@@ -1,0 +1,39 @@
+The S3C2410X has 117 multi-functional input/output port pins. The ports are:
+— Port A (GPA): 23-output port
+— Port B (GPB): 11-input/output port
+— Port C (GPC): 16-input/output port
+— Port D (GPD): 16-input/output port
+— Port E (GPE): 16-input/output port
+— Port F (GPF): 8-input/output port
+— Port G (GPG): 16-input/output port
+— Port H (GPH): 11-input/output port
+
+Each port can be easily configured by software to meet various system configurations and design requirements.
+
+You have to define which function of each pin is used before starting the main program. If a pin is not used for multiplexed functions, the pin can be configured as I/O ports.
+
+Initial pin states are configured seamlessly to avoid problems
+
+
+p9-2 ~ p9-6(實體腳位對應)
+
+
+控制暫存器-PORT CONFIGURATION REGISTER (GPACON-GPHCON)
+In the S3C2410X, most pins are multiplexed. So, It is require to determine which function is selected for each pin.
+
+port control register (PnCON) determines the function of each pin.
+
+If GPF0 – GPF7 and GPG0 – GPG7 are used for wakeup signals in Power-OFF mode, these ports must be configured in Interrupt mode.
+
+
+資料暫存器-PORT DATA REGISTER (GPADAT-GPHDAT)
+If ports are configured as output ports, data can be written to the corresponding bit of the PnDAT. If ports are configured as input ports, the data can be read from the corresponding bit of the PnDAT.
+
+
+提升電阻暫存器-PORT PULL-UP REGISTER (GPBUP-GPHUP)
+The port pull-up register controls the pull-up resister enable/disable of each port group. When the corresponding bit is 0, the pull-up resister of the pin is enabled. When 1, the pull-up resister is disabled.
+
+If the port pull-up register is enabled, the pull-up resisters work without pin’s functional setting (input, output,DATAn, EINTn, etc).
+
+
+p9-8 ~ p9-19(GPACON-GPHCON完整介紹)
