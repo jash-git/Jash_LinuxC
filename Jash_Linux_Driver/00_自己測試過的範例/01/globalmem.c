@@ -17,33 +17,35 @@
 #include <asm/system.h>
 #include <asm/uaccess.h>
 
-#define GLOBALMEM_SIZE	0x1000	/*�����O�����̤j4K�줸��*/
-#define MEM_CLEAR 0x1  /*�M0�����O����*/
-#define GLOBALMEM_MAJOR 256    /*�w�]��globalmem���D�]�Ƹ�*/
+#define GLOBALMEM_SIZE	0x1000	/*全局内存最大4K字节*/
+#define MEM_CLEAR 0x1  /*清0全局内存*/
+#define GLOBALMEM_MAJOR 256    /*预设的globalmem的主设备号*/
 
 static int globalmem_major = GLOBALMEM_MAJOR;
-/*globalmem�]�Ƶ��c��*/
+/*globalmem设备结构体*/
 struct globalmem_dev                                     
 {                                                        
-  struct cdev cdev; /*cdev���c��*/                       
-  unsigned char mem[GLOBALMEM_SIZE]; /*�����O����*/        
+  struct cdev cdev; /*cdev结构体*/                       
+  unsigned char mem[GLOBALMEM_SIZE]; /*全局内存*/        
 };
 
-struct globalmem_dev *globalmem_devp; /*�]�Ƶ��c������*/
-/*�ɥ��}����*/
+struct globalmem_dev *globalmem_devp; /*设备结构体指针*/
+
+/*文件打开函数*/
 int globalmem_open(struct inode *inode, struct file *filp)
 {
-  /*�N�]�Ƶ��c�����н��ȵ��ɨp�����ƫ���*/
+  /*将设备结构体指针赋值给文件私有数据指针*/
   filp->private_data = globalmem_devp;
   return 0;
 }
-/*���������*/
+
+/*文件释放函数*/
 int globalmem_release(struct inode *inode, struct file *filp)
 {
   return 0;
 }
 
-/* ioctl�]�Ʊ������� */
+/* ioctl设备控制函数 */
 static int globalmem_ioctl(struct inode *inodep, struct file *filp, unsigned
   int cmd, unsigned long arg)
 {
@@ -62,22 +64,22 @@ static int globalmem_ioctl(struct inode *inodep, struct file *filp, unsigned
   return 0;
 }
 
-/*Ū����*/
+/*读函数*/
 static ssize_t globalmem_read(struct file *filp, char __user *buf, size_t size,
   loff_t *ppos)
 {
   unsigned long p =  *ppos;
   unsigned int count = size;
   int ret = 0;
-  struct globalmem_dev *dev = filp->private_data; /*���o�]�Ƶ��c������*/
+  struct globalmem_dev *dev = filp->private_data; /*获得设备结构体指针*/
 
-  /*��R�M�������Ī��g����*/
+  /*分析和获取有效的写长度*/
   if (p >= GLOBALMEM_SIZE)
     return count ?  - ENXIO: 0;
   if (count > GLOBALMEM_SIZE - p)
     count = GLOBALMEM_SIZE - p;
 
-  /*���֪Ŷ�->�Τ��Ŷ�*/
+  /*内核空间->用户空间*/
   if (copy_to_user(buf, (void*)(dev->mem + p), count))
   {
     ret =  - EFAULT;
@@ -93,22 +95,22 @@ static ssize_t globalmem_read(struct file *filp, char __user *buf, size_t size,
   return ret;
 }
 
-/*�g����*/
+/*写函数*/
 static ssize_t globalmem_write(struct file *filp, const char __user *buf,
   size_t size, loff_t *ppos)
 {
   unsigned long p =  *ppos;
   unsigned int count = size;
   int ret = 0;
-  struct globalmem_dev *dev = filp->private_data; /*���o�]�Ƶ��c������*/
+  struct globalmem_dev *dev = filp->private_data; /*获得设备结构体指针*/
   
-  /*��R�M�������Ī��g����*/
+  /*分析和获取有效的写长度*/
   if (p >= GLOBALMEM_SIZE)
     return count ?  - ENXIO: 0;
   if (count > GLOBALMEM_SIZE - p)
     count = GLOBALMEM_SIZE - p;
     
-  /*�Τ��Ŷ�->���֪Ŷ�*/
+  /*用户空间->内核空间*/
   if (copy_from_user(dev->mem + p, buf, count))
     ret =  - EFAULT;
   else
@@ -122,13 +124,13 @@ static ssize_t globalmem_write(struct file *filp, const char __user *buf,
   return ret;
 }
 
-/* seek�ɩw������ */
+/* seek文件定位函数 */
 static loff_t globalmem_llseek(struct file *filp, loff_t offset, int orig)
 {
   loff_t ret = 0;
   switch (orig)
   {
-    case 0:   /*�۹��ɶ}�l���m����*/
+    case 0:   /*相对文件开始位置偏移*/
       if (offset < 0)
       {
         ret =  - EINVAL;
@@ -142,7 +144,7 @@ static loff_t globalmem_llseek(struct file *filp, loff_t offset, int orig)
       filp->f_pos = (unsigned int)offset;
       ret = filp->f_pos;
       break;
-    case 1:   /*�۹��������e���m����*/
+    case 1:   /*相对文件当前位置偏移*/
       if ((filp->f_pos + offset) > GLOBALMEM_SIZE)
       {
         ret =  - EINVAL;
@@ -163,7 +165,7 @@ static loff_t globalmem_llseek(struct file *filp, loff_t offset, int orig)
   return ret;
 }
 
-/*�ɾާ@���c��*/
+/*文件操作结构体*/
 static const struct file_operations globalmem_fops =
 {
   .owner = THIS_MODULE,
@@ -175,7 +177,7 @@ static const struct file_operations globalmem_fops =
   .release = globalmem_release,
 };
 
-/*���l�ƨõ��Ucdev*/
+/*初始化并注册cdev*/
 static void globalmem_setup_cdev(struct globalmem_dev *dev, int index)
 {
   int err, devno = MKDEV(globalmem_major, index);
@@ -188,16 +190,16 @@ static void globalmem_setup_cdev(struct globalmem_dev *dev, int index)
     printk(KERN_NOTICE "Error %d adding LED%d", err, index);
 }
 
-/*�]���X�ʼҲո��J����*/
+/*设备驱动模块加载函数*/
 int globalmem_init(void)
 {
   int result;
   dev_t devno = MKDEV(globalmem_major, 0);
 
-  /* �ӽг]�Ƹ�*/
+  /* 申请设备号*/
   if (globalmem_major)
     result = register_chrdev_region(devno, 1, "globalmem");
-  else  /* �ʺA�ӽг]�Ƹ� */
+  else   /* 动态申请设备号 */
   {
     result = alloc_chrdev_region(&devno, 0, 1, "globalmem");
     globalmem_major = MAJOR(devno);
@@ -205,9 +207,9 @@ int globalmem_init(void)
   if (result < 0)
     return result;
     
-  /* �ʺA�ӽг]�Ƶ��c�骺�O����*/
+  /* 动态申请设备结构体的内存*/
   globalmem_devp = kmalloc(sizeof(struct globalmem_dev), GFP_KERNEL);
-  if (!globalmem_devp)    /*�ӽХ���*/
+  if (!globalmem_devp)    /*申请失败*/
   {
     result =  - ENOMEM;
     goto fail_malloc;
@@ -221,12 +223,12 @@ int globalmem_init(void)
   return result;
 }
 
-/*�Ҳը�������*/
+/*模块卸载函数*/
 void globalmem_exit(void)
 {
-  cdev_del(&globalmem_devp->cdev);   /*���Pcdev*/
-  kfree(globalmem_devp);     /*����]�Ƶ��c���O����*/
-  unregister_chrdev_region(MKDEV(globalmem_major, 0), 1); /*����]�Ƹ�*/
+  cdev_del(&globalmem_devp->cdev);   /*注销cdev*/
+  kfree(globalmem_devp);     /*释放设备结构体内存*/
+  unregister_chrdev_region(MKDEV(globalmem_major, 0), 1); /*释放设备号*/
 }
 
 MODULE_AUTHOR("Song Baohua");
