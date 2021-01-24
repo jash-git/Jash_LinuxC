@@ -1,0 +1,48 @@
+Linux C function() 參考手冊：memcpy（拷貝記憶體內容）
+
+ 
+
+資料來源：http://people.cs.nctu.edu.tw/~yslin/library/linuxc/main.htm
+線上執行：http://www.tutorialspoint.com/compile_c_online.php
+code2html：http://tohtml.com/
+
+
+相關函數
+bcopy，memccpy，memcpy，memmove，strcpy，strncpy
+表頭文件
+#include<string.h>
+定義函數
+void * memcpy (void * dest ,const void *src, size_t n);
+函數說明
+memcpy()用來拷貝src所指的內存內容前n個字節到dest所指的內存地址上。與strcpy()不同的是，memcpy()會完整的複製n個字節，不會因為遇到字符串結束'\0'而結束。
+返回值
+返回指向dest的指針。
+附加說明
+指針src和dest所指的內存區域不可重疊。
+範例
+
+#include <string.h>
+#include <stdio.h>
+
+int main()
+{
+	char a[30]="string (a)";
+	char b[30]="string\0string";
+	int i;
+	strcpy(a,b);
+	printf("strcpy():");
+	for(i=0;i<30;i++)
+	{
+		printf("%c",a[i]);
+	}
+	printf("\n");
+	
+	memcpy(a,b,30);
+	printf("memcpy():");
+	for(i=0;i<30;i++)
+	{
+		printf("%c",a[i]);
+	}
+	printf("\n");
+	return 0;
+}

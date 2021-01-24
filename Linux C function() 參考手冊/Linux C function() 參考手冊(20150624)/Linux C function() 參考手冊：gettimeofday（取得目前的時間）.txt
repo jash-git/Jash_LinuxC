@@ -1,0 +1,58 @@
+Linux C function() 參考手冊：gettimeofday（取得目前的時間）
+
+ 
+
+資料來源：http://people.cs.nctu.edu.tw/~yslin/library/linuxc/main.htm
+線上執行：http://www.tutorialspoint.com/compile_c_online.php
+code2html：http://tohtml.com/
+
+
+相關函數
+time，ctime，ftime，settimeofday
+表頭文件
+#include <sys/time.h>
+#include <unistd.h>
+定義函數
+int gettimeofday ( struct timeval * tv , struct timezone * tz )
+函數說明
+gettimeofday()會把目前的時間有tv所指的結構返回，當地時區的信息則放到tz所指的結構中。
+timeval結構定義為:
+struct timeval{
+long tv_sec; /*秒*/
+long tv_usec; /*微秒*/
+};
+timezone 結構定義為:
+struct timezone{
+int tz_minuteswest; /*和Greenwich 時間差了多少分鐘*/
+int tz_dsttime; /*日光節約時間的狀態*/
+};
+上述兩個結構都定義在/usr/include/sys/time.h。tz_dsttime 所代表的狀態如下
+DST_NONE /*不使用*/
+DST_USA /*美國*/
+DST_AUST /*澳洲*/
+DST_WET /*西歐*/
+DST_MET /*中歐*/
+DST_EET /*東歐*/
+DST_CAN /*加拿大*/
+DST_GB /*大不列顛*/
+DST_RUM /*羅馬尼亞*/
+DST_TUR /*土耳其*/
+DST_AUSTALT /*澳洲（1986年以後）*/
+返回值
+成功則返回0，失敗返回－1，錯誤代碼存於errno。附加說明EFAULT指針tv和tz所指的內存空間超出存取權限。
+範例
+
+#include <sys/time.h>
+#include <unistd.h>
+#include <stdio.h>
+int main()
+{
+	struct timeval tv;
+	struct timezone tz;
+	gettimeofday (&tv , &tz);
+	printf("tv_sec: %d\n", tv.tv_sec);
+	printf("tv_usec: %d\n",tv.tv_usec);
+	printf("tz_minuteswest: %d\n", tz.tz_minuteswest);
+	printf("tz_dsttime: %d\n",tz.tz_dsttime);
+	return 0;
+}

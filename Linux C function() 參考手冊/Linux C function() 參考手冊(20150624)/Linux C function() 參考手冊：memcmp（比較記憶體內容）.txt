@@ -1,0 +1,36 @@
+Linux C function() 參考手冊：memcmp（比較記憶體內容）
+
+ 
+
+資料來源：http://people.cs.nctu.edu.tw/~yslin/library/linuxc/main.htm
+線上執行：http://www.tutorialspoint.com/compile_c_online.php
+code2html：http://tohtml.com/
+
+ 
+
+
+相關函數
+bcmp，strcasecmp，strcmp，strcoll，strncmp，strncasecmp
+表頭文件
+#include<string.h>
+定義函數
+int memcmp (const void *s1,const void *s2,size_t n);
+函數說明
+memcmp()用來比較s1和s2所指的內存區間前n個字符。字符串大小的比較是以ASCII碼表上的順序來決定，次順序亦為字符的值。memcmp()首先將s1第一個字符值減去s2第一個字符的值，若差為0則再繼續比較下個字符，若差值不為0則將差值返回。例如，字符串"Ac"和"ba"比較則會返回字符'A'(65)和'b'(98)的差值(－33)。
+返回值
+若參數s1和s2所指的內存內容都完全相同則返回0值。s1若大於s2則返回大於0的值。s1若小於s2則返回小於0的值。
+範例
+
+#include <string.h>
+#include <stdio.h>
+int main()
+{
+	char *a ="aBcDeF";
+	char *b="AbCdEf";
+	char *c="aacdef";
+	char *d="aBcDeF";
+	printf("memcmp(a,b):%d\n",memcmp((void*)a,(void*) b,6));
+	printf("memcmp(a,c):%d\n",memcmp((void*)a,(void*) c,6));
+	printf("memcmp(a,d):%d\n",memcmp((void*)a,(void*) d,6));
+	return 0;
+}

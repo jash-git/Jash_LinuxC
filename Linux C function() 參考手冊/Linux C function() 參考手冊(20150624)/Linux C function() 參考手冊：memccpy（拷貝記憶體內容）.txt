@@ -1,0 +1,34 @@
+Linux C function() 參考手冊：memccpy（拷貝記憶體內容）
+
+ 
+
+資料來源：http://people.cs.nctu.edu.tw/~yslin/library/linuxc/main.htm
+線上執行：http://www.tutorialspoint.com/compile_c_online.php
+code2html：http://tohtml.com/
+
+
+相關函數
+bcopy，memcpy，memmove，strcpy，strncpy
+表頭文件
+#include<string.h>
+定義函數
+void * memccpy(void *dest, const void * src, int c,size_t n);
+函數說明
+memccpy()用來拷貝src所指的內存內容前n個字節到dest所指的地址上。與memcpy()不同的是，memccpy()會在複製時檢查參數c是否出現，若是則返回dest中值為c的下一個字節地址。
+返回值
+返回指向dest中值為c的下一個字節指針。返回值為0表示在src所指內存前n個字節中沒有值為c的字節。
+範例
+
+#include<string.h>
+#include<stdio.h>
+int main()
+{
+	char a[]="string[a]";
+	char b[]="string(b)";
+	char *p;
+	p=memccpy(a,b,'b',sizeof(b));
+	//p=memccpy(a,b,'B',sizeof(b));
+	printf("memccpy():%s\n",a);
+	printf("memccpy return= %s\n",p);
+	return 0;
+}

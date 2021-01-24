@@ -1,0 +1,52 @@
+Linux C function() 參考手冊：bcopy（拷貝記憶體內容）
+
+ 
+
+資料來源：http://people.cs.nctu.edu.tw/~yslin/library/linuxc/main.htm
+線上執行：http://www.tutorialspoint.com/compile_c_online.php
+code2html：http://tohtml.com/
+
+
+相關函數
+memccpy，memcpy，memmove，strcpy，ctrncpy
+表頭文件
+#include <string.h>
+定義函數
+void bcopy ( const void *src,void *dest ,int n);
+函數說明
+bcopy()與memcpy()一樣都是用來拷貝src所指的內存內容前n個字節到dest所指的地址，不過參數src與dest在傳給函數時是相反的位置。
+返回值
+
+附加說明
+建議使用memcpy()取代
+範例
+
+#include <stdio.h>
+#include <string.h>
+
+int main()
+{
+	char dest[30]="string(a)";
+	char src[30]="string1\0string2";
+	int i;
+	printf("dest[30]=%s\n",dest);
+	printf("src[30]=%s\n",src);
+	bcopy(src,dest,30);/* src指針放在前*/
+	printf("bcopy():");
+	for(i=0;i<30;i++)
+	{
+		printf("%c",dest[i]);
+	}
+	
+	memcpy(dest,src,30); /*dest指針放在錢*/
+	printf("\nmemcpy():");
+	for(i=0;i<30;i++)
+	{
+		printf("%c",dest[i]);
+	}
+	printf("\n");
+	printf("dest[30]=%s\n",dest);
+	printf("src[30]=%s\n",src);
+	
+	return 0;
+}

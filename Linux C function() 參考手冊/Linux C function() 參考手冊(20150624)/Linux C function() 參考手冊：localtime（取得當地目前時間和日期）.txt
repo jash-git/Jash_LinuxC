@@ -1,0 +1,33 @@
+Linux C function() 參考手冊：localtime（取得當地目前時間和日期）
+
+ 
+
+資料來源：http://people.cs.nctu.edu.tw/~yslin/library/linuxc/main.htm
+線上執行：http://www.tutorialspoint.com/compile_c_online.php
+code2html：http://tohtml.com/
+
+
+相關函數
+time, asctime, ctime, gmtime
+表頭文件
+#include<time.h>
+定義函數
+struct tm *localtime(const time_t * timep);
+函數說明
+localtime()將參數timep所指的time_t結構中的信息轉換成真實世界所使用的時間日期表示方法，然後將結果由結構tm返回。結構tm的定義請參考gmtime()。此函數返回的時間日期已經轉換成當地時區。
+返回值
+返回結構tm代表目前的當地時間。
+範例
+#include <time.h>
+#include <stdio.h>
+int main()
+{
+	char *wday[]={"Sun(日)","Mon(一)","Tue(二)","Wed(三)","Thu(四)","Fri(五)","Sat(六)"};
+	time_t timep;
+	struct tm *p;
+	time(&timep);
+	p=localtime(&timep); /*取得當地時間*/
+	printf ("%d/%d/%d ", (1900+p->tm_year),p->tm_mon+1, p->tm_mday);
+	printf("%s% d:%d:%d\n", wday[p->tm_wday],p->tm_hour, p->tm_min, p->tm_sec);
+	return 0;
+}

@@ -1,0 +1,45 @@
+Linux C function() 參考手冊：settimeofday（設置目前時間）
+
+ 
+
+資料來源：http://people.cs.nctu.edu.tw/~yslin/library/linuxc/main.htm
+線上執行：http://www.tutorialspoint.com/compile_c_online.php
+code2html：http://tohtml.com/
+
+
+相關函數
+time，ctime，ftime，gettimeofday
+表頭文件
+#include<sys/time.h>
+#include<unistd.h>
+定義函數
+int settimeofday ( const struct timeval *tv,const struct timezone *tz);
+函數說明
+settimeofday()會把目前時間設成由tv所指的結構信息，當地時區信息則設成tz所指的結構。詳細的說明請參考gettimeofday()。注意，只有root權限才能使用此函數修改時間。
+返回值
+成功則返回0，失敗返回－1，錯誤代碼存於errno。
+錯誤代碼
+EPERM 並非由root權限調用settimeofday（），權限不夠。
+EINVAL 時區或某個數據是不正確的，無法正確設置時間。
+
+#include <sys/time.h>
+#include <unistd.h>
+#include <stdio.h>
+
+int main() 
+{
+	timeval p;
+
+	gettimeofday(&p, NULL);
+	printf("currentTime:%d\n", (int)p.tv_sec);
+
+	p.tv_sec = p.tv_sec + 60 * 5;    //系統時間增加五分鐘
+	settimeofday(&p, NULL);
+
+	gettimeofday(&p, NULL);
+	printf("currentTime:%d\n", (int)p.tv_sec);
+
+	return 0;
+}
+
+

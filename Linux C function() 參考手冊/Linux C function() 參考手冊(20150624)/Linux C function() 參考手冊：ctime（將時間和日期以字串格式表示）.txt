@@ -1,0 +1,31 @@
+Linux C function() 參考手冊：ctime（將時間和日期以字串格式表示）
+
+ 
+
+資料來源：http://people.cs.nctu.edu.tw/~yslin/library/linuxc/main.htm
+線上執行：http://www.tutorialspoint.com/compile_c_online.php
+code2html：http://tohtml.com/
+
+
+相關函數
+time，asctime，gmtime，localtime
+表頭文件
+#include<time.h>
+定義函數
+char *ctime(const time_t *timep);
+函數說明
+ctime()將參數timep所指的time_t結構中的信息轉換成真實世界所使用的時間日期表示方法，然後將結果以字符串形態返回。此函數已經由時區轉換成當地時間，字符串格式為“Wed Jun 30 21 :49 :08 1993\n”。若再調用相關的時間日期函數，此字符串可能會被破壞。
+返回值
+返回一字符串表示目前當地的時間日期。
+範例
+
+#include <time.h>
+#include <stdio.h>
+
+int main()
+{
+	time_t timep;
+	time (&timep);
+	printf("%s",ctime(&timep));
+	return 0;
+}
