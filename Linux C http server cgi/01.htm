@@ -1,0 +1,708 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!-- saved from url=(0060)http://www.cnblogs.com/aga-j/archive/2011/08/26/2153948.html -->
+<html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><script async="" type="text/javascript" src="./01_files/gpt.js"></script>
+
+<title>《Unix网络编程》学习笔记 第一，第二章 - Aga.J - 博客园</title>
+<link type="text/css" rel="stylesheet" href="./01_files/common.css">
+<link id="MainCss" type="text/css" rel="stylesheet" href="./01_files/style.css">
+<link type="text/css" rel="stylesheet" href="./01_files/common2.css">
+<link type="text/css" rel="stylesheet" href="./01_files/shStyle.css">
+<link type="text/css" rel="stylesheet" href="./01_files/customcss.aspx">
+<link title="RSS" type="application/rss+xml" rel="alternate" href="http://www.cnblogs.com/aga-j/rss">
+<link title="RSD" type="application/rsd+xml" rel="EditURI" href="http://www.cnblogs.com/aga-j/rsd.xml">
+<link type="application/wlwmanifest+xml" rel="wlwmanifest" href="http://www.cnblogs.com/aga-j/wlwmanifest.xml">
+<script type="text/javascript" async="" src="./01_files/ga.js"></script><script type="text/javascript" async="" src="./01_files/map.js"></script><script src="./01_files/jquery.js" type="text/javascript"></script><style type="text/css"></style>  
+<script type="text/javascript">
+var currentBlogApp = 'aga-j';
+</script>
+<script src="./01_files/common.js" type="text/javascript"></script> 
+<script src="./01_files/json2.js" type="text/javascript"></script>
+<script src="./01_files/skin.js" language="javascript" type="text/javascript"></script>
+<script type="text/javascript" src="./01_files/syntaxHighlighter.js"></script>
+<script async="" type="text/javascript" src="http://common.cnblogs.com/script/google_ads_gpt.js"></script><style id="wrc-middle-css" type="text/css">.wrc_whole_window{	display: none;	position: fixed; 	z-index: 2147483647;	background-color: rgba(40, 40, 40, 0.9);	word-spacing: normal !important;	margin: 0px !important;	padding: 0px !important;	border: 0px !important;	left: 0px;	top: 0px;	width: 100%;	height: 100%;	line-height: normal !important;	letter-spacing: normal !important;	overflow: hidden;}.wrc_bar_window{	display: none;	position: fixed; 	z-index: 2147483647;	background-color: rgba(60, 60, 60, 1.0);	word-spacing: normal !important;	font-family: Segoe UI, Arial Unicode MS, Arial, Sans-Serif;	margin: 0px !important;	padding: 0px !important;	border: 0px !important;	left: 0px;	top: 0px;	width: 100%;	height: 40px;	line-height: normal !important;	letter-spacing: normal !important;	color: white !important;	font-size: 13px !important;}.wrc_middle {	display: table-cell;	vertical-align: middle;	width: 100%;}.wrc_middle_main {	font-family: Segoe UI, Arial Unicode MS, Arial, Sans-Serif;	font-size: 14px;	width: 600px;	height: auto;    background: url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/background-body.jpg) repeat-x left top;	background-color: rgb(39, 53, 62);	position: relative;	margin-left: auto;	margin-right: auto;	text-align: left;}.wrc_middle_tq_main {	font-family: Segoe UI, Arial Unicode MS, Arial, Sans-Serif;	font-size: 16px;	width: 615px;	height: 460px;    background: url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/background-sitecorrect.png) no-repeat;	background-color: white;	color: black !important;	position: relative;	margin-left: auto;	margin-right: auto;	text-align: center;}.wrc_middle_logo {    background: url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/logo.jpg) no-repeat left bottom;    width: 140px;    height: 42px;    color: orange;    display: table-cell;    text-align: right;    vertical-align: middle;}.wrc_icon_warning {	margin: 20px 10px 20px 15px;	float: left;	background-color: transparent;}.wrc_middle_title {    color: #b6bec7;	height: auto;    margin: 0px auto;	font-size: 2.2em;	white-space: nowrap;	text-align: center;}.wrc_middle_hline {    height: 2px;	width: 100%;    display: block;}.wrc_middle_description {	text-align: center;	margin: 15px;	font-size: 1.4em;	padding: 20px;	height: auto;	color: white;	min-height: 3.5em;}.wrc_middle_actions_main_div {	margin-bottom: 15px;	text-align: center;}.wrc_middle_actions_blue_button div {	display: inline-block;	width: auto;	cursor: Pointer;	margin: 3px 10px 3px 10px;	color: white;	font-size: 1.2em;	font-weight: bold;}.wrc_middle_actions_blue_button {	-moz-appearance: none;	border-radius: 7px;	-moz-border-radius: 7px/7px;	border-radius: 7px/7px;	background-color: rgb(0, 173, 223) !important;	display: inline-block;	width: auto;	cursor: Pointer;	border: 2px solid #00dddd;	padding: 0px 20px 0px 20px;}.wrc_middle_actions_blue_button:hover {	background-color: rgb(0, 159, 212) !important;}.wrc_middle_actions_blue_button:active {	background-color: rgb(0, 146, 200) !important;	border: 2px solid #00aaaa;}.wrc_middle_actions_grey_button div {	display: inline-block;	width: auto;	cursor: Pointer;	margin: 3px 10px 3px 10px;	color: white !important;	font-size: 15px;	font-weight: bold;}.wrc_middle_actions_grey_button {	-moz-appearance: none;	border-radius: 7px;	-moz-border-radius: 7px/7px;	border-radius: 7px/7px;	background-color: rgb(100, 100, 100) !important;	display: inline-block;	width: auto;	cursor: Pointer;	border: 2px solid #aaaaaa;	text-decoration: none;	padding: 0px 20px 0px 20px;}.wrc_middle_actions_grey_button:hover {	background-color: rgb(120, 120, 120) !important;}.wrc_middle_actions_grey_button:active {	background-color: rgb(130, 130, 130) !important;	border: 2px solid #00aaaa;}.wrc_middle_action_low {	font-size: 0.9em;	white-space: nowrap;	cursor: Pointer;	color: grey !important;	margin: 10px 10px 0px 10px;	text-decoration: none;}.wrc_middle_action_low:hover {	color: #aa4400 !important;}.wrc_middle_actions_rest_div {	padding-top: 5px;	white-space: nowrap;	text-align: center;}.wrc_middle_action {	white-space: nowrap;	cursor: Pointer;	color: red !important;	font-size: 1.2em;	margin: 10px 10px 0px 10px;	text-decoration: none;}.wrc_middle_action:hover {	color: #aa4400 !important;}</style><script id="wrc-script-middle_window" type="text/javascript" language="JavaScript">var g_inputsCnt = 0;var g_InputThis = new Array(null, null, null, null);var g_alerted = false;/* we test the input if it includes 4 digits   (input is a part of 4 inputs for filling the credit-card number)*/function is4DigitsCardNumber(val){	var regExp = new RegExp('[0-9]{4}');	return (val.length == 4 && val.search(regExp) == 0);}/* testing the whole credit-card number 19 digits devided by three '-' symbols or   exactly 16 digits without any dividers*/function isCreditCardNumber(val){	if(val.length == 19)	{		var regExp = new RegExp('[0-9]{4}-[0-9]{4}-[0-9]{4}-[0-9]{4}');		return (val.search(regExp) == 0);	}	else if(val.length == 16)	{		var regExp = new RegExp('[0-9]{4}[0-9]{4}[0-9]{4}[0-9]{4}');		return (val.search(regExp) == 0);	}	return false;}function CheckInputOnCreditNumber(self){	if(g_alerted)		return false;	var value = self.value;	if(self.type == 'text')	{		if(is4DigitsCardNumber(value))		{			var cont = true;			for(i = 0; i < g_inputsCnt; i++)				if(g_InputThis[i] == self)					cont = false;			if(cont && g_inputsCnt < 4)			{				g_InputThis[g_inputsCnt] = self;				g_inputsCnt++;			}		}		g_alerted = (g_inputsCnt == 4);		if(g_alerted)			g_inputsCnt = 0;		else			g_alerted = isCreditCardNumber(value);	}	return g_alerted;}function CheckInputOnPassword(self){	if(g_alerted)		return false;	var value = self.value;	if(self.type == 'password')	{		g_alerted = (value.length > 0);	}	return g_alerted;}function onInputBlur(self, bRatingOk, bFishingSite){	var bCreditNumber = CheckInputOnCreditNumber(self);	var bPassword = CheckInputOnPassword(self);	if((!bRatingOk || bFishingSite == 1) && (bCreditNumber || bPassword) )	{		var warnDiv = document.getElementById("wrcinputdiv");		if(warnDiv)		{			/* show the warning div in the middle of the screen */			warnDiv.style.left = "0px";			warnDiv.style.top = "0px";			warnDiv.style.width = "100%";			warnDiv.style.height = "100%";			document.getElementById("wrc_warn_fs").style.display = 'none';			document.getElementById("wrc_warn_cn").style.display = 'none';			if(bFishingSite)				document.getElementById("wrc_warn_fs").style.display = 'block';			else				document.getElementById("wrc_warn_cn").style.display = 'block';			warnDiv.style.display = 'table';		}	}}</script></head><style type="text/css">embed[type*="application/x-shockwave-flash"],embed[src*=".swf"],object[type*="application/x-shockwave-flash"],object[codetype*="application/x-shockwave-flash"],object[src*=".swf"],object[codebase*="swflash.cab"],object[classid*="D27CDB6E-AE6D-11cf-96B8-444553540000"],object[classid*="d27cdb6e-ae6d-11cf-96b8-444553540000"],object[classid*="D27CDB6E-AE6D-11cf-96B8-444553540000"]{	display: none !important;}</style>
+<body><script src="http://tajs.qq.com/jiathis.php?uid=1626433&dm=www.cnblogs.com" charset="utf-8"></script><link href="./01_files/jiathis_share.css" rel="stylesheet" type="text/css"><div class="jiathis_style" style="height: auto; position: absolute; z-index: 100000000; top: 10341.4px; right: 0px; overflow: hidden; width: 26px;"><table cellpadding="0" cellspacing="0"><tbody style="background:transparent"><tr><td style="background:transparent"><img src="./01_files/r.gif" style="cursor:pointer;" onmouseover="$CKE.over()" onclick="$CKE.center(this)"></td><td><div><div class="jiadiv_01"><div style="width:100%;background:#F2F2F2;border-bottom:1px solid #E5E5E5;line-height:200%;padding-left:5px;font-size:12px"><table width="100%"><tbody><tr class="jt_sharetitle"><td align="left" style="text-align:left;line-height:25px;font-size:14px;font-weight:bold;color:#000000;">分享到...</td><td align="right" style="text-align:right;"><img src="./01_files/img_exit.gif" border="0" style="opacity:0.5;filter:alpha(opacity=50);margin:0 10px;cursor:pointer;" onclick="$CKE.shareClose();"></td></tr></tbody></table></div><div class="jiadiv_02" style="width:100%;" id="jiathis_sers"><a href="javascript:;" onclick="jiathis_sendto(&#39;copy&#39;);return false;" class="jiatitle"><span class="jtico jtico_copy">复制网址</span></a><a href="javascript:;" onclick="jiathis_sendto(&#39;email&#39;);return false;" class="jiatitle"><span class="jtico jtico_email">邮件</span></a><a href="javascript:;" onclick="jiathis_sendto(&#39;qzone&#39;);return false;" class="jiatitle"><span class="jtico jtico_qzone">QQ空间</span></a><a href="javascript:;" onclick="jiathis_sendto(&#39;tsina&#39;);return false;" class="jiatitle"><span class="jtico jtico_tsina">新浪微博</span></a><a href="javascript:;" onclick="jiathis_sendto(&#39;tqq&#39;);return false;" class="jiatitle"><span class="jtico jtico_tqq">腾讯微博<img src="./01_files/gift.png" style="margin-top:-9px!important;_margin-top:-5px; margin-left:3px;"></span></a><a href="javascript:;" onclick="jiathis_sendto(&#39;msn&#39;);return false;" class="jiatitle"><span class="jtico jtico_msn">MSN</span></a><a href="javascript:;" onclick="jiathis_sendto(&#39;renren&#39;);return false;" class="jiatitle"><span class="jtico jtico_renren">人人网</span></a><a href="javascript:;" onclick="jiathis_sendto(&#39;kaixin001&#39;);return false;" class="jiatitle"><span class="jtico jtico_kaixin001">开心网</span></a><a href="javascript:;" onclick="jiathis_sendto(&#39;t163&#39;);return false;" class="jiatitle"><span class="jtico jtico_t163">网易微博</span></a><a href="javascript:;" onclick="jiathis_sendto(&#39;tsohu&#39;);return false;" class="jiatitle"><span class="jtico jtico_tsohu">搜狐微博</span></a><a href="javascript:;" onclick="jiathis_sendto(&#39;cqq&#39;);return false;" class="jiatitle"><span class="jtico jtico_cqq">QQ好友</span></a><a href="javascript:;" onclick="jiathis_sendto(&#39;taobao&#39;);return false;" class="jiatitle"><span class="jtico jtico_taobao">淘江湖</span></a><a href="javascript:;" onclick="jiathis_sendto(&#39;feixin&#39;);return false;" class="jiatitle"><span class="jtico jtico_feixin">飞信</span></a><a href="javascript:;" onclick="jiathis_sendto(&#39;douban&#39;);return false;" class="jiatitle"><span class="jtico jtico_douban">豆瓣</span></a><a href="javascript:;" onclick="jiathis_sendto(&#39;ishare&#39;);return false;" class="jiatitle"><span class="jtico jtico_ishare">一键分享</span></a><a href="javascript:;" onclick="$CKE.center(this);return false;" class="jiatitle"><span class="jtico jtico_jiathis">查看更多(124)</span></a><div style="clear:both"></div></div><div class="ckepopBottom" style="width:100%;"><div style="float:left;font-size:10px"><a href="http://www.jiathis.com/help/html/what-is-jiathis" class="link_01" style="color:#333333;" target="_blank">这是什么工具?</a></div><div style="float:right;font-size:11px;margin:0 5px 0 0;"><img src="./01_files/img_012.gif" align="absmiddle" border="0"><a href="http://www.jiathis.com/index2" style="color:#333333;padding:0 3px;" class="link_01" target="_blank">JiaThis</a></div><div style="clear:both"></div></div></div></div></td></tr></tbody></table></div><iframe style="position: absolute; display: none;" frameborder="0"></iframe><div class="jiathis_style" style="height: auto; position: absolute; z-index: 100000000; display: none; top: 50%; left: 50%; overflow: auto;"><div style="border:10px solid #7F7F7F; width:300px;"><div class="jiadiv_01" style="width:300px;"><div style="background:#F2F2F2;line-height:100%;height:30px;overflow:hidden;width:300px;"><table width="100%" style="margin:5px 0 0 0;"><tbody><tr class="jt_sharetitle" style="line-height:20px!important;"><td align="left" style="text-align:left;font-size:12px;">分享到各大网站</td><td align="right"><img src="./01_files/img_exit.gif" border="0" style="margin:0 4px;cursor:pointer;" onclick="$CKE.centerClose();"></td></tr></tbody></table></div><div class="searchTxtCont"><div style="background:url(http://v2.jiathis.com/code/images/img_so.gif) no-repeat center;height:30px; width:281px"><form onsubmit="return false;"><input class="searchTxt" name="" type="text" onclick="this.value=&#39;&#39;;this.style.color=&#39;#000&#39;;" value="输入网站名或拼音缩写" onkeyup="$CKE.choose(this);"></form></div></div><div id="jiathis_sharelist" class="jiadiv_02" style="width:300px;height:300px;overflow-y:auto;"><a href="javascript:;" onclick="jiathis_sendto(&#39;ishare&#39;);return false;" class="jiatitle"><span class="jtico jtico_ishare">一键分享</span><input type="hidden" value="ishare,一键分享,yjfx"></a><a href="javascript:;" onclick="jiathis_sendto(&#39;ujian&#39;);return false;" class="jiatitle"><span class="jtico jtico_ujian">猜你喜欢</span><input type="hidden" value="ujian,猜你喜欢,cnxh"></a><a href="javascript:;" onclick="jiathis_sendto(&#39;copy&#39;);return false;" class="jiatitle"><span class="jtico jtico_copy">复制网址</span><input type="hidden" value="copy,复制网址,fzwz"></a><a href="javascript:;" onclick="jiathis_sendto(&#39;fav&#39;);return false;" class="jiatitle"><span class="jtico jtico_fav">收藏夹</span><input type="hidden" value="fav,收藏夹,scj"></a><a href="javascript:;" onclick="jiathis_sendto(&#39;print&#39;);return false;" class="jiatitle"><span class="jtico jtico_print">打印</span><input type="hidden" value="print,打印,dy"></a><a href="javascript:;" onclick="jiathis_sendto(&#39;email&#39;);return false;" class="jiatitle"><span class="jtico jtico_email">邮件</span><input type="hidden" value="email,邮件,yj"></a><a href="javascript:;" onclick="jiathis_sendto(&#39;qzone&#39;);return false;" class="jiatitle"><span class="jtico jtico_qzone">QQ空间</span><input type="hidden" value="qzone,QQ空间,qqkj"></a><a href="javascript:;" onclick="jiathis_sendto(&#39;tsina&#39;);return false;" class="jiatitle"><span class="jtico jtico_tsina">新浪微博</span><input type="hidden" value="tsina,新浪微博,xlwb"></a><a href="javascript:;" onclick="jiathis_sendto(&#39;tqq&#39;);return false;" class="jiatitle"><span class="jtico jtico_tqq">腾讯微博</span><input type="hidden" value="tqq,腾讯微博,txwb"></a><a href="javascript:;" onclick="jiathis_sendto(&#39;tsohu&#39;);return false;" class="jiatitle"><span class="jtico jtico_tsohu">搜狐微博</span><input type="hidden" value="tsohu,搜狐微博,shwb"></a><a href="javascript:;" onclick="jiathis_sendto(&#39;t163&#39;);return false;" class="jiatitle"><span class="jtico jtico_t163">网易微博</span><input type="hidden" value="t163,网易微博,wywb"></a><a href="javascript:;" onclick="jiathis_sendto(&#39;renren&#39;);return false;" class="jiatitle"><span class="jtico jtico_renren">人人网</span><input type="hidden" value="renren,人人网,rrw"></a><a href="javascript:;" onclick="jiathis_sendto(&#39;kaixin001&#39;);return false;" class="jiatitle"><span class="jtico jtico_kaixin001">开心网</span><input type="hidden" value="kaixin001,开心网,kxw"></a><a href="javascript:;" onclick="jiathis_sendto(&#39;googleplus&#39;);return false;" class="jiatitle"><span class="jtico jtico_googleplus">Google+</span><input type="hidden" value="googleplus,Google+,googlej"></a><a href="javascript:;" onclick="jiathis_sendto(&#39;qingbiji&#39;);return false;" class="jiatitle"><span class="jtico jtico_qingbiji">轻笔记</span><input type="hidden" value="qingbiji,轻笔记,qbj"></a><a href="javascript:;" onclick="jiathis_sendto(&#39;taobao&#39;);return false;" class="jiatitle"><span class="jtico jtico_taobao">淘江湖</span><input type="hidden" value="taobao,淘江湖,tjh"></a><a href="javascript:;" onclick="jiathis_sendto(&#39;douban&#39;);return false;" class="jiatitle"><span class="jtico jtico_douban">豆瓣</span><input type="hidden" value="douban,豆瓣,db"></a><a href="javascript:;" onclick="jiathis_sendto(&#39;xiaoyou&#39;);return false;" class="jiatitle"><span class="jtico jtico_xiaoyou">朋友网</span><input type="hidden" value="xiaoyou,朋友网,pyw"></a><a href="javascript:;" onclick="jiathis_sendto(&#39;sdonote&#39;);return false;" class="jiatitle"><span class="jtico jtico_sdonote">麦库记事</span><input type="hidden" value="sdonote,麦库记事,mkjs"></a><a href="javascript:;" onclick="jiathis_sendto(&#39;baidu&#39;);return false;" class="jiatitle"><span class="jtico jtico_baidu">百度搜藏</span><input type="hidden" value="baidu,百度搜藏,bdsc"></a><a href="javascript:;" onclick="jiathis_sendto(&#39;ydnote&#39;);return false;" class="jiatitle"><span class="jtico jtico_ydnote">有道云笔记</span><input type="hidden" value="ydnote,有道云笔记,ydybj"></a><a href="javascript:;" onclick="jiathis_sendto(&#39;189share&#39;);return false;" class="jiatitle"><span class="jtico jtico_189share">手机快传</span><input type="hidden" value="189share,手机快传,sjkc"></a><a href="javascript:;" onclick="jiathis_sendto(&#39;tianya&#39;);return false;" class="jiatitle"><span class="jtico jtico_tianya">天涯社区</span><input type="hidden" value="tianya,天涯社区,tysq"></a><a href="javascript:;" onclick="jiathis_sendto(&#39;feixin&#39;);return false;" class="jiatitle"><span class="jtico jtico_feixin">飞信</span><input type="hidden" value="feixin,飞信,fx"></a><a href="javascript:;" onclick="jiathis_sendto(&#39;tieba&#39;);return false;" class="jiatitle"><span class="jtico jtico_tieba">百度贴吧</span><input type="hidden" value="tieba,百度贴吧,bdtb"></a><a href="javascript:;" onclick="jiathis_sendto(&#39;tifeng&#39;);return false;" class="jiatitle"><span class="jtico jtico_tifeng">凤凰微博</span><input type="hidden" value="tifeng,凤凰微博,fhwb"></a><a href="javascript:;" onclick="jiathis_sendto(&#39;youshi&#39;);return false;" class="jiatitle"><span class="jtico jtico_youshi">优士网</span><input type="hidden" value="youshi,优士网,ysw"></a><a href="javascript:;" onclick="jiathis_sendto(&#39;fanfou&#39;);return false;" class="jiatitle"><span class="jtico jtico_fanfou">饭否</span><input type="hidden" value="fanfou,饭否,ff"></a><a href="javascript:;" onclick="jiathis_sendto(&#39;diandian&#39;);return false;" class="jiatitle"><span class="jtico jtico_diandian">点点网</span><input type="hidden" value="diandian,点点网,ddw"></a><a href="javascript:;" onclick="jiathis_sendto(&#39;mingdao&#39;);return false;" class="jiatitle"><span class="jtico jtico_mingdao">明道</span><input type="hidden" value="mingdao,明道,md"></a><a href="javascript:;" onclick="jiathis_sendto(&#39;51&#39;);return false;" class="jiatitle"><span class="jtico jtico_51">51社区</span><input type="hidden" value="51,51社区,51sq"></a><a href="javascript:;" onclick="jiathis_sendto(&#39;qileke&#39;);return false;" class="jiatitle"><span class="jtico jtico_qileke">奇乐收藏</span><input type="hidden" value="qileke,奇乐收藏,qlsc"></a><a href="javascript:;" onclick="jiathis_sendto(&#39;google&#39;);return false;" class="jiatitle"><span class="jtico jtico_google">谷歌</span><input type="hidden" value="google,谷歌,gg"></a><a href="javascript:;" onclick="jiathis_sendto(&#39;buzz&#39;);return false;" class="jiatitle"><span class="jtico jtico_buzz">谷歌Buzz</span><input type="hidden" value="buzz,谷歌Buzz,ggbuzz"></a><a href="javascript:;" onclick="jiathis_sendto(&#39;youdao&#39;);return false;" class="jiatitle"><span class="jtico jtico_youdao">有道书签</span><input type="hidden" value="youdao,有道书签,ydsq"></a><a href="javascript:;" onclick="jiathis_sendto(&#39;cqq&#39;);return false;" class="jiatitle"><span class="jtico jtico_cqq">QQ好友</span><input type="hidden" value="cqq,QQ好友,cqq"></a><a href="javascript:;" onclick="jiathis_sendto(&#39;qq&#39;);return false;" class="jiatitle"><span class="jtico jtico_qq">QQ书签</span><input type="hidden" value="qq,QQ书签,qqsq"></a><a href="javascript:;" onclick="jiathis_sendto(&#39;msn&#39;);return false;" class="jiatitle"><span class="jtico jtico_msn">MSN</span><input type="hidden" value="msn,MSN,msn"></a><a href="javascript:;" onclick="jiathis_sendto(&#39;pinterest&#39;);return false;" class="jiatitle"><span class="jtico jtico_pinterest">Pinterest</span><input type="hidden" value="pinterest,Pinterest,pinterest"></a><a href="javascript:;" onclick="jiathis_sendto(&#39;huaban&#39;);return false;" class="jiatitle"><span class="jtico jtico_huaban">花瓣网</span><input type="hidden" value="huaban,花瓣网,hbw"></a><a href="javascript:;" onclick="jiathis_sendto(&#39;duitang&#39;);return false;" class="jiatitle"><span class="jtico jtico_duitang">堆糖</span><input type="hidden" value="duitang,堆糖,dt"></a><a href="javascript:;" onclick="jiathis_sendto(&#39;ifensi&#39;);return false;" class="jiatitle"><span class="jtico jtico_ifensi">粉丝网</span><input type="hidden" value="ifensi,粉丝网,fsw"></a><a href="javascript:;" onclick="jiathis_sendto(&#39;tyaolan&#39;);return false;" class="jiatitle"><span class="jtico jtico_tyaolan">摇篮微博</span><input type="hidden" value="tyaolan,摇篮微博,ylwb"></a><a href="javascript:;" onclick="jiathis_sendto(&#39;115&#39;);return false;" class="jiatitle"><span class="jtico jtico_115">115收藏</span><input type="hidden" value="115,115收藏,115sc"></a><a href="javascript:;" onclick="jiathis_sendto(&#39;hi&#39;);return false;" class="jiatitle"><span class="jtico jtico_hi">百度空间</span><input type="hidden" value="hi,百度空间,bdkj"></a><a href="javascript:;" onclick="jiathis_sendto(&#39;gmail&#39;);return false;" class="jiatitle"><span class="jtico jtico_gmail">Gmail邮箱</span><input type="hidden" value="gmail,Gmail邮箱,gmailyx"></a><a href="javascript:;" onclick="jiathis_sendto(&#39;hotmail&#39;);return false;" class="jiatitle"><span class="jtico jtico_hotmail">Hotmail邮箱</span><input type="hidden" value="hotmail,Hotmail邮箱,hotmailyx"></a><a href="javascript:;" onclick="jiathis_sendto(&#39;ymail&#39;);return false;" class="jiatitle"><span class="jtico jtico_ymail">Yahoo! mail</span><input type="hidden" value="ymail,Yahoo! mail,yahoo! mail"></a><a href="javascript:;" onclick="jiathis_sendto(&#39;hexun&#39;);return false;" class="jiatitle"><span class="jtico jtico_hexun">和讯</span><input type="hidden" value="hexun,和讯,hx"></a><a href="javascript:;" onclick="jiathis_sendto(&#39;toeeee&#39;);return false;" class="jiatitle"><span class="jtico jtico_toeeee">南方微博</span><input type="hidden" value="toeeee,南方微博,nfwb"></a><a href="javascript:;" onclick="jiathis_sendto(&#39;139mail&#39;);return false;" class="jiatitle"><span class="jtico jtico_139mail">139邮箱</span><input type="hidden" value="139mail,139邮箱,139yx"></a><a href="javascript:;" onclick="jiathis_sendto(&#39;189mail&#39;);return false;" class="jiatitle"><span class="jtico jtico_189mail">189邮箱</span><input type="hidden" value="189mail,189邮箱,189yx"></a><a href="javascript:;" onclick="jiathis_sendto(&#39;i139&#39;);return false;" class="jiatitle"><span class="jtico jtico_i139">爱分享</span><input type="hidden" value="i139,爱分享,afx"></a><a href="javascript:;" onclick="jiathis_sendto(&#39;iwo&#39;);return false;" class="jiatitle"><span class="jtico jtico_iwo">WO+分享</span><input type="hidden" value="iwo,WO+分享,iwo"></a><a href="javascript:;" onclick="jiathis_sendto(&#39;189cn&#39;);return false;" class="jiatitle"><span class="jtico jtico_189cn">天翼社区</span><input type="hidden" value="189cn,天翼社区,tysq"></a><a href="javascript:;" onclick="jiathis_sendto(&#39;139&#39;);return false;" class="jiatitle"><span class="jtico jtico_139">移动微博</span><input type="hidden" value="139,移动微博,ydwb"></a><a href="javascript:;" onclick="jiathis_sendto(&#39;tpeople&#39;);return false;" class="jiatitle"><span class="jtico jtico_tpeople">人民微博</span><input type="hidden" value="tpeople,人民微博,rmwb"></a><a href="javascript:;" onclick="jiathis_sendto(&#39;cnfol&#39;);return false;" class="jiatitle"><span class="jtico jtico_cnfol">中金微博</span><input type="hidden" value="cnfol,中金微博,zjwb"></a><a href="javascript:;" onclick="jiathis_sendto(&#39;txinhua&#39;);return false;" class="jiatitle"><span class="jtico jtico_txinhua">新华微博</span><input type="hidden" value="txinhua,新华微博,xhwb"></a><a href="javascript:;" onclick="jiathis_sendto(&#39;caimi&#39;);return false;" class="jiatitle"><span class="jtico jtico_caimi">财迷</span><input type="hidden" value="caimi,财迷,cm"></a><a href="javascript:;" onclick="jiathis_sendto(&#39;translate&#39;);return false;" class="jiatitle"><span class="jtico jtico_translate">谷歌翻译</span><input type="hidden" value="translate,谷歌翻译,ggfy"></a><a href="javascript:;" onclick="jiathis_sendto(&#39;tuita&#39;);return false;" class="jiatitle"><span class="jtico jtico_tuita">推他</span><input type="hidden" value="tuita,推他,tt"></a><a href="javascript:;" onclick="jiathis_sendto(&#39;mop&#39;);return false;" class="jiatitle"><span class="jtico jtico_mop">猫扑推客</span><input type="hidden" value="mop,猫扑推客,mptk"></a><a href="javascript:;" onclick="jiathis_sendto(&#39;digu&#39;);return false;" class="jiatitle"><span class="jtico jtico_digu">嘀咕网</span><input type="hidden" value="digu,嘀咕网,dgw"></a><a href="javascript:;" onclick="jiathis_sendto(&#39;xianguo&#39;);return false;" class="jiatitle"><span class="jtico jtico_xianguo">鲜果</span><input type="hidden" value="xianguo,鲜果,xg"></a><a href="javascript:;" onclick="jiathis_sendto(&#39;faxianla&#39;);return false;" class="jiatitle"><span class="jtico jtico_faxianla">发现啦</span><input type="hidden" value="faxianla,发现啦,fxl"></a><a href="javascript:;" onclick="jiathis_sendto(&#39;ganniu&#39;);return false;" class="jiatitle"><span class="jtico jtico_ganniu">赶牛网</span><input type="hidden" value="ganniu,赶牛网,gnw"></a><a href="javascript:;" onclick="jiathis_sendto(&#39;42qu&#39;);return false;" class="jiatitle"><span class="jtico jtico_42qu">42区</span><input type="hidden" value="42qu,42区,42q"></a><a href="javascript:;" onclick="jiathis_sendto(&#39;miliao&#39;);return false;" class="jiatitle"><span class="jtico jtico_miliao">米聊</span><input type="hidden" value="miliao,米聊,ml"></a><a href="javascript:;" onclick="jiathis_sendto(&#39;kansohu&#39;);return false;" class="jiatitle"><span class="jtico jtico_kansohu">搜狐随身看</span><input type="hidden" value="kansohu,搜狐随身看,shssk"></a><a href="javascript:;" onclick="jiathis_sendto(&#39;qingsina&#39;);return false;" class="jiatitle"><span class="jtico jtico_qingsina">新浪轻博</span><input type="hidden" value="qingsina,新浪轻博,xlqb"></a><a href="javascript:;" onclick="jiathis_sendto(&#39;ifengkb&#39;);return false;" class="jiatitle"><span class="jtico jtico_ifengkb">凤凰快博</span><input type="hidden" value="ifengkb,凤凰快博,fhkb"></a><a href="javascript:;" onclick="jiathis_sendto(&#39;jcrb&#39;);return false;" class="jiatitle"><span class="jtico jtico_jcrb">法律微博</span><input type="hidden" value="jcrb,法律微博,flwb"></a><a href="javascript:;" onclick="jiathis_sendto(&#39;gmw&#39;);return false;" class="jiatitle"><span class="jtico jtico_gmw">光明网</span><input type="hidden" value="gmw,光明网,gmw"></a><a href="javascript:;" onclick="jiathis_sendto(&#39;renjian&#39;);return false;" class="jiatitle"><span class="jtico jtico_renjian">人间网</span><input type="hidden" value="renjian,人间网,rjw"></a><a href="javascript:;" onclick="jiathis_sendto(&#39;leihou&#39;);return false;" class="jiatitle"><span class="jtico jtico_leihou">雷猴网</span><input type="hidden" value="leihou,雷猴网,lhw"></a><a href="javascript:;" onclick="jiathis_sendto(&#39;thexun&#39;);return false;" class="jiatitle"><span class="jtico jtico_thexun">和讯微博</span><input type="hidden" value="thexun,和讯微博,hxwb"></a><a href="javascript:;" onclick="jiathis_sendto(&#39;dream163&#39;);return false;" class="jiatitle"><span class="jtico jtico_dream163">游戏江湖</span><input type="hidden" value="dream163,游戏江湖,yxjh"></a><a href="javascript:;" onclick="jiathis_sendto(&#39;masar&#39;);return false;" class="jiatitle"><span class="jtico jtico_masar">玛撒网</span><input type="hidden" value="masar,玛撒网,msw"></a><a href="javascript:;" onclick="jiathis_sendto(&#39;binzhi&#39;);return false;" class="jiatitle"><span class="jtico jtico_binzhi">宾至网</span><input type="hidden" value="binzhi,宾至网,bzw"></a><a href="javascript:;" onclick="jiathis_sendto(&#39;fb&#39;);return false;" class="jiatitle"><span class="jtico jtico_fb">Facebook</span><input type="hidden" value="fb,Facebook,facebook"></a><a href="javascript:;" onclick="jiathis_sendto(&#39;twitter&#39;);return false;" class="jiatitle"><span class="jtico jtico_twitter">Twitter</span><input type="hidden" value="twitter,Twitter,twitter"></a><a href="javascript:;" onclick="jiathis_sendto(&#39;tumblr&#39;);return false;" class="jiatitle"><span class="jtico jtico_tumblr">Tumblr</span><input type="hidden" value="tumblr,Tumblr,tumblr"></a><a href="javascript:;" onclick="jiathis_sendto(&#39;reddit&#39;);return false;" class="jiatitle"><span class="jtico jtico_reddit">Reddit</span><input type="hidden" value="reddit,Reddit,reddit"></a><a href="javascript:;" onclick="jiathis_sendto(&#39;instapaper&#39;);return false;" class="jiatitle"><span class="jtico jtico_instapaper">Instapaper</span><input type="hidden" value="instapaper,Instapaper,instapaper"></a><a href="javascript:;" onclick="jiathis_sendto(&#39;readitlater&#39;);return false;" class="jiatitle"><span class="jtico jtico_readitlater">Read It Later</span><input type="hidden" value="readitlater,Read It Later,readitlater"></a><a href="javascript:;" onclick="jiathis_sendto(&#39;wealink&#39;);return false;" class="jiatitle"><span class="jtico jtico_wealink">若邻网</span><input type="hidden" value="wealink,若邻网,rlw"></a><a href="javascript:;" onclick="jiathis_sendto(&#39;leshou&#39;);return false;" class="jiatitle"><span class="jtico jtico_leshou">乐收</span><input type="hidden" value="leshou,乐收,ls"></a><a href="javascript:;" onclick="jiathis_sendto(&#39;waakee&#39;);return false;" class="jiatitle"><span class="jtico jtico_waakee">挖客网</span><input type="hidden" value="waakee,挖客网,wkw"></a><a href="javascript:;" onclick="jiathis_sendto(&#39;cyzone&#39;);return false;" class="jiatitle"><span class="jtico jtico_cyzone">创业邦</span><input type="hidden" value="cyzone,创业邦,cyb"></a><a href="javascript:;" onclick="jiathis_sendto(&#39;99earth&#39;);return false;" class="jiatitle"><span class="jtico jtico_99earth">救救地球</span><input type="hidden" value="99earth,救救地球,jjdq"></a><a href="javascript:;" onclick="jiathis_sendto(&#39;chouti&#39;);return false;" class="jiatitle"><span class="jtico jtico_chouti">抽屉网</span><input type="hidden" value="chouti,抽屉网,ctw"></a><a href="javascript:;" onclick="jiathis_sendto(&#39;dig24&#39;);return false;" class="jiatitle"><span class="jtico jtico_dig24">递客网</span><input type="hidden" value="dig24,递客网,dkw"></a><a href="javascript:;" onclick="jiathis_sendto(&#39;douban9dian&#39;);return false;" class="jiatitle"><span class="jtico jtico_douban9dian">豆瓣9点</span><input type="hidden" value="douban9dian,豆瓣9点,db9d"></a><a href="javascript:;" onclick="jiathis_sendto(&#39;meilishuo&#39;);return false;" class="jiatitle"><span class="jtico jtico_meilishuo">美丽说</span><input type="hidden" value="meilishuo,美丽说,mls"></a><a href="javascript:;" onclick="jiathis_sendto(&#39;mogujie&#39;);return false;" class="jiatitle"><span class="jtico jtico_mogujie">蘑菇街</span><input type="hidden" value="mogujie,蘑菇街,mgj"></a><a href="javascript:;" onclick="jiathis_sendto(&#39;tianji&#39;);return false;" class="jiatitle"><span class="jtico jtico_tianji">天际网</span><input type="hidden" value="tianji,天际网,tjw"></a><a href="javascript:;" onclick="jiathis_sendto(&#39;poco&#39;);return false;" class="jiatitle"><span class="jtico jtico_poco">Poco网</span><input type="hidden" value="poco,Poco网,pocow"></a><a href="javascript:;" onclick="jiathis_sendto(&#39;baohe&#39;);return false;" class="jiatitle"><span class="jtico jtico_baohe">宝盒网</span><input type="hidden" value="baohe,宝盒网,bhw"></a><a href="javascript:;" onclick="jiathis_sendto(&#39;yijee&#39;);return false;" class="jiatitle"><span class="jtico jtico_yijee">易集网</span><input type="hidden" value="yijee,易集网,yjw"></a><a href="javascript:;" onclick="jiathis_sendto(&#39;pdfonline&#39;);return false;" class="jiatitle"><span class="jtico jtico_pdfonline">Pdf在线转换</span><input type="hidden" value="pdfonline,Pdf在线转换,pdfzxzh"></a><a href="javascript:;" onclick="jiathis_sendto(&#39;printfriendly&#39;);return false;" class="jiatitle"><span class="jtico jtico_printfriendly">友好打印</span><input type="hidden" value="printfriendly,友好打印,yhdy"></a><a href="javascript:;" onclick="jiathis_sendto(&#39;w3c&#39;);return false;" class="jiatitle"><span class="jtico jtico_w3c">W3c验证</span><input type="hidden" value="w3c,W3c验证,w3cyz"></a><a href="javascript:;" onclick="jiathis_sendto(&#39;bitly&#39;);return false;" class="jiatitle"><span class="jtico jtico_bitly">Bit.ly</span><input type="hidden" value="bitly,Bit.ly,bitly"></a><a href="javascript:;" onclick="jiathis_sendto(&#39;digg&#39;);return false;" class="jiatitle"><span class="jtico jtico_digg">Digg</span><input type="hidden" value="digg,Digg,digg"></a><a href="javascript:;" onclick="jiathis_sendto(&#39;mailru&#39;);return false;" class="jiatitle"><span class="jtico jtico_mailru">Mail.ru</span><input type="hidden" value="mailru,Mail.ru,mail.ru"></a><a href="javascript:;" onclick="jiathis_sendto(&#39;diigo&#39;);return false;" class="jiatitle"><span class="jtico jtico_diigo">Diigo</span><input type="hidden" value="diigo,Diigo,diigo"></a><a href="javascript:;" onclick="jiathis_sendto(&#39;evernote&#39;);return false;" class="jiatitle"><span class="jtico jtico_evernote">EverNote</span><input type="hidden" value="evernote,EverNote,evernote"></a><a href="javascript:;" onclick="jiathis_sendto(&#39;friendfeed&#39;);return false;" class="jiatitle"><span class="jtico jtico_friendfeed">FriendFeed</span><input type="hidden" value="friendfeed,FriendFeed,friendfeed"></a><a href="javascript:;" onclick="jiathis_sendto(&#39;myspace&#39;);return false;" class="jiatitle"><span class="jtico jtico_myspace">Myspace</span><input type="hidden" value="myspace,Myspace,myspace"></a><a href="javascript:;" onclick="jiathis_sendto(&#39;linkedin&#39;);return false;" class="jiatitle"><span class="jtico jtico_linkedin">LinkedIn</span><input type="hidden" value="linkedin,LinkedIn,linkedin"></a><a href="javascript:;" onclick="jiathis_sendto(&#39;mixx&#39;);return false;" class="jiatitle"><span class="jtico jtico_mixx">Mixx</span><input type="hidden" value="mixx,Mixx,mixx"></a><a href="javascript:;" onclick="jiathis_sendto(&#39;netlog&#39;);return false;" class="jiatitle"><span class="jtico jtico_netlog">NetLog</span><input type="hidden" value="netlog,NetLog,netlog"></a><a href="javascript:;" onclick="jiathis_sendto(&#39;netvibes&#39;);return false;" class="jiatitle"><span class="jtico jtico_netvibes">Netvibes</span><input type="hidden" value="netvibes,Netvibes,netvibes"></a><a href="javascript:;" onclick="jiathis_sendto(&#39;phonefavs&#39;);return false;" class="jiatitle"><span class="jtico jtico_phonefavs">Phonefavs</span><input type="hidden" value="phonefavs,Phonefavs,phonefavs"></a><a href="javascript:;" onclick="jiathis_sendto(&#39;pingfm&#39;);return false;" class="jiatitle"><span class="jtico jtico_pingfm">Ping.fm</span><input type="hidden" value="pingfm,Ping.fm,ping.fm"></a><a href="javascript:;" onclick="jiathis_sendto(&#39;plaxo&#39;);return false;" class="jiatitle"><span class="jtico jtico_plaxo">Plaxo</span><input type="hidden" value="plaxo,Plaxo,plaxo"></a><a href="javascript:;" onclick="jiathis_sendto(&#39;delicious&#39;);return false;" class="jiatitle"><span class="jtico jtico_delicious">Delicious</span><input type="hidden" value="delicious,Delicious,delicious"></a><a href="javascript:;" onclick="jiathis_sendto(&#39;wong&#39;);return false;" class="jiatitle"><span class="jtico jtico_wong">Mister Wong</span><input type="hidden" value="wong,Mister Wong,misterwong"></a><a href="javascript:;" onclick="jiathis_sendto(&#39;stumbleupon&#39;);return false;" class="jiatitle"><span class="jtico jtico_stumbleupon">Stumbleupon</span><input type="hidden" value="stumbleupon,Stumbleupon,stumbleupon"></a><a href="javascript:;" onclick="jiathis_sendto(&#39;plurk&#39;);return false;" class="jiatitle"><span class="jtico jtico_plurk">Plurk</span><input type="hidden" value="plurk,Plurk,plurk"></a><a href="javascript:;" onclick="jiathis_sendto(&#39;funp&#39;);return false;" class="jiatitle"><span class="jtico jtico_funp">Funp</span><input type="hidden" value="funp,Funp,funp"></a><a href="javascript:;" onclick="jiathis_sendto(&#39;myshare&#39;);return false;" class="jiatitle"><span class="jtico jtico_myshare">Myshare</span><input type="hidden" value="myshare,Myshare,myshare"></a><a href="javascript:;" onclick="jiathis_sendto(&#39;fwisp&#39;);return false;" class="jiatitle"><span class="jtico jtico_fwisp">Fwisp</span><input type="hidden" value="fwisp,Fwisp,fwisp"></a><div style="clear:both"></div></div><div class="centerBottom"><div style="float:left;font-size:10px;"><a href="http://www.jiathis.com/help/html/what-is-jiathis" class="link_01" style="color:#333333;" target="_blank">这是什么工具?</a></div><div style="float:right;font-size:11px;margin:0 10px 0 0;"><img src="./01_files/img_012.gif" align="absmiddle" border="none">&nbsp;<a href="http://www.jiathis.com/index2" style="color:#333333;" class="link_01" target="_blank">JiaThis</a></div><div style="clear:both"></div></div></div></div></div><iframe style="display: none;" frameborder="0" src="./01_files/jiathis_utility.htm"></iframe>
+<a name="top"></a>
+<!--PageBeginHtml Block Begin-->
+<script type="text/javascript" src="http://www.luminate.com/widget/107193fa6e0/"></script>
+
+<!--PageBeginHtml Block End-->
+
+
+<div id="container">
+    <a class="minyx" href="http://www.spiga.com.mx/">Spiga</a>
+    <ul id="topMnu">
+        <!-- 统计数据 -->
+        <li>
+        
+            
+Posts - 159, 
+Articles - 0, 
+Comments - 154
+<!---->            
+        
+        </li>
+        <!-- 这边可以增加一些链接 -->
+        <!-- 博客园 -->
+        <li><a href="http://www.cnblogs.com/">Cnblogs</a></li>
+        <!-- 管理 -->
+        <li id="topMnu-dashboard"><a id="lnkDashboard" href="http://www.cnblogs.com/aga-j/admin/EditPosts.aspx">Dashboard</a></li>
+        <li><a id="lnkLogin" href="http://passport.cnblogs.com/login.aspx?ReturnUrl=http://www.cnblogs.com/aga-j/archive/2011/08/26/2153948.html">Login</a></li>
+    </ul>
+    
+    <script language="javascript" type="text/javascript">
+        var m = window.__blog.topMenuRendered;
+        if (m) { m(__$("topMnu")); }
+    </script>
+
+    <div id="header">
+        <ul id="menu">
+                <!-- 首页，当前section加上current类 -->
+                <li id="menu-home" class="current"><a id="lnkHome" href="http://www.cnblogs.com/aga-j/">Home</a></li>
+                <!-- 联系 -->
+                <li id="menu-contact"><a id="lnkContact" href="http://space.cnblogs.com/msg/send/Aga.J">Contact</a></li>
+                <!-- 相册 -->
+                <li id="menu-gallary"><a id="lnkGallery" href="http://www.cnblogs.com/aga-j/gallery.html">Gallery</a></li>
+                <!-- Rss订阅 -->
+                <li id="rss"><a id="lnkRss" href="http://www.cnblogs.com/aga-j/rss">RSS</a></li>
+        </ul>
+	<div id="newmsg"></div>
+        <h1>
+            <!-- 主标题 -->
+            <a id="lnkBlogTitle" href="http://www.cnblogs.com/aga-j/">Aga.J</a>
+            <!-- 子标题 -->
+            <small>键盘，琴盘，指尖，狂弹</small>
+        </h1>
+    </div>
+    
+    <script language="javascript" type="text/javascript">
+        var m = window.__blog.headerRendered;
+        if (m) { m(__$("header")); }
+    </script>
+        
+    <div id="wrapper"> 
+        <div id="content">
+             <script language="javascript" type="text/javascript">
+                        var m = window.__blog.preRenderPosts;
+                        if (m) { m(); } 
+            </script>
+            
+	
+<div class="post" id="post"><a name="top"></a>
+    <h2>
+        <a id="ctl01_lnkTitle" href="./01_files/01.htm">《Unix网络编程》学习笔记 第一，第二章</a></h2>
+    <small>
+        2011-08-26 01:13
+        by
+        Aga.J,
+        152
+        阅读,
+        <span id="post-comment-count">0</span>
+        评论,
+        <a href="http://www.cnblogs.com/aga-j/archive/2011/08/26/2153948.html#" onclick="PutInWz();return false;">收藏</a>,
+        <a id="ctl01_lnkEdit" href="http://www.cnblogs.com/aga-j/admin/EditPosts.aspx?postid=2153948">编辑</a></small>
+    <div class="entry">
+        <div id="cnblogs_post_body"><p>第一章 简介</p>
+<p>第一章对Unix下的网络编程做了概要的介绍，使用了获取时间的实例来讲解网络编程中所需要使用到的函数和注意内容，并详细的解析了每个函数的功能及其使用。由于之前已经谈过简单TCP通信的实现，这里便不再赘述。</p>
+<p>TCP下的日期/时间 客户端</p>
+<p><a href="http://images.cnblogs.com/cnblogs_com/aga-j/201108/201108260112476327.jpg"><img style="display: inline; border: 0px;" title="clip_image002" border="0" alt="clip_image002" src="./01_files/201108260112494668.jpg" width="621" height="393"></a></p>
+<p>TCP下的日期/时间 服务器</p>
+<p><a href="http://images.cnblogs.com/cnblogs_com/aga-j/201108/201108260112507077.png"><img style="display: inline; border: 0px;" title="clip_image003" border="0" alt="clip_image003" src="./01_files/201108260112546648.png" width="589" height="507"></a></p>
+<p>第二章</p>
+<p>传输层：TCP和UDP</p>
+<p>一 协议介绍</p>
+<table border="1" cellspacing="0" cellpadding="0">
+<tbody>
+<tr>
+<td width="121">
+<p>UDP</p>
+</td>
+<td valign="top" width="448">
+<p>不可靠，数据报，</p>
+</td>
+</tr>
+<tr>
+<td width="121">
+<p>TCP</p>
+</td>
+<td valign="top" width="448">
+<p>可靠，字节流，面向连接，全双工，支持ACK、超时重传，需要保证消息独立性</p>
+</td>
+</tr>
+<tr>
+<td width="121">
+<p>ICMP</p>
+</td>
+<td valign="top" width="448">
+<p>网际控制消息协议，处理路由器和主机间的错误和控制信息</p>
+</td>
+</tr>
+<tr>
+<td width="121">
+<p>IGMP</p>
+</td>
+<td valign="top" width="448">
+<p>网络组管理协议</p>
+</td>
+</tr>
+<tr>
+<td width="121">
+<p>ARP</p>
+</td>
+<td valign="top" width="448">
+<p>地址解析协议，将IPv4地址映射到硬件地址</p>
+</td>
+</tr>
+<tr>
+<td width="121">
+<p>RARP</p>
+</td>
+<td valign="top" width="448">
+<p>逆地址解析</p>
+</td>
+</tr>
+<tr>
+<td width="121">
+<p>BPF</p>
+</td>
+<td valign="top" width="448">
+<p>BSD分组过滤器，为进城提供访问数据链路层的接口</p>
+</td>
+</tr>
+</tbody>
+</table>
+<p>二 TCP底层介绍</p>
+<p>和UDP这种基于数据报的协议不同，TCP是基于字节流的，而且它是可靠的，它向另一端发送数据时，要求返回一个确认，如果没有收到则会重传或者等待更加长的时间，同时，它还有用户动态估算客户端机到服务器往返所花费的时间RTT的算法。</p>
+<p>TCP通过给所发送的数据的每一个字节关联一个序列号来进行排序，架设一个应用进程写了2048个字节到一个TCP socket上，导致TCP发送2个分节（分节会在后面介绍，它是TCP传递给IP的数据单元），第一个分节所含的数据序列号为1-1024，第二个分节所含的数据序列号为1025-2048，如果分节以非顺序到达，那么接收方TCP就会根据其序列号进行重新排序，再将结果数据传递到应用进程内。重复到达的数据也可以根据序列号来判断，并丢弃。</p>
+<p>TCP连接建立过程需要经过3次握手：</p>
+<p>（1） 服务器准备好接收外来的连接（linux编程：socket bind listen），此时服务器称为被动打开</p>
+<p>（2） 客户端通过调用connect来进行“主动打开”，这时客户端发送一个SYN分节，告诉服务器客户在待建立的连接中所要发送的数据的初始序列号</p>
+<p>（3） 服务器确认客户的SYN，同时自己发送一个SYN分节，包含服务器将在该连接中发送的数据的初始序列号（还有ACK）</p>
+<p>（4） 客户确认服务器的SYN，也发回ACK</p>
+<p><a href="http://images.cnblogs.com/cnblogs_com/aga-j/201108/201108260112552404.png"><img style="display: inline; border: 0px;" title="clip_image004" border="0" alt="clip_image004" src="./01_files/201108260112589108.png" width="545" height="401"></a></p>
+<p>其中每个SYN分节可以包含多个TCP选项来配制TCP连接。</p>
+<p>TCP连接终止的过程</p>
+<p>（1） 进程调用close进行“主动关闭”，TCP发送一个FIN分节</p>
+<p>（2） 接收FIN的称为“被动关闭”，发回ACK</p>
+<p>（3） 一段时间后，“被动接收方”也调用close来关闭socket，TCP发送FIN</p>
+<p>（4） 主动关闭方进行ACK</p>
+<p><a href="http://images.cnblogs.com/cnblogs_com/aga-j/201108/201108260112593677.png"><img style="display: inline; border: 0px;" title="clip_image005" border="0" alt="clip_image005" src="./01_files/201108260113015365.png" width="436" height="350"></a></p>
+<p>TCP的状态转换图</p>
+<p><a href="http://images.cnblogs.com/cnblogs_com/aga-j/201108/20110826011304608.png"><img style="display: inline; border: 0px;" title="clip_image006" border="0" alt="clip_image006" src="./01_files/201108260113069330.png" width="396" height="452"></a></p>
+<p><a href="http://images.cnblogs.com/cnblogs_com/aga-j/201108/20110826011309428.png"><img style="display: inline; border: 0px;" title="clip_image007" border="0" alt="clip_image007" src="./01_files/201108260113107755.png" width="363" height="418"></a></p>
+<p>上面两张图可以帮助我们更加直观的连接TCP连接，通信，关闭连接的详细过程。</p>
+<p>接下来是TCP状态中Time WAIT状态的分析，从上图我们知道，TCP主动关闭的一方会进入TIME WAIT的状态，tcp规定进入该状态后需要等待2MSL的时间（MSL是指IP数据报能在互联网中生存的最长时间，“跳限”也可以限制数据报的生存时间）。那么为什么需要TIME WAIT的状态呢？为什么接收到被动关闭端的FIN后不直接关闭连接呢？</p>
+<p>因为</p>
+<p>（1） 它可以实现TCP全双工连接的可靠性   <br>假设主动端接到最后FIN后发回的ACK丢失，那么被动端会重新发送FIN，这时主动端必须维护状态信息来运行它重发最终的ACK，如果不维护状态信息，它将响应以RST，而被动端会将该分节解释为一个错误，这样就无法彻底的终止两个方向上的流。</p>
+<p>（2） 它允许老的重复分节在网络中消失</p>
+<p>当老的重复分节游离后，并且主客都断开了，但是之后双方又建立了一次完全一样的连接，这时不巧老分组又出现，那怎么办，为了避免这种情况，所以等待时间要大于一个分组在网络中能存活的最长时间也就是MSL</p>
+<p>TCP输出过程：</p>
+<p><a href="http://images.cnblogs.com/cnblogs_com/aga-j/201108/201108260113121211.png"><img style="display: inline; border: 0px;" title="clip_image008" border="0" alt="clip_image008" src="./01_files/201108260113148995.png" width="470" height="414"></a></p>
+<p>每个TCP socket都有一个“发送缓冲区”，可以调节其大小，调用write时，TCP会把应用进程缓冲区的数据拷贝到socket的发送缓冲区内，如果容不下则会挂起进程。所以从wirite返回并不意味着连接那端已经接受到数据，这里仅仅是放到发送缓冲区而已。接下来的发送就要靠TCP来完成了，TCP进行分节后有IP构成数据报，查找路由表确定外出接口，床给数据链路（数据链路有输出队列，如果满了，那么分组被丢弃并上报，TCP会重发，这堆用户是透明的）。</p>
+<p>UDP输出</p>
+<p><a href="http://images.cnblogs.com/cnblogs_com/aga-j/201108/201108260113156911.png"><img style="display: inline; border: 0px;" title="clip_image009" border="0" alt="clip_image009" src="./01_files/201108260113179744.png" width="465" height="377"></a></p>
+<p>UDP输出中没有所谓的发送缓冲区，但是也由一个值来限定数据报大小。应用进程的数据沿协议栈向下传递，以某种形式拷贝到内核的缓冲区，链路层将数据扔出后就丢弃数据缓存。</p>
+<p>第3章 套接口编程简介</p>
+<p>（一） 每个协议族都定义了它自己的“套接口地址”结构，以sockaddr_开头，后接每个协议族唯一后缀，例如IPv4的套接口地址结构称为“网际套接口地址结构”，以sockaddr_in命名。数据结构如下</p>
+<p>struct in_addr</p>
+<p>{</p>
+<p>in_addr_t s_addr; //32位IPv4地址，以网络字节序，实际类型uint32_t</p>
+<p>};</p>
+<p>struct sockaddr_in</p>
+<p>{</p>
+<p>uint8_t sin_len; //不通用</p>
+<p>sa_family_t sin_family;</p>
+<p>ln_port_t sin_port; //16位端口，以网络字节序，实际类型uint16_t</p>
+<p>struct in_addr sin_addr;</p>
+<p>char sin_zero[8]; //未使用</p>
+<p>};</p>
+<p>【注意：IPv4和端口号都是以“网络字节序”来存储的，要做相应转换】</p>
+<p>通用套接字结构</p>
+<p>struct sockaddr</p>
+<p>{</p>
+<p>uint8_t sa_len;</p>
+<p>sa_family_t sa_family;</p>
+<p>char sa_data[14];</p>
+<p>};</p>
+<p>【Ipv6的套接字结构类似】</p>
+<p>（二） 主机字节序和网络字节序的转换函数</p>
+<p>uint16_t htons(..)</p>
+<p>uint32_t htonl(..)</p>
+<p>uint16_t ntohs(..)</p>
+<p>uint32_t ntohl(..)</p>
+<p>（三） 多字符字段的操作函数</p>
+<p>#include&lt;strings.h&gt;</p>
+<p>void bzero(void *dest, size_t bytes);</p>
+<p>void bcopy(const void *src,void *dest, size_t nbytes);</p>
+<p>void bcmp(const void *ptr,const void *ptr2,size_t nbytes);</p>
+<p>#include&lt;string.h&gt;</p>
+<p>void *memset(void *dest,int c,size_t len);</p>
+<p>void *mencpy(void *dest,const void *src,size_t inbytes);</p>
+<p>int memcmp(const void *ptr1,const void *ptr2,size_t nbytes);</p>
+<p>（四） 地址转换函数：在ASC||字符串和网络字节序二进制值之间进行转换</p>
+<p>常用：</p>
+<p>inet_aton, inet_addr, inet_ntoa</p>
+<p>适合IPv4和IPv6的新函数</p>
+<p>inet_pton, inet_ntop</p>
+<p>（五） socket上的读写问题</p>
+<p>socket上使用read或者write进行读写时，要注意输入输出的字节数可能比要求的字节数少，这是因为内核中的套接字缓冲区可能已经满了，这时只能再调用一次read或者write来完成读写，我们每次读写成功返回的字节数需要和期望字节数比较，一旦发现不同，则需要再次读取，下面是一个重读函数实现</p>
+<p>ssize_t nleft;</p>
+<p>ssize_t nread;</p>
+<p>char *ptr=vptr;</p>
+<p>nleft=n;</p>
+<p>while(nleft&gt;0)</p>
+<p>{</p>
+<p>if( nread=read(fd,ptr,nleft))&lt;0)</p>
+<p>{</p>
+<p>if(errno=EINTR)</p>
+<p>nread=0;</p>
+<p>else return (-1);</p>
+<p>}</p>
+<p>else if(nread==0)</p>
+<p>break;</p>
+<p>nleft=nleft-nread;</p>
+<p>ptr=ptr+nread;</p>
+<p>}</p>
+<p>return (n-nleft);</p></div><div id="MySignature"><br><font style="background-color: #ffffff"></font>作者：<a href="http://www.cnblogs.com/aga-j/" target="_blank">Aga.J</a> <br>出处：<a href="http://www.cnblogs.com/aga-j" target="_blank">http://www.cnblogs.com/aga-j</a> <br>本文版权归作者和博客园共有，欢迎转载，但未经作者同意必须保留此段声明，且在文章页面明显位置给出原文连接，否则保留追究法律责任的权利。<br>
+个人学习笔记仅供本人记录知识所用，不属发表性文章。</div>
+        
+<script type="text/javascript">
+var isLogined = false;
+var cb_blogId = 70057;
+var cb_entryId = 2153948;
+var cb_blogApp = currentBlogApp;
+var cb_blogUserGuid = "30c2bc30-7c54-df11-ba8f-001cf0cd104b";
+var cb_entryCreatedDate = '2011/8/26 1:13:00';
+var enableGoogleAd = true;
+var googletag = googletag || {};
+googletag.cmd = googletag.cmd || [];
+</script>
+<div class="clear"></div>
+<div id="blog_post_info_block">
+<div id="blog_post_info"><div id="BlogPostCategory">分类: <a href="http://www.cnblogs.com/aga-j/category/311403.html">Linux</a></div>
+<div id="EntryTag"></div>
+<div id="green_channel">
+绿色通道：
+<a href="javascript:void(0);" id="green_channel_digg" onclick="DiggIt(cb_entryId,cb_blogId,1);green_channel_success(this,&#39;谢谢推荐！&#39;);">好文要顶</a>
+<a id="green_channel_follow" onclick="c_follow();" href="javascript:void(0);">关注我</a>
+<a id="green_channel_favorite" onclick="AddToWz(cb_entryId);return false;" href="javascript:void(0);">收藏该文</a><a id="green_channel_contact" href="http://space.cnblogs.com/msg/send/Aga.J" target="_blank">与我联系</a>
+<a id="green_channel_weibo" href="javascript:void(0);" title="分享至新浪微博" onclick="ShareToTsina()"><img src="./01_files/icon_weibo_24.png" alt=""></a>
+</div>
+<div id="digg_block">
+<div id="author_profile">
+<div id="author_profile_info" class="author_profile_info">
+<div id="author_profile_detail" class="author_profile_info">
+<a href="http://home.cnblogs.com/u/aga-j/">Aga.J</a><br>
+<a href="http://home.cnblogs.com/u/aga-j/followees">关注 - 18</a><br>
+<a href="http://home.cnblogs.com/u/aga-j/followers">粉丝 - 44</a>
+</div>
+</div>
+<div class="clear"></div>
+<div id="author_profile_honor"></div>
+<div id="author_profile_follow">
+<a href="javascript:void(0);" onclick="c_follow();return false;">+加关注</a>
+</div>
+</div>
+<div id="div_digg">										
+	<div class="diggit" onclick="votePost(cb_entryId,&#39;Digg&#39;)"> 
+		<span class="diggnum" id="digg_count">0</span>
+	</div>
+	<div class="buryit" onclick="votePost(cb_entryId,&#39;Bury&#39;)"> 
+		<span class="burynum" id="bury_count">0</span>
+	</div>
+	<div class="clear"></div>	
+	<div class="diggword" id="digg_tips">
+    (请您对文章做出评价)
+    </div>	
+</div>
+</div></div>
+<div class="clear"></div>
+<div id="post_next_prev"><a href="http://www.cnblogs.com/aga-j/archive/2011/08/26/2153946.html" class="p_n_p_prefix">« </a> 博主上一篇：<a href="http://www.cnblogs.com/aga-j/archive/2011/08/26/2153946.html" title="发布于2011-08-26 01:11">《深入理解Linux内核》学习笔记-第一章</a><br><a href="http://www.cnblogs.com/aga-j/archive/2011/09/15/2177018.html" class="p_n_p_prefix">» </a> 博主下一篇：<a href="http://www.cnblogs.com/aga-j/archive/2011/09/15/2177018.html" title="发布于2011-09-15 09:53">Linux TCP server系列（1）-简单TCP服务器+多进程处理客户请求</a><br></div>
+</div>
+<script type="text/javascript">
+    //SyntaxHighlighter.config.strings.expandSource = '<span><img src="http://static.cnblogs.com/images/expand-code.gif" alt="" class="expand-code-icon"/>View Code</span>';
+    $(function () {             
+        fixPostBodyFormat();
+        loadAdUnderPost();
+        loadBlogSignature();
+        LoadPostInfoBlock(cb_blogId, cb_entryId, cb_blogApp, cb_blogUserGuid);
+        GetPrevNextPost(cb_entryId, cb_blogId, cb_entryCreatedDate);        
+        GetHistoryToday(cb_blogId, cb_blogApp, cb_entryCreatedDate);        
+    });
+</script>
+    </div>
+    <span><img src="./01_files/2153948.html" width="1" height="1" alt=""></span>
+    <ul class="postmetadata">
+        <li id="ctl01_liCate" class="icon_cat"><strong>Categories: </strong>
+            <a href="http://www.cnblogs.com/aga-j/category/311403.html">Linux</a>            
+        </li>
+        
+        
+    </ul>
+</div>
+
+<script language="javascript" type="text/javascript">
+    var m = window.__blog.postRendered;
+    if (m) { m(__$("post")); }
+</script>
+
+<script language="javascript" type="text/javascript">
+    var m = window.__blog.postRenderPosts;
+    if (m) { m(); }
+</script><div id="blog-comments-placeholder"></div><script type="text/javascript">var commentManager = new blogCommentManager();commentManager.loadComments();</script>
+<div id="comment_form" class="commentform">
+<div id="divCommentShow"></div>
+<div id="comment_nav"><span id="span_refresh_tips"></span><a href="javascript:void(0);" id="lnk_RefreshComments" onclick="return RefreshCommentList();">刷新评论</a><a href="http://www.cnblogs.com/aga-j/archive/2011/08/26/2153948.html#" onclick="return RefreshPage();">刷新页面</a><a href="http://www.cnblogs.com/aga-j/archive/2011/08/26/2153948.html#top">返回顶部</a></div>
+<div id="comment_form_container"><div class="login_tips">注册用户登录后才能发表评论，请 <a rel="nofollow" href="javascript:void(0);" class="underline" onclick="return login(&#39;commentform&#39;);">登录</a> 或 <a rel="nofollow" href="javascript:void(0);" class="underline" onclick="return register();">注册</a>，<a href="http://www.cnblogs.com/">访问</a>网站首页。</div></div>
+
+<script type="text/javascript">
+    if (typeof commentManager === 'undefined') {
+        commentManager = new blogCommentManager();
+    }
+    commentManager.loadCommentForm();   
+</script>
+
+<div class="ad_text_commentbox" id="ad_text_under_commentbox"><a href="http://zt.cnblogs.com/ie10/" target="_blank"><b>IE10：全面支持HTML5，让你创造更多</b></a><br><a href="http://job.cnblogs.com/" target="_blank"><b>找优秀程序员，就在博客园</b></a><br></div>
+<div id="site_nav_under"><a href="http://www.cnblogs.com/" target="_blank" title="程序员的网上家园">博客园首页</a><a href="http://q.cnblogs.com/" target="_blank" title="程序员问答社区">博问</a><a href="http://news.cnblogs.com/" target="_blank" title="IT新闻">新闻</a><a href="http://home.cnblogs.com/ing/" target="_blank">闪存</a><a href="http://job.cnblogs.com/" target="_blank">程序员招聘</a><a href="http://kb.cnblogs.com/" target="_blank">知识库</a></div>
+<div id="ad_under_post_holder">
+<div id="google_ad_c1" class="c_ad_block">
+    <!-- cnblogs_blogpost_C1_sitehome -->
+    <div id="div-gpt-ad-1346480159711-0" style="width:300px; height:250px;">
+    
+    </div>
+</div>
+<div id="blog_news_kb"><div class="itnews c_ad_block"><b>最新IT新闻</b>:<br> ·  <a href="http://news.cnblogs.com/n/169051/" target="_blank">微软需立即解决Windows 8问题已拖累整个产业</a><br> ·  <a href="http://news.cnblogs.com/n/169050/" target="_blank">王府井电商正式上线 产品价格高于天猫</a><br> ·  <a href="http://news.cnblogs.com/n/169049/" target="_blank">惠普公布高管2012年薪水 惠特曼报酬1530万美元</a><br> ·  <a href="http://news.cnblogs.com/n/169048/" target="_blank">传百度将控股金山网络，结盟腾讯共抗360</a><br> ·  <a href="http://news.cnblogs.com/n/169047/" target="_blank">传IBM将收购大数据公司Splunk</a><br>» <a href="http://news.cnblogs.com/" title="IT新闻" target="_blank">更多新闻...</a></div><div class="itnews c_ad_block" id="kb_block"><b>最新知识库文章</b>:<br><div id="kb_recent"> ·  <a href="http://kb.cnblogs.com/page/161488/" target="_blank">你真想到了50岁还靠编程来养家糊口吗？</a><br> ·  <a href="http://kb.cnblogs.com/page/168162/" target="_blank">编写高效的JavaScript程序</a><br> ·  <a href="http://kb.cnblogs.com/page/161717/" target="_blank">Javascript 模块化编程</a><br> ·  <a href="http://kb.cnblogs.com/page/110513/" target="_blank">使用CSS的类名交集复合选择器</a><br> ·  <a href="http://kb.cnblogs.com/page/168552/" target="_blank">马云专访全文：商业王国、孤独感、管理艺术</a><br></div>» <a href="http://kb.cnblogs.com/" target="_blank">更多知识库文章...</a></div></div>
+<div id="google_ad_c2" class="c_ad_block">
+    <!-- cnblogs_blogpost_C2_sitehome -->
+    <div id="div-gpt-ad-1346479110744-1" style="width:468px; height:60px;">
+    
+    </div>
+</div></div>
+<div id="HistoryToday" class="c_ad_block"></div>
+</div>
+
+
+
+
+
+        </div>
+        
+	    <script language="javascript" type="text/javascript">
+	               var m = window.__blog.contentRendered;
+	               if (m) { m(__$("content")); }
+        </script>
+
+	    <div id="sidebar">
+			    
+
+<div id="about">
+    <div>
+        <h2 id="about_title">
+            About
+        </h2>
+        <div id="about_body">
+        <div id="blog-news" style=""><!-- JiaThis Button BEGIN -->
+<div style="position:absolute;width:0px;height:0px;"><div style="display: block; cursor: pointer; text-align: center; width: 0px; height: 0px; top: auto; left: auto; position: static;"><div style="-webkit-transition: opacity 150ms ease-out; background-image: url(chrome-extension://gofhjkjmkpinhpoiabjplobcaignabnl/icon_play.png); text-align: left; opacity: 0.25; border: 1px solid rgb(0, 0, 0); width: 100%; height: 100%; background-color: rgba(193, 217, 244, 0.498039); background-repeat: no-repeat no-repeat;"></div></div><object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" width="0" height="0" id="JIATHISSWF" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab" style="display: none !important;"><param name="allowScriptAccess" value="always"><param name="swLiveConnect" value="true"><param name="movie" value="http://www.jiathis.com/code/swf/m.swf"><param name="FlashVars" value="z=a"><div style="display: block; cursor: pointer; text-align: center; width: 0px; height: 0px; top: auto; left: auto; position: static;"><div style="-webkit-transition: opacity 150ms ease-out; background-image: url(chrome-extension://gofhjkjmkpinhpoiabjplobcaignabnl/icon_play.png); text-align: left; opacity: 0.25; border: 1px solid rgb(0, 0, 0); width: 100%; height: 100%; background-color: rgba(193, 217, 244, 0.498039); background-repeat: no-repeat no-repeat;"></div></div><embed name="JIATHISSWF" src="http://www.jiathis.com/code/swf/m.swf" flashvars="z=a" width="0" height="0" allowscriptaccess="always" swliveconnect="true" type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/go/getflashplayer" style="display: none !important;"></object></div>
+<!-- JiaThis Button END -->
+<div id="profile_block">昵称：<a href="http://home.cnblogs.com/u/aga-j/">Aga.J</a><br>园龄：<a href="http://home.cnblogs.com/u/aga-j/" title="入园时间：2010-05-01">2年8个月</a><br>粉丝：<a href="http://home.cnblogs.com/u/aga-j/followers/">44</a><br>关注：<a href="http://home.cnblogs.com/u/aga-j/followees/">18</a><div id="p_b_follow"><a href="javascript:void(0);" onclick="cnblogs.UserManager.FollowBlogger(&#39;30c2bc30-7c54-df11-ba8f-001cf0cd104b&#39;)">+加关注</a></div></div></div>
+        </div>
+    </div>
+</div>
+
+			    <script language="javascript" type="text/javascript">
+                        var m = window.__blog.aboutRendered;
+                        if (m) { m(__$("about")); }
+                </script>
+                
+<script type="text/javascript">
+function zzk_go()
+{
+	var blogapp = 'aga-j';
+	var keystr = encodeURIComponent("blog:"+blogapp+" "+document.getElementById('q').value);
+    window.location = "http://zzk.cnblogs.com/s?w="+keystr;
+}
+function zzk_go_enter(event)
+{
+	if(event.keyCode == 13)
+	{
+	    zzk_go();
+	    return false;
+	}
+}
+</script>
+
+<div id="mySearchWrapper">
+    <div id="mySearch">
+        <input type="image" src="./01_files/btnsearch.gif" id="btnZzk" class="submit" onclick="zzk_go();return false;">
+        <label class="lb_search"><input type="text" id="q" onkeydown="return zzk_go_enter(event);" class="keyword"></label>
+    </div>
+</div>
+
+                <script language="javascript" type="text/javascript">
+                                var m = window.__blog.searchFormRendered;
+                                if (m) { m(__$("searchform")); }
+                </script>
+                <div id="sideMain">
+                <div id="side-recent-posts">
+<h2>最新随笔</h2>
+ <ul class="bullet">
+
+		<li><a href="http://www.cnblogs.com/aga-j/archive/2012/12/15/2820035.html">Machine Learning 第四课</a></li>
+	
+		<li><a href="http://www.cnblogs.com/aga-j/archive/2012/11/18/2776129.html">Machine Learning 第三课（下）</a></li>
+	
+		<li><a href="http://www.cnblogs.com/aga-j/archive/2012/11/18/2775863.html">Machine Learning 第三课（上）</a></li>
+	
+		<li><a href="http://www.cnblogs.com/aga-j/archive/2012/10/28/2743691.html">Machine Learning第二课</a></li>
+	
+		<li><a href="http://www.cnblogs.com/aga-j/archive/2012/10/27/2742609.html">Stanford公开课Machine learning第一课</a></li>
+	
+		<li><a href="http://www.cnblogs.com/aga-j/archive/2012/02/15/2353124.html">20120215 今天是我在公司实习的最后一天</a></li>
+	
+		<li><a href="http://www.cnblogs.com/aga-j/archive/2012/02/03/2337440.html">Twitter Storm 实时数据处理框架分析总结</a></li>
+	
+		<li><a href="http://www.cnblogs.com/aga-j/archive/2012/02/03/2337151.html">Yahoo!S4分布式流处理引擎分析总结</a></li>
+	
+		<li><a href="http://www.cnblogs.com/aga-j/archive/2012/01/05/2312865.html">好久没写博客，所以在谷歌和百度上搜"aga"的时候我的博客已经不再在搜索结果的第一条里，只能搜"aga-j"。</a></li>
+	
+		<li><a href="http://www.cnblogs.com/aga-j/archive/2011/12/02/2272633.html">疯人疯语</a></li>
+	
+</ul>
+</div></div>
+                <div id="sideRight">
+                <div id="side-archives">
+<h2>随笔档案</h2>
+<ul class="date">
+
+ <li><a href="http://www.cnblogs.com/aga-j/archive/2012/12.html">2012年12月(1)</a></li>
+ 
+
+ <li><a href="http://www.cnblogs.com/aga-j/archive/2012/11.html">2012年11月(2)</a></li>
+ 
+
+ <li><a href="http://www.cnblogs.com/aga-j/archive/2012/10.html">2012年10月(2)</a></li>
+ 
+
+ <li><a href="http://www.cnblogs.com/aga-j/archive/2012/02.html">2012年2月(3)</a></li>
+ 
+
+ <li><a href="http://www.cnblogs.com/aga-j/archive/2012/01.html">2012年1月(1)</a></li>
+ 
+
+ <li><a href="http://www.cnblogs.com/aga-j/archive/2011/12.html">2011年12月(1)</a></li>
+ 
+
+ <li><a href="http://www.cnblogs.com/aga-j/archive/2011/11.html">2011年11月(4)</a></li>
+ 
+
+ <li><a href="http://www.cnblogs.com/aga-j/archive/2011/10.html">2011年10月(3)</a></li>
+ 
+
+ <li><a href="http://www.cnblogs.com/aga-j/archive/2011/09.html">2011年9月(11)</a></li>
+ 
+
+ <li><a href="http://www.cnblogs.com/aga-j/archive/2011/08.html">2011年8月(6)</a></li>
+ 
+
+ <li><a href="http://www.cnblogs.com/aga-j/archive/2011/07.html">2011年7月(14)</a></li>
+ 
+
+ <li><a href="http://www.cnblogs.com/aga-j/archive/2011/06.html">2011年6月(29)</a></li>
+ <li><a href="http://www.cnblogs.com/aga-j/archive/2011/08/26/2153948.html#" onclick="document.getElementById(&#39;div_month_more&#39;).style.display=&#39;block&#39;;this.parentNode.style.display=&#39;none&#39;;return false;">更多...</a></li></ul><ul style="display:none" class="date" id="div_month_more">
+
+ <li><a href="http://www.cnblogs.com/aga-j/archive/2011/05.html">2011年5月(3)</a></li>
+ 
+
+ <li><a href="http://www.cnblogs.com/aga-j/archive/2011/04.html">2011年4月(15)</a></li>
+ 
+
+ <li><a href="http://www.cnblogs.com/aga-j/archive/2011/03.html">2011年3月(8)</a></li>
+ 
+
+ <li><a href="http://www.cnblogs.com/aga-j/archive/2011/02.html">2011年2月(8)</a></li>
+ 
+
+ <li><a href="http://www.cnblogs.com/aga-j/archive/2011/01.html">2011年1月(6)</a></li>
+ 
+
+ <li><a href="http://www.cnblogs.com/aga-j/archive/2010/12.html">2010年12月(3)</a></li>
+ 
+
+ <li><a href="http://www.cnblogs.com/aga-j/archive/2010/11.html">2010年11月(5)</a></li>
+ 
+
+ <li><a href="http://www.cnblogs.com/aga-j/archive/2010/10.html">2010年10月(2)</a></li>
+ 
+
+ <li><a href="http://www.cnblogs.com/aga-j/archive/2010/08.html">2010年8月(11)</a></li>
+ 
+
+ <li><a href="http://www.cnblogs.com/aga-j/archive/2010/07.html">2010年7月(10)</a></li>
+ 
+
+ <li><a href="http://www.cnblogs.com/aga-j/archive/2010/06.html">2010年6月(1)</a></li>
+ 
+
+ <li><a href="http://www.cnblogs.com/aga-j/archive/2010/05.html">2010年5月(10)</a></li>
+ 
+
+</ul>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+<div id="blog-calendar-block" style="">
+<div id="side-calendar">
+<h2>日历</h2>
+<div id="blog-calendar"><table id="blogCalendar" class="Cal" cellspacing="0" cellpadding="0" title="Calendar">
+	<tbody><tr><td colspan="7"><table class="CalTitle" cellspacing="0">
+		<tbody><tr><td class="CalNextPrev"><a href="javascript:void(0);" onclick="loadBlogCalendar(&#39;2012/12/01&#39;);return false;">&lt;</a></td><td align="center">2013年1月</td><td class="CalNextPrev" align="right"><a href="javascript:void(0);" onclick="loadBlogCalendar(&#39;2013/02/01&#39;);return false;">&gt;</a></td></tr>
+	</tbody></table></td></tr><tr><th class="CalDayHeader" align="center" abbr="日" scope="col">日</th><th class="CalDayHeader" align="center" abbr="一" scope="col">一</th><th class="CalDayHeader" align="center" abbr="二" scope="col">二</th><th class="CalDayHeader" align="center" abbr="三" scope="col">三</th><th class="CalDayHeader" align="center" abbr="四" scope="col">四</th><th class="CalDayHeader" align="center" abbr="五" scope="col">五</th><th class="CalDayHeader" align="center" abbr="六" scope="col">六</th></tr><tr><td class="CalOtherMonthDay" align="center">30</td><td class="CalOtherMonthDay" align="center">31</td><td align="center">1</td><td align="center">2</td><td align="center">3</td><td align="center">4</td><td class="CalWeekendDay" align="center">5</td></tr><tr><td class="CalWeekendDay" align="center">6</td><td align="center">7</td><td align="center">8</td><td align="center">9</td><td align="center">10</td><td align="center">11</td><td class="CalTodayDay" align="center">12</td></tr><tr><td class="CalWeekendDay" align="center">13</td><td align="center">14</td><td align="center">15</td><td align="center">16</td><td align="center">17</td><td align="center">18</td><td class="CalWeekendDay" align="center">19</td></tr><tr><td class="CalWeekendDay" align="center">20</td><td align="center">21</td><td align="center">22</td><td align="center">23</td><td align="center">24</td><td align="center">25</td><td class="CalWeekendDay" align="center">26</td></tr><tr><td class="CalWeekendDay" align="center">27</td><td align="center">28</td><td align="center">29</td><td align="center">30</td><td align="center">31</td><td class="CalOtherMonthDay" align="center">1</td><td class="CalOtherMonthDay" align="center">2</td></tr><tr><td class="CalOtherMonthDay" align="center">3</td><td class="CalOtherMonthDay" align="center">4</td><td class="CalOtherMonthDay" align="center">5</td><td class="CalOtherMonthDay" align="center">6</td><td class="CalOtherMonthDay" align="center">7</td><td class="CalOtherMonthDay" align="center">8</td><td class="CalOtherMonthDay" align="center">9</td></tr>
+</tbody></table></div>
+</div>
+</div><div id="side-link-304681">
+    <h2>博客链接</h2>
+    <ul class="chain">
+    
+        <li><a class="mini_rss" href="http://www.cnblogs.com/aga-j-2nd/">Rss</a>
+        <a href="http://www.cnblogs.com/aga-j-2nd/" target="_blank">收藏好文章的博客</a></li>
+    
+    </ul>
+</div></div>
+                <div id="sideLeft">            
+                <div id="side-categories">
+<h2>随笔分类</h2>
+<ul class="folder">
+
+ <li><a class="mini_rss" href="http://www.cnblogs.com/aga-j/category/285341.html/rss">Rss</a>
+ <a href="http://www.cnblogs.com/aga-j/category/285341.html">Algorithm(13)</a> </li>
+
+ <li><a class="mini_rss" href="http://www.cnblogs.com/aga-j/category/285335.html/rss">Rss</a>
+ <a href="http://www.cnblogs.com/aga-j/category/285335.html">Android(4)</a> </li>
+
+ <li><a class="mini_rss" href="http://www.cnblogs.com/aga-j/category/292961.html/rss">Rss</a>
+ <a href="http://www.cnblogs.com/aga-j/category/292961.html">C/C++(24)</a> </li>
+
+ <li><a class="mini_rss" href="http://www.cnblogs.com/aga-j/category/285337.html/rss">Rss</a>
+ <a href="http://www.cnblogs.com/aga-j/category/285337.html">Course(2)</a> </li>
+
+ <li><a class="mini_rss" href="http://www.cnblogs.com/aga-j/category/299169.html/rss">Rss</a>
+ <a href="http://www.cnblogs.com/aga-j/category/299169.html">Data Mining(4)</a> </li>
+
+ <li><a class="mini_rss" href="http://www.cnblogs.com/aga-j/category/287742.html/rss">Rss</a>
+ <a href="http://www.cnblogs.com/aga-j/category/287742.html">dot net(3)</a> </li>
+
+ <li><a class="mini_rss" href="http://www.cnblogs.com/aga-j/category/285334.html/rss">Rss</a>
+ <a href="http://www.cnblogs.com/aga-j/category/285334.html">J2EE(10)</a> </li>
+
+ <li><a class="mini_rss" href="http://www.cnblogs.com/aga-j/category/285331.html/rss">Rss</a>
+ <a href="http://www.cnblogs.com/aga-j/category/285331.html">Life(26)</a> </li>
+
+ <li><a class="mini_rss" href="http://www.cnblogs.com/aga-j/category/311403.html/rss">Rss</a>
+ <a href="http://www.cnblogs.com/aga-j/category/311403.html">Linux(22)</a> </li>
+
+ <li><a class="mini_rss" href="http://www.cnblogs.com/aga-j/category/423421.html/rss">Rss</a>
+ <a href="http://www.cnblogs.com/aga-j/category/423421.html">Machine Learning(4)</a> </li>
+
+ <li><a class="mini_rss" href="http://www.cnblogs.com/aga-j/category/304600.html/rss">Rss</a>
+ <a href="http://www.cnblogs.com/aga-j/category/304600.html">Nice Article(2)</a> </li>
+
+ <li><a class="mini_rss" href="http://www.cnblogs.com/aga-j/category/285339.html/rss">Rss</a>
+ <a href="http://www.cnblogs.com/aga-j/category/285339.html">Object-Oriented(14)</a> </li>
+
+ <li><a class="mini_rss" href="http://www.cnblogs.com/aga-j/category/285338.html/rss">Rss</a>
+ <a href="http://www.cnblogs.com/aga-j/category/285338.html">Other(7)</a> </li>
+
+ <li><a class="mini_rss" href="http://www.cnblogs.com/aga-j/category/351819.html/rss">Rss</a>
+ <a href="http://www.cnblogs.com/aga-j/category/351819.html">stream computing, real-time computing(2)</a> </li>
+
+ <li><a class="mini_rss" href="http://www.cnblogs.com/aga-j/category/285329.html/rss">Rss</a>
+ <a href="http://www.cnblogs.com/aga-j/category/285329.html">Windows Mobile(5)</a> </li>
+
+ <li><a class="mini_rss" href="http://www.cnblogs.com/aga-j/category/285330.html/rss">Rss</a>
+ <a href="http://www.cnblogs.com/aga-j/category/285330.html">Windows Phone(14)</a> </li>
+
+</ul>
+</div><div id="side-top-posts-custom">
+<h2>推荐排行榜</h2>
+	<div id="TopDiggPostsBlock"><ul><li><a href="http://www.cnblogs.com/aga-j/archive/2011/07/02/2096294.html">1. mongoDB是什么？又吸引我的注意力了(3)</a></li><li><a href="http://www.cnblogs.com/aga-j/archive/2011/02/07/1949658.html">2. android开发小技巧笔记(3)</a></li><li><a href="http://www.cnblogs.com/aga-j/archive/2011/01/14/1935436.html">3. windows phone xna游戏视频展示 及 xna开发书籍下载(3)</a></li><li><a href="http://www.cnblogs.com/aga-j/archive/2010/05/19/1739635.html">4. 最近(2)</a></li><li><a href="http://www.cnblogs.com/aga-j/archive/2010/11/13/1876610.html">5. Windows phone 手势，鼠标-学习笔记(2)</a></li></ul></div>
+</div><div id="side-top-posts">
+<h2>阅读排行榜</h2>
+	<div id="TopViewPostsBlock"><ul><li><a href="http://www.cnblogs.com/aga-j/archive/2011/07/02/2096294.html">1. mongoDB是什么？又吸引我的注意力了(2804)</a></li><li><a href="http://www.cnblogs.com/aga-j/archive/2010/08/09/1795375.html">2. 关于使用OpenNetCF完成windows mobile上的wifi通信(2599)</a></li><li><a href="http://www.cnblogs.com/aga-j/archive/2012/02/03/2337440.html">3. Twitter Storm 实时数据处理框架分析总结(2263)</a></li><li><a href="http://www.cnblogs.com/aga-j/archive/2010/08/17/1801725.html">4. 看着这个实例，一起来学重构吧！(1873)</a></li><li><a href="http://www.cnblogs.com/aga-j/archive/2012/02/03/2337151.html">5. Yahoo!S4分布式流处理引擎分析总结(1863)</a></li></ul></div>
+</div></div>
+			    
+			    <div id="sideContainer"></div>
+                <script language="javascript" type="text/javascript">
+                    $.ajax({
+                        url: '/' + currentBlogApp + '/mvc/blog/Minyx2_Lite_SideColumn.aspx',
+                        data: '{}',
+                        type: 'post',
+                        dataType: 'text',
+                        contentType: 'application/json; charset=utf-8',
+                        success: function (data) {
+                            if (data) {
+                                $("#sideContainer").html(data);
+                                if ($("#blog-calendar").length) {
+                                    loadBlogCalendar();
+                                }
+                                loadBlogSideBlocks();
+                                var m = window.__blog.sideContainerRendered;
+                                if (m) { m(__$("sideContainer")); }
+                                window.__blog.sidebar.__layout();
+                            }
+                        }
+                    });
+                    
+                 </script>       	
+			                      
+ 		    </div>
+     		
+	        <script language="javascript" type="text/javascript">
+	        var m = window.__blog.sidebarRendered;
+	        if (m) { m(__$("sidebar")); }
+                </script>        
+     </div>
+     
+        <script language="javascript" type="text/javascript">
+            var m = window.__blog.wrapperRendered;
+            if (m) { m(__$("wrapper")); }
+        </script>
+
+</div>
+<!-- end of container -->
+    
+<script language="javascript" type="text/javascript">
+    var m = window.__blog.containerRendered;
+    if (m) { m(__$("container")); }
+</script>
+
+<div id="footer">
+        
+<p id="logoFoot">
+    <a href="http://www.spiga.com.mx/" title="Agencia Interactiva Spiga">www.spiga.com.mx</a>
+</p>
+<div class="footText">
+<p>
+Copyright ©2013 Aga.J
+</p>
+<p>
+<a href="http://www.cnblogs.com/">博客园</a>
+</p>
+</div>
+</div><!--end: footer -->
+
+<!--PageEndHtml Block Begin-->
+<div id="clustrmaps-widget" style="width: 160px; height: 106px; position: relative;"><a href="http://www3.clustrmaps.com/counter/maps.php?url=http://www.cnblogs.com/aga-j/" style="border: none;"><img style="background-image: url(http://www3.clustrmaps.com/images/nasa_classic.jpg); border: none; position: absolute; left: 0px; top: 0px; padding: 0px; background-position: initial initial; background-repeat: initial initial;" src="./01_files/www.cnblogs.com-aga-j--thumb-text.png"><img src="./01_files/www.cnblogs.com-aga-j--thumb-dots.png" style="position: absolute; border: none; z-index: 1; left: 0px; top: 0px; padding: 0px;"><script src="./01_files/dynamic.js"></script><img style="left: 129px; top: 49px; position: absolute; width: 9px; height: 9px; border: none; display: inline; z-index: 1; padding: 0px;" src="./01_files/smallyellow.png"><img style="left: 128px; top: 41px; position: absolute; width: 9px; height: 9px; border: none; display: inline; z-index: 1; padding: 0px;" src="./01_files/smallyellow.png"><img style="left: 129px; top: 45px; position: absolute; width: 9px; height: 9px; border: none; display: inline; z-index: 1; padding: 0px;" src="./01_files/smallyellow.png"><img style="left: 21px; top: 37px; position: absolute; width: 9px; height: 9px; border: none; display: inline; z-index: 1; padding: 0px;" src="./01_files/smallyellow.png"><img style="left: 130px; top: 40px; position: absolute; width: 9px; height: 9px; border: none; display: inline; z-index: 1; padding: 0px;" src="./01_files/smallyellow.png"><img style="left: 129px; top: 47px; position: absolute; width: 9px; height: 9px; border: none; display: inline; z-index: 1; padding: 0px;" src="./01_files/smallyellow.png"><img style="left: 128px; top: 45px; position: absolute; width: 9px; height: 9px; border: none; display: inline; z-index: 1; padding: 0px;" src="./01_files/smallyellow.png"><img style="left: 127px; top: 41px; position: absolute; width: 9px; height: 9px; border: none; display: inline; z-index: 1; padding: 0px;" src="./01_files/smallyellow.png"><img style="left: 126px; top: 49px; position: absolute; width: 9px; height: 9px; border: none; display: inline; z-index: 1; padding: 0px;" src="./01_files/smallyellow.png"><img style="left: 126px; top: 49px; position: absolute; width: 9px; height: 9px; border: none; display: inline; z-index: 1; padding: 0px;" src="./01_files/smallyellow.png"><img style="left: 21px; top: 37px; position: absolute; width: 9px; height: 9px; border: none; display: inline; z-index: 1; padding: 0px;" src="./01_files/smallyellow.png"></a></div><script type="text/javascript">var _clustrmaps = {'url' : 'http://www.cnblogs.com/aga-j/', 'user' : 968124, 'server' : '3', 'id' : 'clustrmaps-widget', 'version' : 1, 'date' : '2011-12-29', 'lang' : 'zh', 'corners' : 'square' };(function (){ var s = document.createElement('script'); s.type = 'text/javascript'; s.async = true; s.src = 'http://www3.clustrmaps.com/counter/map.js'; var x = document.getElementsByTagName('script')[0]; x.parentNode.insertBefore(s, x);})();</script><noscript>&lt;a href="http://www3.clustrmaps.com/user/584ec5bc"&gt;&lt;img src="http://www3.clustrmaps.com/stats/maps-no_clusters/www.cnblogs.com-aga-j--thumb.jpg" alt="Locations of visitors to this page" /&gt;&lt;/a&gt;</noscript>
+
+<!--PageEndHtml Block End-->
+<script type="text/javascript" src="./01_files/google-analytics.js"></script>
+
+
+</body></html>
