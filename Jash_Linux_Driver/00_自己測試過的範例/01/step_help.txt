@@ -1,0 +1,25 @@
+01.   cd Jash_Linux_Driver				//切換到工作目錄
+02.   make
+						//產生驅動程式globalmem.ko
+03.   ls
+						//查看檔案變化
+04.   cat /proc/devices
+					//查看硬體設備有哪些
+05.   sudo /sbin/insmod ./globalmem.ko
+			//核心模組的載入
+06.   lsmod
+					//查看核心模組
+07.   cat /proc/devices
+					//查看硬體設備有哪些
+08.   sudo mknod /dev/globalmem c 256 0 -m 777		//掛載硬體（驅動程式） 且設定所有人均可存取
+
+						//256 為設備號碼 要和程式內一致 且不可以和cat /proc/devices
+	查出來的結果重複
+09.   echo 'hello jash driver' > /dev/globalmem
+		//透過cmd寫入資料到驅動程式
+10.   cat /dev/globalmem
+				//透過cmd讀取驅動程式內的資料
+11.   gcc -o testglobalmem testglobalmem.c
+
+			//編譯測試程式
+12.   ./testglobalmem					//執行測試程式
