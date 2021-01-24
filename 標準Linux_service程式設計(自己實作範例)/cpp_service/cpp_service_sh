@@ -1,0 +1,64 @@
+#!/bin/sh
+#
+#
+#
+# chkconfig: – 98 02
+# description: This is a daemon for automatically
+# start my service
+#
+# processname: cpp_service
+#
+#
+prefix=/usr
+exec_prefix=/usr
+sbindir=/usr/sbin
+SCRIPT_BASE=/home/jash/cpp_service
+SCRIPT_LOG_LOCATION=/home/jash/cpp_service/log
+START_UP_LOG=${SCRIPT_LOG_LOCATION}/startup
+SHUT_DOWN_LOG=${SCRIPT_LOG_LOCATION}/shutdown
+# Sanity checks.
+# so we can rearrange this easily
+RETVAL=0
+start()
+{
+echo "Starting my service "
+echo " log location is:" ${START_UP_LOG}
+${SCRIPT_BASE}/startup.sh>>${START_UP_LOG}
+echo "Done starting my service! "
+}
+stop()
+{
+echo "Stopping my service "
+echo " log location is:" ${SHUT_DOWN_LOG}
+${SCRIPT_BASE}/shutdown.sh>>${SHUT_DOWN_LOG}
+echo "Done stopping my service! "
+}
+# See how we were called.
+case "$1" in
+start)
+start
+;;
+stop)
+stop
+;;
+status)
+status -p $pidfile $processname
+RETVAL=$?
+;;
+restart)
+stop
+start
+;;
+condrestart)
+if [ -f /var/lock/subsys/$servicename ]; then
+stop
+start
+fi
+;;
+*)
+echo $"Usage: $0 {start|stop|status|restart|condrestart}"
+;;
+esac
+exit $RETVAL
+
+

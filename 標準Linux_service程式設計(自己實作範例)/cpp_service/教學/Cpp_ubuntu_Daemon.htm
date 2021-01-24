@@ -1,0 +1,399 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!-- saved from url=(0049)http://peixun.nntv.com.cn/two/c++/jc/250464.shtml -->
+<html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7">
+<title>C++基础:ubuntu下Daemon如何自动启动—嗨考网</title>
+<meta name="keywords" content="计算机,全国计算机,计算机等级考试报名">
+<meta name="description" content="C++基础:ubuntu下Daemon如何自动启动">
+
+<!--classid:11564|siiclassid:11540|bclassid:11553,bbclassid:11540,bbbclassid:0,,,-->
+<!--Last update:2011-09-29 00:30:46-->
+
+<link href="./Cpp_ubuntu_Daemon_files/index.css" rel="stylesheet" type="text/css">
+<link href="./Cpp_ubuntu_Daemon_files/jisuanji.css" rel="stylesheet" type="text/css">
+<link href="./Cpp_ubuntu_Daemon_files/jisuanji_pd.css" rel="stylesheet" type="text/css">
+<link href="./Cpp_ubuntu_Daemon_files/jisuanji_lb.css" rel="stylesheet" type="text/css">
+<style id="wrc-middle-css" type="text/css">.wrc_whole_window{	display: none;	position: fixed; 	z-index: 2147483647;	background-color: rgba(40, 40, 40, 0.9);	word-spacing: normal !important;	margin: 0px !important;	padding: 0px !important;	border: 0px !important;	left: 0px;	top: 0px;	width: 100%;	height: 100%;	line-height: normal !important;	letter-spacing: normal !important;	overflow: hidden;}.wrc_bar_window{	display: none;	position: fixed; 	z-index: 2147483647;	background-color: rgba(60, 60, 60, 1.0);	word-spacing: normal !important;	font-family: Segoe UI, Arial Unicode MS, Arial, Sans-Serif;	margin: 0px !important;	padding: 0px !important;	border: 0px !important;	left: 0px;	top: 0px;	width: 100%;	height: 40px;	line-height: normal !important;	letter-spacing: normal !important;	color: white !important;	font-size: 13px !important;}.wrc_middle {	display: table-cell;	vertical-align: middle;	width: 100%;}.wrc_middle_main {	font-family: Segoe UI, Arial Unicode MS, Arial, Sans-Serif;	font-size: 14px;	width: 600px;	height: auto;    background: url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/background-body.jpg) repeat-x left top;	background-color: rgb(39, 53, 62);	position: relative;	margin-left: auto;	margin-right: auto;	text-align: left;}.wrc_middle_tq_main {	font-family: Segoe UI, Arial Unicode MS, Arial, Sans-Serif;	font-size: 16px;	width: 615px;	height: 460px;    background: url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/background-sitecorrect.png) no-repeat;	background-color: white;	color: black !important;	position: relative;	margin-left: auto;	margin-right: auto;	text-align: center;}.wrc_middle_logo {    background: url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/logo.jpg) no-repeat left bottom;    width: 140px;    height: 42px;    color: orange;    display: table-cell;    text-align: right;    vertical-align: middle;}.wrc_icon_warning {	margin: 20px 10px 20px 15px;	float: left;	background-color: transparent;}.wrc_middle_title {    color: #b6bec7;	height: auto;    margin: 0px auto;	font-size: 2.2em;	white-space: nowrap;	text-align: center;}.wrc_middle_hline {    height: 2px;	width: 100%;    display: block;}.wrc_middle_description {	text-align: center;	margin: 15px;	font-size: 1.4em;	padding: 20px;	height: auto;	color: white;	min-height: 3.5em;}.wrc_middle_actions_main_div {	margin-bottom: 15px;	text-align: center;}.wrc_middle_actions_blue_button div {	display: inline-block;	width: auto;	cursor: Pointer;	margin: 3px 10px 3px 10px;	color: white;	font-size: 1.2em;	font-weight: bold;}.wrc_middle_actions_blue_button {	-moz-appearance: none;	border-radius: 7px;	-moz-border-radius: 7px/7px;	border-radius: 7px/7px;	background-color: rgb(0, 173, 223) !important;	display: inline-block;	width: auto;	cursor: Pointer;	border: 2px solid #00dddd;	padding: 0px 20px 0px 20px;}.wrc_middle_actions_blue_button:hover {	background-color: rgb(0, 159, 212) !important;}.wrc_middle_actions_blue_button:active {	background-color: rgb(0, 146, 200) !important;	border: 2px solid #00aaaa;}.wrc_middle_actions_grey_button div {	display: inline-block;	width: auto;	cursor: Pointer;	margin: 3px 10px 3px 10px;	color: white !important;	font-size: 15px;	font-weight: bold;}.wrc_middle_actions_grey_button {	-moz-appearance: none;	border-radius: 7px;	-moz-border-radius: 7px/7px;	border-radius: 7px/7px;	background-color: rgb(100, 100, 100) !important;	display: inline-block;	width: auto;	cursor: Pointer;	border: 2px solid #aaaaaa;	text-decoration: none;	padding: 0px 20px 0px 20px;}.wrc_middle_actions_grey_button:hover {	background-color: rgb(120, 120, 120) !important;}.wrc_middle_actions_grey_button:active {	background-color: rgb(130, 130, 130) !important;	border: 2px solid #00aaaa;}.wrc_middle_action_low {	font-size: 0.9em;	white-space: nowrap;	cursor: Pointer;	color: grey !important;	margin: 10px 10px 0px 10px;	text-decoration: none;}.wrc_middle_action_low:hover {	color: #aa4400 !important;}.wrc_middle_actions_rest_div {	padding-top: 5px;	white-space: nowrap;	text-align: center;}.wrc_middle_action {	white-space: nowrap;	cursor: Pointer;	color: red !important;	font-size: 1.2em;	margin: 10px 10px 0px 10px;	text-decoration: none;}.wrc_middle_action:hover {	color: #aa4400 !important;}</style><script id="wrc-script-middle_window" type="text/javascript" language="JavaScript">var g_inputsCnt = 0;var g_InputThis = new Array(null, null, null, null);var g_alerted = false;/* we test the input if it includes 4 digits   (input is a part of 4 inputs for filling the credit-card number)*/function is4DigitsCardNumber(val){	var regExp = new RegExp('[0-9]{4}');	return (val.length == 4 && val.search(regExp) == 0);}/* testing the whole credit-card number 19 digits devided by three '-' symbols or   exactly 16 digits without any dividers*/function isCreditCardNumber(val){	if(val.length == 19)	{		var regExp = new RegExp('[0-9]{4}-[0-9]{4}-[0-9]{4}-[0-9]{4}');		return (val.search(regExp) == 0);	}	else if(val.length == 16)	{		var regExp = new RegExp('[0-9]{4}[0-9]{4}[0-9]{4}[0-9]{4}');		return (val.search(regExp) == 0);	}	return false;}function CheckInputOnCreditNumber(self){	if(g_alerted)		return false;	var value = self.value;	if(self.type == 'text')	{		if(is4DigitsCardNumber(value))		{			var cont = true;			for(i = 0; i < g_inputsCnt; i++)				if(g_InputThis[i] == self)					cont = false;			if(cont && g_inputsCnt < 4)			{				g_InputThis[g_inputsCnt] = self;				g_inputsCnt++;			}		}		g_alerted = (g_inputsCnt == 4);		if(g_alerted)			g_inputsCnt = 0;		else			g_alerted = isCreditCardNumber(value);	}	return g_alerted;}function CheckInputOnPassword(self){	if(g_alerted)		return false;	var value = self.value;	if(self.type == 'password')	{		g_alerted = (value.length > 0);	}	return g_alerted;}function onInputBlur(self, bRatingOk, bFishingSite){	var bCreditNumber = CheckInputOnCreditNumber(self);	var bPassword = CheckInputOnPassword(self);	if((!bRatingOk || bFishingSite == 1) && (bCreditNumber || bPassword) )	{		var warnDiv = document.getElementById("wrcinputdiv");		if(warnDiv)		{			/* show the warning div in the middle of the screen */			warnDiv.style.left = "0px";			warnDiv.style.top = "0px";			warnDiv.style.width = "100%";			warnDiv.style.height = "100%";			document.getElementById("wrc_warn_fs").style.display = 'none';			document.getElementById("wrc_warn_cn").style.display = 'none';			if(bFishingSite)				document.getElementById("wrc_warn_fs").style.display = 'block';			else				document.getElementById("wrc_warn_cn").style.display = 'block';			warnDiv.style.display = 'table';		}	}}</script></head>
+<body>
+
+<div class="main">
+<script type="text/javascript" src="./Cpp_ubuntu_Daemon_files/jquery.js"></script>
+<script type="text/javascript" src="./Cpp_ubuntu_Daemon_files/channel.js"></script>
+<!-- 通用头部导航 -->
+
+   <div class="X_index_top">
+    <div class="index_top_dl">
+      <div class="index_top_right">
+        <ul>
+          <li class="add1"><a href="http://peixun.nntv.com.cn/two/c++/jc/250464.shtml#add" onclick="this.style.behavior=&#39;url(#default#homepage)&#39;;this.sethomepage(&#39;http://peixun.nntv.com.cn/&#39;);return false;" target="_self">设为首页</a></li>
+<li class="add2"><a href="http://peixun.nntv.com.cn/two/c++/jc/250464.shtml#" onclick="window.external.AddFavorite(&#39;http://peixun.nntv.com.cn/&#39;,&#39;嗨考网&#39;);return false" target="_self">加入收藏</a></li>
+
+        </ul>
+      </div>
+    </div>
+    
+    
+
+    
+<div class="X_main_top_js">
+    <div class="s1">
+    <h3><a href="http://peixun.nntv.com.cn/Accountant/" title="财会类">财会类</a></h3>
+    <ul class="bot_1">
+    <li><a href="http://peixun.nntv.com.cn/cy/">会计从业资格</a></li>
+<li><a href="http://peixun.nntv.com.cn/ccbp/">银行从业资格</a></li>
+<li><a href="http://peixun.nntv.com.cn/chuji/">初级会计职称</a></li>
+<li><a href="http://peixun.nntv.com.cn/zhongji/">中级会计职称</a></li>
+<li><a href="http://peixun.nntv.com.cn/cpa/">注册会计师</a></li>
+<li><a href="http://peixun.nntv.com.cn/gaoji/">高级会计师</a></li>
+<li><a href="http://peixun.nntv.com.cn/jgjd/">价格鉴证师</a></li>
+<li><a href="http://peixun.nntv.com.cn/pinggu/">资产评估师</a></li>
+<li><a href="http://peixun.nntv.com.cn/cta/">注册税务师</a></li>
+<li><a href="http://peixun.nntv.com.cn/cia/">内审师</a></li>
+<li><a href="http://peixun.nntv.com.cn/jss/">精算师</a></li>
+<li><a href="http://peixun.nntv.com.cn/jjs/">经济师</a></li>
+<li><a href="http://peixun.nntv.com.cn/tjs/">统计师</a></li>
+<li><a href="http://peixun.nntv.com.cn/sjs/">审计师</a></li>
+<li><a href="http://peixun.nntv.com.cn/licai/">理财规划师</a></li>
+<li><a href="http://peixun.nntv.com.cn/acca/">ACCA/CAT</a></li>
+    </ul>
+    </div>
+    <div class="s1">
+    <h3><a href="http://peixun.nntv.com.cn/jzgc/" title="建筑类">建筑类</a></h3>
+    <ul class="bot_2">
+<li><a href="http://peixun.nntv.com.cn/jzs1/">一级建造师</a></li>
+<li><a href="http://peixun.nntv.com.cn/jzs2/">二级建造师</a></li>
+<li><a href="http://peixun.nntv.com.cn/zjy/">造价员资格</a></li>
+<li><a href="http://peixun.nntv.com.cn/jianzhu/">注册建筑师</a></li>
+<li><a href="http://peixun.nntv.com.cn/aq/">安全工程师</a></li>
+<li><a href="http://peixun.nntv.com.cn/aqpj/">安全评价师</a></li>
+<li><a href="http://peixun.nntv.com.cn/zixun/">咨询工程师</a></li>
+<li><a href="http://peixun.nntv.com.cn/jianli/">监理工程师</a></li>
+<li><a href="http://peixun.nntv.com.cn/gujia/">土地估价师</a></li>
+<li><a href="http://peixun.nntv.com.cn/zaojia/">造价工程师</a></li>
+<li><a href="http://peixun.nntv.com.cn/jiegou/">结构工程师</a></li>
+<li><a href="http://peixun.nntv.com.cn/tddj/">土地登记代理人</a></li>
+<li><a href="http://peixun.nntv.com.cn/zl/">质量工程师</a></li>
+<li><a href="http://peixun.nntv.com.cn/hb/">环保工程师</a></li>
+<li><a href="http://peixun.nntv.com.cn/yt/">岩土工程师</a></li>
+<li><a href="http://peixun.nntv.com.cn/fdc/">房产估价师</a></li>
+<li><a href="http://peixun.nntv.com.cn/imcp/">投资项目管理师</a></li>
+<li><a href="http://peixun.nntv.com.cn/hps/">环境评价师</a></li>
+<li><a href="http://peixun.nntv.com.cn/gljl/">公路监理师</a></li>
+<li><a href="http://peixun.nntv.com.cn/sbjl/">设备监理师</a></li>
+<li><a href="http://peixun.nntv.com.cn/wuye/">物业管理师</a></li>
+<li><a href="http://peixun.nntv.com.cn/city/">城市规划师</a></li>
+<li><a href="http://peixun.nntv.com.cn/fcjj/">房产经纪人</a></li>
+<li><a href="http://peixun.nntv.com.cn/glzj/">公路造价师</a></li>
+<li><a href="http://peixun.nntv.com.cn/shinei/">室内设计师</a></li>
+<li><a href="http://peixun.nntv.com.cn/zbs/">招标师考试</a></li>
+<li><a href="http://peixun.nntv.com.cn/dq/">电气工程师</a></li>
+    </ul>
+    </div>
+    <div class="s1">
+    <h3><a href="http://peixun.nntv.com.cn/waiyu/" title="外语类">外语类</a></h3>
+    <ul class="bot_3">
+<li><a href="http://peixun.nntv.com.cn/toefl/">托福考试</a></li>
+<li><a href="http://peixun.nntv.com.cn/ielts/">雅思考试</a></li>
+<li><a href="http://peixun.nntv.com.cn/tem/">专四专八</a></li>
+<li><a href="http://peixun.nntv.com.cn/catti/">口译笔译</a></li>
+<li><a href="http://peixun.nntv.com.cn/zcyy/">职称英语</a></li>
+<li><a href="http://peixun.nntv.com.cn/fect/">金融英语</a></li>
+<li><a href="http://peixun.nntv.com.cn/cet4/">英语四级</a></li>
+<li><a href="http://peixun.nntv.com.cn/cet6/">英语六级</a></li>
+<li><a href="http://peixun.nntv.com.cn/xyz/">小语种</a></li>
+<li><a href="http://peixun.nntv.com.cn/Japanese/">日语</a></li>
+<li><a href="http://peixun.nntv.com.cn/hanyu/">韩语</a></li>
+<li><a href="http://peixun.nntv.com.cn/yw/">经典译文</a></li>
+<li><a href="http://peixun.nntv.com.cn/syyy/">实用英语</a></li>
+<li><a href="http://peixun.nntv.com.cn/life/">生活英语</a></li>
+<li><a href="http://peixun.nntv.com.cn/bec/">商务英语</a></li>
+<li><a href="http://peixun.nntv.com.cn/gre/">GRE</a></li>
+<li><a href="http://peixun.nntv.com.cn/pets/">PETS</a></li>
+<li><a href="http://peixun.nntv.com.cn/LSAT/">LSAT</a></li>
+<li><a href="http://peixun.nntv.com.cn/toeic/">TOEIC</a></li>
+<li><a href="http://peixun.nntv.com.cn/gmat/">GMAT</a></li>
+<li><a href="http://peixun.nntv.com.cn/mse/">MSE</a></li>
+<li><a href="http://peixun.nntv.com.cn/cet3/">CET3</a></li>
+<li><a href="http://peixun.nntv.com.cn/liuxue/">出国留学</a></li>
+<li><a href="http://peixun.nntv.com.cn/zcry/">职称日语</a></li>
+<li><a href="http://peixun.nntv.com.cn/zcey/">职称俄语</a></li>
+    </ul>
+    </div>
+    <div class="s1">
+    <h3><a href="http://peixun.nntv.com.cn/gwy/" title="公务员">公务员</a></h3>
+    <ul class="bot_4" style="display: none;">
+<li><a href="http://peixun.nntv.com.cn/gx/">公选领导</a></li>
+<li><a href="http://peixun.nntv.com.cn/zfgj/">政法干警</a></li>
+<li><a href="http://peixun.nntv.com.cn/sydw/">事业单位</a></li>
+<li><a href="http://peixun.nntv.com.cn/zj/">警察招考</a></li>
+<li><a href="http://peixun.nntv.com.cn/xds/">选调生</a></li>
+<li><a href="http://peixun.nntv.com.cn/tegang/">特岗教师</a></li>
+<li><a href="http://peixun.nntv.com.cn/gjdw/">国家单位</a></li>
+    </ul>
+    </div>
+    <div class="s1">
+    <h3><a href="http://peixun.nntv.com.cn/xlks/" title="学历类">学历类</a></h3>
+    <ul class="bot_5">
+<li><a href="http://peixun.nntv.com.cn/zikao/">自考</a></li>
+<li><a href="http://peixun.nntv.com.cn/gaokao/">高考</a></li>
+<li><a href="http://peixun.nntv.com.cn/kaoyan/">考研</a></li>
+<li><a href="http://peixun.nntv.com.cn/zhongkao/">中考</a></li>
+<li><a href="http://peixun.nntv.com.cn/chengkao/">成人高考</a></li>
+<li><a href="http://peixun.nntv.com.cn/tdxl/">同等学历</a></li>
+<li><a href="http://peixun.nntv.com.cn/fashuo/">法律硕士</a></li>
+<li><a href="http://peixun.nntv.com.cn/gcs/">工程硕士</a></li>
+<li><a href="http://peixun.nntv.com.cn/mpacc/">会计硕士</a></li>
+<li><a href="http://peixun.nntv.com.cn/jyss/">教育硕士</a></li>
+<li><a href="http://peixun.nntv.com.cn/mba/">MBA</a></li>
+<li><a href="http://peixun.nntv.com.cn/mpa/">MPA</a></li>
+<li><a href="http://peixun.nntv.com.cn/emba/">EMBA</a></li>
+<li><a href="http://peixun.nntv.com.cn/zzss/">在职硕士</a></li>
+<li><a href="http://peixun.nntv.com.cn/Degree/">双学位</a></li>
+<li><a href="http://peixun.nntv.com.cn/yanxiu/">研修班</a></li>
+<li><a href="http://peixun.nntv.com.cn/kaobo/">考博</a></li>
+    </ul>
+    </div>
+    <div class="s1">
+    <h3><a href="http://peixun.nntv.com.cn/yiyao/" title="医药类">医药类</a></h3>
+    <ul class="bot_6">
+<li><a href="http://peixun.nntv.com.cn/skill/">实践技能</a></li>
+<li><a href="http://peixun.nntv.com.cn/Clinical/">临床执业医师</a></li>
+<li><a href="http://peixun.nntv.com.cn/cad/">临床助理医师</a></li>
+<li><a href="http://peixun.nntv.com.cn/zhongyi/">中医执业医师</a></li>
+<li><a href="http://peixun.nntv.com.cn/cda/">中医助理医师</a></li>
+<li><a href="http://peixun.nntv.com.cn/zxyyishi/">中西医执业医师</a></li>
+<li><a href="http://peixun.nntv.com.cn/zxyzlyishi/">中西医助理医师</a></li>
+<li><a href="http://peixun.nntv.com.cn/oral/">口腔执业医师</a></li>
+<li><a href="http://peixun.nntv.com.cn/oad/">口腔助理医师</a></li>
+<li><a href="http://peixun.nntv.com.cn/Health/">公卫执业医师</a></li>
+<li><a href="http://peixun.nntv.com.cn/pha/">公卫助理医师</a></li>
+<li><a href="http://peixun.nntv.com.cn/hushi/">护士资格考试</a></li>
+<li><a href="http://peixun.nntv.com.cn/neike/">内科医师</a></li>
+<li><a href="http://peixun.nntv.com.cn/waike/">外科医师</a></li>
+<li><a href="http://peixun.nntv.com.cn/fuchanke/">妇产科医师</a></li>
+<li><a href="http://peixun.nntv.com.cn/wsyaoshi/">初级药士</a></li>
+<li><a href="http://peixun.nntv.com.cn/zhongyaoshi/">初级中药士</a></li>
+<li><a href="http://peixun.nntv.com.cn/wsjishi/">医学检验技士             </a></li>
+<li><a href="http://peixun.nntv.com.cn/hushi2/">初级护师</a></li>
+<li><a href="http://peixun.nntv.com.cn/hushi3/">主管护师</a></li>
+<li><a href="http://peixun.nntv.com.cn/yaoshi/">执业药师</a></li>
+<li><a href="http://peixun.nntv.com.cn/wszg/">卫生资格</a></li>
+<li><a href="http://peixun.nntv.com.cn/wsyaoshi/">初级药师</a></li>
+<li><a href="http://peixun.nntv.com.cn/wsyaoshi/">主管药师</a></li>
+<li><a href="http://peixun.nntv.com.cn/zhongyaoshi/">初级中药师</a></li>
+<li><a href="http://peixun.nntv.com.cn/zhongyaoshi/">主管中药师</a></li>
+<li><a href="http://peixun.nntv.com.cn/wsjishi/">医学检验技师</a></li>
+<li><a href="http://peixun.nntv.com.cn/wsjishi/">主管技师</a></li>
+    </ul>
+    </div>
+    <div class="s1">
+    <h3><a href="http://peixun.nntv.com.cn/waimao/" title="外贸类">外贸类</a></h3>
+    <ul class="bot_7">
+<li><a href="http://peixun.nntv.com.cn/bgy/">报关员</a></li>
+<li><a href="http://peixun.nntv.com.cn/sws/">商务师</a></li>
+<li><a href="http://peixun.nntv.com.cn/wls/">物流师</a></li>
+<li><a href="http://peixun.nntv.com.cn/dz/">单证员</a></li>
+<li><a href="http://peixun.nntv.com.cn/bjy/">报检员</a></li>
+<li><a href="http://peixun.nntv.com.cn/wxy/">外销员</a></li>
+<li><a href="http://peixun.nntv.com.cn/gdy/">跟单员</a></li>
+<li><a href="http://peixun.nntv.com.cn/hydl/">货运代理</a></li>
+<li><a href="http://peixun.nntv.com.cn/ywy/">业务员</a></li>
+    </ul>
+    </div>
+    <div class="s1">
+    <h3><a href="http://peixun.nntv.com.cn/zy/" title="职业资格">职业资格</a></h3>
+    <ul class="bot_8">
+<li><a href="http://peixun.nntv.com.cn/zq/">证券从业</a></li>
+<li><a href="http://peixun.nntv.com.cn/qh/">期货从业</a></li>
+<li><a href="http://peixun.nntv.com.cn/teacher/">教师资格</a></li>
+<li><a href="http://peixun.nntv.com.cn/ms/">秘书资格</a></li>
+<li><a href="http://peixun.nntv.com.cn/hr/">人力资源师</a></li>
+<li><a href="http://peixun.nntv.com.cn/dy/">导游资格</a></li>
+<li><a href="http://peixun.nntv.com.cn/bx/">保险从业</a></li>
+<li><a href="http://peixun.nntv.com.cn/ec/">电子商务师</a></li>
+<li><a href="http://peixun.nntv.com.cn/flgw/">法律顾问</a></li>
+<li><a href="http://peixun.nntv.com.cn/pm/">项目管理师</a></li>
+<li><a href="http://peixun.nntv.com.cn/shgzz/">社会工作者</a></li>
+<li><a href="http://peixun.nntv.com.cn/yys/">公共营养师</a></li>
+<li><a href="http://peixun.nntv.com.cn/glzx/">管理咨询师</a></li>
+<li><a href="http://peixun.nntv.com.cn/xlzx/">心理咨询师</a></li>
+<li><a href="http://peixun.nntv.com.cn/sf/">司法考试</a></li>
+    </ul>
+    </div>
+    <div class="s1 s9">
+    <h3><a href="http://peixun.nntv.com.cn/it/" title="计算机类">计算机类</a></h3>
+    <ul class="bot_9">
+<li><a href="http://peixun.nntv.com.cn/linux/">Linux认证</a></li>
+<li><a href="http://peixun.nntv.com.cn/cisco/">思科认证</a></li>
+<li><a href="http://peixun.nntv.com.cn/microsoft/">微软认证</a></li>
+<li><a href="http://peixun.nntv.com.cn/java/">JAVA认证</a></li>
+<li><a href="http://peixun.nntv.com.cn/oracle/">oracle认证</a></li>
+<li><a href="http://peixun.nntv.com.cn/ncre/">计算机等级</a></li>
+<li><a href="http://peixun.nntv.com.cn/one/">计算机一级</a></li>
+<li><a href="http://peixun.nntv.com.cn/two/">计算机二级</a></li>
+<li><a href="http://peixun.nntv.com.cn/three/">计算机三级</a></li>
+<li><a href="http://peixun.nntv.com.cn/four/">计算机四级</a></li>
+<li><a href="http://peixun.nntv.com.cn/soft/">软件水平</a></li>
+<li><a href="http://peixun.nntv.com.cn/huawei/">华为认证</a></li>
+<li><a href="http://peixun.nntv.com.cn/zcjsj/">职称计算机</a></li>
+    </ul>
+    </div>
+    </div>
+    
+    
+    
+</div>
+<!-- 通用头部导航 结束-->
+<h2><script language="javascript" src="./Cpp_ubuntu_Daemon_files/bannerJs.html" charset="utf-8"></script><a href="http://member.dongao.com/click.html?uid=18066410&bid=506&rfr=http%3A%2F%2Fpeixun.nntv.com.cn%2Ftwo%2Fc%2B%2B%2Fjc%2F250464.shtml" target="_blank">勤奋+方法=两个半月通过6门</a><img src="./Cpp_ubuntu_Daemon_files/logBannerShow.html" width="0" height="0">
+
+
+
+
+<!-- 二级导航_计算机二级(id:11540) -->
+<div class="cy_pd_nav">
+    <h1><a href="http://peixun.nntv.com.cn/two/" title="计算机二级"><img src="./Cpp_ubuntu_Daemon_files/jisuanji_pd_11_2.gif" width="177" height="63"></a></h1>
+    <div class="cy_pd_nav_zs jsjto_zs">
+      <ul> 
+        <li><a href="http://peixun.nntv.com.cn/two/baoming/">报名</a>┊<a href="http://peixun.nntv.com.cn/two/chafen/">成绩查询</a>┊<a href="http://peixun.nntv.com.cn/two/zhengshu/">证书领取</a></li>
+        <li><a href="http://peixun.nntv.com.cn/two/didian/">考点</a>┊<a href="http://peixun.nntv.com.cn/two/dagang/">考试大纲</a>┊<a href="http://peixun.nntv.com.cn/two/zhinan/">报考指南</a></li>
+      </ul>
+    </div>
+    <div class="jsjto_fd">
+      <ul>
+        <li><a href="http://peixun.nntv.com.cn/two/public/">公共基础知识</a>┊<a href="http://peixun.nntv.com.cn/two/delphi/">Delphi</a>┊<a href="http://peixun.nntv.com.cn/two/c++/">C++</a>┊<a href="http://peixun.nntv.com.cn/two/java/">JAVA</a>┊<a href="http://peixun.nntv.com.cn/two/vf/">VFP</a></li>
+        <li><a href="http://peixun.nntv.com.cn/two/c/">C语言</a>&nbsp;┊<a href="http://peixun.nntv.com.cn/two/access/">Access</a>┊<a href="http://peixun.nntv.com.cn/two/vb/">Visual Basic</a>┊<a href="http://peixun.nntv.com.cn/two/guide/">综合指导</a></li>
+      </ul>
+    </div>
+    <div class="cy_pd_nav_zs jsj_sd">
+      <ul>
+        <li><a href="http://peixun.nntv.com.cn/two/moniti/">模拟试题</a></li>
+        <li><a href="http://peixun.nntv.com.cn/two/zhenti/">历年真题</a></li>
+      </ul>
+    </div>
+    <div class="cy_pd_nav_zs jsj_fad">
+      <ul>
+        <li><a href="http://peixun.nntv.com.cn/two/vb/jq/">技巧心得</a></li>
+        <li><a href="http://peixun.nntv.com.cn/two/c++/jc/250464.shtml#" target="_blank">论坛交流</a></li>
+      </ul>
+    </div>
+    </div>
+
+  <div class="cy_lb_search">
+  <div class="cy_lb_search_left">
+  <ul>
+  <li>您现在的位置：<a href="http://peixun.nntv.com.cn/">嗨考网</a>&nbsp;&gt;&gt;&nbsp;<a href="http://peixun.nntv.com.cn/two/">计算机二级</a>&nbsp;&gt;&gt;&nbsp;<a href="http://peixun.nntv.com.cn/two/c++/">c++</a>&nbsp;&gt;&gt;&nbsp;<a href="http://peixun.nntv.com.cn/two/c++/jc/">c++基础</a> </li>
+  </ul>
+  </div>
+<!--sii-search2-->
+<form target="_blank" action="http://peixun.nntv.com.cn/e/search/index.php" method="post" name="search_news" id="search_news">
+  <div class="cy_lb_search_right">
+    <ul>
+      <li><b>站内搜索:</b> <span class="pu">
+<input type="hidden" name="show" value="title">
+<input name="keyboard" type="text">
+        </span> <span class="bant">
+<input type="submit" name="submit" value=" ">
+        </span></li>
+    </ul>
+    </div>
+</form>
+  </div>
+  <div class="cy_lb_center">
+  <div class="cy_center_bj">
+  <div class="cy_center_hot">
+  <h3>C++基础:ubuntu下Daemon如何自动启动</h3>
+  <ul>
+  <li>时间：2011-09-16　来源：<a href="http://peixun.nntv.com.cn/" target="_blank">嗨考网</a>　责任编辑：</li>
+  </ul>
+  </div>
+
+  <div class="cy_center_news">
+   　　前段时间在写了个Daemon(守护历程）,但不知若何开机自动启动，在看到debian系统的初始化后茅塞顿开，网上介绍Daemon的文章不行偻指算，<a href="http://peixun.nntv.com.cn/" target="_blank" class="infotextkey">嗨考网</a>就不介绍了, Daemon在各个Unix平台下的事理是一样的，只是完成细节上的差别而已，此刻写了一个精简的Daemon,具体的可以参照《Unix环境高级编程》<br>　　以ubuntu为例（ubuntu为debian的分支，所以系统编程和设置装备摆设极为相似），<br>　　代码如下<br>　　//mydaemon.c<br>　　#include&lt;unistd.h&gt;<br>　　#include&lt;stdlib.h&gt;<br>　　#include&lt;sys/param.h&gt;<br>　　#include&lt;sys/types.h&gt;<br>　　#include&lt;sys/stat.h&gt;<br>　　void init_daemon(void)<br>　　{<br>　　int pid;<br>　　int i;<br>　　if(pid=fork())<br>　　exit(0);<br>　　else if(pid&lt;0)<br>　　exit(1);<br>　　//是第一子历程<br>　　setsid();//第一子历程成为新的会话组长和历程组长, 并与节制终端分手<br>　　if(pid=fork())<br>　　exit(0);//竣事第一子历程<br>　　else if(pid&lt; 0)<br>　　exit(1);<br>　　//第二子历程不再是会话组长<br>　　for(i=0;i&lt; NOFILE;++i)//封锁打开的文件描述符<br>　　close(i);<br>　　chdir("/");//改变工作目录到/<br>　　umask(0);//重设文件建树掩模<br>　　return;<br>　　}<br>　　int main()<br>　　{<br>　　init_daemon();//使历程成为Daemon<br>　　//以下可以添加功能代码<br>　　while(1)<br>　　{<br>　　sleep(10);//睡眠一分钟<br>　　}<br>　　return 0;<br>　　}<br>　　输入呼吁<br>　　gcc mydaemon.c -o mydaemon<br>　　./mydaemon<br>　　如不美观成功，可以用ps -efjc查看，我们会发现这个历程的父历程为init,到这里守护历程成功运行，<br>　　良多Daemon如ftpd, httpd都设为开机自动运行，下面谈判若何经由过程添加剧本让系统来启动Daemon，按照系统初始化事理一文（本blog已转载）介绍，<br>　　我在/etc/init.d/中添加一个新建一个剧本，为mydaemon, 剧本如下，假设我的daemon目录为/home/eyesmart/Daemon<br>　　#! /bin/sh<br>　　# /etc/init.d/mydaemon: start the my daemon.<br>　　PATH=/bin:/usr/bin:/sbin:/usr/sbin<br>　　binpath=/home/eyesmart/Daemon/mydaemon<br>　　test -f $binpath || exit 0<br>　　. /lib/lsb/init-functions<br>　　case "$1" in<br>　　start)<br>　　log_begin_msg "Starting mydaemon..."<br>　　start-stop-daemon --start --quiet--exec $binpath<br>　　log_end_msg $?<br>　　;;<br>　　stop)<br>　　log_begin_msg "Stopping mydaemon..."<br>　　start-stop-daemon --stop --retry TERM/1/TERM/1/TERM/4/KILL --quiet --oknodo--exec $binpath<br>　　log_end_msg $?<br>　　;;<br>　　restart|force-reload)<br>　　$0 stop<br>　　sleep 1<br>　　$0 start<br>　　;;<br>　　*)<br>　　log_success_msg "Usage: $binpath {start|stop|restart|force-reload}"<br>　　exit 1<br>　　esac<br>　　exit 0<br>　　大致是这样，剧本可以按需要写的再详尽些,做到这里按说已经完成，可是unix有个run level这个特征，所以我们必需对于特定的run level建树一个链接，<br>　　一般linux是运行level 2，那么我们输入下列呼吁ln -s /etc/init.d/mydaemon /etc/rc2.d/S50mydaemon.<br>　　到这老迈功乐成，当你重启系统的时分你可以在开悔悟程中看到自己些的轨范所显示的信息。<br>　　其他Unix系统环境在细节上会有所差别，但事理一样。
+  </div>
+
+  <div class="epages">
+
+</div>
+
+  <div class="cy_center_fe">
+  <b>上一篇：</b><a href="http://peixun.nntv.com.cn/two/c++/jc/250459.shtml">字符串转换_BSTR/LPSTR/LPWSTR/Char</a><br>
+   <b>下一篇：</b><a href="http://peixun.nntv.com.cn/two/c++/jc/250471.shtml">C++双向循环链表的操作与实现</a>
+  </div>
+  <div class="cy_center_xg">
+  <h3>相关文章</h3>
+  <ul>
+  <li><a href="http://peixun.nntv.com.cn/two/c++/jc/250459.shtml" title="字符串转换_BSTR/LPSTR/LPWSTR/Char">字符串转换_BSTR/LPSTR/LPWSTR/Char</a></li><li><a href="http://peixun.nntv.com.cn/two/c++/jc/250450.shtml" title="C++基础:禁止系统搽除你的窗口">C++基础:禁止系统搽除你的窗口</a></li><li><a href="http://peixun.nntv.com.cn/two/c/jc/250430.shtml" title="2011年计算机等级考试二级C语言常见问题：库函数">2011年计算机等级考试二级C语言常见问题：库函数</a></li><li><a href="http://peixun.nntv.com.cn/two/c/jc/250424.shtml" title="2011年计算机等级考试二级C语言常见问题：标准输入输出库">2011年计算机等级考试二级C语言常见问题：标准输入输出</a></li><li><a href="http://peixun.nntv.com.cn/two/c/jc/250419.shtml" title="2011年计算机等级考试二级C语言常见问题：ANSI/ISO标准C">2011年计算机等级考试二级C语言常见问题：ANSI/ISO标准C</a></li><li><a href="http://peixun.nntv.com.cn/two/c/jc/250412.shtml" title="2011年计算机等级考试二级C语言常见问题：C预处理器">2011年计算机等级考试二级C语言常见问题：C预处理器</a></li><li><a href="http://peixun.nntv.com.cn/two/c/jc/250404.shtml" title="2011年计算机等级考试二级C语言常见问题：布尔表达式和变量">2011年计算机等级考试二级C语言常见问题：布尔表达式和</a></li><li><a href="http://peixun.nntv.com.cn/two/c/jc/250399.shtml" title="2011年计算机等级考试二级C语言常见问题：字符和字符串">2011年计算机等级考试二级C语言常见问题：字符和字符串</a></li><li><a href="http://peixun.nntv.com.cn/two/c/jc/250395.shtml" title="2011年计算机等级考试二级C语言常见问题：内存分配">2011年计算机等级考试二级C语言常见问题：内存分配</a></li><li><a href="http://peixun.nntv.com.cn/two/c/jc/250388.shtml" title="2011年计算机等级考试二级C语言常见问题：数组和指针">2011年计算机等级考试二级C语言常见问题：数组和指针</a></li>
+  </ul>
+  </div>
+
+  </div>
+<!--变量调用-文章右侧-->
+<div class="cy_lb_right">
+<script src="./Cpp_ubuntu_Daemon_files/thea341.js" type="text/javascript"></script><div class="cy_lb_right_img"><a href="http://highso.cn/?webFrom=haikao&webAgent=" target="_blank"><img src="./Cpp_ubuntu_Daemon_files/index_340x190.gif"></a></div>
+<!-- <script src="/sii/11540/list_right_ad1.js" type="text/javascript"></script> -->
+  <div class="cy_lb_right_hot">
+  <h3><b>最新更新</b></h3>
+  <ul>
+  
+<li><a href="http://peixun.nntv.com.cn/two/c++/jc/257475.shtml" title="解读linux对string.h函数的实现" target="_blank">解读linux对string.h函数的实现</a></li>
+
+<li><a href="http://peixun.nntv.com.cn/two/c++/jc/257469.shtml" title="计算机二级C++辅导:a++和++a的压栈" target="_blank">计算机二级C++辅导:a++和++a的压栈</a></li>
+
+<li><a href="http://peixun.nntv.com.cn/two/c++/jc/257463.shtml" title="C++类成员函数的重载、覆盖、隐藏与virtual关键字" target="_blank">C++类成员函数的重载、覆盖、隐藏与virtual关键字</a></li>
+
+<li><a href="http://peixun.nntv.com.cn/two/c++/jc/257456.shtml" title="C/C++中随机数的设置" target="_blank">C/C++中随机数的设置</a></li>
+
+<li><a href="http://peixun.nntv.com.cn/two/c++/jc/257447.shtml" title="关于GCC下使用内建的多媒体指令集（MMX、SSE）函数" target="_blank">关于GCC下使用内建的多媒体指令集（MMX、SSE）函数</a></li>
+
+<li><a href="http://peixun.nntv.com.cn/two/c++/jc/257440.shtml" title="计算机二级C++基础:指针加减法" target="_blank">计算机二级C++基础:指针加减法</a></li>
+
+<li><a href="http://peixun.nntv.com.cn/two/c++/jc/257431.shtml" title="C++基础:delete释放空间时出错的原因" target="_blank">C++基础:delete释放空间时出错的原因</a></li>
+
+<li><a href="http://peixun.nntv.com.cn/two/c++/jc/257424.shtml" title="C++辅导:钩子回调函数之GetMsgProc" target="_blank">C++辅导:钩子回调函数之GetMsgProc</a></li>
+
+<li><a href="http://peixun.nntv.com.cn/two/c++/jc/257416.shtml" title="钩子回调函数之JournalPlaybackProc" target="_blank">钩子回调函数之JournalPlaybackProc</a></li>
+
+<li><a href="http://peixun.nntv.com.cn/two/c++/jc/257409.shtml" title="C++辅导:钩子回调函数之KeyboardProc" target="_blank">C++辅导:钩子回调函数之KeyboardProc</a></li>
+ 
+  </ul>
+
+<h3><b>点击排行榜</b></h3>
+  <ul>
+   
+<li><a href="http://peixun.nntv.com.cn/two/c++/jc/242071.shtml" title="C++基础:类成员函数指针是什么?" target="_blank">C++基础:类成员函数指针是什么?</a></li>
+
+<li><a href="http://peixun.nntv.com.cn/two/c++/jc/257266.shtml" title="C++辅导:C++打造Windows信使服务程序" target="_blank">C++辅导:C++打造Windows信使服务程序</a></li>
+
+<li><a href="http://peixun.nntv.com.cn/two/c++/jc/111119.shtml" title="挑战30天C++入门极限：C/C++中多维数组的指针作为函数参数传递!" target="_blank">挑战30天C++入门极限：C/C++中多维数组的指针作为函数</a></li>
+
+<li><a href="http://peixun.nntv.com.cn/two/c++/jc/112816.shtml" title="二级C++精品课程第三章运算符和表达式课前索引" target="_blank">二级C++精品课程第三章运算符和表达式课前索引</a></li>
+
+<li><a href="http://peixun.nntv.com.cn/two/c++/jc/111118.shtml" title="挑战30天C++入门极限：在c/c++中利用数组名和指针进行排序的例子" target="_blank">挑战30天C++入门极限：在c/c++中利用数组名和指针进行</a></li>
+
+<li><a href="http://peixun.nntv.com.cn/two/c++/jc/223954.shtml" title="C++辅导：C++函数(函数指针实例)" target="_blank">C++辅导：C++函数(函数指针实例)</a></li>
+
+<li><a href="http://peixun.nntv.com.cn/two/c++/jc/112856.shtml" title="计算机等级考试二级Ｃ++各章内容摘要：第2章" target="_blank">计算机等级考试二级Ｃ++各章内容摘要：第2章</a></li>
+
+<li><a href="http://peixun.nntv.com.cn/two/c++/jc/181782.shtml" title="用C++实现可重用的数学例程" target="_blank">用C++实现可重用的数学例程</a></li>
+
+<li><a href="http://peixun.nntv.com.cn/two/c++/jc/250532.shtml" title="计算机二级C++辅导:别让异常逃离析构函数" target="_blank">计算机二级C++辅导:别让异常逃离析构函数</a></li>
+
+<li><a href="http://peixun.nntv.com.cn/two/c++/jc/188616.shtml" title="C++辅导：基本I／o操作" target="_blank">C++辅导：基本I／o操作</a></li>
+ 
+  </ul>
+  </div>
+  </div>
+
+
+  </div>
+<script src="./Cpp_ubuntu_Daemon_files/thea340.js" type="text/javascript"></script><div class="cy_pd_bammer1"><a href="http://highso.cn/?webFrom=haikao&webAgent=" target="_blank"><img src="./Cpp_ubuntu_Daemon_files/index_960x80.gif"></a></div>
+  <div id="footer">
+    <p><script src="./Cpp_ubuntu_Daemon_files/stat.php" language="JavaScript"></script><script src="./Cpp_ubuntu_Daemon_files/cnzz_core.php" charset="utf-8" type="text/javascript"></script><a href="http://www.cnzz.com/stat/website.php?web_id=3359305" target="_blank" title="站长统计">站长统计</a>　|　<a href="http://peixun.nntv.com.cn/two/c++/jc/250464.shtml#">广告服务</a>　|　<a href="http://peixun.nntv.com.cn/two/c++/jc/250464.shtml#">联系我们</a>　|　<a href="http://peixun.nntv.com.cn/sitemap/index.htm">网站地图</a>　|　<a href="http://edu.chinawuliu.com.cn/bbs/">网站帮助</a></p>
+      <p>CopyRight @ 2011 peixun.nntv.com.cn. All Rights Reserved 京ICP备11019784号-2</p>
+</div>
+</h2></div>
+
+<script src="./Cpp_ubuntu_Daemon_files/onclick"></script>
+
+</body><style type="text/css">embed[type*="application/x-shockwave-flash"],embed[src*=".swf"],object[type*="application/x-shockwave-flash"],object[codetype*="application/x-shockwave-flash"],object[src*=".swf"],object[codebase*="swflash.cab"],object[classid*="D27CDB6E-AE6D-11cf-96B8-444553540000"],object[classid*="d27cdb6e-ae6d-11cf-96b8-444553540000"],object[classid*="D27CDB6E-AE6D-11cf-96B8-444553540000"]{	display: none !important;}</style></html>

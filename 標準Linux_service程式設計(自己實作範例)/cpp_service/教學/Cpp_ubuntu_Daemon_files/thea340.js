@@ -1,0 +1,1 @@
+document.write("<div class=\"cy_pd_bammer1\"><a href=\"http://highso.cn/?webFrom=haikao&webAgent=\" target=\"_blank\"><img src=\"/images/index_960x80.gif\" /></a></div>")
