@@ -1,0 +1,531 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!-- saved from url=(0047)http://www.linuxidc.com/Linux/2011-07/39586.htm -->
+<html xmlns="http://www.w3.org/1999/xhtml" lang="utf-8" class="translated-ltr"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>用g++編譯生成動態連接庫*.so的方法及連接_Linux編程_Linux公社-Linux系統門戶網站</title>
+
+<link rel="icon" href="http://www.linuxidc.com/Linux/2011-07/favicon.ico" type="image/x-icon">
+<link rel="shortcut icon" href="http://www.linuxidc.com/Linux/2011-07/favicon.ico" type="image/x-icon">
+<meta name="description" content="用g++编译生成动态连接库*.so的方法及连接">
+<meta name="keywords" content="用g++编译生成动态连接库*.so的方法及连接,编程,Linux编程,Linux Shell,Android,Android教程,JAVA,C语言,Python,HTML5">
+<meta name="generator" content="Linux公社">
+<meta name="generator" content="Linux">
+<link rel="stylesheet" href="./用g++編譯生成動態連接庫_files/style.css" type="text/css">
+<script type="text/javascript" src="./用g++編譯生成動態連接庫_files/head.js"></script>
+<script type="text/javascript">
+var imgMaxWidth=600;
+var urlPrefix="../../";
+</script>
+<script type="text/javascript" src="./用g++編譯生成動態連接庫_files/show.js"></script>
+<script src="./用g++編譯生成動態連接庫_files/logger.js"></script><link href="./用g++編譯生成動態連接庫_files/bdsstyle.css" rel="stylesheet" type="text/css"><script src="chrome-extension://lifbcibllhkdhoafpjfnlhfpfgnpldfl/document_iterator.js"></script><script src="chrome-extension://lifbcibllhkdhoafpjfnlhfpfgnpldfl/find_proxy.js"></script><script src="chrome-extension://lifbcibllhkdhoafpjfnlhfpfgnpldfl/get_html_text.js"></script><script src="chrome-extension://lifbcibllhkdhoafpjfnlhfpfgnpldfl/global_constants.js"></script><script src="chrome-extension://lifbcibllhkdhoafpjfnlhfpfgnpldfl/name_injection_builder.js"></script><script src="chrome-extension://lifbcibllhkdhoafpjfnlhfpfgnpldfl/number_injection_builder.js"></script><script src="chrome-extension://lifbcibllhkdhoafpjfnlhfpfgnpldfl/string_finder.js"></script><script src="chrome-extension://lifbcibllhkdhoafpjfnlhfpfgnpldfl/change_sink.js"></script><meta name="document_iterator.js"><meta name="find_proxy.js"><meta name="get_html_text.js"><meta name="global_constants.js"><meta name="name_injection_builder.js"><meta name="number_injection_builder.js"><meta name="string_finder.js"><meta name="change_sink.js"><style id="wrc-middle-css" type="text/css">.wrc_whole_window{	display: none;	position: fixed; 	z-index: 2147483647;	background-color: rgba(40, 40, 40, 0.9);	word-spacing: normal !important;	margin: 0px !important;	padding: 0px !important;	border: 0px !important;	left: 0px;	top: 0px;	width: 100%;	height: 100%;	line-height: normal !important;	letter-spacing: normal !important;	overflow: hidden;}.wrc_bar_window{	display: none;	position: fixed; 	z-index: 2147483647;	background-color: rgba(60, 60, 60, 1.0);	word-spacing: normal !important;	font-family: Segoe UI, Arial Unicode MS, Arial, Sans-Serif;	margin: 0px !important;	padding: 0px !important;	border: 0px !important;	left: 0px;	top: 0px;	width: 100%;	height: 40px;	line-height: normal !important;	letter-spacing: normal !important;	color: white !important;	font-size: 13px !important;}.wrc_middle {	display: table-cell;	vertical-align: middle;	width: 100%;}.wrc_middle_main {	font-family: Segoe UI, Arial Unicode MS, Arial, Sans-Serif;	font-size: 14px;	width: 600px;	height: auto;    background: url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/background-body.jpg) repeat-x left top;	background-color: rgb(39, 53, 62);	position: relative;	margin-left: auto;	margin-right: auto;	text-align: left;}.wrc_middle_tq_main {	font-family: Segoe UI, Arial Unicode MS, Arial, Sans-Serif;	font-size: 16px;	width: 615px;	height: 460px;    background: url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/background-sitecorrect.png) no-repeat;	background-color: white;	color: black !important;	position: relative;	margin-left: auto;	margin-right: auto;	text-align: center;}.wrc_middle_logo {    background: url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/logo.jpg) no-repeat left bottom;    width: 140px;    height: 42px;    color: orange;    display: table-cell;    text-align: right;    vertical-align: middle;}.wrc_icon_warning {	margin: 20px 10px 20px 15px;	float: left;	background-color: transparent;}.wrc_middle_title {    color: #b6bec7;	height: auto;    margin: 0px auto;	font-size: 2.2em;	white-space: nowrap;	text-align: center;}.wrc_middle_hline {    height: 2px;	width: 100%;    display: block;}.wrc_middle_description {	text-align: center;	margin: 15px;	font-size: 1.4em;	padding: 20px;	height: auto;	color: white;	min-height: 3.5em;}.wrc_middle_actions_main_div {	margin-bottom: 15px;	text-align: center;}.wrc_middle_actions_blue_button div {	display: inline-block;	width: auto;	cursor: Pointer;	margin: 3px 10px 3px 10px;	color: white;	font-size: 1.2em;	font-weight: bold;}.wrc_middle_actions_blue_button {	-moz-appearance: none;	border-radius: 7px;	-moz-border-radius: 7px/7px;	border-radius: 7px/7px;	background-color: rgb(0, 173, 223) !important;	display: inline-block;	width: auto;	cursor: Pointer;	border: 2px solid #00dddd;	padding: 0px 20px 0px 20px;}.wrc_middle_actions_blue_button:hover {	background-color: rgb(0, 159, 212) !important;}.wrc_middle_actions_blue_button:active {	background-color: rgb(0, 146, 200) !important;	border: 2px solid #00aaaa;}.wrc_middle_actions_grey_button div {	display: inline-block;	width: auto;	cursor: Pointer;	margin: 3px 10px 3px 10px;	color: white !important;	font-size: 15px;	font-weight: bold;}.wrc_middle_actions_grey_button {	-moz-appearance: none;	border-radius: 7px;	-moz-border-radius: 7px/7px;	border-radius: 7px/7px;	background-color: rgb(100, 100, 100) !important;	display: inline-block;	width: auto;	cursor: Pointer;	border: 2px solid #aaaaaa;	text-decoration: none;	padding: 0px 20px 0px 20px;}.wrc_middle_actions_grey_button:hover {	background-color: rgb(120, 120, 120) !important;}.wrc_middle_actions_grey_button:active {	background-color: rgb(130, 130, 130) !important;	border: 2px solid #00aaaa;}.wrc_middle_action_low {	font-size: 0.9em;	white-space: nowrap;	cursor: Pointer;	color: grey !important;	margin: 10px 10px 0px 10px;	text-decoration: none;}.wrc_middle_action_low:hover {	color: #aa4400 !important;}.wrc_middle_actions_rest_div {	padding-top: 5px;	white-space: nowrap;	text-align: center;}.wrc_middle_action {	white-space: nowrap;	cursor: Pointer;	color: red !important;	font-size: 1.2em;	margin: 10px 10px 0px 10px;	text-decoration: none;}.wrc_middle_action:hover {	color: #aa4400 !important;}</style><script id="wrc-script-middle_window" type="text/javascript" language="JavaScript">var g_inputsCnt = 0;var g_InputThis = new Array(null, null, null, null);var g_alerted = false;/* we test the input if it includes 4 digits   (input is a part of 4 inputs for filling the credit-card number)*/function is4DigitsCardNumber(val){	var regExp = new RegExp('[0-9]{4}');	return (val.length == 4 && val.search(regExp) == 0);}/* testing the whole credit-card number 19 digits devided by three '-' symbols or   exactly 16 digits without any dividers*/function isCreditCardNumber(val){	if(val.length == 19)	{		var regExp = new RegExp('[0-9]{4}-[0-9]{4}-[0-9]{4}-[0-9]{4}');		return (val.search(regExp) == 0);	}	else if(val.length == 16)	{		var regExp = new RegExp('[0-9]{4}[0-9]{4}[0-9]{4}[0-9]{4}');		return (val.search(regExp) == 0);	}	return false;}function CheckInputOnCreditNumber(self){	if(g_alerted)		return false;	var value = self.value;	if(self.type == 'text')	{		if(is4DigitsCardNumber(value))		{			var cont = true;			for(i = 0; i < g_inputsCnt; i++)				if(g_InputThis[i] == self)					cont = false;			if(cont && g_inputsCnt < 4)			{				g_InputThis[g_inputsCnt] = self;				g_inputsCnt++;			}		}		g_alerted = (g_inputsCnt == 4);		if(g_alerted)			g_inputsCnt = 0;		else			g_alerted = isCreditCardNumber(value);	}	return g_alerted;}function CheckInputOnPassword(self){	if(g_alerted)		return false;	var value = self.value;	if(self.type == 'password')	{		g_alerted = (value.length > 0);	}	return g_alerted;}function onInputBlur(self, bRatingOk, bFishingSite){	var bCreditNumber = CheckInputOnCreditNumber(self);	var bPassword = CheckInputOnPassword(self);	if((!bRatingOk || bFishingSite == 1) && (bCreditNumber || bPassword) )	{		var warnDiv = document.getElementById("wrcinputdiv");		if(warnDiv)		{			/* show the warning div in the middle of the screen */			warnDiv.style.left = "0px";			warnDiv.style.top = "0px";			warnDiv.style.width = "100%";			warnDiv.style.height = "100%";			document.getElementById("wrc_warn_fs").style.display = 'none';			document.getElementById("wrc_warn_cn").style.display = 'none';			if(bFishingSite)				document.getElementById("wrc_warn_fs").style.display = 'block';			else				document.getElementById("wrc_warn_cn").style.display = 'block';			warnDiv.style.display = 'table';		}	}}</script><style id="wrc-css" type="text/css">.wrcx {display:none} .r .wrcx, .osl .wrcx, .bc .wrcx, .fc .wrcx, #rhsline ol .wrcx {display:inline; background: url("chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/grey0-16.png") right no-repeat}
+.wrc0 {display:none} .r .wrc0, .osl .wrc0, .bc .wrc0, .fc .wrc0, #rhsline ol .wrc0 {display:inline; background: url("chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/grey0-16.png") right no-repeat}
+.wrc11 {display:none} .r .wrc11, .osl .wrc11, .bc .wrc11, .fc .wrc11, #rhsline ol .wrc11 {display:inline; background: url("chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/green1-16.png") right no-repeat}
+.wrc12 {display:none} .r .wrc12, .osl .wrc12, .bc .wrc12, .fc .wrc12, #rhsline ol .wrc12 {display:inline; background: url("chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/green2-16.png") right no-repeat}
+.wrc13 {display:none} .r .wrc13, .osl .wrc13, .bc .wrc13, .fc .wrc13, #rhsline ol .wrc13 {display:inline; background: url("chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/green3-16.png") right no-repeat}
+.wrc21 {display:none} .r .wrc21, .osl .wrc21, .bc .wrc21, .fc .wrc21, #rhsline ol .wrc21 {display:inline; background: url("chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/yellow1-16.png") right no-repeat}
+.wrc22 {display:none} .r .wrc22, .osl .wrc22, .bc .wrc22, .fc .wrc22, #rhsline ol .wrc22 {display:inline; background: url("chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/yellow2-16.png") right no-repeat}
+.wrc23 {display:none} .r .wrc23, .osl .wrc23, .bc .wrc23, .fc .wrc23, #rhsline ol .wrc23 {display:inline; background: url("chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/yellow3-16.png") right no-repeat}
+.wrc31 {display:none} .r .wrc31, .osl .wrc31, .bc .wrc31, .fc .wrc31, #rhsline ol .wrc31 {display:inline; background: url("chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/red1-16.png") right no-repeat}
+.wrc32 {display:none} .r .wrc32, .osl .wrc32, .bc .wrc32, .fc .wrc32, #rhsline ol .wrc32 {display:inline; background: url("chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/red2-16.png") right no-repeat}
+.wrc33 {display:none} .r .wrc33, .osl .wrc33, .bc .wrc33, .fc .wrc33, #rhsline ol .wrc33 {display:inline; background: url("chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/red3-16.png") right no-repeat}
+.wrc_icon{margin:0;padding:0;padding-left:15px !important;width:16px !important; height:16px !important;line-height:16px !important;}
+#wrchoverdiv{padding-bottom:20px; position:absolute; width:180px; background:transparent url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/background-body.jpg) top left repeat-x; display:none; font-family: Segoe UI, Arial Unicode MS, Arial, Sans-Serif; font-size: 14px; z-index:9999999;}
+#wrchoverdiv{cursor:default;}
+#wrchoverdiv #wrccontainer{width:180px;}
+#wrchoverdiv #wrcheader{width:140px; height:42px; background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/logo.jpg) bottom left no-repeat; text-align:right; line-height:42px; color:orange; margin:0 auto;}
+#wrchoverdiv .wrchorizontal{width:180px; height:2px; background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/horizontal-line.jpg) bottom left no-repeat;}
+#wrchoverdiv #wrccurrentvote{height:25px; line-height:25px; color:#FFF; text-align:center; text-transform:uppercase;}
+#wrchoverdiv #wrcrating{margin:5px auto; width:69px; height:55px; background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/grey-0.png) bottom left no-repeat;}
+#wrchoverdiv #wrcrating.wrcbx{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/grey-0.png);}
+#wrchoverdiv #wrcrating.wrcb0{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/grey-0.png);}
+#wrchoverdiv #wrcrating.wrcb11{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/green-1.png);}
+#wrchoverdiv #wrcrating.wrcb12{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/green-2.png);}
+#wrchoverdiv #wrcrating.wrcb13{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/green-3.png);}
+#wrchoverdiv #wrcrating.wrcb21{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/yellow-1.png);}
+#wrchoverdiv #wrcrating.wrcb22{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/yellow-2.png);}
+#wrchoverdiv #wrcrating.wrcb23{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/yellow-3.png);}
+#wrchoverdiv #wrcrating.wrcb31{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/red-1.png);}
+#wrchoverdiv #wrcrating.wrcb32{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/red-2.png);}
+#wrchoverdiv #wrcrating.wrcb33{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/red-3.png);}
+#wrchoverdiv #wrcratingtext{margin:3px 5px; color:#FFF; text-align:center; padding:0; font-size:12px;}
+#wrchoverdiv #wrcweighttext{margin:3px 5px; color:#FFF; text-align:center; padding:0; font-size:12px;}
+#wrchoverdiv #wrcflags{width:150px; height:70px; margin:0 auto;}
+#wrchoverdiv .wrcicon{width:30px; height:30px; float:left;}
+#wrchoverdiv #wrcicon_shopping{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/shopping-small-disable.png) top left no-repeat;}
+#wrchoverdiv #wrcicon_shopping.selected{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/shopping-small-selected.png) top left no-repeat;}
+#wrchoverdiv #wrcicon_social{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/social-small-disable.png) top left no-repeat;}
+#wrchoverdiv #wrcicon_social.selected{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/social-small-selected.png) top left no-repeat;}
+#wrchoverdiv #wrcicon_news{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/news-small-disable.png) top left no-repeat;}
+#wrchoverdiv #wrcicon_news.selected{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/news-small-selected.png) top left no-repeat;}
+#wrchoverdiv #wrcicon_it{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/it-small-disable.png) top left no-repeat;}
+#wrchoverdiv #wrcicon_it.selected{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/it-small-selected.png) top left no-repeat;}
+#wrchoverdiv #wrcicon_corporate{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/corporate-small-disable.png) top left no-repeat;}
+#wrchoverdiv #wrcicon_corporate.selected{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/corporate-small-selected.png) top left no-repeat;}
+#wrchoverdiv #wrcicon_pornography{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/pornography-small-disable.png) top left no-repeat;}
+#wrchoverdiv #wrcicon_pornography.selected{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/pornography-small-selected.png) top left no-repeat;}
+#wrchoverdiv #wrcicon_violence{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/violence-small-disable.png) top left no-repeat;}
+#wrchoverdiv #wrcicon_violence.selected{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/violence-small-selected.png) top left no-repeat;}
+#wrchoverdiv #wrcicon_gambling{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/gambling-small-disable.png) top left no-repeat;}
+#wrchoverdiv #wrcicon_gambling.selected{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/gambling-small-selected.png) top left no-repeat;}
+#wrchoverdiv #wrcicon_drugs{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/drugs-small-disable.png) top left no-repeat;}
+#wrchoverdiv #wrcicon_drugs.selected{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/drugs-small-selected.png) top left no-repeat;}
+#wrchoverdiv #wrcicon_illegal{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/illegal-small-disable.png) top left no-repeat;}
+#wrchoverdiv #wrcicon_illegal.selected{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/illegal-small-selected.png) top left no-repeat;}
+</style><link type="text/css" rel="stylesheet" charset="UTF-8" href="./用g++編譯生成動態連接庫_files/translateelement.css"><script type="text/javascript" charset="UTF-8" src="./用g++編譯生成動態連接庫_files/main_zh-TW.js"></script><script type="text/javascript" charset="UTF-8" src="./用g++編譯生成動態連接庫_files/element_main.js"></script></head><style type="text/css">embed[type*="application/x-shockwave-flash"],embed[src*=".swf"],object[type*="application/x-shockwave-flash"],object[codetype*="application/x-shockwave-flash"],object[src*=".swf"],object[codebase*="swflash.cab"],object[classid*="D27CDB6E-AE6D-11cf-96B8-444553540000"],object[classid*="d27cdb6e-ae6d-11cf-96b8-444553540000"],object[classid*="D27CDB6E-AE6D-11cf-96B8-444553540000"]{	display: none !important;}</style>
+<body><iframe style="display: none; " frameborder="0"></iframe><div id="bdshare_s"><iframe id="bdsIfr" style="position:absolute;display:none;z-index:9999;" frameborder="0"></iframe><div id="bdshare_l" style="display: none; "><div id="bdshare_l_c"><h6><font><font>分享到</font></font></h6><ul><li><a href="http://www.linuxidc.com/Linux/2011-07/39586.htm#" class="bds_qzone qqkj"><font><font>QQ空間</font></font></a></li><li><a href="http://www.linuxidc.com/Linux/2011-07/39586.htm#" class="bds_tsina xlwb"><font><font>新浪微博</font></font></a></li><li><a href="http://www.linuxidc.com/Linux/2011-07/39586.htm#" class="bds_baidu bdsc"><font><font>百度搜藏</font></font></a></li><li><a href="http://www.linuxidc.com/Linux/2011-07/39586.htm#" class="bds_renren rrw"><font><font>人人網</font></font></a></li><li><a href="http://www.linuxidc.com/Linux/2011-07/39586.htm#" class="bds_tqq txwb"><font><font>騰訊微博</font></font></a></li><li><a href="http://www.linuxidc.com/Linux/2011-07/39586.htm#" class="bds_kaixin001 kxw"><font><font>開心網</font></font></a></li><li><a href="http://www.linuxidc.com/Linux/2011-07/39586.htm#" class="bds_tqf txpy"><font><font>騰訊朋友</font></font></a></li><li><a href="http://www.linuxidc.com/Linux/2011-07/39586.htm#" class="bds_hi bdkj"><font><font>百度空間</font></font></a></li><li><a href="http://www.linuxidc.com/Linux/2011-07/39586.htm#" class="bds_douban db"><font><font>豆瓣網</font></font></a></li><li><a href="http://www.linuxidc.com/Linux/2011-07/39586.htm#" class="bds_tsohu shwb"><font><font>搜狐微博</font></font></a></li><li><a href="http://www.linuxidc.com/Linux/2011-07/39586.htm#" class="bds_bdhome bdhome"><font><font>百度新首頁</font></font></a></li><li><a href="http://www.linuxidc.com/Linux/2011-07/39586.htm#" class="bds_qq qqsc"><font><font>QQ收藏</font></font></a></li><li><a href="http://www.linuxidc.com/Linux/2011-07/39586.htm#" class="bds_thx thx"><font><font>和訊微博</font></font></a></li><li><a href="http://www.linuxidc.com/Linux/2011-07/39586.htm#" class="bds_taobao tjh"><font><font>我的淘寶</font></font></a></li><li><a href="http://www.linuxidc.com/Linux/2011-07/39586.htm#" class="bds_tieba bdtb"><font><font>百度貼吧</font></font></a></li><li><a href="http://www.linuxidc.com/Linux/2011-07/39586.htm#" class="bds_more"><font><font>更多...</font></font></a></li></ul><p><a href="http://www.linuxidc.com/Linux/2011-07/39586.htm#" class="goWebsite"><font><font>百度分享</font></font></a></p></div></div></div>
+<div class="twidth">
+<div id="sitehead">
+<div class="l"></div>
+<div class="r"></div>
+<div class="m">
+	<table width="100%">
+	<tbody><tr align="center"><td width="160">
+	<a href="http://www.linuxidc.com/"><img style="FILTER: chroma(color=#FFFFFF)" src="./用g++編譯生成動態連接庫_files/logo.jpg" border="0"></a>
+	</td><td>
+	<div align="center"><script src="./用g++編譯生成動態連接庫_files/linux.js" type="text/javascript" language="javaScript"></script><p align="center"><a title="Android的專題" href="http://www.linuxidc.com/topicnews.aspx?tid=11" target="_self"><img alt="Android的專題" src="./用g++編譯生成動態連接庫_files/Android.png" border="0"></a></p>
+</div>
+	</td><td width="100" style="line-height:120%">
+	<a href="http://www.linuxidc.com/Linux/2011-07/39586.htm#" onclick="javascript:window.external.addFavorite(&#39;http://www.linuxidc.com/&#39;,&#39;Linux公社 - Linux系统门户网站&#39;)"><font><font>加入收藏</font></font></a><br>
+	<a href="http://www.linuxidc.com/sitemap.aspx"><font><font>網站地圖</font></font></a><br>
+	<a href="http://www.linuxidc.com/search.aspx"><font><font>網站搜索</font></font></a><br>
+	
+		<script type="text/javascript" src="./用g++編譯生成動態連接庫_files/language.js"></script> <a name="StranLink"><font><font>繁體</font></font></a>
+	
+	</td>
+	</tr></tbody></table>
+</div>
+</div>
+<div id="navbar">
+<div class="l"></div>
+<div class="r"></div>
+<div class="m">
+	<script type="text/javascript" src="./用g++編譯生成動態連接庫_files/popmenu.js" charset="utf-8"></script><a href="http://www.linuxidc.com/index.htm" class="first">首页</a><a href="http://www.linuxidc.com/it/index.htm">Linux新闻</a><a href="http://www.linuxidc.com/Linuxit/index.htm">Linux教程</a><a href="http://www.linuxidc.com/MySql/index.htm">数据库技术</a><a href="http://www.linuxidc.com/RedLinux/index.htm" class="thisclass">Linux编程</a><a href="http://www.linuxidc.com/Apache/index.htm">服务器应用</a><a href="http://www.linuxidc.com/Unix/index.htm">Linux安全</a><a href="http://www.linuxidc.com/download/index.htm">Linux下载</a><a href="http://www.linuxidc.com/Linuxrz/index.htm">Linux认证</a><a href="http://www.linuxidc.com/theme/index.htm">Linux主题</a><a href="http://www.linuxidc.com/Linuxwallpaper/index.htm">Linux壁纸</a><a href="http://www.linuxidc.com/linuxsoft/index.htm">Linux软件</a><a href="http://www.linuxidc.com/digi/index.htm">数码</a><a href="http://www.linuxidc.com/mobile/index.htm">手机</a><a href="http://www.linuxidc.com/diannao/index.htm">电脑</a>
+
+</div>
+</div>
+
+<div id="navsub">
+<div class="l"></div>
+<div class="r"></div>
+<div class="m">
+	<a href="http://www.linuxidc.com/index.htm"><font><font>首頁</font></font></a><font><font> → </font></font><a href="http://www.linuxidc.com/RedLinux/index.htm"><font><font>Linux的編程</font></font></a>
+</div>
+</div>
+<div class="linus"><script type="text/javascript" language="javaScript" src="./用g++編譯生成動態連接庫_files/linux1.js"></script><a title="" href="http://www.yutianedu.com/list.asp?Unid=22049" target="_blank" wrc_done="true"><img height="70" src="./用g++編譯生成動態連接庫_files/linux95070.gif" width="969"></a>&nbsp;<span class="wrc_icon wrc0" rating="{&quot;icon&quot;:&quot;grey0-16.png&quot;,&quot;rating&quot;:0,&quot;weight&quot;:0,&quot;flags&quot;:{}}"></span>
+<a title="" href="http://www.boxue.com.cn/" target="_blank" wrc_done="true"><img border="0" src="./用g++編譯生成動態連接庫_files/20128242252923350.gif"></a>&nbsp;<span class="wrc_icon wrc0" rating="{&quot;icon&quot;:&quot;grey0-16.png&quot;,&quot;rating&quot;:0,&quot;weight&quot;:0,&quot;flags&quot;:{}}"></span>
+</div>
+<div class="linus"><script type="text/javascript" language="javaScript" src="./用g++編譯生成動態連接庫_files/linuxa.js"></script><script type="text/javascript">/*Linux公社通栏*/ var cpro_id = 'u533706';</script><script src="./用g++編譯生成動態連接庫_files/c.js" type="text/javascript"></script><script type="text/javascript" charset="utf-8" src="./用g++編譯生成動態連接庫_files/ecom"></script><div style="display:none"><font><font> - </font></font></div> <iframe id="cproIframe1" src="./用g++編譯生成動態連接庫_files/uijs(3).htm" width="960" height="90" align="center,center" marginwidth="0" marginheight="0" scrolling="no" frameborder="0" allowtransparency="true"></iframe>
+</div>
+<table id="middle" width="100%" cellspacing="0" cellpadding="0" style="table-layout:fixed">
+<tbody><tr><td valign="top">
+
+	<div class="mframe">
+	<div class="tl"></div>
+	<div class="tr"></div>
+	<div class="tm">
+		<span class="tt"><font><font>閱讀內容</font></font></span>
+	</div>
+	<div class="wrapper">
+	<div class="ml"></div>
+	<div class="mr"></div>
+	<div class="mm" id="bodyTd">
+		<div id="printBody" style="word-break:break-all;">
+		<br><div align="center"><h1 class="aTitle"><font><font class="">用g++編譯生成動態連接庫*.so的方法及連接</font></font></h1></div>
+		
+		<table width="97%" align="center">
+			<tbody><tr>
+			<td width="120"><font><font>[日期：2011-07-31]</font></font></td>
+			<td align="center"><font><font>來源：Linux社區 作者：acb0y</font></font></td>
+			</tr>
+		</tbody></table>
+<div class="linua"><script type="text/javascript" language="javaScript" src="./用g++編譯生成動態連接庫_files/linux2.js"></script><a title="尚觀Linux的" href="http://www.upemb.com/page/uealinuxidc12531.php" target="_blank" wrc_done="true"><img src="./用g++編譯生成動態連接庫_files/201253120192839760.gif" border="1"></a>&nbsp;<span class="wrc_icon wrc0" rating="{&quot;icon&quot;:&quot;grey0-16.png&quot;,&quot;rating&quot;:0,&quot;weight&quot;:0,&quot;flags&quot;:{}}"></span>
+</div>
+<div class="linub"><script type="text/javascript" language="javaScript" src="./用g++編譯生成動態連接庫_files/linux19.js"></script><script type="text/javascript"><!--
+google_ad_client = "pub-5195587195407606";
+/* 300x250, 创建于 09-12-6 */
+google_ad_slot = "6879159141";
+google_ad_width = 300;
+google_ad_height = 250;
+//-->
+</script>
+<script type="text/javascript" src="./用g++編譯生成動態連接庫_files/show_ads.js">
+</script><ins style="display:inline-table;border:none;height:250px;margin:0;padding:0;position:relative;visibility:visible;width:300px"><ins id="aswift_0_anchor" style="display:block;border:none;height:250px;margin:0;padding:0;position:relative;visibility:visible;width:300px"><iframe allowtransparency="true" frameborder="0" height="250" hspace="0" marginwidth="0" marginheight="0" onload="var i=this.id,s=window.google_iframe_oncopy,H=s&amp;&amp;s.handlers,h=H&amp;&amp;H[i],w=this.contentWindow,d;try{d=w.document}catch(e){}if(h&amp;&amp;d&amp;&amp;(!d.body||!d.body.firstChild)){if(h.call){i+=&#39;.call&#39;;setTimeout(h,0)}else if(h.match){i+=&#39;.nav&#39;;w.location.replace(h)}s.log&amp;&amp;s.log.push(i)}" scrolling="no" vspace="0" width="300" id="aswift_0" name="aswift_0" style="left:0;position:absolute;top:0;"></iframe></ins></ins>
+</div>
+		<div id="content"><!--IWMS_AD_BEGIN--><table border="0" width="97%" align="center"><tbody><tr><td colspan="3"><div align="center"><script src="./用g++編譯生成動態連接庫_files/system60.js" type="text/javascript" language="javaScript"></script><script type="text/javascript">/*LinuxIDC����468*15��������2012-7-25*/ var cpro_id = 'u995685';</script><script src="./用g++編譯生成動態連接庫_files/c.js" type="text/javascript"></script><script type="text/javascript" charset="utf-8" src="./用g++編譯生成動態連接庫_files/ecom(1)"></script><div style="display:none"><font><font> - </font></font></div> <iframe id="cproIframe2" src="./用g++編譯生成動態連接庫_files/uijs(5).htm" width="468" height="15" align="center,center" marginwidth="0" marginheight="0" scrolling="no" frameborder="0" allowtransparency="true"></iframe>
+</div></td></tr></tbody></table><!--IWMS_AD_END--><p><font><font>1、動態庫*.so的編譯</font></font></p>
+<p><span style="WHITE-SPACE: pre"></span><font><font>這裡我們用到4個文件，它們分別為：SoDemoTest.h、one.cpp、two.cpp、three.cpp。</font><font>它們的內容如下：&nbsp;</font></font></p>
+<p><font><font>SoDemoTest.h</font></font></p>
+<div class="dp-highlighter bg_cpp">
+<ol class="dp-cpp">
+<li class="alt"><span><span class="preprocessor"><font color="#808080"><font><font>的＃ifndef __ SO_DEMO_TEST_HEADER__ </font></font></font></span><span>&nbsp;&nbsp;</span></span></li>
+<li class=""><span></span><span class="preprocessor"><font color="#808080"><font><font>的＃define __ SO_DEMO_TEST_HEADER__ </font></font></font></span><span>&nbsp;&nbsp;</span></li>
+<li class="alt"><span></span><span class="preprocessor"><font color="#808080"><font><font>＃包括&lt;iostream&gt; </font></font></font></span><span>&nbsp;&nbsp;</span></li>
+<li class=""><span></span><span class="keyword"><strong><font color="#006699"><font><font>使用</font></font></font></strong></span><span>&nbsp;</span><span class="keyword"><strong><font color="#006699"><font><font>命名空間</font></font></font></strong></span><span><font><font> &nbsp;性病;&nbsp;&nbsp;</font></font></span></li>
+<li class="alt"><span></span><span class="keyword"><strong><font color="#006699"><font><font>空隙</font></font></font></strong></span><span><font><font> &nbsp;1（）;&nbsp;&nbsp;</font></font></span></li>
+<li class=""><span></span><span class="keyword"><strong><font color="#006699"><font><font>空隙</font></font></font></strong></span><span><font><font> &nbsp;2（）;&nbsp;&nbsp;</font></font></span></li>
+<li class="alt"><span></span><span class="keyword"><strong><font color="#006699"><font><font>無效</font></font></font></strong></span><span><font><font> &nbsp;（3）;&nbsp;&nbsp;</font></font></span></li>
+<li class=""><span></span><span class="preprocessor"><font color="#808080"><font><font>＃ENDIF</font></font></font></span><span>&nbsp;&nbsp;</span></li></ol></div>
+<p></p>
+<p><font><font>one.cpp</font></font></p>
+<div class="dp-highlighter bg_cpp">
+<ol class="dp-cpp">
+<li class="alt"><span><span class="preprocessor"><font color="#808080"><font><font>＃包括“SoDemoTest.h”的 </font></font></font></span><span>&nbsp;&nbsp;</span></span></li>
+<li class=""><span></span><span class="keyword"><strong><font color="#006699"><font><font>無效</font></font></font></strong></span><span><font><font> &nbsp;（1）&nbsp;&nbsp;</font></font></span></li>
+<li class="alt"><span><font><font>{&nbsp;&nbsp;</font></font></span></li>
+<li class=""><span><font><font>&nbsp;&nbsp;&nbsp;&nbsp;法院&lt;&lt;&nbsp; </font></font></span><span class="string"><font color="#0000ff"><font><font>“的一個電話（）函數。”</font></font></font></span><span><font><font> &nbsp;&lt;&lt; endl;&nbsp;&nbsp;</font></font></span></li>
+<li class="alt"><span><font><font>}&nbsp;&nbsp;</font></font></span></li></ol></div>
+<p></p>
+<p><font><font>two.cpp</font></font></p>
+<div class="dp-highlighter bg_cpp">
+<ol class="dp-cpp">
+<li class="alt"><span><span class="preprocessor"><font color="#808080"><font><font>＃包括“SoDemoTest.h”的 </font></font></font></span><span>&nbsp;&nbsp;</span></span></li>
+<li class=""><span></span><span class="keyword"><strong><font color="#006699"><font><font>無效</font></font></font></strong></span><span><font><font> &nbsp;（2）&nbsp;&nbsp;</font></font></span></li>
+<li class="alt"><span><font><font>{&nbsp;&nbsp;</font></font></span></li>
+<li class=""><span><font><font>&nbsp;&nbsp;&nbsp;&nbsp;法院&lt;&lt;&nbsp; </font></font></span><span class="string"><font color="#0000ff"><font><font>“呼叫（）函數。”</font></font></font></span><span><font><font> &nbsp;&lt;&lt; endl;&nbsp;&nbsp;</font></font></span></li>
+<li class="alt"><span><font><font>}&nbsp;&nbsp;</font></font></span></li></ol></div>
+<p></p>
+<p><font><font>three.cpp</font></font></p>
+<div class="dp-highlighter bg_cpp">
+<ol class="dp-cpp">
+<li class="alt"><span><span class="preprocessor"><font color="#808080"><font><font>＃包括“SoDemoTest.h”的 </font></font></font></span><span>&nbsp;&nbsp;</span></span></li>
+<li class=""><span></span><span class="keyword"><strong><font color="#006699"><font><font>無效</font></font></font></strong></span><span><font><font> &nbsp;（3）&nbsp;&nbsp;</font></font></span></li>
+<li class="alt"><span><font><font>{&nbsp;&nbsp;</font></font></span></li>
+<li class=""><span><font><font>&nbsp;&nbsp;&nbsp;&nbsp;法院&lt;&lt;&nbsp; </font></font></span><span class="string"><font color="#0000ff"><font><font>“呼叫3（）函數。”</font></font></font></span><span><font><font> &nbsp;&lt;&lt; endl;&nbsp;&nbsp;</font></font></span></li>
+<li class="alt"><span><font><font>}&nbsp;&nbsp;</font></font></span></li></ol></div>
+<p></p>
+<p><font><font>將這幾個文件編譯成動態庫libtest.so。</font><font>編譯命令如下：</font></font></p>
+<p><font><font>$ G+ + one.cpp two.cpp three.cpp子卡共享的-o libtest.so</font></font></p>
+<p><font><font>2、動態庫的連接</font></font></p>
+<p><span style="WHITE-SPACE: pre"></span><font><font>在上面的部分，我們已經生成了一個libtest.so的動態鏈接庫，現在我們用一個程序來調用這個動態鏈接庫。</font><font>文件名為：main.cpp</font></font></p>
+<p><font><font>main.cpp中</font></font></p>
+<div class="dp-highlighter bg_cpp">
+<ol class="dp-cpp">
+<li class="alt"><span><span class="preprocessor"><font color="#808080"><font><font>＃包括“SoDemoTest.h”的 </font></font></font></span><span>&nbsp;&nbsp;</span></span></li>
+<li class=""><span></span><span class="datatypes"><strong><font color="#2e8b57"><font><font>INT</font></font></font></strong></span><span><font><font> &nbsp;（）&nbsp;&nbsp;</font></font></span></li>
+<li class="alt"><span><font><font>{&nbsp;&nbsp;</font></font></span></li>
+<li class=""><span><font><font>&nbsp;&nbsp;&nbsp;&nbsp;酮（）;&nbsp;&nbsp;</font></font></span></li>
+<li class="alt"><span><font><font>&nbsp;&nbsp;&nbsp;&nbsp;兩個（）;&nbsp;&nbsp;</font></font></span></li>
+<li class=""><span><font><font>&nbsp;&nbsp;&nbsp;&nbsp;三（）;&nbsp;&nbsp;</font></font></span></li>
+<li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="keyword"><strong><font color="#006699"><font><font>返回</font></font></font></strong></span><span><font><font> &nbsp;0;&nbsp;&nbsp;</font></font></span></li>
+<li class=""><span><font><font>}&nbsp;&nbsp;</font></font></span></li></ol></div>
+<p></p>
+<p><span style="WHITE-SPACE: pre"></span><font><font>將main.cpp與libtest.so鏈接成一個可執行文件main。</font><font>命令如下：</font></font></p>
+<p><font><font>$ G+ +的main.cpp-L。</font><font>-ltest-O主</font></font></p>
+<p><span style="WHITE-SPACE: pre"></span><font><font>測試可執行程序main是否已經鏈接的動態庫libtest.so，如果列出了libtest.so，那麼就說明正常鏈接了。</font><font>可以執行以下命令：</font></font></p>
+<p><font><font>LDD主要</font></font></p>
+<p><span style="WHITE-SPACE: pre"></span><font><font>執行main可以看看main是否調用了動態鏈接庫中的函數。</font></font></p>
+<p><font><font>3、編譯參數</font></font></p>
+<p><span style="WHITE-SPACE: pre"></span><span><font><font>-shared 該選項指定生成動態連接庫（讓連接器生成T類型的導出符號表，有時候也生成弱連接W類型的導出符號），不用該標誌外部程序無法連接。</font><font>相當於一個可執行文件</font></font></span></p>
+<p><span><br></span></p>
+<p><span><span style="WHITE-SPACE: pre"></span></span><span><font><font>-fPIC：表示編譯為位置獨立的代碼，不用此選項的話編譯後的代碼是位置相關的所以動態載入時是通過代碼拷貝的方式來滿足不同進程的需要，而不能達到真正代碼段共享的目的。</font></font></span></p>
+<p><span><font><font>-L.：表示要連接的庫在當前目錄中</font></font></span></p>
+<p><span><font><font>-ltest：編譯器查找動態連接庫時有隱含的命名規則，即在給出的名字前面加上lib，後面加上.so來確定庫的名稱</font></font></span></p>
+<p><span><font><font>LD_LIBRARY_PATH：這個環境變量指示動態連接器可以裝載動態庫的路徑。</font></font></span></p>
+<p><span><font><font>4、注意的問題</font></font></span></p>
+<p><span><span style="WHITE-SPACE: pre"></span></span><span><font><font>調用動態庫的時候有幾個問題會經常碰到，有時，明明已經將庫的頭文件所在目錄通過“-I” include進來了，庫所在文件通過“-L”參數引導，並指定了“- l”的庫名，但通過ldd命令察看時，就是死活找不到你指定鏈接的so文件，這時你要作的就是通過修改LD_LIBRARY_PATH或者/etc/ld.so.conf文件來指定動態庫的目錄。</font><font>通常這樣做就可以解決庫無法鏈接的問題了。</font></font></span></p></div>
+		
+		
+		
+		</div><br>
+<div align="center"><script type="text/javascript" language="javaScript" src="./用g++編譯生成動態連接庫_files/fx.js"></script><!-- Baidu Button BEGIN -->
+    <div id="bdshare" class="bdshare_t bds_tools_32 get-codes-bdshare">
+        <a class="bds_qzone" title="分享到QQ空間" href="http://www.linuxidc.com/Linux/2011-07/39586.htm#"></a>
+        <a class="bds_tsina" title="分享到新浪微博" href="http://www.linuxidc.com/Linux/2011-07/39586.htm#"></a>
+        <a class="bds_baidu" title="分享到百度搜藏" href="http://www.linuxidc.com/Linux/2011-07/39586.htm#"></a>
+        <a class="bds_tqq" title="分享到騰訊微博" href="http://www.linuxidc.com/Linux/2011-07/39586.htm#"></a>
+        <a class="bds_renren" title="分享到人人網" href="http://www.linuxidc.com/Linux/2011-07/39586.htm#"></a>
+        <span class="bds_more"><font><font>更多</font></font></span>
+		<a class="shareCount" href="http://www.linuxidc.com/Linux/2011-07/39586.htm#" title="累計分享0次"><font><font>0</font></font></a>
+    </div>
+<script type="text/javascript" id="bdshare_js" data="type=tools" src="./用g++編譯生成動態連接庫_files/bds_s_v2.js"></script>
+<script type="text/javascript" id="bdshell_js" src="./用g++編譯生成動態連接庫_files/shell_v2.js"></script>
+<script type="text/javascript">
+	document.getElementById("bdshell_js").src = "http://bdimg.share.baidu.com/static/js/shell_v2.js?t=" + new Date().getHours();
+</script>
+<!-- Baidu Button END -->
+<p>&nbsp;</p>
+</div><br>
+		<div align="center">
+<div class="linuc"><script type="text/javascript" language="javaScript" src="./用g++編譯生成動態連接庫_files/linux3.js"></script><script type="text/javascript">/*LinuxIDC����468*15��������2012-7-25*/ var cpro_id = 'u995685';</script><script src="./用g++編譯生成動態連接庫_files/c.js" type="text/javascript"></script><script type="text/javascript" charset="utf-8" src="./用g++編譯生成動態連接庫_files/ecom(1)"></script><div style="display:none"><font><font> - </font></font></div> <iframe id="cproIframe3" src="./用g++編譯生成動態連接庫_files/uijs(4).htm" width="468" height="15" align="center,center" marginwidth="0" marginheight="0" scrolling="no" frameborder="0" allowtransparency="true"></iframe>
+<script type="text/javascript" language="javaScript" src="./用g++編譯生成動態連接庫_files/linux8.js"></script><script type="text/javascript"><!--
+google_ad_client = "ca-pub-5195587195407606";
+/* LinuxIDC.com正文内容下广告位 */
+google_ad_slot = "0155470610";
+google_ad_width = 336;
+google_ad_height = 280;
+//-->
+</script>
+<script type="text/javascript" src="./用g++編譯生成動態連接庫_files/show_ads.js">
+</script><ins style="display:inline-table;border:none;height:280px;margin:0;padding:0;position:relative;visibility:visible;width:336px"><ins id="aswift_1_anchor" style="display:block;border:none;height:280px;margin:0;padding:0;position:relative;visibility:visible;width:336px"><iframe allowtransparency="true" frameborder="0" height="280" hspace="0" marginwidth="0" marginheight="0" onload="var i=this.id,s=window.google_iframe_oncopy,H=s&amp;&amp;s.handlers,h=H&amp;&amp;H[i],w=this.contentWindow,d;try{d=w.document}catch(e){}if(h&amp;&amp;d&amp;&amp;(!d.body||!d.body.firstChild)){if(h.call){i+=&#39;.call&#39;;setTimeout(h,0)}else if(h.match){i+=&#39;.nav&#39;;w.location.replace(h)}s.log&amp;&amp;s.log.push(i)}" scrolling="no" vspace="0" width="336" id="aswift_1" name="aswift_1" style="left:0;position:absolute;top:0;"></iframe></ins></ins>
+</div></div>		
+<br>
+		<div style="padding-left:20px;clear:both"><font><font>
+			上一篇：</font></font><a href="http://www.linuxidc.com/Linux/2011-07/39585.htm"><font><font>UNIX/Linux中書中一直提到的“ourhdr.h”文件內容</font></font></a><br><font><font> 
+			下一篇：</font></font><a href="http://www.linuxidc.com/Linux/2011-07/39587.htm"><font><font>Unix/Linux如何創建一個後台進程</font></font></a><br>
+		</div>
+	</div>
+	</div>
+	<div class="bl"></div>
+	<div class="br"></div>
+	<div class="bm"></div>
+	</div>
+	
+	<div class="mframe">
+	<div class="tl"></div>
+	<div class="tr"></div>
+	<div class="tm">
+		<span class="tt"><font><font>相關的資訊</font></font></span> &nbsp; &nbsp; &nbsp;
+		<a href="http://www.linuxidc.com/search.aspx?Where=Nkey&Keyword=Linux%e7%bc%96%e7%a8%8b" target="_blank"><font><font>編程的Linux </font></font></a>&nbsp; <a href="http://www.linuxidc.com/search.aspx?Where=Nkey&Keyword=G%2b%2b" target="_blank"><font><font>G+ +</font></font></a>&nbsp; 
+	</div>
+	<div class="wrapper">
+	<div class="ml"></div>
+	<div class="mr"></div>
+	<div class="mm">
+		<table width="100%"><tbody><tr><td width="50%" valign="top"><ul class="nl"><li><a href="http://www.linuxidc.com/Linux/2011-05/36616.htm" target="_blank" title="詳解Linux下auto工具製作Makefile源碼包（工具安裝篇）"><font><font>詳解Linux的Makefile文件下自動工具製作源碼包（</font></font></a>&nbsp; <span class="gray"><font><font>（29/05/2011六時57分21秒）</font></font></span></li>
+<li><a href="http://www.linuxidc.com/Linux/2011-05/36605.htm" target="_blank" title="多種方法獲取sys_call_table(Linux系統調用表)的地址"><font><font>多種方法獲取sys_call_table中（Linux的系統調用</font></font></a>&nbsp; <span class="gray"><font><font>（29/05/2011 6點29分07秒）</font></font></span></li>
+<li><a href="http://www.linuxidc.com/Linux/2011-05/36573.htm" target="_blank" title="Linux平台代碼覆蓋率測試-基本塊圖、插樁位置及樁代碼執行分析"><font><font>Linux平台代碼覆蓋率測試-基本塊圖、插樁位</font></font></a>&nbsp; <span class="gray"><font><font>(05/28/2011 07:14:28)</font></font></span></li>
+</ul></td><td width="50%" valign="top"><ul class="nl"><li><a href="http://www.linuxidc.com/Linux/2011-05/36615.htm" target="_blank" title="詳解Linux下auto工具製作Makefile源碼包（製作篇）"><font><font>詳解Linux的Makefile文件下自動工具製作源碼包（</font></font></a>&nbsp; <span class="gray"><font><font>（29/05/2011 6點52分17秒）</font></font></span></li>
+<li><a href="http://www.linuxidc.com/Linux/2011-05/36576.htm" target="_blank"><font><font>Linux的as86程序彙編器</font></font></a>&nbsp; <span class="gray"><font><font>（2011年5月28日7點30分20秒）</font></font></span></li>
+<li><a href="http://www.linuxidc.com/Linux/2007-06/5125.htm" target="_blank"><font><font>linux下的定時器編程學習</font></font></a>&nbsp; <span class="gray"><font><font>（2007年6月14日八時05分39秒）</font></font></span></li>
+</ul></td></tr></tbody></table>
+	</div>
+	</div>
+	<div class="bl"></div>
+	<div class="br"></div>
+	<div class="bm"></div>
+	</div>
+
+	<div class="lframe">
+	<div class="tl"></div>
+	<div class="tr"></div>
+	<div class="tm">
+
+		<span class="tt"><font><font>相關圖片</font></font></span>
+	</div>
+	<div class="wrapper">
+	<div class="ml"></div>
+	<div class="mr"></div>
+	<div class="mm">
+		<div class="imgList"><ul><li style="width:25%"><a href="http://www.linuxidc.com/Linux/2012-08/69414.htm" target="_blank" title="關於Python中的for循環控制語句"><img src="./用g++編譯生成動態連接庫_files/120831110027411t.jpg" alt="關於Python中的for循環控制語句" width="120" height="90"><font><font>關於Python中的for循</font></font></a></li><li style="width:25%"><a href="http://www.linuxidc.com/Linux/2012-08/69412.htm" target="_blank" title="基於Android的遠程視頻監控系統（附源碼下載）"><img src="./用g++編譯生成動態連接庫_files/120831105230281t.jpg" alt="基於Android的遠程視頻監控系統（附源碼下載）" width="120" height="90"><font><font>基於Android的遠程視</font></font></a></li><li style="width:25%"><a href="http://www.linuxidc.com/Linux/2012-08/69410.htm" target="_blank" title="Linux下的C++線程池實現"><img src="./用g++編譯生成動態連接庫_files/120831104911071t.jpg" alt="Linux下的C++線程池實現" width="120" height="90"><font><font>Linux下的C++線程池實</font></font></a></li><li style="width:25%"><a href="http://www.linuxidc.com/Linux/2012-08/69358.htm" target="_blank"><img src="./用g++編譯生成動態連接庫_files/120831065972231t.jpg" alt="菜鳥學Ogre教程" width="120" height="90"><font><font>菜鳥學Ogre教程</font></font></a></li><li style="width:25%"><a href="http://www.linuxidc.com/Linux/2012-08/69355.htm" target="_blank" title="C++大作頁-數組運算.動態多維數組"><img src="./用g++編譯生成動態連接庫_files/120831065387871t.jpg" alt="C++大作頁-數組運算.動態多維數組" width="120" height="90"><font><font>C++大作頁-數組運算.</font></font></a></li><li style="width:25%"><a href="http://www.linuxidc.com/Linux/2012-08/69305.htm" target="_blank" title="Android 分頁Title欄滑塊效果--ActionBar(模擬網易騰訊等動態效果)"><img src="./用g++編譯生成動態連接庫_files/120830102588941t.jpg" alt="Android 分頁Title欄滑塊效果--ActionBar(模擬網易騰訊等動態效果)" width="120" height="90"><font><font>Android的分頁標題欄</font></font></a></li><li style="width:25%"><a href="http://www.linuxidc.com/Linux/2012-08/69304.htm" target="_blank" title="Android的選項卡分頁菜單實現總結"><img src="./用g++編譯生成動態連接庫_files/120830101275371t.jpg" alt="Android的選項卡分頁菜單實現總結" width="120" height="90"><font><font>Android的標籤分頁菜單</font></font></a></li><li style="width:25%"><a href="http://www.linuxidc.com/Linux/2012-08/69303.htm" target="_blank" title="Android的TabHost解決下面白線"><img src="./用g++編譯生成動態連接庫_files/12083010079114t.jpg" alt="Android的TabHost解決下面白線" width="120" height="90"><font><font>Android的TabHost解決</font></font></a></li></ul></div>
+	</div>
+	</div>
+	<div class="bl"></div>
+	<div class="br"></div>
+	<div class="bm"></div>
+	</div>
+
+	<div class="mframe">
+	<div class="tl"></div>
+	<div class="tr"></div>
+	<div class="tm">
+		<span class="tt"><font><font>本文評論</font></font></span>
+		 &nbsp; &nbsp; &nbsp;
+		 <a href="http://www.linuxidc.com/remark.aspx?id=39586" target="_blank" style="cursor:hand"><font><font>全部評論</font></font></a>
+	</div>
+	<div class="wrapper">
+	<div class="ml"></div>
+	<div class="mr"></div>
+	<div class="mm">
+		
+	</div>
+	</div>
+	<div class="bl"></div>
+	<div class="br"></div>
+	<div class="bm"></div>
+	</div>
+	
+	<div class="mframe">
+	<div class="tl"></div>
+	<div class="tr"></div>
+	<div class="tm">
+		<span class="tt"><font><font>發表評論</font></font></span>
+	</div>
+	<div class="wrapper">
+	<div class="ml"></div>
+	<div class="mr"></div>
+	<div class="mm">
+		<form id="remarkForm" action="http://www.linuxidc.com/remark.aspx?id=39586" method="post" onsubmit="return checkRemark();" style="padding:5px">
+			<script type="text/javascript" language="javascript">
+			function checkRemark()
+			{
+			var form=document.getElementById("remarkForm");
+			var remarkSize = 1000;
+			if (form.body.value=="")
+			{	alert("请填写评论内容");
+				form.body.focus();
+				return false;
+			}
+			if (form.username.value=="")
+			{	alert("请填写姓名");
+				form.username.focus();
+				return false;
+			}
+			if (form.body.value.length>remarkSize)
+			{	form.body.value = form.body.value.substr(0,remarkSize);
+				showLen(form.body);
+				form.body.focus();
+				alert("评论内容不可以超过"+remarkSize+"字,已帮你删除多余部分");
+				return false;
+			}
+			if (form.username.value.length>10)
+			{	alert("姓名不可以超过10个字");
+				form.username.focus();
+				return false;
+			}
+			form.submit.disabled=true;
+			form.vcode.value = VCode("用g++编译生成动态连接库*.so的方法及连接");
+			return true;
+			}
+			function showLen(obj)
+			{
+				document.getElementById("bodyLen").value=obj.value.length;
+			}
+			</script>
+			<input type="radio" name="face" value="1" checked="checked"><img src="./用g++編譯生成動態連接庫_files/face1.gif" alt=""><input type="radio" name="face" value="2"><img src="./用g++編譯生成動態連接庫_files/face2.gif" alt=""><input type="radio" name="face" value="3"><img src="./用g++編譯生成動態連接庫_files/face3.gif" alt=""><input type="radio" name="face" value="4"><img src="./用g++編譯生成動態連接庫_files/face4.gif" alt=""><input type="radio" name="face" value="5"><img src="./用g++編譯生成動態連接庫_files/face5.gif" alt=""><input type="radio" name="face" value="6"><img src="./用g++編譯生成動態連接庫_files/face6.gif" alt=""><input type="radio" name="face" value="7"><img src="./用g++編譯生成動態連接庫_files/face7.gif" alt=""><input type="radio" name="face" value="8"><img src="./用g++編譯生成動態連接庫_files/face8.gif" alt=""><input type="radio" name="face" value="9"><img src="./用g++編譯生成動態連接庫_files/face9.gif" alt=""><input type="radio" name="face" value="10"><img src="./用g++編譯生成動態連接庫_files/face10.gif" alt=""><input type="radio" name="face" value="11"><img src="./用g++編譯生成動態連接庫_files/face11.gif" alt=""><input type="radio" name="face" value="12"><img src="./用g++編譯生成動態連接庫_files/face12.gif" alt=""><input type="radio" name="face" value="13"><img src="./用g++編譯生成動態連接庫_files/face13.gif" alt=""><input type="radio" name="face" value="14"><img src="./用g++編譯生成動態連接庫_files/face14.gif" alt="">
+<br><font><font>請您注意：</font></font><br><font><font>遵守國家有關法律、法規，尊重網上道德，承擔一切因您的行為而直接或間接引起的法律責任。</font></font><br><font><font>LinuxIDC.com擁有管理筆名和留言的一切權利。</font></font><br>
+<script type="text/javascript" language="javaScript" src="./用g++編譯生成動態連接庫_files/linux11.js"></script><br>
+			<div style="padding-top:5px"><font><font>
+			點評：
+			</font></font><textarea name="body" cols="78" rows="12" onkeydown="showLen(this)" onkeyup="showLen(this)"></textarea><font><font> 字數</font></font><input type="text" id="bodyLen" size="3" readonly="readonly" style="border-width:0;background:transparent;">
+			</div>
+			<div style="padding-top:5px"><font><font>
+			姓名：
+			</font></font><input type="text" id="i_username" name="username" value="" maxlength="15" size="10">
+			<font><font><input type="submit" name="submit" id="i_submit" value=" 發表 "></font></font>
+			</div>
+			<script type="text/javascript">
+			var remarkmember = false;
+			var allowremark = true;
+			if (remarkmember){
+				document.getElementById("i_username").readonly=true;
+				document.write("(限会员登录后发表评论)");
+			}
+			if (!allowremark){
+				document.getElementById("i_submit").disabled=true;
+			}
+			</script>
+			<script type="text/javascript" src="./用g++編譯生成動態連接庫_files/clientDate.js"></script><input type="hidden" name="clientDate" id="clientDate" value="Wed, 12 Sep 2012 01:46:05 GMT">
+			<input type="hidden" name="vcode" value="">
+		</form>
+	</div>
+	</div>
+	<div class="bl"></div>
+	<div class="br"></div>
+	<div class="bm"></div>
+	</div>
+	<iframe src="./用g++編譯生成動態連接庫_files/frm_hit.htm" style="visibility:hidden;height:0;width:0"></iframe>
+</td><td valign="top" class="linuz">
+<div class="linuzs"><script type="text/javascript" language="javaScript" src="./用g++編譯生成動態連接庫_files/jquery.js"></script></div>
+<div class="linuzs"><script type="text/javascript" language="javaScript" src="./用g++編譯生成動態連接庫_files/linuxgif.js"></script><script type="text/javascript">/*300*250，创建于2011-6-22*/ var cpro_id = 'u516543';</script><script src="./用g++編譯生成動態連接庫_files/c.js" type="text/javascript"></script><script type="text/javascript" charset="utf-8" src="./用g++編譯生成動態連接庫_files/ecom(2)"></script><div style="display:none"><font><font> - </font></font></div> <iframe id="cproIframe4" src="./用g++編譯生成動態連接庫_files/uijs(2).htm" width="300" height="250" align="center,center" marginwidth="0" marginheight="0" scrolling="no" frameborder="0" allowtransparency="true"></iframe>
+</div>
+	<div class="lframe">
+	<div class="tl"></div>
+	<div class="tr"></div>
+	<div class="tm">
+		<span class="tt"><font><font>最新資訊</font></font></span>
+	</div>
+	<div class="wrapper">
+	<div class="ml"></div>
+	<div class="mr"></div>
+	<div class="mm">
+		<ul class="nl">
+<li><a href="http://www.linuxidc.com/Linux/2012-09/69461.htm" target="_blank"><font><font>Ubuntu 中其他編程語言的使用</font></font></a></li>
+<li><a href="http://www.linuxidc.com/Linux/2012-09/69460.htm" target="_blank"><font><font>Ubuntu的中如何修復GRUB2引導加載程序</font></font></a></li>
+<li><a href="http://www.linuxidc.com/Linux/2012-09/69459.htm" target="_blank"><font><font>的Linux下配置啟動多個Tomcat的</font></font></a></li>
+<li><a href="http://www.linuxidc.com/Linux/2012-09/69458.htm" target="_blank"><font><font>VMware 改變Ubuntu硬盤空間大小</font></font></a></li>
+<li><a href="http://www.linuxidc.com/Linux/2012-09/69457.htm" target="_blank"><font><font>Opera網絡瀏覽器12.02之前版本遠程代碼執行漏洞</font></font></a></li>
+<li><a href="http://www.linuxidc.com/Linux/2012-09/69456.htm" target="_blank"><font><font>蘋果的iChat Server XMPP回撥保護組件安全繞過漏洞</font></font></a></li>
+<li><a href="http://www.linuxidc.com/Linux/2012-09/69455.htm" target="_blank"><font><font>squidGuard的長URL處理遠程拒絕服務漏洞</font></font></a></li>
+<li><a href="http://www.linuxidc.com/Linux/2012-09/69454.htm" target="_blank" title="Oracle Java運行時環境的遠程代碼執行漏洞（CVE-2012-3136）"><font><font>Oracle Java運行時環境的遠程代碼執行漏洞（</font></font></a></li>
+<li><a href="http://www.linuxidc.com/Linux/2012-09/69453.htm" target="_blank" title="Oracle Java運行時環境的遠程代碼執行漏洞（CVE-2012-1682）"><font><font>Oracle Java運行時環境的遠程代碼執行漏洞（</font></font></a></li>
+<li><a href="http://www.linuxidc.com/Linux/2012-09/69452.htm" target="_blank"><font><font>谷歌Chrome 21.0.1180.89多個安全漏洞</font></font></a></li>
+<li><a href="http://www.linuxidc.com/Linux/2012-09/69451.htm" target="_blank" title="GarrettCom Magnum MNS-6K軟件硬編碼密碼安全限制繞過漏洞"><font><font>GarrettCom萬能MNS-6K軟件硬編碼密碼安全限制繞</font></font></a></li>
+<li><a href="http://www.linuxidc.com/Linux/2012-09/69450.htm" target="_blank"><font><font>Oracle JRE 7沙盒繞過遠程代碼執行漏洞[補丁]</font></font></a></li>
+<li><a href="http://www.linuxidc.com/Linux/2012-09/69449.htm" target="_blank"><font><font>機架的網絡服務器彩虹！</font></font></a></li>
+<li><a href="http://www.linuxidc.com/Linux/2012-09/69448.htm" target="_blank"><font><font>微型的Web框架（Ruby）的機架</font></font></a></li>
+<li><a href="http://www.linuxidc.com/Linux/2012-09/69447.htm" target="_blank"><font><font>Github上最多的庫中被叉</font></font></a></li>
+<li><a href="http://www.linuxidc.com/Linux/2012-09/69446.htm" target="_blank"><font><font>彩虹！</font><font>4.4.1發布，機架的網絡服務器</font></font></a></li>
+<li><a href="http://www.linuxidc.com/Linux/2012-09/69445.htm" target="_blank"><font><font>OpenNMS 1.11.2 發布，企業級監控平台</font></font></a></li>
+<li><a href="http://www.linuxidc.com/Linux/2012-09/69444.htm" target="_blank"><font><font>0.4.3 libQtCassandra發布</font></font></a></li>
+<li><a href="http://www.linuxidc.com/Linux/2012-09/69443.htm" target="_blank"><font><font>libQtCassandra</font></font></a></li>
+<li><a href="http://www.linuxidc.com/Linux/2012-09/69442.htm" target="_blank"><font><font>RHCE_RHEL6_複習總結10.配置NTP服務</font></font></a></li>
+</ul>
+	</div>
+	</div>
+	<div class="bl"></div>
+	<div class="br"></div>
+	<div class="bm"></div>
+	</div>
+<div class="linuzb"><script type="text/javascript" language="javaScript" src="./用g++編譯生成動態連接庫_files/linux16.js"></script><br><script type="text/javascript" language="javaScript" src="./用g++編譯生成動態連接庫_files/linux18.js"></script><a title="神諭" href="http://www.linuxidc.com/Linux/2012-07/66157.htm" target="_blank"><img src="./用g++編譯生成動態連接庫_files/20127232058790938.jpg" border="0"></a>
+<a href="http://www.linuxidc.net/" target="_blank" wrc_done="true"><img height="90" alt="LinuxIDC" src="./用g++編譯生成動態連接庫_files/linuxidcnet.png" width="300"></a>&nbsp;<span class="wrc_icon wrc0" rating="{&quot;icon&quot;:&quot;grey0-16.png&quot;,&quot;rating&quot;:0,&quot;weight&quot;:0,&quot;flags&quot;:{}}"></span>
+<a href="http://www.linuxidc.com/search.aspx?Where=Nkey&Keyword=Ubuntu+11.10" target="_blank"><img height="90" alt="Ubuntu的" src="./用g++編譯生成動態連接庫_files/ubuntu910.jpg" width="300"></a>
+<a href="http://www.linuxidc.com/topicnews.aspx?tid=2" target="_blank"><img height="139" src="./用g++編譯生成動態連接庫_files/ubuntuone.gif" width="300"></a>
+</div>
+	<div class="lframe">
+	<div class="tl"></div>
+	<div class="tr"></div>
+	<div class="tm">
+		<span class="tt"><font><font>本週熱門</font></font></span>
+	</div>
+	<div class="wrapper">
+	<div class="ml"></div>
+	<div class="mr"></div>
+	<div class="mm">
+		<ul class="nl">
+<li><a href="http://www.linuxidc.com/Linux/2007-06/4767.htm" target="_blank"><font><font>Linux的shell腳本全面學習</font></font></a></li>
+<li><a href="http://www.linuxidc.com/Linux/2011-04/33966.htm" target="_blank"><font><font>Android的核心分析</font></font></a></li>
+<li><a href="http://www.linuxidc.com/Linux/2011-07/39271.htm" target="_blank"><font><font>Android的活頁夾設計與實現 - 設計篇</font></font></a></li>
+<li><a href="http://www.linuxidc.com/Linux/2011-08/41747.htm" target="_blank"><font><font>Linux設備驅動程序學習筆記</font></font></a></li>
+<li><a href="http://www.linuxidc.com/Linux/2007-12/9623.htm" target="_blank"><font><font>Linux的內核的的ioctl函數學習</font></font></a></li>
+<li><a href="http://www.linuxidc.com/Linux/2012-03/55898.htm" target="_blank"><font><font>Android 4.0.3 顯示系統深入理解</font></font></a></li>
+<li><a href="http://www.linuxidc.com/Linux/2012-06/63214.htm" target="_blank"><font><font>機器人之片段（官網資料翻譯）</font></font></a></li>
+<li><a href="http://www.linuxidc.com/Linux/2011-11/47136.htm" target="_blank"><font><font>Android 2.3的SD卡掛載流程淺析</font></font></a></li>
+<li><a href="http://www.linuxidc.com/Linux/2011-09/43938.htm" target="_blank"><font><font>Android採用ListView實現數據列表顯示</font></font></a></li>
+<li><a href="http://www.linuxidc.com/Linux/2010-02/24667.htm" target="_blank"><font><font>詳細易懂的Linux的makefile的教程</font></font></a></li>
+<li><a href="http://www.linuxidc.com/Linux/2011-05/35392.htm" target="_blank"><font><font>Android之PopupWindow中彈出對話框</font></font></a></li>
+<li><a href="http://www.linuxidc.com/Linux/2011-10/45756.htm" target="_blank"><font><font>Android的OpenGL ES的簡明開發教程</font></font></a></li>
+<li><a href="http://www.linuxidc.com/Linux/2012-06/63652.htm" target="_blank"><font><font>PyQt4 精彩實例分析</font></font></a></li>
+<li><a href="http://www.linuxidc.com/Linux/2011-11/48114.htm" target="_blank"><font><font>機器人的基站，WIFI，GPS定位集合【源碼此頁】</font></font></a></li>
+<li><a href="http://www.linuxidc.com/Linux/2012-06/63092.htm" target="_blank"><font><font>make menuconfig這詳解</font></font></a></li>
+<li><a href="http://www.linuxidc.com/Linux/2011-08/40508.htm" target="_blank"><font><font>技術內幕：Android的粘合劑的IPC機制</font></font></a></li>
+<li><a href="http://www.linuxidc.com/Linux/2011-05/35982.htm" target="_blank"><font><font>U-BOOT-2009.08在在mini2440上的移植</font></font></a></li>
+<li><a href="http://www.linuxidc.com/Linux/2012-03/55997.htm" target="_blank"><font><font>S3C6410的Linux內核移植</font></font></a></li>
+<li><a href="http://www.linuxidc.com/Linux/2011-12/49365.htm" target="_blank" title="完美解決Android在listview添加checkbox實現單選多選操作問題"><font><font>完美解決Android在listview添加checkbox實現單選多</font></font></a></li>
+<li><a href="http://www.linuxidc.com/Linux/2010-08/27880.htm" target="_blank"><font><font>Android的C / C + +開發</font></font></a></li>
+<li><a href="http://www.linuxidc.com/Linux/2011-04/34541.htm" target="_blank"><font><font>Android的驅動例子（LED燈控制）</font></font></a></li>
+<li><a href="http://www.linuxidc.com/Linux/2012-05/61283.htm" target="_blank"><font><font>Android串口通信實例分析【附源碼】</font></font></a></li>
+<li><a href="http://www.linuxidc.com/Linux/2011-03/33600.htm" target="_blank"><font><font>S3C2440上LCD驅動（FrameBuffer的）實例開發講解</font></font></a></li>
+<li><a href="http://www.linuxidc.com/Linux/2011-10/45832.htm" target="_blank"><font><font>Qt 學習實例教程</font></font></a></li>
+<li><a href="http://www.linuxidc.com/Linux/2011-11/47859.htm" target="_blank" title="Android的ExpandableListView展開列表控件（手機QQ好友列表）"><font><font>Android的ExpandableListView展開列表控件（手機QQ好</font></font></a></li>
+</ul>
+	</div>
+	</div>
+	<div class="bl"></div>
+	<div class="br"></div>
+	<div class="bm"></div>
+	</div>
+</td></tr>
+</tbody></table>
+
+<div id="footer"><br><p align="center">
+<a href="http://www.linuxidc.com/aboutus.htm"><font></font></a><font><font>（QQ：3165270）</font><font>©2006-2011　</font><a href="http://www.linuxidc.com/"><font>Linux的公社。</font></a><font>　保留所有權利浙ICP備06018118號</font></font><a href="http://www.linuxidc.com/adsense.htm"><font></font></a><font></font><a href="http://www.linuxidc.com/sitemap.aspx"><font></font></a><font></font><a href="http://www.linuxidc.com/help.htm"><font></font></a><font></font><a href="http://www.linuxidc.com/contactus.htm"><font></font></a><br><font></font><br><script type="text/javascript" language="javaScript" src="./用g++編譯生成動態連接庫_files/qq.js"></script><font></font><img src="./用g++編譯生成動態連接庫_files/email.png"><font></font><br>
+<script type="text/javascript" language="javaScript" src="./用g++編譯生成動態連接庫_files/foot.js"></script><font></font><a href="http://www.6688.cc/" wrc_done="true"><font color="red"><font></font></font></a>&nbsp;<span class="wrc_icon wrc0" rating="{&quot;icon&quot;:&quot;grey0-16.png&quot;,&quot;rating&quot;:0,&quot;weight&quot;:0,&quot;flags&quot;:{}}"></span><font></font><br><font></font><font color="red"><font></font></font><font></font><br><font></font><a href="http://www.linuxidc.com/"><font></font></a><font></font></p>
+	
+
+	<div class="menuskin" id="popmenu" onmouseover="clearhidemenu();highlightmenu(event,&#39;on&#39;)" onmouseout="highlightmenu(event,&#39;off&#39;);dynamichide(event)" style="Z-index:100"></div>
+	<script type="text/javascript" src="./用g++編譯生成動態連接庫_files/menu.js" charset="utf-8"></script>
+	<script type="text/javascript">
+	jsdone=true;
+	</script>
+
+
+</div>
+</div>
+<script type="text/javascript" language="javaScript" src="./用g++編譯生成動態連接庫_files/linuxren1.js"></script><script type="text/javascript">
+document.body.oncopy = function () { setTimeout( function () { var text = clipboardData.getData("text"); if (text) { text = text + "\r\n本篇文章来源于 Linux公社网站(www.linuxidc.com)  原文链接："+location.href; clipboardData.setData("text", text); } }, 100 ) }
+</script>
+
+<script type="text/javascript" language="javaScript" src="./用g++編譯生成動態連接庫_files/linuxren2.js"></script><script type="text/javascript">/*Linux������������120*270��������2012-7-31*/ var cpro_id = 'u1004368';</script><script src="./用g++編譯生成動態連接庫_files/f.js" type="text/javascript"></script><script type="text/javascript" charset="utf-8" src="./用g++編譯生成動態連接庫_files/ecom(3)"></script>
+
+<script type="text/javascript" language="javaScript" src="./用g++編譯生成動態連接庫_files/linuxren3.js"></script><script src="./用g++編譯生成動態連接庫_files/h.js" type="text/javascript"></script>
+
+<div style="padding: 0px; display: block; visibility: visible; border: none; background-image: none; float: none; overflow: hidden; position: fixed; z-index: 2147483647; width: 124px; height: 299px; line-height: 299px; right: 65px; top: 150px; background-position: initial initial; background-repeat: initial initial; " id="cproIframe5holder"><div style="padding: 0px; display: block; visibility: visible; border: none; background-image: none; float: none; overflow: hidden; width: 100%; height: 100%; background-position: initial initial; background-repeat: initial initial; "><div style="display:none"><font><font> - </font></font></div> <iframe id="cproIframe5" src="./用g++編譯生成動態連接庫_files/uijs.htm" width="124" height="299" align="center,center" marginwidth="0" marginheight="0" scrolling="no" frameborder="0" allowtransparency="true"></iframe></div><div style="padding: 0px; display: block; visibility: visible; border: none; background-color: rgb(255, 255, 255); float: none; overflow: hidden; height: 20px; line-height: 20px; position: absolute; text-decoration: none; color: rgb(51, 51, 51); text-align: left; font-size: 14px; font-family: simsun, arial; cursor: pointer; opacity: 0; width: 50px; right: 0px; bottom: 0px; background-position: initial initial; background-repeat: initial initial; ">&nbsp;</div></div><div style="padding: 0px; display: block; visibility: visible; border: none; background-image: none; float: none; overflow: hidden; position: fixed; z-index: 2147483647; width: 124px; height: 299px; line-height: 299px; left: 65px; top: 150px; background-position: initial initial; background-repeat: initial initial; " id="cproIframe6holder"><div style="padding: 0px; display: block; visibility: visible; border: none; background-image: none; float: none; overflow: hidden; width: 100%; height: 100%; background-position: initial initial; background-repeat: initial initial; "><div style="display:none"><font><font> - </font></font></div> <iframe id="cproIframe6" src="./用g++編譯生成動態連接庫_files/uijs(1).htm" width="124" height="299" align="center,center" marginwidth="0" marginheight="0" scrolling="no" frameborder="0" allowtransparency="true"></iframe></div><div style="padding: 0px; display: block; visibility: visible; border: none; background-color: rgb(255, 255, 255); float: none; overflow: hidden; height: 20px; line-height: 20px; position: absolute; text-decoration: none; color: rgb(51, 51, 51); text-align: left; font-size: 14px; font-family: simsun, arial; cursor: pointer; opacity: 0; width: 50px; right: 0px; bottom: 0px; background-position: initial initial; background-repeat: initial initial; ">&nbsp;</div></div><div id="goog-gt-tt" class="goog-tooltip skiptranslate" dir="ltr" style="visibility: hidden; left: 470px; top: 546px; display: none; "><div style="padding: 8px;"><div><div class="logo"><img src="./用g++編譯生成動態連接庫_files/translate-32.png" width="20" height="20"></div></div></div><div class="top" style="padding: 8px; float: left; width: 100%;"><h1 class="title gray">原文</h1></div><div class="middle" style="padding: 8px;"><div class="original-text">用g++编译生成动态连接库*.so的方法及连接</div></div><div class="bottom" style="padding: 8px;"><div class="activity-links"><span class="activity-link">建議更好的譯法</span><span class="activity-link"></span></div><div class="started-activity-container"><hr style="color: #CCC; background-color: #CCC; height: 1px; border: none;"><div class="activity-root"></div></div></div><div class="status-message" style="display: none; opacity: 0; "></div></div><div id="wrchoverdiv"><div id="wrccontainer"><div id="wrcheader"><div id="wrctitle"><font><font> WebRep</font></font></div></div><div class="wrchorizontal"></div><div id="wrccurrentvote"><font><font>體評價州長</font></font></div><div class="wrchorizontal"></div><div id="wrcrating"></div><div id="wrcratingtext"><font><font>此網站沒有任何評價資訊</font></font></div><div id="wrcweighttext"><font><font>（票數不足）</font></font></div><div id="wrcflags"><div id="wrcicon_shopping" class="wrcicon"></div><div id="wrcicon_social" class="wrcicon"></div><div id="wrcicon_news" class="wrcicon"></div><div id="wrcicon_it" class="wrcicon"></div><div id="wrcicon_corporate" class="wrcicon"></div><div id="wrcicon_pornography" class="wrcicon"></div><div id="wrcicon_violence" class="wrcicon"></div><div id="wrcicon_gambling" class="wrcicon"></div><div id="wrcicon_drugs" class="wrcicon"></div><div id="wrcicon_illegal" class="wrcicon"></div></div><div class="wrchorizontal"></div></div></div></body><span id="skype_highlighting_settings" display="none" autoextractnumbers="1"></span><object id="skype_plugin_object" location.href="http://www.linuxidc.com/Linux/2011-07/39586.htm" location.hostname="www.linuxidc.com" style="position: absolute; visibility: hidden; left: -100px; top: -100px; " width="0" height="0" type="application/x-vnd.skype.toolbars.npplugin.4.2.0"></object></html>

@@ -1,0 +1,256 @@
+動態鏈接庫的原理及使用 
+2007-09-12 08:51:28 
+一.              動態鏈接庫的原理及使用
+大家對Windows操作系統中的DLL文件一定十分熟悉，其實這種軟件組件化的方法在Linux中也可以實現。其實插件和 DLL 通常是用來無須編寫整個新應用程序而添加功能的極好方法，一般來講，在不更改原有應用程序的情況下，插件為現有應用程序提供新功能。Linux環境下甚至做的更好。
+
+Linux提供4個庫函數、一個頭文件dlfcn.h以及兩個共享庫（靜態庫libdl.a和動態庫libdl.so）支持動態鏈接。
+
+■         dlopen：打開動態共享目標文件並將其映射到內存中，返回其首地址
+
+■         dlsym：返回鎖請求的入口點的指針
+
+■         dlerror：返回NULL或者指向描述最近錯誤的字符串
+
+■         dlclose：關閉動態共享文件
+
+函數dlopen需要在文件系統中查找目標文件並為之創建句柄。有四種方法指定目標文件的位置：
+
+■         絕對路徑
+
+■         在環境變量LD_LIBRARY_PATH指定的目錄中
+
+■         在/etc/ld.so.cache中指定的庫列表中
+
+■         在/usr/lib或者/lib中
+
+下面舉一個例子。
+
+主程序文件hello.c：
+
+#include <stdio.h>
+
+#include <dlfcn.h>
+
+ 
+
+void* slib=0;
+
+void (*func)(char*);
+
+const char* hError;
+
+ 
+
+int main(int argc,char* argv[])
+
+{
+
+    slib=dlopen("./slib.so",RTLD_LAZY);
+
+    hError=dlerror();
+
+    if (hError)
+
+    {
+
+        printf("dlopen Error!\n");
+
+        return 1;
+
+    }
+
+    func=dlsym(slib,"func");
+
+    hError=dlerror();
+
+    if (hError)
+
+{
+
+dlclose(slib);
+
+        printf("dlsym Error!\n");
+
+        return 1;
+
+    }
+
+    func("How do you do ?\n");
+
+    dlclose(slib);
+
+    hError=dlerror();
+
+    if (hError)
+
+    {
+
+        printf("dlclose Error!\n");
+
+        return 1;
+
+    }
+
+    return 0;
+
+}
+ 
+
+ 
+
+函數dlopen的第二個參數有兩種選擇：
+
+■         RTLD_LAZY：推遲解析DLL中的外部引用，直到DLL被執行
+
+■         RTLD_NOW：在返回之前解析所有的外部引用
+
+以下是DLL文件源碼slib.c：
+
+int func(char* msg)
+
+{
+
+    printf("func be Executed!\n");
+
+    printf(msg);
+
+    return 0;
+
+}
+ 
+
+
+ 
+
+是不是很簡單？
+
+源代碼寫好後，在編譯和鏈接時有點複雜。為此，我們編寫了一個makefile：
+
+all:hello slib.so
+
+hello:
+
+       gcc -o hello hello.c -ldl
+
+slib.so:slib.o
+
+       gcc -shared -lc -o slib.so slib.o
+
+slib.o:
+
+       gcc -c -fpic slib.c
+ 
+
+
+ 
+
+生成這個程序需要三步：
+
+■         將DLL編譯為位置無代碼
+
+■         創建DLL共享目標文件
+
+■         編譯主程序並與DLL相鏈接
+
+編譯slib.c時，使用了-fpic或者-fPIC選項，使生成的代碼是位置無關的，因為重建共享目標庫需要位置無關，並且這類代碼支持大的偏移。
+
+創建DLL共享目標文件時使用了-shared選項，該選項產生適合動態鏈接的共享目標文件slib.so。
+
+生成主程序時，使用-ldl選項，這是鏈接選項，即主程序中的部分符號為動態鏈接庫中的符號，也就是說，在運行時需要到dll文件中才能夠解決引用。
+
+ 
+
+二.              通用類型的動態函數庫的建立
+
+Linux操作系統和各種軟件包為軟件開發人員提供了很多的動態函數庫文件。但是一般情況下這些庫還不能滿足用戶的所有需求。開發人員會根據自己的需要編寫很多的函數。對於這些函數，如果總是將源文件與調用它們的程序鏈接起來，雖然也可以，但是，缺點是顯然的。下面就將它們加入動態函數庫中。
+
+在Linux中，建立動態函數庫不需要額外的工具，只需要gcc就可以了。
+
+通過ldd命令可以很方便的察看程序用到了哪些庫。
+
+下面通過一個簡單的例子說明動態函數庫的建立過程。
+
+文件mylib.c是函數庫的源程序文件，內容如下：
+
+ 
+
+int myadd(int a1, int a2)
+
+{
+
+return a1+a2;
+
+}
+ 
+
+
+ 
+
+文件testlib.c是測試程序的源程序文件：
+
+#incoude <stdio.h>
+
+extern int myadd(int, int);
+
+int main()
+
+{
+
+    printf(“%d\n”,myadd(1, 2));
+
+    return 0;
+
+}
+ 
+
+
+ 
+
+下面給出makefile的內容：
+
+ 
+
+ 
+
+all:libmylib.so.1.0 testlib
+
+ 
+
+libmylib.so.1.0 : mylib.o
+
+       ld –m elf_i386 –shared –soname libmylib.so.1 –o libmylib.so.1.0 mylib.o
+
+       ln –sf libmylib.so.1.0 libmylib.so.1
+
+       ln –sf libmylib.so.1 libmylib.so
+
+ 
+
+testlib : testlib.c
+
+       gcc –Wall –O2 –L. –lmylib –o testlib testlib.c
+
+ 
+
+mylib.o : mylib.c
+
+       gcc –c –Wall –O2 –fPIC –o mylib.o mylib.c
+
+ 
+
+clean :
+
+       -rm –f libmylib.so* testlib *.o
+
+ 
+ 
+
+ 
+
+在Linux的shell中輸入make命令，動態函數庫libmylib.so.1.0和它的測試程序就生成了。運行./testlib試試看。
+
+如果你不走運的話，系統會提示找不到libmylib.so.1動態函數庫，因為系統認為沒有這樣的文件或目錄。不要慌。你可能需要使用LD_LIBRARY_PATH環境變量。
+
+[root@localhost home]export LD_LIBRARY_PATH=.:$LD_LIBRARY_PATH
+
+再運行一次測試程序吧。

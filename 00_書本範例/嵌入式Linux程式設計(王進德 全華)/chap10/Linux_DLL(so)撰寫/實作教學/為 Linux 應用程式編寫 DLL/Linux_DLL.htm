@@ -1,0 +1,1503 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<!-- saved from url=(0061)http://www.ibm.com/developerworks/cn/linux/sdk/dll/index.html -->
+<html xmlns="http://www.w3.org/1999/xhtml" lang="zh-CN" xml:lang="zh-CN"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<title>为 Linux 应用程序编写 DLL</title>
+<meta http-equiv="PICS-Label" content="(PICS-1.1 &quot;http://www.icra.org/ratingsv02.html&quot; l gen true r (cz 1 lz 1 nz 1 oz 1 vz 1) &quot;http://www.rsac.org/ratingsv01.html&quot; l gen true r (n 0 s 0 v 0 l 0) &quot;http://www.classify.org/safesurf/&quot; l gen true r (SS~~000 1))">
+<link rel="schema.DC" href="http://purl.org/DC/elements/1.0/">
+<link rel="SHORTCUT ICON" href="http://www.ibm.com/favicon.ico">
+  <meta name="Owner" content="dw@cn.ibm.com">
+  <meta name="DC.Language" scheme="rfc1766" content="zh-CN">
+  <meta name="IBM.Country" content="CN">
+<meta name="Security" content="Public">
+<meta name="IBM.SpecialPurpose" content="SP001">
+<meta name="IBM.PageAttributes" content="sid=1003,1004">
+<meta name="Source" content="v16 Template Generator">
+<meta name="Robots" content="index,follow">
+<meta name="Abstract" content="插件和 DLL 通常是用来无须编写整个新应用程序而添加功能的极好方法。在 Linux 中，插件和 DLL 是以动态库形式实现的。电子商务顾问兼设计师 Allen Wilson 介绍了动态库，并且向您演示了如何在某一个应用程序正在运行之后使用动态库来更改该应用程序。">
+<meta name="Description" content="插件和 DLL 通常是用来无须编写整个新应用程序而添加功能的极好方法。在 Linux 中，插件和 DLL 是以动态库形式实现的。电子商务顾问兼设计师 Allen Wilson 介绍了动态库，并且向您演示了如何在某一个应用程序正在运行之后使用动态库来更改该应用程序。">
+<meta name="Keywords" content="linux dll intro, libc library function, system library, static plugin, dynamic link library, application, allen wilson, linux dll 介绍, libc 库函数, 系统库, 静态插件, 动态链接库, 应用程序, allen wilson,linux tutorials, linux training, linux standards, linux code, linux resources, linux programming, open source standards, linux how to, linux 教程, linux 培训, linux 代码, linux 资源, linux 编程，开放源码标准, linux 如何做,, tttlca">
+<meta name="DC.Date" scheme="iso8601" content="2001-10-01">
+<meta name="DC.Type" scheme="IBM_ContentClassTaxonomy" content="CT316">
+<meta name="DC.Subject" scheme="IBM_SubjectTaxonomy" content="SWGC0">
+<meta scheme="IBM_WTMCategory" name="IBM.WTMCategory" content="SOFDCLNXCN">
+<meta name="DC.Rights" content="© Copyright IBM Corporation 2001">
+<meta name="IBM.Effective" scheme="W3CDTF" content="2001-10-01">
+<meta name="title" content="为 Linux 应用程序编写 DLL">
+
+<!-- HEADER_SCRIPTS_AND_CSS_INCLUDE -->
+<link href="./Linux_DLL_files/all.css" media="all" rel="stylesheet" title="www" type="text/css">
+<link href="./Linux_DLL_files/screen.css" media="screen,projection" rel="stylesheet" title="www" type="text/css">
+<link href="./Linux_DLL_files/screen-uas.css" media="screen,projection" rel="stylesheet" title="www" type="text/css">
+<link href="./Linux_DLL_files/screen-fonts.css" media="screen,projection" rel="stylesheet" title="www" type="text/css">
+<link href="./Linux_DLL_files/handheld.css" media="handheld" rel="stylesheet" title="www" type="text/css">
+<link href="./Linux_DLL_files/print.css" media="print" rel="stylesheet" title="www" type="text/css">
+<link href="./Linux_DLL_files/overlay.css" media="screen,projection" rel="stylesheet" title="www" type="text/css">
+
+<!-- dW-specific CSS -->
+<link href="./Linux_DLL_files/dw-screen.css" media="screen,projection" rel="stylesheet" title="www" type="text/css">
+<link href="./Linux_DLL_files/dw-local-site.css" media="screen,projection" rel="stylesheet" title="www" type="text/css">
+<link href="./Linux_DLL_files/dw-screen-comments-ratings-signin.css" media="screen,projection" rel="stylesheet" title="www" type="text/css">
+<link href="./Linux_DLL_files/jquery.cluetip.css" media="screen,projection" rel="stylesheet" title="www" type="text/css">
+
+<!-- JPP: LOCAL URL FOR TESTING V16 DEFIANT MASTHEAD/FOOTER -->
+<link href="./Linux_DLL_files/dw-mf2012-01.css" rel="stylesheet" title="www" type="text/css">
+<link href="./Linux_DLL_files/dw-mf-cn.css" rel="stylesheet" title="www" type="text/css">
+<script src="./Linux_DLL_files/ibmcommon.js" type="text/javascript">//</script><link rel="search" type="application/opensearchdescription+xml" href="http://www.ibm.com/search/opensearch/description.xml" title="IBM Search">
+<script src="./Linux_DLL_files/dynamicnav.js" type="text/javascript">//</script>
+<script language="JavaScript" src="./Linux_DLL_files/urltactic.js" type="text/javascript"></script>
+<!-- Rating_START -->
+<script language="JavaScript" type="text/javascript">
+  // <![CDATA[
+
+ dwr = {};
+  dwr.clickhere = '点击评分';
+  dwr.starIntro = ''; 
+  dwr.stars = '星';
+  dwr.star = '星'; 
+  dwr.avgRatingOf = '平均分';
+  dwr.youRated = '您的评分是';
+  dwr.avgRating = '平均分';
+  dwr.basedOnVote = '共 {1} 个评分'; // {1} to be substitue by code
+  dwr.basedOnVotes = '共 {1} 个评分';
+  dwr.leftParen = '（'; 
+  dwr.rightParen = ' ）'; 
+  dwr.space = ' '; 
+  dwr.yourRating = '您的评分';
+dwr.avgRating2 = '总共 {1} 评分的平均分';
+dwr.avgRating3 = '平均分{1} 星';
+dwr.rateThisArticle = '为本文评分';
+dwr.votes = '{1}个评分';
+dwr.vote = '{1}个评分';
+dwr.submitErr = '错误：提交失败，请重试。';
+dwr.noRatingErr = '错误：请选择一个评分并重新提交。';
+dwr.submit = '提交';
+// ]]>
+</script>
+
+<!-- Rating_START -->
+<script language="JavaScript" src="./Linux_DLL_files/showrating.js" type="text/javascript"></script>
+<style type="text/css">
+  .metavalue {
+  display: none;
+  }
+</style>
+<!-- Rating_END --><!-- RESERVED_HEADER_INCLUDE -->
+<script language="javascript" src="./Linux_DLL_files/ajax1.js" type="text/javascript"></script>
+<script language="javascript" src="./Linux_DLL_files/search_counter-maverick.js" type="text/javascript"></script>
+<script language="javascript" src="./Linux_DLL_files/request_referer_capture-maverick.js" type="text/javascript"></script>
+<script language="JavaScript" type="text/javascript">
+ <!--
+ setDefaultQuery('defaultHere');
+ //-->
+</script>
+<script language="JavaScript" type="text/javascript">
+ <!--
+ function openNewWindow(url,tar,arg){window.open(url,tar,arg);}
+ //-->
+</script>
+  <!-- Include file support -->
+  <script language="JavaScript" type="text/javascript">
+    (function($) {
+    jQuery.extend({
+    getInc: function(u,d){
+    if(u==null)return;
+    jQuery.ajax({
+    type: "GET",
+    url: u,
+    dataType: "text",
+    success: function(t) {
+    jQuery(d).html(t);
+    ibmCommon.initShowHide(jQuery(d).children()[0]);	
+    },
+    async: true
+    });
+    }
+    });
+    })(jQuery);
+  </script>
+<script id="mhMenu" type="text/javascript" src="./Linux_DLL_files/cnzh-utf8.js" charset="UTF-8"></script><script src="chrome-extension://lifbcibllhkdhoafpjfnlhfpfgnpldfl/document_iterator.js"></script><script src="chrome-extension://lifbcibllhkdhoafpjfnlhfpfgnpldfl/find_proxy.js"></script><script src="chrome-extension://lifbcibllhkdhoafpjfnlhfpfgnpldfl/get_html_text.js"></script><script src="chrome-extension://lifbcibllhkdhoafpjfnlhfpfgnpldfl/global_constants.js"></script><script src="chrome-extension://lifbcibllhkdhoafpjfnlhfpfgnpldfl/name_injection_builder.js"></script><script src="chrome-extension://lifbcibllhkdhoafpjfnlhfpfgnpldfl/number_injection_builder.js"></script><script src="chrome-extension://lifbcibllhkdhoafpjfnlhfpfgnpldfl/string_finder.js"></script><script src="chrome-extension://lifbcibllhkdhoafpjfnlhfpfgnpldfl/change_sink.js"></script><meta name="document_iterator.js"><meta name="find_proxy.js"><meta name="get_html_text.js"><meta name="global_constants.js"><meta name="name_injection_builder.js"><meta name="number_injection_builder.js"><meta name="string_finder.js"><meta name="change_sink.js"><script id="wiBundle" type="text/javascript" src="./Linux_DLL_files/Controller" charset="UTF-8"></script><style id="wrc-middle-css" type="text/css">.wrc_whole_window{	display: none;	position: fixed; 	z-index: 2147483647;	background-color: rgba(40, 40, 40, 0.9);	word-spacing: normal !important;	margin: 0px !important;	padding: 0px !important;	border: 0px !important;	left: 0px;	top: 0px;	width: 100%;	height: 100%;	line-height: normal !important;	letter-spacing: normal !important;	overflow: hidden;}.wrc_bar_window{	display: none;	position: fixed; 	z-index: 2147483647;	background-color: rgba(60, 60, 60, 1.0);	word-spacing: normal !important;	font-family: Segoe UI, Arial Unicode MS, Arial, Sans-Serif;	margin: 0px !important;	padding: 0px !important;	border: 0px !important;	left: 0px;	top: 0px;	width: 100%;	height: 40px;	line-height: normal !important;	letter-spacing: normal !important;	color: white !important;	font-size: 13px !important;}.wrc_middle {	display: table-cell;	vertical-align: middle;	width: 100%;}.wrc_middle_main {	font-family: Segoe UI, Arial Unicode MS, Arial, Sans-Serif;	font-size: 14px;	width: 600px;	height: auto;    background: url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/background-body.jpg) repeat-x left top;	background-color: rgb(39, 53, 62);	position: relative;	margin-left: auto;	margin-right: auto;	text-align: left;}.wrc_middle_tq_main {	font-family: Segoe UI, Arial Unicode MS, Arial, Sans-Serif;	font-size: 16px;	width: 615px;	height: 460px;    background: url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/background-sitecorrect.png) no-repeat;	background-color: white;	color: black !important;	position: relative;	margin-left: auto;	margin-right: auto;	text-align: center;}.wrc_middle_logo {    background: url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/logo.jpg) no-repeat left bottom;    width: 140px;    height: 42px;    color: orange;    display: table-cell;    text-align: right;    vertical-align: middle;}.wrc_icon_warning {	margin: 20px 10px 20px 15px;	float: left;	background-color: transparent;}.wrc_middle_title {    color: #b6bec7;	height: auto;    margin: 0px auto;	font-size: 2.2em;	white-space: nowrap;	text-align: center;}.wrc_middle_hline {    height: 2px;	width: 100%;    display: block;}.wrc_middle_description {	text-align: center;	margin: 15px;	font-size: 1.4em;	padding: 20px;	height: auto;	color: white;	min-height: 3.5em;}.wrc_middle_actions_main_div {	margin-bottom: 15px;	text-align: center;}.wrc_middle_actions_blue_button div {	display: inline-block;	width: auto;	cursor: Pointer;	margin: 3px 10px 3px 10px;	color: white;	font-size: 1.2em;	font-weight: bold;}.wrc_middle_actions_blue_button {	-moz-appearance: none;	border-radius: 7px;	-moz-border-radius: 7px/7px;	border-radius: 7px/7px;	background-color: rgb(0, 173, 223) !important;	display: inline-block;	width: auto;	cursor: Pointer;	border: 2px solid #00dddd;	padding: 0px 20px 0px 20px;}.wrc_middle_actions_blue_button:hover {	background-color: rgb(0, 159, 212) !important;}.wrc_middle_actions_blue_button:active {	background-color: rgb(0, 146, 200) !important;	border: 2px solid #00aaaa;}.wrc_middle_actions_grey_button div {	display: inline-block;	width: auto;	cursor: Pointer;	margin: 3px 10px 3px 10px;	color: white !important;	font-size: 15px;	font-weight: bold;}.wrc_middle_actions_grey_button {	-moz-appearance: none;	border-radius: 7px;	-moz-border-radius: 7px/7px;	border-radius: 7px/7px;	background-color: rgb(100, 100, 100) !important;	display: inline-block;	width: auto;	cursor: Pointer;	border: 2px solid #aaaaaa;	text-decoration: none;	padding: 0px 20px 0px 20px;}.wrc_middle_actions_grey_button:hover {	background-color: rgb(120, 120, 120) !important;}.wrc_middle_actions_grey_button:active {	background-color: rgb(130, 130, 130) !important;	border: 2px solid #00aaaa;}.wrc_middle_action_low {	font-size: 0.9em;	white-space: nowrap;	cursor: Pointer;	color: grey !important;	margin: 10px 10px 0px 10px;	text-decoration: none;}.wrc_middle_action_low:hover {	color: #aa4400 !important;}.wrc_middle_actions_rest_div {	padding-top: 5px;	white-space: nowrap;	text-align: center;}.wrc_middle_action {	white-space: nowrap;	cursor: Pointer;	color: red !important;	font-size: 1.2em;	margin: 10px 10px 0px 10px;	text-decoration: none;}.wrc_middle_action:hover {	color: #aa4400 !important;}</style><script id="wrc-script-middle_window" type="text/javascript" language="JavaScript">var g_inputsCnt = 0;var g_InputThis = new Array(null, null, null, null);var g_alerted = false;/* we test the input if it includes 4 digits   (input is a part of 4 inputs for filling the credit-card number)*/function is4DigitsCardNumber(val){	var regExp = new RegExp('[0-9]{4}');	return (val.length == 4 && val.search(regExp) == 0);}/* testing the whole credit-card number 19 digits devided by three '-' symbols or   exactly 16 digits without any dividers*/function isCreditCardNumber(val){	if(val.length == 19)	{		var regExp = new RegExp('[0-9]{4}-[0-9]{4}-[0-9]{4}-[0-9]{4}');		return (val.search(regExp) == 0);	}	else if(val.length == 16)	{		var regExp = new RegExp('[0-9]{4}[0-9]{4}[0-9]{4}[0-9]{4}');		return (val.search(regExp) == 0);	}	return false;}function CheckInputOnCreditNumber(self){	if(g_alerted)		return false;	var value = self.value;	if(self.type == 'text')	{		if(is4DigitsCardNumber(value))		{			var cont = true;			for(i = 0; i < g_inputsCnt; i++)				if(g_InputThis[i] == self)					cont = false;			if(cont && g_inputsCnt < 4)			{				g_InputThis[g_inputsCnt] = self;				g_inputsCnt++;			}		}		g_alerted = (g_inputsCnt == 4);		if(g_alerted)			g_inputsCnt = 0;		else			g_alerted = isCreditCardNumber(value);	}	return g_alerted;}function CheckInputOnPassword(self){	if(g_alerted)		return false;	var value = self.value;	if(self.type == 'password')	{		g_alerted = (value.length > 0);	}	return g_alerted;}function onInputBlur(self, bRatingOk, bFishingSite){	var bCreditNumber = CheckInputOnCreditNumber(self);	var bPassword = CheckInputOnPassword(self);	if((!bRatingOk || bFishingSite == 1) && (bCreditNumber || bPassword) )	{		var warnDiv = document.getElementById("wrcinputdiv");		if(warnDiv)		{			/* show the warning div in the middle of the screen */			warnDiv.style.left = "0px";			warnDiv.style.top = "0px";			warnDiv.style.width = "100%";			warnDiv.style.height = "100%";			document.getElementById("wrc_warn_fs").style.display = 'none';			document.getElementById("wrc_warn_cn").style.display = 'none';			if(bFishingSite)				document.getElementById("wrc_warn_fs").style.display = 'block';			else				document.getElementById("wrc_warn_cn").style.display = 'block';			warnDiv.style.display = 'table';		}	}}</script><style id="wrc-css" type="text/css">.wrcx {display:none} .r .wrcx, .osl .wrcx, .bc .wrcx, .fc .wrcx, #rhsline ol .wrcx {display:inline; background: url("chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/grey0-16.png") right no-repeat}
+.wrc0 {display:none} .r .wrc0, .osl .wrc0, .bc .wrc0, .fc .wrc0, #rhsline ol .wrc0 {display:inline; background: url("chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/grey0-16.png") right no-repeat}
+.wrc11 {display:none} .r .wrc11, .osl .wrc11, .bc .wrc11, .fc .wrc11, #rhsline ol .wrc11 {display:inline; background: url("chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/green1-16.png") right no-repeat}
+.wrc12 {display:none} .r .wrc12, .osl .wrc12, .bc .wrc12, .fc .wrc12, #rhsline ol .wrc12 {display:inline; background: url("chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/green2-16.png") right no-repeat}
+.wrc13 {display:none} .r .wrc13, .osl .wrc13, .bc .wrc13, .fc .wrc13, #rhsline ol .wrc13 {display:inline; background: url("chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/green3-16.png") right no-repeat}
+.wrc21 {display:none} .r .wrc21, .osl .wrc21, .bc .wrc21, .fc .wrc21, #rhsline ol .wrc21 {display:inline; background: url("chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/yellow1-16.png") right no-repeat}
+.wrc22 {display:none} .r .wrc22, .osl .wrc22, .bc .wrc22, .fc .wrc22, #rhsline ol .wrc22 {display:inline; background: url("chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/yellow2-16.png") right no-repeat}
+.wrc23 {display:none} .r .wrc23, .osl .wrc23, .bc .wrc23, .fc .wrc23, #rhsline ol .wrc23 {display:inline; background: url("chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/yellow3-16.png") right no-repeat}
+.wrc31 {display:none} .r .wrc31, .osl .wrc31, .bc .wrc31, .fc .wrc31, #rhsline ol .wrc31 {display:inline; background: url("chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/red1-16.png") right no-repeat}
+.wrc32 {display:none} .r .wrc32, .osl .wrc32, .bc .wrc32, .fc .wrc32, #rhsline ol .wrc32 {display:inline; background: url("chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/red2-16.png") right no-repeat}
+.wrc33 {display:none} .r .wrc33, .osl .wrc33, .bc .wrc33, .fc .wrc33, #rhsline ol .wrc33 {display:inline; background: url("chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/red3-16.png") right no-repeat}
+.wrc_icon{margin:0;padding:0;padding-left:15px !important;width:16px !important; height:16px !important;line-height:16px !important;}
+#wrchoverdiv{padding-bottom:20px; position:absolute; width:180px; background:transparent url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/background-body.jpg) top left repeat-x; display:none; font-family: Segoe UI, Arial Unicode MS, Arial, Sans-Serif; font-size: 14px; z-index:9999999;}
+#wrchoverdiv{cursor:default;}
+#wrchoverdiv #wrccontainer{width:180px;}
+#wrchoverdiv #wrcheader{width:140px; height:42px; background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/logo.jpg) bottom left no-repeat; text-align:right; line-height:42px; color:orange; margin:0 auto;}
+#wrchoverdiv .wrchorizontal{width:180px; height:2px; background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/horizontal-line.jpg) bottom left no-repeat;}
+#wrchoverdiv #wrccurrentvote{height:25px; line-height:25px; color:#FFF; text-align:center; text-transform:uppercase;}
+#wrchoverdiv #wrcrating{margin:5px auto; width:69px; height:55px; background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/grey-0.png) bottom left no-repeat;}
+#wrchoverdiv #wrcrating.wrcbx{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/grey-0.png);}
+#wrchoverdiv #wrcrating.wrcb0{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/grey-0.png);}
+#wrchoverdiv #wrcrating.wrcb11{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/green-1.png);}
+#wrchoverdiv #wrcrating.wrcb12{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/green-2.png);}
+#wrchoverdiv #wrcrating.wrcb13{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/green-3.png);}
+#wrchoverdiv #wrcrating.wrcb21{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/yellow-1.png);}
+#wrchoverdiv #wrcrating.wrcb22{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/yellow-2.png);}
+#wrchoverdiv #wrcrating.wrcb23{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/yellow-3.png);}
+#wrchoverdiv #wrcrating.wrcb31{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/red-1.png);}
+#wrchoverdiv #wrcrating.wrcb32{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/red-2.png);}
+#wrchoverdiv #wrcrating.wrcb33{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/red-3.png);}
+#wrchoverdiv #wrcratingtext{margin:3px 5px; color:#FFF; text-align:center; padding:0; font-size:12px;}
+#wrchoverdiv #wrcweighttext{margin:3px 5px; color:#FFF; text-align:center; padding:0; font-size:12px;}
+#wrchoverdiv #wrcflags{width:150px; height:70px; margin:0 auto;}
+#wrchoverdiv .wrcicon{width:30px; height:30px; float:left;}
+#wrchoverdiv #wrcicon_shopping{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/shopping-small-disable.png) top left no-repeat;}
+#wrchoverdiv #wrcicon_shopping.selected{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/shopping-small-selected.png) top left no-repeat;}
+#wrchoverdiv #wrcicon_social{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/social-small-disable.png) top left no-repeat;}
+#wrchoverdiv #wrcicon_social.selected{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/social-small-selected.png) top left no-repeat;}
+#wrchoverdiv #wrcicon_news{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/news-small-disable.png) top left no-repeat;}
+#wrchoverdiv #wrcicon_news.selected{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/news-small-selected.png) top left no-repeat;}
+#wrchoverdiv #wrcicon_it{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/it-small-disable.png) top left no-repeat;}
+#wrchoverdiv #wrcicon_it.selected{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/it-small-selected.png) top left no-repeat;}
+#wrchoverdiv #wrcicon_corporate{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/corporate-small-disable.png) top left no-repeat;}
+#wrchoverdiv #wrcicon_corporate.selected{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/corporate-small-selected.png) top left no-repeat;}
+#wrchoverdiv #wrcicon_pornography{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/pornography-small-disable.png) top left no-repeat;}
+#wrchoverdiv #wrcicon_pornography.selected{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/pornography-small-selected.png) top left no-repeat;}
+#wrchoverdiv #wrcicon_violence{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/violence-small-disable.png) top left no-repeat;}
+#wrchoverdiv #wrcicon_violence.selected{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/violence-small-selected.png) top left no-repeat;}
+#wrchoverdiv #wrcicon_gambling{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/gambling-small-disable.png) top left no-repeat;}
+#wrchoverdiv #wrcicon_gambling.selected{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/gambling-small-selected.png) top left no-repeat;}
+#wrchoverdiv #wrcicon_drugs{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/drugs-small-disable.png) top left no-repeat;}
+#wrchoverdiv #wrcicon_drugs.selected{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/drugs-small-selected.png) top left no-repeat;}
+#wrchoverdiv #wrcicon_illegal{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/illegal-small-disable.png) top left no-repeat;}
+#wrchoverdiv #wrcicon_illegal.selected{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/illegal-small-selected.png) top left no-repeat;}
+</style></head><style type="text/css">embed[type*="application/x-shockwave-flash"],embed[src*=".swf"],object[type*="application/x-shockwave-flash"],object[codetype*="application/x-shockwave-flash"],object[src*=".swf"],object[codebase*="swflash.cab"],object[classid*="D27CDB6E-AE6D-11cf-96B8-444553540000"],object[classid*="d27cdb6e-ae6d-11cf-96b8-444553540000"],object[classid*="D27CDB6E-AE6D-11cf-96B8-444553540000"]{	display: none !important;}</style>
+
+<body id="ibm-com">
+<div id="ibm-top" class="ibm-landing-page">
+
+<!-- MASTHEAD_BEGIN -->
+<!-- MASTHEAD_BEGIN -->
+<div class="ibm-access"><a href="http://www.ibm.com/developerworks/cn/linux/sdk/dll/index.html#ibm-content">跳转到主要内容</a></div>
+<div id="ibm-masthead-dw">
+  
+    <!-- TOP ROW -->    
+    <div id="dw-masthead-top-row">
+    	<ul id="ibm-mast-options-dw" class="cn">
+    		<li id="dw-mast-top-0"> 	
+    			<a class="" href="http://www.ibm.com/developerworks/dwwi/DWAuthRouter?m=loginpage&lang=zh&d=http%3A%2F%2Fwww.ibm.com%2Fdeveloperworks%2Fcn%2Flinux%2Fsdk%2Fdll%2Findex.html" title="">登录 (或注册)</a>
+    		</li>
+    		<li id="dw-mast-top-1" class="dw-mast-top-1-cn">
+    			<a href="http://www.ibm.com/developerworks/cn/linux/sdk/dll/index.html#SELECTLANG">中文</a><img class="dw-preload" src="./Linux_DLL_files/arrow-down-active.gif" width="8" height="7" alt="">
+    		</li>
+    		<li id="dw-mast-top-2" class="dw-mf-hide">
+    			<a href="http://www.ibm.com/developerworks/cn/linux/sdk/dll/index.html#"><img src="./Linux_DLL_files/photo.do" alt="PHOTO" class="dw-mast-profimg" width="20" height="20"> [userid]</a>
+    		</li>
+    		<li id="dw-mast-top-3">
+    			<a href="http://www.ibm.com/developerworks/cn/linux/sdk/dll/index.html#"><img src="./Linux_DLL_files/ibm-smlogo.gif" width="44" height="16" alt="IBM®"></a>
+    		</li>
+    	</ul>
+	</div>
+    
+    <!-- TOP ROW SLIDER -->
+    <div id="ibm-my-menu-dw">    
+        <div class="ibm-ribbon-pane-dw">
+            <div class="ibm-ribbon-section-dw">
+                <!-- Sign-in -->
+                <div class="dw-mast-columns">                
+					<div class="dw-mast-col-1-1">
+						<div id="dw-mast-sso">
+							<!--<div id="dw-mast-sso-reg">
+								<p class="dw-mast-sso-reg-cn">如果您还没有注册到 IBM 注册系统，我们为给您带来的不便表示道歉，并请您马上注册。 							
+									<a href="#" onclick="(function () {window.location='/developerworks/dwwi/DWAuthRouter?m=reg&amp;lang=zh&amp;d='+encodeURIComponent(location.href);})();">现在注册</a>。</p>
+							</div>-->
+							<div id="signin_error_mf" class="no-display"></div>
+							<div id="dw-mast-sso-form">
+								<form id="sForm_mf" action="" method="post" name="sForm_name_mf" onsubmit="return false;">
+									<div id="dw-mast-sso-id" class="dw-mast-sso-id-cn">
+										<label for="ibmid_mf">IBM ID：</label>
+										<input id="ibmid_mf" type="text" value="" name="ibmid_name_mf" maxlength="100" onkeypress="handleEP(event,this.form,&#39;mf&#39;);" class="">
+									</div>
+									<div id="dw-mast-sso-pw" class="dw-mast-sso-pw-cn">
+										<label for="pw_mf">密码：</label>
+										<input id="pw_mf" type="password" value="" name="pw_name_mf" maxlength="100" onkeypress="handleEP(event,this.form,&#39;mf&#39;);" class="">
+									</div>
+									<div id="dw-mast-sso-target" class="dw-mast-sso-target-cn">
+										<p class="dw-mf-perm-box">
+											<input id="perm_mf" type="checkbox" name="perm_name_mf"><label for="perm_mf"> 保持登录。</label>
+										</p>
+									</div>
+									<div id="dw-mast-sso-terms">
+										<p class="dw-mast-sso-terms-cn">单击提交则表示您同意developerWorks 的条款和条件。 <a href="http://www.ibm.com/developerworks/mydeveloperworks/terms?lang=zh">查看条款和条件</a>.</p>
+									</div>
+									<div>
+										<input class="dw-mf-submit-btn-cn" name="ibm_submit_name_mf" value="提交" onclick="signin(&#39;mf&#39;);return false;" type="submit">
+									</div>
+								</form>
+							</div>
+							<div id="dw-mast-sso-update">
+								<div id="dw-mast-sso-update-id">
+									<ul>
+										<li><a class="ibm-forward-link" href="http://www.ibm.com/developerworks/cn/linux/sdk/dll/index.html#" onclick="(function () {window.location=&#39;/developerworks/dwwi/DWAuthRouter?m=reg&amp;lang=zh_CN&amp;d=&#39;+encodeURIComponent(location.href);})();">需要一个 IBM ID？</a></li>
+										
+									<li><a class="ibm-forward-link" href="http://www.ibm.com/developerworks/dwwi/jsp/WSHelp.jsp?lang=zh_CN">忘记 IBM ID？</a></li>
+									</ul>
+								</div>
+								<div id="dw-mast-sso-update-pw">
+								<ul class="dw-mf-pwupdate">
+									<li><a class="ibm-forward-link" href="http://www.ibm.com/developerworks/cn/linux/sdk/dll/index.html#" onclick="(function () {window.location=&#39;https://www.ibm.com/account/profile?page=forgot&amp;lang=zh_CN&amp;appname=ibm&amp;required=null&amp;d=&#39;+encodeURIComponent(getAuthUrl())+&#39;%3Fm%3Dloginpage%26lang%3Dzh_CN%26d%3D&#39;+encodeURIComponent(location.href);})();">忘记密码？</a></li>
+									<li><a class="ibm-forward-link" href="http://www.ibm.com/developerworks/cn/linux/sdk/dll/index.html#" onclick="(function () {window.location=&#39;https://www.ibm.com/account/profile?page=chpw&amp;lang=zh_CN&amp;appname=ibm&amp;required=null&amp;d=&#39;+encodeURIComponent(location.href);})();">更改您的密码</a></li>
+								</ul>
+									</div>
+							</div>
+							<div id="dw-mast-sso-text">
+								<p>当您初次登录到 developerWorks 时，将会为您创建一份概要信息。<strong>您在 developerWorks 概要信息中选择公开的信息将公开显示给其他人，但您可以随时修改这些信息的显示状态。</strong>您的姓名（除非选择隐藏）和昵称将和您在 developerWorks 发布的内容一同显示。</p>
+								<p class="dw-mf-secure-cn">所有提交的信息确保安全。</p>
+							</div>
+							<div class="dw-mast-close">
+								<ul>
+									<li><div class="dw-mast-close-sign-cn"><a href="http://www.ibm.com/developerworks/cn/linux/sdk/dll/index.html#"><img src="./Linux_DLL_files/c.gif" alt="关闭 [x]" width="20" height="10" border="0"></a></div></li>
+								</ul>
+							</div>	
+						</div>
+						
+						<div id="dw-mast-dname" class="dw-mf-hide">
+							<p>当您初次登录到 developerWorks 时，将会为您创建一份概要信息，您需要指定一个昵称。您的昵称将和您在 developerWorks 发布的内容显示在一起。</p><p><strong>昵称长度在 3 至 31 个字符之间</strong>。 您的昵称在 developerWorks 社区中必须是唯一的，并且出于隐私保护的原因，不能是您的电子邮件地址。</p>
+							<div id="signin_dname_error_mf" class="no-display"></div>
+							<div id="dw-mast-dname-form">
+								<form id="dForm_mf" action="" method="post" name="dForm_name_mf" onsubmit="return false;">
+									<div id="dw-mast-dname-mf">
+										<label for="dname_mf">昵称：</label>
+										<input id="dname_mf" name="dname_name_mf" maxlength="31" size="25" value="" type="text" onkeypress="handleEP(event,this.form,&#39;mf&#39;);">
+									</div>
+									<div id="dw-mast-dname-terms">
+										<p class="dw-mast-dname-terms-cn">单击<strong>提交</strong>则表示您同意developerWorks 的条款和条件。 <a href="http://www.ibm.com/developerworks/mydeveloperworks/terms?lang=zh">查看条款和条件</a>.</p>
+									</div>
+									<div>
+										<input class="dw-mf-submit-btn-cn" name="dname_submit_name_mf" value="提交" onclick="signin(&#39;mf&#39;);return false;" type="submit">
+									</div>
+								</form>								
+							</div>
+							<div id="dw-mast-dname-secure">
+								<p class="dw-mf-secure-cn">所有提交的信息确保安全。</p>
+							</div>
+							<div class="dw-mast-close">
+								<ul>
+									<li><div class="dw-mast-close-sign-cn"><a href="http://www.ibm.com/developerworks/cn/linux/sdk/dll/index.html#"><img src="./Linux_DLL_files/c.gif" alt="关闭 [x]" width="20" height="10" border="0"></a></div></li>
+								</ul>
+							</div>	
+						</div>
+	
+						<div id="dw-mast-auth" class="dw-mf-hide">
+							<div>
+
+								<h2>My developerWorks:</h2>
+								<ul>
+									<li><a id="dw-mast-top-0-0" href="http://www.ibm.com/developerworks/mydeveloperworks/profiles/html/myProfileView.do?lang=zh">我的概要信息</a></li>
+									<li><a href="http://www.ibm.com/developerworks/mydeveloperworks/homepage?lang=zh">我的首页</a></li>
+									<li><a href="http://www.ibm.com/developerworks/mydeveloperworks/groups/service/html/mycommunities?lang=zh">我的群组</a></li>
+								</ul>     
+							</div>
+							<div id="dw-mast-notify" class="dw-mf-hide">
+								<h2>我的通知：</h2>
+								<ul>
+									<li><a id="new_notify" href="http://www.ibm.com/developerworks/mydeveloperworks/homepage?lang=zh">{[num_notify] 个新通知}([num_notify] 个新通知)</a></li>
+									<li><a id="new_invite" href="http://www.ibm.com/developerworks/mydeveloperworks/profiles/html/wc.do?action=in&requireAuth=true&widgetId=friends&lang=[lang]">{[num_invite] 个网络请求}([num_invite] 个网络请求)</a></li>  
+								</ul>
+							</div>
+							<div class="dw-mast-more">
+								<ul class="ibm-link-list">
+									<li><a class="dw-more-link" href="http://www.ibm.com/developerworks/cn/linux/sdk/dll/index.html#" onclick="signOut(); return false;"><strong>退出</strong></a></li>
+								</ul>
+							</div>
+							<div class="dw-mast-close">
+								<ul>
+									<li><div class="dw-mast-close-sign"><a href="http://www.ibm.com/developerworks/cn/linux/sdk/dll/index.html#"><img src="./Linux_DLL_files/c.gif" alt="关闭 [x]" width="20" height="10" border="0"></a></div></li>
+								</ul>
+							</div>		
+						</div>
+						
+					</div>
+                	
+                </div>
+                <!-- Site selector --> 
+				<div class="dw-mast-columns">
+					<div class="dw-mast-col-2-1">
+						<h2>选择语言：</h2>
+						<ul>
+							<li><a id="dw-mast-top-1-0" href="http://www.ibm.com/developerworks/">English</a></li>
+							<li><a href="http://www.ibm.com/developerworks/cn/">中文</a></li>
+							<li><a href="http://www.ibm.com/developerworks/jp/">日本語</a></li>
+						    <li><a href="http://www.ibm.com/developerworks/ru/">Русский</a></li>
+						</ul>
+					</div>
+					<div class="dw-mast-col-2-2">
+						<ul>
+							<li><a href="http://www.ibm.com/developerworks/br/">Português (Brasil)</a></li>
+							<li><a href="http://www.ibm.com/developerworks/ssa/">Español</a></li>
+							<li><a href="http://www.ibm.com/developerworks/vn/">Việt</a></li>
+						</ul>
+					</div>
+					<div class="dw-mast-close">
+						<ul>
+							<li><div class="dw-mast-close-lang"><a href="http://www.ibm.com/developerworks/cn/linux/sdk/dll/index.html#"><img src="./Linux_DLL_files/c.gif" alt="关闭 [x]" width="20" height="10" border="0"></a></div></li>
+						</ul>
+                    </div>
+                </div>
+                <div class="dw-mast-columns"><!-- Authenticated --></div>
+                <!-- IBM -->
+				<div class="dw-mast-columns">
+					<div class="dw-mast-col-2-1">
+						<ul>
+							<li><a id="dw-mast-top-3-0" href="http://www.ibm.com/cn/zh/">IBM 主页</a></li>
+							<li><a href="http://www.ibm.com/solutions/cn/zh/">解决方案</a></li>
+							<li><a href="http://www.ibm.com/software/cn/">软件</a></li>
+						</ul>
+					</div>
+					<div class="dw-mast-col-2-2 dw-mast-ibm">
+						<ul>
+							<li><a href="http://www.ibm.com/support/cn/zh/">支持门户</a></li>
+							<li><a href="http://www.ibm.com/support/documentation/cn/zh/">产品文档</a></li>
+							<li><a href="http://www.ibm.com/redbooks/">Redbooks（英文）</a></li>
+						</ul>
+					</div>
+					<div class="dw-mast-close">
+						<ul>
+							<li><div class="dw-mast-close-ibm-cn"><a href="http://www.ibm.com/developerworks/cn/linux/sdk/dll/index.html#"><img src="./Linux_DLL_files/c.gif" alt="关闭 [x]" width="20" height="10" border="0"></a></div></li>
+						</ul>
+                    </div> 
+				</div>
+			</div>
+        </div>
+    </div>
+
+    <!-- BOTTOM ROW -->
+    <div id="ibm-universal-nav-dw">
+        <ul id="ibm-unav-links-dw">
+        	<li id="ibm-unav-home-dwlogo">
+        		<a href="http://www.ibm.com/developerworks/cn/"><img src="./Linux_DLL_files/dw-wordmark.gif" width="218" height="32" alt="developerWorks®"></a>
+        	</li>
+        </ul>
+    	<ul id="ibm-menu-links-dw" class="ibm-menu-links-dw-cn">
+    		
+    		<li id="dw-mast-nav-0"><a href="http://www.ibm.com/developerworks/cn/topics">技术主题</a></li>
+    		<li id="dw-mast-nav-1"><a href="http://www.ibm.com/developerworks/cn/downloads/">软件下载</a></li>
+    		<li id="dw-mast-nav-2"><a href="https://www.ibm.com/developerworks/community/?lang=zh">社区</a></li>
+    		<li id="dw-mast-nav-3"><a href="https://www.ibm.com/developerworks/community/groups/service/html/communityview?communityUuid=6d7f9e5d-5f89-4767-a006-a81b8d186370&lang=zh">技术讲座</a></li>
+    	</ul>   
+    	<form id="ibm-search-form" action="http://www.ibm.com/search/csass/search/" method="get" name="form1">
+    		<input type="hidden" name="sn" value="dw">
+    		<input type="hidden" name="lang" value="zh">
+    		<input type="hidden" name="cc" value="CN">
+    		<input type="hidden" name="en" value="utf">
+    		<input type="hidden" name="hpp" value="20">
+    		<input type="hidden" name="dws" value="cndw">
+    		<input type="hidden" name="lo" value="zh">
+    		<p>
+    			<label for="q"><img alt="查询:" height="1" width="1" src="./Linux_DLL_files/c.gif"></label>
+    			<input type="text" value="搜索 developerWorks" name="q" maxlength="100" id="q">
+    			<input type="submit" id="ibm-search" class="ibm-btn-search ibm-btn-search-cn" name="Search" value="搜索">
+    		</p>
+    	</form>
+    </div>
+    
+    <!-- BOTTOM ROW SLIDER -->
+    <div id="ibm-common-menu-dw">
+        <div class="ibm-ribbon-pane-dw">
+            <div class="ibm-ribbon-section-dw">
+				<!-- Technical topics category -->
+  
+            	<div class="dw-mast-columns">
+            	<div class="dw-mast-col-5-1">
+            		<h2><a id="dw-mast-nav-0-0" href="http://www.ibm.com/developerworks/cn/topics/">技术主题</a></h2>
+            		
+            		<ul>
+            		    <li><a href="http://www.ibm.com/developerworks/cn/agile/">Agile
+            			    transformation</a></li>
+            			<li><a href="http://www.ibm.com/developerworks/cn/aix/">AIX and UNIX</a></li>
+            		    <li><a href="http://www.ibm.com/developerworks/cn/bigdata/">Big data</a></li>
+            			<li><a href="http://www.ibm.com/developerworks/cn/cloud/">Cloud computing</a></li>
+            			<li><a href="http://www.ibm.com/developerworks/cn/ibmi/">IBM i</a></li>
+            			
+            		</ul>     
+            	</div>
+            	<div class="dw-mast-col-5-2">
+            		
+            		<ul>
+            		    <li><a href="http://www.ibm.com/developerworks/cn/data/">Information management</a></li>
+            		    <li><a href="http://www.ibm.com/developerworks/cn/java/">Java technology</a></li>
+            		    <li><a href="http://www.ibm.com/developerworks/cn/linux/">Linux</a></li>
+            			<li><a href="http://www.ibm.com/developerworks/cn/lotus/">Lotus</a></li>
+            		    <li><a href="http://www.ibm.com/developerworks/cn/mobile/">Mobile
+            		        development</a></li>
+           			
+            		</ul>
+            	</div>
+            	<div class="dw-mast-col-5-3">
+            		
+            		<ul>
+          			<li><a href="http://www.ibm.com/developerworks/cn/opensource/">Open source</a></li>
+            		    <li><a href="http://www.ibm.com/developerworks/cn/rational/">Rational</a></li>
+            			<li><a href="http://www.ibm.com/developerworks/cn/webservices/">SOA and web services</a></li>
+             			<li><a href="http://www.ibm.com/developerworks/cn/web/">Web development</a></li>  
+            			<li><a href="http://www.ibm.com/developerworks/cn/websphere/">WebSphere</a></li>     
+    
+            		</ul>
+            		
+            	</div>
+            	<div class="dw-mast-col-5-4">
+            		<ul>
+           			<li><a href="http://www.ibm.com/developerworks/cn/xml/">XML</a></li>
+            		</ul>        
+            	</div>
+            	<div class="dw-mast-col-5-5">
+            		<ul>
+            			<li><a href="http://www.ibm.com/developerworks/cn/library/"><strong>文档库</strong></a></li>
+            			<li><a href="http://www.ibm.com/developerworks/cn/products/"><strong>产品 A - Z</strong></a></li>				    
+            		</ul>        
+            	</div>
+            	<div class="dw-mast-close">
+            		<ul>
+            			<li><div class="dw-mast-close-tech-cn"><a href="http://www.ibm.com/developerworks/cn/linux/sdk/dll/index.html#"><img src="./Linux_DLL_files/c.gif" alt="关闭 [x]" width="20" height="10" border="0"></a></div></li>
+            		</ul>
+            	</div>
+            </div>
+            	<!-- Evaluation software category -->
+            	<div class="dw-mast-columns">
+            		<div class="dw-mast-col-2-1">
+            			<h2><a id="dw-mast-nav-1-0" href="http://www.ibm.com/developerworks/cn/downloads">软件下载</a></h2>
+            			<ul>
+            				<li><a href="http://www.ibm.com/developerworks/cn/downloads/#data">Information management</a></li>
+            				<li><a href="http://www.ibm.com/developerworks/cn/downloads/#lotus">Lotus</a></li>
+            				<li><a href="http://www.ibm.com/developerworks/cn/downloads/#rational">Rational</a></li>
+            			</ul>            
+            		</div>
+            		<div class="dw-mast-col-2-2">
+            			<ul>
+            				<li><a href="http://www.ibm.com/developerworks/cn/downloads/#tivoli">Tivoli</a></li>
+            				<li><a href="http://www.ibm.com/developerworks/cn/downloads/#websphere">WebSphere</a></li>
+            				
+            			</ul>            
+            		</div>
+            		<div class="dw-mast-close">
+            			<ul>
+            				<li><div class="dw-mast-close-eval-cn"><a href="http://www.ibm.com/developerworks/cn/linux/sdk/dll/index.html#"><img src="./Linux_DLL_files/c.gif" alt="关闭 [x]" width="20" height="10" border="0"></a></div></li>
+            			</ul>
+            		</div>
+            	</div>
+            	<!-- Community category -->
+            	<div class="dw-mast-columns">
+            		<div class="dw-mast-col-2-1">
+            			<h2><a id="dw-mast-nav-2-0" href="https://www.ibm.com/developerworks/community/?lang=zh">社区</a></h2>
+            			<ul>
+            				<li><a href="https://www.ibm.com/developerworks/community/homepage/?lang=zh">我的首页</a></li>
+            				<li><a href="https://www.ibm.com/developerworks/community/profiles/home.do?lang=zh">概要信息</a></li>
+            				<li><a href="https://www.ibm.com/developerworks/community/groups/service/html/allcommunities?lang=zh">群组</a></li>
+            				<li><a href="https://www.ibm.com/developerworks/mydeveloperworks/blogs/?lang=zh">博客</a></li>
+            				<li><a href="https://www.ibm.com/developerworks/community/bookmarks/html?lang=zh">书签</a></li>  
+            			</ul>     
+            		</div>
+            		<div class="dw-mast-col-2-2">
+            			<ul>
+            				<!--	<li><a href="">Forums</a></li> -->
+            				<li><a href="https://www.ibm.com/developerworks/mydeveloperworks/wikis/home?lang=zh">Wiki</a></li>
+            				<li><a href="https://www.ibm.com/developerworks/community/files/app?lang=zh">文件</a></li>
+            				<li><a href="https://www.ibm.com/developerworks/community/activities/service/html/mainpage?lang=zh#dashboard,myactivities">活动</a></li>
+            				<!--	<li><a href="">Podcasts</a></li> -->    
+            			</ul>
+            		</div>
+            		<div class="dw-mast-close">
+            			<ul>
+            				<li><div class="dw-mast-close-comm-cn"><a href="http://www.ibm.com/developerworks/cn/linux/sdk/dll/index.html#"><img src="./Linux_DLL_files/c.gif" alt="关闭 [x]" width="20" height="10" border="0"></a></div></li>
+            			</ul>
+            		</div>
+            	</div>
+            	<!-- Events category -->
+            	<div class="dw-mast-columns">
+            		<div class="dw-mast-col-1-1">
+            			<h2><a id="dw-mast-nav-3-0" href="https://www.ibm.com/developerworks/community/groups/service/html/communityview?communityUuid=6d7f9e5d-5f89-4767-a006-a81b8d186370&lang=zh">技术讲座</a></h2>
+            			<ul>
+            				<li><a href="https://www.ibm.com/developerworks/community/groups/service/html/communityview?communityUuid=6d7f9e5d-5f89-4767-a006-a81b8d186370&lang=zh">技术讲座</a></li>
+            				<li><a href="http://www.ibm.com/developerworks/cn/swi/">多媒体课堂</a></li>
+            				<li><a href="http://www.ibm.com/developerworks/find/webcasts/">网络广播（英文）</a></li>
+            				<li><a href="http://www.ibm.com/developerworks/find/events/">查找活动（技术讲座，网络广播，会议等）（英文）</a></li> 
+            			</ul>            
+            		</div>
+            		<div class="dw-mast-close">
+            			<ul>
+            				<li><div class="dw-mast-close-event-cn"><a href="http://www.ibm.com/developerworks/cn/linux/sdk/dll/index.html#"><img src="./Linux_DLL_files/c.gif" alt="关闭 [x]" width="20" height="10" border="0"></a></div></li>
+            			</ul>
+            		</div>
+            	</div>
+            </div>
+        </div>
+    </div>
+	
+</div>
+<div id="fdiv" class="ibm-access"><div style="display: block; cursor: pointer; text-align: center; width: 1px; height: 1px; top: auto; left: auto; position: static; "><div style="-webkit-transition: opacity 150ms ease-out; background-image: url(chrome-extension://gofhjkjmkpinhpoiabjplobcaignabnl/icon_play.png); text-align: left; opacity: 0.25; border: 1px solid rgb(0, 0, 0); width: 100%; height: 100%; background-color: rgba(193, 217, 244, 0.498039); background-repeat: no-repeat no-repeat; "></div></div><embed type="application/x-shockwave-flash" src="https://www.ibm.com/developerworks/js/dw-mf/connect.swf" width="1" height="1" id="sflash" name="sflash" quality="high" menu="false" wmode="window" movie="https://www.ibm.com/developerworks/js/dw-mf/connect.swf" swliveconnect="true" allowscriptaccess="always" style="display: none !important; "></div>
+<!-- MASTHEAD_END --><!-- MASTHEAD_END -->
+
+<div id="ibm-pcon">
+
+<!-- CONTENT_BEGIN -->
+<div id="ibm-content">
+
+<!-- Navigation_Trail_BEGIN -->
+<!-- &nbsp; -->
+      <div id="ibm-content-head"><ul id="ibm-navigation-trail"><li class="ibm-first"><a href="http://www.ibm.com/developerworks/cn/">developerWorks 中国</a></li><li><a href="http://www.ibm.com/developerworks/cn/linux/">Linux</a></li><li><a href="http://www.ibm.com/developerworks/cn/views/linux/libraryview.jsp">文档库</a></li></ul></div>
+<!-- Navigation_Trail_END -->
+
+<!-- dW_Summary Area_START -->
+<div id="dw-summary-article">
+
+<div class="dw-content-head">
+<h1>为 Linux 应用程序编写 DLL</h1><p><em>在仅仅只会编写插件的时候为什么要编写整个应用程序？</em></p>
+</div>
+
+<div class="ibm-container-body ibm-two-column">
+
+<div class="ibm-column ibm-first">
+<div class="author"><a class="dwauthor" rel="#authortip1" href="http://www.ibm.com/developerworks/cn/linux/sdk/dll/index.html#author1">Allen Wilson</a> (<a href="mailto:wilsona@us.ibm.com?subject=%E4%B8%BA%20Linux%20%E5%BA%94%E7%94%A8%E7%A8%8B%E5%BA%8F%E7%BC%96%E5%86%99%20DLL&cc=wilsona@us.ibm.com">wilsona@us.ibm.com</a>), 电子商务设计师, IBM</div><div id="authortip1" class="dwauthor-onload-state ibm-no-print" style="display: none; ">Allen Wilson 在位于美国堪萨斯州奥斯汀的 IBM
+任电子商务设计师兼顾问。他的专长领域包括 Linux、AIX、WebSphere
+Application Server 和应用程序托管。您可以通过 
+        <a href="mailto:wilsona@us.ibm.com?cc=wilsona@us.ibm.com">wilsona@us.ibm.com</a>
+同他联系。
+      </div>
+<p></p>
+  <p><strong>简介：</strong>&nbsp;插件和 DLL 通常是用来无须编写整个新应用程序而添加功能的极好方法。在 Linux 中，插件和 DLL 是以动态库形式实现的。电子商务顾问兼设计师 Allen Wilson 介绍了动态库，并且向您演示了如何在某一个应用程序正在运行之后使用动态库来更改该应用程序。</p>
+
+ 
+</div>
+
+<div class="ibm-column ibm-second">
+
+<p class="leading"><b>发布日期：</b>&nbsp;2001 年 10 月 01 日
+  
+<br><b>级别：</b>&nbsp;初级
+    
+
+<br><strong>访问情况 ：</strong>&nbsp;8934 次浏览
+  <br><strong>评论：</strong>&nbsp;<span id="nCmts">0&nbsp;(<a class="dw-view-comment" href="http://www.ibm.com/developerworks/cn/linux/sdk/dll/index.html#icomments">查看</a>&nbsp;|&nbsp;<a onclick="showSignIn();return false;" href="http://www.ibm.com/developerworks/cn/linux/sdk/dll/index.html#">添加评论</a> - 登录)</span>
+  <!-- Rating_Area_Begin -->
+  </p><div id="art-rating-summary"><img alt="平均分 3 星 共 10 个评分" src="./Linux_DLL_files/stars120x20-3b.jpg" class="dw-avg-rating"> 平均分 (10个评分)<br><a class="dw-view-comment" href="http://www.ibm.com/developerworks/cn/linux/sdk/dll/index.html#iratings">为本文评分</a></div>
+  <!-- Rating_Area_End -->
+  <br>
+<p></p>
+</div>
+
+</div>
+</div>
+<!-- dW_Summary_Area_END -->
+
+<!-- CONTENT_BODY -->
+<div id="ibm-content-body">
+
+<!-- MAIN_COLUMN_BEGIN -->
+<div id="ibm-content-main">
+
+<!-- Related_Searches_Area_And_Overlays_Begin -->
+
+<!-- MAIN_COLUMN_CONTAINER_BEGIN -->
+<div class="ibm-container">
+
+<!-- MAIN_COLUMN_CONTENT_BEGIN -->
+<p>Internet 浏览器用户非常熟悉插件的概念。从 Web
+上下载插件，通常这些插件为浏览器的音频、视频以及特殊效果提供增强支持。一般来讲，在不更改原有应用程序的情况下，插件为现有应用程序提供新功能。</p>
+      <p>DLL
+是程序函数，它们在设计和构建应用程序时为该程序所知。设计应用程序的主程序时使用程序框架或底板，这些程序框架或底板在运行时选择性地装入所需的
+dll，这些 dll
+位于磁盘上同主程序分离的一些文件中。这一打包和动态装入提供了灵活的升级、维护、以及许可策略。</p>
+      <p>随 Linux 一起交付的还有几千条命令和应用程序，它们至少都需要 libc
+库函数。如果 libc
+函数与每一个应用程序都打包在一起，那么磁盘上将会出现几千个相同函数的副本。Linux
+构建这些应用程序，以使用通常所需的系统库的单个系统级副本，而不浪费磁盘空间。Linux
+甚至做得更好，每个需要公共系统库函数的进程使用单个的系统级内的副本，一次性将该副本装入到内存并为各进程所共享。</p>
+      <p>在 Linux 中，插件和 dll
+以动态库形式实现。本文的余下部分是在应用程序运行之后使用动态库更改该应用程序的示例。</p>
+      <p><a name="2"><span class="atitle">Linux 动态链接</span></a></p>
+      <p>
+Linux
+中的应用程序以以下两种方式之一链接到外部函数：要么在构建时与静态库（ 
+        <code>
+lib*.a</code> ）
+        <em>静态地链接</em>，并且将库代码包含在该应用程序的可执行文件里；要么在运行时与共享库（ 
+        <code>
+lib*.so</code> ）
+        <em>动态地链接</em>。通过动态链接装入器，将动态库映射进应用程序的可执行内存中。在启动应用程序之前，动态链接装入器将所需的共享目标库映射到应用程序的内存，或者使用系统共享的目标并为应用程序解析所需的外部引用。现在应用程序就可以运行了。
+      </p>
+      <p>作为示例，下面有一个演示 Linux
+中对动态链接库的缺省使用的小程序：</p>
+ 
+      <table width="100%" cellpadding="0" cellspacing="0" border="0"><tbody><tr><td class="code-outline"><pre class="displaycode">main()
+{
+   printf("Hello world
+");
+}</pre></td></tr></tbody></table><br> 
+      <p>当使用 gcc 编译 hello.c 时，就创建了一个名为 
+        <code>a.out</code> 
+的可执行文件。通过使用 Linux 命令 
+        <code>ldd
+a.out</code> （该命令打印出共享库的相互依赖性），可以看出所需的共享库是：
+      </p>
+ 
+      <table width="100%" cellpadding="0" cellspacing="0" border="0"><tbody><tr><td class="code-outline"><pre class="displaycode">        libc.so.6 =&gt; /lib/libc.so.6 (0x4001d000)
+         /lib/ld-linux.so.2 =&gt; /lib/ld-linux.so.2 (0x40000000)
+</pre></td></tr></tbody></table><br> 
+      <p>使用相同的动态链接装入器在应用程序运行之后将 dll
+映射进应用程序的内存。通过使用 Linux
+动态装入器例程，应用程序控制装入哪一个动态库以及调用库中的哪一个函数，以执行装入和链接以及返回所需入口点的地址。</p>
+      <div class="ibm-alternate-rule"><hr></div><p class="ibm-ind-link ibm-back-to-top"><a href="http://www.ibm.com/developerworks/cn/linux/sdk/dll/index.html#ibm-pcon" class="ibm-anchor-up-link">回页首</a></p><p><a name="3"><span class="atitle">Linux dll 函数</span></a></p>
+      <p>
+Linux 提供 4 个库函数（ 
+        <code>dlopen</code> , 
+        <code>dlerror</code> , 
+        <code>dlsym</code> 和 
+        <code>dlclose</code> ），一个 include
+文件（ 
+        <code>dlfcn.h</code> ）以及两个共享库（静态库 
+        <code>libdl.a</code> 和动态库 
+        <code>libdl.so</code> ），以支持动态链接装入器。这些库函数是:
+      </p>
+      <ul>
+        <li>
+          <em>dlopen</em>
+将共享目标文件打开并且映射到内存中，并且返回句柄
+        </li>
+        <li>
+          <em>dlsym</em>返回一个指向被请求入口点的指针
+        </li>
+        <li>
+          <em>dlerror</em> 返回 NULL 或者一个指向描述最近错误的 ASCII
+字符串的指针
+        </li>
+        <li>
+          <em>dlclose</em>关闭句柄并且取消共享目标文件的映射
+        </li>
+      </ul>
+      <p>动态链接装入器例程 dlopen
+需要在文件系统中查找共享目标文件以打开文件并创建句柄。有 4
+种方式用以指定文件的位置：</p>
+      <ul>
+        <li>
+ 
+          <code>dlopen call</code> 中的绝对文件路径
+        </li>
+        <li>在 LD_LIBRARY_PATH 环境变量中指定的目录中</li>
+        <li>在 /etc/ld.so.cache 中指定的库列表之中</li>
+        <li>先在 /usr/lib 之中，然后在 /lib 之中</li>
+      </ul>
+      <div class="ibm-alternate-rule"><hr></div><p class="ibm-ind-link ibm-back-to-top"><a href="http://www.ibm.com/developerworks/cn/linux/sdk/dll/index.html#ibm-pcon" class="ibm-anchor-up-link">回页首</a></p><p><a name="4"><span class="atitle">dll 示例：小的 C 程序和 dlTest</span></a></p>
+      <p>
+动态链接装入器示例程序是一个小的 C 程序，该程序被设计用来练习 dl
+例程。该程序基于每个人都编写过的一个 C 程序，它将“Hello
+World”打印到控制台上。最初打印的消息是“HeLlO
+WoRlD”。该测试程序链接到再次打印该消息的两个函数上：第一次都用大写字符，第二次都用小写字符。</p>
+      <p>以下是该程序的概要：</p>
+      <ol>
+        <li>定义 dll include 文件 
+          <code>dlfcn.h</code> 和所需的变量。
+至少需要这些变量：
+          <ul>
+            <li>到共享库文件的句柄</li>
+            <li>指向被映射函数入口点的指针</li>
+            <li>指向错误字符串的指针</li>
+          </ul>
+        </li>
+        <li>打印初始消息，“HeLlO WoRlD”。
+</li>
+        <li>使用绝对路径“/home/dlTest/UPPERCASE.so”和选项
+RTLD_LAZY， 
+          <code>dlopen</code> 打开 UPPERCASE dll
+的共享目标文件并返回句柄。
+          <ul>
+            <li>选项 RTLD_LAZY 推迟解析 dll 的外部引用，直到 dll 被执行。</li>
+            <li>选项 RTLD_NOW 在 
+              <code>dlopen</code> 
+返回之前解析所有的外部引用。
+            </li>
+          </ul>
+        </li>
+        <li>
+ 
+          <code>dlsym</code> 返回入口点 printUPPERCASE 的地址。
+          <br>
+        </li>
+        <li>调用 printUPPERCASE 并且打印修改过的消息“HELLO WORLD”。
+</li>
+        <li>
+ 
+          <code>dlclose</code> 关闭到 UPPERCASE.so
+的句柄，并且从内存中取消 dll 映射。
+          <br>
+        </li>
+        <li>
+ 
+          <code>dlopen</code> 使用基于环境变量 LD_LIBRARY_PATH
+的相对路径查找共享目标路径，来打开 lowercase dll 的共享目标文件
+lowercase.so，并且返回句柄。
+          <br>
+        </li>
+        <li>
+ 
+          <code>dlsym</code> 返回入口点 printLowercase 的地址。
+          <br>
+        </li>
+        <li>调用 printLowercase 并且打印修改过的信息“hello world”。
+</li>
+        <li>
+ 
+          <code>dlclose</code> 关闭到 lowercase.so
+的句柄，并且从内存中取消 dll 映射。
+        </li>
+      </ol>
+      <p>注意，每次调用 
+        <code>dlopen</code> 、 
+        <code>dlsym</code> 或 
+        <code>dlclose</code> 之后，调用 
+        <code>dlerror</code> 
+以获取最后的错误信息，并且打印该错误信息字符串。以下是 dlTest
+的测试运行：
+      </p>
+ 
+      <table width="100%" cellpadding="0" cellspacing="0" border="0"><tbody><tr><td class="code-outline"><pre class="displaycode">   dlTest  2-Original message 
+HeLlO WoRlD
+    dlTest  3-Open Library with absolute path return-(null)- 
+    dlTest  4-Find symbol printUPPERCASE return-(null)- 
+HELLO WORLD
+    dlTest  5-printUPPERCASE return-(null)- 
+    dlTest  6-Close handle return-(null)-
+    dlTest  7-Open Library with relative path return-(null)- 
+    dlTest  8-Find symbol printLowercase return-(null)- 
+hello world
+    dlTest  9-printLowercase return-(null)- 
+    dlTest 10-Close handle return-(null)-
+</pre></td></tr></tbody></table><br> 
+      <p>完整的 dlTest.c、UPPERCASE.c 和 lowercase.c
+源代码清单在本文后面的
+        <a href="http://www.ibm.com/developerworks/cn/linux/sdk/dll/index.html#7">清单</a>里。
+      </p>
+      <div class="ibm-alternate-rule"><hr></div><p class="ibm-ind-link ibm-back-to-top"><a href="http://www.ibm.com/developerworks/cn/linux/sdk/dll/index.html#ibm-pcon" class="ibm-anchor-up-link">回页首</a></p><p><a name="5"><span class="atitle">构建 dlTest</span></a></p>
+      <p>
+启用运行时动态链接需要三步：</p>
+      <ol>
+        <li>将 dll 编译为位置无关代码</li>
+        <li>创建 dll 共享目标文件</li>
+        <li>编译主程序并同 dl 库相链接</li>
+      </ol>
+      <p>编译 UPPERCASE.c 和 lowercase.c 的 gcc 命令包含 -fpic 选项。选项
+-fpic 和 -fPIC
+导致生成的代码是位置无关的，重建共享目标库需要位置无关。-fPIC
+选项产生位置无关的代码，这类代码支持大偏移。用于 UPPERCASE.o 和
+lowercase.o 的第二个 gcc 命令，带有 -shared
+选项，该选项产生适合于动态链接的共享目标文件 a*.so。</p>
+      <p>用于编译和执行 dltest 的 ksh 脚本如下：</p>
+ 
+      <table width="100%" cellpadding="0" cellspacing="0" border="0"><tbody><tr><td class="code-outline"><pre class="displaycode">#!/bin/ksh
+#  Build shared library
+#
+#set -x
+clear
+#
+#  Shared library for dlopen absolute path test
+#
+if [ -f UPPERCASE.o ]; then rm UPPERCASE.o
+fi
+gcc  -c -fpic UPPERCASE.c
+if [ -f UPPERCASE.so ]; then rm UPPERCASE.so
+fi
+gcc -shared -lc  -o UPPERCASE.so  UPPERCASE.o 
+#
+#  Shared library for dlopen relative path test
+#
+export LD_LIBRARY_PATH=`pwd`
+if [ -f lowercase.o ]; then rm lowercase.o
+fi
+gcc  -c -fpic lowercase.c
+if [ -f lowercase.so ]; then rm lowercase.so
+fi
+gcc -shared -lc  -o lowercase.so  lowercase.o
+#
+#  Rebuild test program
+#
+if [ -f dlTest ]; then rm dlTest
+fi
+gcc -o dlTest dlTest.c -ldl
+echo Current LD_LIBRARY_PATH=$LD_LIBRARY_PATH
+dlTest
+</pre></td></tr></tbody></table><br> 
+      <div class="ibm-alternate-rule"><hr></div><p class="ibm-ind-link ibm-back-to-top"><a href="http://www.ibm.com/developerworks/cn/linux/sdk/dll/index.html#ibm-pcon" class="ibm-anchor-up-link">回页首</a></p><p><a name="6"><span class="atitle">结束语</span></a></p>
+      <p>
+创建能在运行时被动态链接到 Linux
+系统上的应用程序的共享目标代码是一项非常简单的练习。应用程序通过使用对动态链接装入器的
+dlopen、dlsym 和 dlclose
+函数调用来获取对共享目标文件的访问。dlerror
+以字符串的形式返回任何错误，这些错误信息字符串描述 dl
+函数碰到的最后一个错误。在运行时，主应用程序使用绝对路径或相对于
+LD_LIBRARY_PATH 的相对路径找到共享目标库，并且请求所需的 dll
+入口点的地址。当需要时，也可对 dll
+进行间接函数调用，最后，关闭到共享目标文件的句柄，并且从内存中取消该目标文件映射，使之不可用。</p>
+      <p>使用附加选项 -fpic 或 -fPIC
+编译共享目标代码，以产生位置无关的代码，使用 -shared
+选项将目标代码放进共享目标库中。</p>
+      <p>Linux
+中的共享目标代码库和动态链接装入器向应用程序提供了额外的功能。减少了磁盘上和内存里的可执行文件的大小。可以在需要时，装入可选的应用程序功能，可以在无须重新构建整个应用程序的情况下修正缺陷，并且应用程序可以包含第三方的插件。</p>
+      <div class="ibm-alternate-rule"><hr></div><p class="ibm-ind-link ibm-back-to-top"><a href="http://www.ibm.com/developerworks/cn/linux/sdk/dll/index.html#ibm-pcon" class="ibm-anchor-up-link">回页首</a></p><p><a name="7"><span class="atitle">清单（应用程序和 dll）</span></a></p>
+      
+      <br><a name="h18231"><b>dlTest.c:</b></a><br>
+ 
+      <table width="100%" cellpadding="0" cellspacing="0" border="0"><tbody><tr><td class="code-outline"><pre class="displaycode">/*************************************************************/
+/*     Test Linux Dynamic Function Loading              */
+/*                                      */
+/*     void       *dlopen(const char *filename, int flag)           */
+/*          Opens dynamic library and return handle     */
+/*                                      */
+/*     const char *dlerror(void)                    */
+/*          Returns string describing the last error.           */
+/*                                      */
+/*     void       *dlsym(void *handle, char *symbol)            */
+/*          Return pointer to symbol's load point.          */
+/*          If symbol is undefined, NULL is returned.           */
+/*                                      */
+/*     int        dlclose (void *handle)                    */
+/*          Close the dynamic library handle.               */
+/*                                      */
+/*                                      */
+/*                                      */
+/*************************************************************/
+#include&lt;stdio.h&gt;
+#include    &lt;stdlib.h&gt;
+ 
+/*                              */
+/* 1-dll include file and variables */
+/*                              */
+#include    &lt;dlfcn.h&gt;
+void  *FunctionLib;     /*  Handle to shared lib file   */
+int   (*Function)();        /*  Pointer to loaded routine   */
+const char *dlError;        /*  Pointer to error string     */
+main( argc, argv )
+{
+  int   rc;             /*  return codes            */
+  char HelloMessage[] = "HeLlO WoRlD\n";
+ 
+/*                              */
+/* 2-print the original message                 */
+/*                              */
+  printf("  dlTest  2-Original message \n");
+  printf("%s", HelloMessage);
+/*                                               */
+/*  3-Open Dynamic Loadable Libary with absolute path      */
+/*                                              */
+  FunctionLib = dlopen("/home/dlTest/UPPERCASE.so",RTLD_LAZY);
+  dlError = dlerror();
+  printf("  dlTest  3-Open Library with absolute path return-%s- \n", dlError);
+  if( dlError ) exit(1);
+/*                              */
+/* 4-Find the first loaded function */
+/*                              */
+  Function    = dlsym( FunctionLib, "printUPPERCASE");
+  dlError = dlerror();
+  printf("  dlTest  4-Find symbol printUPPERCASE return-%s- \n", dlError);
+  if( dlError ) exit(1);
+/*                              */
+/* 5-Execute the first loaded function              */
+/*                              */
+  rc = (*Function)( HelloMessage );
+  printf("  dlTest  5-printUPPERCASE return-%s- \n", dlError);
+/*                              */
+/* 6-Close the shared library handle                    */
+/* Note:  after the dlclose, "printUPPERCASE" is not loaded     */
+/*                              */
+  rc = dlclose(FunctionLib);
+  dlError = dlerror();
+  printf("  dlTest  6-Close handle return-%s-\n",dlError); 
+  if( rc ) exit(1);
+/*                              */
+/*  7-Open Dynamic Loadable Libary using LD_LIBRARY path        */
+/*                              */
+  FunctionLib = dlopen("lowercase.so",RTLD_LAZY);
+  dlError = dlerror();
+  printf("  dlTest  7-Open Library with relative path return-%s- \n", dlError);
+  if( dlError ) exit(1);
+/*                              */
+/* 8-Find the second loaded function                */
+/*                              */
+  Function    = dlsym( FunctionLib, "printLowercase");
+  dlError = dlerror();
+  printf("  dlTest  8-Find symbol printLowercase return-%s- \n", dlError);
+  if( dlError ) exit(1);
+/*                              */
+/* 8-execute the second loaded function             */
+/*                              */
+  rc = (*Function)( HelloMessage );
+  printf("  dlTest  9-printLowercase return-%s- \n", dlError);
+/*                              */
+/* 10-Close the shared library handle               */
+/*                              */
+  rc = dlclose(FunctionLib);
+  dlError = dlerror();
+  printf("  dlTest 10-Close handle return-%s-\n",dlError); 
+  if( rc ) exit(1);
+  return(0);
+}
+</pre></td></tr></tbody></table><br> 
+      <br>
+      <br><a name="h21785"><b>UPPERCASE.c:</b></a><br>
+ 
+      <table width="100%" cellpadding="0" cellspacing="0" border="0"><tbody><tr><td class="code-outline"><pre class="displaycode">/************************************************/
+/*      Function to print input string as UPPER case.         */
+/*      Returns 1.                                                            */
+/*********************************************** */
+int printUPPERCASE ( inLine )
+char inLine[];
+{
+   char UPstring[256];
+   char *inptr, *outptr;
+   
+   inptr = inLine;
+   outptr = UPstring;
+   while ( *inptr != '\0' )
+      *outptr++ = toupper(*inptr++);
+  *outptr++ = '\0';
+   printf(UPstring);
+   return(1);
+}
+</pre></td></tr></tbody></table><br> 
+      <br>
+      <br><a name="h22721"><b>lowercase.c</b></a><br>
+ 
+      <table width="100%" cellpadding="0" cellspacing="0" border="0"><tbody><tr><td class="code-outline"><pre class="displaycode">/********************************************/
+/*     Function to print input string as lower case.      */
+/*     Returns 2.                                                      */
+/******************************************* */
+int printLowercase( inLine )
+char inLine[];
+{
+   char lowstring[256];
+   char *inptr, *outptr;
+   inptr = inLine;
+   outptr = lowstring;
+   while ( *inptr != '' )
+      *outptr++ = tolower(*inptr++);
+  *outptr++ = '';
+   printf(lowstring);
+   return(2);
+}
+</pre></td></tr></tbody></table><br> 
+    <!-- CMA ID: 21425 --> <!-- Site ID: 10 --> <!-- XSLT stylesheet used to transform this file:  dw-article-6.0-beta.xsl -->
+<br>
+<p><a name="resources"><span class="atitle">参考资料 </span></a></p>
+      <ul><li>您可以参阅本文在 developerWorks 全球站点上的
+          <a href="http://www.ibm.com/developerworks/library/l-dll.html?S_TACT=105AGX52&S_CMP=cn-a-l">英文原文</a>.
+        <br><br></li><li>下载
+          <a href="http://www.ibm.com/developerworks/java/jdk/linux130/?S_TACT=105AGX52&S_CMP=cn-a-l">IBM
+developer kit for Linux</a>.
+          <br>
+        <br><br></li><li>同样在
+          <em>developerWorks</em>上，请阅读相关文章
+          <a href="http://www.ibm.com/developerworks/library/l-shobj/?S_TACT=105AGX52&S_CMP=cn-a-l">"shared
+objects for the object disoriented!"</a>.
+          <br>
+        <br><br></li><li>在
+          <em>developerWorks</em>上浏览
+          <a href="http://www.ibm.com/developerworks/cn/linux/index.html">更多 Linux
+参考资料</a>。
+          <br>
+        <br><br></li><li>在
+          <em>developerWorks</em>上浏览
+          <a href="http://www.ibm.com/developerworks/opensource/?S_TACT=105AGX52&article=osr&S_CMP=cn-a-l">
+更多开放源码参考资料</a>。
+        <br><br></li></ul>
+<p><a name="author"><span class="atitle">关于作者</span></a></p><div class="ibm-container ibm-portrait-module ibm-alternate-two"><div class="ibm-container-body"><p><a name="author1"> </a>Allen Wilson 在位于美国堪萨斯州奥斯汀的 IBM
+任电子商务设计师兼顾问。他的专长领域包括 Linux、AIX、WebSphere
+Application Server 和应用程序托管。您可以通过 
+        <a href="mailto:wilsona@us.ibm.com?cc=wilsona@us.ibm.com">wilsona@us.ibm.com</a>
+同他联系。
+      </p></div></div>
+<!-- MAIN_COLUMN_CONTENT_END -->
+  <!-- OVERLAYS_START -->
+  <!-- Report_Abuse_Start -->
+  <div class="ibm-common-overlay ibm-no-print" id="reportabuseoverlay">
+    <div class="ibm-head"><p><a class="ibm-common-overlay-close" href="http://www.ibm.com/developerworks/cn/linux/sdk/dll/index.html#">关闭 [x]</a></p></div>
+    <div class="ibm-body">
+      <div class="ibm-main">
+        <a class="ibm-access" name="reportabuseoverlay">关于报告滥用的帮助</a>   
+        <div class="ibm-title"><h1>报告滥用</h1></div>
+        <div class="ibm-container ibm-alternate">
+          <p><strong>谢谢!</strong>  此内容已经标识给管理员注意。</p>
+          <div class="ibm-overlay-rule"><hr></div>
+          <div class="ibm-buttons-row">
+            <input type="button" onclick="ibmCommon.Overlays.hide(&#39;reportabuseoverlay&#39;);return false;" class="ibm-btn-cancel-sec dw-btn-cancel-sec" name="ibm-cancel" value="关闭">
+          </div>
+        </div>
+      </div> 
+    </div>
+    <div class="ibm-footer"></div>
+  </div>
+  <!-- Report_Abuse_Error_Start -->
+  <div class="ibm-common-overlay ibm-no-print" id="reportabuseoverlayerror">
+    <div class="ibm-head"><p><a class="ibm-common-overlay-close" href="http://www.ibm.com/developerworks/cn/linux/sdk/dll/index.html#">关闭 [x]</a></p></div>
+    <div class="ibm-body">
+      <div class="ibm-main">
+        <a class="ibm-access" name="reportabuseoverlayerror">关于报告滥用的帮助</a>   
+        <div class="ibm-title"><h1>报告滥用</h1></div>
+        <div class="ibm-container ibm-alternate">
+          <p class="ibm-ind-error"><strong>报告滥用提交失败。  请稍后重试。</strong></p>
+          <div class="ibm-overlay-rule"><hr></div>
+          <div class="ibm-buttons-row">
+            <input type="button" onclick="ibmCommon.Overlays.hide(&#39;reportabuseoverlayerror&#39;);return false;" class="ibm-btn-cancel-sec dw-btn-cancel-sec" name="ibm-cancel" value="关闭">
+          </div>
+        </div>
+      </div> 
+    </div>
+    <div class="ibm-footer"></div>
+  </div>
+  <!-- Sign in OVERLAY STARTS HERE --> 
+  <div class="ibm-common-overlay" id="signin_overlay">
+    <div class="ibm-head">
+      <p><a class="ibm-common-overlay-close" href="http://www.ibm.com/developerworks/cn/linux/sdk/dll/index.html#" onclick="clearForm();">关闭 [x]</a></p>
+    </div>
+    <div class="ibm-body">
+      <div class="ibm-main">
+        <div class="ibm-title ibm-subtitle">
+          <h1>developerWorks：登录</h1>
+          <div id="ibm-overlay-error-signin" class="no-display"></div>
+        </div>
+        
+        <div class="ibm-container ibm-alternate ibm-buttons-last">
+          <div class="ibm-container-body">
+
+            <form class="ibm-column-form" id="sFormId" action="" method="post" name="sForm" onsubmit="return false;">
+              <p><label for="ibmid">IBM ID：</label><span><input name="ibm-id" id="ibmid" size="25" value="" class="required" type="text" onkeypress="handleEP(event,this.form);">
+                <br><a class="ibm-forward-link" href="http://www.ibm.com/developerworks/cn/linux/sdk/dll/index.html#" onclick="(function () {window.location=&#39;/developerworks/dwwi/DWAuthRouter?m=reg&amp;lang=zh_CN&amp;d=&#39;+encodeURIComponent(location.href);})();">需要一个 IBM ID？</a>
+                <br><a class="ibm-forward-link" href="http://www.ibm.com/developerworks/dwwi/jsp/WSHelp.jsp?lang=zh_CN">忘记 IBM ID？</a></span>   
+              </p> 
+              <p><label for="password">密码：</label><span><input name="password" id="password" size="25" value="" class="required" type="password" onkeypress="handleEP(event,this.form);"><br>
+                <a class="ibm-forward-link" href="http://www.ibm.com/developerworks/cn/linux/sdk/dll/index.html#" onclick="(function () {window.location=&#39;https://www.ibm.com/account/profile?page=forgot&amp;lang=zh_CN&amp;appname=ibm&amp;required=null&amp;d=&#39;+encodeURIComponent(getAuthUrl())+&#39;%3Fm%3Dloginpage%26lang%3Dzh_CN%26d%3D&#39;+encodeURIComponent(location.href);})();">忘记密码？</a><br>
+                <a class="ibm-forward-link" href="http://www.ibm.com/developerworks/cn/linux/sdk/dll/index.html#" onclick="(function () {window.location=&#39;https://www.ibm.com/account/profile?page=chpw&amp;lang=zh_CN&amp;appname=ibm&amp;required=null&amp;d=&#39;+encodeURIComponent(location.href);})();">更改您的密码</a></span></p> 
+
+              <p class="dw-perm-box">
+                <span><input id="perm" type="checkbox" name="perm_name"><label for="perm"> 保持登录。</label></span>
+              </p>
+
+              <p>单击提交则表示您同意developerWorks 的条款和条件。 <a href="http://www.ibm.com/developerworks/mydeveloperworks/terms?lang=zh">使用条款</a></p>
+              <div class="ibm-buttons-row">
+                <p><input class="ibm-btn-arrow-pri" name="ibm-submit" value="提交" onclick="signin();return false;" type="submit"><span class="ibm-sep">&nbsp;</span>
+                  <input value="取消" type="button" name="ibm-cancel" class="ibm-btn-cancel-sec" onclick="clearForm();ibmCommon.Overlays.hide(&#39;signin_overlay&#39;);return false;"></p>
+              </div>
+            </form>
+            <div class="ibm-overlay-rule"><hr></div>
+            <p>当您初次登录到 developerWorks 时，将会为您创建一份概要信息。<strong>您在 developerWorks 概要信息中选择公开的信息将公开显示给其他人，但您可以随时修改这些信息的显示状态。</strong>您的姓名（除非选择隐藏）和昵称将和您在 developerWorks 发布的内容一同显示。</p>
+            <div class="dw-overlay-legal"><p>所有提交的信息确保安全。</p></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="ibm-footer"></div>
+  </div>
+  <!-- Sign in OVERLAY ENDS HERE --> 
+  
+  
+  <!-- Display name OVERLAY STARTS HERE --> 
+  <div class="ibm-common-overlay" id="displayname_overlay">
+    <div class="ibm-head">
+      <p><a class="ibm-common-overlay-close" href="http://www.ibm.com/developerworks/cn/linux/sdk/dll/index.html#" onclick="clearForm();">关闭 [x]</a></p>
+    </div>
+    <div class="ibm-body">
+      <div class="ibm-main">
+        <div class="ibm-title ibm-subtitle">
+          <h1>请选择您的昵称：</h1>
+          <div id="ibm-overlay-error-dname" class="no-display"></div>
+        </div>
+        <div class="ibm-container ibm-alternate ibm-buttons-last">
+          <div class="ibm-container-body">
+            <p class="ibm-overlay-intro">当您初次登录到 developerWorks 时，将会为您创建一份概要信息，您需要指定一个昵称。您的昵称将和您在 developerWorks 发布的内容显示在一起。</p><p><strong>昵称长度在 3 至 31 个字符之间</strong>。 您的昵称在 developerWorks 社区中必须是唯一的，并且出于隐私保护的原因，不能是您的电子邮件地址。</p>
+            <form id="dFormId" method="post" action="" name="dForm" onsubmit="return false;" class="ibm-column-form">
+              <p><label for="displayname">昵称：</label><span><input name="displayname" id="displayname" size="25" value="" type="text" onkeypress="handleEP(event,this.form);"></span><span class="ibm-form-note">（长度在 3 至 31 个字符之间）</span>
+              </p>
+              
+              <div class="ibm-overlay-rule"><hr>
+              </div>
+              <p>单击<strong>提交</strong>则表示您同意developerWorks 的条款和条件。 <a href="http://www.ibm.com/developerworks/mydeveloperworks/terms?lang=zh">使用条款</a>.</p>
+              <div class="ibm-buttons-row">
+                <p><input class="ibm-btn-arrow-pri" name="ibm-submit" value="提交" onclick="signin();return false;" type="submit"><span class="ibm-sep">&nbsp;</span>
+                  <input value="取消" type="button" name="ibm-cancel" class="ibm-btn-cancel-sec" onclick="clearForm();ibmCommon.Overlays.hide(&#39;displayname_overlay&#39;);return false;"></p>
+              </div>
+            </form>
+            <div class="ibm-overlay-rule"><hr></div>
+            <div class="dw-overlay-legal"><p>所有提交的信息确保安全。</p></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="ibm-footer"></div>
+  </div>
+  <!-- Display name OVERLAY ENDS HERE -->
+  <!-- OVERLAYS_END -->
+  <!-- RATINGS START -->
+  <p class="ibm-no-print"><span class="atitle"><a name="iratings">为本文评分</a></span></p>
+  <input id="art-rating" name="ratinga" type="hidden" value="3"><div id="art-rating-module"><p id="submitErr" class="ibm-ind-error" style="display: none;"><strong>错误：提交失败，请重试。</strong></p><p><span id="ratingSectUI"><img alt="平均分 3 星 共 10 个评分" src="./Linux_DLL_files/stars120x20-3gw.jpg" class="dw-avg-rating"> 平均分 (10个评分)</span></p><div class="ibm-container" id="ratingForm"><div class="ibm-container-body dw-container-ratings"><form class="dw-ratings-form" onsubmit="artRating.submitRating(); return false;"><input type="radio" name="ratingstars" id="rat-1" value="1"><label class="rating-label" id="star1" for="rat-1">1 星</label><img id="rat-1-img" alt="1 星" title="1 星" src="./Linux_DLL_files/stars120x20-1w.jpg" class="rating-image"><span class="dw-rating-text">1 星</span><br><input type="radio" name="ratingstars" id="rat-2" value="2"><label class="rating-label" id="star2" for="rat-2">2 星</label><img id="rat-2-img" alt="2 星" title="2 星" src="./Linux_DLL_files/stars120x20-2w.jpg" class="rating-image2"><span class="dw-rating-text">2 星</span><br><input type="radio" name="ratingstars" id="rat-3" value="3"><label class="rating-label" id="star3" for="rat-3">3 星</label><img id="rat-3-img" alt="3 星" title="3 星" src="./Linux_DLL_files/stars120x20-3w.jpg" class="rating-image2"><span class="dw-rating-text">3 星</span><br><input type="radio" name="ratingstars" id="rat-4" value="4"><label class="rating-label" id="star4" for="rat-4">4 星</label><img id="rat-4-img" alt="4 星" title="4 星" src="./Linux_DLL_files/stars120x20-4w.jpg" class="rating-image2"><span class="dw-rating-text">4 星</span><br><input type="radio" name="ratingstars" id="rat-5" value="5"><label class="rating-label" id="star5" for="rat-5">5 星</label><img id="rat-5-img" alt="5 星" title="5 星" src="./Linux_DLL_files/stars120x20-5w.jpg" class="rating-image2"><span class="dw-rating-text">5 星</span><div class="ibm-buttons-row"><p class="ibm-first"><input value="提交" type="submit" name="ibm-submit" class="ibm-btn-arrow-pri dw-ratings-submit"></p></div></form></div></div></div>
+  <script language="JavaScript" type="text/javascript">
+    // <![CDATA[
+   // widget div id and article id as args
+   window.artRating.init('art-rating-module','art-rating-summary');
+// ]]>
+  </script>
+  <!-- RATINGS END --> 
+  
+  <!-- INLINE_COMMENTS_START -->
+  <p class="ibm-no-print"><span class="atitle"><a name="icomments">评论</a></span></p>
+    <script language="JavaScript" type="text/javascript">
+      // <![CDATA[
+dwc = {};
+dwc.cmts = '条评论';
+dwc.signInPreText = '请';
+dwc.signIn = '登录';
+dwc.or = '或';
+dwc.register = '注册';
+dwc.signInPostText = '';
+dwc.leaveCmt = '后发表评论。';
+dwc.view = '查看';
+dwc.totalCmts = '共有评论';
+dwc.postYourCmt = '添加您的评论';
+dwc.show = '显示：';
+dwc.recentCmts = '最新评论';
+dwc.allCmts = '所有评论';
+dwc.tooLongCmt = '您的评论超过了 1000 字符限制';
+dwc.numCharsLeft = '剩余 <span id="charCount">{1}</span> 字符';
+dwc.reportAbuse = '报告滥用';
+dwc.notifyMsg = '有新评论时提醒我';
+dwc.htmlWarning = '注意：评论中不支持 HTML 语法'; 
+dwc.cmt = '评论：';
+dwc.addCmts = '添加评论';
+dwc.addCmt = '添加评论';
+dwc.doNotErase = '--在下方添加评论--'; 
+dwc.viewOrAddCmts = '查看或添加评论';
+dwc.reportInapprCont = '举报不良信息';
+dwc.reportInapprContLink = 'http://www.ibm.com/developerworks/forums/forum.jspa?forumID=1834';
+dwc.postingCmt = '正在发布评论……';
+dwc.noCmt = '快来添加第一条评论';
+dwc.netwkErr = '在检索评论时出错，请稍后刷新。';
+dwc.addACmt = '添加评论';
+dwc.instructCmt = '标有星号（<span class="ibm-required">*</span>）的是必填项目。';
+dwc.btnPost = '发布';
+dwc.btnPostAnon = '匿名发布';
+dwc.btnClrCmt = '清除评论';
+dwc.btnCancel = '取消';
+dwc.showRecent = '显示最新的 {1} 条评论'; // {1} is the count to be substituted
+dwc.showNext = '显示后 {1} 条评论'; // {1} is the count to be substituted
+dwc.showAllCmts = '显示所有评论';
+dwc.enterCmt = '请输入评论内容。';
+dwc.loginErr = '暂时无法验证您的登录状态，请稍后再试。';
+dwc.postErr = '暂时无法发布您的评论，请稍后再试。';
+dwc.postBy = '由 <strong>{1}</strong>  于 {2} '; // {1} is the author to be substituted; {2} is the date
+dwc.siteId = 10;
+dwc.lang = 'zh_CN';
+dwc.viperLang = 'zh';
+// ]]>
+    </script>
+    <div id="threadShow"><div id="cmtTog" style=""><div class="ibm-container ibm-alternate-two dw-commentbox dw-noborder"><p id="cmtHead"><label for="newCmt"><strong>添加评论:</strong></label></p><div class="ibm-container-body dw-commentbox dw-noborder"><p id="signInSect" style="">请 <a onclick="showSignIn();return false;" href="http://www.ibm.com/developerworks/cn/linux/sdk/dll/index.html#">登录</a> 或 <a href="http://www.ibm.com/developerworks/dwwi/DWAuthRouter?m=register&lang=zh_CN&d=http%3A%2F%2Fwww.ibm.com%2Fdeveloperworks%2Fcn%2Flinux%2Fsdk%2Fdll%2Findex.html%23icomments">注册</a>  后发表评论。</p><p>注意：评论中不支持 HTML 语法</p><span id="infoCmt"></span><form focus="name" enctype="multipart/form-data" method="post" action="" name="form" class="ibm-column-form"><p><textarea cols="120" rows="5" name="newCmt" id="newCmt" class="dw-inoperable" disabled=""></textarea><br></p><span class="ibm-input-group"><input type="checkbox" value="1" name="comment_notification" id="comment_notification" disabled=""><label id="notifyText" class="ibm-form-note dw-btn-cancel-sec" for="comment_notification">有新评论时提醒我</label></span><span class="ibm-form-note dw-btn-cancel-sec notifySection" id="maxCharsCount">剩余 <span id="charCount">1000</span> 字符</span><br><br><p></p><p class="ibm-buttons-row"><input type="button" value="发布" jquery1275054459750="11" name="postCmt" id="postCmt" class="ibm-btn-arrow-sec dw-btn-arrow-sec" alt="添加您的评论" disabled=""><br><br></p></form></div></div><div id="topControl" class="ibm-container ibm-alternate-two dw-comment-totals" style="display: none; "><div class="ibm-container-body"><form id="selectComments" method="get" action=""><p><span class="dw-comment-totals-label"><strong>共有评论 (<span id="numCmts">0</span>)</strong></span><span><img src="./Linux_DLL_files/c.gif" width="100" height="10" alt=""></span><span class="dw-how-many-comments-label" style="display:none" id="dropdownCmts"><label for="howManyComments">显示：</label>&nbsp;<select name="comments" id="howManyComments" class="dw-how-many-comments"><option selected="selected" value="recent">最新评论   </option></select><input type="image" class="ibm-btn-go" name="ibm-go" value="Go" src="./Linux_DLL_files/short-btn.gif" alt="Go"><br></span></p></form></div></div><div id="cmtSect"><div class="comment"><div class="dw-icomment-container"><table class="dw-icomment-body" cellpadding="0" cellspacing="0" width="100%"><tbody><tr><td><p>快来添加第一条评论</p></td></tr></tbody></table></div></div></div></div><div id="bottomControl" class="ibm-container ibm-alternate-two dw-comment-totals" style="display: none; "><div class="ibm-container-body"><form id="selectComments2" method="get" action=""><p><span class="dw-comment-totals-label"><strong>共有评论 (<span id="numCmts2">0</span>)</strong></span><span><img src="./Linux_DLL_files/c.gif" width="100" height="10" alt=""></span><span class="dw-how-many-comments-label" style="display:none" id="dropdownCmts2"><label for="howManyComments2">显示：</label>&nbsp;<select name="comments" id="howManyComments2" class="dw-how-many-comments"><option selected="selected" value="recent">最新评论   </option></select><input type="image" class="ibm-btn-go" name="ibm-go" value="Go" src="./Linux_DLL_files/short-btn.gif" alt="Go"><br></span></p></form></div></div></div>
+  <!-- INLINE_COMMENTS_END -->
+  
+
+  <p class="ibm-ind-link ibm-back-to-top"><a class="ibm-anchor-up-link" href="http://www.ibm.com/developerworks/cn/linux/sdk/dll/index.html#ibm-pcon">回页首</a></p>
+
+<!-- Overlays -->
+<!-- lk - pull in overlays from ww when required on cn -->
+  </div>
+<!-- MAIN_COLUMN_CONTAINER_END -->
+
+<!-- Rating_Meta_BEGIN -->
+<!--Rating_Meta_BEGIN--><div class="metavalue">static.content.url=http://www.ibm.com/developerworks/js/artrating/</div><div class="metavalue">SITE_ID=10</div><div class="metavalue">Zone=Linux</div><div class="metavalue">ArticleID=21425</div><div class="metavalue">ArticleTitle=为 Linux 应用程序编写 DLL</div><div class="metavalue">publish-date=10012001</div><div class="metavalue">author1-email=wilsona@us.ibm.com</div><div class="metavalue">author1-email-cc=wilsona@us.ibm.com</div><script language="javascript" type="text/javascript">document.write('<div class="metavalue">url='+location.href.replace(/</g, '%3C')+'</div>');</script><div class="metavalue">url=http://www.ibm.com/developerworks/cn/linux/sdk/dll/index.html</div><!--Rating_Meta_END-->
+<!-- Rating_Meta_END -->
+
+</div>
+<!-- MAIN_COLUMN_END-->
+
+<!-- RIGHT_COLUMN_BEGIN -->
+<div id="ibm-content-sidebar">
+
+<!-- RIGHT_COLUMN_CONTENT_BEGIN --> 
+<div class="ibm-container"><h2>内容</h2><div class="ibm-container-body"><img alt="" height="1" width="1" src="./Linux_DLL_files/c(1).gif"><ul class="ibm-bullet-list"><li><a class="ibm-feature-link" href="http://www.ibm.com/developerworks/cn/linux/sdk/dll/index.html#2">Linux 动态链接</a></li><li><a class="ibm-feature-link" href="http://www.ibm.com/developerworks/cn/linux/sdk/dll/index.html#3">Linux dll 函数</a></li><li><a class="ibm-feature-link" href="http://www.ibm.com/developerworks/cn/linux/sdk/dll/index.html#4">dll 示例：小的 C 程序和 dlTest</a></li><li><a class="ibm-feature-link" href="http://www.ibm.com/developerworks/cn/linux/sdk/dll/index.html#5">构建 dlTest</a></li><li><a class="ibm-feature-link" href="http://www.ibm.com/developerworks/cn/linux/sdk/dll/index.html#6">结束语</a></li><li><a class="ibm-feature-link" href="http://www.ibm.com/developerworks/cn/linux/sdk/dll/index.html#7">清单（应用程序和 dll）</a></li><li><a class="ibm-feature-link" href="http://www.ibm.com/developerworks/cn/linux/sdk/dll/index.html#resources">参考资料 </a></li><li><a class="ibm-feature-link" href="http://www.ibm.com/developerworks/cn/linux/sdk/dll/index.html#author">关于作者</a></li><li><a class="ibm-feature-link" href="http://www.ibm.com/developerworks/cn/linux/sdk/dll/index.html#icomments">建议</a></li></ul></div></div>
+
+ 
+
+
+<!-- Dig_Deeper -->
+
+<!-- High_Visibility_Offer -->
+
+<!-- Special_Offers -->
+
+<!-- RIGHT_COLUMN_CONTENT_END -->
+
+</div>
+<!-- RIGHT_COLUMN_END -->
+
+<!-- CONTENT_BODY_END -->
+</div>
+
+</div>
+<!-- CONTENT_END -->
+
+ <!-- END_IBM-PCON -->
+</div>
+
+<!-- FOOTER_BEGIN -->
+<div id="ibm-footer">
+<!-- IBM footer container; disabled -->
+</div>
+
+<div id="ibm-page-tools-dw">
+	<div id="dw-footer-top-row">
+		<ul id="dw-foot-options">
+			<li id="dw-print"><a class="ibm-print-link" href="http://www.ibm.com/developerworks/cn/linux/sdk/dll/index.html#">打印此页面</a></li>
+		</ul>
+		<ul id="ibm-foot-options-dw">
+			<li id="dw-foot-0" class="dw-foot-0-cn"><a href="http://www.ibm.com/developerworks/cn/linux/sdk/dll/index.html#">分享此页面</a></li>
+			<li id="dw-foot-1" class="dw-foot-1-cn"><a href="http://www.ibm.com/developerworks/cn/linux/sdk/dll/index.html#">关注 developerWorks</a></li>
+		</ul>
+	</div>       
+	
+	
+	<!-- TOP ROW SLIDER -->
+    <div id="dw-page-tools-menu">    
+        <div class="ibm-ribbon-pane-dw">
+            <div class="ibm-ribbon-section-dw">
+				<!-- Share this page -->			
+                <div class="dw-footer-columns">
+                    <div class="dw-footer-col-4-1">
+                    	<h2>分享此页面：</h2>                            
+						<ul class="ibm-link-list">
+						  <!--<li><a id="dw-foot-0-0" class="dwcn-sina-link"
+						        href="#"
+						        onClick="javascript:location.href='http://hits.sinajs.cn/A1/weiboshare.html?&amp;appkey=&amp;title='+escape(document.title)+'&amp;url='+escape(location.href)'+'&amp;pic=&ralateUid&amp;language=zh_cn;
+						        ">新浪微博</a></li> -->
+						   <li><a id="dw-foot-0-0" class="dwcn-sina-link" href="http://www.ibm.com/developerworks/cn/linux/sdk/dll/index.html#" onclick="javascript:location.href=&#39;http://service.weibo.com/share/share.php?title=&#39;+encodeURIComponent(document.title)+&#39;&amp;url=&#39;+escape(location.href)+&#39;&amp;language=zh_cn&#39;
+						        ; ">新浪微博</a></li> 
+						   <li><a class="dwcn-renren-link" href="http://www.ibm.com/developerworks/cn/linux/sdk/dll/index.html#" onclick="javascript:location.href=&#39;http://share.renren.com/share/buttonshare?title=&#39;+encodeURIComponent(document.title)+&#39;&amp;link=&#39;+escape(location.href);
+						        ">人人网</a></li> 
+						    <li><a class="dwcn-tencent-link" href="http://www.ibm.com/developerworks/cn/linux/sdk/dll/index.html#" onclick="javascript:location.href=&#39;http://v.t.qq.com/share/share.php?title=&#39;+encodeURIComponent(document.title)+&#39;&amp;url=&#39;+escape(location.href);
+						        ">腾讯微博</a></li> 
+						   				
+						</ul>
+                    </div>
+                    <div class="dw-footer-col-4-2">
+						<ul class="ibm-link-list">
+						    <li><a class="dwcn-sohu-link" href="http://www.ibm.com/developerworks/cn/linux/sdk/dll/index.html#" onclick="javascript:location.href=&#39;http://t.sohu.com/third/post.jsp?title=&#39;+encodeURIComponent(document.title)+&#39;&amp;link=&#39;+escape(location.href);
+						        ">搜狐微博</a></li>
+						    
+						    <li><a class="dwcn-netease-link" href="http://www.ibm.com/developerworks/cn/linux/sdk/dll/index.html#" onclick="javascript:location.href=&#39;http://t.163.com/article/user/checkLogin.do?info=&#39;+encodeURIComponent(document.title)+ &#39;&#39; +escape(location.href);
+						        ">网易微博</a></li>
+						    <li><a class="ibm-facebook-link" href="http://www.facebook.com/sharer.php?u=http%3A%2F%2Fwww.ibm.com%2Fdeveloperworks%2Fcn%2Flinux%2Fsdk%2Fdll%2Findex.html&t=%E4%B8%BA%20Linux%20%E5%BA%94%E7%94%A8%E7%A8%8B%E5%BA%8F%E7%BC%96%E5%86%99%20DLL">Facebook</a></li>
+						</ul>
+                </div>
+                    <div class="dw-footer-col-4-3">
+						<ul class="ibm-link-list">
+						 <li><a class="ibm-linkedin-link" href="http://www.linkedin.com/shareArticle?mini=true&url=http%3A%2F%2Fwww.ibm.com%2Fdeveloperworks%2Fcn%2Flinux%2Fsdk%2Fdll%2Findex.html&title=%E4%B8%BA%20Linux%20%E5%BA%94%E7%94%A8%E7%A8%8B%E5%BA%8F%E7%BC%96%E5%86%99%20DLL">LinkedIn</a></li>   
+						 <li><a class="ibm-twitter-link" href="http://twitter.com/home?status=http%3A%2F%2Fwww.ibm.com%2Fdeveloperworks%2Fcn%2Flinux%2Fsdk%2Fdll%2Findex.html%20-%20%E4%B8%BA%20Linux%20%E5%BA%94%E7%94%A8%E7%A8%8B%E5%BA%8F%E7%BC%96%E5%86%99%20DLL">Twitter</a></li>   
+						 <li><a class="ibm-delicious-link" href="http://delicious.com/post?url=http%3A%2F%2Fwww.ibm.com%2Fdeveloperworks%2Fcn%2Flinux%2Fsdk%2Fdll%2Findex.html&title=%E4%B8%BA%20Linux%20%E5%BA%94%E7%94%A8%E7%A8%8B%E5%BA%8F%E7%BC%96%E5%86%99%20DLL">Delicious</a></li>
+						
+						</ul>
+                    </div>
+                   <div class="dw-footer-col-4-4">
+						<ul class="ibm-link-list">
+						 <li><a class="ibm-digg-link" href="http://digg.com/submit?phase=2&url=http%3A%2F%2Fwww.ibm.com%2Fdeveloperworks%2Fcn%2Flinux%2Fsdk%2Fdll%2Findex.html&title=%E4%B8%BA%20Linux%20%E5%BA%94%E7%94%A8%E7%A8%8B%E5%BA%8F%E7%BC%96%E5%86%99%20DLL">Digg</a></li>   
+						 <li><a class="ibm-email-link" href="http://www.ibm.com/developerworks/cn/linux/sdk/dll/index.html#">发送此页面</a></li>
+						</ul>
+                    </div>
+                    <div class="dw-footer-close">
+						<ul>
+							<li><div class="dw-footer-close-share"><a href="http://www.ibm.com/developerworks/cn/linux/sdk/dll/index.html#"><img src="./Linux_DLL_files/c.gif" alt="关闭 [x]" width="20" height="10"></a></div></li>
+						</ul>
+                    </div>
+                </div>
+                  <!-- Follow developerWorks -->
+                <div class="dw-footer-columns">
+                    <div class="dw-footer-col-1-1 dw-footer-col-1-1-cn">
+                    	<h2>关注 developerWorks 中国网站：</h2>
+						<ul class="ibm-link-list">
+							<!--<li><a id="dw-foot-1-0" class="ibm-twitter-link" href="http://www.twitter.com/dwchina">Twitter</a></li>-->
+						    <li><a id="dw-foot-1-0" class="dwcn-sina-link" href="http://weibo.com/ibmdw/" wrc_done="true">新浪微博</a>&nbsp;<span class="wrc_icon wrc13" rating="{&quot;icon&quot;:&quot;green3-16.png&quot;,&quot;rating&quot;:1,&quot;weight&quot;:3,&quot;flags&quot;:{&quot;social&quot;:1}}"></span></li>
+						</ul>
+                    </div>
+                    <div class="dw-footer-close">
+						<ul>
+							<li><div class="dw-footer-close-follow-cn"><a href="http://www.ibm.com/developerworks/cn/linux/sdk/dll/index.html#"><img src="./Linux_DLL_files/c.gif" alt="关闭 [x]" width="20" height="10"></a></div></li>
+						</ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="ibm-footer-module-dw">
+	<div class="dw-footer-columns">
+		<div class="dw-footer-col-6-1">
+			<ul>
+				<!--<li><a href="http://www.ibm.com/developerworks/aboutdw/">About</a></li>-->
+				<li><a href="https://www.ibm.com/developerworks/secure/feedback.jsp?domain=dwchina">帮助</a></li>
+				<li><a href="http://www.ibm.com/developerworks/cn/author/">联系编辑</a></li>
+				<li><a href="https://www.ibm.com/developerworks/secure/myideas2.jsp?domain=dwchina&start=true">提交内容</a></li>
+				<li><a href="http://www.ibm.com/developerworks/cn/sitemap/">网站导航</a></li>
+			</ul>
+		</div>
+		<div class="dw-footer-col-6-2">
+			<ul>
+				<li><a href="http://www.ibm.com/developerworks/cn/rss/">订阅源</a></li>
+				<li><a href="http://www.ibm.com/vrm/newsletter/10104?S_TACT=105AGX52&S_CMP=dwcntop">在线浏览每周时事通讯</a></li>
+			</ul>
+		</div>
+		<div class="dw-footer-col-6-3">
+			<ul>
+				<li><a href="https://www.ibm.com/developerworks/community/report?lang=zh">报告滥用</a></li>
+				<li><a href="https://www.ibm.com/developerworks/community/terms?lang=zh">使用条款</a></li>
+				<li><a href="http://www.ibm.com/privacy/cn/zh/">隐私条约</a></li>
+				<li><a href="http://www.ibm.com/ibm/accessibility/cn/">浏览辅助</a></li>
+			</ul>
+		</div>
+		<div class="dw-footer-col-6-4-cn">
+			<ul>
+				<li><a href="http://www-900.ibm.com/cn/ai/" wrc_done="true">IBM 教育学院教育培养计划</a>&nbsp;<span class="wrc_icon wrc12" rating="{&quot;icon&quot;:&quot;green2-16.png&quot;,&quot;rating&quot;:1,&quot;weight&quot;:2,&quot;flags&quot;:{}}"></span></li>
+				<li><a href="http://www.ibm.com/partnerworld/isv/">ISV 资源 (英语)</a></li>
+			</ul>
+		</div>
+		<div class="dw-footer-col-6-5">
+		</div>
+		<div class="dw-footer-col-6-6">
+		</div>
+	</div>
+	<!-- Language selector no-script -->
+	<noscript>
+	&lt;div id="dw-footer-selectlang"&gt;
+		&lt;h2&gt;&lt;a name="SELECTLANG"&gt;选择语言：&lt;/a&gt;&lt;/h2&gt;
+		&lt;ul&gt;
+			&lt;li&gt;&lt;a href="http://www.ibm.com/developerworks/"&gt;English&lt;/a&gt;&lt;/li&gt;
+			&lt;li&gt;&lt;a href="http://www.ibm.com/developerworks/cn/"&gt;中文&lt;/a&gt;&lt;/li&gt;
+			&lt;li&gt;&lt;a href="http://www.ibm.com/developerworks/jp/"&gt;日本語&lt;/a&gt;&lt;/li&gt;
+			&lt;li&gt;&lt;a href="http://www.ibm.com/developerworks/ru/"&gt;Русский&lt;/a&gt;&lt;/li&gt;
+			&lt;li&gt;&lt;a href="http://www.ibm.com/developerworks/br/"&gt;Português (Brasil)&lt;/a&gt;&lt;/li&gt;
+			&lt;li&gt;&lt;a href="http://www.ibm.com/developerworks/ssa/"&gt;Español&lt;/a&gt;&lt;/li&gt;
+			&lt;li&gt;&lt;a href="http://www.ibm.com/developerworks/vn/"&gt;Việt&lt;/a&gt;&lt;/li&gt;
+		&lt;/ul&gt;
+	&lt;/div&gt;
+	</noscript>
+</div><!-- FOOTER_END -->
+
+ <!-- END_IBM-TOP -->
+<div id="ibm-overlay-top"></div></div>
+ 
+ <!-- SCRIPTS_INCLUDE_BEGIN -->
+<!-- JQuery start -->
+<script type="text/javascript" language="JavaScript" src="./Linux_DLL_files/jquery.hoverIntent.minified.js"></script>
+<script type="text/javascript" language="JavaScript" src="./Linux_DLL_files/jquery.cluetip.js"></script>
+<script type="text/javascript" language="JavaScript" src="./Linux_DLL_files/ui.core-1.7.1.js"></script>
+<script type="text/javascript" language="JavaScript" src="./Linux_DLL_files/ui.slider-1.7.1.js"></script>
+
+<!-- xM Masthead/Footer -->
+<script src="./Linux_DLL_files/jquery.tools.min.js" type="text/javascript">//</script>
+<script src="./Linux_DLL_files/jquery.jscroll.js" type="text/javascript">//</script>
+<script src="./Linux_DLL_files/dw_v16.js" type="text/javascript">//</script>
+<script src="./Linux_DLL_files/flash-detect.js" type="text/javascript">//</script>
+<script src="./Linux_DLL_files/dwsi.js" type="text/javascript">//</script>
+<script type="text/javascript" language="JavaScript" src="./Linux_DLL_files/dwjquerytags.js"></script>
+<script type="text/javascript" language="JavaScript" src="./Linux_DLL_files/showcomments.js">//</script>
+<script language="JavaScript" type="text/javascript">
+	// <![CDATA[
+ jQuery('threadShow').showComments('95%',5,'nCmts','icomments');
+// ]]>
+</script>
+<script type="text/javascript" language="JavaScript">
+	jQuery.noConflict();     
+	// Put all your code in your document ready area
+	jQuery(document).ready(function(jQuery) {
+	// Do jQuery stuff using jQuery 
+	jQuery('a.dwauthor').cluetip({
+	local: true,
+	showTitle: false,
+	positionBy: 'bottomTop',
+	sticky: true,	
+	mouseOutClose: true,
+	closeText: '<img src="//dw1.s81c.com/developerworks/js/jquery/cluetip98/i/x.gif" alt="Close" />',
+	arrows: false,
+	dropShadow: true,
+	cluetipClass: 'dwbasic'
+	});   	
+	//tagging
+	login="false";
+	userid="";
+	whichTags = "init";
+	pCont = "";
+	mCont = "";
+	signInMCont = "";
+	accessCont = "";
+	pValue = 0;
+	mValue = 0;
+	
+	rBHash = null;
+	rBHash = new Object();
+	rBHash['viperLang'] = 'zh';
+	rBHash['urlLang'] = 'cn';
+	rBHash['tagThisWinTitle'] = '添加标签';
+	rBHash['pTags1'] = '热门标签';		
+	rBHash['pTags2'] = '热门标签结束';
+	rBHash['mTags1'] = '我的标签';
+	rBHash['mTags2'] = '我的标签结束';
+	rBHash['alt1'] = '正在加载内容';
+	rBHash['noATags'] = '没有可用的标签';
+	rBHash['signIn1'] = '请';
+	rBHash['signIn2'] = '登录';
+	rBHash['signIn3'] = '以访问';
+	rBHash['signIn4'] = '我的标签';
+	rBHash['signIn5'] = '要访问我的标签，请';
+	rBHash['signIn6'] = '登录';
+	rBHash['signIn7'] = '查看热门标签';
+	rBHash['dnameSuffix'] = '';
+
+	zoneHash = new Object();
+	zoneHash['aix'] = 'AIX and UNIX';
+	zoneHash['ibmi'] = 'IBM i zone';
+	zoneHash['data'] = 'Information Management';
+	zoneHash['lotus'] = 'Lotus';
+	zoneHash['rational'] = 'Rational';
+	//zoneHash['tivoli'] = 'Tivoli zone';
+	zoneHash['websphere'] = 'WebSphere';
+	zoneHash['architecture'] = 'Technical library';
+	//zoneHash['autonomic'] = 'Technical library';
+	zoneHash['java'] = 'Java technology';
+	zoneHash['cloud'] = 'Cloud computing';
+	//zoneHash['industry'] = 'Technical library';
+	zoneHash['library'] = '文档库';
+	zoneHash['linux'] = 'Linux';
+	zoneHash['opensource'] = 'Open source';
+	//zoneHash['power'] = 'Technical library';
+	zoneHash['webservices'] = 'SOA and web services';
+	zoneHash['web'] = 'Web development';
+	zoneHash['xml'] = 'XML';
+	//zoneHash['wireless'] = 'Technical library';
+	jQuery.checkRB();
+	jQuery.getPopularTags("/developerworks/dwtags/dwjquerytabtags?lang=" + rBHash['viperLang'] + "&base=" + jQuery.getNormalizedZoneUrl(location.href));
+	jQuery.getUserTags();
+	if(jQuery.isTutorial(location.href) == "true") {
+	jQuery.getTagsForContent("/developerworks/tagging/UseCaseServlet?lang=" + rBHash['viperLang'] + "&format=maverick&cType=tutorials&use_case=geturltags&action=gettags&url=" + jQuery.normalizeUrl(location.href));
+	}
+	else {
+	jQuery.getTagsForContent("/developerworks/tagging/UseCaseServlet?lang=" + rBHash['viperLang'] + "&format=maverick&cType=articles&use_case=geturltags&action=gettags&url=" + jQuery.normalizeUrl(location.href));
+	
+	}
+	// si
+	initSI();
+	});
+</script>
+<!-- JQuery end -->
+<!-- Overlay js -->
+<script language="JavaScript" src="./Linux_DLL_files/overlay.js" type="text/javascript"></script><!-- BEGIN: Use this section to set page specific variables for the Unica Page Tag -->
+<script language="JavaScript">var NTPT_PGEXTRA="ibmSkillLevel=1&ibmAdoptPhase=667&ibmRole=710&ibmCmaId=21425";</script>
+<!--END --><!-- SCRIPTS_INCLUDE_END -->
+
+<div id="ibm-metrics">
+<script src="./Linux_DLL_files/stats.js" type="text/javascript">//</script>
+</div>
+
+
+
+<div id="cluetip-waitimage" style="position: absolute; z-index: 95; display: none; "></div><div id="cluetip" style="z-index: 96; display: none; position: absolute; "><div style="z-index: 95; opacity: 0.1; top: 1px; left: 1px; position: absolute; background-color: rgb(0, 0, 0); "></div><div style="z-index: 94; opacity: 0.1; top: 2px; left: 2px; position: absolute; background-color: rgb(0, 0, 0); "></div><div style="z-index: 93; opacity: 0.1; top: 3px; left: 3px; position: absolute; background-color: rgb(0, 0, 0); "></div><div style="z-index: 92; opacity: 0.1; top: 4px; left: 4px; position: absolute; background-color: rgb(0, 0, 0); "></div><div style="z-index: 91; opacity: 0.1; top: 5px; left: 5px; position: absolute; background-color: rgb(0, 0, 0); "></div><div style="z-index: 90; opacity: 0.1; top: 6px; left: 6px; position: absolute; background-color: rgb(0, 0, 0); "></div><div id="cluetip-outer" style="position: relative; z-index: 97; "><div id="cluetip-title"></div><div id="cluetip-inner"></div></div><div id="cluetip-extra"></div><div id="cluetip-arrows" class="cluetip-arrows" style="z-index: 97; "></div></div><div id="wrchoverdiv"><div id="wrccontainer"><div id="wrcheader"><div id="wrctitle"> WebRep</div></div><div class="wrchorizontal"></div><div id="wrccurrentvote">總體評價</div><div class="wrchorizontal"></div><div id="wrcrating"></div><div id="wrcratingtext">此網站沒有任何評價資訊</div><div id="wrcweighttext">（票數不足）</div><div id="wrcflags"><div id="wrcicon_shopping" class="wrcicon"></div><div id="wrcicon_social" class="wrcicon"></div><div id="wrcicon_news" class="wrcicon"></div><div id="wrcicon_it" class="wrcicon"></div><div id="wrcicon_corporate" class="wrcicon"></div><div id="wrcicon_pornography" class="wrcicon"></div><div id="wrcicon_violence" class="wrcicon"></div><div id="wrcicon_gambling" class="wrcicon"></div><div id="wrcicon_drugs" class="wrcicon"></div><div id="wrcicon_illegal" class="wrcicon"></div></div><div class="wrchorizontal"></div></div></div></body><span id="skype_highlighting_settings" display="none" autoextractnumbers="1"></span><object id="skype_plugin_object" location.href="http://www.ibm.com/developerworks/cn/linux/sdk/dll/index.html" location.hostname="www.ibm.com" style="position: absolute; visibility: hidden; left: -100px; top: -100px; " width="0" height="0" type="application/x-vnd.skype.toolbars.npplugin.4.2.0"></object></html>

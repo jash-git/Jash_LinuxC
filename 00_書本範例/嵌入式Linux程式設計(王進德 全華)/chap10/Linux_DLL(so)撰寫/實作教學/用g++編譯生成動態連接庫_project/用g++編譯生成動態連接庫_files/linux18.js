@@ -1,0 +1,4 @@
+document.writeln("<A title=\"Oracle\" href=\"http:\/\/www.linuxidc.com\/Linux\/2012-07\/66157.htm\" target=_blank><IMG src=\"http:\/\/bbs.cndw.com\/UploadFile\/2012-7\/20127232058790938.jpg\" border=0><\/A>")
+document.writeln("<A href=\"http:\/\/www.linuxidc.net\/\" target=_blank><IMG height=90 alt=LinuxIDC src=\"http:\/\/img.linuxidc.com\/img\/linuxidcnet.png\" width=300><\/A>");
+document.writeln("<A href=\"http:\/\/www.linuxidc.com\/search.aspx?Where=Nkey&Keyword=Ubuntu+11.10\" target=_blank><IMG height=90 alt=Ubuntu src=\"http:\/\/img.linuxidc.com\/img\/ubuntu910.jpg\" width=300><\/A>");
+document.writeln("<A href=\"http:\/\/www.linuxidc.com\/topicnews.aspx?tid=2\" target=_blank><IMG height=139 src=\"http:\/\/img.linuxidc.com\/img\/ubuntuone.gif\" width=300><\/A>")

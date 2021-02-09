@@ -1,0 +1,60 @@
+Linux C/C++ 相關-gcc 套件包裝製作
+/////////////////////////////////////////////////////////////
+程式碼
+======
+假設 main() 呼叫 iloveso() 這個函式，而且程式分開的話，程式碼就會像這樣子：
+callso.c
+#include <stdio.h>
+void iloveso(void);
+int
+main(void)
+{
+printf("\nmain() begin\n");
+iloveso();
+printf("main() end\n");
+}
+iloveso.c
+#include <stdio.h>
+extern void iloveso(void);
+void
+iloveso(void)
+{
+printf("here is so!!\n");
+}
+
+一般做法
+========
+一般的情況下，我們會這樣去編譯程式
+gcc callso.c iloveso.c –o callso
+編譯出來後，直接執行 ./callso 就可以執行程式了。
+
+靜態連結
+========
+因為 iloveso() 這個函式，其他程式也可能會使用到，我們希望把他獨立出來，這樣子，別人就可以直接連結他，而不需要重新編譯一次。
+我們可以先編譯為 obj 檔之後，再利用 ar 指令，將 obj 檔變為 .a (靜態library) 檔。
+再執行Ranlib 以確保 .a 檔能跟 unix 相容。
+gcc -c iloveso.c -o iloveso.o
+ar rcv libiloveso.a iloveso.o
+ranlib libiloveso.a
+為了驗證這樣子是可行的，請先在 /etc/ld.so.conf 最後加上 /usr/local/lib。
+接著執行 ldconfig。然後將 libiloveso.a 放到 /usr/local/lib 
+執行
+gcc –o callso callso.c –liloveso
+沒有錯誤訊息的話表示成功，請執行 ./callso 試試。
+如果有錯誤的話，通常是因為 ld.so.conf 檔案未設定，或設定後未執行 ldconfig 的緣故。
+
+動態連結
+========
+當有很多程式都使用同一個靜態Library時，每個程式都會將該靜態連結檔給含括進來，所以會造成空間浪費，我們可以利用動態連結避免掉這個缺點。
+同樣的，我們可以利用下列的程式來編譯動態連結檔
+gcc -shared -Wl,-soname,libiloveso.so -o libiloveso.so iloveso.c -lc
+這樣子就直接產出 libiloveso.so 了。
+接下來同樣安裝到 /usr/local/lib，確定ld.so.conf有增加/usr/local/lib後，執行 ldconfig，以完成設定。
+然後利用如下指令編譯 callso.c
+gcc -o callso callso.c –liloveso
+這樣就 ok 了，你可以試著用 ldd callso 去驗證一下，是不是真的有連結到。
+
+結論及注意事項
+==============
+發現了嗎??不管是靜態或動態，程式碼和程式指令都不曾變更過，只有編譯Library 檔時，有些許差別而已。這對程式設計師來說，真是方便很多。
+要特別注意的是Library檔必須以 lib 為開頭；另外，當 .a 和.so 同時存在時，gcc 會自動以 .so 作為優先連結對象，若你要強迫gcc作靜態連結，就要在編譯時加上 –static 。

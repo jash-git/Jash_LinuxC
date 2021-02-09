@@ -1,0 +1,640 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<!-- saved from url=(0050)http://blog.csdn.net/winki7/article/details/625704 -->
+<html xmlns="http://www.w3.org/1999/xhtml" class="translated-ltr"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>linux 下創建共享庫.so - winki7的專欄- 博客頻道- CSDN.NET</title>
+
+<meta name="description" content="类似Windows系统中的动态链接库，Linux中也有相应的共享库用以支持代码的复用。Windows中为*.dll，而Linux中为*.so，我来详细的告诉你如何在linux下编写动态库,以及如何使用它.在linux下编写动态链接库的步骤: 1.      编写库的头文件和源文件.2.      把所有涉及到的源文件用如下方式编译为目标文件: g++/gcc -g -c">
+<script type="text/javascript" async="" src="./linux 下創建共享庫_files/ga.js"></script><script src="./linux 下創建共享庫_files/jquery.js" type="text/javascript"></script>
+<script src="./linux 下創建共享庫_files/plugins.js" type="text/javascript"></script>
+<script src="./linux 下創建共享庫_files/common.js" type="text/javascript"></script>
+<link rel="Stylesheet" type="text/css" href="./linux 下創建共享庫_files/style.css">
+<link id="RSSLink" title="RSS" type="application/rss+xml" rel="alternate" href="http://blog.csdn.net/winki7/rss/list">
+<link rel="shortcut icon" href="http://blog.csdn.net/favicon.ico">
+<link type="text/css" rel="stylesheet" href="./linux 下創建共享庫_files/default.css">
+<script src="chrome-extension://lifbcibllhkdhoafpjfnlhfpfgnpldfl/document_iterator.js"></script><script src="chrome-extension://lifbcibllhkdhoafpjfnlhfpfgnpldfl/find_proxy.js"></script><script src="chrome-extension://lifbcibllhkdhoafpjfnlhfpfgnpldfl/get_html_text.js"></script><script src="chrome-extension://lifbcibllhkdhoafpjfnlhfpfgnpldfl/global_constants.js"></script><script src="chrome-extension://lifbcibllhkdhoafpjfnlhfpfgnpldfl/name_injection_builder.js"></script><script src="chrome-extension://lifbcibllhkdhoafpjfnlhfpfgnpldfl/number_injection_builder.js"></script><script src="chrome-extension://lifbcibllhkdhoafpjfnlhfpfgnpldfl/string_finder.js"></script><script src="chrome-extension://lifbcibllhkdhoafpjfnlhfpfgnpldfl/change_sink.js"></script><meta name="document_iterator.js"><meta name="find_proxy.js"><meta name="get_html_text.js"><meta name="global_constants.js"><meta name="name_injection_builder.js"><meta name="number_injection_builder.js"><meta name="string_finder.js"><meta name="change_sink.js"><style id="wrc-middle-css" type="text/css">.wrc_whole_window{	display: none;	position: fixed; 	z-index: 2147483647;	background-color: rgba(40, 40, 40, 0.9);	word-spacing: normal !important;	margin: 0px !important;	padding: 0px !important;	border: 0px !important;	left: 0px;	top: 0px;	width: 100%;	height: 100%;	line-height: normal !important;	letter-spacing: normal !important;	overflow: hidden;}.wrc_bar_window{	display: none;	position: fixed; 	z-index: 2147483647;	background-color: rgba(60, 60, 60, 1.0);	word-spacing: normal !important;	font-family: Segoe UI, Arial Unicode MS, Arial, Sans-Serif;	margin: 0px !important;	padding: 0px !important;	border: 0px !important;	left: 0px;	top: 0px;	width: 100%;	height: 40px;	line-height: normal !important;	letter-spacing: normal !important;	color: white !important;	font-size: 13px !important;}.wrc_middle {	display: table-cell;	vertical-align: middle;	width: 100%;}.wrc_middle_main {	font-family: Segoe UI, Arial Unicode MS, Arial, Sans-Serif;	font-size: 14px;	width: 600px;	height: auto;    background: url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/background-body.jpg) repeat-x left top;	background-color: rgb(39, 53, 62);	position: relative;	margin-left: auto;	margin-right: auto;	text-align: left;}.wrc_middle_tq_main {	font-family: Segoe UI, Arial Unicode MS, Arial, Sans-Serif;	font-size: 16px;	width: 615px;	height: 460px;    background: url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/background-sitecorrect.png) no-repeat;	background-color: white;	color: black !important;	position: relative;	margin-left: auto;	margin-right: auto;	text-align: center;}.wrc_middle_logo {    background: url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/logo.jpg) no-repeat left bottom;    width: 140px;    height: 42px;    color: orange;    display: table-cell;    text-align: right;    vertical-align: middle;}.wrc_icon_warning {	margin: 20px 10px 20px 15px;	float: left;	background-color: transparent;}.wrc_middle_title {    color: #b6bec7;	height: auto;    margin: 0px auto;	font-size: 2.2em;	white-space: nowrap;	text-align: center;}.wrc_middle_hline {    height: 2px;	width: 100%;    display: block;}.wrc_middle_description {	text-align: center;	margin: 15px;	font-size: 1.4em;	padding: 20px;	height: auto;	color: white;	min-height: 3.5em;}.wrc_middle_actions_main_div {	margin-bottom: 15px;	text-align: center;}.wrc_middle_actions_blue_button div {	display: inline-block;	width: auto;	cursor: Pointer;	margin: 3px 10px 3px 10px;	color: white;	font-size: 1.2em;	font-weight: bold;}.wrc_middle_actions_blue_button {	-moz-appearance: none;	border-radius: 7px;	-moz-border-radius: 7px/7px;	border-radius: 7px/7px;	background-color: rgb(0, 173, 223) !important;	display: inline-block;	width: auto;	cursor: Pointer;	border: 2px solid #00dddd;	padding: 0px 20px 0px 20px;}.wrc_middle_actions_blue_button:hover {	background-color: rgb(0, 159, 212) !important;}.wrc_middle_actions_blue_button:active {	background-color: rgb(0, 146, 200) !important;	border: 2px solid #00aaaa;}.wrc_middle_actions_grey_button div {	display: inline-block;	width: auto;	cursor: Pointer;	margin: 3px 10px 3px 10px;	color: white !important;	font-size: 15px;	font-weight: bold;}.wrc_middle_actions_grey_button {	-moz-appearance: none;	border-radius: 7px;	-moz-border-radius: 7px/7px;	border-radius: 7px/7px;	background-color: rgb(100, 100, 100) !important;	display: inline-block;	width: auto;	cursor: Pointer;	border: 2px solid #aaaaaa;	text-decoration: none;	padding: 0px 20px 0px 20px;}.wrc_middle_actions_grey_button:hover {	background-color: rgb(120, 120, 120) !important;}.wrc_middle_actions_grey_button:active {	background-color: rgb(130, 130, 130) !important;	border: 2px solid #00aaaa;}.wrc_middle_action_low {	font-size: 0.9em;	white-space: nowrap;	cursor: Pointer;	color: grey !important;	margin: 10px 10px 0px 10px;	text-decoration: none;}.wrc_middle_action_low:hover {	color: #aa4400 !important;}.wrc_middle_actions_rest_div {	padding-top: 5px;	white-space: nowrap;	text-align: center;}.wrc_middle_action {	white-space: nowrap;	cursor: Pointer;	color: red !important;	font-size: 1.2em;	margin: 10px 10px 0px 10px;	text-decoration: none;}.wrc_middle_action:hover {	color: #aa4400 !important;}</style><script id="wrc-script-middle_window" type="text/javascript" language="JavaScript">var g_inputsCnt = 0;var g_InputThis = new Array(null, null, null, null);var g_alerted = false;/* we test the input if it includes 4 digits   (input is a part of 4 inputs for filling the credit-card number)*/function is4DigitsCardNumber(val){	var regExp = new RegExp('[0-9]{4}');	return (val.length == 4 && val.search(regExp) == 0);}/* testing the whole credit-card number 19 digits devided by three '-' symbols or   exactly 16 digits without any dividers*/function isCreditCardNumber(val){	if(val.length == 19)	{		var regExp = new RegExp('[0-9]{4}-[0-9]{4}-[0-9]{4}-[0-9]{4}');		return (val.search(regExp) == 0);	}	else if(val.length == 16)	{		var regExp = new RegExp('[0-9]{4}[0-9]{4}[0-9]{4}[0-9]{4}');		return (val.search(regExp) == 0);	}	return false;}function CheckInputOnCreditNumber(self){	if(g_alerted)		return false;	var value = self.value;	if(self.type == 'text')	{		if(is4DigitsCardNumber(value))		{			var cont = true;			for(i = 0; i < g_inputsCnt; i++)				if(g_InputThis[i] == self)					cont = false;			if(cont && g_inputsCnt < 4)			{				g_InputThis[g_inputsCnt] = self;				g_inputsCnt++;			}		}		g_alerted = (g_inputsCnt == 4);		if(g_alerted)			g_inputsCnt = 0;		else			g_alerted = isCreditCardNumber(value);	}	return g_alerted;}function CheckInputOnPassword(self){	if(g_alerted)		return false;	var value = self.value;	if(self.type == 'password')	{		g_alerted = (value.length > 0);	}	return g_alerted;}function onInputBlur(self, bRatingOk, bFishingSite){	var bCreditNumber = CheckInputOnCreditNumber(self);	var bPassword = CheckInputOnPassword(self);	if((!bRatingOk || bFishingSite == 1) && (bCreditNumber || bPassword) )	{		var warnDiv = document.getElementById("wrcinputdiv");		if(warnDiv)		{			/* show the warning div in the middle of the screen */			warnDiv.style.left = "0px";			warnDiv.style.top = "0px";			warnDiv.style.width = "100%";			warnDiv.style.height = "100%";			document.getElementById("wrc_warn_fs").style.display = 'none';			document.getElementById("wrc_warn_cn").style.display = 'none';			if(bFishingSite)				document.getElementById("wrc_warn_fs").style.display = 'block';			else				document.getElementById("wrc_warn_cn").style.display = 'block';			warnDiv.style.display = 'table';		}	}}</script><style id="wrc-css" type="text/css">.wrcx {display:none} .r .wrcx, .osl .wrcx, .bc .wrcx, .fc .wrcx, #rhsline ol .wrcx {display:inline; background: url("chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/grey0-16.png") right no-repeat}
+.wrc0 {display:none} .r .wrc0, .osl .wrc0, .bc .wrc0, .fc .wrc0, #rhsline ol .wrc0 {display:inline; background: url("chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/grey0-16.png") right no-repeat}
+.wrc11 {display:none} .r .wrc11, .osl .wrc11, .bc .wrc11, .fc .wrc11, #rhsline ol .wrc11 {display:inline; background: url("chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/green1-16.png") right no-repeat}
+.wrc12 {display:none} .r .wrc12, .osl .wrc12, .bc .wrc12, .fc .wrc12, #rhsline ol .wrc12 {display:inline; background: url("chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/green2-16.png") right no-repeat}
+.wrc13 {display:none} .r .wrc13, .osl .wrc13, .bc .wrc13, .fc .wrc13, #rhsline ol .wrc13 {display:inline; background: url("chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/green3-16.png") right no-repeat}
+.wrc21 {display:none} .r .wrc21, .osl .wrc21, .bc .wrc21, .fc .wrc21, #rhsline ol .wrc21 {display:inline; background: url("chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/yellow1-16.png") right no-repeat}
+.wrc22 {display:none} .r .wrc22, .osl .wrc22, .bc .wrc22, .fc .wrc22, #rhsline ol .wrc22 {display:inline; background: url("chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/yellow2-16.png") right no-repeat}
+.wrc23 {display:none} .r .wrc23, .osl .wrc23, .bc .wrc23, .fc .wrc23, #rhsline ol .wrc23 {display:inline; background: url("chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/yellow3-16.png") right no-repeat}
+.wrc31 {display:none} .r .wrc31, .osl .wrc31, .bc .wrc31, .fc .wrc31, #rhsline ol .wrc31 {display:inline; background: url("chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/red1-16.png") right no-repeat}
+.wrc32 {display:none} .r .wrc32, .osl .wrc32, .bc .wrc32, .fc .wrc32, #rhsline ol .wrc32 {display:inline; background: url("chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/red2-16.png") right no-repeat}
+.wrc33 {display:none} .r .wrc33, .osl .wrc33, .bc .wrc33, .fc .wrc33, #rhsline ol .wrc33 {display:inline; background: url("chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/red3-16.png") right no-repeat}
+.wrc_icon{margin:0;padding:0;padding-left:15px !important;width:16px !important; height:16px !important;line-height:16px !important;}
+#wrchoverdiv{padding-bottom:20px; position:absolute; width:180px; background:transparent url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/background-body.jpg) top left repeat-x; display:none; font-family: Segoe UI, Arial Unicode MS, Arial, Sans-Serif; font-size: 14px; z-index:9999999;}
+#wrchoverdiv{cursor:default;}
+#wrchoverdiv #wrccontainer{width:180px;}
+#wrchoverdiv #wrcheader{width:140px; height:42px; background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/logo.jpg) bottom left no-repeat; text-align:right; line-height:42px; color:orange; margin:0 auto;}
+#wrchoverdiv .wrchorizontal{width:180px; height:2px; background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/horizontal-line.jpg) bottom left no-repeat;}
+#wrchoverdiv #wrccurrentvote{height:25px; line-height:25px; color:#FFF; text-align:center; text-transform:uppercase;}
+#wrchoverdiv #wrcrating{margin:5px auto; width:69px; height:55px; background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/grey-0.png) bottom left no-repeat;}
+#wrchoverdiv #wrcrating.wrcbx{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/grey-0.png);}
+#wrchoverdiv #wrcrating.wrcb0{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/grey-0.png);}
+#wrchoverdiv #wrcrating.wrcb11{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/green-1.png);}
+#wrchoverdiv #wrcrating.wrcb12{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/green-2.png);}
+#wrchoverdiv #wrcrating.wrcb13{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/green-3.png);}
+#wrchoverdiv #wrcrating.wrcb21{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/yellow-1.png);}
+#wrchoverdiv #wrcrating.wrcb22{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/yellow-2.png);}
+#wrchoverdiv #wrcrating.wrcb23{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/yellow-3.png);}
+#wrchoverdiv #wrcrating.wrcb31{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/red-1.png);}
+#wrchoverdiv #wrcrating.wrcb32{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/red-2.png);}
+#wrchoverdiv #wrcrating.wrcb33{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/red-3.png);}
+#wrchoverdiv #wrcratingtext{margin:3px 5px; color:#FFF; text-align:center; padding:0; font-size:12px;}
+#wrchoverdiv #wrcweighttext{margin:3px 5px; color:#FFF; text-align:center; padding:0; font-size:12px;}
+#wrchoverdiv #wrcflags{width:150px; height:70px; margin:0 auto;}
+#wrchoverdiv .wrcicon{width:30px; height:30px; float:left;}
+#wrchoverdiv #wrcicon_shopping{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/shopping-small-disable.png) top left no-repeat;}
+#wrchoverdiv #wrcicon_shopping.selected{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/shopping-small-selected.png) top left no-repeat;}
+#wrchoverdiv #wrcicon_social{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/social-small-disable.png) top left no-repeat;}
+#wrchoverdiv #wrcicon_social.selected{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/social-small-selected.png) top left no-repeat;}
+#wrchoverdiv #wrcicon_news{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/news-small-disable.png) top left no-repeat;}
+#wrchoverdiv #wrcicon_news.selected{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/news-small-selected.png) top left no-repeat;}
+#wrchoverdiv #wrcicon_it{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/it-small-disable.png) top left no-repeat;}
+#wrchoverdiv #wrcicon_it.selected{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/it-small-selected.png) top left no-repeat;}
+#wrchoverdiv #wrcicon_corporate{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/corporate-small-disable.png) top left no-repeat;}
+#wrchoverdiv #wrcicon_corporate.selected{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/corporate-small-selected.png) top left no-repeat;}
+#wrchoverdiv #wrcicon_pornography{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/pornography-small-disable.png) top left no-repeat;}
+#wrchoverdiv #wrcicon_pornography.selected{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/pornography-small-selected.png) top left no-repeat;}
+#wrchoverdiv #wrcicon_violence{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/violence-small-disable.png) top left no-repeat;}
+#wrchoverdiv #wrcicon_violence.selected{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/violence-small-selected.png) top left no-repeat;}
+#wrchoverdiv #wrcicon_gambling{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/gambling-small-disable.png) top left no-repeat;}
+#wrchoverdiv #wrcicon_gambling.selected{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/gambling-small-selected.png) top left no-repeat;}
+#wrchoverdiv #wrcicon_drugs{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/drugs-small-disable.png) top left no-repeat;}
+#wrchoverdiv #wrcicon_drugs.selected{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/drugs-small-selected.png) top left no-repeat;}
+#wrchoverdiv #wrcicon_illegal{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/illegal-small-disable.png) top left no-repeat;}
+#wrchoverdiv #wrcicon_illegal.selected{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/illegal-small-selected.png) top left no-repeat;}
+</style><style charset="utf-8" type="text/css" id="">SPAN.skype_pnh_container SPAN.skype_pnh_mark{  display:none !important;}@media screen{SPAN.skype_pnh_print_container{  display:none !important;}SPAN.skype_pnh_container, SPAN.skype_pnh_container *{background-attachment: scroll !important;background-color: transparent !important;background-image: none !important;background-position: 0px 0px ! important;background-repeat: no-repeat !important;border: 0px none !important;border-color: #000000 !important;border-style: none !important;border-width: 0 !important;border-left: 0 none #000000 !important;border-top: 0 none #000000 !important;border-right: 0 none #000000 !important;border-bottom: 0 none #000000 !important;border-left-color: #000000 !important;border-left-style: none !important;border-left-width: 0 !important;border-top-color: #000000 !important;border-top-style: none !important;border-top-width: 0 !important;border-right-color: #000000 !important;border-right-style: none !important;border-right-width: 0 !important;border-bottom-color: #000000 !important;border-bottom-style: none !important;border-bottom-width: 0 !important;border-collapse: separate !important;bottom: auto !important;clear: none !important;clip: auto !important;cursor: pointer !important;direction: ltr !important;display: inline !important;float: none !important;font-style: normal !important;left: auto !important;letter-spacing: 0 !important;list-style-image: none !important;list-style-position: outside !important;list-style-type: disc !important;overflow: hidden !important;overflow-x: hidden !important;overflow-y: hidden !important;padding: 0px 0px 0px 0px !important;padding-left: 0px !important;padding-top: 0px !important;padding-right: 0px !important;padding-bottom: 0px !important;page-break-after: auto !important;page-break-before: auto !important;page-break-inside: auto !important;position: static !important;right: auto !important;table-layout: auto !important;text-align: left !important;text-decoration: none !important;text-indent: 0px !important;text-transform: none !important;top: auto !important;voice-family: inherit !important;white-space: nowrap !important;word-spacing: normal !important;z-index: 0 !important;  color: #49535A !important;  font-family: Tahoma, Arial, Helvetica, sans-serif !important;  font-size: 11px !important;  font-weight: bold !important;  height: 14px !important;  line-height: 14px !important;  margin-left: 0px !important;  margin-top: 0px !important;  margin-right: 0px !important;  margin-bottom: 0px !important;  vertical-align: baseline !important;  width: auto !important;}SPAN.skype_pnh_container SPAN.skype_pnh_highlighting_active_fax SPAN.skype_pnh_right_span, SPAN.skype_pnh_container SPAN.skype_pnh_highlighting_inactive_fax SPAN.skype_pnh_right_span{  background-position: -92px 0px !important;}SPAN.skype_pnh_container SPAN.skype_pnh_highlighting_inactive_free SPAN.skype_pnh_dropart_flag_span{  background-position: 0px 1px !important;}SPAN.skype_pnh_container SPAN.skype_pnh_highlighting_inactive_free SPAN.skype_pnh_textarea_span{  background-position: -90px 0px !important;}SPAN.skype_pnh_container SPAN.skype_pnh_highlighting_inactive_free SPAN.skype_pnh_text_span{  visibility: hidden !important;}SPAN.skype_pnh_container SPAN.skype_pnh_highlighting_active_free SPAN.skype_pnh_dropart_flag_span{  background-position: 0px 1px !important;}SPAN.skype_pnh_container SPAN.skype_pnh_highlighting_active_free SPAN.skype_pnh_textarea_span{  background-position: -160px 0px !important;}SPAN.skype_pnh_container SPAN.skype_pnh_highlighting_active_free SPAN.skype_pnh_text_span{  background-position: -160px 0px !important;  color: #FFFFFF !important;}SPAN.skype_pnh_container SPAN.skype_pnh_left_span{  background-position: 0px 0px !important;  width: 6px !important;}SPAN.skype_pnh_container SPAN.skype_pnh_dropart_span{  background-position: -11px 0px !important;  width: 27px !important;}SPAN.skype_pnh_container SPAN.skype_pnh_dropart_wo_arrow_span{  background-position: -130px 0px !important;  width: 18px !important;}SPAN.skype_pnh_container SPAN.skype_pnh_dropart_flag_span{  background-position: 1px 1px !important;  width: 18px !important;}SPAN.skype_pnh_container SPAN.skype_pnh_textarea_span{  background-position: -125px 0px !important;}SPAN.skype_pnh_container SPAN.skype_pnh_text_span{  padding-left: 5px !important;  background-position: -125px 0px !important;}SPAN.skype_pnh_container SPAN.skype_pnh_right_span{  background-position: -62px 0px !important;  width: 15px !important;}}@media print{SPAN.skype_pnh_print_container{}SPAN.skype_pnh_container{    display:none !important;}}@media screen{SPAN.skype_pnh_container SPAN.skype_pnh_highlighting_inactive_common *{  background-image:url('chrome-extension://lifbcibllhkdhoafpjfnlhfpfgnpldfl/numbers_common_inactive_icon_set.gif') !important;}SPAN.skype_pnh_container SPAN.skype_pnh_highlighting_active_common *{  background-image:url('chrome-extension://lifbcibllhkdhoafpjfnlhfpfgnpldfl/numbers_common_active_icon_set.gif') !important;}SPAN.skype_pnh_container SPAN.skype_pnh_highlighting_inactive_fax *{  background-image:url('chrome-extension://lifbcibllhkdhoafpjfnlhfpfgnpldfl/numbers_common_inactive_icon_set.gif') !important;}SPAN.skype_pnh_container SPAN.skype_pnh_highlighting_active_fax *{  background-image:url('chrome-extension://lifbcibllhkdhoafpjfnlhfpfgnpldfl/numbers_common_active_icon_set.gif') !important;}SPAN.skype_pnh_container SPAN.skype_pnh_highlighting_inactive_free *{  background-image:url('chrome-extension://lifbcibllhkdhoafpjfnlhfpfgnpldfl/numbers_free_icon_set.gif') !important;}SPAN.skype_pnh_container SPAN.skype_pnh_highlighting_active_free *{  background-image:url('chrome-extension://lifbcibllhkdhoafpjfnlhfpfgnpldfl/numbers_free_icon_set.gif') !important;}SPAN.skype_pnh_container SPAN.skype_pnh_dropart_flag_span{  background-image: url('chrome-extension://lifbcibllhkdhoafpjfnlhfpfgnpldfl/flags.gif') !important;}}</style><link type="text/css" rel="stylesheet" charset="UTF-8" href="./linux 下創建共享庫_files/translateelement.css"><script type="text/javascript" charset="UTF-8" src="./linux 下創建共享庫_files/main_zh-TW.js"></script><script type="text/javascript" charset="UTF-8" src="./linux 下創建共享庫_files/element_main.js"></script></head><style type="text/css">embed[type*="application/x-shockwave-flash"],embed[src*=".swf"],object[type*="application/x-shockwave-flash"],object[codetype*="application/x-shockwave-flash"],object[src*=".swf"],object[codebase*="swflash.cab"],object[classid*="D27CDB6E-AE6D-11cf-96B8-444553540000"],object[classid*="d27cdb6e-ae6d-11cf-96b8-444553540000"],object[classid*="D27CDB6E-AE6D-11cf-96B8-444553540000"]{	display: none !important;}</style>
+<body>
+<script src="./linux 下創建共享庫_files/pub_topnav_2011.js" type="text/javascript"></script><link rel="stylesheet" type="text/css" href="./linux 下創建共享庫_files/navtop_2012.css">
+<div class="nav_top_2011">
+<p><span style="color:red;"><font><font>您還未登錄！</font></font></span><font><font>| </font></font><a href="https://passport.csdn.net/account/login" target="_top" wrc_done="true"><font><font>登錄</font></font></a>&nbsp;<span class="wrc_icon wrc11" rating="{&quot;icon&quot;:&quot;green1-16.png&quot;,&quot;rating&quot;:1,&quot;weight&quot;:1,&quot;flags&quot;:{&quot;it&quot;:1}}"></span><font><font> | </font></font><a href="https://passport.csdn.net/account/register" target="_top" wrc_done="true"><font><font>註冊</font></font></a>&nbsp;<span class="wrc_icon wrc11" rating="{&quot;icon&quot;:&quot;green1-16.png&quot;,&quot;rating&quot;:1,&quot;weight&quot;:1,&quot;flags&quot;:{&quot;it&quot;:1}}"></span><font><font> | </font></font><a href="https://passport.csdn.net/help/faq" target="_blank" wrc_done="true"><font><font>幫助</font></font></a>&nbsp;<span class="wrc_icon wrc11" rating="{&quot;icon&quot;:&quot;green1-16.png&quot;,&quot;rating&quot;:1,&quot;weight&quot;:1,&quot;flags&quot;:{&quot;it&quot;:1}}"></span></p><ul>
+<li><a href="http://www.csdn.net/" target="_blank" wrc_done="true"><font><font>首頁</font></font></a>&nbsp;<span class="wrc_icon wrc11" rating="{&quot;icon&quot;:&quot;green1-16.png&quot;,&quot;rating&quot;:1,&quot;weight&quot;:1,&quot;flags&quot;:{&quot;it&quot;:1}}"></span></li>
+<li><a href="http://news.csdn.net/" target="_blank" wrc_done="true"><font><font>業界</font></font></a>&nbsp;<span class="wrc_icon wrc11" rating="{&quot;icon&quot;:&quot;green1-16.png&quot;,&quot;rating&quot;:1,&quot;weight&quot;:1,&quot;flags&quot;:{&quot;it&quot;:1}}"></span></li>
+<li><a href="http://mobile.csdn.net/" target="_blank" wrc_done="true"><font><font>移動</font></font></a>&nbsp;<span class="wrc_icon wrc11" rating="{&quot;icon&quot;:&quot;green1-16.png&quot;,&quot;rating&quot;:1,&quot;weight&quot;:1,&quot;flags&quot;:{&quot;it&quot;:1}}"></span></li>
+<li><a href="http://cloud.csdn.net/" target="_blank" wrc_done="true"><font><font>雲計算</font></font></a>&nbsp;<span class="wrc_icon wrc11" rating="{&quot;icon&quot;:&quot;green1-16.png&quot;,&quot;rating&quot;:1,&quot;weight&quot;:1,&quot;flags&quot;:{&quot;it&quot;:1}}"></span></li>
+<li><a href="http://sd.csdn.net/" target="_blank" wrc_done="true"><font><font>研發</font></font></a>&nbsp;<span class="wrc_icon wrc11" rating="{&quot;icon&quot;:&quot;green1-16.png&quot;,&quot;rating&quot;:1,&quot;weight&quot;:1,&quot;flags&quot;:{&quot;it&quot;:1}}"></span></li>
+<li><a href="http://bbs.csdn.net/" target="_blank" wrc_done="true"><font><font>論壇</font></font></a>&nbsp;<span class="wrc_icon wrc11" rating="{&quot;icon&quot;:&quot;green1-16.png&quot;,&quot;rating&quot;:1,&quot;weight&quot;:1,&quot;flags&quot;:{&quot;it&quot;:1}}"></span></li>
+<li><a href="http://blog.csdn.net/" target="_blank"><font><font>博客</font></font></a></li>
+<li><a href="http://download.csdn.net/" target="_blank" wrc_done="true"><font><font>下載</font></font></a>&nbsp;<span class="wrc_icon wrc01" rating="{&quot;icon&quot;:&quot;grey0-16.png&quot;,&quot;rating&quot;:0,&quot;weight&quot;:1,&quot;flags&quot;:{}}"></span></li>
+<li class="more"><h2 id="topnav_btnmore" onclick="showNavMore(this)"><a href="javascript:void(0);"><font><font>更多</font></font></a></h2>
+<div id="topnav_hidlist">
+<iframe name="nav_frm" src="about:blank" width="92" height="178" scrolling="no" frameborder="no"></iframe>
+</div>
+</li>
+</ul>
+</div>
+
+
+<div id="container">
+<div id="header">
+    <div class="header">
+        <div id="blog_title">
+            <h1><a href="http://blog.csdn.net/winki7"><font><font>winki7的專欄</font></font></a></h1>
+            <h2><font><font>與大家共享技術的樂趣，我們一直在努力......</font></font></h2>
+            <div class="clear"></div>
+        </div>
+        <div class="clear"></div>
+    </div>
+</div>
+<div id="navigator">
+    <div class="navigator_bg"></div>
+    <div class="navigator">
+        <ul>
+            <li id="btnContents"><a href="http://blog.csdn.net/winki7?viewmode=contents"><span><img src="./linux 下創建共享庫_files/ico_list.gif"><font><font>目錄視圖</font></font></span></a></li>
+            <li id="btnView"><a href="http://blog.csdn.net/winki7?viewmode=list"><span><img src="./linux 下創建共享庫_files/ico_summary.gif"><font><font>摘要視圖</font></font></span></a></li>
+            <li id="btnRss"><a href="http://blog.csdn.net/winki7/rss/list"><span><img src="./linux 下創建共享庫_files/ico_rss.gif"><font><font>訂閱</font></font></span></a></li>
+</ul>
+    </div>
+</div>
+<script type="text/javascript">
+    var username = "winki7";
+    var blog_address = "http://blog.csdn.net/winki7";
+    var static_host = "http://static.blog.csdn.net";
+    var currentUserName = "";
+</script>
+        
+<div id="body">
+<div id="main">
+<div class="main">
+<div class="notice"> 
+
+<a href="http://blog.csdn.net/csdnproduct/article/details/7863031" target="_blank">
+<font color="red"><font><font>新版論壇系列介紹之二——功能介紹篇</font></font></font></a>
+
+&nbsp;&nbsp;
+
+
+<a href="http://blog.csdn.net/csdnproduct/article/details/7868152" target="_blank">
+<font color="red"><font><font>公告：CSDN博客頻道博客搬家功能上線！</font></font></font></a>
+
+&nbsp;&nbsp;&nbsp;
+
+
+<a href="http://blog.csdn.net/csdnproduct/article/details/7964475" target="_blank">
+<font color="red"><font><font>CSDN產品客服新浪微博正式上線公告</font></font></font></a>
+
+<br>
+
+<a href="http://mdcc.csdn.net/" target="_blank" wrc_done="true">
+<font color="blue"><font><font>中國最大規模移動開發者高水平盛會 
+  </font></font></font></a>&nbsp;<span class="wrc_icon wrc11" rating="{&quot;icon&quot;:&quot;green1-16.png&quot;,&quot;rating&quot;:1,&quot;weight&quot;:1,&quot;flags&quot;:{&quot;it&quot;:1}}"></span>
+
+&nbsp;&nbsp;
+
+
+<a href="http://blog.csdn.net/blogdevteam/article/details/7867718" target="_blank">
+<font color="red"><font><font>沒有重量只有質量：iPad版《程序員雜誌》應用上線</font></font></font></a>
+
+&nbsp;&nbsp;
+
+
+<a href="http://blog.csdn.net/blogdevteam/article/details/7954317" target="_blank">
+<font color="blue"><font><font>“第一次親密接觸”——有獎徵文活動  </font></font></font></a>
+
+</div><script type="text/javascript" src="./linux 下創建共享庫_files/ad.js"></script>
+
+<div id="article_details" class="details">
+    <div class="article_title">
+    <span class="ico ico_type_Original"></span>
+    <h3>
+        <span class="link_title"><a href="./linux 下創建共享庫_files/linux 下創建共享庫.htm"><font><font>
+        linux 下創建共享庫.so
+        </font></font></a></span>
+    </h3>
+</div>
+
+        
+    <div class="article_manage">
+        <span class="link_categories"><font><font>
+        分類：
+             </font></font><a href="http://blog.csdn.net/winki7/article/category/157422"><font><font>Linux/others</font></font></a> 
+        </span>
+    <span class="link_postdate"><font><font> 2006-03-16 09:13 </font></font></span>
+    <span class="link_view" title="閱讀次數"><font><font>7378人閱讀</font></font></span>
+    <span class="link_comments" title="評論次數"><a href="http://blog.csdn.net/winki7/article/details/625704#comments"><font><font>評論</font></font></a><font><font> (2) </font></font></span>
+    <span class="link_collect"><a href="javascript:void(0);" onclick="javascript:collectArticle(&#39;linux 下创建共享库.so&#39;,&#39;625704&#39;);return false;" title="收藏"><font><font>收藏</font></font></a></span>
+    <span class="link_report"><a href="http://blog.csdn.net/winki7/article/details/625704#report" onclick="javascript:report(625704,2);return false;" title="舉報"><font><font>舉報</font></font></a></span>
+    
+</div>
+
+    
+<div id="article_content" class="article_content">
+<p class="MsoNormal" style="MARGIN: 0cm 0cm 0pt; TEXT-INDENT: 21pt"><span style="FONT-SIZE: 9pt; FONT-FAMILY: 宋体; mso-bidi-font-size: 12.0pt; mso-ascii-font-family: Verdana; mso-hansi-font-family: Verdana"></span></p>
+<p class="MsoNormal" style="MARGIN: 0cm 0cm 0pt; TEXT-INDENT: 21pt"><span style="FONT-SIZE: 9pt; FONT-FAMILY: 宋体; mso-bidi-font-size: 12.0pt; mso-ascii-font-family: Verdana; mso-hansi-font-family: Verdana"><font><font>類似</font></font></span><span lang="EN-US" style="FONT-SIZE: 9pt; FONT-FAMILY: Verdana; mso-bidi-font-size: 12.0pt"><font><font>Windows </font></font></span><span style="FONT-SIZE: 9pt; FONT-FAMILY: 宋体; mso-bidi-font-size: 12.0pt; mso-ascii-font-family: Verdana; mso-hansi-font-family: Verdana"><font><font>系統中的動態鏈接庫，</font></font></span><span lang="EN-US" style="FONT-SIZE: 9pt; FONT-FAMILY: Verdana; mso-bidi-font-size: 12.0pt"><font><font>Linux </font></font></span><span style="FONT-SIZE: 9pt; FONT-FAMILY: 宋体; mso-bidi-font-size: 12.0pt; mso-ascii-font-family: Verdana; mso-hansi-font-family: Verdana"><font><font>中也有相應的共享庫用以支持代碼的複用。</font></font></span><span lang="EN-US" style="FONT-SIZE: 9pt; FONT-FAMILY: Verdana; mso-bidi-font-size: 12.0pt"><font><font>Windows </font></font></span><span style="FONT-SIZE: 9pt; FONT-FAMILY: 宋体; mso-bidi-font-size: 12.0pt; mso-ascii-font-family: Verdana; mso-hansi-font-family: Verdana"><font><font>中為</font></font></span><span lang="EN-US" style="FONT-SIZE: 9pt; FONT-FAMILY: Verdana; mso-bidi-font-size: 12.0pt"><font><font>*.dll </font></font></span><span style="FONT-SIZE: 9pt; FONT-FAMILY: 宋体; mso-bidi-font-size: 12.0pt; mso-ascii-font-family: Verdana; mso-hansi-font-family: Verdana"><font><font>，而</font></font></span><span lang="EN-US" style="FONT-SIZE: 9pt; FONT-FAMILY: Verdana; mso-bidi-font-size: 12.0pt"><font><font>Linux </font></font></span><span style="FONT-SIZE: 9pt; FONT-FAMILY: 宋体; mso-bidi-font-size: 12.0pt; mso-ascii-font-family: Verdana; mso-hansi-font-family: Verdana"><font><font>中為</font></font></span><span lang="EN-US" style="FONT-SIZE: 9pt; FONT-FAMILY: Verdana; mso-bidi-font-size: 12.0pt"><font><font>*.so </font></font></span><span style="FONT-SIZE: 9pt; FONT-FAMILY: 宋体; mso-bidi-font-size: 12.0pt; mso-ascii-font-family: Verdana; mso-hansi-font-family: Verdana"><font><font>，我來詳細的告訴你如何在</font></font></span><span lang="EN-US" style="FONT-SIZE: 9pt; FONT-FAMILY: Verdana; mso-bidi-font-size: 12.0pt"><font><font>linux </font></font></span><span style="FONT-SIZE: 9pt; FONT-FAMILY: 宋体; mso-bidi-font-size: 12.0pt; mso-ascii-font-family: Verdana; mso-hansi-font-family: Verdana"><font><font>下編寫動態庫</font></font></span><span lang="EN-US" style="FONT-SIZE: 9pt; FONT-FAMILY: Verdana; mso-bidi-font-size: 12.0pt"><font><font>, </font></font></span><span style="FONT-SIZE: 9pt; FONT-FAMILY: 宋体; mso-bidi-font-size: 12.0pt; mso-ascii-font-family: Verdana; mso-hansi-font-family: Verdana"><font><font>以及如何使用它</font></font></span><span lang="EN-US" style="FONT-SIZE: 9pt; FONT-FAMILY: Verdana; mso-bidi-font-size: 12.0pt"><font><font>.</font></font><o:p></o:p></span></p>
+<p class="MsoNormal" style="MARGIN: 0cm 0cm 0pt"><strong><em><u style="text-underline: red"><span style="FONT-SIZE: 9pt; FONT-FAMILY: 宋体; mso-bidi-font-size: 12.0pt; mso-ascii-font-family: Verdana; mso-hansi-font-family: Verdana"><font><font>在</font></font></span></u></em></strong><strong><em><u style="text-underline: red"><span lang="EN-US" style="FONT-SIZE: 9pt; FONT-FAMILY: Verdana; mso-bidi-font-size: 12.0pt"><font><font>linux </font></font></span></u></em></strong><strong><em><u style="text-underline: red"><span style="FONT-SIZE: 9pt; FONT-FAMILY: 宋体; mso-bidi-font-size: 12.0pt; mso-ascii-font-family: Verdana; mso-hansi-font-family: Verdana"><font><font>下編寫動態鏈接庫的步驟</font></font></span></u></em></strong><strong><em><u style="text-underline: red"><span lang="EN-US" style="FONT-SIZE: 9pt; FONT-FAMILY: Verdana; mso-bidi-font-size: 12.0pt"><font><font>:</font></font><o:p></o:p></span></u></em></strong></p>
+<p class="MsoNormal" style="MARGIN: 0cm 0cm 0pt"><span lang="EN-US" style="FONT-SIZE: 9pt; FONT-FAMILY: Verdana; mso-bidi-font-size: 12.0pt">&nbsp;<o:p></o:p></span></p>
+<p class="MsoNormal" style="MARGIN: 0cm 0cm 0pt 18pt; TEXT-INDENT: -18pt; mso-list: l1 level1 lfo1; tab-stops: list 18.0pt"><span lang="EN-US" style="FONT-SIZE: 9pt; COLOR: blue; FONT-FAMILY: Verdana; mso-bidi-font-size: 12.0pt"><font><font>1. </font></font><span style="FONT: 7pt &#39;Times New Roman&#39;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span><span style="FONT-SIZE: 9pt; COLOR: blue; FONT-FAMILY: 宋体; mso-bidi-font-size: 12.0pt; mso-ascii-font-family: Verdana; mso-hansi-font-family: Verdana"><font><font>編寫庫的頭文件和源文件</font></font></span><span lang="EN-US" style="FONT-SIZE: 9pt; COLOR: blue; FONT-FAMILY: Verdana; mso-bidi-font-size: 12.0pt"><font><font>.</font></font><o:p></o:p></span></p>
+<p class="MsoNormal" style="MARGIN: 0cm 0cm 0pt 18pt; TEXT-INDENT: -18pt; mso-list: l1 level1 lfo1; tab-stops: list 18.0pt"><span lang="EN-US" style="FONT-SIZE: 9pt; COLOR: blue; FONT-FAMILY: Verdana; mso-bidi-font-size: 12.0pt"><font><font>2. </font></font><span style="FONT: 7pt &#39;Times New Roman&#39;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span><span style="FONT-SIZE: 9pt; COLOR: blue; FONT-FAMILY: 宋体; mso-bidi-font-size: 12.0pt; mso-ascii-font-family: Verdana; mso-hansi-font-family: Verdana"><font><font>把所有涉及到的源文件用如下方式編譯為目標文件</font></font></span><span lang="EN-US" style="FONT-SIZE: 9pt; COLOR: blue; FONT-FAMILY: Verdana; mso-bidi-font-size: 12.0pt"><font><font>:</font></font><o:p></o:p></span></p>
+<p class="MsoNormal" style="MARGIN: 0cm 0cm 0pt 18pt"><span lang="EN-US" style="FONT-SIZE: 9pt; COLOR: blue; FONT-FAMILY: Verdana; mso-bidi-font-size: 12.0pt">&nbsp;<o:p></o:p></span></p>
+<p class="MsoNormal" style="MARGIN: 0cm 0cm 0pt; TEXT-INDENT: 18pt"><span lang="EN-US" style="FONT-SIZE: 9pt; FONT-FAMILY: Verdana; mso-bidi-font-size: 12.0pt"><font><font>g++/gcc -g -c -fPIC -o library1.o library1.cpp</font></font><o:p></o:p></span></p>
+<p class="MsoNormal" style="MARGIN: 0cm 0cm 0pt; TEXT-INDENT: 18pt"><span lang="EN-US" style="FONT-SIZE: 9pt; FONT-FAMILY: Verdana; mso-bidi-font-size: 12.0pt"><font><font>g++/gcc -g -c -fPIC -o library2.o library2.cpp </font></font><br><font><font>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ......</font></font><o:p></o:p></span></p>
+<p class="MsoNormal" style="MARGIN: 0cm 0cm 0pt; TEXT-INDENT: 18pt; mso-char-indent-count: 2.0; mso-char-indent-size: 9.0pt"><span lang="EN-US" style="FONT-SIZE: 9pt; FONT-FAMILY: Verdana; mso-bidi-font-size: 12.0pt"><font><font>......</font></font><o:p></o:p></span></p>
+<p class="MsoNormal" style="MARGIN: 0cm 0cm 0pt; TEXT-INDENT: 18pt"><span style="FONT-SIZE: 9pt; COLOR: red; FONT-FAMILY: 宋体; mso-bidi-font-size: 12.0pt; mso-ascii-font-family: Verdana; mso-hansi-font-family: Verdana"><font><font>（註釋：</font></font></span><span lang="EN-US" style="FONT-SIZE: 9pt; COLOR: red; FONT-FAMILY: Verdana; mso-bidi-font-size: 12.0pt"><font><font>-fPIC </font></font></span><span style="FONT-SIZE: 9pt; COLOR: red; FONT-FAMILY: 宋体; mso-bidi-font-size: 12.0pt; mso-ascii-font-family: Verdana; mso-hansi-font-family: Verdana"><font><font>指通過這個選項來生成與位置無關的代碼，可以在任何地址被連接和裝載，</font></font></span><span lang="EN-US" style="FONT-SIZE: 9pt; COLOR: red; FONT-FAMILY: Verdana; mso-bidi-font-size: 12.0pt"><font><font>-c </font></font></span><span style="FONT-SIZE: 9pt; COLOR: red; FONT-FAMILY: 宋体; mso-bidi-font-size: 12.0pt; mso-ascii-font-family: Verdana; mso-hansi-font-family: Verdana"><font><font>指只編譯而不連接原程序）</font></font></span><span lang="EN-US" style="FONT-SIZE: 9pt; COLOR: red; FONT-FAMILY: Verdana; mso-bidi-font-size: 12.0pt"><o:p></o:p></span></p>
+<p class="MsoNormal" style="MARGIN: 0cm 0cm 0pt 54pt; TEXT-INDENT: -54pt; mso-char-indent-count: -6.0; mso-char-indent-size: 9.0pt"><span lang="EN-US" style="FONT-SIZE: 9pt; FONT-FAMILY: Verdana; mso-bidi-font-size: 12.0pt">&nbsp;<o:p></o:p></span></p>
+<p class="MsoNormal" style="MARGIN: 0cm 0cm 0pt 18pt; TEXT-INDENT: -18pt; mso-list: l1 level1 lfo1; tab-stops: list 18.0pt"><span lang="EN-US" style="FONT-SIZE: 9pt; COLOR: blue; FONT-FAMILY: Verdana; mso-bidi-font-size: 12.0pt"><font><font>3. </font></font><span style="FONT: 7pt &#39;Times New Roman&#39;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span><span style="FONT-SIZE: 9pt; COLOR: blue; FONT-FAMILY: 宋体; mso-bidi-font-size: 12.0pt; mso-ascii-font-family: Verdana; mso-hansi-font-family: Verdana"><font><font>把所有的目標文件鏈接為動態庫</font></font></span><span lang="EN-US" style="FONT-SIZE: 9pt; COLOR: blue; FONT-FAMILY: Verdana; mso-bidi-font-size: 12.0pt"><font><font>:</font></font><o:p></o:p></span></p>
+<p class="MsoNormal" style="MARGIN: 0cm 0cm 0pt"><span lang="EN-US" style="FONT-SIZE: 9pt; COLOR: blue; FONT-FAMILY: Verdana; mso-bidi-font-size: 12.0pt">&nbsp;<o:p></o:p></span></p>
+<p class="MsoNormal" style="MARGIN: 0cm 0cm 0pt; TEXT-INDENT: 21pt"><span lang="EN-US" style="FONT-SIZE: 9pt; FONT-FAMILY: Verdana; mso-bidi-font-size: 12.0pt"><font><font>g++/gcc -g -shared -Wl,-soname,lib***.so -o lib***.so.1.0.0 library1.o library2.o .... -lc</font></font><o:p></o:p></span></p>
+<p class="MsoNormal" style="MARGIN: 0cm 0cm 0pt"><span lang="EN-US" style="FONT-SIZE: 9pt; FONT-FAMILY: Verdana; mso-bidi-font-size: 12.0pt">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <o:p></o:p></span></p>
+<p class="MsoNormal" style="MARGIN: 0cm 0cm 0pt"><span style="FONT-SIZE: 9pt; COLOR: red; FONT-FAMILY: 宋体; mso-bidi-font-size: 12.0pt; mso-ascii-font-family: Verdana; mso-hansi-font-family: Verdana"><font><font>&nbsp;&nbsp;&nbsp; （註釋：</font></font></span><span lang="EN-US" style="FONT-SIZE: 9pt; COLOR: red; FONT-FAMILY: Verdana; mso-bidi-font-size: 12.0pt"><font><font>-lc </font></font></span><span style="FONT-SIZE: 9pt; COLOR: red; FONT-FAMILY: 宋体; mso-bidi-font-size: 12.0pt; mso-ascii-font-family: Verdana; mso-hansi-font-family: Verdana"><font><font>選項，表示使用</font></font></span><span lang="EN-US" style="FONT-SIZE: 9pt; COLOR: red; FONT-FAMILY: Verdana; mso-bidi-font-size: 12.0pt"><font><font>c </font></font></span><span style="FONT-SIZE: 9pt; COLOR: red; FONT-FAMILY: 宋体; mso-bidi-font-size: 12.0pt; mso-ascii-font-family: Verdana; mso-hansi-font-family: Verdana"><font><font>語言庫，一般都要用到）</font></font></span><span lang="EN-US" style="FONT-SIZE: 9pt; COLOR: red; FONT-FAMILY: Verdana; mso-bidi-font-size: 12.0pt"><o:p></o:p></span></p>
+<p class="MsoNormal" style="MARGIN: 0cm 0cm 0pt"><span lang="EN-US" style="FONT-SIZE: 9pt; FONT-FAMILY: Verdana; mso-bidi-font-size: 12.0pt">&nbsp;<o:p></o:p></span></p>
+<p class="MsoNormal" style="MARGIN: 0cm 0cm 0pt 18pt; TEXT-INDENT: -18pt; mso-list: l1 level1 lfo1; tab-stops: list 18.0pt"><span lang="EN-US" style="FONT-SIZE: 9pt; COLOR: blue; FONT-FAMILY: Verdana; mso-bidi-font-size: 12.0pt"><font><font>4. </font></font><span style="FONT: 7pt &#39;Times New Roman&#39;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span><span style="FONT-SIZE: 9pt; COLOR: blue; FONT-FAMILY: 宋体; mso-bidi-font-size: 12.0pt; mso-ascii-font-family: Verdana; mso-hansi-font-family: Verdana"><font><font>建立一個庫名鏈接</font></font></span><span lang="EN-US" style="FONT-SIZE: 9pt; COLOR: blue; FONT-FAMILY: Verdana; mso-bidi-font-size: 12.0pt"><o:p></o:p></span></p>
+<p class="MsoNormal" style="MARGIN: 0cm 0cm 0pt"><span lang="EN-US" style="FONT-SIZE: 9pt; FONT-FAMILY: Verdana; mso-bidi-font-size: 12.0pt">&nbsp;<o:p></o:p></span></p>
+<p class="MsoNormal" style="MARGIN: 0cm 0cm 0pt; TEXT-INDENT: 18pt"><span lang="EN-US" style="FONT-SIZE: 9pt; FONT-FAMILY: Verdana; mso-bidi-font-size: 12.0pt"><font><font>ln -s lib***.so.1.0.0 lib***.so</font></font><o:p></o:p></span></p>
+<p class="MsoNormal" style="MARGIN: 0cm 0cm 0pt"><span lang="EN-US" style="FONT-SIZE: 9pt; FONT-FAMILY: Verdana; mso-bidi-font-size: 12.0pt">&nbsp;<o:p></o:p></span></p>
+<p class="MsoNormal" style="MARGIN: 0cm 0cm 0pt"><span style="FONT-SIZE: 9pt; FONT-FAMILY: 宋体; mso-bidi-font-size: 12.0pt; mso-ascii-font-family: Verdana; mso-hansi-font-family: Verdana"><font><font>現在你就可以引用庫了</font></font></span><span lang="EN-US" style="FONT-SIZE: 9pt; FONT-FAMILY: Verdana; mso-bidi-font-size: 12.0pt"><font><font>. </font></font></span><span style="FONT-SIZE: 9pt; FONT-FAMILY: 宋体; mso-bidi-font-size: 12.0pt; mso-ascii-font-family: Verdana; mso-hansi-font-family: Verdana"><font><font>下面我分別給出簡單例子告訴你如何動態和靜態使用動態庫</font></font></span><span lang="EN-US" style="FONT-SIZE: 9pt; FONT-FAMILY: Verdana; mso-bidi-font-size: 12.0pt"><font><font>:</font></font><o:p></o:p></span></p>
+<p class="MsoNormal" style="MARGIN: 0cm 0cm 0pt"><span style="FONT-SIZE: 9pt; FONT-FAMILY: 宋体; mso-bidi-font-size: 12.0pt; mso-ascii-font-family: Verdana; mso-hansi-font-family: Verdana"><font><font>假如你的應用程序源代碼叫</font></font></span><span lang="EN-US" style="FONT-SIZE: 9pt; FONT-FAMILY: Verdana; mso-bidi-font-size: 12.0pt"><font><font>testlib.cpp</font></font><o:p></o:p></span></p>
+<p class="MsoNormal" style="MARGIN: 0cm 0cm 0pt"><span style="FONT-SIZE: 9pt; FONT-FAMILY: 宋体; mso-bidi-font-size: 12.0pt; mso-ascii-font-family: Verdana; mso-hansi-font-family: Verdana"><font><font>採用</font></font></span><span lang="EN-US" style="FONT-SIZE: 9pt; FONT-FAMILY: Verdana; mso-bidi-font-size: 12.0pt"><font><font>/ </font></font></span><span style="FONT-SIZE: 9pt; FONT-FAMILY: 宋体; mso-bidi-font-size: 12.0pt; mso-ascii-font-family: Verdana; mso-hansi-font-family: Verdana"><font><font>如下方式編譯</font></font></span><span lang="EN-US" style="FONT-SIZE: 9pt; FONT-FAMILY: Verdana; mso-bidi-font-size: 12.0pt"><font><font>:</font></font><o:p></o:p></span></p>
+<p class="MsoNormal" style="MARGIN: 0cm 0cm 0pt"><span lang="EN-US" style="FONT-SIZE: 9pt; FONT-FAMILY: Verdana; mso-bidi-font-size: 12.0pt">&nbsp;</span></p>
+<p class="MsoNormal" style="MARGIN: 0cm 0cm 0pt"><span lang="EN-US" style="FONT-SIZE: 9pt; FONT-FAMILY: Verdana; mso-bidi-font-size: 12.0pt"></span><span lang="EN-US" style="FONT-SIZE: 9pt; FONT-FAMILY: Verdana; mso-bidi-font-size: 12.0pt"><font><font>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; g++ -g -o testlib testlib.cpp -ldl</font></font><o:p></o:p></span></p>
+<p class="MsoNormal" style="MARGIN: 0cm 0cm 0pt"><span lang="EN-US" style="FONT-SIZE: 9pt; FONT-FAMILY: Verdana; mso-bidi-font-size: 12.0pt">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <o:p></o:p></span></p>
+<p class="MsoNormal" style="MARGIN: 0cm 0cm 0pt"><span style="FONT-SIZE: 9pt; COLOR: red; FONT-FAMILY: 宋体; mso-bidi-font-size: 12.0pt; mso-ascii-font-family: Verdana; mso-hansi-font-family: Verdana"><font><font>&nbsp;&nbsp;&nbsp;&nbsp;（註釋：</font></font></span><span lang="EN-US" style="FONT-SIZE: 9pt; COLOR: red; FONT-FAMILY: Verdana; mso-bidi-font-size: 12.0pt"><font><font>-ldl </font></font></span><span style="FONT-SIZE: 9pt; COLOR: red; FONT-FAMILY: 宋体; mso-bidi-font-size: 12.0pt; mso-ascii-font-family: Verdana; mso-hansi-font-family: Verdana"><font><font>選項，表示生成的對像模塊需要使用共享庫）</font></font></span><span lang="EN-US" style="FONT-SIZE: 9pt; COLOR: red; FONT-FAMILY: Verdana; mso-bidi-font-size: 12.0pt"><o:p></o:p></span></p>
+<p class="MsoNormal" style="MARGIN: 0cm 0cm 0pt"><span lang="EN-US" style="FONT-SIZE: 9pt; FONT-FAMILY: Verdana; mso-bidi-font-size: 12.0pt">&nbsp;<o:p></o:p></span></p>
+<p class="MsoNormal" style="MARGIN: 0cm 0cm 0pt"><span lang="EN-US" style="FONT-SIZE: 9pt; FONT-FAMILY: Verdana; mso-bidi-font-size: 12.0pt"><font><font>//////// </font></font></span><span style="FONT-SIZE: 9pt; FONT-FAMILY: 宋体; mso-bidi-font-size: 12.0pt; mso-ascii-font-family: Verdana; mso-hansi-font-family: Verdana"><font><font>這個例子告訴你如何動態的調用</font></font></span><span lang="EN-US" style="FONT-SIZE: 9pt; FONT-FAMILY: Verdana; mso-bidi-font-size: 12.0pt"><font><font>.so </font></font></span><span style="FONT-SIZE: 9pt; FONT-FAMILY: 宋体; mso-bidi-font-size: 12.0pt; mso-ascii-font-family: Verdana; mso-hansi-font-family: Verdana"><font><font>庫</font></font></span><span lang="EN-US" style="FONT-SIZE: 9pt; FONT-FAMILY: Verdana; mso-bidi-font-size: 12.0pt"><o:p></o:p></span></p>
+<p class="MsoNormal" style="MARGIN: 0cm 0cm 0pt"><span lang="EN-US" style="FONT-SIZE: 9pt; FONT-FAMILY: Verdana; mso-bidi-font-size: 12.0pt"><font><font>testlib.cpp</font></font><o:p></o:p></span></p>
+<p class="MsoNormal" style="MARGIN: 0cm 0cm 0pt"><span lang="EN-US" style="FONT-SIZE: 9pt; FONT-FAMILY: Verdana; mso-bidi-font-size: 12.0pt"><font><font>#include &lt;dlfcn.h&gt;</font></font><o:p></o:p></span></p>
+<p class="MsoNormal" style="MARGIN: 0cm 0cm 0pt"><span lang="EN-US" style="FONT-SIZE: 9pt; FONT-FAMILY: Verdana; mso-bidi-font-size: 12.0pt"><font><font>#include &lt;iostream.h&gt;</font></font><o:p></o:p></span></p>
+<p class="MsoNormal" style="MARGIN: 0cm 0cm 0pt"><span lang="EN-US" style="FONT-SIZE: 9pt; FONT-FAMILY: Verdana; mso-bidi-font-size: 12.0pt"><font><font>#include ...</font></font><o:p></o:p></span></p>
+<p class="MsoNormal" style="MARGIN: 0cm 0cm 0pt"><span lang="EN-US" style="FONT-SIZE: 9pt; FONT-FAMILY: Verdana; mso-bidi-font-size: 12.0pt"><font><font>int main()</font></font><o:p></o:p></span></p>
+<p class="MsoNormal" style="MARGIN: 0cm 0cm 0pt"><span lang="EN-US" style="FONT-SIZE: 9pt; FONT-FAMILY: Verdana; mso-bidi-font-size: 12.0pt"><font><font>{</font></font><o:p></o:p></span></p>
+<p class="MsoNormal" style="MARGIN: 0cm 0cm 0pt"><span lang="EN-US" style="FONT-SIZE: 9pt; FONT-FAMILY: Verdana; mso-bidi-font-size: 12.0pt"><span style="mso-tab-count: 1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><font><font>void *handle=NULL;</font></font><o:p></o:p></span></p>
+<p class="MsoNormal" style="MARGIN: 0cm 0cm 0pt"><span lang="EN-US" style="FONT-SIZE: 9pt; FONT-FAMILY: Verdana; mso-bidi-font-size: 12.0pt"><span style="mso-tab-count: 1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><font><font>//define a pointer which will point to the function in the lib you want to use.</font></font><o:p></o:p></span></p>
+<p class="MsoNormal" style="MARGIN: 0cm 0cm 0pt"><span lang="EN-US" style="FONT-SIZE: 9pt; FONT-FAMILY: Verdana; mso-bidi-font-size: 12.0pt"><span style="mso-tab-count: 1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><font><font>YourFuntionType (*pFunc)(YourFunctionPerameterList........);</font></font><o:p></o:p></span></p>
+<p class="MsoNormal" style="MARGIN: 0cm 0cm 0pt"><span lang="EN-US" style="FONT-SIZE: 9pt; FONT-FAMILY: Verdana; mso-bidi-font-size: 12.0pt"><span style="mso-tab-count: 1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><font><font>//open the lib you want to use.</font></font><o:p></o:p></span></p>
+<p class="MsoNormal" style="MARGIN: 0cm 0cm 0pt"><span lang="EN-US" style="FONT-SIZE: 9pt; FONT-FAMILY: Verdana; mso-bidi-font-size: 12.0pt"><span style="mso-tab-count: 1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><font><font>handle=dlopen("/../../../yourlib.so",RTLD_LAZY);</font></font><o:p></o:p></span></p>
+<p class="MsoNormal" style="MARGIN: 0cm 0cm 0pt"><span lang="EN-US" style="FONT-SIZE: 9pt; FONT-FAMILY: Verdana; mso-bidi-font-size: 12.0pt"><span style="mso-tab-count: 1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><font><font>if(handle==NULL)</font></font><o:p></o:p></span></p>
+<p class="MsoNormal" style="MARGIN: 0cm 0cm 0pt"><span lang="EN-US" style="FONT-SIZE: 9pt; FONT-FAMILY: Verdana; mso-bidi-font-size: 12.0pt"><span style="mso-tab-count: 1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><font><font>{</font></font><o:p></o:p></span></p>
+<p class="MsoNormal" style="MARGIN: 0cm 0cm 0pt"><span lang="EN-US" style="FONT-SIZE: 9pt; FONT-FAMILY: Verdana; mso-bidi-font-size: 12.0pt"><span style="mso-tab-count: 1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><span style="mso-tab-count: 1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><font><font>cout&lt;&lt;"failed loading library!"&lt;&lt;endl;</font></font><o:p></o:p></span></p>
+<p class="MsoNormal" style="MARGIN: 0cm 0cm 0pt"><span lang="EN-US" style="FONT-SIZE: 9pt; FONT-FAMILY: Verdana; mso-bidi-font-size: 12.0pt"><span style="mso-tab-count: 2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><font><font>return -1;</font></font><o:p></o:p></span></p>
+<p class="MsoNormal" style="MARGIN: 0cm 0cm 0pt"><span lang="EN-US" style="FONT-SIZE: 9pt; FONT-FAMILY: Verdana; mso-bidi-font-size: 12.0pt"><span style="mso-tab-count: 1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><font><font>}</font></font><o:p></o:p></span></p>
+<p class="MsoNormal" style="MARGIN: 0cm 0cm 0pt"><span lang="EN-US" style="FONT-SIZE: 9pt; FONT-FAMILY: Verdana; mso-bidi-font-size: 12.0pt"><span style="mso-tab-count: 1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><font><font>dlerror();</font></font><o:p></o:p></span></p>
+<p class="MsoNormal" style="MARGIN: 0cm 0cm 0pt"><span lang="EN-US" style="FONT-SIZE: 9pt; FONT-FAMILY: Verdana; mso-bidi-font-size: 12.0pt"><span style="mso-tab-count: 1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><font><font>//try to load the function in lib</font></font><o:p></o:p></span></p>
+<p class="MsoNormal" style="MARGIN: 0cm 0cm 0pt"><span lang="EN-US" style="FONT-SIZE: 9pt; FONT-FAMILY: Verdana; mso-bidi-font-size: 12.0pt"><span style="mso-tab-count: 1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><font><font>pFunc=(YourFuntionType(*)(YourFunctionPerameterList))dlsym(handle,"YourFuntionName");</font></font><o:p></o:p></span></p>
+<p class="MsoNormal" style="MARGIN: 0cm 0cm 0pt"><span lang="EN-US" style="FONT-SIZE: 9pt; FONT-FAMILY: Verdana; mso-bidi-font-size: 12.0pt"><span style="mso-tab-count: 1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><font><font>if(dlerror()!=NULL)</font></font><o:p></o:p></span></p>
+<p class="MsoNormal" style="MARGIN: 0cm 0cm 0pt"><span lang="EN-US" style="FONT-SIZE: 9pt; FONT-FAMILY: Verdana; mso-bidi-font-size: 12.0pt"><span style="mso-tab-count: 1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><font><font>{</font></font><o:p></o:p></span></p>
+<p class="MsoNormal" style="MARGIN: 0cm 0cm 0pt"><span lang="EN-US" style="FONT-SIZE: 9pt; FONT-FAMILY: Verdana; mso-bidi-font-size: 12.0pt"><span style="mso-tab-count: 1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><span style="mso-tab-count: 1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><font><font>cout&lt;&lt;"Loading function in lib error!"&lt;&lt;endl;</font></font><o:p></o:p></span></p>
+<p class="MsoNormal" style="MARGIN: 0cm 0cm 0pt"><span lang="EN-US" style="FONT-SIZE: 9pt; FONT-FAMILY: Verdana; mso-bidi-font-size: 12.0pt"><span style="mso-tab-count: 2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><font><font>return -1;</font></font><o:p></o:p></span></p>
+<p class="MsoNormal" style="MARGIN: 0cm 0cm 0pt"><span lang="EN-US" style="FONT-SIZE: 9pt; FONT-FAMILY: Verdana; mso-bidi-font-size: 12.0pt"><span style="mso-tab-count: 1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><font><font>}</font></font><o:p></o:p></span></p>
+<p class="MsoNormal" style="MARGIN: 0cm 0cm 0pt"><span lang="EN-US" style="FONT-SIZE: 9pt; FONT-FAMILY: Verdana; mso-bidi-font-size: 12.0pt"><span style="mso-tab-count: 1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><font><font>//now you can use the funtion like this</font></font><o:p></o:p></span></p>
+<p class="MsoNormal" style="MARGIN: 0cm 0cm 0pt"><span lang="EN-US" style="FONT-SIZE: 9pt; FONT-FAMILY: Verdana; mso-bidi-font-size: 12.0pt"><span style="mso-tab-count: 1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><font><font>(*pFunc)(YourFuntionPerameterList); </font></font><o:p></o:p></span></p>
+<p class="MsoNormal" style="MARGIN: 0cm 0cm 0pt"><span lang="EN-US" style="FONT-SIZE: 9pt; FONT-FAMILY: Verdana; mso-bidi-font-size: 12.0pt"><span style="mso-tab-count: 1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><font><font>return 0; </font></font><o:p></o:p></span></p>
+<p class="MsoNormal" style="MARGIN: 0cm 0cm 0pt"><span lang="EN-US" style="FONT-SIZE: 9pt; FONT-FAMILY: Verdana; mso-bidi-font-size: 12.0pt"><font><font>}&nbsp;&nbsp;</font></font><o:p></o:p></span></p>
+<p class="MsoNormal" style="MARGIN: 0cm 0cm 0pt"><span lang="EN-US" style="FONT-SIZE: 9pt; FONT-FAMILY: Verdana; mso-bidi-font-size: 12.0pt">&nbsp;<o:p></o:p></span></p>
+<p class="MsoNormal" style="MARGIN: 0cm 0cm 0pt"><span style="FONT-SIZE: 9pt; COLOR: red; FONT-FAMILY: 宋体; mso-bidi-font-size: 12.0pt; mso-ascii-font-family: Verdana; mso-hansi-font-family: Verdana"><font><font>（註釋：</font></font></span><span lang="EN-US" style="FONT-SIZE: 9pt; COLOR: red; FONT-FAMILY: Verdana; mso-bidi-font-size: 12.0pt"><font><font>dlopen()</font></font><o:p></o:p></span></p>
+<p class="MsoNormal" style="MARGIN: 0cm 0cm 0pt"><span lang="EN-US" style="FONT-SIZE: 9pt; COLOR: red; FONT-FAMILY: Verdana; mso-bidi-font-size: 12.0pt">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><span style="FONT-SIZE: 9pt; COLOR: red; FONT-FAMILY: 宋体; mso-bidi-font-size: 12.0pt; mso-ascii-font-family: Verdana; mso-hansi-font-family: Verdana"><font><font>第一個參數：指定共享庫的名稱，將會在下面位置查找指定的共享庫。</font></font></span><span lang="EN-US" style="FONT-SIZE: 9pt; COLOR: red; FONT-FAMILY: Verdana; mso-bidi-font-size: 12.0pt"><o:p></o:p></span></p>
+<p class="MsoNormal" style="MARGIN: 0cm 0cm 0pt 21pt; TEXT-INDENT: 21pt"><span style="FONT-SIZE: 9pt; COLOR: red; FONT-FAMILY: 宋体; mso-bidi-font-size: 12.0pt; mso-ascii-font-family: Verdana; mso-hansi-font-family: Verdana"><font><font>－環境變量</font></font></span><span lang="EN-US" style="FONT-SIZE: 9pt; COLOR: red; FONT-FAMILY: Verdana; mso-bidi-font-size: 12.0pt"><font><font>LD_LIBRARY_PATH </font></font></span><span style="FONT-SIZE: 9pt; COLOR: red; FONT-FAMILY: 宋体; mso-bidi-font-size: 12.0pt; mso-ascii-font-family: Verdana; mso-hansi-font-family: Verdana"><font><font>列出的用分號間隔的所有目錄。</font></font></span><span lang="EN-US" style="FONT-SIZE: 9pt; COLOR: red; FONT-FAMILY: Verdana; mso-bidi-font-size: 12.0pt"><o:p></o:p></span></p>
+<p class="MsoNormal" style="MARGIN: 0cm 0cm 0pt 21pt; TEXT-INDENT: 21pt"><span style="FONT-SIZE: 9pt; COLOR: red; FONT-FAMILY: 宋体; mso-bidi-font-size: 12.0pt; mso-ascii-font-family: Verdana; mso-hansi-font-family: Verdana"><font><font>－文件</font></font></span><span lang="EN-US" style="FONT-SIZE: 9pt; COLOR: red; FONT-FAMILY: Verdana; mso-bidi-font-size: 12.0pt"><font><font>/etc/ld.so.cache </font></font></span><span style="FONT-SIZE: 9pt; COLOR: red; FONT-FAMILY: 宋体; mso-bidi-font-size: 12.0pt; mso-ascii-font-family: Verdana; mso-hansi-font-family: Verdana"><font><font>中找到的庫的列表，用</font></font></span><span lang="EN-US" style="FONT-SIZE: 9pt; COLOR: red; FONT-FAMILY: Verdana; mso-bidi-font-size: 12.0pt"><font><font>ldconfig </font></font></span><span style="FONT-SIZE: 9pt; COLOR: red; FONT-FAMILY: 宋体; mso-bidi-font-size: 12.0pt; mso-ascii-font-family: Verdana; mso-hansi-font-family: Verdana"><font><font>維護。</font></font></span><span lang="EN-US" style="FONT-SIZE: 9pt; COLOR: red; FONT-FAMILY: Verdana; mso-bidi-font-size: 12.0pt"><o:p></o:p></span></p>
+<p class="MsoNormal" style="MARGIN: 0cm 0cm 0pt 21pt; TEXT-INDENT: 21pt"><span style="FONT-SIZE: 9pt; COLOR: red; FONT-FAMILY: 宋体; mso-bidi-font-size: 12.0pt; mso-ascii-font-family: Verdana; mso-hansi-font-family: Verdana"><font><font>－目錄</font></font></span><span lang="EN-US" style="FONT-SIZE: 9pt; COLOR: red; FONT-FAMILY: Verdana; mso-bidi-font-size: 12.0pt"><font><font>usr/lib </font></font></span><span style="FONT-SIZE: 9pt; COLOR: red; FONT-FAMILY: 宋体; mso-bidi-font-size: 12.0pt; mso-ascii-font-family: Verdana; mso-hansi-font-family: Verdana"><font><font>。</font></font></span><span lang="EN-US" style="FONT-SIZE: 9pt; COLOR: red; FONT-FAMILY: Verdana; mso-bidi-font-size: 12.0pt"><o:p></o:p></span></p>
+<p class="MsoNormal" style="MARGIN: 0cm 0cm 0pt 21pt; TEXT-INDENT: 21pt"><span style="FONT-SIZE: 9pt; COLOR: red; FONT-FAMILY: 宋体; mso-bidi-font-size: 12.0pt; mso-ascii-font-family: Verdana; mso-hansi-font-family: Verdana"><font><font>－目錄</font></font></span><span lang="EN-US" style="FONT-SIZE: 9pt; COLOR: red; FONT-FAMILY: Verdana; mso-bidi-font-size: 12.0pt"><font><font>/lib </font></font></span><span style="FONT-SIZE: 9pt; COLOR: red; FONT-FAMILY: 宋体; mso-bidi-font-size: 12.0pt; mso-ascii-font-family: Verdana; mso-hansi-font-family: Verdana"><font><font>。</font></font></span><span lang="EN-US" style="FONT-SIZE: 9pt; COLOR: red; FONT-FAMILY: Verdana; mso-bidi-font-size: 12.0pt"><o:p></o:p></span></p>
+<p class="MsoNormal" style="MARGIN: 0cm 0cm 0pt 21pt; TEXT-INDENT: 21pt"><span style="FONT-SIZE: 9pt; COLOR: red; FONT-FAMILY: 宋体; mso-bidi-font-size: 12.0pt; mso-ascii-font-family: Verdana; mso-hansi-font-family: Verdana"><font><font>－當前目錄。</font><font>（這裡就是這種情況）</font></font></span><span lang="EN-US" style="FONT-SIZE: 9pt; COLOR: red; FONT-FAMILY: Verdana; mso-bidi-font-size: 12.0pt"><o:p></o:p></span></p>
+<p class="MsoNormal" style="MARGIN: 0cm 0cm 0pt 21pt; TEXT-INDENT: 21pt"><span lang="EN-US" style="FONT-SIZE: 9pt; COLOR: red; FONT-FAMILY: Verdana; mso-bidi-font-size: 12.0pt">&nbsp;<o:p></o:p></span></p>
+<p class="MsoNormal" style="MARGIN: 0cm 0cm 0pt 21pt; TEXT-INDENT: 21pt"><span style="FONT-SIZE: 9pt; COLOR: red; FONT-FAMILY: 宋体; mso-bidi-font-size: 12.0pt; mso-ascii-font-family: Verdana; mso-hansi-font-family: Verdana"><font><font>第二個參數：指定如何打開共享庫。</font></font></span><span lang="EN-US" style="FONT-SIZE: 9pt; COLOR: red; FONT-FAMILY: Verdana; mso-bidi-font-size: 12.0pt"><o:p></o:p></span></p>
+<p class="MsoNormal" style="MARGIN: 0cm 0cm 0pt 21pt; TEXT-INDENT: 21pt"><span style="FONT-SIZE: 9pt; COLOR: red; FONT-FAMILY: 宋体; mso-bidi-font-size: 12.0pt; mso-ascii-font-family: Verdana; mso-hansi-font-family: Verdana"><font><font>－</font></font></span><span lang="EN-US" style="FONT-SIZE: 9pt; COLOR: red; FONT-FAMILY: Verdana; mso-bidi-font-size: 12.0pt"><font><font>RTLD_NOW </font></font></span><span style="FONT-SIZE: 9pt; COLOR: red; FONT-FAMILY: 宋体; mso-bidi-font-size: 12.0pt; mso-ascii-font-family: Verdana; mso-hansi-font-family: Verdana"><font><font>：將共享庫中的所有函數加載到內存</font></font></span><span lang="EN-US" style="FONT-SIZE: 9pt; COLOR: red; FONT-FAMILY: Verdana; mso-bidi-font-size: 12.0pt"><o:p></o:p></span></p>
+<p class="MsoNormal" style="MARGIN: 0cm 0cm 0pt; TEXT-INDENT: -72pt; mso-char-indent-count: -8.0; mso-char-indent-size: 9.0pt"><span style="FONT-SIZE: 9pt; COLOR: red; FONT-FAMILY: 宋体; mso-bidi-font-size: 12.0pt; mso-ascii-font-family: Verdana; mso-hansi-font-family: Verdana"><font><font>－</font></font></span><span lang="EN-US" style="FONT-SIZE: 9pt; COLOR: red; FONT-FAMILY: Verdana; mso-bidi-font-size: 12.0pt"><font><font>RTLD_LAZY </font></font></span><span style="FONT-SIZE: 9pt; COLOR: red; FONT-FAMILY: 宋体; mso-bidi-font-size: 12.0pt; mso-ascii-font-family: Verdana; mso-hansi-font-family: Verdana"><font><font>：會推後共享庫中的函數的加載操作，直到調用</font></font></span><span lang="EN-US" style="FONT-SIZE: 9pt; COLOR: red; FONT-FAMILY: Verdana; mso-bidi-font-size: 12.0pt"><font><font>dlsym() </font></font></span><span style="FONT-SIZE: 9pt; COLOR: red; FONT-FAMILY: 宋体; mso-bidi-font-size: 12.0pt; mso-ascii-font-family: Verdana; mso-hansi-font-family: Verdana"><font><font>時方加載某函數</font></font></span><span lang="EN-US" style="FONT-SIZE: 9pt; COLOR: red; FONT-FAMILY: Verdana; mso-bidi-font-size: 12.0pt"><o:p></o:p></span></p>
+<p class="MsoNormal" style="MARGIN: 0cm 0cm 0pt 21pt; TEXT-INDENT: 21pt"><span lang="EN-US" style="FONT-SIZE: 9pt; COLOR: red; FONT-FAMILY: Verdana; mso-bidi-font-size: 12.0pt"><font><font>dlsym()</font></font><o:p></o:p></span></p>
+<p class="MsoNormal" style="MARGIN: 0cm 0cm 0pt"><span style="FONT-SIZE: 9pt; COLOR: red; FONT-FAMILY: 宋体; mso-bidi-font-size: 12.0pt; mso-ascii-font-family: Verdana; mso-hansi-font-family: Verdana"><font><font>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 調用</font></font></span><span lang="EN-US" style="FONT-SIZE: 9pt; COLOR: red; FONT-FAMILY: Verdana; mso-bidi-font-size: 12.0pt"><font><font>dlsym </font></font></span><span style="FONT-SIZE: 9pt; COLOR: red; FONT-FAMILY: 宋体; mso-bidi-font-size: 12.0pt; mso-ascii-font-family: Verdana; mso-hansi-font-family: Verdana"><font><font>時，利用</font></font></span><span lang="EN-US" style="FONT-SIZE: 9pt; COLOR: red; FONT-FAMILY: Verdana; mso-bidi-font-size: 12.0pt"><font><font>dlopen() </font></font></span><span style="FONT-SIZE: 9pt; COLOR: red; FONT-FAMILY: 宋体; mso-bidi-font-size: 12.0pt; mso-ascii-font-family: Verdana; mso-hansi-font-family: Verdana"><font><font>返回的共享庫的</font></font></span><span lang="EN-US" style="FONT-SIZE: 9pt; COLOR: red; FONT-FAMILY: Verdana; mso-bidi-font-size: 12.0pt"><font><font>phandle </font></font></span><span style="FONT-SIZE: 9pt; COLOR: red; FONT-FAMILY: 宋体; mso-bidi-font-size: 12.0pt; mso-ascii-font-family: Verdana; mso-hansi-font-family: Verdana"><font><font>以及函數名稱作為參數，返回要加載函數的入口地址。</font></font></span><span lang="EN-US" style="FONT-SIZE: 9pt; COLOR: red; FONT-FAMILY: Verdana; mso-bidi-font-size: 12.0pt"><o:p></o:p></span></p>
+<p class="MsoNormal" style="MARGIN: 0cm 0cm 0pt; TEXT-INDENT: 20.9pt; mso-char-indent-count: 2.32; mso-char-indent-size: 9.0pt"><span lang="EN-US" style="FONT-SIZE: 9pt; COLOR: red; FONT-FAMILY: Verdana; mso-bidi-font-size: 12.0pt"><font><font>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dlerror()</font></font><o:p></o:p></span></p>
+<p class="MsoNormal" style="MARGIN: 0cm 0cm 0pt; TEXT-INDENT: 27pt; mso-char-indent-count: 3.0; mso-char-indent-size: 9.0pt"><span style="FONT-SIZE: 9pt; COLOR: red; FONT-FAMILY: 宋体; mso-bidi-font-size: 12.0pt; mso-ascii-font-family: Verdana; mso-hansi-font-family: Verdana"><font><font>&nbsp;&nbsp;&nbsp; 該函數用於檢查調用共享庫的相關函數出現的錯誤。</font></font></span><span lang="EN-US" style="FONT-SIZE: 9pt; COLOR: red; FONT-FAMILY: Verdana; mso-bidi-font-size: 12.0pt"><o:p></o:p></span></p>
+<p class="MsoNormal" style="MARGIN: 0cm 0cm 0pt"><span style="FONT-SIZE: 9pt; COLOR: red; FONT-FAMILY: 宋体; mso-bidi-font-size: 12.0pt; mso-ascii-font-family: Verdana; mso-hansi-font-family: Verdana"><font><font>）</font></font></span><span lang="EN-US" style="FONT-SIZE: 9pt; COLOR: red; FONT-FAMILY: Verdana; mso-bidi-font-size: 12.0pt"><o:p></o:p></span></p>
+<p class="MsoNormal" style="MARGIN: 0cm 0cm 0pt"><span lang="EN-US" style="FONT-SIZE: 9pt; FONT-FAMILY: Verdana; mso-bidi-font-size: 12.0pt">&nbsp;<o:p></o:p></span></p>
+<p class="MsoNormal" style="MARGIN: 0cm 0cm 0pt"><span style="FONT-SIZE: 9pt; FONT-FAMILY: 宋体; mso-bidi-font-size: 12.0pt; mso-ascii-font-family: Verdana; mso-hansi-font-family: Verdana"><font><font>特別需要注意的幾點問題</font></font></span><span lang="EN-US" style="FONT-SIZE: 9pt; FONT-FAMILY: Verdana; mso-bidi-font-size: 12.0pt"><font><font>:</font></font><o:p></o:p></span></p>
+<p class="MsoNormal" style="MARGIN: 0cm 0cm 0pt 18pt; TEXT-INDENT: -18pt; mso-list: l0 level1 lfo2; tab-stops: list 18.0pt"><span lang="EN-US" style="FONT-SIZE: 9pt; FONT-FAMILY: Verdana; mso-bidi-font-size: 12.0pt"><font><font>1. </font></font><span style="FONT: 7pt &#39;Times New Roman&#39;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span><span style="FONT-SIZE: 9pt; FONT-FAMILY: 宋体; mso-bidi-font-size: 12.0pt; mso-ascii-font-family: Verdana; mso-hansi-font-family: Verdana"><font><font>當你想用</font></font></span><span lang="EN-US" style="FONT-SIZE: 9pt; FONT-FAMILY: Verdana; mso-bidi-font-size: 12.0pt"><font><font>c++ </font></font></span><span style="FONT-SIZE: 9pt; FONT-FAMILY: 宋体; mso-bidi-font-size: 12.0pt; mso-ascii-font-family: Verdana; mso-hansi-font-family: Verdana"><font><font>寫動態庫的時候</font></font></span><span lang="EN-US" style="FONT-SIZE: 9pt; FONT-FAMILY: Verdana; mso-bidi-font-size: 12.0pt"><font><font>, </font></font></span><span style="FONT-SIZE: 9pt; FONT-FAMILY: 宋体; mso-bidi-font-size: 12.0pt; mso-ascii-font-family: Verdana; mso-hansi-font-family: Verdana"><font><font>記住千萬別忘了在頭文件裡面加上如下內容</font></font></span><span lang="EN-US" style="FONT-SIZE: 9pt; FONT-FAMILY: Verdana; mso-bidi-font-size: 12.0pt"><font><font>, </font></font></span><span style="FONT-SIZE: 9pt; FONT-FAMILY: 宋体; mso-bidi-font-size: 12.0pt; mso-ascii-font-family: Verdana; mso-hansi-font-family: Verdana"><font><font>否則生成的庫在動態調用的時候會出問題</font></font></span><span lang="EN-US" style="FONT-SIZE: 9pt; FONT-FAMILY: Verdana; mso-bidi-font-size: 12.0pt"><font><font>!!!!!!!</font></font><o:p></o:p></span></p>
+<p class="MsoNormal" style="MARGIN: 0cm 0cm 0pt; TEXT-INDENT: 18pt"><span lang="EN-US" style="FONT-SIZE: 9pt; FONT-FAMILY: Verdana; mso-bidi-font-size: 12.0pt"><span style="mso-spacerun: yes">&nbsp;</span><font><font>#ifdef __cplusplus </font><font>extern "C" {</font></font><br>&nbsp;&nbsp;<span style="mso-tab-count: 1">&nbsp;&nbsp;&nbsp;&nbsp; </span><font></font><o:p></o:p></span></p>
+<p class="MsoNormal" style="MARGIN: 0cm 0cm 0pt; TEXT-INDENT: 18pt"><span lang="EN-US" style="FONT-SIZE: 9pt; FONT-FAMILY: Verdana; mso-bidi-font-size: 12.0pt"><font><font>#endif</font></font><o:p></o:p></span></p>
+<p class="MsoNormal" style="MARGIN: 0cm 0cm 0pt; TEXT-INDENT: 24.3pt; mso-char-indent-count: 2.7; mso-char-indent-size: 9.0pt"><span lang="EN-US" style="FONT-SIZE: 9pt; FONT-FAMILY: Verdana; mso-bidi-font-size: 12.0pt"><font><font>....</font></font><o:p></o:p></span></p>
+<p class="MsoNormal" style="MARGIN: 0cm 0cm 0pt; TEXT-INDENT: 24.3pt; mso-char-indent-count: 2.7; mso-char-indent-size: 9.0pt"><span lang="EN-US" style="FONT-SIZE: 9pt; FONT-FAMILY: Verdana; mso-bidi-font-size: 12.0pt"><font><font>....</font></font><o:p></o:p></span></p>
+<p class="MsoNormal" style="MARGIN: 0cm 0cm 0pt"><span lang="EN-US" style="FONT-SIZE: 9pt; FONT-FAMILY: Verdana; mso-bidi-font-size: 12.0pt"><span style="mso-spacerun: yes">&nbsp;</span><span style="mso-spacerun: yes">&nbsp; </span><font><font>#ifdef __cplusplus</font></font><o:p></o:p></span></p>
+<p class="MsoNormal" style="MARGIN: 0cm 0cm 0pt; TEXT-INDENT: 18pt; mso-char-indent-count: 2.0; mso-char-indent-size: 9.0pt"><span lang="EN-US" style="FONT-SIZE: 9pt; FONT-FAMILY: Verdana; mso-bidi-font-size: 12.0pt"><font><font>}</font></font><o:p></o:p></span></p>
+<p class="MsoNormal" style="MARGIN: 0cm 0cm 0pt; TEXT-INDENT: 9pt; mso-char-indent-count: 1.0; mso-char-indent-size: 9.0pt"><span lang="EN-US" style="FONT-SIZE: 9pt; FONT-FAMILY: Verdana; mso-bidi-font-size: 12.0pt"><font><font>#endif&nbsp;</font></font><o:p></o:p></span></p>
+<p class="MsoNormal" style="MARGIN: 0cm 0cm 0pt"><span lang="EN-US" style="FONT-SIZE: 9pt; FONT-FAMILY: Verdana; mso-bidi-font-size: 12.0pt">&nbsp;<o:p></o:p></span></p>
+<p class="MsoNormal" style="MARGIN: 0cm 0cm 0pt 18pt; TEXT-INDENT: -18pt; mso-list: l0 level1 lfo2; tab-stops: list 18.0pt"><span lang="EN-US" style="FONT-SIZE: 9pt; FONT-FAMILY: Verdana; mso-bidi-font-size: 12.0pt"><font><font>2. </font></font><span style="FONT: 7pt &#39;Times New Roman&#39;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span><span style="FONT-SIZE: 9pt; FONT-FAMILY: 宋体; mso-bidi-font-size: 12.0pt; mso-ascii-font-family: Verdana; mso-hansi-font-family: Verdana"><font><font>當你的庫中包括與</font></font></span><span lang="EN-US" style="FONT-SIZE: 9pt; FONT-FAMILY: Verdana; mso-bidi-font-size: 12.0pt"><font><font>omniORB3 </font></font></span><span style="FONT-SIZE: 9pt; FONT-FAMILY: 宋体; mso-bidi-font-size: 12.0pt; mso-ascii-font-family: Verdana; mso-hansi-font-family: Verdana"><font><font>相關的東西的時候</font></font></span><span lang="EN-US" style="FONT-SIZE: 9pt; FONT-FAMILY: Verdana; mso-bidi-font-size: 12.0pt"><font><font>, </font></font></span><span style="FONT-SIZE: 9pt; FONT-FAMILY: 宋体; mso-bidi-font-size: 12.0pt; mso-ascii-font-family: Verdana; mso-hansi-font-family: Verdana"><font><font>一定要在</font></font></span><span lang="EN-US" style="FONT-SIZE: 9pt; FONT-FAMILY: Verdana; mso-bidi-font-size: 12.0pt"><font><font>makefile </font></font></span><span style="FONT-SIZE: 9pt; FONT-FAMILY: 宋体; mso-bidi-font-size: 12.0pt; mso-ascii-font-family: Verdana; mso-hansi-font-family: Verdana"><font><font>中加上</font></font></span><span lang="EN-US" style="FONT-SIZE: 9pt; FONT-FAMILY: Verdana; mso-bidi-font-size: 12.0pt"><font><font>-D__x86__ -D__OSVERSION=4</font></font><o:p></o:p></span></p>
+<p class="MsoNormal" style="MARGIN: 0cm 0cm 0pt"><span lang="EN-US" style="FONT-SIZE: 9pt; FONT-FAMILY: Verdana; mso-bidi-font-size: 12.0pt">&nbsp;<o:p></o:p></span></p>
+<p class="MsoNormal" style="MARGIN: 0cm 0cm 0pt"><span lang="EN-US" style="FONT-SIZE: 9pt; FONT-FAMILY: Verdana; mso-bidi-font-size: 12.0pt"><font><font>///////////// </font></font></span><span style="FONT-SIZE: 9pt; FONT-FAMILY: 宋体; mso-bidi-font-size: 12.0pt; mso-ascii-font-family: Verdana; mso-hansi-font-family: Verdana"><font><font>這個例子告訴你如何靜態調用</font></font></span><span lang="EN-US" style="FONT-SIZE: 9pt; FONT-FAMILY: Verdana; mso-bidi-font-size: 12.0pt"><font><font>.so </font></font></span><span style="FONT-SIZE: 9pt; FONT-FAMILY: 宋体; mso-bidi-font-size: 12.0pt; mso-ascii-font-family: Verdana; mso-hansi-font-family: Verdana"><font><font>庫</font></font></span><span lang="EN-US" style="FONT-SIZE: 9pt; FONT-FAMILY: Verdana; mso-bidi-font-size: 12.0pt"><o:p></o:p></span></p>
+<p class="MsoNormal" style="MARGIN: 0cm 0cm 0pt"><span style="FONT-SIZE: 9pt; FONT-FAMILY: 宋体; mso-bidi-font-size: 12.0pt; mso-ascii-font-family: Verdana; mso-hansi-font-family: Verdana"><font><font>首先你得確保你的應用程序能夠找到你的</font></font></span><span lang="EN-US" style="FONT-SIZE: 9pt; FONT-FAMILY: Verdana; mso-bidi-font-size: 12.0pt"><font><font>.so </font></font></span><span style="FONT-SIZE: 9pt; FONT-FAMILY: 宋体; mso-bidi-font-size: 12.0pt; mso-ascii-font-family: Verdana; mso-hansi-font-family: Verdana"><font><font>庫</font></font></span><span lang="EN-US" style="FONT-SIZE: 9pt; FONT-FAMILY: Verdana; mso-bidi-font-size: 12.0pt"><font><font>, </font></font></span><span style="FONT-SIZE: 9pt; FONT-FAMILY: 宋体; mso-bidi-font-size: 12.0pt; mso-ascii-font-family: Verdana; mso-hansi-font-family: Verdana"><font><font>這可以有幾種方法來實現</font></font></span><span lang="EN-US" style="FONT-SIZE: 9pt; FONT-FAMILY: Verdana; mso-bidi-font-size: 12.0pt"><font><font>.</font></font><o:p></o:p></span></p>
+<p class="MsoNormal" style="MARGIN: 0cm 0cm 0pt"><span style="FONT-SIZE: 9pt; FONT-FAMILY: 宋体; mso-bidi-font-size: 12.0pt; mso-ascii-font-family: Verdana; mso-hansi-font-family: Verdana"><font><font>方法一</font></font></span><span lang="EN-US" style="FONT-SIZE: 9pt; FONT-FAMILY: Verdana; mso-bidi-font-size: 12.0pt"><font><font>:</font></font><o:p></o:p></span></p>
+<p class="MsoNormal" style="MARGIN: 0cm 0cm 0pt; TEXT-INDENT: 21pt"><span lang="EN-US" style="FONT-SIZE: 9pt; FONT-FAMILY: Verdana; mso-bidi-font-size: 12.0pt"><font><font>1. </font></font></span><span style="FONT-SIZE: 9pt; FONT-FAMILY: 宋体; mso-bidi-font-size: 12.0pt; mso-ascii-font-family: Verdana; mso-hansi-font-family: Verdana"><font><font>你可以把</font></font></span><span lang="EN-US" style="FONT-SIZE: 9pt; FONT-FAMILY: Verdana; mso-bidi-font-size: 12.0pt"><font><font>YourLib.so.1.0.0 </font></font></span><span style="FONT-SIZE: 9pt; FONT-FAMILY: 宋体; mso-bidi-font-size: 12.0pt; mso-ascii-font-family: Verdana; mso-hansi-font-family: Verdana"><font><font>和</font></font></span><span lang="EN-US" style="FONT-SIZE: 9pt; FONT-FAMILY: Verdana; mso-bidi-font-size: 12.0pt"><font><font>YourLib.so </font></font></span><span style="FONT-SIZE: 9pt; FONT-FAMILY: 宋体; mso-bidi-font-size: 12.0pt; mso-ascii-font-family: Verdana; mso-hansi-font-family: Verdana"><font><font>放到</font></font></span><span lang="EN-US" style="FONT-SIZE: 9pt; FONT-FAMILY: Verdana; mso-bidi-font-size: 12.0pt"><font><font>/usr/lib </font></font></span><span style="FONT-SIZE: 9pt; FONT-FAMILY: 宋体; mso-bidi-font-size: 12.0pt; mso-ascii-font-family: Verdana; mso-hansi-font-family: Verdana"><font><font>中</font></font></span><span lang="EN-US" style="FONT-SIZE: 9pt; FONT-FAMILY: Verdana; mso-bidi-font-size: 12.0pt"><font><font>, </font></font></span><span style="FONT-SIZE: 9pt; FONT-FAMILY: 宋体; mso-bidi-font-size: 12.0pt; mso-ascii-font-family: Verdana; mso-hansi-font-family: Verdana"><font><font>然後執行命令</font></font></span><span lang="EN-US" style="FONT-SIZE: 9pt; FONT-FAMILY: Verdana; mso-bidi-font-size: 12.0pt"><font><font>:ldconfig, </font></font></span><span style="FONT-SIZE: 9pt; FONT-FAMILY: 宋体; mso-bidi-font-size: 12.0pt; mso-ascii-font-family: Verdana; mso-hansi-font-family: Verdana"><font><font>這樣你就可以在你的應用程序中直接調用你庫中的函數了</font></font></span><span lang="EN-US" style="FONT-SIZE: 9pt; FONT-FAMILY: Verdana; mso-bidi-font-size: 12.0pt"><font><font>, </font></font></span><span style="FONT-SIZE: 9pt; FONT-FAMILY: 宋体; mso-bidi-font-size: 12.0pt; mso-ascii-font-family: Verdana; mso-hansi-font-family: Verdana"><font><font>當然你</font></font></span><span style="FONT-SIZE: 9pt; FONT-FAMILY: Verdana; mso-bidi-font-size: 12.0pt"> </span><span style="FONT-SIZE: 9pt; FONT-FAMILY: 宋体; mso-bidi-font-size: 12.0pt; mso-ascii-font-family: Verdana; mso-hansi-font-family: Verdana"><font><font>得把庫的頭文件包含到你的應用程序中</font></font></span><span lang="EN-US" style="FONT-SIZE: 9pt; FONT-FAMILY: Verdana; mso-bidi-font-size: 12.0pt"><o:p></o:p></span></p>
+<p class="MsoNormal" style="MARGIN: 0cm 0cm 0pt; TEXT-INDENT: 21pt"><span lang="EN-US" style="FONT-SIZE: 9pt; FONT-FAMILY: Verdana; mso-bidi-font-size: 12.0pt"><font><font>2. </font></font></span><span style="FONT-SIZE: 9pt; FONT-FAMILY: 宋体; mso-bidi-font-size: 12.0pt; mso-ascii-font-family: Verdana; mso-hansi-font-family: Verdana"><font><font>編譯你的應用程序</font></font></span><span lang="EN-US" style="FONT-SIZE: 9pt; FONT-FAMILY: Verdana; mso-bidi-font-size: 12.0pt"><o:p></o:p></span></p>
+<p class="MsoNormal" style="MARGIN: 0cm 0cm 0pt; TEXT-INDENT: 21pt"><span lang="EN-US" style="FONT-SIZE: 9pt; FONT-FAMILY: Verdana; mso-bidi-font-size: 12.0pt"><font><font>g++/gcc -g -o yourapp yourapp.cpp –lYourLib</font></font><o:p></o:p></span></p>
+<p class="MsoNormal" style="MARGIN: 0cm 0cm 0pt; TEXT-INDENT: 21pt"><span lang="EN-US" style="FONT-SIZE: 9pt; FONT-FAMILY: Verdana; mso-bidi-font-size: 12.0pt">&nbsp;<o:p></o:p></span></p>
+<p class="MsoNormal" style="MARGIN: 0cm 0cm 0pt"><span style="FONT-SIZE: 9pt; FONT-FAMILY: 宋体; mso-bidi-font-size: 12.0pt; mso-ascii-font-family: Verdana; mso-hansi-font-family: Verdana"><font><font>方法二</font></font></span><span lang="EN-US" style="FONT-SIZE: 9pt; FONT-FAMILY: Verdana; mso-bidi-font-size: 12.0pt"><font><font>:</font></font><o:p></o:p></span></p>
+<p class="MsoNormal" style="MARGIN: 0cm 0cm 0pt; TEXT-INDENT: 21pt"><span lang="EN-US" style="FONT-SIZE: 9pt; FONT-FAMILY: Verdana; mso-bidi-font-size: 12.0pt"><font><font>1. </font></font></span><span style="FONT-SIZE: 9pt; FONT-FAMILY: 宋体; mso-bidi-font-size: 12.0pt; mso-ascii-font-family: Verdana; mso-hansi-font-family: Verdana"><font><font>你也可以採用在系統中設置環境變量的辦法來實現</font></font></span><span lang="EN-US" style="FONT-SIZE: 9pt; FONT-FAMILY: Verdana; mso-bidi-font-size: 12.0pt"><font><font>.&nbsp; </font></font></span><span style="FONT-SIZE: 9pt; FONT-FAMILY: 宋体; mso-bidi-font-size: 12.0pt; mso-ascii-font-family: Verdana; mso-hansi-font-family: Verdana"><font><font>在</font></font></span><span lang="EN-US" style="FONT-SIZE: 9pt; FONT-FAMILY: Verdana; mso-bidi-font-size: 12.0pt"><font><font>root </font></font></span><span style="FONT-SIZE: 9pt; FONT-FAMILY: 宋体; mso-bidi-font-size: 12.0pt; mso-ascii-font-family: Verdana; mso-hansi-font-family: Verdana"><font><font>目錄下</font></font></span><span lang="EN-US" style="FONT-SIZE: 9pt; FONT-FAMILY: Verdana; mso-bidi-font-size: 12.0pt"><font><font>:</font></font><o:p></o:p></span></p>
+<p class="MsoNormal" style="MARGIN: 0cm 0cm 0pt; TEXT-INDENT: 27pt; mso-char-indent-count: 3.0; mso-char-indent-size: 9.0pt"><span lang="EN-US" style="FONT-SIZE: 9pt; FONT-FAMILY: Verdana; mso-bidi-font-size: 12.0pt"><font><font>vi .bash_profile</font></font><o:p></o:p></span></p>
+<p class="MsoNormal" style="MARGIN: 0cm 0cm 0pt"><span style="FONT-SIZE: 9pt; FONT-FAMILY: 宋体; mso-bidi-font-size: 12.0pt; mso-ascii-font-family: Verdana; mso-hansi-font-family: Verdana"><font><font>然後添加</font></font></span><span lang="EN-US" style="FONT-SIZE: 9pt; FONT-FAMILY: Verdana; mso-bidi-font-size: 12.0pt"><font><font>LD_LIBRARY=/../YourDirIncludingYourLib</font></font><o:p></o:p></span></p>
+<p class="MsoNormal" style="MARGIN: 0cm 0cm 0pt"><span style="FONT-SIZE: 9pt; FONT-FAMILY: 宋体; mso-bidi-font-size: 12.0pt; mso-ascii-font-family: Verdana; mso-hansi-font-family: Verdana"><font><font>然後註消一次</font></font></span><span lang="EN-US" style="FONT-SIZE: 9pt; FONT-FAMILY: Verdana; mso-bidi-font-size: 12.0pt"><font><font>, </font></font></span><span style="FONT-SIZE: 9pt; FONT-FAMILY: 宋体; mso-bidi-font-size: 12.0pt; mso-ascii-font-family: Verdana; mso-hansi-font-family: Verdana"><font><font>環境變量就生效了</font></font></span><span lang="EN-US" style="FONT-SIZE: 9pt; FONT-FAMILY: Verdana; mso-bidi-font-size: 12.0pt"><font><font>, </font></font></span><span style="FONT-SIZE: 9pt; FONT-FAMILY: 宋体; mso-bidi-font-size: 12.0pt; mso-ascii-font-family: Verdana; mso-hansi-font-family: Verdana"><font><font>這樣你就可以在你的應用程序中直接調用庫中的函數了</font></font></span><span lang="EN-US" style="FONT-SIZE: 9pt; FONT-FAMILY: Verdana; mso-bidi-font-size: 12.0pt"><font><font>, </font></font></span><span style="FONT-SIZE: 9pt; FONT-FAMILY: 宋体; mso-bidi-font-size: 12.0pt; mso-ascii-font-family: Verdana; mso-hansi-font-family: Verdana"><font><font>同樣你得有頭文件</font></font></span><span lang="EN-US" style="FONT-SIZE: 9pt; FONT-FAMILY: Verdana; mso-bidi-font-size: 12.0pt"><font><font>.</font></font><o:p></o:p></span></p>
+<p class="MsoNormal" style="MARGIN: 0cm 0cm 0pt; TEXT-INDENT: 21pt"><span lang="EN-US" style="FONT-SIZE: 9pt; FONT-FAMILY: Verdana; mso-bidi-font-size: 12.0pt"><font><font>2. </font></font></span><span style="FONT-SIZE: 9pt; FONT-FAMILY: 宋体; mso-bidi-font-size: 12.0pt; mso-ascii-font-family: Verdana; mso-hansi-font-family: Verdana"><font><font>編譯你的應用程序</font></font></span><span lang="EN-US" style="FONT-SIZE: 9pt; FONT-FAMILY: Verdana; mso-bidi-font-size: 12.0pt"><o:p></o:p></span></p>
+<p class="MsoNormal" style="MARGIN: 0cm 0cm 0pt; TEXT-INDENT: 21pt"><span lang="EN-US" style="FONT-SIZE: 9pt; FONT-FAMILY: Verdana; mso-bidi-font-size: 12.0pt"><font><font>g++/gcc -g -o yourapp yourapp.cpp –lYourLib</font></font><o:p></o:p></span></p>
+<p class="MsoNormal" style="MARGIN: 0cm 0cm 0pt"><span lang="EN-US" style="FONT-SIZE: 9pt; FONT-FAMILY: Verdana; mso-bidi-font-size: 12.0pt">&nbsp;<o:p></o:p></span></p>
+<p class="MsoNormal" style="MARGIN: 0cm 0cm 0pt"><span style="FONT-SIZE: 9pt; FONT-FAMILY: 宋体; mso-bidi-font-size: 12.0pt; mso-ascii-font-family: Verdana; mso-hansi-font-family: Verdana"><font><font>方法三</font></font></span><span lang="EN-US" style="FONT-SIZE: 9pt; FONT-FAMILY: Verdana; mso-bidi-font-size: 12.0pt"><font><font>:</font></font><o:p></o:p></span></p>
+<p class="MsoNormal" style="MARGIN: 0cm 0cm 0pt; TEXT-INDENT: 21pt"><span style="FONT-SIZE: 9pt; FONT-FAMILY: 宋体; mso-bidi-font-size: 12.0pt; mso-ascii-font-family: Verdana; mso-hansi-font-family: Verdana"><font><font>你可以直接採用在編譯鏈接的時候告訴系統你的庫在什麼地方</font></font></span><span lang="EN-US" style="FONT-SIZE: 9pt; FONT-FAMILY: Verdana; mso-bidi-font-size: 12.0pt"><br>&nbsp;&nbsp;<span style="mso-tab-count: 1">&nbsp;&nbsp;&nbsp;&nbsp; </span><font><font>g++/gcc -g -o yourapp yourapp.cpp -L/YourDirIncludingYourLib –lYourLib</font></font><o:p></o:p></span></p>
+<p class="MsoNormal" style="MARGIN: 0cm 0cm 0pt"><span lang="EN-US" style="FONT-SIZE: 9pt; FONT-FAMILY: Verdana; mso-bidi-font-size: 12.0pt"><font><font>/////////////////////////////////</font></font><o:p></o:p></span></p>
+<p class="MsoNormal" style="MARGIN: 0cm 0cm 0pt"><span style="FONT-SIZE: 9pt; FONT-FAMILY: 宋体; mso-bidi-font-size: 12.0pt; mso-ascii-font-family: Verdana; mso-hansi-font-family: Verdana"><font><font>假如你的庫中有個函數</font></font></span><span lang="EN-US" style="FONT-SIZE: 9pt; FONT-FAMILY: Verdana; mso-bidi-font-size: 12.0pt"><font><font>:int eat(.....)</font></font><o:p></o:p></span></p>
+<p class="MsoNormal" style="MARGIN: 0cm 0cm 0pt"><span style="FONT-SIZE: 9pt; FONT-FAMILY: 宋体; mso-bidi-font-size: 12.0pt; mso-ascii-font-family: Verdana; mso-hansi-font-family: Verdana"><font><font>那麼採用如下方式調用它</font></font></span><span lang="EN-US" style="FONT-SIZE: 9pt; FONT-FAMILY: Verdana; mso-bidi-font-size: 12.0pt"><o:p></o:p></span></p>
+<p class="MsoNormal" style="MARGIN: 0cm 0cm 0pt"><span lang="EN-US" style="FONT-SIZE: 9pt; FONT-FAMILY: Verdana; mso-bidi-font-size: 12.0pt"><font><font>yourapp.cpp</font></font><o:p></o:p></span></p>
+<p class="MsoNormal" style="MARGIN: 0cm 0cm 0pt"><span lang="EN-US" style="FONT-SIZE: 9pt; FONT-FAMILY: Verdana; mso-bidi-font-size: 12.0pt"><font><font>#include "YourLib.h"</font></font><o:p></o:p></span></p>
+<p class="MsoNormal" style="MARGIN: 0cm 0cm 0pt"><span lang="EN-US" style="FONT-SIZE: 9pt; FONT-FAMILY: Verdana; mso-bidi-font-size: 12.0pt"><font><font>int main()</font></font><o:p></o:p></span></p>
+<p class="MsoNormal" style="MARGIN: 0cm 0cm 0pt"><span lang="EN-US" style="FONT-SIZE: 9pt; FONT-FAMILY: Verdana; mso-bidi-font-size: 12.0pt"><font><font>{</font></font><o:p></o:p></span></p>
+<p class="MsoNormal" style="MARGIN: 0cm 0cm 0pt"><span lang="EN-US" style="FONT-SIZE: 9pt; FONT-FAMILY: Verdana; mso-bidi-font-size: 12.0pt">&nbsp;<span style="mso-tab-count: 1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><font><font>eat();</font></font><o:p></o:p></span></p>
+<p class="MsoNormal" style="MARGIN: 0cm 0cm 0pt; TEXT-INDENT: 21pt"><span lang="EN-US" style="FONT-SIZE: 9pt; FONT-FAMILY: Verdana; mso-bidi-font-size: 12.0pt"><font><font>return 0;</font></font><o:p></o:p></span></p>
+<p class="MsoNormal" style="MARGIN: 0cm 0cm 0pt"><span lang="EN-US" style="FONT-SIZE: 9pt; FONT-FAMILY: Verdana; mso-bidi-font-size: 12.0pt"><font><font>}</font></font><o:p></o:p></span></p>
+<p class="MsoNormal" style="MARGIN: 0cm 0cm 0pt"><span lang="EN-US" style="FONT-SIZE: 9pt; FONT-FAMILY: Verdana; mso-bidi-font-size: 12.0pt">&nbsp;<o:p></o:p></span></p>
+<p class="MsoNormal" style="MARGIN: 0cm 0cm 0pt"><span style="FONT-SIZE: 9pt; FONT-FAMILY: 宋体; mso-bidi-font-size: 12.0pt; mso-ascii-font-family: Verdana; mso-hansi-font-family: Verdana"><font><font>是不是很</font></font></span><span lang="EN-US" style="FONT-SIZE: 9pt; FONT-FAMILY: Verdana; mso-bidi-font-size: 12.0pt"><font><font>easy? </font></font></span><span style="FONT-SIZE: 9pt; FONT-FAMILY: 宋体; mso-bidi-font-size: 12.0pt; mso-ascii-font-family: Verdana; mso-hansi-font-family: Verdana"><font><font>對了在靜態調用的時候好像不存在上面的</font></font></span><span lang="EN-US" style="FONT-SIZE: 9pt; FONT-FAMILY: Verdana; mso-bidi-font-size: 12.0pt"><font><font>" </font></font></span><span style="FONT-SIZE: 9pt; FONT-FAMILY: 宋体; mso-bidi-font-size: 12.0pt; mso-ascii-font-family: Verdana; mso-hansi-font-family: Verdana"><font><font>注意</font></font></span><span lang="EN-US" style="FONT-SIZE: 9pt; FONT-FAMILY: Verdana; mso-bidi-font-size: 12.0pt"><font><font>1" </font></font></span><span style="FONT-SIZE: 9pt; FONT-FAMILY: 宋体; mso-bidi-font-size: 12.0pt; mso-ascii-font-family: Verdana; mso-hansi-font-family: Verdana"><font><font>的問題</font></font></span><span lang="EN-US" style="FONT-SIZE: 9pt; FONT-FAMILY: Verdana; mso-bidi-font-size: 12.0pt"><font><font>, </font></font></span><span style="FONT-SIZE: 9pt; FONT-FAMILY: 宋体; mso-bidi-font-size: 12.0pt; mso-ascii-font-family: Verdana; mso-hansi-font-family: Verdana"><font><font>不過鑑於保險起見</font></font></span><span lang="EN-US" style="FONT-SIZE: 9pt; FONT-FAMILY: Verdana; mso-bidi-font-size: 12.0pt"><font><font>, </font></font></span><span style="FONT-SIZE: 9pt; FONT-FAMILY: 宋体; mso-bidi-font-size: 12.0pt; mso-ascii-font-family: Verdana; mso-hansi-font-family: Verdana"><font><font>最好還是按照標準的方式寫</font></font></span><span lang="EN-US" style="FONT-SIZE: 9pt; FONT-FAMILY: Verdana; mso-bidi-font-size: 12.0pt"><font><font>c++ </font></font></span><span style="FONT-SIZE: 9pt; FONT-FAMILY: 宋体; mso-bidi-font-size: 12.0pt; mso-ascii-font-family: Verdana; mso-hansi-font-family: Verdana"><font><font>頭文件吧</font></font></span><span lang="EN-US" style="FONT-SIZE: 9pt; FONT-FAMILY: Verdana; mso-bidi-font-size: 12.0pt"><font><font>, </font></font></span><span style="FONT-SIZE: 9pt; FONT-FAMILY: 宋体; mso-bidi-font-size: 12.0pt; mso-ascii-font-family: Verdana; mso-hansi-font-family: Verdana"><font><font>這絕對是個好習慣</font></font></span><span lang="EN-US" style="FONT-SIZE: 9pt; FONT-FAMILY: Verdana; mso-bidi-font-size: 12.0pt"><font><font>.</font></font><o:p></o:p></span></p>
+<p class="MsoNormal" style="MARGIN: 0cm 0cm 0pt"><span lang="EN-US" style="FONT-SIZE: 9pt; FONT-FAMILY: Verdana; mso-bidi-font-size: 12.0pt">&nbsp;<o:p></o:p></span></p>
+</div>
+<div class="share_buttons" id="sharePanel"><span><font><font>分享到：</font></font></span> <a name="sina" class="share_sina" title="分享到新浪微博"></a><a name="qq" class="share_qq" title="分享到騰訊微博"></a></div>
+<!--192.168.1.236-->
+<div class="article_next_prev">
+    <li class="prev_article"><span><font><font>上一篇：</font></font></span><a href="http://blog.csdn.net/winki7/article/details/613048"><font><font>linux下架設CVS服務器</font></font></a></li>
+    <li class="next_article"><span><font><font>下一篇：</font></font></span><a href="http://blog.csdn.net/winki7/article/details/626208"><font><font>Linux共享庫</font></font></a></li>
+</div>
+
+
+    
+</div>
+<div id="ad_cen"><iframe id="ad_frm_0" frameborder="0" scrolling="no" style="border-width: 0px; overflow: hidden; width: 732px; height: 97px; " src="./linux 下創建共享庫_files/ad(1).htm"></iframe></div>
+<script type="text/javascript">
+    new Ad(4, 'ad_cen');
+</script>
+<div id="comment_title" class="panel_head"><font><font>查看評論</font></font><a name="comments"></a></div>
+<div id="comment_list"><dl class="comment_item comment_topic" id="comment_item_910725"><dt class="comment_head" floor="2"><font><font>2樓</font></font><span class="user"><a class="username" href="http://blog.csdn.net/bluehouse1985" target="_blank"><font><font>bluehouse1985 </font></font></a> <span class="ptime"><font><font>2008-09-24 15:45發表</font></font></span>  <a href="http://blog.csdn.net/winki7/article/details/625704#reply" class="cmt_btn reply" title="回复"><font><font>[回复]</font></font></a> <span class="comment_manage" style="display: none; " commentid="910725" username="bluehouse1985"> <a href="http://blog.csdn.net/winki7/article/details/625704#quote" class="cmt_btn quote" title="引用"><font><font>[引用] </font></font></a> <a href="http://blog.csdn.net/winki7/article/details/625704#report" class="cmt_btn report" title="舉報"><font><font>[舉報]</font></font></a></span></span></dt><dd class="comment_userface"><a href="http://blog.csdn.net/bluehouse1985" target="_blank"><img src="./linux 下創建共享庫_files/3_bluehouse1985.jpg" width="40" height="40"></a></dd><dd class="comment_body"><font><font>Linux環境下的多核調試</font></font><br><font><font>             — Intel + Totalview強強聯合! </font></font><br><font><font>目前，在軟件開發行業，各種性能優異的調試工具層出不窮。</font><font>但是，它們中的絕大部分都只支持windows環境。</font><font>即使能支持linux平台，操作起來也很不方便。</font><font>因此，對於長期在linux上編寫程序的開發人員來說，如何調試就成了一個令人頭痛的問題！</font><font>Intel軟件和Totalview Debugger正是在這種情況下應運而生！</font></font><br><font><font>Intel軟件可以在英特爾架構上產生出色的應用程序性能，並可以利用最新英特爾多核處理器的各項先進功能。</font><font>TotalView Debugger與Intel軟件的結合將會掀起一場linux下調試工具的革命！</font></font><br><font><font>TotalView Debugger是一個linux平台並行環境下的調試工具，它的IDE環境、多線程(進程)調試能力、內存調試能力、集群調試能力在業界都是無與倫比的! </font></font><br><font><font>XLsoft攜手Intel、TotalView公司於2008年10月30日在上海舉行“Linux環境下的多核調試”免費培訓講座。</font><font>我們非常榮幸地邀請您參加,並提供免費軟件試用光盤！</font><font>一、報名方式：</font><font>電話：021-62128912/010-84492749 </font><font>Email:Marketing@xlsoft.com.cn </font><font>二、講座內容: </font><font>1. Linux平台下程序調試工具概述</font><font>2. Intel軟件功能介紹</font><font>3. Totalview Debugger功能介紹</font><font>三、講座時間：</font><font>2008年10月30日（星期四）14：00 ~ 17：00 </font><font>四、講座地點：</font><font>上海青松城大酒店3樓長悅廳</font><font>（徐家匯肇家浜路777號東安路口，距衡山路站約15分鐘路程）</font><font>四、活動詳情：</font><font>聯繫人:王娟</font><font>Tel:021-62128916 Mobile: 15000262606 </font><font>E-mail:kiko.wang@xlsoft.com.cn </font><font>諮詢熱線: </font><font>021－62128912 </font><span class="skype_pnh_container" dir="ltr" tabindex="-1"><span class="skype_pnh_highlighting_inactive_common" dir="ltr" skypeaction="skype_dropdown" title="以 Skype 撥打位於 台湾 的電話號碼：+8861084492749"><span class="skype_pnh_textarea_span"><span class="skype_pnh_text_span"><font>010－84492749</font></span></span></span></span><font>更多的服務信息，請聯繫我們Marketing@xlsoft.com.cn or聯繫方式。</font><font>上海世全軟件信息技術有限公司</font><font>聯繫電話上海:021－62128912北京: </font><span class="skype_pnh_container" dir="ltr" tabindex="-1"><span class="skype_pnh_highlighting_inactive_common" dir="ltr" skypeaction="skype_dropdown" title="以 Skype 撥打位於 台湾 的電話號碼：+8861084492749"><span class="skype_pnh_textarea_span"><span class="skype_pnh_text_span"><font>010－84492749</font></span></span></span></span></font><br><br><font></font><br><font></font><br><font></font><br><br><font></font><br><font></font><br><font></font><br><font></font><br><br><font></font><br><font></font><br><br><font></font><br><font></font><br><font></font><br><br><font></font><br><font></font><br><font></font><br><font></font><br><br><font></font><br><font></font><font><font><span class="skype_pnh_print_container">010－84492749</span><span class="skype_pnh_container" dir="ltr" tabindex="-1"><span class="skype_pnh_mark"> begin_of_the_skype_highlighting</span>&nbsp;<span class="skype_pnh_highlighting_inactive_common" dir="ltr" skypeaction="skype_dropdown" title="以 Skype 撥打位於 台湾 的電話號碼：+8861084492749"><span class="skype_pnh_left_span" skypeaction="skype_dropdown" title="Skype行動">&nbsp;&nbsp;</span><span class="skype_pnh_dropart_span" skypeaction="skype_dropdown" title="Skype行動"><span class="skype_pnh_dropart_flag_span" skypeaction="skype_dropdown">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;&nbsp;&nbsp;</span><span class="skype_pnh_textarea_span"><span class="skype_pnh_text_span">010－84492749</span></span><span class="skype_pnh_right_span">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></span>&nbsp;<span class="skype_pnh_mark">end_of_the_skype_highlighting</span></span></font></font> <br><font></font><br><br><font></font><br><font></font><font><font><span class="skype_pnh_print_container">010－84492749</span><span class="skype_pnh_container" dir="ltr" tabindex="-1"><span class="skype_pnh_mark"> begin_of_the_skype_highlighting</span>&nbsp;<span class="skype_pnh_highlighting_inactive_common" dir="ltr" skypeaction="skype_dropdown" title="以 Skype 撥打位於 台湾 的電話號碼：+8861084492749"><span class="skype_pnh_left_span" skypeaction="skype_dropdown" title="Skype行動">&nbsp;&nbsp;</span><span class="skype_pnh_dropart_span" skypeaction="skype_dropdown" title="Skype行動"><span class="skype_pnh_dropart_flag_span" skypeaction="skype_dropdown">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;&nbsp;&nbsp;</span><span class="skype_pnh_textarea_span"><span class="skype_pnh_text_span">010－84492749</span></span><span class="skype_pnh_right_span">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></span>&nbsp;<span class="skype_pnh_mark">end_of_the_skype_highlighting</span></span></font></font></dd></dl><dl class="comment_item comment_topic" id="comment_item_570196"><dt class="comment_head" floor="1"><font><font>1樓</font></font><span class="user"><a class="username" href="http://blog.csdn.net/fang189797" target="_blank"><font><font>fang189797 </font></font></a> <span class="ptime"><font><font>2007-05-31 16:42發表</font></font></span>  <a href="http://blog.csdn.net/winki7/article/details/625704#reply" class="cmt_btn reply" title="回复"><font><font>[回复]</font></font></a> <span class="comment_manage" style="display:none;" commentid="570196" username="fang189797"> <a href="http://blog.csdn.net/winki7/article/details/625704#quote" class="cmt_btn quote" title="引用"><font><font>[引用] </font></font></a> <a href="http://blog.csdn.net/winki7/article/details/625704#report" class="cmt_btn report" title="舉報"><font><font>[舉報]</font></font></a></span></span></dt><dd class="comment_userface"><a href="http://blog.csdn.net/fang189797" target="_blank"><img src="./linux 下創建共享庫_files/3_fang189797.jpg" width="40" height="40"></a></dd><dd class="comment_body"><font><font>謝謝了，真是要什麼有什麼。</font><font>正找這個資料呢</font></font></dd></dl><div class="clear"></div></div>
+<div id="comment_bar" style="display: none; "></div>
+<div id="comment_form"><div class="guest_link"><font><font>您還沒有登錄,請</font></font><a href="http://passport.csdn.net/account/login?from=http%3A%2F%2Fblog.csdn.net%2Fwinki7%2Farticle%2Fdetails%2F625704"><font><font>[登錄]</font></font></a><font><font>或</font></font><a href="http://passport.csdn.net/account/register?from=http%3A%2F%2Fblog.csdn.net%2Fwinki7%2Farticle%2Fdetails%2F625704"><font><font>[註冊]</font></font></a></div></div>
+<div class="announce"><font><font>* 以上用戶言論只代表其個人觀點，不代表CSDN網站的觀點或立場</font></font><a name="reply"></a><a name="quote"></a></div>
+<script type="text/javascript">
+    var fileName = '625704';
+    var commentscount = 2;
+    var islock = false
+</script>
+<script type="text/javascript" src="./linux 下創建共享庫_files/comment.js"></script>
+<div id="ad_bot"><iframe id="ad_frm_1" frameborder="0" scrolling="no" style="border-width: 0px; overflow: hidden; width: 732px; height: 170px; " src="./linux 下創建共享庫_files/ad(2).htm"></iframe></div>
+<script type="text/javascript">
+    new Ad(5, 'ad_bot');
+</script>
+<div id="report_dialog"></div>
+
+<div id="d-top">
+<a href="http://blog.csdn.net/winki7/article/details/625704#" onclick="javascript:document.body.scrollTop=0;document.documentElement.scrollTop=0;this.blur();return false;" title="回到頂部">
+<img src="./linux 下創建共享庫_files/top.png" alt="TOP"></a>
+</div>
+
+
+
+<div class="clear"></div>
+</div>
+</div>
+
+<div id="side">
+<div class="side">
+<div id="panel_Profile" class="panel">
+    <ul class="panel_head"><span><font><font>個人資料</font></font></span></ul>
+    <ul class="panel_body profile">
+        <div id="blog_userface">
+            <a href="http://my.csdn.net/winki7" target="_blank" wrc_done="true">
+            <img src="./linux 下創建共享庫_files/1_winki7.jpg" title="訪問我的空間" style="max-width:90%">
+            </a>&nbsp;<span class="wrc_icon wrc11" rating="{&quot;icon&quot;:&quot;green1-16.png&quot;,&quot;rating&quot;:1,&quot;weight&quot;:1,&quot;flags&quot;:{&quot;it&quot;:1}}"></span>
+            <br>
+            <span><a href="http://my.csdn.net/winki7" target="_blank" wrc_done="true"><font><font>winki7</font></font></a>&nbsp;<span class="wrc_icon wrc11" rating="{&quot;icon&quot;:&quot;green1-16.png&quot;,&quot;rating&quot;:1,&quot;weight&quot;:1,&quot;flags&quot;:{&quot;it&quot;:1}}"></span></span>
+        </div>
+<div class="interact">
+<!--<a href="#" class="attented" title="已关注"></a>-->
+<a href="http://blog.csdn.net/winki7/article/details/625704#" class="attent" id="span_add_follow" title="[加關注]"></a>
+<a href="http://my.csdn.net/my/letter/send/winki7" class="letter" title="[發私信]" wrc_done="true"></a>&nbsp;<span class="wrc_icon wrc11" rating="{&quot;icon&quot;:&quot;green1-16.png&quot;,&quot;rating&quot;:1,&quot;weight&quot;:1,&quot;flags&quot;:{&quot;it&quot;:1}}"></span>
+</div>
+        <div id="blog_medal">
+        <div id="bms_box"></div></div>
+        <ul id="blog_rank">
+            <li><font><font>訪問：</font></font><span><font><font>74794次</font></font></span></li>
+            <li><font><font>積分：</font></font><span><font><font>1138分</font></font></span></li>
+            <li><font><font>排名：</font></font><span><font><font>第6562名</font></font></span></li>
+        </ul>
+        <ul id="blog_statistics">
+            <li><font><font>原創：</font></font><span><font><font>39篇</font></font></span></li>
+            <li><font><font>轉載：</font></font><span><font><font>6篇</font></font></span></li>
+            <li><font><font>譯文：</font></font><span><font><font>0篇</font></font></span></li>
+            <li><font><font>評論：</font></font><span><font><font>14條</font></font></span></li>
+        </ul>
+    </ul>
+</div>
+<script type="text/javascript">
+    var _blogger = 'winki7';
+</script>
+<script type="text/javascript">
+$(document).ready(function () {
+    var un = getUN().toLowerCase();
+    if (un == _blogger.toLowerCase()) {
+        $('.interact').hide();
+    } else if(un) {
+        var url = "http://my.csdn.net/index.php/follow/check_is_followed/" + encodeURIComponent(un) + "/" + encodeURIComponent(_blogger) + "?jsonpcallback=?";
+        $.getJSON(url, {}, function (data) {
+            if (data.succ == 1 && data.info == 1) {
+                $('#span_add_follow').attr('class', 'attented');
+            } else {
+                $('#span_add_follow').click(guanzhu);
+            }
+        }, 'json');
+    }
+});
+function guanzhu() {
+    var url = "http://my.csdn.net/index.php/follow/do_follow?jsonpcallback=?";
+    $.getJSON(url, { "username": _blogger }, function (data) {
+        if (data.succ == 1) {
+            alert('关注成功！');
+            $('#span_add_follow').attr('class', 'attented').click(function () { return false; });
+        } else {
+            alert(data.msg);
+        }
+    });
+    return false;
+}
+function getUN() {
+    var m = document.cookie.match(new RegExp("(^| )UserName=([^;]*)(;|$)"));
+    if (m) return m[2];
+    else return '';
+}
+</script>
+
+<div class="panel" id="panel_Search">
+    <ul class="panel_head"><span><font><font>文章搜索</font></font></span></ul>
+    <ul class="panel_body">
+        <form id="frmSearch" action="http://so.csdn.net/search" class="form_search" target="_blank">
+        <span><input id="inputSearch" type="text" class="blogsearch" title="請輸入關鍵字"></span>
+        <font><font><input id="btnSubmit" type="submit" value="搜索" title="sea​​rch in blog"></font></font>
+        <input type="hidden" name="q" id="inputQ">
+        <input type="hidden" name="t" value="blog">
+        <a id="btnSearchBlog" target="_blank"></a>
+        </form>
+    </ul>
+</div><div id="panel_Category" class="panel">
+    <ul class="panel_head"><span><font><font>文章分類</font></font></span></ul>
+    <ul class="panel_body">
+        <li>
+        <a href="http://blog.csdn.net/winki7/article/category/157411"><font><font>C++ language/others </font></font></a><span><font><font>(12)</font></font></span>
+        </li>
+        <li>
+        <a href="http://blog.csdn.net/winki7/article/category/164860"><font><font>c/c++經典連線</font></font></a><span><font><font>(1)</font></font></span>
+        </li>
+        <li>
+        <a href="http://blog.csdn.net/winki7/article/category/157413"><font><font>database/others </font></font></a><span><font><font>(10)</font></font></span>
+        </li>
+        <li>
+        <a href="http://blog.csdn.net/winki7/article/category/157410"><font><font>Java language/others </font></font></a><span><font><font>(8)</font></font></span>
+        </li>
+        <li>
+        <a href="http://blog.csdn.net/winki7/article/category/157422"><font><font>Linux/others </font></font></a><span><font><font>(17)</font></font></span>
+        </li>
+        <li>
+        <a href="http://blog.csdn.net/winki7/article/category/157423"><font><font>windows/others </font></font></a><span><font><font>(3)</font></font></span>
+        </li>
+        <li>
+        <a href="http://blog.csdn.net/winki7/article/category/157415"><font><font>人生感言</font></font></a><span><font><font>(4)</font></font></span>
+        </li>
+        <li>
+        <a href="http://blog.csdn.net/winki7/article/category/157416"><font><font>其它文章</font></font></a><span><font><font>(1)</font></font></span>
+        </li>
+    </ul>
+</div><div id="panel_Archive" class="panel">
+    <ul class="panel_head"><span><font><font>文章存檔</font></font></span></ul>
+    <ul class="panel_body">
+        <div id="archive_list"><li><a href="http://blog.csdn.net/winki7/article/month/2006/07"><font><font>2006年07月</font></font></a><span><font><font>(5)</font></font></span></li><li><a href="http://blog.csdn.net/winki7/article/month/2006/03"><font><font>2006年03月</font></font></a><span><font><font>(3)</font></font></span></li><li><a href="http://blog.csdn.net/winki7/article/month/2006/02"><font><font>2006年02月</font></font></a><span><font><font>(8)</font></font></span></li><li><a href="http://blog.csdn.net/winki7/article/month/2006/01"><font><font>2006年01月</font></font></a><span><font><font>(2)</font></font></span></li><li><a href="http://blog.csdn.net/winki7/article/month/2005/12"><font><font>2005年12月</font></font></a><span><font><font>(13)</font></font></span></li><span class="hidelist" style="display:none;"><li><a href="http://blog.csdn.net/winki7/article/month/2005/11"><font><font>2005年11月</font></font></a><span><font><font>(2)</font></font></span></li><li><a href="http://blog.csdn.net/winki7/article/month/2005/10"><font><font>2005年10月</font></font></a><span><font><font>(12)</font></font></span></li></span><div id="archive_list_button" class="list_closed"><font><font>展開</font></font></div></div>
+    </ul>
+</div>
+<div id="hotarticls" class="panel">
+    <ul class="panel_head"><span><font><font>閱讀排行</font></font></span></ul>
+    <ul class="panel_body itemlist">
+        <li>
+            <a href="http://blog.csdn.net/winki7/article/details/600903" title="eclipse+GTK+win32編譯環境搭建  "><font><font>eclipse+GTK+win32編譯環境搭建   </font></font></a><span><font><font>(12997)</font></font></span>
+        </li>
+        <li>
+            <a href="./linux 下創建共享庫_files/linux 下創建共享庫.htm" title="linux 下創建共享庫.so"><font><font>linux下創建共享庫.so </font></font></a><span><font><font>(7378)</font></font></span>
+        </li>
+        <li>
+            <a href="http://blog.csdn.net/winki7/article/details/541741" title="linux 下安裝libpcap (庫)手記"><font><font>linux下安裝libpcap (庫)手記</font></font></a><span><font><font>(6291)</font></font></span>
+        </li>
+        <li>
+            <a href="http://blog.csdn.net/winki7/article/details/510223" title="org.apache.commons.fileupload的使用"><font><font>org.apache.commons.fileupload的使用</font></font></a><span><font><font>(4166)</font></font></span>
+        </li>
+        <li>
+            <a href="http://blog.csdn.net/winki7/article/details/552282" title="用c++ 操作mysql 數據庫類（for linux or windows and others）"><font><font>用c++操作mysql數據庫類（for linux or windows and others）</font></font></a><span><font><font>(3002)</font></font></span>
+        </li>
+        <li>
+            <a href="http://blog.csdn.net/winki7/article/details/554118" title="詳細解說STL string "><font><font>詳細解說STL string </font></font></a><span><font><font>(1922)</font></font></span>
+        </li>
+        <li>
+            <a href="http://blog.csdn.net/winki7/article/details/513416" title="JSP連接mysql數據庫攻略"><font><font>JSP連接mysql數據庫攻略</font></font></a><span><font><font>(1735)</font></font></span>
+        </li>
+        <li>
+            <a href="http://blog.csdn.net/winki7/article/details/600403" title="用Linux構建FTP服務器"><font><font>用Linux構建FTP服務器</font></font></a><span><font><font>(1675)</font></font></span>
+        </li>
+        <li>
+            <a href="http://blog.csdn.net/winki7/article/details/554109" title="c++ stl iostream 使用筆記三"><font><font>c++ stl iostream使用筆記三</font></font></a><span><font><font>(1661)</font></font></span>
+        </li>
+        <li>
+            <a href="http://blog.csdn.net/winki7/article/details/600886" title="linux+gtk+c/c++ 開發資料收集整理"><font><font>linux+gtk+c/c++開發資料收集整理</font></font></a><span><font><font>(1651)</font></font></span>
+        </li>
+    </ul>
+</div>
+<div id="hotarticls2" class="panel">
+    <ul class="panel_head"><span><font><font>評論排行</font></font></span></ul>
+    <ul class="panel_body itemlist">
+        <li>
+            <a href="http://blog.csdn.net/winki7/article/details/541741" title="linux 下安裝libpcap (庫)手記"><font><font>linux下安裝libpcap (庫)手記</font></font></a><span><font><font>(4)</font></font></span>
+        </li>
+        <li>
+            <a href="http://blog.csdn.net/winki7/article/details/552282" title="用c++ 操作mysql 數據庫類（for linux or windows and others）"><font><font>用c++操作mysql數據庫類（for linux or windows and others）</font></font></a><span><font><font>(3)</font></font></span>
+        </li>
+        <li>
+            <a href="http://blog.csdn.net/winki7/article/details/504265" title="如何在resin下配置數據庫連接池"><font><font>如何在resin下配置數據庫連接池</font></font></a><span><font><font>(2)</font></font></span>
+        </li>
+        <li>
+            <a href="http://blog.csdn.net/winki7/article/details/600903" title="eclipse+GTK+win32編譯環境搭建  "><font><font>eclipse+GTK+win32編譯環境搭建   </font></font></a><span><font><font>(2)</font></font></span>
+        </li>
+        <li>
+            <a href="./linux 下創建共享庫_files/linux 下創建共享庫.htm" title="linux 下創建共享庫.so"><font><font>linux下創建共享庫.so </font></font></a><span><font><font>(2)</font></font></span>
+        </li>
+        <li>
+            <a href="http://blog.csdn.net/winki7/article/details/520327" title="AJAX技術"><font><font>AJAX技術</font></font></a><span><font><font>(1)</font></font></span>
+        </li>
+        <li>
+            <a href="http://blog.csdn.net/winki7/article/details/600886" title="linux+gtk+c/c++ 開發資料收集整理"><font><font>linux+gtk+c/c++開發資料收集整理</font></font></a><span><font><font>(0)</font></font></span>
+        </li>
+        <li>
+            <a href="http://blog.csdn.net/winki7/article/details/600403" title="用Linux構建FTP服務器"><font><font>用Linux構建FTP服務器</font></font></a><span><font><font>(0)</font></font></span>
+        </li>
+        <li>
+            <a href="http://blog.csdn.net/winki7/article/details/600099" title="運用autoconf和automake自動生成Makefile實例講解 "><font><font>運用autoconf和automake自動生成Makefile實例講解</font></font></a><span><font><font>(0)</font></font></span>
+        </li>
+        <li>
+            <a href="http://blog.csdn.net/winki7/article/details/584362" title="linux 問答式學習"><font><font>linux問答式學習</font></font></a><span><font><font>(0)</font></font></span>
+        </li>
+    </ul>
+</div>
+<div id="homepageArticles" class="panel">
+    <ul class="panel_head"><span><font><font>推薦文章</font></font></span></ul>
+    <ul class="panel_body" id="ad_commend">
+    <iframe id="ad_frm_2" frameborder="0" scrolling="no" style="border-width: 0px; overflow: hidden; width: 182px; height: 244px; " src="./linux 下創建共享庫_files/ad.htm"></iframe></ul>
+</div>
+<script type="text/javascript" src="./linux 下創建共享庫_files/ad.js"></script>
+<script type="text/javascript">
+    new Ad(12, 'ad_commend');
+</script><div id="newcomments" class="panel">
+<ul class="panel_head"><span><font><font>最新評論</font></font></span></ul>
+<ul class="panel_body itemlist">
+    <li>
+    <a href="http://blog.csdn.net/winki7/article/details/541741#comments"><font><font>linux 下安裝libpcap (庫)手記</font></font></a>
+    <p style="margin:0px;"><font><font>aa_qq110: 謝謝
+    </font></font></p>
+    </li>
+    <li>
+    <a href="http://blog.csdn.net/winki7/article/details/552282#comments"><font><font>用c++ 操作mysql 數據庫類（for linux or windows and others）</font></font></a>
+    <p style="margin:0px;"><font><font>匿名用戶: 謝謝！</font><font>！</font><font>！
+    </font></font></p>
+    </li>
+    <li>
+    <a href="http://blog.csdn.net/winki7/article/details/552282#comments"><font><font>用c++ 操作mysql 數據庫類（for linux or windows and others）</font></font></a>
+    <p style="margin:0px;"><font><font>匿名用戶: 很好哈~~
+    </font></font></p>
+    </li>
+    <li>
+    <a href="http://blog.csdn.net/winki7/article/details/600903#comments"><font><font>eclipse+GTK+win32編譯環境搭建  </font></font></a>
+    <p style="margin:0px;"><font><font>visionalcloud: 為什麼安裝你的步驟加入`pkg-config --cflags gtk+-2.0`提示： `pkg...
+    </font></font></p>
+    </li>
+    <li>
+    <a href="http://blog.csdn.net/winki7/article/details/625704#comments"><font><font>linux 下創建共享庫.so</font></font></a>
+    <p style="margin:0px;"><font><font>bluehouse1985: Linux 環境下的多核調試— Intel + Totalview 強強...
+    </font></font></p>
+    </li>
+    <li>
+    <a href="http://blog.csdn.net/winki7/article/details/504265#comments"><font><font>如何在resin下配置數據庫連接池</font></font></a>
+    <p style="margin:0px;"><font><font>Suasea: 有價值
+    </font></font></p>
+    </li>
+    <li>
+    <a href="http://blog.csdn.net/winki7/article/details/600903#comments"><font><font>eclipse+GTK+win32編譯環境搭建  </font></font></a>
+    <p style="margin:0px;"><font><font>RickHunterWXC: 太感謝了~~~ 補充一點點： 在Other objects 裡面填上`pkg-config -...
+    </font></font></p>
+    </li>
+    <li>
+    <a href="http://blog.csdn.net/winki7/article/details/625704#comments"><font><font>linux 下創建共享庫.so</font></font></a>
+    <p style="margin:0px;"><font><font>fang189797: 謝謝了，真是要什麼有什麼。</font><font>正找這個資料呢
+    </font></font></p>
+    </li>
+    <li>
+    <a href="http://blog.csdn.net/winki7/article/details/520327#comments"><font><font>AJAX技術</font></font></a>
+    <p style="margin:0px;"><font><font>A: 代碼挺長
+    </font></font></p>
+    </li>
+    <li>
+    <a href="http://blog.csdn.net/winki7/article/details/504265#comments"><font><font>如何在resin下配置數據庫連接池</font></font></a>
+    <p style="margin:0px;"><font><font>El_Nino: 謝謝了,正好要用
+    </font></font></p>
+    </li>
+</ul>
+</div>
+<div id="custom_column_962213" class="panel">
+    <ul class="panel_head"><span><font><font>友情連接</font></font></span></ul>
+    <ul class="panel_body">
+        <ul><li><a href="http://www.i170.com/user/xiaofeng_jia" target="_blank" wrc_done="true"><font><font>linux c/c++好友Cat</font></font></a>&nbsp;<span class="wrc_icon wrc0" rating="{&quot;icon&quot;:&quot;grey0-16.png&quot;,&quot;rating&quot;:0,&quot;weight&quot;:0,&quot;flags&quot;:{}}"></span><font><font> ( </font></font><a href="http://www.i170.com/user/xiaofeng_jia/RSS" target="_blank" wrc_done="true"><font><font>RSS</font></font></a>&nbsp;<span class="wrc_icon wrc0" rating="{&quot;icon&quot;:&quot;grey0-16.png&quot;,&quot;rating&quot;:0,&quot;weight&quot;:0,&quot;flags&quot;:{}}"></span><font><font> )</font></font></li><li><a href="http://blog.csdn.net/winki" target="_blank"><font><font>老婆的blog</font></font></a><font><font> ( </font></font><a href="http://blog.csdn.net/winki/Rss.aspx" target="_blank"><font><font>RSS</font></font></a><font><font> )</font></font></li><li><a href="http://yuanyuan2918.freecity.bokee.com/" target="_blank" wrc_done="true"><font><font>可愛的小袁</font></font></a>&nbsp;<span class="wrc_icon wrc0" rating="{&quot;icon&quot;:&quot;grey0-16.png&quot;,&quot;rating&quot;:0,&quot;weight&quot;:0,&quot;flags&quot;:{}}"></span></li></ul>
+    </ul>
+</div></div>
+<div class="clear"></div>
+</div>
+
+<div class="clear"></div>
+</div>
+<script type="text/javascript" src="./linux 下創建共享庫_files/shCore-src.js"></script>
+<script type="text/javascript" src="./linux 下創建共享庫_files/ZeroClipboard.js"></script>
+<script type="text/javascript" src="./linux 下創建共享庫_files/article_code.js"></script>
+
+<script type="text/javascript" src="./linux 下創建共享庫_files/show.js"></script>
+<script type="text/javascript" src="./linux 下創建共享庫_files/showblogmedal.ashx"></script>
+<script type="text/javascript">document.write("<img src=http://counter.csdn.net/pv.aspx?id=24 border=0 width=0 height=0>");</script><img src="./linux 下創建共享庫_files/pv.aspx" border="0" width="0" height="0">
+
+<script type="text/javascript" src="./linux 下創建共享庫_files/publib_footer.js"></script><link rel="stylesheet" type="text/css" href="./linux 下創建共享庫_files/pub_footer_2012.css"><div class="pub_footerall"><dl><dt></dt> <dd><a href="http://www.csdn.net/company/about.html" target="_blank" wrc_done="true"><font><font>公司簡介</font></font></a>&nbsp;<span class="wrc_icon wrc11" rating="{&quot;icon&quot;:&quot;green1-16.png&quot;,&quot;rating&quot;:1,&quot;weight&quot;:1,&quot;flags&quot;:{&quot;it&quot;:1}}"></span><font><font> | </font></font><a href="http://www.csdn.net/company/recruit.html" target="_blank" wrc_done="true"><font><font>招賢納士</font></font></a>&nbsp;<span class="wrc_icon wrc11" rating="{&quot;icon&quot;:&quot;green1-16.png&quot;,&quot;rating&quot;:1,&quot;weight&quot;:1,&quot;flags&quot;:{&quot;it&quot;:1}}"></span><font><font> | </font></font><a href="http://www.csdn.net/company/marketing.html" target="_blank" wrc_done="true"><font><font>廣告服務</font></font></a>&nbsp;<span class="wrc_icon wrc11" rating="{&quot;icon&quot;:&quot;green1-16.png&quot;,&quot;rating&quot;:1,&quot;weight&quot;:1,&quot;flags&quot;:{&quot;it&quot;:1}}"></span><font><font> | </font></font><a href="http://www.csdn.net/company/account.html" target="_blank" wrc_done="true"><font><font>銀行匯款帳號</font></font></a>&nbsp;<span class="wrc_icon wrc11" rating="{&quot;icon&quot;:&quot;green1-16.png&quot;,&quot;rating&quot;:1,&quot;weight&quot;:1,&quot;flags&quot;:{&quot;it&quot;:1}}"></span><font><font> | </font></font><a href="http://www.csdn.net/company/contact.html" target="_blank" wrc_done="true"><font><font>聯繫方式</font></font></a>&nbsp;<span class="wrc_icon wrc11" rating="{&quot;icon&quot;:&quot;green1-16.png&quot;,&quot;rating&quot;:1,&quot;weight&quot;:1,&quot;flags&quot;:{&quot;it&quot;:1}}"></span><font><font> | </font></font><a href="http://www.csdn.net/company/statement.html" target="_blank" wrc_done="true"><font><font>版權聲明</font></font></a>&nbsp;<span class="wrc_icon wrc11" rating="{&quot;icon&quot;:&quot;green1-16.png&quot;,&quot;rating&quot;:1,&quot;weight&quot;:1,&quot;flags&quot;:{&quot;it&quot;:1}}"></span><font><font> | </font></font><a href="http://www.csdn.net/company/layer.html" target="_blank" wrc_done="true"><font><font>法律顧問</font></font></a>&nbsp;<span class="wrc_icon wrc11" rating="{&quot;icon&quot;:&quot;green1-16.png&quot;,&quot;rating&quot;:1,&quot;weight&quot;:1,&quot;flags&quot;:{&quot;it&quot;:1}}"></span><font><font> | </font></font><a href="mailto:webmaster@csdn.net"><font><font>問題報告</font></font></a></dd><dd><font><font>京 ICP 證 070598 號</font></font></dd><dd><font><font>北京創新樂知信息技術有限公司版權所有</font></font></dd><dd><img src="./linux 下創建共享庫_files/ico_email.gif" alt="" title=""><font><font> 聯繫郵箱：webmaster@csdn.net</font></font></dd><dd><font><font>Copyright © 1999-2012, CSDN.NET, All Rights Reserved&nbsp;</font></font><a href="http://www.hd315.gov.cn/beian/view.asp?bianhao=010202001032100010" target="_blank" wrc_done="true"><img src="./linux 下創建共享庫_files/gongshang_logos.gif" alt="GongshangLogo" title=""></a>&nbsp;<span class="wrc_icon wrc21" rating="{&quot;icon&quot;:&quot;yellow1-16.png&quot;,&quot;rating&quot;:2,&quot;weight&quot;:1,&quot;flags&quot;:{}}"></span></dd></dl></div>
+
+<script type="text/javascript" src="./linux 下創建共享庫_files/counter.js"></script><script type="text/javascript" charset="UTF-8" src="./linux 下創建共享庫_files/msg.popup.js"></script>
+
+<!--ad.csdn.net-->
+<script type="text/javascript" src="./linux 下創建共享庫_files/ad-blog.js"></script><script type="text/javascript" src="./linux 下創建共享庫_files/ad-ibm23.js"></script>
+
+
+
+
+</div>
+
+<div id="wrchoverdiv" style="display: none; "><div id="wrccontainer"><div id="wrcheader"><div id="wrctitle"><font><font> WebRep</font></font></div></div><div class="wrchorizontal"></div><div id="wrccurrentvote"><font><font>總體評價</font></font></div><div class="wrchorizontal"></div><div id="wrcrating"></div><div id="wrcratingtext"><font><font>此網站沒有任何評價資訊</font></font></div><div id="wrcweighttext"><font><font>（票數不足）</font></font></div><div id="wrcflags"><div id="wrcicon_shopping" class="wrcicon"></div><div id="wrcicon_social" class="wrcicon"></div><div id="wrcicon_news" class="wrcicon"></div><div id="wrcicon_it" class="wrcicon"></div><div id="wrcicon_corporate" class="wrcicon"></div><div id="wrcicon_pornography" class="wrcicon"></div><div id="wrcicon_violence" class="wrcicon"></div><div id="wrcicon_gambling" class="wrcicon"></div><div id="wrcicon_drugs" class="wrcicon"></div><div id="wrcicon_illegal" class="wrcicon"></div></div><div class="wrchorizontal"></div></div></div><iframe style="width: 1px; height: 1px; position: absolute; visibility: hidden; " src="./linux 下創建共享庫_files/tivoli-downloadthefinalpage_728-90-0801.htm"></iframe><link href="./linux 下創建共享庫_files/message_pop.css" rel="stylesheet" type="text/css"><div style="display: block; " id="_popup_msg_container">
+
+<div wistate="max" id="im_popupWindow_miniMsg" class="im_popupWindow" style="display: block; height: 240px; ">
+	<h6 class="wi_draggable"><font><font>最新ASP.NET免費公開課</font></font><span>
+
+</span><a onclick="_message_tips_pop(&#39;down&#39;);return false;"><img alt="close" class="founctionpic3" src="./linux 下創建共享庫_files/pic_close.gif"></a></h6>
+    <div id="im_popupWindow_miniMsgContent" class="wi_content">
+		<div class="kuai">
+			<div style="width:280px;"><a href="http://net.itcast.cn/subject/gz_.net_1/asp.html?from=12911webim" target="_blank"><img src="./linux 下創建共享庫_files/ASP.JPG" alt="" border="0" style="border:0;" title=""></a></div>
+		</div>
+	</div>
+	<div class="content_qq"><span onclick="window.open(&#39;http://g.csdn.net/5222481&#39;)" target="_blank"></span>
+ </div>
+ 
+</div>
+</div><div id="goog-gt-tt" class="skiptranslate" dir="ltr"><div style="padding: 8px;"><div><div class="logo"><img src="./linux 下創建共享庫_files/translate-32.png" width="20" height="20"></div></div></div><div class="top" style="padding: 8px; float: left; width: 100%;"><h1 class="title gray">原文</h1></div><div class="middle" style="padding: 8px;"><div class="original-text"></div></div><div class="bottom" style="padding: 8px;"><div class="activity-links"><span class="activity-link">建議更好的譯法</span><span class="activity-link"></span></div><div class="started-activity-container"><hr style="color: #CCC; background-color: #CCC; height: 1px; border: none;"><div class="activity-root"></div></div></div><div class="status-message" style="display: none; "></div></div><img src="./linux 下創建共享庫_files/count_new.php" style="display: none; "></body><span id="skype_highlighting_settings" display="none" autoextractnumbers="1"></span><object id="skype_plugin_object" location.href="http://blog.csdn.net/winki7/article/details/625704" location.hostname="blog.csdn.net" style="position: absolute; visibility: hidden; left: -100px; top: -100px; " width="0" height="0" type="application/x-vnd.skype.toolbars.npplugin.4.2.0"></object></html>

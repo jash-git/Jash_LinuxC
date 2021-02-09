@@ -1,0 +1,999 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<!-- saved from url=(0057)http://linux.ccidnet.com/art/9513/20070614/1113691_1.html -->
+<!-- 模版文件头 --><!-- 模版文件头 结束 --><HTML><HEAD><TITLE>Linux系统中动态链接库的创建及其使用 — IT技术 - 赛迪网</TITLE>
+<META http-equiv=Content-Type content="text/html; charset=gb2312">
+<META content=系统管理,linux name=keywords>
+<META content=Linux系统中动态链接库的创建及其使用 name=description><LINK 
+href="網頁形式.files/index_css_new.css" type=text/css rel=stylesheet>
+<SCRIPT language=javascript>
+function window.onload() {
+
+if(top.location != self.location){
+
+var a = window.parent.document.getElementsByTagName('iframe');
+
+for (var i=0; i<a.length; i++){
+
+if (a[i].name == self.name) {a[i].height = document.body.scrollHeight; return;}}} 
+
+}
+</SCRIPT>
+
+<SCRIPT language=JavaScript>
+function doZoom(size){
+document.getElementById('zoom').style.fontSize=size+'px';
+}
+</SCRIPT>
+
+<META content="MSHTML 6.00.2900.3132" name=GENERATOR></HEAD>
+<BODY><!-- 文章导航开始-->
+<SCRIPT language=JavaScript src="網頁形式.files/ccid_art_header.js"></SCRIPT>
+<IMG height=0 src="網頁形式.files/art.gif" width=0 border=0><BR><!-- 文章导航结束-->
+<TABLE 
+style="BORDER-RIGHT: #b0bcc2 1px solid; BORDER-TOP: #b0bcc2 1px solid; MARGIN: 6px 0px 5px; BORDER-LEFT: #b0bcc2 1px solid; BORDER-BOTTOM: #b0bcc2 1px solid" 
+height=70 cellSpacing=0 cellPadding=4 width=948 border=0>
+  <TBODY>
+  <TR>
+    <TD height=60>
+      <TABLE height=60 cellSpacing=0 cellPadding=0 width="100%" border=0>
+        <TBODY>
+        <TR>
+          <TD width="80%">
+            <SCRIPT 
+            src="網頁形式.files/;pl=pl-9-techwz_db;tp=js;sk=0;ck=0;"></SCRIPT>
+          </TD>
+          <TD align=right width="20%">
+            <TABLE cellSpacing=0 cellPadding=0 width="98%" border=0>
+              <TBODY>
+              <TR>
+                <TD vAlign=bottom align=middle>
+                  <TABLE height=60 cellSpacing=0 cellPadding=0 width="98%" 
+                  border=0>
+                    <TBODY>
+                    <TR>
+                      <TD class=a9c_2 align=right width="5%">·</TD>
+                      <TD align=left width="95%"><A class=a9c_2 
+                        href="http://bbs.tech.ccidnet.com/2007/network/index.php" 
+                        target=_blank>2007网络安全热点话题征集</A></TD></TR>
+                    <TR>
+                      <TD class=a9c_2 align=left>·</TD>
+                      <TD align=left><A class=a9c_2 
+                        href="http://bbs.network.ccidnet.com/thread.php?fid=85" 
+                        target=_blank>技术社区精美礼品实物竞拍</A></TD></TR>
+                    <TR>
+                      <TD class=a9c_2 align=left>·</TD>
+                      <TD align=left><A class=a9c_2 
+                        href="http://bbs.security.ccidnet.com/thread.php?fid=87" 
+                        target=_blank>专家坐镇赛迪网病毒求助专区</A></TD></TR></TBODY></TABLE></TD></TR></TBODY></TABLE></TD></TR></TBODY></TABLE></TD></TR></TBODY></TABLE>
+<TABLE style="MARGIN: 1px 0px" cellSpacing=0 cellPadding=0 width=948 border=0>
+  <TBODY>
+  <TR>
+    <TD>
+      <SCRIPT src="網頁形式.files/;pl=pl-85-linux_wz_db1;tp=js;sk=0;ck=0;"></SCRIPT>
+    </TD></TR></TBODY></TABLE>
+<TABLE height=27 cellSpacing=0 cellPadding=0 width=948 border=0>
+  <TBODY>
+  <TR>
+    <TD align=middle>
+      <TABLE cellSpacing=0 cellPadding=0 width="100%" border=0>
+        <TBODY>
+        <TR>
+          <TD align=left width=416>
+            <TABLE cellSpacing=0 cellPadding=0 width="100%" border=0>
+              <TBODY>
+              <TR>
+                <TD width=27><A href="http://tech.ccidnet.com/" 
+                  target=_blank><IMG height=33 src="網頁形式.files/logo.jpg" 
+                  width=27 border=0></A></TD>
+                <TD width=91><A href="http://tech.ccidnet.com/" 
+                  target=_blank><IMG height=33 src="網頁形式.files/logo_t4.jpg" 
+                  width=81 border=0></A></TD>
+                <TD width=1><IMG height=33 src="網頁形式.files/line3.gif" 
+                width=1></TD>
+                <TD vAlign=bottom align=middle width=297>
+                  <TABLE cellSpacing=0 cellPadding=0 width="99%" border=0>
+                    <TBODY>
+                    <TR>
+                      <TD align=left>&nbsp;<A class=a9b 
+                        href="http://www.ccidnet.com/" 
+                        target=_blank>赛迪网</A><SPAN 
+                        class=a9b>&nbsp;&gt;</SPAN>&nbsp;<A class=a9b 
+                        href="http://tech.ccidnet.com/" 
+                        target=_blank>IT技术</A>&nbsp;<SPAN 
+                        class=a9b>&gt;&nbsp;</SPAN><A class=a9b 
+                        href="http://linux.ccidnet.com/" 
+                        target=_blank>Linux</A>&nbsp;<SPAN 
+                        class=a9b>&gt;&nbsp;</SPAN><A class=a9b 
+                        href="http://linux.ccidnet.com/col/9513/9513.html" 
+                        target=_blank>系统管理</A></TD></TR></TBODY></TABLE></TD></TR></TBODY></TABLE></TD>
+          <TD vAlign=bottom width=274>
+            <SCRIPT language=javascript>
+			function changeactionzs(){
+				var channellvalue = document.searchForm1.channelid.value;
+				var searchwordvalues = document.searchForm1.searchword.value;
+				if (channellvalue == "001"){
+					document.searchForm1.wd.value = document.searchForm1.searchword.value;
+					document.searchForm1.action = "http://event.ccidnet.com/baidu";
+				}
+				else if(channellvalue == "002"){
+					document.searchForm1.q.value = document.searchForm1.searchword.value;
+					document.searchForm1.method = "get";
+					document.searchForm1.action = "http://www.google.com/custom";
+				}
+				else{
+				   document.searchForm1.action =  "http://search.ccidnet.com/search.wct";
+				}
+			}
+		 </SCRIPT>
+
+            <FORM style="MARGIN: 0px" name=searchForm1 onsubmit=changeactionzs() 
+            action=http://search.ccidnet.com/search.wct method=post 
+            target=_blank>
+            <TABLE height=30 cellSpacing=0 cellPadding=0 width="100%" 
+              border=0><TBODY>
+              <TR>
+                <TD class=a9 width="6%">&nbsp;</TD>
+                <TD class=a9 width="25%"><SPAN class=a29>IT资讯搜索</SPAN></TD>
+                <TD width="33%"><INPUT 
+                  style="PADDING-RIGHT: 1px; PADDING-LEFT: 1px; FONT-SIZE: 9pt; PADDING-BOTTOM: 1px; PADDING-TOP: 1px; HEIGHT: 20px" 
+                  size=12 name=searchword></TD>
+                <TD width="25%"><SELECT name=channelid> <OPTION value=1649 
+                    selected>赛迪网</OPTION> <OPTION value=2771>资讯中心</OPTION> 
+                    <OPTION value=39179>通信产业</OPTION> <OPTION 
+                    value=2581>IT技术</OPTION> <OPTION value=12082>IT产品</OPTION> 
+                    <OPTION value=3544>信息化</OPTION> <OPTION 
+                    value=38883>情报中心</OPTION> <OPTION value=001>百度</OPTION> 
+                    <OPTION value=002>Google</OPTION></SELECT> <INPUT type=hidden 
+                  value=page name=search5> <INPUT type=hidden name=wd> <INPUT 
+                  type=hidden value=pub-3653458698766474 name=client> <INPUT 
+                  type=hidden name=q> <INPUT type=hidden value=www.ccidnet.com 
+                  name=domains> <INPUT type=hidden value=www.ccidnet.com 
+                  name=sitesearch> </TD>
+                <TD align=middle width="16%"><INPUT type=image 
+                  src="網頁形式.files/wz_button.gif" 
+            name=Submit2></TD></TR></TBODY></TABLE></TD></FORM>
+          <TD width=10>&nbsp;</TD>
+          <TD vAlign=bottom width=260>
+            <FORM name=quick_search 
+            action=http://price.ccidnet.com/template/@searchresult.html 
+            method=post target=_blank><INPUT type=hidden value=1 
+            name=searchType> <INPUT type=hidden value=0 name=innerClass> 
+            <TABLE height=30 cellSpacing=0 cellPadding=0 width="100%" 
+              border=0><TBODY>
+              <TR>
+                <TD vAlign=center width="25%"><SPAN class=white12></SPAN><SPAN 
+                  class=a29>IT产品搜索</SPAN></TD>
+                <TD width="33%"><INPUT 
+                  style="PADDING-RIGHT: 1px; PADDING-LEFT: 1px; FONT-SIZE: 9pt; PADDING-BOTTOM: 1px; PADDING-TOP: 1px; HEIGHT: 20px" 
+                  size=11 name=keyword></TD>
+                <TD width="25%"><SELECT name=classID> <OPTION value=0 
+                    selected>产品分类</OPTION> <OPTION value=15>手机</OPTION> <OPTION 
+                    value=1>笔记本</OPTION> <OPTION value=3>台式机</OPTION> <OPTION 
+                    value=2>服务器</OPTION> <OPTION value=1854>投影机</OPTION> <OPTION 
+                    value=5>打印机</OPTION></SELECT> </TD>
+                <TD align=middle width="11%"><INPUT type=image 
+                  src="網頁形式.files/wz_button.gif" 
+            name=imageField32></TD></TR></TBODY></TABLE></TD></TR></TBODY></TABLE></TD></FORM></TR></TBODY></TABLE>
+<TABLE style="MARGIN-TOP: 5px" cellSpacing=0 cellPadding=0 width=948 border=0>
+  <TBODY>
+  <TR>
+    <TD width=2></TD>
+    <TD vAlign=top width=639><IFRAME marginWidth=0 marginHeight=0 
+      src="網頁形式.files/art_tech.htm" frameBorder=0 width=639 scrolling=no 
+      height=95 RESIZABLE="no"></IFRAME>
+      <TABLE cellSpacing=0 cellPadding=0 width="100%" border=0>
+        <TBODY>
+        <TR>
+          <TD><IMG height=6 src="網頁形式.files/wz_left_1.gif" width=639></TD></TR>
+        <TR>
+          <TD align=middle background=網頁形式.files/wz_left_2.gif>
+            <TABLE class=titel style="BORDER-TOP: #ffffff 17px solid" 
+            cellSpacing=0 cellPadding=0 width=560 border=0>
+              <TBODY>
+              <TR>
+                <TD align=middle>
+                  <H1 class=titel>Linux系统中动态链接库的创建及其使用 </H1></TD></TR></TBODY></TABLE>
+            <TABLE style="MARGIN: 2px 0px 20px" cellSpacing=0 cellPadding=0 
+            width=560 border=0>
+              <TBODY>
+              <TR>
+                <TD bgColor=#b1bcc0 height=1></TD></TR></TBODY></TABLE>
+            <TABLE style="MARGIN-BOTTOM: 20px" cellSpacing=0 cellPadding=0 
+            width=560 border=0>
+              <TBODY>
+              <TR>
+                <TD align=middle><SPAN class=content01></SPAN><SPAN 
+                  class=b>发布时间：2007.06.15 
+                  06:17</SPAN>&nbsp;&nbsp;&nbsp;&nbsp;<SPAN class=b> 
+                  来源：赛迪网</SPAN>&nbsp;&nbsp;&nbsp;&nbsp;<SPAN 
+                  class=b>作者：skid</SPAN></TD></TR></TBODY></TABLE>
+            <TABLE class=p11 cellSpacing=0 cellPadding=0 width=560 border=0>
+              <TBODY>
+              <TR>
+                <TD style="WORD-WRAP: break-word" align=left>
+                  <P class=a14c style="TEXT-INDENT: 2em"><SPAN class=a14c 
+                  id=zoom><SPAN id=tech_art_center></SPAN>
+                  <P style="TEXT-INDENT: 2em">LINUX系统中动态链接库的创建与使用 大家都知道，在 
+                  WINDOWS系统中有很多的动态链接库(以.DLL为后缀的文件，DLL即Dynamic Link 
+                  Library)。这种动态链接库，和静态函数库不同，它里面的函数并不是执行程序本身的一部分，而是根据执行程序需要按需装入，同时其执行代码可在多个执行程序间共享，节省了空间，提高了效率，具备很高的灵活性，得到越来越多程序员和用户的青睐。那么，在LINUX系统中有无这样的函数库呢？答案是肯定的，LINUX的动态链接库不仅有，而且为数不少。在/lib目录下，就有许多以.so作后缀的文件，这就是LINUX系统应用的动态链接库，只不过与 
+                  WINDOWS叫法不同，它叫so，即Shared Object，共享对象。(在LINUX下，静态函数库是以.a作后缀的) 
+                  X-WINDOW作为LINUX下的标准图形窗口界面，它本身就采用了很多的动态链接库(在/usr/X11R6/lib目录下)，以方便程序间的共享，节省占用空间。著名的APACHE网页服务器，也采用了动态链接库，以便扩充程序功能。你只需将PHP动态链接库拷到其共享目录，修改一下配置， 
+                  APACHE就可以支持PHP网页了。如果你愿意，可以自己编写动态链接库，让APACHE支持你自己定义的网页格式。这就是动态链接的好处。 
+
+                  <P style="TEXT-INDENT: 2em">
+                  <P style="TEXT-INDENT: 2em"><B>1、LINUX下动态链接库的创建</B> 
+                  <P style="TEXT-INDENT: 2em">
+                  <P 
+                  style="TEXT-INDENT: 2em">在LINUX系统下，创建动态链接库是件再简单不过的事情。只要在编译函数库源程序时加上-shared选项即可，这样所生成的执行程序即为动态链接库。从某种意义上来说，动态链接库也是一种执行程序。按一般规则，程序名应带.so后缀。下面举个例子说说。 
+
+                  <P 
+                  style="TEXT-INDENT: 2em">我准备编写两个函数，一个用于查询当前日期getdate，一个用于查询当前时间gettime，并将这两个函数存于动态链接库my.so中。为此，需要做以下几项工作。 
+
+                  <P style="TEXT-INDENT: 2em">1.1 
+                  编写用户接口文件datetime.h，内容如下(每行前面的数字为行号)： 
+                  <P 
+                  style="TEXT-INDENT: 2em">---------------------------------------------------------------------- 
+
+                  <P style="TEXT-INDENT: 2em">1 /* datetime.h : 纵横软件制作中心雨亦奇编写, 
+                  2001-06-28. */ 
+                  <P style="TEXT-INDENT: 2em">2 
+                  <P style="TEXT-INDENT: 2em">3 #ifndef __DATETIME_H 
+                  <P style="TEXT-INDENT: 2em">4 
+                  <P style="TEXT-INDENT: 2em">5 #define __DATETIME_H 
+                  <P style="TEXT-INDENT: 2em">6 
+                  <P style="TEXT-INDENT: 2em">7 /* 日期结构 */ 
+                  <P style="TEXT-INDENT: 2em">8 typedef struct 
+                  <P style="TEXT-INDENT: 2em">9 { 
+                  <P style="TEXT-INDENT: 2em">10 int year; 
+                  <P style="TEXT-INDENT: 2em">11 int mon; 
+                  <P style="TEXT-INDENT: 2em">12 int day; 
+                  <P style="TEXT-INDENT: 2em">13 }DATETYPE; 
+                  <P style="TEXT-INDENT: 2em">14 
+                  <P style="TEXT-INDENT: 2em">15 /* 时间结构 */ 
+                  <P style="TEXT-INDENT: 2em">16 typedef struct 
+                  <P style="TEXT-INDENT: 2em">17 { 
+                  <P style="TEXT-INDENT: 2em">18 char hour; 
+                  <P style="TEXT-INDENT: 2em">19 char min; 
+                  <P style="TEXT-INDENT: 2em">20 char sec; 
+                  <P style="TEXT-INDENT: 2em">21 }TIMETYPE; 
+                  <P style="TEXT-INDENT: 2em">22 
+                  <P style="TEXT-INDENT: 2em">23 /* 函数原型说明 */ 
+                  <P style="TEXT-INDENT: 2em">24 
+                  <P style="TEXT-INDENT: 2em">25 #ifdef SHARED 
+                  <P style="TEXT-INDENT: 2em">26 int (*getdate)(DATETYPE *d); 
+                  <P style="TEXT-INDENT: 2em">27 #else 
+                  <P style="TEXT-INDENT: 2em">28 int getdate(DATETYPE *d); 
+                  <P style="TEXT-INDENT: 2em">29 #endif 
+                  <P style="TEXT-INDENT: 2em">30 
+                  <P style="TEXT-INDENT: 2em">31 #ifdef SHARED 
+                  <P style="TEXT-INDENT: 2em">32 int (*gettime)(TIMETYPE *t); 
+                  <P style="TEXT-INDENT: 2em">33 #else 
+                  <P style="TEXT-INDENT: 2em">34 int gettime(TIMETYPE *t); 
+                  <P style="TEXT-INDENT: 2em">35 #endif 
+                  <P style="TEXT-INDENT: 2em">36 
+                  <P style="TEXT-INDENT: 2em">37 #endif 
+                  <P style="TEXT-INDENT: 2em">38 
+                  <P 
+                  style="TEXT-INDENT: 2em">---------------------------------------------------------------------- 
+
+                  <P 
+                  style="TEXT-INDENT: 2em">这个用户接口文件中，先定义了日期与时间结构，接着定义一下函数的原型。动态函数与静态函数的原型说明不同的是，动态函数应使用(*函数名)的形式，以便引用其指针。若要引用文件中的动态函数说明，用户应该定义一下SHARED宏，这样才能使用。 
+
+                  <P style="TEXT-INDENT: 2em">1.2 编写getdate.c，源程序如下： 
+                  <P 
+                  style="TEXT-INDENT: 2em">---------------------------------------------------------------------- 
+
+                  <P style="TEXT-INDENT: 2em">1 /* getdate.c : 纵横软件制作中心雨亦奇编写, 
+                  2001-06-28. */ 
+                  <P style="TEXT-INDENT: 2em">2 
+                  <P style="TEXT-INDENT: 2em">3 #include "time.h" 
+                  <P style="TEXT-INDENT: 2em">4 #include "datetime.h" 
+                  <P style="TEXT-INDENT: 2em">5 
+                  <P style="TEXT-INDENT: 2em">6 int getdate(DATETYPE *d) 
+                  <P style="TEXT-INDENT: 2em">7 { 
+                  <P style="TEXT-INDENT: 2em">8 long ti; 
+                  <P style="TEXT-INDENT: 2em">9 struct tm *tm; 
+                  <P style="TEXT-INDENT: 2em">10 
+                  <P style="TEXT-INDENT: 2em">11 time(&amp;ti); 
+                  <P style="TEXT-INDENT: 2em">12 tm=localtime(&amp;ti); 
+                  <P style="TEXT-INDENT: 2em">13 d-&gt;year=tm-&gt;tm_year+1900; 
+
+                  <P style="TEXT-INDENT: 2em">14 d-&gt;mon=tm-&gt;tm_mon+1; 
+                  <P style="TEXT-INDENT: 2em">15 d-&gt;day=tm-&gt;tm_mday; 
+                  <P style="TEXT-INDENT: 2em">16 } 
+                  <P style="TEXT-INDENT: 2em">17 
+                  <P 
+                  style="TEXT-INDENT: 2em">---------------------------------------------------------------------- 
+
+                  <P 
+                  style="TEXT-INDENT: 2em">在getdate函数中，先调用time取得以秒计的系统时间，再用localtime函数转换一下时间结构，最后调整得到正确的日期。 
+
+                  <P style="TEXT-INDENT: 2em">1.3 编写gettime.c，源程序如下： 
+                  <P 
+                  style="TEXT-INDENT: 2em">---------------------------------------------------------------------- 
+
+                  <P style="TEXT-INDENT: 2em">1 /* gettime.c : 纵横软件制作中心雨亦奇编写, 
+                  2001-06-28. */ 
+                  <P style="TEXT-INDENT: 2em">2 
+                  <P style="TEXT-INDENT: 2em">3 #include "time.h" 
+                  <P style="TEXT-INDENT: 2em">4 #include "datetime.h" 
+                  <P style="TEXT-INDENT: 2em">5 
+                  <P style="TEXT-INDENT: 2em">6 int gettime(TIMETYPE *t) 
+                  <P style="TEXT-INDENT: 2em">7 { 
+                  <P style="TEXT-INDENT: 2em">8 long ti; 
+                  <P style="TEXT-INDENT: 2em">9 struct tm *tm; 
+                  <P style="TEXT-INDENT: 2em">10 
+                  <P style="TEXT-INDENT: 2em">11 time(&amp;ti); 
+                  <P style="TEXT-INDENT: 2em">12 tm=localtime(&amp;ti); 
+                  <P style="TEXT-INDENT: 2em">13 t-&gt;hour=tm-&gt;tm_hour; 
+                  <P style="TEXT-INDENT: 2em">14 t-&gt;min=tm-&gt;tm_min; 
+                  <P style="TEXT-INDENT: 2em">15 t-&gt;sec=tm-&gt;tm_sec; 
+                  <P style="TEXT-INDENT: 2em">16 } 
+                  <P style="TEXT-INDENT: 2em">17 
+                  <P 
+                  style="TEXT-INDENT: 2em">---------------------------------------------------------------------- 
+
+                  <P 
+                  style="TEXT-INDENT: 2em">gettime函数与getdate函数相仿，先用time函数取得以秒计的系统时间，再用localtime函数转换一下时间结构，最后返回当前的时间(不需调整)。 
+
+                  <P style="TEXT-INDENT: 2em">1.4 编写维护文件makefile-lib，内容如下： 
+                  <P 
+                  style="TEXT-INDENT: 2em">---------------------------------------------------------------------- 
+
+                  <P style="TEXT-INDENT: 2em">1 # makefile-lib : 纵横软件制作中心雨亦奇编写, 
+                  2001-06-28. 
+                  <P style="TEXT-INDENT: 2em">2 
+                  <P style="TEXT-INDENT: 2em">3 all : my.so 
+                  <P style="TEXT-INDENT: 2em">4 
+                  <P style="TEXT-INDENT: 2em">5 SRC = getdate.c gettime.c 
+                  <P style="TEXT-INDENT: 2em">6 
+                  <P style="TEXT-INDENT: 2em">7 TGT = $(SRC:.c=.o) 
+                  <P style="TEXT-INDENT: 2em">8 
+                  <P style="TEXT-INDENT: 2em">9 $(SRC) : datetime.h 
+                  <P style="TEXT-INDENT: 2em">10 @touch $@ 
+                  <P style="TEXT-INDENT: 2em">11 
+                  <P style="TEXT-INDENT: 2em">12 %.o : %.c 
+                  <P style="TEXT-INDENT: 2em">13 cc -c $? 
+                  <P style="TEXT-INDENT: 2em">14 
+                  <P style="TEXT-INDENT: 2em">15 # 动态函数库(my.so)生成 
+                  <P style="TEXT-INDENT: 2em">16 my.so : $(TGT) 
+                  <P style="TEXT-INDENT: 2em">17 cc -shared -o $@ $(TGT) 
+                  <P style="TEXT-INDENT: 2em">18 
+                  <P 
+                  style="TEXT-INDENT: 2em">---------------------------------------------------------------------- 
+
+                  <P 
+                  style="TEXT-INDENT: 2em">编写维护文件的目的，在于方便程序员维护程序，尤其是维护比较大的工程项目。一个素质良好的程序员应该学会熟练地编写维护文件makefile。定义了文件间的依赖关系后，一旦源文件发生变化，仅需make一下，其目标文件维护代码会自动执行，从而自动更新目标文件，减少了许多工作量。注意: 
+                  每行维护代码必须以TAB(跳格键)开始，不是的话make时将出错。 
+                  <P 
+                  style="TEXT-INDENT: 2em">本维护文件第1行是注释行，以#号开头；文件第3行定义所有需要维护的函数库；第5行定义相关源程序文件；第7行定义目标文件；第9-10行说明所有源程序依赖于datetime.h头文件，并有相应维护代码，即touch 
+                  一下，更新一下源文件的时间；第12-13行定义.o文件依赖于相应的.c文件，并指定了维护代码，即用cc编译一下；第16-17行定义共享库 
+                  my.so依赖的目标文件，维护代码中用-shared编译选项，以生成动态链接库 my.so。 
+                  <P style="TEXT-INDENT: 2em">1.5 运行make -f makefile-lib 命令 
+                  <P style="TEXT-INDENT: 2em">make 
+                  运行后，动态链接库my.so就产生了，我们就可以在程序中调用了。如果想让系统所有用户都可以使用，则应以root用户登录系统，将这个库拷贝到 
+                  /lib目录下(命令：cp my.so /lib)，或者在/lib目录下建个符号连接即可(命令：ln -s 
+                  `pwd`/my.so /lib)。 
+                  <P style="TEXT-INDENT: 2em"><B>2、Linux下动态链接库的使用 </B>
+                  <P style="TEXT-INDENT: 2em">2.1 重要的dlfcn.h头文件 
+                  <P 
+                  style="TEXT-INDENT: 2em">LINUX下使用动态链接库，源程序需要包含dlfcn.h头文件，此文件定义了调用动态链接库的函数的原型。下面详细说明一下这些函数。 
+
+                  <P style="TEXT-INDENT: 2em">2.1.1 dlerror 
+                  <P style="TEXT-INDENT: 2em">原型为: const char *dlerror(void); 
+                  <P 
+                  style="TEXT-INDENT: 2em">当动态链接库操作函数执行失败时，dlerror可以返回出错信息，返回值为NULL时表示操作函数执行成功。 
+
+                  <P style="TEXT-INDENT: 2em">2.1.2 dlopen 
+                  <P style="TEXT-INDENT: 2em">原型为: void *dlopen (const char 
+                  *filename, int flag); 
+                  <P 
+                  style="TEXT-INDENT: 2em">dlopen用于打开指定名字(filename)的动态链接库，并返回操作句柄。 
+
+                  <P style="TEXT-INDENT: 2em">filename: 
+                  如果名字不以/开头，则非绝对路径名，将按下列先后顺序查找该文件。 
+                  <P style="TEXT-INDENT: 2em">(1) 用户环境变量中的LD_LIBRARY值； 
+                  <P style="TEXT-INDENT: 2em">(2) 动态链接缓冲文件/etc/ld.so.cache 
+                  <P style="TEXT-INDENT: 2em">(3) 目录/lib，/usr/lib 
+                  <P style="TEXT-INDENT: 2em">flag表示在什么时候解决未定义的符号(调用)。取值有两个: 
+                  <P style="TEXT-INDENT: 2em">1) RTLD_LAZY : 表明在动态链接库的函数代码执行时解决。 
+
+                  <P style="TEXT-INDENT: 2em">2) RTLD_NOW : 
+                  表明在dlopen返回前就解决所有未定义的符号，一旦未解决，dlopen将返回错误。 
+                  <P style="TEXT-INDENT: 2em">dlopen调用失败时，将返回NULL值，否则返回的是操作句柄。 
+                  <P style="TEXT-INDENT: 2em">2.1.3 dlsym : 取函数执行地址 
+                  <P style="TEXT-INDENT: 2em">原型为: void *dlsym(void *handle, 
+                  char *symbol); 
+                  <P 
+                  style="TEXT-INDENT: 2em">dlsym根据动态链接库操作句柄(handle)与符号(symbol)，返回符号对应的函数的执行代码地址。由此地址，可以带参数执行相应的函数。 
+
+                  <P style="TEXT-INDENT: 2em">如程序代码: void (*add)(int x,int y); 
+                  /* 说明一下要调用的动态函数add */ 
+                  <P style="TEXT-INDENT: 2em">add=dlsym("xxx.so","add"); /* 
+                  打开xxx.so共享库,取add函数地址 */ 
+                  <P style="TEXT-INDENT: 2em">add(89,369); /* 带两个参数89和369调用add函数 
+                  */ 
+                  <P style="TEXT-INDENT: 2em">2.1.4 dlclose : 关闭动态链接库 
+                  <P style="TEXT-INDENT: 2em">原型为: int dlclose (void *handle); 
+                  <P 
+                  style="TEXT-INDENT: 2em">dlclose用于关闭指定句柄的动态链接库，只有当此动态链接库的使用计数为0时,才会真正被系统卸载。 
+
+                  <P style="TEXT-INDENT: 2em">2.2 在程序中使用动态链接库函数 
+                  <P style="TEXT-INDENT: 2em">2.2.1 程序范例 
+                  <P 
+                  style="TEXT-INDENT: 2em">下面的程序装载了动态链接库my.so，并用getdate,gettime取得当前日期与时间后输出。 
+
+                  <P 
+                  style="TEXT-INDENT: 2em">---------------------------------------------------------------------- 
+
+                  <P style="TEXT-INDENT: 2em">1 
+                  /************************************/ 
+                  <P style="TEXT-INDENT: 2em">2 /* 文件名称: dy.c */ 
+                  <P style="TEXT-INDENT: 2em">3 /* 功能描述: 动态链接库应用示范程序 */ 
+                  <P style="TEXT-INDENT: 2em">4 /* 程序编写: 纵横软件制作中心雨亦奇 */ 
+                  <P style="TEXT-INDENT: 2em">5 /* 编写时间: 2001-06-28 */ 
+                  <P style="TEXT-INDENT: 2em">6 
+                  /************************************/ 
+                  <P style="TEXT-INDENT: 2em">7 
+                  <P style="TEXT-INDENT: 2em">8 #include "stdio.h" /* 包含标准输入输出文件 
+                  */ 
+                  <P style="TEXT-INDENT: 2em">9 
+                  <P style="TEXT-INDENT: 2em">10 #include "dlfcn.h" /* 
+                  包含动态链接功能接口文件 */ 
+                  <P style="TEXT-INDENT: 2em">11 #define SOFILE "./my.so" /* 
+                  指定动态链接库名称 */ 
+                  <P style="TEXT-INDENT: 2em">12 
+                  <P style="TEXT-INDENT: 2em">13 #define SHARED /* 
+                  定义宏,确认共享,以便引用动态函数 */ 
+                  <P style="TEXT-INDENT: 2em">14 #include "datetime.h" /* 
+                  包含用户接口文件 */ 
+                  <P style="TEXT-INDENT: 2em">15 
+                  <P style="TEXT-INDENT: 2em">16 main() 
+                  <P style="TEXT-INDENT: 2em">17 { 
+                  <P style="TEXT-INDENT: 2em">18 DATETYPE d; 
+                  <P style="TEXT-INDENT: 2em">19 TIMETYPE t; 
+                  <P style="TEXT-INDENT: 2em">20 void *dp; 
+                  <P style="TEXT-INDENT: 2em">21 char *error; 
+                  <P style="TEXT-INDENT: 2em">22 
+                  <P style="TEXT-INDENT: 2em">23 puts("动态链接库应用示范"); 
+                  <P style="TEXT-INDENT: 2em">24 
+                  <P style="TEXT-INDENT: 2em">25 dp=dlopen(SOFILE,RTLD_LAZY); /* 
+                  打开动态链接库 */ 
+                  <P style="TEXT-INDENT: 2em">26 
+                  <P style="TEXT-INDENT: 2em">27 if (dp==NULL) /* 若打开失败则退出 */ 
+                  <P style="TEXT-INDENT: 2em">28 { 
+                  <P style="TEXT-INDENT: 2em">29 fputs(dlerror(),stderr); 
+                  <P style="TEXT-INDENT: 2em">30 exit(1); 
+                  <P style="TEXT-INDENT: 2em">31 } 
+                  <P style="TEXT-INDENT: 2em">32 
+                  <P style="TEXT-INDENT: 2em">33 getdate=dlsym(dp,"getdate"); /* 
+                  定位取日期函数 */ 
+                  <P style="TEXT-INDENT: 2em">34 
+                  <P style="TEXT-INDENT: 2em">35 error=dlerror(); /* 检测错误 */ 
+                  <P style="TEXT-INDENT: 2em">36 if (error) /* 若出错则退出 */ 
+                  <P style="TEXT-INDENT: 2em">37 { 
+                  <P style="TEXT-INDENT: 2em">38 fputs(error,stderr); 
+                  <P style="TEXT-INDENT: 2em">39 exit(1); 
+                  <P style="TEXT-INDENT: 2em">40 } 
+                  <P style="TEXT-INDENT: 2em">41 
+                  <P style="TEXT-INDENT: 2em">42 getdate(&amp;d); /* 调用此共享函数 */ 
+                  <P style="TEXT-INDENT: 2em">43 printf("当前日期: 
+                  %04d-%02d-%02d\n",d.year,d.mon,d.day); 
+                  <P style="TEXT-INDENT: 2em">44 
+                  <P style="TEXT-INDENT: 2em">45 gettime=dlsym(dp,"gettime"); /* 
+                  定位取时间函数 */ 
+                  <P style="TEXT-INDENT: 2em">46 
+                  <P style="TEXT-INDENT: 2em">47 error=dlerror(); /* 检测错误 */ 
+                  <P style="TEXT-INDENT: 2em">48 if (error) /* 若出错则退出 */ 
+                  <P style="TEXT-INDENT: 2em">49 { 
+                  <P style="TEXT-INDENT: 2em">50 fputs(error,stderr); 
+                  <P style="TEXT-INDENT: 2em">51 exit(1); 
+                  <P style="TEXT-INDENT: 2em">52 } 
+                  <P style="TEXT-INDENT: 2em">53 
+                  <P style="TEXT-INDENT: 2em">54 gettime(&amp;t); /* 调用此共享函数 */ 
+                  <P style="TEXT-INDENT: 2em">55 printf("当前时间: 
+                  %02d:%02d:%02d\n",t.hour,t.min,t.sec); 
+                  <P style="TEXT-INDENT: 2em">56 
+                  <P style="TEXT-INDENT: 2em">57 dlclose(dp); /* 关闭共享库 */ 
+                  <P style="TEXT-INDENT: 2em">58 
+                  <P style="TEXT-INDENT: 2em">59 exit(0); /* 成功返回 */ 
+                  <P style="TEXT-INDENT: 2em">60 
+                  <P style="TEXT-INDENT: 2em">61 } 
+                  <P 
+                  style="TEXT-INDENT: 2em">---------------------------------------------------------------------- 
+
+                  <P style="TEXT-INDENT: 2em">程序说明: 
+                  <P style="TEXT-INDENT: 2em">第8行: 
+                  包含标准输入输出头文件,因为程序中使用了printf,puts,fputs等标准输入输出函数,需要让编译器根据头文件中函数的原型,检查一下语法; 
+
+                  <P style="TEXT-INDENT: 2em">第10-11行: 包含动态链接库功能头文件,并定义动态链接库名称; 
+                  <P style="TEXT-INDENT: 2em">第13-14行: 
+                  定义宏SHARED以便引用14行的头文件datetime.h中的动态函数说明; 
+                  <P style="TEXT-INDENT: 2em">第25行: 用dlopen打开SOFILE共享库,返回句柄dp; 
+                  <P style="TEXT-INDENT: 2em">第27-31行: 检测dp是否为空,为空则显示错误后退出; 
+                  <P style="TEXT-INDENT: 2em">第33行: 用dlsym取得getdate函数动态地址; 
+                  <P style="TEXT-INDENT: 2em">第35-40行: 
+                  如果dlerror返回值不为空,则dlsym执行出错,程序显示错误后退出; 
+                  <P style="TEXT-INDENT: 2em">第42-43行: 执行getdate调用,输出当前日期; 
+                  <P style="TEXT-INDENT: 2em">第45行: 用dlsym取得gettime函数动态地址; 
+                  <P style="TEXT-INDENT: 2em">第47-52行: 
+                  如果dlerror返回值不为空,则dlsym执行出错,程序显示错误后退出; 
+                  <P style="TEXT-INDENT: 2em">第54-55行: 执行gettime调用,输出当前时间; 
+                  <P style="TEXT-INDENT: 2em">第57行: 用dlclose关闭dp所指示的动态链接库; 
+                  <P style="TEXT-INDENT: 2em">第59行: 程序退出,返回0值。 
+                  <P style="TEXT-INDENT: 2em">2.2.2 编写维护文件 
+                  <P style="TEXT-INDENT: 2em">维护文件makefile内容如下: 
+                  <P 
+                  style="TEXT-INDENT: 2em">---------------------------------------------------------------------- 
+
+                  <P style="TEXT-INDENT: 2em">1 # makefile : 纵横软件制作中心雨亦奇编写, 
+                  2001-06-28. 
+                  <P style="TEXT-INDENT: 2em">2 
+                  <P style="TEXT-INDENT: 2em">3 all : dy 
+                  <P style="TEXT-INDENT: 2em">4 
+                  <P style="TEXT-INDENT: 2em">5 DYSRC = dy.c 
+                  <P style="TEXT-INDENT: 2em">6 
+                  <P style="TEXT-INDENT: 2em">7 DYTGT = $(DYSRC:.c=.o) 
+                  <P style="TEXT-INDENT: 2em">8 
+                  <P style="TEXT-INDENT: 2em">9 %.o : %.c 
+                  <P style="TEXT-INDENT: 2em">10 cc -c $? 
+                  <P style="TEXT-INDENT: 2em">11 
+                  <P style="TEXT-INDENT: 2em">12 # 动态库应用示范程序 
+                  <P style="TEXT-INDENT: 2em">13 dy : $(DYTGT) 
+                  <P style="TEXT-INDENT: 2em">14 cc -rdynamic -s -o $@ $(DYTGT) 
+                  -ldl 
+                  <P style="TEXT-INDENT: 2em">15 
+                  <P 
+                  style="TEXT-INDENT: 2em">---------------------------------------------------------------------- 
+
+                  <P style="TEXT-INDENT: 2em">维护文件说明: 
+                  <P style="TEXT-INDENT: 2em">第3行: 定义所有需要维护的模块; 
+                  <P style="TEXT-INDENT: 2em">第5行: 定义源程序; 
+                  <P style="TEXT-INDENT: 2em">第7行: 定义目标文件; 
+                  <P style="TEXT-INDENT: 2em">第9-10行: 定义.o文件依赖于.c文件,维护代码为“cc -c 
+                  变动的源文件名”; 
+                  <P style="TEXT-INDENT: 2em">第13-14行: 
+                  定义dy依赖于变量DYTGT指示的值,维护代码中采用-rdynamic选项以指定输出文件为动态链接的方式，选项-s指定删除目标文件中的符号表,最后的选项-ldl则指示装配程序ld需要装载dl函数库。 
+
+                  <P style="TEXT-INDENT: 2em">2.2.3 运行make命令 
+                  <P style="TEXT-INDENT: 2em">运行make后将产生执行文件dy，运行后将产生如下类似信息： 
+                  <P style="TEXT-INDENT: 2em">动态链接库应用示范 
+                  <P style="TEXT-INDENT: 2em">当前日期: 2001-06-28 
+                  <P style="TEXT-INDENT: 2em">当前时间: 10:06:21 
+                  <P style="TEXT-INDENT: 2em">当删除my.so文件时,将出现以下信息: 
+                  <P style="TEXT-INDENT: 2em">动态链接库应用示范 
+                  <P style="TEXT-INDENT: 2em">my.so: cannot open shared object 
+                  file: 文件或目录不存在 
+                  <P style="TEXT-INDENT: 2em"><B>3、小结 </B>
+                  <P style="TEXT-INDENT: 2em">LINUX创建与使用动态链接库并不是一件难事。 
+                  <P 
+                  style="TEXT-INDENT: 2em">编译函数源程序时选用-shared选项即可创建动态链接库，注意应以.so后缀命名，最好放到公用库目录(如/lib,/usr/lib等)下面，并要写好用户接口文件，以便其它用户共享。 
+
+                  <P 
+                  style="TEXT-INDENT: 2em">使用动态链接库，源程序中要包含dlfcn.h头文件，写程序时注意dlopen等函数的正确调用，编译时要采用-rdynamic选项与-ldl选项，以产生可调用动态链接库的执行代码。 
+
+                  <P style="TEXT-INDENT: 2em">
+                  <P style="TEXT-INDENT: 2em">（责任编辑：凌云通） 
+                  <P align=center></P>
+                  <P></P><SPAN>
+                  <P align=center><BR></P></SPAN></SPAN></TD></TR>
+              <TR>
+                <TD>
+                  <TABLE class=index01 style="MARGIN-TOP: 2px" cellSpacing=0 
+                  cellPadding=0 width="100%" border=0>
+                    <TBODY>
+                    <TR>
+                      <TD align=right><SPAN class=b>[ </SPAN><A class=b 
+                        href="http://comment1.ccidnet.com/comment/disp/add_newcomment?articleID=1113691&amp;columnID=9513&amp;articleTitle=Linux%CF%B5%CD%B3%D6%D0%B6%AF%CC%AC%C1%B4%BD%D3%BF%E2%B5%C4%B4%B4%BD%A8%BC%B0%C6%E4%CA%B9%D3%C3&amp;articleTime=2007-06-14&amp;articleURL=http://news.ccidnet.com%2Fart%2F9513%2F20070614%2F1113691_1.html" 
+                        target=_blank>发表评论</A><SPAN class=b>&nbsp;]</SPAN> <FONT 
+                        class=b>字体</FONT><SPAN class=b>[ </SPAN><A class=b 
+                        href="javascript:doZoom(16)" target=_self>大</A>、<A 
+                        class=b href="javascript:doZoom(14)" 
+                        target=_self>中</A>、<A class=b 
+                        href="javascript:doZoom(12)" target=_self>小</A><SPAN 
+                        class=b>&nbsp;]</SPAN> <SPAN class=b>[ </SPAN><A class=b 
+                        href="javascript:self.print()">打印</A><SPAN 
+                        class=b>&nbsp;]</SPAN> <SPAN class=b>[ </SPAN><A class=b 
+                        href="http://blog.ccidnet.com/" 
+                        target=_blank>进入博客</A><SPAN class=b>&nbsp;]</SPAN> <SPAN 
+                        class=b>[ <A class=b href="http://bbs.ccidnet.com/" 
+                        target=_blank>进入论坛</A><SPAN class=b>&nbsp;]</SPAN> 
+                        &nbsp;<SPAN class=b>[ </SPAN><A class=b 
+                        href="mailto:?subject=【赛迪网】”&amp;body=我在【赛迪网】上看到“”这篇文章，特向您推荐             http://comm.ccidnet.com/art/3777/20070509/1077253_1.html">推荐给朋友</A><SPAN 
+                        class=b>&nbsp;]</SPAN></SPAN></TD></TR></TBODY></TABLE></TD></TR><!--<tr>
+                  <td height="30" align="right" valign="top" class="content01"><span class="b">【</span><a class="b" 
+            href="javascript:t=document.title;u=location.href;e=document.selection?(document.selection.type!='None'?document.selection.createRange().text:''):(document.getSelection?document.getSelection():'');void(open('http://bookmark.hexun.com/post.aspx?title='+escape(t)+'&amp;url='+escape(u)+'&amp;excerpt='+escape(e),'HexunBookmark','scrollbars=no,width=600,height=450,left=80,top=80,status=no,resizable=yes'));">收藏到和讯网摘</a><span class="b">】</span>&nbsp;&nbsp;&nbsp;<span class="b">【</span><a 
+            class="b" 
+            href="javascript:newsForm('谷歌个性化主页遭遇技术问题%20用户心血白费')">将本文用短信转发给好友</a><span class="b">】</span></td>
+                </tr>--></TBODY></TABLE></TD></TR>
+        <TR>
+          <TD><IMG height=9 src="網頁形式.files/wz_left_3.gif" 
+        width=639></TD></TR></TBODY></TABLE>
+      <TABLE style="MARGIN: 2px 0px 8px" cellSpacing=0 cellPadding=0 
+      width="100%" border=0>
+        <TBODY>
+        <TR>
+          <TD width=639 background=網頁形式.files/wz_left_4.jpg height=12>
+            <TABLE cellSpacing=0 cellPadding=0 width="100%" border=0>
+              <TBODY>
+              <TR>
+                <TD width="3%">&nbsp;</TD>
+                <TD class=a6 align=left 
+              width="97%">【<STRONG>相关文章</STRONG>】</TD></TR></TBODY></TABLE></TD></TR>
+        <TR>
+          <TD align=middle background=網頁形式.files/wz_left_5.jpg><!-- 相关文章显示开始 -->
+            <TABLE cellSpacing=0 cellPadding=0 width="98%" border=0>
+              <TBODY>
+              <TR>
+                <TD vAlign=bottom>
+                  <TABLE style="MARGIN: 10px 0px 14px" cellSpacing=0 
+                  cellPadding=0 width="100%" border=0>
+                    <TBODY>
+                    <TR vAlign=top>
+                      <TD class=a9 align=right width="3%">·</TD>
+                      <TD align=left><A class=a9 
+                        href="http://tech.ccidnet.com/art/2583/20070614/1113715_1.html" 
+                        target=_blank>高手进阶 Linux系统下MTD/CFI驱动介绍</A></TD>
+                      <TD class=a9 align=middle>(06-14)</TD>
+                      <TD class=a9 align=right width="3%">·</TD>
+                      <TD align=left><A class=a9 
+                        href="http://linux.ccidnet.com/art/737/20070614/1113685_1.html" 
+                        target=_blank>Linux下配置NTP 架设本地的时间服务器</A></TD>
+                      <TD class=a9 align=middle>(06-14)</TD></TR>
+                    <TR vAlign=top>
+                      <TD class=a9 align=right width="3%">·</TD>
+                      <TD align=left><A class=a9 
+                        href="http://linux.ccidnet.com/art/9513/20070614/1113677_1.html" 
+                        target=_blank>全力打造自己的Linux操作系统开发环境</A></TD>
+                      <TD class=a9 align=middle>(06-14)</TD>
+                      <TD class=a9 align=right width="3%">·</TD>
+                      <TD align=left><A class=a9 
+                        href="http://linux.ccidnet.com/art/3067/20070614/1113675_1.html" 
+                        target=_blank>实用技巧 使用MD5加密GRUB密码操作步骤</A></TD>
+                      <TD class=a9 align=middle>(06-14)</TD></TR>
+                    <TR vAlign=top>
+                      <TD class=a9 align=right width="3%">·</TD>
+                      <TD align=left><A class=a9 
+                        href="http://tech.ccidnet.com/art/2583/20070614/1113165_1.html" 
+                        target=_blank>感染Linux系统脚本程序的病毒技术介绍</A></TD>
+                      <TD class=a9 align=middle>(06-14)</TD>
+                      <TD class=a9 align=right width="3%">·</TD>
+                      <TD align=left><A class=a9 
+                        href="http://linux.ccidnet.com/art/9515/20070613/1112061_1.html" 
+                        target=_blank>Ubuntu Linux强大功能 超越网络服务器</A></TD>
+                      <TD class=a9 align=middle>(06-13)</TD></TR>
+                    <TR vAlign=top>
+                      <TD class=a9 align=right width="3%">·</TD>
+                      <TD align=left><A class=a9 
+                        href="http://linux.ccidnet.com/art/737/20070613/1112059_1.html" 
+                        target=_blank>基于Linux系统的服务器优化及安全配置</A></TD>
+                      <TD class=a9 align=middle>(06-13)</TD>
+                      <TD class=a9 align=right width="3%">·</TD>
+                      <TD align=left><A class=a9 
+                        href="http://linux.ccidnet.com/art/9515/20070613/1112055_1.html" 
+                        target=_blank>Ubuntu表示将增强Linux服务器领域投入</A></TD>
+                      <TD class=a9 align=middle>(06-13)</TD></TR>
+                    <TR vAlign=top>
+                      <TD class=a9 align=right width="3%">·</TD>
+                      <TD align=left><A class=a9 
+                        href="http://linux.ccidnet.com/art/737/20070613/1112051_1.html" 
+                        target=_blank>如何增强Linux和Unix服务器系统安全性</A></TD>
+                      <TD class=a9 align=middle>(06-13)</TD>
+                      <TD class=a9 align=right width="3%">·</TD>
+                      <TD align=left><A class=a9 
+                        href="http://linux.ccidnet.com/art/3067/20070613/1112047_1.html" 
+                        target=_blank>拨开云雾：Lastlog文件不断变大的原因</A></TD>
+                      <TD class=a9 align=middle>(06-13)</TD></TR></TBODY></TABLE><!-- 相关文章显示结束 --></TD></TR></TBODY></TABLE></TD></TR>
+        <TR>
+          <TD><IMG height=5 src="網頁形式.files/wz_left_6.jpg" 
+        width=639></TD></TR></TBODY></TABLE><!--  文章点评开始 --><SPAN id=news_comment>
+      <TABLE cellSpacing=0 cellPadding=0 width="100%" align=center border=0>
+        <TBODY>
+        <TR>
+          <TD>
+            <SCRIPT src="網頁形式.files/article.htm"></SCRIPT>
+          </TD></TR></TBODY></TABLE></SPAN><!--  文章点评结束 -->
+      <TABLE style="MARGIN-TOP: 9px" cellSpacing=0 cellPadding=0 width="100%" 
+      border=0>
+        <TBODY>
+        <TR>
+          <TD width=639 background=網頁形式.files/wz_left_7.jpg height=12>
+            <TABLE cellSpacing=0 cellPadding=0 width="100%" border=0>
+              <TBODY>
+              <TR>
+                <TD width="3%">&nbsp;</TD>
+                <TD class=a6 align=left 
+                width="97%">【<STRONG>客户需求反馈表</STRONG>】</TD></TR></TBODY></TABLE></TD></TR>
+        <TR>
+          <SCRIPT language=JavaScript>
+<!--
+function submitForm(){
+        url="http://publisher.ccidnet.com:7001/pub/disp/Feedback?username="+document.form2.username.value
+            +"&unit="+document.form2.unit.value
+            +"&memo="+document.form2.memo.value
+            +"&telephone="+document.form2.telephone.value
+            +"&email="+document.form2.email.value
+            +"&articleURL="+document.form2.articleURL.value;
+
+            for(i=0;i<3;i++)
+            {
+            	if(document.form2.require[i].checked)
+            	{
+            	url+="&require="+document.form2.require[i].value;
+            	}
+            }
+
+           window.open(url,'用户反馈提交成功','width=400,height=300')
+}
+
+//-->
+</SCRIPT>
+
+          <FORM name=form2 action="" method=post>
+          <TD align=middle background=網頁形式.files/wz_left_5.jpg>
+            <TABLE style="MARGIN: 8px 0px" cellSpacing=0 cellPadding=0 
+            width="95%" border=0><INPUT type=hidden 
+              value=/art/9513/20070614/1113691_1.html name=articleURL> 
+              <TBODY>
+              <TR>
+                <TD class=a9b width="3%">*</TD>
+                <TD vAlign=bottom width="12%"><SPAN class=a9b>姓　　名:</SPAN></TD>
+                <TD width="47%"><INPUT 
+                  style="PADDING-RIGHT: 1px; PADDING-LEFT: 1px; FONT-SIZE: 9pt; PADDING-BOTTOM: 1px; PADDING-TOP: 1px; HEIGHT: 20px" 
+                  size=35 name=username></TD>
+                <TD vAlign=bottom width="38%" rowSpan=4>
+                  <TABLE cellSpacing=0 cellPadding=0 width="100%" border=0>
+                    <TBODY>
+                    <TR>
+                      <TD><INPUT class=a9b type=checkbox value=1 
+                        name=require>更多资料　<INPUT class=a9b type=checkbox value=2 
+                        name=require>了解方案　<INPUT class=a9b type=checkbox value=3 
+                        name=require>认识厂商</TD></TR>
+                    <TR>
+                      <TD height=15></TD></TR>
+                    <TR>
+                      <TD><TEXTAREA name=memo rows=4 cols=30>详细需求信息请在此处填写!</TEXTAREA></TD></TR></TBODY></TABLE></TD></TR>
+              <TR>
+                <TD class=a9b width="3%">*</TD>
+                <TD class=a9b>单位名称:</TD>
+                <TD><INPUT 
+                  style="PADDING-RIGHT: 1px; PADDING-LEFT: 1px; FONT-SIZE: 9pt; PADDING-BOTTOM: 1px; PADDING-TOP: 1px; HEIGHT: 20px" 
+                  size=35 name=unit></TD></TR>
+              <TR>
+                <TD class=a9b width="3%">*</TD>
+                <TD class=a9b>联系电话:</TD>
+                <TD><INPUT 
+                  style="PADDING-RIGHT: 1px; PADDING-LEFT: 1px; FONT-SIZE: 9pt; PADDING-BOTTOM: 1px; PADDING-TOP: 1px; HEIGHT: 20px" 
+                  size=35 name=telephone></TD></TR>
+              <TR>
+                <TD class=a9b width="3%">*</TD>
+                <TD class=a9b>电子邮件:</TD>
+                <TD><INPUT 
+                  style="PADDING-RIGHT: 1px; PADDING-LEFT: 1px; FONT-SIZE: 9pt; PADDING-BOTTOM: 1px; PADDING-TOP: 1px; HEIGHT: 20px" 
+                  size=35 name=email></TD></TR>
+              <TR>
+                <TD class=a9b align=middle colSpan=4><INPUT onclick=javascript:submitForm() type=submit value=提交 name=Submit> 
+<INPUT type=reset value=重填 name=Submit2> 
+          </TD></TR></TBODY></TABLE></TD></FORM><!-- 客户需求反馈结束 --></TR>
+        <TR>
+          <TD><IMG height=5 src="網頁形式.files/wz_left_6.jpg" 
+        width=639></TD></TR></TBODY></TABLE></TD>
+    <TD width=7></TD>
+    <TD vAlign=top align=middle width=300><!--赛迪推荐开始  -->
+      <TABLE style="MARGIN-BOTTOM: 3px" cellSpacing=0 cellPadding=0 width="100%" 
+      border=0>
+        <TBODY>
+        <TR>
+          <TD vAlign=bottom align=middle width=287 
+          background=網頁形式.files/wz_left_bg2b.jpg height=31>
+            <TABLE height=26 cellSpacing=0 cellPadding=0 width="100%" 
+              border=0><TBODY>
+              <TR>
+                <TD class=a7 vAlign=center align=left width=15>&nbsp;</TD>
+                <TD class=a7 vAlign=center align=left width=69><STRONG><A 
+                  class=a7 href="http://www.ccidnet.com/" 
+                  target=_blank>赛迪推荐</A></STRONG></TD>
+                <TD vAlign=center align=left width=12><IMG height=17 
+                  src="網頁形式.files/wz_line4.jpg" width=3></TD>
+                <TD vAlign=bottom align=left 
+            width=203>&nbsp;</TD></TR></TBODY></TABLE></TD></TR>
+        <TR>
+          <TD 
+          style="BORDER-RIGHT: #b0bcc2 1px solid; BORDER-LEFT: #b0bcc2 1px solid; BORDER-BOTTOM: #b0bcc2 2px solid" 
+          align=middle><IFRAME marginWidth=0 marginHeight=0 
+            src="網頁形式.files/tech_pip2.htm" frameBorder=0 width=278 scrolling=no 
+            height=180 RESIZABLE="no"></IFRAME></TD></TR></TBODY></TABLE><!--赛迪推荐结束  -->
+      <TABLE style="MARGIN-BOTTOM: 2px" cellSpacing=0 cellPadding=0 width="100%" 
+      border=0>
+        <TBODY>
+        <TR>
+          <TD>
+            <SCRIPT 
+            src="網頁形式.files/;pl=pl-85-linux_wz_pip1;tp=js;sk=0;ck=0;"></SCRIPT>
+          </TD></TR></TBODY></TABLE>
+      <TABLE style="MARGIN-BOTTOM: 3px" cellSpacing=0 cellPadding=0 width="100%" 
+      border=0>
+        <TBODY>
+        <TR>
+          <TD vAlign=bottom align=middle width=287 
+          background=網頁形式.files/wz_left_bg2b.jpg height=31>
+            <TABLE cellSpacing=0 cellPadding=0 width="100%" border=0>
+              <TBODY>
+              <TR>
+                <TD class=a7 vAlign=center align=left width=15>&nbsp;</TD>
+                <TD class=a7 vAlign=center align=left 
+                  width=58><STRONG>IT产品</STRONG></TD>
+                <TD class=a7 vAlign=center align=left width=10><IMG height=22 
+                  src="網頁形式.files/wz_line4.jpg" width=3></TD>
+                <TD vAlign=bottom align=left width=217><SPAN 
+                  class=dian>·</SPAN><A class=a9 href="http://nb.ccidnet.com/" 
+                  target=_blank>笔记本</A><SPAN class=dian>·</SPAN><A class=a9 
+                  href="http://pc.ccidnet.com/" target=_blank>台式机</A><SPAN 
+                  class=dian>·</SPAN><A class=a9 
+                  href="http://server.ccidnet.com/" target=_blank>服务器</A><SPAN 
+                  class=dian>·</SPAN><A class=a9 
+                  href="http://print.ccidnet.com/" target=_blank>打印</A><SPAN 
+                  class=dian>·</SPAN><A class=a9 
+                  href="http://projector.ccidnet.com/" 
+              target=_blank>投影</A></TD></TR></TBODY></TABLE></TD></TR>
+        <TR>
+          <TD 
+          style="BORDER-RIGHT: #b0bcc2 1px solid; BORDER-LEFT: #b0bcc2 1px solid; BORDER-BOTTOM: #b0bcc2 2px solid" 
+          align=middle>
+            <TABLE cellSpacing=0 cellPadding=0 width=298 border=0>
+              <TBODY>
+              <TR>
+                <TD vAlign=top width=6></TD>
+                <TD width=284 rowSpan=2>
+                  <TABLE style="MARGIN-TOP: 0px" cellSpacing=0 cellPadding=0 
+                  width="100%" border=0>
+                    <TBODY>
+                    <TR>
+                      <TD width=287 height=29><!--IT产品轮替开始  --><IFRAME 
+                        name=body2 marginWidth=0 marginHeight=0 
+                        src="網頁形式.files/it_Recommend.htm" frameBorder=0 
+                        width=285 scrolling=no height=105 
+                        RESIZABLE="no"></IFRAME><!--IT产品轮替结束  --></TD></TR></TBODY></TABLE></TD>
+                <TD vAlign=top width=6 rowSpan=2>
+                  <TABLE style="MARGIN-TOP: 4px" cellSpacing=0 cellPadding=0 
+                  width=7 border=0>
+                    <TBODY>
+                    <TR>
+                      <TD width=6 background=網頁形式.files/nr_left_bg.gif 
+                      height=29></TD></TR></TBODY></TABLE></TD></TR>
+              <TR>
+                <TD vAlign=top>
+                  <TABLE style="MARGIN-TOP: 1px" cellSpacing=0 cellPadding=0 
+                  width=6 border=0>
+                    <TBODY>
+                    <TR>
+                      <TD width=9 background=網頁形式.files/nr_left_bg.gif 
+                      height=29></TD></TR></TBODY></TABLE></TD></TR></TBODY></TABLE>
+            <TABLE style="MARGIN-TOP: 3px" cellSpacing=0 cellPadding=0 width=280 
+            border=0>
+              <TBODY>
+              <TR>
+                <TD vAlign=center align=right width="21%"><SPAN 
+                  class=a23>IT产品搜索&nbsp;</SPAN></TD>
+                <TD vAlign=center width="21%">
+                  <FORM name=quick_search 
+                  action=http://price.ccidnet.com/template/@searchresult.html 
+                  method=post target=_blank><INPUT type=hidden value=1 
+                  name=searchType> <INPUT type=hidden value=0 name=innerClass> 
+                  <SELECT name=classID> <OPTION value=0 
+                    selected>-产品分类-</OPTION> <OPTION value=15>手机</OPTION> 
+                    <OPTION value=1>笔记本</OPTION> <OPTION value=3>台式机</OPTION> 
+                    <OPTION value=2>服务器</OPTION> <OPTION value=1854>投影机</OPTION> 
+                    <OPTION value=5>打印机</OPTION> <OPTION value=1853>交换机</OPTION> 
+                    <OPTION value=2576>路由器</OPTION> <OPTION 
+                    value=3356>防火墙</OPTION> <OPTION value=3547>无线上网卡</OPTION> 
+                    <OPTION value=3548>无线路由器</OPTION> <OPTION 
+                    value=22>复印机</OPTION> <OPTION value=21>多功能一体机</OPTION> 
+                    <OPTION value=1852>UPS</OPTION> <OPTION 
+                    value=23>工作站</OPTION> <OPTION 
+                value=2593>磁盘阵列</OPTION></SELECT></TD>
+                <TD align=right width="21%"><INPUT 
+                  style="BORDER-RIGHT: #888888 1px solid; BORDER-TOP: #888888 1px solid; BORDER-LEFT: #888888 1px solid; BORDER-BOTTOM: #888888 1px solid" 
+                  size=9 name=keyword></TD>
+                <TD vAlign=bottom align=middle width="9%"><INPUT type=image 
+                  src="網頁形式.files/wz_button2.gif" 
+              name=imageField22></TD></FORM></TR></TBODY></TABLE>
+            <TABLE style="MARGIN: 9px 0px 7px" cellSpacing=0 cellPadding=0 
+            width="94%" align=center border=0>
+              <TBODY>
+              <TR>
+                <TD background=網頁形式.files/line1.gif 
+            height=1></TD></TR></TBODY></TABLE><!--IT产品文章开始  --><IFRAME 
+            name=body1 marginWidth=0 marginHeight=0 src="網頁形式.files/round4.htm" 
+            frameBorder=0 width=280 scrolling=no height=105 
+            RESIZABLE="no"></IFRAME><!--IT产品文章结束  --></TD></TR></TBODY></TABLE><!--广告按钮开始  -->
+      <TABLE style="MARGIN-BOTTOM: 2px" cellSpacing=0 cellPadding=0 width="100%" 
+      border=0>
+        <TBODY>
+        <TR>
+          <TD>
+            <SCRIPT 
+            src="網頁形式.files/;pl=pl-85-linux_wz_bu1;tp=js;sk=0;ck=0;"></SCRIPT>
+          </TD></TR></TBODY></TABLE><!--广告按钮结束  -->
+      <TABLE style="MARGIN-BOTTOM: 9px" cellSpacing=0 cellPadding=0 width="100%" 
+      border=0>
+        <TBODY>
+        <TR>
+          <TD vAlign=bottom align=middle width=287 
+          background=網頁形式.files/wz_left_bg2b.jpg height=31>
+            <TABLE cellSpacing=0 cellPadding=0 width="100%" border=0>
+              <TBODY>
+              <TR>
+                <TD class=a7 vAlign=center align=left width=15>&nbsp;</TD>
+                <TD class=a7 vAlign=center align=left 
+                  width=58><STRONG>IT技术</STRONG></TD>
+                <TD class=a7 vAlign=center align=left width=10><IMG height=22 
+                  src="網頁形式.files/wz_line4.jpg" width=3></TD>
+                <TD vAlign=bottom align=left width=217><SPAN 
+                  class=dian>·</SPAN><A class=a9 href="http://java.ccidnet.com/" 
+                  target=_blank>开发</A><SPAN class=dian>·</SPAN><A class=a9 
+                  href="http://network.ccidnet.com/" target=_blank>网管</A><SPAN 
+                  class=dian>·</SPAN><A class=a9 
+                  href="http://security.ccidnet.com/" target=_blank>安全</A><SPAN 
+                  class=dian>·</SPAN><A class=a9 
+                  href="http://database.ccidnet.com/" target=_blank>数据库</A><SPAN 
+                  class=dian>·</SPAN><A class=a9 
+                  href="http://linux.ccidnet.com/" 
+              target=_blank>操作系统</A></TD></TR></TBODY></TABLE></TD></TR>
+        <TR>
+          <TD 
+          style="BORDER-RIGHT: #b0bcc2 1px solid; BORDER-LEFT: #b0bcc2 1px solid; BORDER-BOTTOM: #b0bcc2 2px solid" 
+          align=middle><!--IT技术开始  --><IFRAME marginWidth=0 marginHeight=0 
+            src="網頁形式.files/it_pro.htm" frameBorder=0 width=288 scrolling=no 
+            height=243 
+      RESIZABLE="no"></IFRAME><!--IT技术结束  --></TD></TR></TBODY></TABLE><!--信息化开始  --><IFRAME 
+      marginWidth=0 marginHeight=0 src="網頁形式.files/it_tech.htm" frameBorder=0 
+      width=300 scrolling=no height=285 RESIZABLE="no"></IFRAME><!--信息化结束  -->
+      <TABLE style="MARGIN-TOP: 8px" cellSpacing=0 cellPadding=0 width="100%" 
+      border=0>
+        <TBODY>
+        <TR>
+          <TD vAlign=bottom align=middle width=287 
+          background=網頁形式.files/wz_left_bg2b.jpg height=31>
+            <TABLE cellSpacing=0 cellPadding=0 width="100%" border=0>
+              <TBODY>
+              <TR>
+                <TD class=a7 vAlign=center align=left width=13>&nbsp;</TD>
+                <TD class=a7 vAlign=center align=left width=80><STRONG><A 
+                  class=a7 href="http://blog.ccidnet.com/" 
+                  target=_blank>博客</A><SPAN class=dian>·</SPAN><A class=a7 
+                  href="http://bbs.ccidnet.com/" 
+target=_blank>论坛</A></STRONG></TD>
+                <TD class=a7 vAlign=center align=left width=6><IMG height=22 
+                  src="網頁形式.files/wz_line4.jpg" width=3></TD>
+                <TD vAlign=bottom align=left width=197><SPAN 
+                  class=dian>·</SPAN><A class=a9 
+                  href="http://zengjq.blog.ccidnet.com/" 
+                  target=_blank>曾剑秋</A><SPAN class=dian>·</SPAN><A class=a9 
+                  href="http://xlg.blog.ccidnet.com/blog/ccid/uid_5759.html" 
+                  target=_blank>项立刚</A><SPAN class=dian>·</SPAN><A class=a9 
+                  href="http://bbs.java.ccidnet.com/" 
+                  target=_blank>Java学习</A><SPAN class=dian>·</SPAN><A class=a9 
+                  href="http://bbs.network.ccidnet.com/thread.php?fid=24" 
+                  target=_blank>网管</A></TD></TR></TBODY></TABLE></TD></TR>
+        <TR>
+          <TD 
+          style="BORDER-RIGHT: #b0bcc2 1px solid; BORDER-LEFT: #b0bcc2 1px solid; BORDER-BOTTOM: #b0bcc2 2px solid" 
+          align=middle><!--博客论坛开始  --><IFRAME marginWidth=0 marginHeight=0 
+            src="網頁形式.files/cio.htm" frameBorder=0 width=285 scrolling=no 
+            height=152 RESIZABLE="no"></IFRAME><IFRAME marginWidth=0 
+            marginHeight=0 src="網頁形式.files/blog_bbs.htm" frameBorder=0 width=285 
+            scrolling=no height=100 
+        RESIZABLE="no"></IFRAME><!--博客论坛结束  --></TD></TR></TBODY></TABLE></TD></TR></TBODY></TABLE><IFRAME 
+src="網頁形式.files/it_bbs.htm" width=0 height=0></IFRAME>
+<SCRIPT src="網頁形式.files/article_view.htm"></SCRIPT>
+<!-- 点击排行开始 -->
+<SCRIPT src="網頁形式.files/do_click.htm"></SCRIPT>
+<SPAN id=tech_art_center_real>
+<SCRIPT src="網頁形式.files/ad.htm"></SCRIPT>
+</SPAN>
+<SCRIPT>
+    tech_art_center.innerHTML=tech_art_center_real.innerHTML;
+    tech_art_center_real.innerHTML="";
+</SCRIPT>
+<!--ccidnet_page_end--></BODY></HTML>

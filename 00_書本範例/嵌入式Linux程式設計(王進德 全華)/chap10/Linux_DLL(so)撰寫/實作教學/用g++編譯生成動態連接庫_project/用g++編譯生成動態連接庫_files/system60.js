@@ -1,0 +1,1 @@
+document.writeln("<script type=\"text\/javascript\">\/*LinuxIDC主题468*15，创建于2012-7-25*\/ var cpro_id = \'u995685\';<\/script><script src=\"http:\/\/cpro.baidu.com\/cpro\/ui\/c.js\" type=\"text\/javascript\"><\/script>")

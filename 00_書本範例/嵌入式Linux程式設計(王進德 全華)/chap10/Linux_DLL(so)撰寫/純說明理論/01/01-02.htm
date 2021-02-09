@@ -1,0 +1,744 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<!-- saved from url=(0056)http://linux.ccidnet.com/art/302/20070130/1013637_2.html -->
+<!-- 模版文件头 --><!-- 模版文件头 结束 --><HTML><HEAD><TITLE>为Linux应用程序编写DLL程序函数 — 通信产业 - 赛迪网</TITLE>
+<META http-equiv=Content-Type content="text/html; charset=gb2312">
+<META content=Linux,DLL name=keywords>
+<META 
+content="插件和 DLL 通常是用来无须编写整个新应用程序而添加功能的极好方法。在 Linux 中，插件和 DLL 以动态库形式实现。电子商务顾问兼设计师 Allen Wilson 介绍了动态库并且向您演示了如何在某个应用程序正在运行之后使用动态库来" 
+name=description><LINK href="01-02.files/index_css_new.css" type=text/css 
+rel=stylesheet>
+<SCRIPT language=javascript>
+function window.onload() {
+
+if(top.location != self.location){
+
+var a = window.parent.document.getElementsByTagName('iframe');
+
+for (var i=0; i<a.length; i++){
+
+if (a[i].name == self.name) {a[i].height = document.body.scrollHeight; return;}}} 
+
+}
+</SCRIPT>
+
+<SCRIPT language=JavaScript>
+function doZoom(size){
+document.getElementById('zoom').style.fontSize=size+'px';
+}
+</SCRIPT>
+
+<META content="MSHTML 6.00.2900.3132" name=GENERATOR></HEAD>
+<BODY><!-- 文章导航开始-->
+<SCRIPT language=JavaScript src="01-02.files/ccid_art_header.js"></SCRIPT>
+<!-- 文章导航结束-->
+<TABLE 
+style="BORDER-RIGHT: #b0bcc2 1px solid; BORDER-TOP: #b0bcc2 1px solid; MARGIN: 6px 0px 5px; BORDER-LEFT: #b0bcc2 1px solid; BORDER-BOTTOM: #b0bcc2 1px solid" 
+height=70 cellSpacing=0 cellPadding=4 width=948 border=0>
+  <TBODY>
+  <TR>
+    <TD height=60>
+      <TABLE height=60 cellSpacing=0 cellPadding=0 width="100%" border=0>
+        <TBODY>
+        <TR>
+          <TD width="80%">
+            <SCRIPT 
+            src="01-02.files/;pl=pl-9-techwz_db;tp=js;sk=0;ck=0;"></SCRIPT>
+          </TD>
+          <TD align=right width="20%">
+            <TABLE cellSpacing=0 cellPadding=0 width="98%" border=0>
+              <TBODY>
+              <TR>
+                <TD vAlign=bottom align=middle>
+                  <TABLE height=60 cellSpacing=0 cellPadding=0 width="98%" 
+                  border=0>
+                    <TBODY>
+                    <TR>
+                      <TD class=a9c_2 align=right width="5%">·</TD>
+                      <TD align=left width="95%"><A class=a9c_2 
+                        href="http://bbs.tech.ccidnet.com/2007/network/index.php" 
+                        target=_blank>2007网络安全热点话题征集</A></TD></TR>
+                    <TR>
+                      <TD class=a9c_2 align=left>·</TD>
+                      <TD align=left><A class=a9c_2 
+                        href="http://bbs.network.ccidnet.com/thread.php?fid=85" 
+                        target=_blank>技术社区精美礼品实物竞拍</A></TD></TR>
+                    <TR>
+                      <TD class=a9c_2 align=left>·</TD>
+                      <TD align=left><A class=a9c_2 
+                        href="http://bbs.security.ccidnet.com/thread.php?fid=87" 
+                        target=_blank>专家坐镇赛迪网病毒求助专区</A></TD></TR></TBODY></TABLE></TD></TR></TBODY></TABLE></TD></TR></TBODY></TABLE></TD></TR></TBODY></TABLE>
+<TABLE style="MARGIN: 1px 0px" cellSpacing=0 cellPadding=0 width=948 border=0>
+  <TBODY>
+  <TR>
+    <TD>
+      <SCRIPT 
+src="01-02.files/;pl=pl-85-linux_wz_db1;tp=js;sk=0;ck=0;"></SCRIPT>
+    </TD></TR></TBODY></TABLE>
+<TABLE height=27 cellSpacing=0 cellPadding=0 width=948 border=0>
+  <TBODY>
+  <TR>
+    <TD align=middle>
+      <TABLE cellSpacing=0 cellPadding=0 width="100%" border=0>
+        <TBODY>
+        <TR>
+          <TD align=left width=416>
+            <TABLE cellSpacing=0 cellPadding=0 width="100%" border=0>
+              <TBODY>
+              <TR>
+                <TD width=27><A href="http://tech.ccidnet.com/" 
+                  target=_blank><IMG height=33 src="01-02.files/logo.jpg" 
+                  width=27 border=0></A></TD>
+                <TD width=91><A href="http://tech.ccidnet.com/" 
+                  target=_blank><IMG height=33 src="01-02.files/logo_t4.jpg" 
+                  width=81 border=0></A></TD>
+                <TD width=1><IMG height=33 src="01-02.files/line3.gif" 
+                width=1></TD>
+                <TD vAlign=bottom align=middle width=297>
+                  <TABLE cellSpacing=0 cellPadding=0 width="99%" border=0>
+                    <TBODY>
+                    <TR>
+                      <TD align=left>&nbsp;<A class=a9b 
+                        href="http://www.ccidnet.com/" 
+                        target=_blank>赛迪网</A><SPAN 
+                        class=a9b>&nbsp;&gt;</SPAN>&nbsp;<A class=a9b 
+                        href="http://tech.ccidnet.com/" 
+                        target=_blank>IT技术</A>&nbsp;<SPAN 
+                        class=a9b>&gt;&nbsp;</SPAN><A class=a9b 
+                        href="http://linux.ccidnet.com/" 
+                        target=_blank>Linux</A>&nbsp;<SPAN 
+                        class=a9b>&gt;&nbsp;</SPAN><A class=a9b 
+                        href="http://linux.ccidnet.com/col/302/302.html" 
+                        target=_blank>最新更新</A></TD></TR></TBODY></TABLE></TD></TR></TBODY></TABLE></TD>
+          <TD vAlign=bottom width=274>
+            <SCRIPT language=javascript>
+			function changeactionzs(){
+				var channellvalue = document.searchForm1.channelid.value;
+				var searchwordvalues = document.searchForm1.searchword.value;
+				if (channellvalue == "001"){
+					document.searchForm1.wd.value = document.searchForm1.searchword.value;
+					document.searchForm1.action = "http://event.ccidnet.com/baidu";
+				}
+				else if(channellvalue == "002"){
+					document.searchForm1.q.value = document.searchForm1.searchword.value;
+					document.searchForm1.method = "get";
+					document.searchForm1.action = "http://www.google.com/custom";
+				}
+				else{
+				   document.searchForm1.action =  "http://search.ccidnet.com/search.wct";
+				}
+			}
+		 </SCRIPT>
+
+            <FORM style="MARGIN: 0px" name=searchForm1 onsubmit=changeactionzs() 
+            action=http://search.ccidnet.com/search.wct method=post 
+            target=_blank>
+            <TABLE height=30 cellSpacing=0 cellPadding=0 width="100%" 
+              border=0><TBODY>
+              <TR>
+                <TD class=a9 width="6%">&nbsp;</TD>
+                <TD class=a9 width="25%"><SPAN class=a29>IT资讯搜索</SPAN></TD>
+                <TD width="33%"><INPUT 
+                  style="PADDING-RIGHT: 1px; PADDING-LEFT: 1px; FONT-SIZE: 9pt; PADDING-BOTTOM: 1px; PADDING-TOP: 1px; HEIGHT: 20px" 
+                  size=12 name=searchword></TD>
+                <TD width="25%"><SELECT name=channelid> <OPTION value=1649 
+                    selected>赛迪网</OPTION> <OPTION value=2771>资讯中心</OPTION> 
+                    <OPTION value=39179>通信产业</OPTION> <OPTION 
+                    value=2581>IT技术</OPTION> <OPTION value=12082>IT产品</OPTION> 
+                    <OPTION value=3544>信息化</OPTION> <OPTION 
+                    value=38883>情报中心</OPTION> <OPTION value=001>百度</OPTION> 
+                    <OPTION value=002>Google</OPTION></SELECT> <INPUT type=hidden 
+                  value=page name=search5> <INPUT type=hidden name=wd> <INPUT 
+                  type=hidden value=pub-3653458698766474 name=client> <INPUT 
+                  type=hidden name=q> <INPUT type=hidden value=www.ccidnet.com 
+                  name=domains> <INPUT type=hidden value=www.ccidnet.com 
+                  name=sitesearch> </TD>
+                <TD align=middle width="16%"><INPUT type=image 
+                  src="01-02.files/wz_button.gif" 
+            name=Submit2></TD></TR></TBODY></TABLE></TD></FORM>
+          <TD width=10>&nbsp;</TD>
+          <TD vAlign=bottom width=260>
+            <FORM name=quick_search 
+            action=http://price.ccidnet.com/template/@searchresult.html 
+            method=post target=_blank><INPUT type=hidden value=1 
+            name=searchType> <INPUT type=hidden value=0 name=innerClass> 
+            <TABLE height=30 cellSpacing=0 cellPadding=0 width="100%" 
+              border=0><TBODY>
+              <TR>
+                <TD vAlign=center width="25%"><SPAN class=white12></SPAN><SPAN 
+                  class=a29>IT产品搜索</SPAN></TD>
+                <TD width="33%"><INPUT 
+                  style="PADDING-RIGHT: 1px; PADDING-LEFT: 1px; FONT-SIZE: 9pt; PADDING-BOTTOM: 1px; PADDING-TOP: 1px; HEIGHT: 20px" 
+                  size=11 name=keyword></TD>
+                <TD width="25%"><SELECT name=classID> <OPTION value=0 
+                    selected>产品分类</OPTION> <OPTION value=15>手机</OPTION> <OPTION 
+                    value=1>笔记本</OPTION> <OPTION value=3>台式机</OPTION> <OPTION 
+                    value=2>服务器</OPTION> <OPTION value=1854>投影机</OPTION> <OPTION 
+                    value=5>打印机</OPTION></SELECT> </TD>
+                <TD align=middle width="11%"><INPUT type=image 
+                  src="01-02.files/wz_button.gif" 
+              name=imageField32></TD></TR></TBODY></TABLE></TD></TR></TBODY></TABLE></TD></FORM></TR></TBODY></TABLE>
+<TABLE style="MARGIN-TOP: 5px" cellSpacing=0 cellPadding=0 width=948 border=0>
+  <TBODY>
+  <TR>
+    <TD width=2></TD>
+    <TD vAlign=top width=639><IFRAME marginWidth=0 marginHeight=0 
+      src="01-02.files/art_tech.htm" frameBorder=0 width=639 scrolling=no 
+      height=95 RESIZABLE="no"></IFRAME>
+      <TABLE cellSpacing=0 cellPadding=0 width="100%" border=0>
+        <TBODY>
+        <TR>
+          <TD><IMG height=6 src="01-02.files/wz_left_1.gif" width=639></TD></TR>
+        <TR>
+          <TD align=middle background=01-02.files/wz_left_2.gif>
+            <TABLE class=titel style="BORDER-TOP: #ffffff 17px solid" 
+            cellSpacing=0 cellPadding=0 width=560 border=0>
+              <TBODY>
+              <TR>
+                <TD align=middle>
+                  <H1 class=titel>为Linux应用程序编写DLL程序函数 （2） 
+            </H1></TD></TR></TBODY></TABLE>
+            <TABLE style="MARGIN: 2px 0px 20px" cellSpacing=0 cellPadding=0 
+            width=560 border=0>
+              <TBODY>
+              <TR>
+                <TD bgColor=#b1bcc0 height=1></TD></TR></TBODY></TABLE>
+            <TABLE style="MARGIN-BOTTOM: 20px" cellSpacing=0 cellPadding=0 
+            width=560 border=0>
+              <TBODY>
+              <TR>
+                <TD align=middle><SPAN class=content01></SPAN><SPAN 
+                  class=b>发布时间：2007.01.31 
+                  04:41</SPAN>&nbsp;&nbsp;&nbsp;&nbsp;<SPAN class=b> 
+                  来源：IBM</SPAN>&nbsp;&nbsp;&nbsp;&nbsp;<SPAN 
+                  class=b>作者：IBM</SPAN></TD></TR></TBODY></TABLE>
+            <TABLE class=p11 cellSpacing=0 cellPadding=0 width=560 border=0>
+              <TBODY>
+              <TR>
+                <TD style="WORD-WRAP: break-word" align=left>
+                  <P class=a14c style="TEXT-INDENT: 2em"><SPAN class=a14c 
+                  id=zoom><SPAN id=tech_art_center></SPAN>
+                  <P style="TEXT-INDENT: 2em">
+                  <P style="TEXT-INDENT: 2em">选项 RTLD_LAZY 推迟解析 dll 的外部引用，直到 dll 
+                  被执行。 
+                  <P style="TEXT-INDENT: 2em">选项 RTLD_NOW 在 dlopen 
+                  返回之前解析所有的外部引用。 
+                  <P style="TEXT-INDENT: 2em">dlsym 返回入口点 printUPPERCASE 的地址。 
+                  <P style="TEXT-INDENT: 2em">调用 printUPPERCASE 并且打印修改过的消息“HELLO 
+                  WORLD”。 
+                  <P style="TEXT-INDENT: 2em">dlclose 关闭到 UPPERCASE.so 
+                  的句柄，并且从内存中取消 dll 映射。 
+                  <P style="TEXT-INDENT: 2em">dlopen 使用基于环境变量 LD_LIBRARY_PATH 
+                  的相对路径查找共享目标路径，来打开 lowercase dll 的共享目标文件 lowercase.so，并且返回句柄。 
+                  <P style="TEXT-INDENT: 2em">dlsym 返回入口点 printLowercase 的地址。 
+                  <P style="TEXT-INDENT: 2em">调用 printLowercase 并且打印修改过的信息“hello 
+                  world”。 
+                  <P style="TEXT-INDENT: 2em">dlclose 关闭到 lowercase.so 
+                  的句柄，并且从内存中取消 dll 映射。 
+                  <P style="TEXT-INDENT: 2em">注意，每次调用 dlopen、dlsym 或 dlclose 
+                  之后，调用 dlerror 以获取最后的错误信息，并且打印该错误信息字符串。以下是 dlTest 的测试运行： 
+                  <P style="TEXT-INDENT: 2em">
+                  <CENTER><CCID_NOBR>
+                  <TABLE cellSpacing=0 borderColorDark=#ffffff cellPadding=2 
+                  width=400 align=center borderColorLight=black border=1>
+                    <TBODY>
+                    <TR>
+                      <TD class=code style="FONT-SIZE: 9pt" bgColor=#e6e6e6><PRE><CCID_CODE>　　
+　　 dlTest 2-Original message 
+　　HeLlO WoRlD
+　　 dlTest 3-Open Library with absolute path return-(null)- 
+　　 dlTest 4-Find symbol printUPPERCASE return-(null)- 
+　　HELLO WORLD
+　　 dlTest 5-printUPPERCASE return-(null)- 
+　　 dlTest 6-Close handle return-(null)-
+　　 dlTest 7-Open Library with relative path return-(null)- 
+　　 dlTest 8-Find symbol printLowercase return-(null)- 
+　　hello world
+　　 dlTest 9-printLowercase return-(null)- 
+　　 dlTest 10-Close handle return-(null)-</CCID_CODE></PRE></TD></TR></TBODY></TABLE></CCID_NOBR></CENTER>　　 
+
+                  <P style="TEXT-INDENT: 2em">完整的 dlTest.c、UPPERCASE.c 和 
+                  lowercase.c 源代码清单在本文后面的清单里。 
+                  <P style="TEXT-INDENT: 2em"><B>构建 dlTest</B> 
+                  <P style="TEXT-INDENT: 2em">启用运行时动态链接需要三步： 
+                  <P style="TEXT-INDENT: 2em">将 dll 编译为位置无关代码； 
+                  <P style="TEXT-INDENT: 2em">创建 dll 共享目标文件； 
+                  <P style="TEXT-INDENT: 2em">编译主程序并同 dl 库相链接。 
+                  <P style="TEXT-INDENT: 2em">编译 UPPERCASE.c 和 lowercase.c 的 gcc 
+                  命令包含 -fpic 选项。选项 -fpic 和 -fPIC 
+                  导致生成的代码是位置无关的，重建共享目标库需要位置无关。-fPIC 选项产生位置无关的代码，这类代码支持大偏移。用于 
+                  UPPERCASE.o 和 lowercase.o 的第二个 gcc 命令，带有 -shared 
+                  选项，该选项产生适合于动态链接的共享目标文件 a*.so。 
+                  <P style="TEXT-INDENT: 2em">用于编译和执行 dltest 的 ksh 脚本如下： 
+                  <P style="TEXT-INDENT: 2em">
+                  <CENTER><CCID_NOBR>
+                  <TABLE cellSpacing=0 borderColorDark=#ffffff cellPadding=2 
+                  width=400 align=center borderColorLight=black border=1>
+                    <TBODY>
+                    <TR>
+                      <TD class=code style="FONT-SIZE: 9pt" bgColor=#e6e6e6><PRE><CCID_CODE>　　
+　　#!/bin/ksh
+　　# Build shared library
+　　#
+　　#set -x
+　　clear
+　　
+　　#
+　　# Shared library for dlopen absolute path test
+　　#
+　　if [ -f UPPERCASE.o ]; then rm UPPERCASE.o
+　　fi
+　　gcc -c -fpic UPPERCASE.c
+　　if [ -f UPPERCASE.so ]; then rm UPPERCASE.so
+　　fi
+　　gcc -shared -lc -o UPPERCASE.so UPPERCASE.o 
+　　
+　　#
+　　# Shared library for dlopen relative path test
+　　#
+　　export LD_LIBRARY_PATH=`pwd`
+　　if [ -f lowercase.o ]; then rm lowercase.o
+　　fi
+　　gcc -c -fpic lowercase.c
+　　if [ -f lowercase.so ]; then rm lowercase.so
+　　fi
+　　gcc -shared -lc -o lowercase.so lowercase.o
+　　
+　　#
+　　# Rebuild test program
+　　#
+　　if [ -f dlTest ]; then rm dlTest
+　　fi
+　　gcc -o dlTest dlTest.c -ldl
+　　echo Current LD_LIBRARY_PATH=$LD_LIBRARY_PATH
+　　dlTest</CCID_CODE></PRE></TD></TR></TBODY></TABLE></CCID_NOBR></CENTER>　　 
+
+                  <P style="TEXT-INDENT: 2em"><B>结束语</B> 
+                  <P style="TEXT-INDENT: 2em">创建能在运行时被动态链接到 Linux 
+                  系统上的应用程序的共享目标代码是一项非常简单的练习。应用程序通过使用对动态链接装入器的 dlopen、dlsym 和 
+                  dlclose 函数调用来获取对共享目标文件的访问。dlerror 以字符串的形式返回任何错误，这些错误信息字符串描述 dl 
+                  函数碰到的最后一个错误。在运行时，主应用程序使用绝对路径或相对于 LD_LIBRARY_PATH 
+                  的相对路径找到共享目标库，并且请求所需的 dll 入口点的地址。当需要时，也可对 dll 
+                  进行间接函数调用，最后，关闭到共享目标文件的句柄，并且从内存中取消该目标文件映射，使之不可用。(T004) 
+                  <P style="TEXT-INDENT: 2em">　　 
+                  <P align=center><SPAN class=content01><A class=content01 
+                  href="http://linux.ccidnet.com/art/302/20070130/1013637_1.html">&lt;&lt;上一页</A></SPAN> 
+                  <A class=content01 
+                  href="http://linux.ccidnet.com/art/302/20070130/1013637_1.html">1</A> 
+                  <FONT color=#ff0000>2</FONT> </P>
+                  <P></P><SPAN>
+                  <P align=center><BR></P></SPAN></SPAN></TD></TR>
+              <TR>
+                <TD>
+                  <TABLE class=index01 style="MARGIN-TOP: 2px" cellSpacing=0 
+                  cellPadding=0 width="100%" border=0>
+                    <TBODY>
+                    <TR>
+                      <TD align=right><SPAN class=b>[ </SPAN><A class=b 
+                        href="http://comment1.ccidnet.com/comment/disp/add_newcomment?articleID=1077253&amp;columnID=3777&amp;articleTitle=%B8%C3%B2%A1%B6%BE%CA%C7%D2%BB%B8%F6%CE%A3%BA%A6%BC%AB%B4%F3%B5%C4%CD%F8%C9%CF%D2%F8%D0%D0&amp;articleTime=2007-05-09&amp;articleURL=http://news.ccidnet.com%2Fart%2F3777%2F20070509%2F1077253_1.html" 
+                        target=_blank>发表评论</A><SPAN class=b>&nbsp;]</SPAN> <FONT 
+                        class=b>字体</FONT><SPAN class=b>[ </SPAN><A class=b 
+                        href="javascript:doZoom(16)" target=_self>大</A>、<A 
+                        class=b href="javascript:doZoom(14)" 
+                        target=_self>中</A>、<A class=b 
+                        href="javascript:doZoom(12)" target=_self>小</A><SPAN 
+                        class=b>&nbsp;]</SPAN> <SPAN class=b>[ </SPAN><A class=b 
+                        href="javascript:self.print()">打印</A><SPAN 
+                        class=b>&nbsp;]</SPAN> <SPAN class=b>[ </SPAN><A class=b 
+                        href="http://blog.ccidnet.com/" 
+                        target=_blank>进入博客</A><SPAN class=b>&nbsp;]</SPAN> <SPAN 
+                        class=b>[ <A class=b href="http://bbs.ccidnet.com/" 
+                        target=_blank>进入论坛</A><SPAN class=b>&nbsp;]</SPAN> 
+                        &nbsp;<SPAN class=b>[ </SPAN><A class=b 
+                        href="mailto:?subject=【赛迪网】”&amp;body=我在【赛迪网】上看到“”这篇文章，特向您推荐             http://comm.ccidnet.com/art/3777/20070509/1077253_1.html">推荐给朋友</A><SPAN 
+                        class=b>&nbsp;]</SPAN></SPAN></TD></TR></TBODY></TABLE></TD></TR><!--<tr>
+                  <td height="30" align="right" valign="top" class="content01"><span class="b">【</span><a class="b" 
+            href="javascript:t=document.title;u=location.href;e=document.selection?(document.selection.type!='None'?document.selection.createRange().text:''):(document.getSelection?document.getSelection():'');void(open('http://bookmark.hexun.com/post.aspx?title='+escape(t)+'&amp;url='+escape(u)+'&amp;excerpt='+escape(e),'HexunBookmark','scrollbars=no,width=600,height=450,left=80,top=80,status=no,resizable=yes'));">收藏到和讯网摘</a><span class="b">】</span>&nbsp;&nbsp;&nbsp;<span class="b">【</span><a 
+            class="b" 
+            href="javascript:newsForm('谷歌个性化主页遭遇技术问题%20用户心血白费')">将本文用短信转发给好友</a><span class="b">】</span></td>
+                </tr>--></TBODY></TABLE></TD></TR>
+        <TR>
+          <TD><IMG height=9 src="01-02.files/wz_left_3.gif" 
+        width=639></TD></TR></TBODY></TABLE>
+      <TABLE style="MARGIN: 2px 0px 8px" cellSpacing=0 cellPadding=0 
+      width="100%" border=0>
+        <TBODY>
+        <TR>
+          <TD width=639 background=01-02.files/wz_left_4.jpg height=12>
+            <TABLE cellSpacing=0 cellPadding=0 width="100%" border=0>
+              <TBODY>
+              <TR>
+                <TD width="3%">&nbsp;</TD>
+                <TD class=a6 align=left 
+              width="97%">【<STRONG>相关文章</STRONG>】</TD></TR></TBODY></TABLE></TD></TR>
+        <TR>
+          <TD align=middle background=01-02.files/wz_left_5.jpg><!-- 相关文章显示开始 -->
+            <TABLE cellSpacing=0 cellPadding=0 width="98%" border=0>
+              <TBODY>
+              <TR>
+                <TD vAlign=bottom>
+                  <TABLE style="MARGIN: 10px 0px 14px" cellSpacing=0 
+                  cellPadding=0 width="100%" border=0>
+                    <TBODY>
+                    <TR vAlign=top>
+                      <TD class=a9 align=right width="3%">·</TD>
+                      <TD align=left><A class=a9 
+                        href="http://linux.ccidnet.com/art/302/20070129/1012685_1.html" 
+                        target=_blank>在Linux 系统中紧急情况处理六招</A></TD>
+                      <TD class=a9 align=middle>(01-29)</TD>
+                      <TD class=a9 align=right width="3%">·</TD>
+                      <TD align=left><A class=a9 
+                        href="http://linux.ccidnet.com/art/302/20070129/1012439_1.html" 
+                        target=_blank>在Linux系统下优化Oracle具体步骤</A></TD>
+                      <TD class=a9 align=middle>(01-29)</TD></TR>
+                    <TR vAlign=top>
+                      <TD class=a9 align=right width="3%">·</TD>
+                      <TD align=left><A class=a9 
+                        href="http://linux.ccidnet.com/art/302/20070129/1012273_1.html" 
+                        target=_blank>使用PHP脚本修改Linux或Unix系统口令</A></TD>
+                      <TD class=a9 align=middle>(01-29)</TD>
+                      <TD class=a9 align=right width="3%">·</TD>
+                      <TD align=left><A class=a9 
+                        href="http://linux.ccidnet.com/art/302/20070129/1012257_1.html" 
+                        target=_blank>Linux系统内核:修改TCP/IP调优参数 </A></TD>
+                      <TD class=a9 align=middle>(01-29)</TD></TR>
+                    <TR vAlign=top>
+                      <TD class=a9 align=right width="3%">·</TD>
+                      <TD align=left><A class=a9 
+                        href="http://linux.ccidnet.com/art/302/20070129/1012249_1.html" 
+                        target=_blank>审计并跟踪Linux系统的异常活动详解</A></TD>
+                      <TD class=a9 align=middle>(01-29)</TD>
+                      <TD class=a9 align=right width="3%">·</TD>
+                      <TD align=left><A class=a9 
+                        href="http://linux.ccidnet.com/art/302/20070129/1012221_1.html" 
+                        target=_blank>Linux操作系统日志管理的技巧介绍</A></TD>
+                      <TD class=a9 align=middle>(01-29)</TD></TR>
+                    <TR vAlign=top>
+                      <TD class=a9 align=right width="3%">·</TD>
+                      <TD align=left><A class=a9 
+                        href="http://linux.ccidnet.com/art/302/20070129/1012195_1.html" 
+                        target=_blank>Linux系统安装与硬盘分区简单介绍</A></TD>
+                      <TD class=a9 align=middle>(01-29)</TD>
+                      <TD class=a9 align=right width="3%">·</TD>
+                      <TD align=left><A class=a9 
+                        href="http://linux.ccidnet.com/art/302/20070129/1012087_1.html" 
+                        target=_blank>2006年:被嘲笑的Linux终于挺起胸膛</A></TD>
+                      <TD class=a9 align=middle>(01-29)</TD></TR>
+                    <TR vAlign=top>
+                      <TD class=a9 align=right width="3%">·</TD>
+                      <TD align=left><A class=a9 
+                        href="http://linux.ccidnet.com/art/302/20070129/1012049_1.html" 
+                        target=_blank>为什么要Linux，为什么为Linux狂热</A></TD>
+                      <TD class=a9 align=middle>(01-29)</TD>
+                      <TD class=a9 align=right width="3%">·</TD>
+                      <TD align=left><A class=a9 
+                        href="http://linux.ccidnet.com/art/302/20070129/1011947_1.html" 
+                        target=_blank>Linux系统内核研究之可执行文件格式</A></TD>
+                      <TD class=a9 align=middle>(01-29)</TD></TR></TBODY></TABLE><!-- 相关文章显示结束 --></TD></TR></TBODY></TABLE></TD></TR>
+        <TR>
+          <TD><IMG height=5 src="01-02.files/wz_left_6.jpg" 
+        width=639></TD></TR></TBODY></TABLE><!--  文章点评开始 --><SPAN id=news_comment>
+      <TABLE cellSpacing=0 cellPadding=0 width="100%" align=center border=0>
+        <TBODY>
+        <TR>
+          <TD>
+            <SCRIPT src="01-02.files/article.htm"></SCRIPT>
+          </TD></TR></TBODY></TABLE></SPAN><!--  文章点评结束 -->
+      <TABLE style="MARGIN-TOP: 9px" cellSpacing=0 cellPadding=0 width="100%" 
+      border=0>
+        <TBODY>
+        <TR>
+          <TD width=639 background=01-02.files/wz_left_7.jpg height=12>
+            <TABLE cellSpacing=0 cellPadding=0 width="100%" border=0>
+              <TBODY>
+              <TR>
+                <TD width="3%">&nbsp;</TD>
+                <TD class=a6 align=left 
+                width="97%">【<STRONG>客户需求反馈表</STRONG>】</TD></TR></TBODY></TABLE></TD></TR>
+        <TR>
+          <SCRIPT language=JavaScript>
+<!--
+function submitForm(){
+        url="http://publisher.ccidnet.com:7001/pub/disp/Feedback?username="+document.form2.username.value
+            +"&unit="+document.form2.unit.value
+            +"&memo="+document.form2.memo.value
+            +"&telephone="+document.form2.telephone.value
+            +"&email="+document.form2.email.value
+            +"&articleURL="+document.form2.articleURL.value;
+
+            for(i=0;i<3;i++)
+            {
+            	if(document.form2.require[i].checked)
+            	{
+            	url+="&require="+document.form2.require[i].value;
+            	}
+            }
+
+           window.open(url,'用户反馈提交成功','width=400,height=300')
+}
+
+//-->
+</SCRIPT>
+
+          <FORM name=form2 action="" method=post>
+          <TD align=middle background=01-02.files/wz_left_5.jpg>
+            <TABLE style="MARGIN: 8px 0px" cellSpacing=0 cellPadding=0 
+            width="95%" border=0><INPUT type=hidden 
+              value=/art/302/20070130/1013637_1.html name=articleURL> 
+              <TBODY>
+              <TR>
+                <TD class=a9b width="3%">*</TD>
+                <TD vAlign=bottom width="12%"><SPAN class=a9b>姓　　名:</SPAN></TD>
+                <TD width="47%"><INPUT 
+                  style="PADDING-RIGHT: 1px; PADDING-LEFT: 1px; FONT-SIZE: 9pt; PADDING-BOTTOM: 1px; PADDING-TOP: 1px; HEIGHT: 20px" 
+                  size=35 name=username></TD>
+                <TD vAlign=bottom width="38%" rowSpan=4>
+                  <TABLE cellSpacing=0 cellPadding=0 width="100%" border=0>
+                    <TBODY>
+                    <TR>
+                      <TD><INPUT class=a9b type=checkbox value=1 
+                        name=require>更多资料　<INPUT class=a9b type=checkbox value=2 
+                        name=require>了解方案　<INPUT class=a9b type=checkbox value=3 
+                        name=require>认识厂商</TD></TR>
+                    <TR>
+                      <TD height=15></TD></TR>
+                    <TR>
+                      <TD><TEXTAREA name=memo rows=4 cols=30>详细需求信息请在此处填写!</TEXTAREA></TD></TR></TBODY></TABLE></TD></TR>
+              <TR>
+                <TD class=a9b width="3%">*</TD>
+                <TD class=a9b>单位名称:</TD>
+                <TD><INPUT 
+                  style="PADDING-RIGHT: 1px; PADDING-LEFT: 1px; FONT-SIZE: 9pt; PADDING-BOTTOM: 1px; PADDING-TOP: 1px; HEIGHT: 20px" 
+                  size=35 name=unit></TD></TR>
+              <TR>
+                <TD class=a9b width="3%">*</TD>
+                <TD class=a9b>联系电话:</TD>
+                <TD><INPUT 
+                  style="PADDING-RIGHT: 1px; PADDING-LEFT: 1px; FONT-SIZE: 9pt; PADDING-BOTTOM: 1px; PADDING-TOP: 1px; HEIGHT: 20px" 
+                  size=35 name=telephone></TD></TR>
+              <TR>
+                <TD class=a9b width="3%">*</TD>
+                <TD class=a9b>电子邮件:</TD>
+                <TD><INPUT 
+                  style="PADDING-RIGHT: 1px; PADDING-LEFT: 1px; FONT-SIZE: 9pt; PADDING-BOTTOM: 1px; PADDING-TOP: 1px; HEIGHT: 20px" 
+                  size=35 name=email></TD></TR>
+              <TR>
+                <TD class=a9b align=middle colSpan=4><INPUT onclick=javascript:submitForm() type=submit value=提交 name=Submit> 
+<INPUT type=reset value=重填 name=Submit2> 
+          </TD></TR></TBODY></TABLE></TD></FORM><!-- 客户需求反馈结束 --></TR>
+        <TR>
+          <TD><IMG height=5 src="01-02.files/wz_left_6.jpg" 
+        width=639></TD></TR></TBODY></TABLE></TD>
+    <TD width=7></TD>
+    <TD vAlign=top align=middle width=300><!--赛迪推荐开始  -->
+      <TABLE style="MARGIN-BOTTOM: 3px" cellSpacing=0 cellPadding=0 width="100%" 
+      border=0>
+        <TBODY>
+        <TR>
+          <TD vAlign=bottom align=middle width=287 
+          background=01-02.files/wz_left_bg2b.jpg height=31>
+            <TABLE height=26 cellSpacing=0 cellPadding=0 width="100%" 
+              border=0><TBODY>
+              <TR>
+                <TD class=a7 vAlign=center align=left width=15>&nbsp;</TD>
+                <TD class=a7 vAlign=center align=left width=69><STRONG><A 
+                  class=a7 href="http://www.ccidnet.com/" 
+                  target=_blank>赛迪推荐</A></STRONG></TD>
+                <TD vAlign=center align=left width=12><IMG height=17 
+                  src="01-02.files/wz_line4.jpg" width=3></TD>
+                <TD vAlign=bottom align=left 
+            width=203>&nbsp;</TD></TR></TBODY></TABLE></TD></TR>
+        <TR>
+          <TD 
+          style="BORDER-RIGHT: #b0bcc2 1px solid; BORDER-LEFT: #b0bcc2 1px solid; BORDER-BOTTOM: #b0bcc2 2px solid" 
+          align=middle><IFRAME marginWidth=0 marginHeight=0 
+            src="01-02.files/tech_pip2.htm" frameBorder=0 width=278 scrolling=no 
+            height=180 RESIZABLE="no"></IFRAME></TD></TR></TBODY></TABLE><!--赛迪推荐结束  -->
+      <TABLE style="MARGIN-BOTTOM: 2px" cellSpacing=0 cellPadding=0 width="100%" 
+      border=0>
+        <TBODY>
+        <TR>
+          <TD>
+            <SCRIPT 
+            src="01-02.files/;pl=pl-85-linux_wz_pip1;tp=js;sk=0;ck=0;"></SCRIPT>
+          </TD></TR></TBODY></TABLE>
+      <TABLE style="MARGIN-BOTTOM: 3px" cellSpacing=0 cellPadding=0 width="100%" 
+      border=0>
+        <TBODY>
+        <TR>
+          <TD vAlign=bottom align=middle width=287 
+          background=01-02.files/wz_left_bg2b.jpg height=31>
+            <TABLE cellSpacing=0 cellPadding=0 width="100%" border=0>
+              <TBODY>
+              <TR>
+                <TD class=a7 vAlign=center align=left width=15>&nbsp;</TD>
+                <TD class=a7 vAlign=center align=left 
+                  width=58><STRONG>IT产品</STRONG></TD>
+                <TD class=a7 vAlign=center align=left width=10><IMG height=22 
+                  src="01-02.files/wz_line4.jpg" width=3></TD>
+                <TD vAlign=bottom align=left width=217><SPAN 
+                  class=dian>·</SPAN><A class=a9 href="http://nb.ccidnet.com/" 
+                  target=_blank>笔记本</A><SPAN class=dian>·</SPAN><A class=a9 
+                  href="http://pc.ccidnet.com/" target=_blank>台式机</A><SPAN 
+                  class=dian>·</SPAN><A class=a9 
+                  href="http://server.ccidnet.com/" target=_blank>服务器</A><SPAN 
+                  class=dian>·</SPAN><A class=a9 
+                  href="http://print.ccidnet.com/" target=_blank>打印</A><SPAN 
+                  class=dian>·</SPAN><A class=a9 
+                  href="http://projector.ccidnet.com/" 
+              target=_blank>投影</A></TD></TR></TBODY></TABLE></TD></TR>
+        <TR>
+          <TD 
+          style="BORDER-RIGHT: #b0bcc2 1px solid; BORDER-LEFT: #b0bcc2 1px solid; BORDER-BOTTOM: #b0bcc2 2px solid" 
+          align=middle>
+            <TABLE cellSpacing=0 cellPadding=0 width=298 border=0>
+              <TBODY>
+              <TR>
+                <TD vAlign=top width=6></TD>
+                <TD width=284 rowSpan=2>
+                  <TABLE style="MARGIN-TOP: 0px" cellSpacing=0 cellPadding=0 
+                  width="100%" border=0>
+                    <TBODY>
+                    <TR>
+                      <TD width=287 height=29><!--IT产品轮替开始  --><IFRAME 
+                        name=body2 marginWidth=0 marginHeight=0 
+                        src="01-02.files/it_Recommend.htm" frameBorder=0 
+                        width=285 scrolling=no height=105 
+                        RESIZABLE="no"></IFRAME><!--IT产品轮替结束  --></TD></TR></TBODY></TABLE></TD>
+                <TD vAlign=top width=6 rowSpan=2>
+                  <TABLE style="MARGIN-TOP: 4px" cellSpacing=0 cellPadding=0 
+                  width=7 border=0>
+                    <TBODY>
+                    <TR>
+                      <TD width=6 background=01-02.files/nr_left_bg.gif 
+                      height=29></TD></TR></TBODY></TABLE></TD></TR>
+              <TR>
+                <TD vAlign=top>
+                  <TABLE style="MARGIN-TOP: 1px" cellSpacing=0 cellPadding=0 
+                  width=6 border=0>
+                    <TBODY>
+                    <TR>
+                      <TD width=9 background=01-02.files/nr_left_bg.gif 
+                      height=29></TD></TR></TBODY></TABLE></TD></TR></TBODY></TABLE>
+            <TABLE style="MARGIN-TOP: 3px" cellSpacing=0 cellPadding=0 width=280 
+            border=0>
+              <TBODY>
+              <TR>
+                <TD vAlign=center align=right width="21%"><SPAN 
+                  class=a23>IT产品搜索&nbsp;</SPAN></TD>
+                <TD vAlign=center width="21%">
+                  <FORM name=quick_search 
+                  action=http://price.ccidnet.com/template/@searchresult.html 
+                  method=post target=_blank><INPUT type=hidden value=1 
+                  name=searchType> <INPUT type=hidden value=0 name=innerClass> 
+                  <SELECT name=classID> <OPTION value=0 
+                    selected>-产品分类-</OPTION> <OPTION value=15>手机</OPTION> 
+                    <OPTION value=1>笔记本</OPTION> <OPTION value=3>台式机</OPTION> 
+                    <OPTION value=2>服务器</OPTION> <OPTION value=1854>投影机</OPTION> 
+                    <OPTION value=5>打印机</OPTION> <OPTION value=1853>交换机</OPTION> 
+                    <OPTION value=2576>路由器</OPTION> <OPTION 
+                    value=3356>防火墙</OPTION> <OPTION value=3547>无线上网卡</OPTION> 
+                    <OPTION value=3548>无线路由器</OPTION> <OPTION 
+                    value=22>复印机</OPTION> <OPTION value=21>多功能一体机</OPTION> 
+                    <OPTION value=1852>UPS</OPTION> <OPTION 
+                    value=23>工作站</OPTION> <OPTION 
+                value=2593>磁盘阵列</OPTION></SELECT></TD>
+                <TD align=right width="21%"><INPUT 
+                  style="BORDER-RIGHT: #888888 1px solid; BORDER-TOP: #888888 1px solid; BORDER-LEFT: #888888 1px solid; BORDER-BOTTOM: #888888 1px solid" 
+                  size=9 name=keyword></TD>
+                <TD vAlign=bottom align=middle width="9%"><INPUT type=image 
+                  src="01-02.files/wz_button2.gif" 
+              name=imageField22></TD></FORM></TR></TBODY></TABLE>
+            <TABLE style="MARGIN: 9px 0px 7px" cellSpacing=0 cellPadding=0 
+            width="94%" align=center border=0>
+              <TBODY>
+              <TR>
+                <TD background=01-02.files/line1.gif 
+            height=1></TD></TR></TBODY></TABLE><!--IT产品文章开始  --><IFRAME 
+            name=body1 marginWidth=0 marginHeight=0 src="01-02.files/round4.htm" 
+            frameBorder=0 width=280 scrolling=no height=105 
+            RESIZABLE="no"></IFRAME><!--IT产品文章结束  --></TD></TR></TBODY></TABLE><!--广告按钮开始  -->
+      <TABLE style="MARGIN-BOTTOM: 2px" cellSpacing=0 cellPadding=0 width="100%" 
+      border=0>
+        <TBODY>
+        <TR>
+          <TD>
+            <SCRIPT 
+            src="01-02.files/;pl=pl-85-linux_wz_bu1;tp=js;sk=0;ck=0;"></SCRIPT>
+          </TD></TR></TBODY></TABLE><!--广告按钮结束  -->
+      <TABLE style="MARGIN-BOTTOM: 9px" cellSpacing=0 cellPadding=0 width="100%" 
+      border=0>
+        <TBODY>
+        <TR>
+          <TD vAlign=bottom align=middle width=287 
+          background=01-02.files/wz_left_bg2b.jpg height=31>
+            <TABLE cellSpacing=0 cellPadding=0 width="100%" border=0>
+              <TBODY>
+              <TR>
+                <TD class=a7 vAlign=center align=left width=15>&nbsp;</TD>
+                <TD class=a7 vAlign=center align=left 
+                  width=58><STRONG>IT技术</STRONG></TD>
+                <TD class=a7 vAlign=center align=left width=10><IMG height=22 
+                  src="01-02.files/wz_line4.jpg" width=3></TD>
+                <TD vAlign=bottom align=left width=217><SPAN 
+                  class=dian>·</SPAN><A class=a9 href="http://java.ccidnet.com/" 
+                  target=_blank>开发</A><SPAN class=dian>·</SPAN><A class=a9 
+                  href="http://network.ccidnet.com/" target=_blank>网管</A><SPAN 
+                  class=dian>·</SPAN><A class=a9 
+                  href="http://security.ccidnet.com/" target=_blank>安全</A><SPAN 
+                  class=dian>·</SPAN><A class=a9 
+                  href="http://database.ccidnet.com/" target=_blank>数据库</A><SPAN 
+                  class=dian>·</SPAN><A class=a9 
+                  href="http://linux.ccidnet.com/" 
+              target=_blank>操作系统</A></TD></TR></TBODY></TABLE></TD></TR>
+        <TR>
+          <TD 
+          style="BORDER-RIGHT: #b0bcc2 1px solid; BORDER-LEFT: #b0bcc2 1px solid; BORDER-BOTTOM: #b0bcc2 2px solid" 
+          align=middle><!--IT技术开始  --><IFRAME marginWidth=0 marginHeight=0 
+            src="01-02.files/it_pro.htm" frameBorder=0 width=288 scrolling=no 
+            height=243 
+      RESIZABLE="no"></IFRAME><!--IT技术结束  --></TD></TR></TBODY></TABLE><!--信息化开始  --><IFRAME 
+      marginWidth=0 marginHeight=0 src="01-02.files/it_tech.htm" frameBorder=0 
+      width=300 scrolling=no height=285 RESIZABLE="no"></IFRAME><!--信息化结束  -->
+      <TABLE style="MARGIN-TOP: 8px" cellSpacing=0 cellPadding=0 width="100%" 
+      border=0>
+        <TBODY>
+        <TR>
+          <TD vAlign=bottom align=middle width=287 
+          background=01-02.files/wz_left_bg2b.jpg height=31>
+            <TABLE cellSpacing=0 cellPadding=0 width="100%" border=0>
+              <TBODY>
+              <TR>
+                <TD class=a7 vAlign=center align=left width=13>&nbsp;</TD>
+                <TD class=a7 vAlign=center align=left width=80><STRONG><A 
+                  class=a7 href="http://blog.ccidnet.com/" 
+                  target=_blank>博客</A><SPAN class=dian>·</SPAN><A class=a7 
+                  href="http://bbs.ccidnet.com/" 
+target=_blank>论坛</A></STRONG></TD>
+                <TD class=a7 vAlign=center align=left width=6><IMG height=22 
+                  src="01-02.files/wz_line4.jpg" width=3></TD>
+                <TD vAlign=bottom align=left width=197><SPAN 
+                  class=dian>·</SPAN><A class=a9 
+                  href="http://zengjq.blog.ccidnet.com/" 
+                  target=_blank>曾剑秋</A><SPAN class=dian>·</SPAN><A class=a9 
+                  href="http://xlg.blog.ccidnet.com/blog/ccid/uid_5759.html" 
+                  target=_blank>项立刚</A><SPAN class=dian>·</SPAN><A class=a9 
+                  href="http://bbs.java.ccidnet.com/" 
+                  target=_blank>Java学习</A><SPAN class=dian>·</SPAN><A class=a9 
+                  href="http://bbs.network.ccidnet.com/thread.php?fid=24" 
+                  target=_blank>网管</A></TD></TR></TBODY></TABLE></TD></TR>
+        <TR>
+          <TD 
+          style="BORDER-RIGHT: #b0bcc2 1px solid; BORDER-LEFT: #b0bcc2 1px solid; BORDER-BOTTOM: #b0bcc2 2px solid" 
+          align=middle><!--博客论坛开始  --><IFRAME marginWidth=0 marginHeight=0 
+            src="01-02.files/cio.htm" frameBorder=0 width=285 scrolling=no 
+            height=152 RESIZABLE="no"></IFRAME><IFRAME marginWidth=0 
+            marginHeight=0 src="01-02.files/blog_bbs.htm" frameBorder=0 
+            width=285 scrolling=no height=100 RESIZABLE="no"></IFRAME><!--博客论坛结束  --></TD></TR></TBODY></TABLE></TD></TR></TBODY></TABLE><SPAN 
+id=tech_art_center_real>
+<SCRIPT src="01-02.files/ad.htm"></SCRIPT>
+</SPAN>
+<SCRIPT>
+    tech_art_center.innerHTML=tech_art_center_real.innerHTML;
+    tech_art_center_real.innerHTML="";
+</SCRIPT>
+<!--ccidnet_page_end--></BODY></HTML>
