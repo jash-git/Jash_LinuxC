@@ -1,0 +1,841 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<!-- saved from url=(0058)http://blog.csdn.net/wangwei890702/article/details/8193285 -->
+<html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><script charset="utf-8" async="" src="./help_files/log.js"></script><script src="./help_files/get_uid.json"></script>
+<title>Linux下c开发 之 线程通信 - wangwei890702的专栏 - 博客频道 - CSDN.NET</title>
+
+<meta name="description" content="1.Linux“线程”     进程与线程之间是有区别的，不过Linux内核只提供了轻量进程的支持，未实现线程模型。Linux是一种“多进程单线程”的操作系统。Linux本身只有进程的概念，而其所谓的“线程”本质上在内核里仍然是进程。     大家知道，进程是资源分配的单位，同一进程中的多个线程共享该进程的资源（如作为共享内存的全局变量）。Linux中所谓的“线程”只是在被创建时c">
+<script type="text/javascript" async="" src="./help_files/ga.js"></script><script src="./help_files/jquery.js" type="text/javascript"></script>
+<script type="text/javascript" src="./help_files/ad.js"></script>
+<link rel="Stylesheet" type="text/css" href="./help_files/style.css">
+<link id="RSSLink" title="RSS" type="application/rss+xml" rel="alternate" href="http://blog.csdn.net/wangwei890702/rss/list">
+<link rel="shortcut icon" href="http://blog.csdn.net/favicon.ico">
+<link type="text/css" rel="stylesheet" href="./help_files/default.css">
+<link type="text/css" rel="stylesheet" href="./help_files/style(1).css"></head>
+<body>
+<script src="./help_files/pub_topnav_2011.js" type="text/javascript"></script><link rel="stylesheet" type="text/css" href="./help_files/navtop_2012.css">
+<div class="nav_top_2011">
+<p><span style="color:red;">您还未登录！</span>|<a href="https://passport.csdn.net/account/login" target="_top">登录</a>|<a href="https://passport.csdn.net/account/register" target="_top">注册</a>|<a href="https://passport.csdn.net/help/faq" target="_blank">帮助</a></p><ul>
+<li><a href="http://www.csdn.net/" target="_blank" style="color: red;">首页</a></li>
+<li><a href="http://news.csdn.net/" target="_blank">业界</a></li>
+<li><a href="http://mobile.csdn.net/" target="_blank">移动</a></li>
+<li><a href="http://cloud.csdn.net/" target="_blank">云计算</a></li>
+<li><a href="http://sd.csdn.net/" target="_blank">研发</a></li>
+<li><a href="http://bbs.csdn.net/" target="_blank">论坛</a></li>
+<li><a href="http://blog.csdn.net/" target="_blank">博客</a></li>
+<li><a href="http://download.csdn.net/" target="_blank">下载</a></li>
+<li class="more"><h2 id="topnav_btnmore" onclick="showNavMore(this)"><a href="javascript:void(0);">更多</a></h2>
+<div id="topnav_hidlist">
+<iframe name="nav_frm" src="about:blank" width="92" height="178" scrolling="no" frameborder="no"></iframe>
+</div>
+</li>
+</ul>
+</div>
+
+
+<div id="container">
+<div id="header">
+    <div class="header">
+        <div id="blog_title">
+            <h1><a href="http://blog.csdn.net/wangwei890702">wangwei890702的专栏</a></h1>
+            <h2></h2>
+            <div class="clear"></div>
+        </div>
+        <div class="clear"></div>
+    </div>
+</div>
+<div id="navigator">
+    <div class="navigator_bg"></div>
+    <div class="navigator">
+        <ul>
+            <li id="btnContents"><a href="http://blog.csdn.net/wangwei890702?viewmode=contents"><span><img src="./help_files/ico_list.gif">目录视图</span></a></li>
+            <li id="btnView"><a href="http://blog.csdn.net/wangwei890702?viewmode=list"><span><img src="./help_files/ico_summary.gif">摘要视图</span></a></li>
+            <li id="btnRss"><a href="http://blog.csdn.net/wangwei890702/rss/list"><span><img src="./help_files/ico_rss.gif">订阅</span></a></li>
+</ul>
+    </div>
+</div>
+<script type="text/javascript">
+    var username = "wangwei890702";
+    var _blogger = username;
+    var blog_address = "http://blog.csdn.net/wangwei890702";
+    var static_host = "http://static.blog.csdn.net";
+    var currentUserName = "";
+</script>
+
+<div id="body">
+<div id="main">
+<div class="main">
+<div class="notice"> 
+
+<a href="http://read.csdn.net/" target="_blank">
+<font color="red">CSDN个性阅读，订阅你想看的博客文章</font></a>
+
+
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+<a href="http://www.csdn.net/article/2013-08-06/2816471" target="_blank"><font color="blue">专访李铁军：从医生到金山首席安全专家的转变 
+</font></a>
+
+&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+
+<a href="http://blog.csdn.net/adali/article/details/9813651" target="_blank">
+<font color="blue">独一无二的职位：开源社区经理 
+ </font></a>
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+<a href="http://blog.csdn.net/blogdevteam/article/details/10389969" target="_blank"><font color="blue">CSDN博客第三期云计算最佳博主评选</font></a>
+
+
+
+</div>
+<div id="article_details" class="details">
+    <div class="article_title">
+    <span class="ico ico_type_Repost"></span>
+    <h3>
+        <span class="link_title"><a href="./help_files/help.htm">
+        Linux下c开发 之 线程通信
+        </a></span>
+    </h3>
+</div>
+
+        
+    <div class="article_manage">
+        <span class="link_categories">
+        分类：
+            <a href="http://blog.csdn.net/wangwei890702/article/category/1282633">Linux C</a> 
+        </span>
+    <span class="link_postdate">2012-11-17 02:59</span>
+    <span class="link_view" title="阅读次数">420人阅读</span>
+    <span class="link_comments" title="评论次数"><a href="http://blog.csdn.net/wangwei890702/article/details/8193285#comments">评论</a>(0)</span>
+    <span class="link_collect"><a href="javascript:void(0);" onclick="javascript:collectArticle(&#39;Linux下c开发 之 线程通信&#39;,&#39;8193285&#39;);return false;" title="收藏">收藏</a></span>
+    <span class="link_report"><a href="http://blog.csdn.net/wangwei890702/article/details/8193285#report" onclick="javascript:report(8193285,2);return false;" title="举报">举报</a></span>
+    
+</div>
+
+
+    
+<div id="article_content" class="article_content">
+
+<p style="word-wrap:break-word; margin:10px auto; font-family:&#39;ms shell dlg&#39;; font-size:14.285714149475098px; line-height:28.571428298950195px">
+1.Linux“线程”</p>
+<p style="word-wrap:break-word; margin:10px auto; font-family:&#39;ms shell dlg&#39;; font-size:14.285714149475098px; line-height:28.571428298950195px">
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;进程与线程之间是有区别的，不过Linux内核只提供了轻量进程的支持，未实现线程模型。Linux是一种“多进程单线程”的操作系统。Linux本身只有进程的概念，而其所谓的“线程”本质上在内核里仍然是进程。</p>
+<p style="word-wrap:break-word; margin:10px auto; font-family:&#39;ms shell dlg&#39;; font-size:14.285714149475098px; line-height:28.571428298950195px">
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;大家知道，进程是资源分配的单位，同一进程中的多个线程共享该进程的资源（如作为共享内存的全局变量）。Linux中所谓的“线程”只是在被创建时clone了父进程的资源，因此clone出来的进程表现为“线程”，这一点一定要弄清楚。因此，Linux“线程”这个概念只有在打冒号的情况下才是最准确的。</p>
+<p style="word-wrap:break-word; margin:10px auto; font-family:&#39;ms shell dlg&#39;; font-size:14.285714149475098px; line-height:28.571428298950195px">
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;目前Linux中最流行的线程机制为LinuxThreads，所采用的就是线程－进程“一对一”模型，调度交给核心，而在用户级实现一个包括信号处理在内的线程管理机制。LinuxThreads由Xavier Leroy (Xavier.Leroy@inria.fr)负责开发完成，并已绑定在GLIBC中发行，它实现了一种BiCapitalized面向Linux的Posix 1003.1c “pthread”标准接口。Linuxthread可以支持Intel、Alpha、MIPS等平台上的多处理器系统。<br style="clear:both">
+<br style="clear:both">
+　　按照POSIX 1003.1c 标准编写的程序与Linuxthread 库相链接即可支持Linux平台上的多线程，在程序中需包含头文件pthread. h，在编译链接时使用命令：<br style="clear:both">
+<br style="clear:both">
+</p><table width="90%" align="center" bgcolor="#cccccc" style="table-layout:fixed; word-wrap:break-word; border:1px solid rgb(192,192,192); border-collapse:collapse">
+<tbody>
+<tr>
+<td style="font-size:10pt; border:1px solid rgb(192,192,192); border-collapse:collapse; padding:3px; word-break:normal!important">
+gcc -D -REENTRANT -lpthread xxx. c</td>
+</tr>
+</tbody>
+</table>
+<br style="clear:both">
+　　其中-REENTRANT宏使得相关库函数(如stdio.h、errno.h中函数) 是可重入的、线程安全的(thread-safe)，-lpthread则意味着链接库目录下的libpthread.a或libpthread.so文件。使用Linuxthread库需要2.0以上版本的Linux内核及相应版本的C库(libc 5.2.18、libc 5.4.12、libc 6)。<br style="clear:both">
+<p></p>
+<p style="word-wrap:break-word; margin:10px auto; font-family:&#39;ms shell dlg&#39;; font-size:14.285714149475098px; line-height:28.571428298950195px">
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>2.“线程”控制</strong><br style="clear:both">
+<br style="clear:both">
+　　线程创建<br style="clear:both">
+<br style="clear:both">
+　　进程被创建时，系统会为其创建一个主线程，而要在进程中创建新的线程，则可以调用pthread_create：<br style="clear:both">
+<br style="clear:both">
+</p><table width="90%" align="center" bgcolor="#cccccc" style="table-layout:fixed; word-wrap:break-word; border:1px solid rgb(192,192,192); border-collapse:collapse">
+<tbody>
+<tr>
+<td style="font-size:10pt; border:1px solid rgb(192,192,192); border-collapse:collapse; padding:3px; word-break:normal!important">
+pthread_create(pthread_t *thread, const pthread_attr_t *attr, void *<br style="clear:both">
+(start_routine)(void*), void *arg);</td>
+</tr>
+</tbody>
+</table>
+<br style="clear:both">
+　　start_routine为新线程的入口函数，arg为传递给start_routine的参数。<br style="clear:both">
+<br style="clear:both">
+　　每个线程都有自己的线程ID，以便在进程内区分。线程ID在pthread_create调用时回返给创建线程的调用者；一个线程也可以在创建后使用pthread_self()调用获取自己的线程ID：<br style="clear:both">
+<br style="clear:both">
+<table width="90%" align="center" bgcolor="#cccccc" style="table-layout:fixed; word-wrap:break-word; border:1px solid rgb(192,192,192); border-collapse:collapse">
+<tbody>
+<tr>
+<td style="font-size:10pt; border:1px solid rgb(192,192,192); border-collapse:collapse; padding:3px; word-break:normal!important">
+pthread_self (void) ;</td>
+</tr>
+</tbody>
+</table>
+<br style="clear:both">
+　　线程退出<br style="clear:both">
+<br style="clear:both">
+　　线程的退出方式有三：<br style="clear:both">
+<br style="clear:both">
+　　（1）执行完成后隐式退出；<br style="clear:both">
+<br style="clear:both">
+　　（2）由线程本身显示调用pthread_exit 函数退出；<br style="clear:both">
+<br style="clear:both">
+<table width="90%" align="center" bgcolor="#cccccc" style="table-layout:fixed; word-wrap:break-word; border:1px solid rgb(192,192,192); border-collapse:collapse">
+<tbody>
+<tr>
+<td style="font-size:10pt; border:1px solid rgb(192,192,192); border-collapse:collapse; padding:3px; word-break:normal!important">
+pthread_exit (void * retval) ;</td>
+</tr>
+</tbody>
+</table>
+<br style="clear:both">
+　　（3）被其他线程用pthread_cance函数终止：<br style="clear:both">
+<br style="clear:both">
+<table width="90%" align="center" bgcolor="#cccccc" style="table-layout:fixed; word-wrap:break-word; border:1px solid rgb(192,192,192); border-collapse:collapse">
+<tbody>
+<tr>
+<td style="font-size:10pt; border:1px solid rgb(192,192,192); border-collapse:collapse; padding:3px; word-break:normal!important">
+pthread_cance (pthread_t thread) ;</td>
+</tr>
+</tbody>
+</table>
+<br style="clear:both">
+　　在某线程中调用此函数，可以终止由参数thread 指定的线程。<br style="clear:both">
+<br style="clear:both">
+　　如果一个线程要等待另一个线程的终止，可以使用pthread_join函数，该函数的作用是调用pthread_join的线程将被挂起直到线程ID为参数thread的线程终止：<br style="clear:both">
+<br style="clear:both">
+<table width="90%" align="center" bgcolor="#cccccc" style="table-layout:fixed; word-wrap:break-word; border:1px solid rgb(192,192,192); border-collapse:collapse">
+<tbody>
+<tr>
+<td style="font-size:10pt; border:1px solid rgb(192,192,192); border-collapse:collapse; padding:3px; word-break:normal!important">
+pthread_join (pthread_t thread, void** threadreturn);</td>
+</tr>
+</tbody>
+</table>
+<p></p>
+<p style="word-wrap:break-word; margin:10px auto; font-family:&#39;ms shell dlg&#39;; font-size:14.285714149475098px; line-height:28.571428298950195px">
+<strong>3.线程通信<br style="clear:both">
+<br style="clear:both">
+</strong>　　线程互斥<br style="clear:both">
+<br style="clear:both">
+　　互斥意味着“排它”，即两个线程不能同时进入被互斥保护的代码。Linux下可以通过pthread_mutex_t 定义互斥体机制完成多线程的互斥操作，该机制的作用是对某个需要互斥的部分，在进入时先得到互斥体，如果没有得到互斥体，表明互斥部分被其它线程拥有，此时欲获取互斥体的线程阻塞，直到拥有该互斥体的线程完成互斥部分的操作为止。<br style="clear:both">
+<br style="clear:both">
+　　下面的代码实现了对共享全局变量x 用互斥体mutex 进行保护的目的：<br style="clear:both">
+<br style="clear:both">
+</p><table width="90%" align="center" bgcolor="#cccccc" style="table-layout:fixed; word-wrap:break-word; border:1px solid rgb(192,192,192); border-collapse:collapse">
+<tbody>
+<tr>
+<td style="font-size:10pt; border:1px solid rgb(192,192,192); border-collapse:collapse; padding:3px; word-break:normal!important">
+int x; // 进程中的全局变量<br style="clear:both">
+pthread_mutex_t mutex;<br style="clear:both">
+pthread_mutex_init(&amp;mutex, NULL); //按缺省的属性初始化互斥体变量mutex<br style="clear:both">
+pthread_mutex_lock(&amp;mutex); // 给互斥体变量加锁<br style="clear:both">
+… //对变量x 的操作<br style="clear:both">
+phtread_mutex_unlock(&amp;mutex); // 给互斥体变量解除锁</td>
+</tr>
+</tbody>
+</table>
+<br style="clear:both">
+　　线程同步<br style="clear:both">
+<br style="clear:both">
+　　同步就是线程等待某个事件的发生。只有当等待的事件发生线程才继续执行，否则线程挂起并放弃处理器。当多个线程协作时，相互作用的任务必须在一定的条件下同步。<br style="clear:both">
+<br style="clear:both">
+　　Linux下的C语言编程有多种线程同步机制，最典型的是条件变量(condition variable)。pthread_cond_init用来创建一个条件变量，其函数原型为：<br style="clear:both">
+<br style="clear:both">
+<table width="90%" align="center" bgcolor="#cccccc" style="table-layout:fixed; word-wrap:break-word; border:1px solid rgb(192,192,192); border-collapse:collapse">
+<tbody>
+<tr>
+<td style="font-size:10pt; border:1px solid rgb(192,192,192); border-collapse:collapse; padding:3px; word-break:normal!important">
+pthread_cond_init (pthread_cond_t *cond, const pthread_condattr_t *attr);</td>
+</tr>
+</tbody>
+</table>
+<br style="clear:both">
+　　pthread_cond_wait和pthread_cond_timedwait用来等待条件变量被设置，值得注意的是这两个等待调用需要一个已经上锁的互斥体mutex，这是为了防止在真正进入等待状态之前别的线程有可能设置该条件变量而产生竞争。pthread_cond_wait的函数原型为：<br style="clear:both">
+<br style="clear:both">
+<table width="90%" align="center" bgcolor="#cccccc" style="table-layout:fixed; word-wrap:break-word; border:1px solid rgb(192,192,192); border-collapse:collapse">
+<tbody>
+<tr>
+<td style="font-size:10pt; border:1px solid rgb(192,192,192); border-collapse:collapse; padding:3px; word-break:normal!important">
+pthread_cond_wait (pthread_cond_t *cond, pthread_mutex_t *mutex);</td>
+</tr>
+</tbody>
+</table>
+<br style="clear:both">
+　　pthread_cond_broadcast用于设置条件变量，即使得事件发生，这样等待该事件的线程将不再阻塞：<br style="clear:both">
+<br style="clear:both">
+<table width="90%" align="center" bgcolor="#cccccc" style="table-layout:fixed; word-wrap:break-word; border:1px solid rgb(192,192,192); border-collapse:collapse">
+<tbody>
+<tr>
+<td style="font-size:10pt; border:1px solid rgb(192,192,192); border-collapse:collapse; padding:3px; word-break:normal!important">
+pthread_cond_broadcast (pthread_cond_t *cond) ;</td>
+</tr>
+</tbody>
+</table>
+<br style="clear:both">
+　　pthread_cond_signal则用于解除某一个等待线程的阻塞状态：<br style="clear:both">
+<br style="clear:both">
+<table width="90%" align="center" bgcolor="#cccccc" style="table-layout:fixed; word-wrap:break-word; border:1px solid rgb(192,192,192); border-collapse:collapse">
+<tbody>
+<tr>
+<td style="font-size:10pt; border:1px solid rgb(192,192,192); border-collapse:collapse; padding:3px; word-break:normal!important">
+pthread_cond_signal (pthread_cond_t *cond) ;</td>
+</tr>
+</tbody>
+</table>
+<br style="clear:both">
+　　pthread_cond_destroy 则用于释放一个条件变量的资源。<br style="clear:both">
+<br style="clear:both">
+　　在头文件semaphore.h 中定义的信号量则完成了互斥体和条件变量的封装，按照多线程程序设计中访问控制机制，控制对资源的同步访问，提供程序设计人员更方便的调用接口。<br style="clear:both">
+<br style="clear:both">
+<table width="90%" align="center" bgcolor="#cccccc" style="table-layout:fixed; word-wrap:break-word; border:1px solid rgb(192,192,192); border-collapse:collapse">
+<tbody>
+<tr>
+<td style="font-size:10pt; border:1px solid rgb(192,192,192); border-collapse:collapse; padding:3px; word-break:normal!important">
+sem_init(sem_t *sem, int pshared, unsigned int val);</td>
+</tr>
+</tbody>
+</table>
+<br style="clear:both">
+　　这个函数初始化一个信号量sem 的值为val，参数pshared 是共享属性控制，表明是否在进程间共享。<br style="clear:both">
+<br style="clear:both">
+<table width="90%" align="center" bgcolor="#cccccc" style="table-layout:fixed; word-wrap:break-word; border:1px solid rgb(192,192,192); border-collapse:collapse">
+<tbody>
+<tr>
+<td style="font-size:10pt; border:1px solid rgb(192,192,192); border-collapse:collapse; padding:3px; word-break:normal!important">
+sem_wait(sem_t *sem);</td>
+</tr>
+</tbody>
+</table>
+<br style="clear:both">
+　　调用该函数时，若sem为无状态，调用线程阻塞，等待信号量sem值增加(post )成为有信号状态；若sem为有状态，调用线程顺序执行，但信号量的值减一。<br style="clear:both">
+<br style="clear:both">
+<table width="90%" align="center" bgcolor="#cccccc" style="table-layout:fixed; word-wrap:break-word; border:1px solid rgb(192,192,192); border-collapse:collapse">
+<tbody>
+<tr>
+<td style="font-size:10pt; border:1px solid rgb(192,192,192); border-collapse:collapse; padding:3px; word-break:normal!important">
+sem_post(sem_t *sem);</td>
+</tr>
+</tbody>
+</table>
+<br style="clear:both">
+　　调用该函数，信号量sem的值增加，可以从无信号状态变为有信号状态。<p></p>
+<p style="word-wrap:break-word; margin:10px auto; font-family:&#39;ms shell dlg&#39;; font-size:14.285714149475098px; line-height:28.571428298950195px">
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>
+<p style="word-wrap:break-word; margin:10px auto; font-family:&#39;ms shell dlg&#39;; font-size:14.285714149475098px; line-height:28.571428298950195px">
+&nbsp;</p>
+<div style="word-wrap:break-word; font-family:&#39;ms shell dlg&#39;; font-size:14.285714149475098px; line-height:28.571428298950195px">
+<strong>4.实例<br style="clear:both">
+<br style="clear:both">
+</strong>　　下面我们还是以名的生产者/消费者问题为例来阐述Linux线程的控制和通信。一组生产者线程与一组消费者线程通过缓冲区发生联系。生产者线程将生产的产品送入缓冲区，消费者线程则从中取出产品。缓冲区有N 个，是一个环形的缓冲池。<br style="clear:both">
+<br style="clear:both">
+<table width="90%" align="center" bgcolor="#cccccc" style="table-layout:fixed; word-wrap:break-word; border:1px solid rgb(192,192,192); border-collapse:collapse">
+<tbody>
+<tr>
+<td style="font-size:10pt; border:1px solid rgb(192,192,192); border-collapse:collapse; padding:3px; word-break:normal!important">
+#include &lt;stdio.h&gt;<br style="clear:both">
+#include &lt;pthread.h&gt;<br style="clear:both">
+#define BUFFER_SIZE 16 // 缓冲区数量<br style="clear:both">
+struct prodcons<br style="clear:both">
+{<br style="clear:both">
+// 缓冲区相关数据结构<br style="clear:both">
+int buffer[BUFFER_SIZE]; /* 实际数据存放的数组*/<br style="clear:both">
+pthread_mutex_t lock; /* 互斥体lock 用于对缓冲区的互斥操作 */<br style="clear:both">
+int readpos, writepos; /* 读写指针*/<br style="clear:both">
+pthread_cond_t notempty; /* 缓冲区非空的条件变量 */<br style="clear:both">
+pthread_cond_t notfull; /* 缓冲区未满的条件变量 */<br style="clear:both">
+};<br style="clear:both">
+/* 初始化缓冲区结构 */<br style="clear:both">
+void init(struct prodcons *b)<br style="clear:both">
+{<br style="clear:both">
+pthread_mutex_init(&amp;b-&gt;lock, NULL);<br style="clear:both">
+pthread_cond_init(&amp;b-&gt;notempty, NULL);<br style="clear:both">
+pthread_cond_init(&amp;b-&gt;notfull, NULL);<br style="clear:both">
+b-&gt;readpos = 0;<br style="clear:both">
+b-&gt;writepos = 0;<br style="clear:both">
+}<br style="clear:both">
+/* 将产品放入缓冲区,这里是存入一个整数*/<br style="clear:both">
+void put(struct prodcons *b, int data)<br style="clear:both">
+{<br style="clear:both">
+pthread_mutex_lock(&amp;b-&gt;lock);<br style="clear:both">
+/* 等待缓冲区未满*/<br style="clear:both">
+if ((b-&gt;writepos + 1) % BUFFER_SIZE == b-&gt;readpos)<br style="clear:both">
+{<br style="clear:both">
+pthread_cond_wait(&amp;b-&gt;notfull, &amp;b-&gt;lock);<br style="clear:both">
+}<br style="clear:both">
+/* 写数据,并移动指针 */<br style="clear:both">
+b-&gt;buffer[b-&gt;writepos] = data;<br style="clear:both">
+b-&gt;writepos++;<br style="clear:both">
+if (b-&gt;writepos &gt; = BUFFER_SIZE)<br style="clear:both">
+b-&gt;writepos = 0;<br style="clear:both">
+/* 设置缓冲区非空的条件变量*/<br style="clear:both">
+pthread_cond_signal(&amp;b-&gt;notempty);<br style="clear:both">
+pthread_mutex_unlock(&amp;b-&gt;lock);<br style="clear:both">
+}&nbsp;<br style="clear:both">
+/* 从缓冲区中取出整数*/<br style="clear:both">
+int get(struct prodcons *b)<br style="clear:both">
+{<br style="clear:both">
+int data;<br style="clear:both">
+pthread_mutex_lock(&amp;b-&gt;lock);<br style="clear:both">
+/* 等待缓冲区非空*/<br style="clear:both">
+if (b-&gt;writepos == b-&gt;readpos)<br style="clear:both">
+{<br style="clear:both">
+pthread_cond_wait(&amp;b-&gt;notempty, &amp;b-&gt;lock);<br style="clear:both">
+}<br style="clear:both">
+/* 读数据,移动读指针*/<br style="clear:both">
+data = b-&gt;buffer[b-&gt;readpos];<br style="clear:both">
+b-&gt;readpos++;<br style="clear:both">
+if (b-&gt;readpos &gt; = BUFFER_SIZE)<br style="clear:both">
+b-&gt;readpos = 0;<br style="clear:both">
+/* 设置缓冲区未满的条件变量*/<br style="clear:both">
+pthread_cond_signal(&amp;b-&gt;notfull);<br style="clear:both">
+pthread_mutex_unlock(&amp;b-&gt;lock);<br style="clear:both">
+return data;<br style="clear:both">
+}<br style="clear:both">
+<br style="clear:both">
+/* 测试:生产者线程将1 到10000 的整数送入缓冲区,消费者线<br style="clear:both">
+程从缓冲区中获取整数,两者都打印信息*/<br style="clear:both">
+#define OVER ( - 1)<br style="clear:both">
+struct prodcons buffer;<br style="clear:both">
+void *producer(void *data)<br style="clear:both">
+{<br style="clear:both">
+int n;<br style="clear:both">
+for (n = 0; n &lt; 10000; n++)<br style="clear:both">
+{<br style="clear:both">
+printf("%d ---&gt;\n", n);<br style="clear:both">
+put(&amp;buffer, n);<br style="clear:both">
+} put(&amp;buffer, OVER);<br style="clear:both">
+return NULL;<br style="clear:both">
+}<br style="clear:both">
+<br style="clear:both">
+void *consumer(void *data)<br style="clear:both">
+{<br style="clear:both">
+int d;<br style="clear:both">
+while (1)<br style="clear:both">
+{<br style="clear:both">
+d = get(&amp;buffer);<br style="clear:both">
+if (d == OVER)<br style="clear:both">
+break;<br style="clear:both">
+printf("---&gt;%d \n", d);<br style="clear:both">
+}<br style="clear:both">
+return NULL;<br style="clear:both">
+}<br style="clear:both">
+<br style="clear:both">
+int main(void)<br style="clear:both">
+{<br style="clear:both">
+pthread_t th_a, th_b;<br style="clear:both">
+void *retval;<br style="clear:both">
+init(&amp;buffer);<br style="clear:both">
+/* 创建生产者和消费者线程*/<br style="clear:both">
+pthread_create(&amp;th_a, NULL, producer, 0);<br style="clear:both">
+pthread_create(&amp;th_b, NULL, consumer, 0);<br style="clear:both">
+/* 等待两个线程结束*/<br style="clear:both">
+pthread_join(th_a, &amp;retval);<br style="clear:both">
+pthread_join(th_b, &amp;retval);<br style="clear:both">
+return 0;<br style="clear:both">
+}</td>
+</tr>
+</tbody>
+</table>
+<br style="clear:both">
+　　5.WIN32、VxWorks、Linux线程类比<br style="clear:both">
+<br style="clear:both">
+　　目前为止，笔者已经创作了《基于嵌入式操作系统VxWorks的多任务并发程序设计》（《软件报》2006年5~12期连载）、《深入浅出Win32多线程程序设计》（天极网技术专题）系列，我们来找出这两个系列文章与本文的共通点。<br style="clear:both">
+<br style="clear:both">
+　　 看待技术问题要瞄准其本质，不管是Linux、VxWorks还是WIN32，其涉及到多线程的部分都是那些内容，无非就是线程控制和线程通信，它们的许多函数只是名称不同，其实质含义是等价的，下面我们来列个三大操作系统共同点详细表单：<br style="clear:both">
+<br style="clear:both">
+<table cellspacing="0" cellpadding="2" width="90%" align="center" border="1" style="table-layout:fixed; word-wrap:break-word; border:1px solid rgb(192,192,192); border-collapse:collapse">
+<tbody>
+<tr>
+<td width="13%" style="font-size:10pt; border:1px solid rgb(192,192,192); border-collapse:collapse; padding:3px; word-break:normal!important">
+事项</td>
+<td width="31%" style="font-size:10pt; border:1px solid rgb(192,192,192); border-collapse:collapse; padding:3px; word-break:normal!important">
+WIN32</td>
+<td width="25%" style="font-size:10pt; border:1px solid rgb(192,192,192); border-collapse:collapse; padding:3px; word-break:normal!important">
+VxWorks</td>
+<td width="31%" style="font-size:10pt; border:1px solid rgb(192,192,192); border-collapse:collapse; padding:3px; word-break:normal!important">
+Linux</td>
+</tr>
+<tr>
+<td style="font-size:10pt; border:1px solid rgb(192,192,192); border-collapse:collapse; padding:3px; word-break:normal!important">
+线程创建</td>
+<td style="font-size:10pt; border:1px solid rgb(192,192,192); border-collapse:collapse; padding:3px; word-break:normal!important">
+CreateThread</td>
+<td style="font-size:10pt; border:1px solid rgb(192,192,192); border-collapse:collapse; padding:3px; word-break:normal!important">
+taskSpawn</td>
+<td style="font-size:10pt; border:1px solid rgb(192,192,192); border-collapse:collapse; padding:3px; word-break:normal!important">
+pthread_create</td>
+</tr>
+<tr>
+<td style="font-size:10pt; border:1px solid rgb(192,192,192); border-collapse:collapse; padding:3px; word-break:normal!important">
+线程终止</td>
+<td style="font-size:10pt; border:1px solid rgb(192,192,192); border-collapse:collapse; padding:3px; word-break:normal!important">
+执行完成后退出；线程自身调用ExitThread函数即终止自己；被其他线程调用函数TerminateThread函数</td>
+<td style="font-size:10pt; border:1px solid rgb(192,192,192); border-collapse:collapse; padding:3px; word-break:normal!important">
+执行完成后退出；由线程本身调用exit退出；被其他线程调用函数taskDelete终止</td>
+<td style="font-size:10pt; border:1px solid rgb(192,192,192); border-collapse:collapse; padding:3px; word-break:normal!important">
+执行完成后退出；由线程本身调用pthread_exit 退出；被其他线程调用函数pthread_cance终止</td>
+</tr>
+<tr>
+<td style="font-size:10pt; border:1px solid rgb(192,192,192); border-collapse:collapse; padding:3px; word-break:normal!important">
+获取线程ID</td>
+<td style="font-size:10pt; border:1px solid rgb(192,192,192); border-collapse:collapse; padding:3px; word-break:normal!important">
+GetCurrentThreadId</td>
+<td style="font-size:10pt; border:1px solid rgb(192,192,192); border-collapse:collapse; padding:3px; word-break:normal!important">
+taskIdSelf</td>
+<td style="font-size:10pt; border:1px solid rgb(192,192,192); border-collapse:collapse; padding:3px; word-break:normal!important">
+pthread_self</td>
+</tr>
+<tr>
+<td style="font-size:10pt; border:1px solid rgb(192,192,192); border-collapse:collapse; padding:3px; word-break:normal!important">
+创建互斥</td>
+<td style="font-size:10pt; border:1px solid rgb(192,192,192); border-collapse:collapse; padding:3px; word-break:normal!important">
+CreateMutex</td>
+<td style="font-size:10pt; border:1px solid rgb(192,192,192); border-collapse:collapse; padding:3px; word-break:normal!important">
+semMCreate</td>
+<td style="font-size:10pt; border:1px solid rgb(192,192,192); border-collapse:collapse; padding:3px; word-break:normal!important">
+pthread_mutex_init</td>
+</tr>
+<tr>
+<td style="font-size:10pt; border:1px solid rgb(192,192,192); border-collapse:collapse; padding:3px; word-break:normal!important">
+获取互斥</td>
+<td style="font-size:10pt; border:1px solid rgb(192,192,192); border-collapse:collapse; padding:3px; word-break:normal!important">
+WaitForSingleObject、WaitForMultipleObjects</td>
+<td style="font-size:10pt; border:1px solid rgb(192,192,192); border-collapse:collapse; padding:3px; word-break:normal!important">
+semTake</td>
+<td style="font-size:10pt; border:1px solid rgb(192,192,192); border-collapse:collapse; padding:3px; word-break:normal!important">
+pthread_mutex_lock</td>
+</tr>
+<tr>
+<td style="font-size:10pt; border:1px solid rgb(192,192,192); border-collapse:collapse; padding:3px; word-break:normal!important">
+释放互斥</td>
+<td style="font-size:10pt; border:1px solid rgb(192,192,192); border-collapse:collapse; padding:3px; word-break:normal!important">
+ReleaseMutex</td>
+<td style="font-size:10pt; border:1px solid rgb(192,192,192); border-collapse:collapse; padding:3px; word-break:normal!important">
+semGive</td>
+<td style="font-size:10pt; border:1px solid rgb(192,192,192); border-collapse:collapse; padding:3px; word-break:normal!important">
+phtread_mutex_unlock</td>
+</tr>
+<tr>
+<td style="font-size:10pt; border:1px solid rgb(192,192,192); border-collapse:collapse; padding:3px; word-break:normal!important">
+创建信号量</td>
+<td style="font-size:10pt; border:1px solid rgb(192,192,192); border-collapse:collapse; padding:3px; word-break:normal!important">
+CreateSemaphore</td>
+<td style="font-size:10pt; border:1px solid rgb(192,192,192); border-collapse:collapse; padding:3px; word-break:normal!important">
+semBCreate、semCCreate</td>
+<td style="font-size:10pt; border:1px solid rgb(192,192,192); border-collapse:collapse; padding:3px; word-break:normal!important">
+sem_init</td>
+</tr>
+<tr>
+<td style="font-size:10pt; border:1px solid rgb(192,192,192); border-collapse:collapse; padding:3px; word-break:normal!important">
+等待信号量</td>
+<td style="font-size:10pt; border:1px solid rgb(192,192,192); border-collapse:collapse; padding:3px; word-break:normal!important">
+WaitForSingleObject</td>
+<td style="font-size:10pt; border:1px solid rgb(192,192,192); border-collapse:collapse; padding:3px; word-break:normal!important">
+semTake</td>
+<td style="font-size:10pt; border:1px solid rgb(192,192,192); border-collapse:collapse; padding:3px; word-break:normal!important">
+sem_wait</td>
+</tr>
+<tr>
+<td style="font-size:10pt; border:1px solid rgb(192,192,192); border-collapse:collapse; padding:3px; word-break:normal!important">
+释放信号量</td>
+<td style="font-size:10pt; border:1px solid rgb(192,192,192); border-collapse:collapse; padding:3px; word-break:normal!important">
+ReleaseSemaphore</td>
+<td style="font-size:10pt; border:1px solid rgb(192,192,192); border-collapse:collapse; padding:3px; word-break:normal!important">
+semGive</td>
+<td style="font-size:10pt; border:1px solid rgb(192,192,192); border-collapse:collapse; padding:3px; word-break:normal!important">
+sem_post</td>
+</tr>
+</tbody>
+</table>
+<br style="clear:both">
+　　<strong>&nbsp;6.小结</strong><br style="clear:both">
+<br style="clear:both">
+　　本章讲述了Linux下多线程的控制及线程间通信编程方法，给出了一个生产者/消费者的实例，并将Linux的多线程与WIN32、VxWorks多线程进行了类比，总结了一般规律。鉴于多线程编程已成为开发并发应用程序的主流方法，学好本章的意义也便不言自明。</div>
+<div style="word-wrap:break-word; font-family:&#39;ms shell dlg&#39;; font-size:14.285714149475098px; line-height:28.571428298950195px">
+<br>
+</div>
+<div style="word-wrap:break-word; font-family:&#39;ms shell dlg&#39;; font-size:14.285714149475098px; line-height:28.571428298950195px">
+转载自：<a href="http://www.cnblogs.com/sophia0405/archive/2008/12/02/1345463.html">http://www.cnblogs.com/sophia0405/archive/2008/12/02/1345463.html</a></div>
+
+</div>
+
+<div class="share_buttons" id="sharePanel"><span>分享到：</span> <a name="sina" class="share_sina" title="分享到新浪微博"></a><a name="qq" class="share_qq" title="分享到腾讯微博"></a></div>
+<!--192.168.100.33-->
+<div class="article_next_prev">
+    <li class="next_article"><span>下一篇：</span><a href="http://blog.csdn.net/wangwei890702/article/details/8192403">Linux 编译报错 -- undefined reference to 问题解决方法 （具体'pthread_create'和opencv看文章最后两条）</a></li>
+</div>
+
+
+    
+</div>
+<div id="ad_cen">
+<script type="text/javascript">BAIDU_CLB_SLOT_ID = "117306";</script>
+<script type="text/javascript" src="./help_files/o.js"></script><div id="BAIDU_CLB_SLOT_PS_117306"></div><script charset="utf-8" src="./help_files/ecom"></script><div id="baidu_clb_slot_117306"><iframe id="baidu_clb_slot_iframe_117306" src="./help_files/help.htm" onload="BAIDU_CLB_renderFrame(&#39;117306&#39;)" width="728" height="90" vspace="0" hspace="0" allowtransparency="true" scrolling="no" marginheight="0" marginwidth="0" frameborder="0" style="border: 0; vertical-align: bottom; margin: 0; display: block;"></iframe></div>
+</div>
+<script type="text/javascript">
+    //new Ad(4, 'ad_cen');
+</script>
+<div id="comment_title" class="panel_head">查看评论<a name="comments"></a></div>
+<div id="comment_list"><br>&nbsp;&nbsp;暂无评论<br><br><div class="clear"></div></div>
+<div id="comment_bar"></div>
+<div id="comment_form"><div class="guest_link">您还没有登录,请<a href="javascript:void(0);" onclick="javascript:csdn.showLogin(function (dat) {js_logined(dat.data.userName);});">[登录]</a>或<a href="http://passport.csdn.net/account/register?from=http%3A%2F%2Fblog.csdn.net%2Fwangwei890702%2Farticle%2Fdetails%2F8193285">[注册]</a></div></div>
+<div class="announce">* 以上用户言论只代表其个人观点，不代表CSDN网站的观点或立场<a name="reply"></a><a name="quote"></a></div>
+<script type="text/javascript">
+    var fileName = '8193285';
+    var commentscount = 0;
+    var islock = false
+</script>
+<script type="text/javascript" src="./help_files/comment.js"></script>
+<div id="ad_bot"><iframe id="ad_frm_0" frameborder="0" scrolling="no" src="./help_files/ad(1).htm" style="border-width: 0px; overflow: hidden; width: 738px; height: 170px;"></iframe></div>
+<script type="text/javascript">
+    new Ad(5, 'ad_bot');
+</script>
+<div id="report_dialog"></div>
+
+<div id="d-top" style="display: none;">
+<a id="d-top-a" href="http://blog.csdn.net/wangwei890702/article/details/8193285#" title="回到顶部">
+<img src="./help_files/top.png" alt="TOP"></a>
+</div>
+<script type="text/javascript">
+    $(function(){
+        var d_top=$('#d-top');
+        document.onscroll=function(){
+            var scrTop=(document.body.scrollTop||document.documentElement.scrollTop);
+            if(scrTop>500){
+                d_top.show();
+            }else{
+                d_top.hide();
+            }
+        }
+        $('#d-top-a').click(function(){
+            scrollTo(0,0);
+            this.blur();
+            return false;
+        });
+    });
+</script>
+
+<div class="clear"></div>
+</div>
+</div>
+
+<div id="side">
+<div class="side">
+<div id="panel_Profile" class="panel">
+<ul class="panel_head"><span>个人资料</span></ul>
+<ul class="panel_body profile">
+<div id="blog_userface">
+    <a href="http://my.csdn.net/wangwei890702" target="_blank">
+    <img src="./help_files/1_wangwei890702.jpg" title="访问我的空间" style="max-width:90%">
+    </a>
+    <br>
+    <span><a href="http://my.csdn.net/wangwei890702" class="user_name" target="_blank">wangwei890702</a></span>
+</div>
+<div class="interact">
+<a href="javascript:void(0);" class="attent" id="span_add_follow" title="[加关注]"></a>
+<a href="javascript:void(0);" class="letter" onclick="loginto(1)" title="[发私信]"></a>
+</div>
+<div id="blog_medal">
+<div id="bms_box"><a href="http://medal.blog.csdn.net/allmedal.aspx" target="_blank"><img src="./help_files/holdon_s2.gif" onmouseover="m_over_m(this,0)" onmouseout="m_out_m()" alt=""></a></div></div>
+<ul id="blog_rank">
+    <li>访问：<span>8320次</span></li>
+    <li>积分：<span>377分</span></li>
+    <li>排名：<span>千里之外</span></li>
+</ul>
+<ul id="blog_statistics">
+    <li>原创：<span>27篇</span></li>
+    <li>转载：<span>21篇</span></li>
+    <li>译文：<span>0篇</span></li>
+    <li>评论：<span>1条</span></li>
+</ul>
+</ul>
+</div>
+
+<div class="panel">
+<ul class="panel_body" style="padding:0;">
+<script type="text/javascript" src="./help_files/m.js"></script> 
+<script type="text/javascript"> 
+BAIDU_CLB_preloadSlots("724643","117306"); 
+</script><script charset="utf-8" src="./help_files/ecom(1)"></script>
+<script type="text/javascript">BAIDU_CLB_fillSlot("724643");</script><script type="text/javascript"><!--
+google_ad_client = "ca-pub-1076724771190722";
+/* 博客内页 200&#42;200 */
+google_ad_slot = "9073392646";
+google_ad_width = 200;
+google_ad_height = 200;
+//-->
+</script>
+<script type="text/javascript" src="./help_files/show_ads.js">
+</script><ins style="display:inline-table;border:none;height:200px;margin:0;padding:0;position:relative;visibility:visible;width:200px"><ins id="aswift_0_anchor" style="display:block;border:none;height:200px;margin:0;padding:0;position:relative;visibility:visible;width:200px"><iframe width="200" height="200" frameborder="0" marginwidth="0" marginheight="0" vspace="0" hspace="0" allowtransparency="true" scrolling="no" onload="var i=this.id,s=window.google_iframe_oncopy,H=s&amp;&amp;s.handlers,h=H&amp;&amp;H[i],w=this.contentWindow,d;try{d=w.document}catch(e){}if(h&amp;&amp;d&amp;&amp;(!d.body||!d.body.firstChild)){if(h.call){setTimeout(h,0)}else if(h.match){w.location.replace(h)}}" id="aswift_0" name="aswift_0" style="left:0;position:absolute;top:0;"></iframe></ins></ins> 
+</ul>
+</div>
+<div class="panel" id="panel_Search">
+    <ul class="panel_head"><span>文章搜索</span></ul>
+    <ul class="panel_body">
+        <form id="frmSearch" action="http://so.csdn.net/search" class="form_search" target="_blank">
+        <span><input id="inputSearch" type="text" class="blogsearch" title="请输入关键字"></span>
+        <input id="btnSubmit" type="submit" value="搜索" title="search in blog">
+        <input type="hidden" name="q" id="inputQ">
+        <input type="hidden" name="t" value="blog">
+        <a id="btnSearchBlog" target="_blank"></a>
+        </form>
+    </ul>
+</div><div id="panel_Category" class="panel">
+<ul class="panel_head"><span>文章分类</span></ul>
+<ul class="panel_body">
+<li>
+<a href="http://blog.csdn.net/wangwei890702/article/category/1282631">生活</a><span>(5)</span>
+</li>
+<li>
+<a href="http://blog.csdn.net/wangwei890702/article/category/1282633">Linux C</a><span>(31)</span>
+</li>
+<li>
+<a href="http://blog.csdn.net/wangwei890702/article/category/1283385">数据结构</a><span>(1)</span>
+</li>
+<li>
+<a href="http://blog.csdn.net/wangwei890702/article/category/1283407">算法</a><span>(3)</span>
+</li>
+<li>
+<a href="http://blog.csdn.net/wangwei890702/article/category/1286439">TCP/IP</a><span>(4)</span>
+</li>
+<li>
+<a href="http://blog.csdn.net/wangwei890702/article/category/1334403">json</a><span>(1)</span>
+</li>
+<li>
+<a href="http://blog.csdn.net/wangwei890702/article/category/1337168">QT</a><span>(9)</span>
+</li>
+<li>
+<a href="http://blog.csdn.net/wangwei890702/article/category/1337169">渐变</a><span>(1)</span>
+</li>
+<li>
+<a href="http://blog.csdn.net/wangwei890702/article/category/1337739">progress</a><span>(1)</span>
+</li>
+<li>
+<a href="http://blog.csdn.net/wangwei890702/article/category/1366817">webkit</a><span>(2)</span>
+</li>
+<li>
+<a href="http://blog.csdn.net/wangwei890702/article/category/1372442">服务器</a><span>(1)</span>
+</li>
+<li>
+<a href="http://blog.csdn.net/wangwei890702/article/category/1471567">android</a><span>(3)</span>
+</li>
+</ul>
+</div><div id="panel_Archive" class="panel">
+<ul class="panel_head"><span>文章存档</span></ul>
+<ul class="panel_body">
+<div id="archive_list"><li><a href="http://blog.csdn.net/wangwei890702/article/month/2013/06">2013年06月</a><span>(7)</span></li><li><a href="http://blog.csdn.net/wangwei890702/article/month/2013/05">2013年05月</a><span>(1)</span></li><li><a href="http://blog.csdn.net/wangwei890702/article/month/2013/03">2013年03月</a><span>(5)</span></li><li><a href="http://blog.csdn.net/wangwei890702/article/month/2013/02">2013年02月</a><span>(1)</span></li><li><a href="http://blog.csdn.net/wangwei890702/article/month/2013/01">2013年01月</a><span>(8)</span></li><span class="hidelist" style="display:none;"><li><a href="http://blog.csdn.net/wangwei890702/article/month/2012/12">2012年12月</a><span>(10)</span></li><li><a href="http://blog.csdn.net/wangwei890702/article/month/2012/11">2012年11月</a><span>(16)</span></li></span><div id="archive_list_button" class="list_closed">展开</div></div>
+</ul>
+</div>
+<div id="hotarticls" class="panel">
+<ul class="panel_head"><span>阅读排行</span></ul>
+<ul class="panel_body itemlist">
+<li>
+<a href="http://blog.csdn.net/wangwei890702/article/details/8552482" title="QT 学习记录：渐变-QLinearGradient，QRadialGradient，QConicalGradient)">QT 学习记录：渐变-QLinearGradient，QRadialGradient，QConicalGradient)</a><span>(997)</span>
+</li>
+<li>
+<a href="http://blog.csdn.net/wangwei890702/article/details/8653495" title="webkit 设置body背景色为透明的方法">webkit 设置body背景色为透明的方法</a><span>(467)</span>
+</li>
+<li>
+<a href="http://blog.csdn.net/wangwei890702/article/details/8590392" title="QT 等待对话框/进度--">QT 等待对话框/进度--</a><span>(439)</span>
+</li>
+<li>
+<a href="./help_files/help.htm" title="Linux下c开发 之 线程通信">Linux下c开发 之 线程通信</a><span>(420)</span>
+</li>
+<li>
+<a href="http://blog.csdn.net/wangwei890702/article/details/8546993" title="在Linux里设置环境变量的方法（export PATH）--路径">在Linux里设置环境变量的方法（export PATH）--路径</a><span>(321)</span>
+</li>
+<li>
+<a href="http://blog.csdn.net/wangwei890702/article/details/8195740" title="数据结构之散列表（Hash）">数据结构之散列表（Hash）</a><span>(285)</span>
+</li>
+<li>
+<a href="http://blog.csdn.net/wangwei890702/article/details/8679976" title="QT程序编译">QT程序编译</a><span>(284)</span>
+</li>
+<li>
+<a href="http://blog.csdn.net/wangwei890702/article/details/8192403" title="Linux 编译报错 -- undefined reference to 问题解决方法 （具体&#39;pthread_create&#39;和opencv看文章最后两条）">Linux 编译报错 -- undefined reference to 问题解决方法 （具体'pthread_create'和opencv看文章最后两条）</a><span>(237)</span>
+</li>
+<li>
+<a href="http://blog.csdn.net/wangwei890702/article/details/8193296" title="关于她的记忆">关于她的记忆</a><span>(228)</span>
+</li>
+<li>
+<a href="http://blog.csdn.net/wangwei890702/article/details/8703283" title="samba服务器配置及常见错误解决（fedora）">samba服务器配置及常见错误解决（fedora）</a><span>(209)</span>
+</li>
+</ul>
+</div>
+<div id="hotarticls2" class="panel">
+<ul class="panel_head"><span>评论排行</span></ul>
+<ul class="panel_body itemlist">
+<li>
+<a href="http://blog.csdn.net/wangwei890702/article/details/8193296" title="关于她的记忆">关于她的记忆</a><span>(1)</span>
+</li>
+<li>
+<a href="http://blog.csdn.net/wangwei890702/article/details/9185417" title="javah 命令记录">javah 命令记录</a><span>(0)</span>
+</li>
+<li>
+<a href="http://blog.csdn.net/wangwei890702/article/details/8590392" title="QT 等待对话框/进度--">QT 等待对话框/进度--</a><span>(0)</span>
+</li>
+<li>
+<a href="http://blog.csdn.net/wangwei890702/article/details/8554962" title="QT学习记录-进度条：">QT学习记录-进度条：</a><span>(0)</span>
+</li>
+<li>
+<a href="http://blog.csdn.net/wangwei890702/article/details/8553004" title="嵌入式软件开发------QColor类的使用">嵌入式软件开发------QColor类的使用</a><span>(0)</span>
+</li>
+<li>
+<a href="http://blog.csdn.net/wangwei890702/article/details/8552482" title="QT 学习记录：渐变-QLinearGradient，QRadialGradient，QConicalGradient)">QT 学习记录：渐变-QLinearGradient，QRadialGradient，QConicalGradient)</a><span>(0)</span>
+</li>
+<li>
+<a href="http://blog.csdn.net/wangwei890702/article/details/8548922" title="Linux中find常见用法示例">Linux中find常见用法示例</a><span>(0)</span>
+</li>
+<li>
+<a href="http://blog.csdn.net/wangwei890702/article/details/8546993" title="在Linux里设置环境变量的方法（export PATH）--路径">在Linux里设置环境变量的方法（export PATH）--路径</a><span>(0)</span>
+</li>
+<li>
+<a href="http://blog.csdn.net/wangwei890702/article/details/8540230" title="linux 动态库的生成与使用">linux 动态库的生成与使用</a><span>(0)</span>
+</li>
+<li>
+<a href="http://blog.csdn.net/wangwei890702/article/details/8540189" title="JSON 基础介绍">JSON 基础介绍</a><span>(0)</span>
+</li>
+</ul>
+</div>
+<div id="homepageArticles" class="panel">
+<ul class="panel_head"><span>推荐文章</span></ul>
+<ul class="panel_body" id="ad_commend"><iframe id="ad_frm_1" frameborder="0" scrolling="no" src="./help_files/ad.htm" style="border-width: 0px; overflow: hidden; width: 194px; height: 218px;"></iframe></ul>
+</div>
+<script type="text/javascript">
+ new Ad(12, 'ad_commend');
+</script><div id="newcomments" class="panel">
+<ul class="panel_head"><span>最新评论</span></ul>
+<ul class="panel_body itemlist">
+    <li>
+    <a href="http://blog.csdn.net/wangwei890702/article/details/8193296#comments">关于她的记忆</a>
+    <p style="margin:0px;"><a href="http://blog.csdn.net/wangwei890702" class="user_name">wangwei890702</a>:
+找骂的吧。
+    </p>
+    </li>
+</ul>
+</div>
+</div>
+<div class="clear"></div>
+</div>
+
+<div class="clear"></div>
+</div>
+
+<script type="text/javascript" src="./help_files/newblog.min.js"></script>
+<script type="text/javascript" src="./help_files/showblogmedal.ashx"></script>
+
+<script type="text/javascript">
+document.write('<script type="text/javascript" src="http://csdnimg.cn/pubfooter/js/publib_footer.js?' + Math.floor(new Date()/120000).toString(36) + '="></'+'script>');
+</script><script type="text/javascript" src="./help_files/publib_footer.js"></script><link rel="stylesheet" type="text/css" href="./help_files/pub_footer_2012.css"><div id="pub_footerall" class="pub_footerall"><dl><dt></dt> <dd><a href="http://www.csdn.net/company/about.html" target="_blank">公司简介</a>|<a href="http://www.csdn.net/company/recruit.html" target="_blank">招贤纳士</a>|<a href="http://www.csdn.net/company/marketing.html" target="_blank">广告服务</a>|<a href="http://www.csdn.net/company/account.html" target="_blank">银行汇款帐号</a>|<a href="http://www.csdn.net/company/contact.html" target="_blank">联系方式</a>|<a href="http://www.csdn.net/company/statement.html" target="_blank">版权声明</a>|<a href="http://www.csdn.net/company/layer.html" target="_blank">法律顾问</a>|<a href="mailto:webmaster@csdn.net">问题报告</a></dd><dd><a href="http://wpa.qq.com/msgrd?v=3&uin=2355263776&site=qq&menu=yes" target="_blank" class="qq">QQ客服</a> <a href="http://e.weibo.com/csdnsupport/profile" target="_blank" class="weibo">微博客服</a> <a href="http://bbs.csdn.net/forums/Service" target="_blank" class="online">论坛反馈</a> <a href="mailto:webmaster@csdn.net" class="email">联系邮箱：webmaster@csdn.net</a> <span class="phone">服务热线：400-600-2320</span></dd><dd>京&nbsp;ICP&nbsp;证&nbsp;070598&nbsp;号</dd><dd>北京创新乐知信息技术有限公司 版权所有</dd><dd>世纪乐知(北京)网络技术有限公司 提供技术支持</dd><dd>江苏乐知网络技术有限公司 提供商务支持</dd><dd>Copyright © 1999-2012, CSDN.NET, All Rights Reserved&nbsp;<a href="http://www.hd315.gov.cn/beian/view.asp?bianhao=010202001032100010" target="_blank"><img src="./help_files/gongshang_logos.gif" alt="GongshangLogo" title=""></a></dd></dl></div><script id="noticeScript" type="text/javascript" btnid="header_notice_num" wrapid="note1" count="5" subcount="5" src="./help_files/notify.js"></script><script type="text/javascript" charset="utf-8" src="./help_files/tracking.js"></script>
+
+<script type="text/javascript" src="./help_files/login.js"></script>
+<script type="text/javascript">document.write("<img src=http://counter.csdn.net/pv.aspx?id=24 border=0 width=0 height=0>");</script><img src="./help_files/pv.aspx" border="0" width="0" height="0">
+<script type="text/javascript" src="./help_files/counter.js"></script><script type="text/javascript" charset="UTF-8" src="./help_files/msg.popup.js"></script>
+
+
+<script type="text/javascript" src="./help_files/ad-blog.js"></script>
+
+<script type="text/javascript" src="./help_files/count.js"></script><iframe src="./help_files/logs.htm" frameborder="0" width="0" height="0"></iframe>
+
+</div>
+
+</body></html>
