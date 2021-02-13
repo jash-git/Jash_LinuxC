@@ -1,0 +1,186 @@
+﻿<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3c.org/TR/1999/REC-html401-19991224/loose.dtd">
+<!-- saved from url=(0029)http://zhanjun.net/?q=node/14 -->
+<HTML lang=zh-hans xml:lang="zh-hans" 
+xmlns="http://www.w3.org/1999/xhtml"><HEAD><TITLE>Linux操作系统下串口编程入门教程 | Linux－Programming－国学</TITLE>
+<META http-equiv=Content-Type content="text/html; charset=utf-8">
+<STYLE type=text/css media=all>@import url( misc/drupal.css );
+</STYLE>
+
+<STYLE type=text/css>@import url( modules/codefilter/codefilter.css );
+</STYLE>
+
+<STYLE type=text/css media=all>@import url( themes/bluemarine/style.css );
+</STYLE>
+
+<META content="MSHTML 6.00.2900.3020" name=GENERATOR></HEAD>
+<BODY>
+<TABLE id=header cellSpacing=0 cellPadding=0 border=0>
+  <TBODY>
+  <TR>
+    <TD id=logo>
+      <H1 class=site-name><A title=Home 
+      href="http://zhanjun.net/">Linux－Programming－国学</A></H1></TD>
+    <TD id=menu>
+      <DIV id=secondary><A class=active href="http://zhanjun.net/cn">旧版</A>
+      <SCRIPT src="Linux_RS232.files/urchin.js" type=text/javascript>
+</SCRIPT>
+
+      <SCRIPT type=text/javascript>
+_uacct = "UA-262224-4";
+urchinTracker();
+</SCRIPT>
+       </DIV>
+      <DIV id=primary><A class=active 
+      href="http://zhanjun.net/?q=user/login">Login</A></DIV></TD></TR></TBODY></TABLE>
+<TABLE id=content cellSpacing=0 cellPadding=0 border=0>
+  <TBODY>
+  <TR>
+    <TD vAlign=top>
+      <DIV id=main>
+      <DIV class=breadcrumb><A href="http://zhanjun.net/?q=">主页</A></DIV>
+      <H1 class=title>Linux操作系统下串口编程入门教程</H1><!-- begin content -->
+      <DIV class="node "><SPAN class=submitted>由 zhanjun 在 周五, 2006-03-24 13:28 
+      提交</SPAN> 
+      <DIV class=content>
+      <P>Linux操作系统下串口编程入门教程<BR>作者：佚名 文章来源：不详 点击数：199 更新时间：2005-11-6 </P>
+      <P>--------------------------------------------------------------------------------</P>
+      <P>　　简介：</P>
+      <P>　　Linux操作系统从一开始就对串行口提供了很好的支持，本文就Linux下的串行口通讯编程进行简单的介绍。</P>
+      <P>　　串口简介</P>
+      <P>　　串行口是计算机一种常用的接口，具有连接线少，通讯简单，得到广泛的使用。常用的串口是RS-232-C接口(又称EIA 
+      RS-232-C)它是在1970年由美国电子工业协会(EIA)联合贝尔系统、调制解调器厂家及计算机终端生产厂家共同制定的用于串行通讯的标准。它的全名是"数据终端设备(DTE)和数据通讯设备(DCE)之间串行二进制数据交换接口技术标准"该标准规定采用一个25个脚的DB25连接器，对连接器的每个引脚的信号内容加以规定，还对各种信号的电平加以规定。传输距离在码元畸变小于4%的情况下，传输电缆长度应为50英尺。</P>
+      <P>　　Linux操作系统从一开始就对串行口提供了很好的支持，本文就Linux下的串行口通讯编程进行简单的介绍，如果要非常深入了解，建议看看本文所参考的《Serial 
+      Programming Guide for POSIX Operating Systems》</P>
+      <P>　　串口操作</P>
+      <P>　　串口操作需要的头文件<BR>#include &lt;stdio.h&gt; /*标准输入输出定义*/<BR>#include 
+      &lt;stdlib.h&gt; /*标准函数库定义*/<BR>#include &lt;unistd.h&gt; /*Unix 
+      标准函数定义*/<BR>#include &lt;sys/types.h&gt;<BR>#include 
+      &lt;sys/stat.h&gt;<BR>#include &lt;fcntl.h&gt; /*文件控制定义*/<BR>#include 
+      &lt;termios.h&gt; /*PPSIX 终端控制定义*/<BR>#include &lt;errno.h&gt; 
+      /*错误号定义*/</P>
+      <P>打开串口 </P>
+      <P>在 Linux 下串口文件是位于 /dev 下的。串口一 为 /dev/ttyS0，串口二 为 
+      /dev/ttyS1。打开串口是通过使用标准的文件打开函数操作： </P>
+      <P>int fd;<BR>/*以读写方式打开串口*/<BR>fd = open( "/dev/ttyS0", O_RDWR);<BR>if (-1 
+      == fd){<BR>/* 不能打开串口一*/<BR>perror(" 提示错误！");<BR>}</P>
+      <P>设置串口 </P>
+      <P>　　最基本的设置串口包括波特率设置，效验位和停止位设置。串口的设置主要是设置 struct termios 结构体的各成员值。 </P>
+      <P>struct termio<BR>{ unsigned short c_iflag; /* 输入模式标志 */<BR>unsigned 
+      short c_oflag; /* 输出模式标志 */<BR>unsigned short c_cflag; /* 
+      控制模式标志*/<BR>unsigned short c_lflag; /* local mode flags */<BR>unsigned 
+      char c_line; /* line discipline */<BR>unsigned char c_cc[NCC]; /* control 
+      characters */<BR>};</P>
+      <P>　　设置这个结构体很复杂，我这里就只说说常见的一些设置： </P>
+      <P>　　波特率设置 下面是修改波特率的代码： </P>
+      <P>struct termios Opt;<BR>tcgetattr(fd, 
+      &amp;Opt);<BR>cfsetispeed(&amp;Opt,B19200); 
+      /*设置为19200Bps*/<BR>cfsetospeed(&amp;Opt,B19200);<BR>tcsetattr(fd,TCANOW,&amp;Opt);</P>
+      <P>设置波特率的例子函数： </P>
+      <P>/**<BR>*@brief 设置串口通信速率<BR>*@param fd 类型 int 打开串口的文件句柄<BR>*@param speed 
+      类型 int 串口速度<BR>*@return void<BR>*/<BR>int speed_arr[] = { B38400, B19200, 
+      B9600, B4800, B2400, B1200, B300,<BR>B38400, B19200,漀?朦?????????? B9600, 
+      B4800, B2400, B1200, B300, };<BR>int name_arr[] = {38400, 19200, 9600, 
+      4800, 2400, 1200, 300, 38400,<BR>19200, 9600, 4800, 2400, 1200, 300, 
+      };<BR>void set_speed(int fd, int speed){<BR>int i;<BR>int 
+      status;<BR>struct termios Opt;<BR>tcgetattr(fd, &amp;Opt);<BR>for ( i= 0; 
+      i &lt; sizeof(speed_arr) / sizeof(int); i++) {<BR>if (speed == 
+      name_arr[i]) {<BR>tcflush(fd, TCIOFLUSH);<BR>cfsetispeed(&amp;Opt, 
+      speed_arr[i]);<BR>cfsetospeed(&amp;Opt, speed_arr[i]);<BR>status = 
+      tcsetattr(fd1, TCSANOW, &amp;Opt);<BR>if (status != 0) 
+      {<BR>perror("tcsetattr 
+      fd1");<BR>return;<BR>}<BR>tcflush(fd,TCIOFLUSH);<BR>}<BR>}<BR>}</P>
+      <P>设置效验的函数： </P>
+      <P>/**<BR>*@brief 设置串口数据位，停止位和效验位<BR>*@param fd 类型 int 
+      打开的串口文件句柄<BR>*@param databits 类型 int 数据位 取值 为 7 或者8<BR>*@param stopbits 类型 
+      int 停止位 取值为 1 或者2<BR>*@param parity 类型 int 效验类型 取值为N,E,O,,S<BR>*/<BR>int 
+      set_Parity(int fd,int databits,int stopbits,int parity)<BR>{<BR>struct 
+      termios options;<BR>if ( tcgetattr( fd,&amp;options) != 0) 
+      {<BR>perror("SetupSerial 1");<BR>return(FALSE);<BR>}<BR>options.c_cflag 
+      &amp;= ~CSIZE;<BR>switch (databits) /*设置数据位数*/<BR>{<BR>case 
+      7:<BR>options.c_cflag |= CS7;<BR>break;<BR>case 8:<BR>options.c_cflag |= 
+      CS8;<BR>break;<BR>default:<BR>fprintf(stderr,"Unsupported data size "); 
+      return (FALSE);<BR>}<BR>switch (parity)<BR>{<BR>case 'n':<BR>case 
+      'N':<BR>options.c_cflag &amp;= ~PARENB; /* Clear parity enable 
+      */<BR>options.c_iflag &amp;= ~INPCK; /* Enable parity checking 
+      */<BR>break;<BR>case 'o':<BR>case 'O':<BR>options.c_cflag |= (PARODD | 
+      PARENB); /* 设置为奇效验*/<BR>options.c_iflag |= INPCK; /* Disnable 
+      漀?朦??????????parity checking */<BR>break;<BR>case 'e':<BR>case 
+      'E':<BR>options.c_cflag |= PARENB; /* Enable parity */<BR>options.c_cflag 
+      &amp;= ~PARODD; /* 转换为偶效验*/<BR>options.c_iflag |= INPCK; /* Disnable 
+      parity checking */<BR>break;<BR>case 'S':<BR>case 's': /*as no 
+      parity*/<BR>options.c_cflag &amp;= ~PARENB;<BR>options.c_cflag &amp;= 
+      ~CSTOPB;break;<BR>default:<BR>fprintf(stderr,"Unsupported parity 
+      ");<BR>return (FALSE);<BR>}<BR>/* 设置停止位*/<BR>switch 
+      (stopbits)<BR>{<BR>case 1:<BR>options.c_cflag &amp;= 
+      ~CSTOPB;<BR>break;<BR>case 2:<BR>options.c_cflag |= 
+      CSTOPB;<BR>break;<BR>default:<BR>fprintf(stderr,"Unsupported stop bits 
+      ");<BR>return (FALSE);<BR>}<BR>/* Set input parity option */<BR>if (parity 
+      != 'n')<BR>options.c_iflag |= 
+      INPCK;<BR>tcflush(fd,TCIFLUSH);<BR>options.c_cc[VTIME] = 150; /* 设置超时15 
+      seconds*/<BR>options.c_cc[VMIN] = 0; /* Update the options and do it NOW 
+      */<BR>if (tcsetattr(fd,TCSANOW,&amp;options) != 
+      0)<BR>{<BR>perror("SetupSerial 3");<BR>return (FALSE);<BR>}<BR>return 
+      (TRUE);<BR>}</P>
+      <P>需要注意的是: 如果不是开发终端之类的，只是串口传输数据，而不需要串口来处理，那么使用原始模式(Raw Mode)方式来通讯，设置方式如下： 
+      </P>
+      <P>options.c_lflag &amp;= ~(ICANON | ECHO | ECHOE | ISIG); 
+      /*Input*/<BR>options.c_oflag &amp;= ~OPOST; /*Output*/</P>
+      <P>读写串口 </P>
+      <P>设置好串口之后，读写串口就很容易了，把串口当作文件读写就是。 </P>
+      <P>·发送数据 </P>
+      <P>char buffer[1024];int Length;int nByte;nByte = write(fd, buffer 
+      ,Length)</P>
+      <P>·读取串口数据 </P>
+      <P>使用文件操作read函数读取，如果设置为原始模式(Raw 
+      Mode)传输数据，那么read函数返回的字符数是实际串口收到的字符数。可以使用操作文件的函数来实现异步读取，如fcntl，或者select等来操作。<BR>char 
+      buff[1024];int Len;int readByte = read(fd,buff,Len);</P>
+      <P>关闭串口 </P>
+      <P>关闭串口就是关闭文件。 </P>
+      <P>close(fd);</P>
+      <P>例子 </P>
+      <P>下面是一个简单的读取串口数据的例子，使用了上面定义的一些函数和头文件 </P>
+      <P>/**********************************************************************<BR>代码说明：使用串口二测试的，发送的数据是字符，<BR>但是没有发送字符串结束符号，所以接收到后，后面加上了结束符号。<BR>我测试使用的是单片机发送数据到第二个串口，测试通过。<BR>**********************************************************************/<BR>#define 
+      FALSE -1<BR>#define TRUE 
+      0<BR>/*********************************************************************/<BR>int 
+      OpenDev(char *Dev)<BR>{<BR>int fd = open( Dev, O_RDWR );<BR>//| O_NOCTTY | 
+      O_NDELAY<BR>if (-1 == fd)<BR>{<BR>perror("Can't Open Serial 
+      Port");<BR>return -1;<BR>}<BR>else<BR>return fd;<BR>}<BR>int main(int 
+      argc, char **argv){<BR>int fd;<BR>int nread;<BR>char buff[512];<BR>char 
+      *dev = "/dev/ttyS1"; //串口二<BR>fd = 
+      OpenDev(dev);<BR>漀?朦??????????set_speed(fd,19200);<BR>if 
+      (set_Parity(fd,8,1,'N') == FALSE) {<BR>printf("Set Parity Error 
+      ");<BR>exit (0);<BR>}<BR>while (1) //循环读取数据<BR>{<BR>while((nread = 
+      read(fd, buff, 512))&gt;0)<BR>{<BR>printf(" Len %d 
+      ",nread);<BR>buff[nread+1] = '';<BR>printf( " %s", 
+      buff);<BR>}<BR>}<BR>//close(fd);<BR>// exit (0);<BR>}</P>
+      <P>参考资料 </P>
+      <P>Serial Programming Guide for POSIX Operating Systems</P></DIV>
+      <DIV class=links>» 要发表评论，请先<A 
+      href="http://zhanjun.net/?q=user/login">登录</A> 或 <A 
+      href="http://zhanjun.net/?q=user/register">注册</A></DIV></DIV><!-- end content --></DIV><!-- main --></TD>
+    <TD id=sidebar-right>
+      <DIV class="block block-blog" id=block-blog-0>
+      <H2 class=title>最新Blog文章</H2>
+      <DIV class=content>
+      <DIV class=item-list>
+      <UL>
+        <LI><A href="http://zhanjun.net/?q=node/48">php web robot php 提取超链接</A>
+        <LI><A href="http://zhanjun.net/?q=node/47">为什么不应该写char 
+        *p="hello"[zz]</A>
+        <LI><A href="http://zhanjun.net/?q=node/46">如何读书－－做一个真正有知识的人</A>
+        <LI><A href="http://zhanjun.net/?q=node/38">超级cool的免费的webmail ajax的</A>
+        <LI><A href="http://zhanjun.net/?q=node/5">网页爬虫larbin的使用方法</A>
+        <LI><A href="http://zhanjun.net/?q=node/4">分类检索引擎</A>
+        <LI><A href="http://zhanjun.net/?q=node/3">开源spider一览【转载】</A>
+        <LI><A href="http://zhanjun.net/?q=node/1">开篇系统测试</A></LI></UL></DIV>
+      <DIV class=more-link><A title=阅读最新的Blog文章 
+      href="http://zhanjun.net/?q=blog">更多</A></DIV></DIV></DIV>
+      <DIV class="block block-user" id=block-user-1>
+      <H2 class=title>导航</H2>
+      <DIV class=content>
+      <DIV class=menu>
+      <UL>
+        <LI class=leaf><A href="http://zhanjun.net/?q=tracker">最新文章</A> 
+      </LI></UL></DIV></DIV></DIV></TD></TR></TBODY></TABLE>
+<DIV id=footer>zhanjun.net www.gxbd.com justsoso.cn getdomain.cn 2006 
+</DIV></BODY></HTML>
