@@ -1,0 +1,1092 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<!-- saved from url=(0058)http://www.dzone.com/snippets/simple-popen2-implementation -->
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en" class="js"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><script src="./02_Simple Popen2 Implementation   DZone_files/cb=gapi.loaded_1" async=""></script><script type="text/javascript" src="./02_Simple Popen2 Implementation   DZone_files/widgets.js"></script><link rel="stylesheet" type="text/css" href="./02_Simple Popen2 Implementation   DZone_files/widget100.css" media="all">
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+            <link rel="canonical" href="./02_Simple Popen2 Implementation   DZone_files/02_Simple Popen2 Implementation   DZone.htm">
+    
+    <!-- Start of DART Code -->
+    <script id="LR1" type="text/javascript" async="" src="./02_Simple Popen2 Implementation   DZone_files/hubclient.js"></script><script id="facebook-jssdk" src="./02_Simple Popen2 Implementation   DZone_files/all.js"></script><script src="./02_Simple Popen2 Implementation   DZone_files/cb=gapi.loaded_0" async=""></script><script id="twitter-wjs" src="./02_Simple Popen2 Implementation   DZone_files/widgets.js"></script><script type="text/javascript" async="" src="./02_Simple Popen2 Implementation   DZone_files/plusone.js" gapi_processed="true"></script><script type="text/javascript" async="" src="./02_Simple Popen2 Implementation   DZone_files/ga.js"></script><script src="./02_Simple Popen2 Implementation   DZone_files/woopra.js" type="text/javascript" async=""></script><script type="text/javascript">
+	// This is a bad little hack for things that execute reliance on Drupals JS before its been fully loaded
+	var Drupal = Drupal || { 'settings': {}, 'behaviors': {}, 'themes': {}, 'locale': {} };
+	Drupal.behaviors = Drupal.behaviors || {};
+        (function() {
+            var useSSL = 'https:' == document.location.protocol;
+            var src = (useSSL ? 'https:' : 'http:') +
+                '//www.googletagservices.com/tag/js/gpt.js';
+            document.write('<scr' + 'ipt src="' + src + '"></scr' + 'ipt>');
+        })();
+        </script><script src="http://www.googletagservices.com/tag/js/gpt.js"></script><style type="text/css"></style>
+
+    <script type="text/javascript">
+        googletag.defineSlot('/2916070/zones_bottomblurb_650x122', [650, 122], 'div-gpt-ad-1350569504085-0').addService(googletag.pubads());
+        googletag.defineSlot('/2916070/zones_masthead_728x90_default', [728, 90], 'div-gpt-ad-1350569504085-1').addService(googletag.pubads());
+        googletag.defineSlot('/2916070/zones_sidebar_336x280_default', [300, 250], 'div-gpt-ad-1350569504085-2').addService(googletag.pubads());
+        googletag.defineSlot('/2916070/zones_superboard_980x200', [980, 200], 'div-gpt-ad-1350569504085-3').addService(googletag.pubads());
+        googletag.defineSlot('/2916070/zones_textad_239x90', [239, 90], 'div-gpt-ad-1350569504085-40').addService(googletag.pubads());
+        googletag.defineSlot('/2916070/zones_textad_239x90', [239, 90], 'div-gpt-ad-1350569504085-41').addService(googletag.pubads());
+        googletag.defineSlot('/2916070/zones_textad_239x90', [239, 90], 'div-gpt-ad-1350569504085-42').addService(googletag.pubads());
+        googletag.defineSlot('/2916070/zones_textad_800x20', [800, 20], 'div-gpt-ad-1350569504085-5').addService(googletag.pubads());
+        googletag.defineSlot('/2916070/zones_topblurb_650x61', [650, 61], 'div-gpt-ad-1350569504085-6').addService(googletag.pubads());
+        googletag.pubads().enableSyncRendering();
+        googletag.pubads().enableSingleRequest();
+        googletag.enableServices();
+        googletag.pubads().setTargeting("tag", "www.dzone.com");
+    </script>
+    <!-- End of DART Code -->
+
+
+    <!-- Start of Woopra Code -->
+    <script type="text/javascript">
+        function woopraReady(tracker) {
+            tracker.setDomain('dzone.com');
+            tracker.setIdleTimeout(300000);
+
+            
+            tracker.trackPageview({
+                url: window.location.pathname + window.location.search,
+                title: document.title,
+                                    author: 'Snippets_User',
+                                zone:'Snippets',
+                microzone:'0'
+            });
+
+            return false;
+        }
+        (function() {
+            var wsc = document.createElement('script');
+            wsc.src = document.location.protocol+'//static.woopra.com/js/woopra.js';
+            wsc.type = 'text/javascript';
+            wsc.async = true;
+            var ssc = document.getElementsByTagName('script')[0];
+            ssc.parentNode.insertBefore(wsc, ssc);
+        })();
+    </script>
+    <!-- End of Woopra Code -->
+
+    <!-- Use this code block to activate a prestitial if there's one to load -->
+    <!-- BEGIN ADVERTPRO ADVANCED CODE BLOCK -->
+
+    <script language="JavaScript" type="text/javascript">
+        <!--
+        document.write('<SCR'+'IPT src="http://avpa.dzone.com/servlet/view/dynamic/javascript/zone?zid=159&pid=0&random='+Math.floor(89999999*Math.random()+10000000)+'&millis='+new Date().getTime()+'" language="JavaScript" type="text/javascript"></SCR'+'IPT>');
+        //-->
+    </script><script src="http://avpa.dzone.com/servlet/view/dynamic/javascript/zone?zid=159&pid=0&random=54415693&millis=1358080682647" language="JavaScript" type="text/javascript"></script>
+
+    <!-- END ADVERTPRO ADVANCED CODE BLOCK -->
+
+            <title>Simple Popen2 Implementation | DZone</title>
+    
+        
+<link rel="alternate" type="application/rss+xml" title="Comments for &quot;Simple Popen2 Implementation&quot;" href="http://www.dzone.com/crss/node/97081">
+
+<link rel="shortcut icon" href="http://www.dzone.com/misc/favicon.ico" type="image/x-icon">
+<script type="text/javascript" src="./02_Simple Popen2 Implementation   DZone_files/16518638.js"></script>
+            <link type="text/css" rel="stylesheet" media="all" href="./02_Simple Popen2 Implementation   DZone_files/css_d19fce29e7b7c66b91b446305f1c2725.css">
+<link type="text/css" rel="stylesheet" media="print" href="./02_Simple Popen2 Implementation   DZone_files/css_65d637aa7eddfbf57e33f4da826e30ad.css">
+                <meta name="Description" content="">
+            
+    
+    <!-- RSS link -->
+    
+        <script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-410289-1']);
+  _gaq.push(['_trackPageview']);
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>                        
+
+<script src="./02_Simple Popen2 Implementation   DZone_files/nonSecureAnonymousFramework"></script><div style="visibility: hidden; height: 1px; width: 1px; position: absolute; z-index: 100000;" id="_atssh"><iframe id="_atssh975" title="AddThis utility frame" style="height: 1px; width: 1px; position: absolute; z-index: 100000; border: 0px; left: 0px; top: 0px;" src="./02_Simple Popen2 Implementation   DZone_files/sh105.htm"></iframe></div><script type="text/javascript" src="./02_Simple Popen2 Implementation   DZone_files/core053.js"></script><style type="text/css">* html #li_ui_li_gen_1358080684572_0 a#li_ui_li_gen_1358080684572_0-link{height:1% !important;}#li_ui_li_gen_1358080684572_0{position:relative !important;overflow:visible !important;display:block !important;}#li_ui_li_gen_1358080684572_0 a#li_ui_li_gen_1358080684572_0-link{border:0 !important;height:20px !important;text-decoration:none !important;padding:0 !important;margin:0 !important;display:inline-block !important;}#li_ui_li_gen_1358080684572_0 a#li_ui_li_gen_1358080684572_0-link:link, #li_ui_li_gen_1358080684572_0 a#li_ui_li_gen_1358080684572_0-link:visited, #li_ui_li_gen_1358080684572_0 a#li_ui_li_gen_1358080684572_0-link:hover, #li_ui_li_gen_1358080684572_0 a#li_ui_li_gen_1358080684572_0-link:active{border:0 !important;text-decoration:none !important;}#li_ui_li_gen_1358080684572_0 a#li_ui_li_gen_1358080684572_0-link:after{content:"." !important;display:block !important;clear:both !important;visibility:hidden !important;line-height:0 !important;height:0 !important;}#li_ui_li_gen_1358080684572_0 #li_ui_li_gen_1358080684572_0-logo{background:url(http://static.licdn.com/scds/common/u/img/sprite/sprite_connect_v13.png) 0px -276px no-repeat !important;cursor:pointer !important;border:0 !important;text-indent:-9999em !important;overflow:hidden !important;padding:0 !important;margin:0 !important;position:absolute !important;left:0px !important;top:0px !important;display:block !important;width:20px !important;height:20px !important;float:right !important;}#li_ui_li_gen_1358080684572_0.hovered #li_ui_li_gen_1358080684572_0-logo{background-position:-20px -276px !important;}#li_ui_li_gen_1358080684572_0.clicked #li_ui_li_gen_1358080684572_0-logo, #li_ui_li_gen_1358080684572_0.down #li_ui_li_gen_1358080684572_0-logo{background-position:-40px -276px !important;}.IN-shadowed #li_ui_li_gen_1358080684572_0 #li_ui_li_gen_1358080684572_0-logo{}#li_ui_li_gen_1358080684572_0 #li_ui_li_gen_1358080684572_0-title{color:#333 !important;cursor:pointer !important;display:block !important;white-space:nowrap !important;float:left !important;margin-left:1px !important;vertical-align:top !important;overflow:hidden !important;text-align:center !important;height:18px !important;padding:0 4px 0 23px !important;border:1px solid #000 !important;border-top-color:#E2E2E2 !important;border-right-color:#BFBFBF !important;border-bottom-color:#B9B9B9 !important;border-left-color:#E2E2E2 !important;border-left:0 !important;text-shadow:#FFFFFF -1px 1px 0 !important;line-height:20px !important;border-radius:0 !important;-webkit-border-radius:0 !important;border-top-right-radius:2px !important;border-bottom-right-radius:2px !important;-webkit-border-top-right-radius:2px !important;-webkit-border-bottom-right-radius:2px !important;background-color:#ECECEC !important;background-image:-webkit-gradient(linear, left top, left bottom, color-stop(0%,#FEFEFE), color-stop(100%,#ECECEC)) !important; background-image: -webkit-linear-gradient(top, #FEFEFE 0%, #ECECEC 100%) !important;}#li_ui_li_gen_1358080684572_0.hovered #li_ui_li_gen_1358080684572_0-title{border:1px solid #000 !important;border-top-color:#ABABAB !important;border-right-color:#9A9A9A !important;border-bottom-color:#787878 !important;border-left-color:#04568B !important;border-left:0 !important;background-color:#EDEDED !important;background-image:-webkit-gradient(linear, left top, left bottom, color-stop(0%,#EDEDED), color-stop(100%,#DEDEDE)) !important; background-image: -webkit-linear-gradient(top, #EDEDED 0%, #DEDEDE 100%) !important;}#li_ui_li_gen_1358080684572_0.clicked #li_ui_li_gen_1358080684572_0-title, #li_ui_li_gen_1358080684572_0.down #li_ui_li_gen_1358080684572_0-title{color:#666 !important;border:1px solid #000 !important;border-top-color:#B6B6B6 !important;border-right-color:#B3B3B3 !important;border-bottom-color:#9D9D9D !important;border-left-color:#49627B !important;border-left:0 !important;background-color:#DEDEDE !important;background-image:-webkit-gradient(linear, left top, left bottom, color-stop(0%,#E3E3E3), color-stop(100%,#EDEDED)) !important; background-image: -webkit-linear-gradient(top, #E3E3E3 0%, #EDEDED 100%) !important;}.IN-shadowed #li_ui_li_gen_1358080684572_0 #li_ui_li_gen_1358080684572_0-title{}.IN-shadowed #li_ui_li_gen_1358080684572_0.hovered #li_ui_li_gen_1358080684572_0-title{}.IN-shadowed #li_ui_li_gen_1358080684572_0.clicked #li_ui_li_gen_1358080684572_0-title, .IN-shadowed #li_ui_li_gen_1358080684572_0.down #li_ui_li_gen_1358080684572_0-title{}#li_ui_li_gen_1358080684572_0 #li_ui_li_gen_1358080684572_0-title-text, #li_ui_li_gen_1358080684572_0 #li_ui_li_gen_1358080684572_0-title-text *{color:#333 !important;font-size:11px !important;font-family:Arial, sans-serif !important;font-weight:bold !important;font-style:normal !important;display:inline-block !important;background:transparent none !important;vertical-align:baseline !important;height:18px !important;line-height:20px !important;float:none !important;}#li_ui_li_gen_1358080684572_0 #li_ui_li_gen_1358080684572_0-title-text strong{font-weight:bold !important;}#li_ui_li_gen_1358080684572_0 #li_ui_li_gen_1358080684572_0-title-text em{font-style:italic !important;}#li_ui_li_gen_1358080684572_0.hovered #li_ui_li_gen_1358080684572_0-title-text, #li_ui_li_gen_1358080684572_0.hovered #li_ui_li_gen_1358080684572_0-title-text *{color:#000 !important;}#li_ui_li_gen_1358080684572_0.clicked #li_ui_li_gen_1358080684572_0-title-text, #li_ui_li_gen_1358080684572_0.down #li_ui_li_gen_1358080684572_0-title-text, #li_ui_li_gen_1358080684572_0.clicked #li_ui_li_gen_1358080684572_0-title-text *, #li_ui_li_gen_1358080684572_0.down #li_ui_li_gen_1358080684572_0-title-text *{color:#666 !important;}#li_ui_li_gen_1358080684572_0 #li_ui_li_gen_1358080684572_0-title #li_ui_li_gen_1358080684572_0-mark{display:inline-block !important;width:0px !important;overflow:hidden !important;}.success #li_ui_li_gen_1358080684572_0 #li_ui_li_gen_1358080684572_0-title{color:#333 !important;border-top-color:#E2E2E2 !important;border-right-color:#BFBFBF !important;border-bottom-color:#B9B9B9 !important;border-left-color:#E2E2E2 !important;background-color:#ECECEC !important;background-image:-webkit-gradient(linear, left top, left bottom, color-stop(0%,#FEFEFE), color-stop(100%,#ECECEC)) !important; background-image: -webkit-linear-gradient(top, #FEFEFE 0%, #ECECEC 100%) !important;}.success #li_ui_li_gen_1358080684572_0 #li_ui_li_gen_1358080684572_0-title-text, .success #li_ui_li_gen_1358080684572_0 #li_ui_li_gen_1358080684572_0-title-text *{color:#333 !important;}.IN-shadowed .success #li_ui_li_gen_1358080684572_0 #li_ui_li_gen_1358080684572_0-title{}.success #li_ui_li_gen_1358080684572_0.hovered #li_ui_li_gen_1358080684572_0-title{color:#000 !important;border-top-color:#ABABAB !important;border-right-color:#9A9A9A !important;border-bottom-color:#787878 !important;border-left-color:#04568B !important;background-color:#EDEDED !important;background-image:-webkit-gradient(linear, left top, left bottom, color-stop(0%,#EDEDED), color-stop(100%,#DEDEDE)) !important; background-image: -webkit-linear-gradient(top, #EDEDED 0%, #DEDEDE 100%) !important;}.success #li_ui_li_gen_1358080684572_0.hovered #li_ui_li_gen_1358080684572_0-title-text, .success #li_ui_li_gen_1358080684572_0.hovered #li_ui_li_gen_1358080684572_0-title-text *{color:#000 !important;}.success #li_ui_li_gen_1358080684572_0.clicked #li_ui_li_gen_1358080684572_0-title, .success #li_ui_li_gen_1358080684572_0.down #li_ui_li_gen_1358080684572_0-title{color:#666 !important;border-top-color:#B6B6B6 !important;border-right-color:#B3B3B3 !important;border-bottom-color:#9D9D9D !important;border-left-color:#49627B !important;background-color:#DEDEDE !important;background-image:-webkit-gradient(linear, left top, left bottom, color-stop(0%,#E3E3E3), color-stop(100%,#EDEDED)) !important; background-image: -webkit-linear-gradient(top, #E3E3E3 0%, #EDEDED 100%) !important;}.success #li_ui_li_gen_1358080684572_0.clicked #li_ui_li_gen_1358080684572_0-title-text, .success #li_ui_li_gen_1358080684572_0.down #li_ui_li_gen_1358080684572_0-title-text, .success #li_ui_li_gen_1358080684572_0.clicked #li_ui_li_gen_1358080684572_0-title-text *, .success #li_ui_li_gen_1358080684572_0.down #li_ui_li_gen_1358080684572_0-title-text *{color:#666 !important;}.IN-shadowed .success #li_ui_li_gen_1358080684572_0.clicked #li_ui_li_gen_1358080684572_0-title, .IN-shadowed .success #li_ui_li_gen_1358080684572_0.down #li_ui_li_gen_1358080684572_0-title{}#li_ui_li_gen_1358080684587_1-container.IN-right {display:inline-block !important;float:left !important;overflow:visible !important;position:relative !important;height:18px !important;padding-left:2px !important;line-height:1px !important;cursor:pointer !important;}#li_ui_li_gen_1358080684587_1.IN-right {display:block !important;float:left !important;height:18px !important;margin-right:4px !important;padding-right:4px !important;background:url(http://static.licdn.com/scds/common/u/img/sprite/sprite_connect_v13.png) right -100px no-repeat !important;}#li_ui_li_gen_1358080684587_1-inner.IN-right {display:block !important;float:left !important;padding-left:8px !important;text-align:center !important;background:url(http://static.licdn.com/scds/common/u/img/sprite/sprite_connect_v13.png) 0px -60px no-repeat !important;}#li_ui_li_gen_1358080684587_1-content.IN-right {display:inline !important;font-size:11px !important;color:#04558B !important;font-weight:bold !important;font-family:Arial, sans-serif !important;line-height:18px !important;padding:0 5px 0 5px !important;}#li_ui_li_gen_1358080684587_1-container.IN-hovered #li_ui_li_gen_1358080684587_1.IN-right, #li_ui_li_gen_1358080684587_1-container.IN-clicked #li_ui_li_gen_1358080684587_1.IN-right, #li_ui_li_gen_1358080684587_1-container.IN-down #li_ui_li_gen_1358080684587_1.IN-right {background-position-y:-120px !important;}#li_ui_li_gen_1358080684587_1-container.IN-hovered #li_ui_li_gen_1358080684587_1-inner.IN-right, #li_ui_li_gen_1358080684587_1-container.IN-clicked #li_ui_li_gen_1358080684587_1-inner.IN-right, #li_ui_li_gen_1358080684587_1-container.IN-down #li_ui_li_gen_1358080684587_1-inner.IN-right {background-position-y:-80px !important;}#li_ui_li_gen_1358080684587_1-container.IN-empty {display:none !important;}#li_ui_li_gen_1358080684587_1-container.IN-hidden #li_ui_li_gen_1358080684587_1 {display:none !important;}* html #li_ui_li_gen_1358080684591_2 a#li_ui_li_gen_1358080684591_2-link{height:1% !important;}#li_ui_li_gen_1358080684591_2{position:relative !important;overflow:visible !important;display:block !important;}#li_ui_li_gen_1358080684591_2 a#li_ui_li_gen_1358080684591_2-link{border:0 !important;height:20px !important;text-decoration:none !important;padding:0 !important;margin:0 !important;display:inline-block !important;}#li_ui_li_gen_1358080684591_2 a#li_ui_li_gen_1358080684591_2-link:link, #li_ui_li_gen_1358080684591_2 a#li_ui_li_gen_1358080684591_2-link:visited, #li_ui_li_gen_1358080684591_2 a#li_ui_li_gen_1358080684591_2-link:hover, #li_ui_li_gen_1358080684591_2 a#li_ui_li_gen_1358080684591_2-link:active{border:0 !important;text-decoration:none !important;}#li_ui_li_gen_1358080684591_2 a#li_ui_li_gen_1358080684591_2-link:after{content:"." !important;display:block !important;clear:both !important;visibility:hidden !important;line-height:0 !important;height:0 !important;}#li_ui_li_gen_1358080684591_2 #li_ui_li_gen_1358080684591_2-logo{background:url(http://static.licdn.com/scds/common/u/img/sprite/sprite_connect_v13.png) 0px -276px no-repeat !important;cursor:pointer !important;border:0 !important;text-indent:-9999em !important;overflow:hidden !important;padding:0 !important;margin:0 !important;position:absolute !important;left:0px !important;top:0px !important;display:block !important;width:20px !important;height:20px !important;float:right !important;}#li_ui_li_gen_1358080684591_2.hovered #li_ui_li_gen_1358080684591_2-logo{background-position:-20px -276px !important;}#li_ui_li_gen_1358080684591_2.clicked #li_ui_li_gen_1358080684591_2-logo, #li_ui_li_gen_1358080684591_2.down #li_ui_li_gen_1358080684591_2-logo{background-position:-40px -276px !important;}.IN-shadowed #li_ui_li_gen_1358080684591_2 #li_ui_li_gen_1358080684591_2-logo{}#li_ui_li_gen_1358080684591_2 #li_ui_li_gen_1358080684591_2-title{color:#333 !important;cursor:pointer !important;display:block !important;white-space:nowrap !important;float:left !important;margin-left:1px !important;vertical-align:top !important;overflow:hidden !important;text-align:center !important;height:18px !important;padding:0 4px 0 23px !important;border:1px solid #000 !important;border-top-color:#E2E2E2 !important;border-right-color:#BFBFBF !important;border-bottom-color:#B9B9B9 !important;border-left-color:#E2E2E2 !important;border-left:0 !important;text-shadow:#FFFFFF -1px 1px 0 !important;line-height:20px !important;border-radius:0 !important;-webkit-border-radius:0 !important;border-top-right-radius:2px !important;border-bottom-right-radius:2px !important;-webkit-border-top-right-radius:2px !important;-webkit-border-bottom-right-radius:2px !important;background-color:#ECECEC !important;background-image:-webkit-gradient(linear, left top, left bottom, color-stop(0%,#FEFEFE), color-stop(100%,#ECECEC)) !important; background-image: -webkit-linear-gradient(top, #FEFEFE 0%, #ECECEC 100%) !important;}#li_ui_li_gen_1358080684591_2.hovered #li_ui_li_gen_1358080684591_2-title{border:1px solid #000 !important;border-top-color:#ABABAB !important;border-right-color:#9A9A9A !important;border-bottom-color:#787878 !important;border-left-color:#04568B !important;border-left:0 !important;background-color:#EDEDED !important;background-image:-webkit-gradient(linear, left top, left bottom, color-stop(0%,#EDEDED), color-stop(100%,#DEDEDE)) !important; background-image: -webkit-linear-gradient(top, #EDEDED 0%, #DEDEDE 100%) !important;}#li_ui_li_gen_1358080684591_2.clicked #li_ui_li_gen_1358080684591_2-title, #li_ui_li_gen_1358080684591_2.down #li_ui_li_gen_1358080684591_2-title{color:#666 !important;border:1px solid #000 !important;border-top-color:#B6B6B6 !important;border-right-color:#B3B3B3 !important;border-bottom-color:#9D9D9D !important;border-left-color:#49627B !important;border-left:0 !important;background-color:#DEDEDE !important;background-image:-webkit-gradient(linear, left top, left bottom, color-stop(0%,#E3E3E3), color-stop(100%,#EDEDED)) !important; background-image: -webkit-linear-gradient(top, #E3E3E3 0%, #EDEDED 100%) !important;}.IN-shadowed #li_ui_li_gen_1358080684591_2 #li_ui_li_gen_1358080684591_2-title{}.IN-shadowed #li_ui_li_gen_1358080684591_2.hovered #li_ui_li_gen_1358080684591_2-title{}.IN-shadowed #li_ui_li_gen_1358080684591_2.clicked #li_ui_li_gen_1358080684591_2-title, .IN-shadowed #li_ui_li_gen_1358080684591_2.down #li_ui_li_gen_1358080684591_2-title{}#li_ui_li_gen_1358080684591_2 #li_ui_li_gen_1358080684591_2-title-text, #li_ui_li_gen_1358080684591_2 #li_ui_li_gen_1358080684591_2-title-text *{color:#333 !important;font-size:11px !important;font-family:Arial, sans-serif !important;font-weight:bold !important;font-style:normal !important;display:inline-block !important;background:transparent none !important;vertical-align:baseline !important;height:18px !important;line-height:20px !important;float:none !important;}#li_ui_li_gen_1358080684591_2 #li_ui_li_gen_1358080684591_2-title-text strong{font-weight:bold !important;}#li_ui_li_gen_1358080684591_2 #li_ui_li_gen_1358080684591_2-title-text em{font-style:italic !important;}#li_ui_li_gen_1358080684591_2.hovered #li_ui_li_gen_1358080684591_2-title-text, #li_ui_li_gen_1358080684591_2.hovered #li_ui_li_gen_1358080684591_2-title-text *{color:#000 !important;}#li_ui_li_gen_1358080684591_2.clicked #li_ui_li_gen_1358080684591_2-title-text, #li_ui_li_gen_1358080684591_2.down #li_ui_li_gen_1358080684591_2-title-text, #li_ui_li_gen_1358080684591_2.clicked #li_ui_li_gen_1358080684591_2-title-text *, #li_ui_li_gen_1358080684591_2.down #li_ui_li_gen_1358080684591_2-title-text *{color:#666 !important;}#li_ui_li_gen_1358080684591_2 #li_ui_li_gen_1358080684591_2-title #li_ui_li_gen_1358080684591_2-mark{display:inline-block !important;width:0px !important;overflow:hidden !important;}.success #li_ui_li_gen_1358080684591_2 #li_ui_li_gen_1358080684591_2-title{color:#333 !important;border-top-color:#E2E2E2 !important;border-right-color:#BFBFBF !important;border-bottom-color:#B9B9B9 !important;border-left-color:#E2E2E2 !important;background-color:#ECECEC !important;background-image:-webkit-gradient(linear, left top, left bottom, color-stop(0%,#FEFEFE), color-stop(100%,#ECECEC)) !important; background-image: -webkit-linear-gradient(top, #FEFEFE 0%, #ECECEC 100%) !important;}.success #li_ui_li_gen_1358080684591_2 #li_ui_li_gen_1358080684591_2-title-text, .success #li_ui_li_gen_1358080684591_2 #li_ui_li_gen_1358080684591_2-title-text *{color:#333 !important;}.IN-shadowed .success #li_ui_li_gen_1358080684591_2 #li_ui_li_gen_1358080684591_2-title{}.success #li_ui_li_gen_1358080684591_2.hovered #li_ui_li_gen_1358080684591_2-title{color:#000 !important;border-top-color:#ABABAB !important;border-right-color:#9A9A9A !important;border-bottom-color:#787878 !important;border-left-color:#04568B !important;background-color:#EDEDED !important;background-image:-webkit-gradient(linear, left top, left bottom, color-stop(0%,#EDEDED), color-stop(100%,#DEDEDE)) !important; background-image: -webkit-linear-gradient(top, #EDEDED 0%, #DEDEDE 100%) !important;}.success #li_ui_li_gen_1358080684591_2.hovered #li_ui_li_gen_1358080684591_2-title-text, .success #li_ui_li_gen_1358080684591_2.hovered #li_ui_li_gen_1358080684591_2-title-text *{color:#000 !important;}.success #li_ui_li_gen_1358080684591_2.clicked #li_ui_li_gen_1358080684591_2-title, .success #li_ui_li_gen_1358080684591_2.down #li_ui_li_gen_1358080684591_2-title{color:#666 !important;border-top-color:#B6B6B6 !important;border-right-color:#B3B3B3 !important;border-bottom-color:#9D9D9D !important;border-left-color:#49627B !important;background-color:#DEDEDE !important;background-image:-webkit-gradient(linear, left top, left bottom, color-stop(0%,#E3E3E3), color-stop(100%,#EDEDED)) !important; background-image: -webkit-linear-gradient(top, #E3E3E3 0%, #EDEDED 100%) !important;}.success #li_ui_li_gen_1358080684591_2.clicked #li_ui_li_gen_1358080684591_2-title-text, .success #li_ui_li_gen_1358080684591_2.down #li_ui_li_gen_1358080684591_2-title-text, .success #li_ui_li_gen_1358080684591_2.clicked #li_ui_li_gen_1358080684591_2-title-text *, .success #li_ui_li_gen_1358080684591_2.down #li_ui_li_gen_1358080684591_2-title-text *{color:#666 !important;}.IN-shadowed .success #li_ui_li_gen_1358080684591_2.clicked #li_ui_li_gen_1358080684591_2-title, .IN-shadowed .success #li_ui_li_gen_1358080684591_2.down #li_ui_li_gen_1358080684591_2-title{}#li_ui_li_gen_1358080684594_3-container.IN-top {display:inline-block !important;overflow:visible !important;position:relative !important;height:42px !important;line-height:1px !important;cursor:pointer !important;}#li_ui_li_gen_1358080684594_3.IN-top {display:inline-block !important;height:42px !important;width:57px !important;text-align:center !important;background:url(http://static.licdn.com/scds/common/u/img/sprite/sprite_connect_v13.png) -150px top no-repeat !important;}#li_ui_li_gen_1358080684594_3-content.IN-top {display:inline !important;font-size:16px !important;color:#04558B !important;font-weight:bold !important;font-family:Arial, sans-serif !important;line-height:34px !important;}#li_ui_li_gen_1358080684594_3-container.IN-hovered #li_ui_li_gen_1358080684594_3.IN-top, #li_ui_li_gen_1358080684594_3-container.IN-clicked #li_ui_li_gen_1358080684594_3.IN-top, #li_ui_li_gen_1358080684594_3-container.IN-down #li_ui_li_gen_1358080684594_3.IN-top {background-position-x:-210px !important;}#li_ui_li_gen_1358080684594_3-container.IN-empty #li_ui_li_gen_1358080684594_3-inner.IN-top {background:url(http://static.licdn.com/scds/common/u/img/sprite/sprite_connect_v13.png) 0px -20px no-repeat !important;overflow:hidden !important;margin:5px auto 0 auto !important;width:26px !important;height:26px !important;display:block !important;}#li_ui_li_gen_1358080684594_3-container.IN-empty #li_ui_li_gen_1358080684594_3-content.IN-top {text-indent:-999px !important;display:inline-block !important;}#li_ui_li_gen_1358080684594_3-container.IN-hidden #li_ui_li_gen_1358080684594_3 {display:none !important;}</style><link rel="stylesheet" type="text/css" href="./02_Simple Popen2 Implementation   DZone_files/woopra.widgets.2.css"><style id="wrc-middle-css" type="text/css">.wrc_whole_window{	display: none;	position: fixed; 	z-index: 2147483647;	background-color: rgba(40, 40, 40, 0.9);	word-spacing: normal !important;	margin: 0px !important;	padding: 0px !important;	border: 0px !important;	left: 0px;	top: 0px;	width: 100%;	height: 100%;	line-height: normal !important;	letter-spacing: normal !important;	overflow: hidden;}.wrc_bar_window{	display: none;	position: fixed; 	z-index: 2147483647;	background-color: rgba(60, 60, 60, 1.0);	word-spacing: normal !important;	font-family: Segoe UI, Arial Unicode MS, Arial, Sans-Serif;	margin: 0px !important;	padding: 0px !important;	border: 0px !important;	left: 0px;	top: 0px;	width: 100%;	height: 40px;	line-height: normal !important;	letter-spacing: normal !important;	color: white !important;	font-size: 13px !important;}.wrc_middle {	display: table-cell;	vertical-align: middle;	width: 100%;}.wrc_middle_main {	font-family: Segoe UI, Arial Unicode MS, Arial, Sans-Serif;	font-size: 14px;	width: 600px;	height: auto;    background: url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/background-body.jpg) repeat-x left top;	background-color: rgb(39, 53, 62);	position: relative;	margin-left: auto;	margin-right: auto;	text-align: left;}.wrc_middle_tq_main {	font-family: Segoe UI, Arial Unicode MS, Arial, Sans-Serif;	font-size: 16px;	width: 615px;	height: 460px;    background: url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/background-sitecorrect.png) no-repeat;	background-color: white;	color: black !important;	position: relative;	margin-left: auto;	margin-right: auto;	text-align: center;}.wrc_middle_logo {    background: url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/logo.jpg) no-repeat left bottom;    width: 140px;    height: 42px;    color: orange;    display: table-cell;    text-align: right;    vertical-align: middle;}.wrc_icon_warning {	margin: 20px 10px 20px 15px;	float: left;	background-color: transparent;}.wrc_middle_title {    color: #b6bec7;	height: auto;    margin: 0px auto;	font-size: 2.2em;	white-space: nowrap;	text-align: center;}.wrc_middle_hline {    height: 2px;	width: 100%;    display: block;}.wrc_middle_description {	text-align: center;	margin: 15px;	font-size: 1.4em;	padding: 20px;	height: auto;	color: white;	min-height: 3.5em;}.wrc_middle_actions_main_div {	margin-bottom: 15px;	text-align: center;}.wrc_middle_actions_blue_button div {	display: inline-block;	width: auto;	cursor: Pointer;	margin: 3px 10px 3px 10px;	color: white;	font-size: 1.2em;	font-weight: bold;}.wrc_middle_actions_blue_button {	-moz-appearance: none;	border-radius: 7px;	-moz-border-radius: 7px/7px;	border-radius: 7px/7px;	background-color: rgb(0, 173, 223) !important;	display: inline-block;	width: auto;	cursor: Pointer;	border: 2px solid #00dddd;	padding: 0px 20px 0px 20px;}.wrc_middle_actions_blue_button:hover {	background-color: rgb(0, 159, 212) !important;}.wrc_middle_actions_blue_button:active {	background-color: rgb(0, 146, 200) !important;	border: 2px solid #00aaaa;}.wrc_middle_actions_grey_button div {	display: inline-block;	width: auto;	cursor: Pointer;	margin: 3px 10px 3px 10px;	color: white !important;	font-size: 15px;	font-weight: bold;}.wrc_middle_actions_grey_button {	-moz-appearance: none;	border-radius: 7px;	-moz-border-radius: 7px/7px;	border-radius: 7px/7px;	background-color: rgb(100, 100, 100) !important;	display: inline-block;	width: auto;	cursor: Pointer;	border: 2px solid #aaaaaa;	text-decoration: none;	padding: 0px 20px 0px 20px;}.wrc_middle_actions_grey_button:hover {	background-color: rgb(120, 120, 120) !important;}.wrc_middle_actions_grey_button:active {	background-color: rgb(130, 130, 130) !important;	border: 2px solid #00aaaa;}.wrc_middle_action_low {	font-size: 0.9em;	white-space: nowrap;	cursor: Pointer;	color: grey !important;	margin: 10px 10px 0px 10px;	text-decoration: none;}.wrc_middle_action_low:hover {	color: #aa4400 !important;}.wrc_middle_actions_rest_div {	padding-top: 5px;	white-space: nowrap;	text-align: center;}.wrc_middle_action {	white-space: nowrap;	cursor: Pointer;	color: red !important;	font-size: 1.2em;	margin: 10px 10px 0px 10px;	text-decoration: none;}.wrc_middle_action:hover {	color: #aa4400 !important;}</style><script id="wrc-script-middle_window" type="text/javascript" language="JavaScript">var g_inputsCnt = 0;var g_InputThis = new Array(null, null, null, null);var g_alerted = false;/* we test the input if it includes 4 digits   (input is a part of 4 inputs for filling the credit-card number)*/function is4DigitsCardNumber(val){	var regExp = new RegExp('[0-9]{4}');	return (val.length == 4 && val.search(regExp) == 0);}/* testing the whole credit-card number 19 digits devided by three '-' symbols or   exactly 16 digits without any dividers*/function isCreditCardNumber(val){	if(val.length == 19)	{		var regExp = new RegExp('[0-9]{4}-[0-9]{4}-[0-9]{4}-[0-9]{4}');		return (val.search(regExp) == 0);	}	else if(val.length == 16)	{		var regExp = new RegExp('[0-9]{4}[0-9]{4}[0-9]{4}[0-9]{4}');		return (val.search(regExp) == 0);	}	return false;}function CheckInputOnCreditNumber(self){	if(g_alerted)		return false;	var value = self.value;	if(self.type == 'text')	{		if(is4DigitsCardNumber(value))		{			var cont = true;			for(i = 0; i < g_inputsCnt; i++)				if(g_InputThis[i] == self)					cont = false;			if(cont && g_inputsCnt < 4)			{				g_InputThis[g_inputsCnt] = self;				g_inputsCnt++;			}		}		g_alerted = (g_inputsCnt == 4);		if(g_alerted)			g_inputsCnt = 0;		else			g_alerted = isCreditCardNumber(value);	}	return g_alerted;}function CheckInputOnPassword(self){	if(g_alerted)		return false;	var value = self.value;	if(self.type == 'password')	{		g_alerted = (value.length > 0);	}	return g_alerted;}function onInputBlur(self, bRatingOk, bFishingSite){	var bCreditNumber = CheckInputOnCreditNumber(self);	var bPassword = CheckInputOnPassword(self);	if((!bRatingOk || bFishingSite == 1) && (bCreditNumber || bPassword) )	{		var warnDiv = document.getElementById("wrcinputdiv");		if(warnDiv)		{			/* show the warning div in the middle of the screen */			warnDiv.style.left = "0px";			warnDiv.style.top = "0px";			warnDiv.style.width = "100%";			warnDiv.style.height = "100%";			document.getElementById("wrc_warn_fs").style.display = 'none';			document.getElementById("wrc_warn_cn").style.display = 'none';			if(bFishingSite)				document.getElementById("wrc_warn_fs").style.display = 'block';			else				document.getElementById("wrc_warn_cn").style.display = 'block';			warnDiv.style.display = 'table';		}	}}</script><style id="wrc-css" type="text/css">.wrcx {display:none} .r .wrcx,  .fc .wrcx, #rhsline ol .wrcx {display:inline; background: url("chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/grey0-16.png") right no-repeat} .vresult .r, .tl .r .wrcx{ display: none;}
+.wrc0 {display:none} .r .wrc0,  .fc .wrc0, #rhsline ol .wrc0 {display:inline; background: url("chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/grey0-16.png") right no-repeat} .vresult .r, .tl .r .wrc0{ display: none;}
+.wrc11 {display:none} .r .wrc11,  .fc .wrc11, #rhsline ol .wrc11 {display:inline; background: url("chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/green1-16.png") right no-repeat} .vresult .r, .tl .r .wrc11{ display: none;}
+.wrc12 {display:none} .r .wrc12,  .fc .wrc12, #rhsline ol .wrc12 {display:inline; background: url("chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/green2-16.png") right no-repeat} .vresult .r, .tl .r .wrc12{ display: none;}
+.wrc13 {display:none} .r .wrc13,  .fc .wrc13, #rhsline ol .wrc13 {display:inline; background: url("chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/green3-16.png") right no-repeat} .vresult .r, .tl .r .wrc13{ display: none;}
+.wrc21 {display:none} .r .wrc21,  .fc .wrc21, #rhsline ol .wrc21 {display:inline; background: url("chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/yellow1-16.png") right no-repeat} .vresult .r, .tl .r .wrc21{ display: none;}
+.wrc22 {display:none} .r .wrc22,  .fc .wrc22, #rhsline ol .wrc22 {display:inline; background: url("chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/yellow2-16.png") right no-repeat} .vresult .r, .tl .r .wrc22{ display: none;}
+.wrc23 {display:none} .r .wrc23,  .fc .wrc23, #rhsline ol .wrc23 {display:inline; background: url("chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/yellow3-16.png") right no-repeat} .vresult .r, .tl .r .wrc23{ display: none;}
+.wrc31 {display:none} .r .wrc31,  .fc .wrc31, #rhsline ol .wrc31 {display:inline; background: url("chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/red1-16.png") right no-repeat} .vresult .r, .tl .r .wrc31{ display: none;}
+.wrc32 {display:none} .r .wrc32,  .fc .wrc32, #rhsline ol .wrc32 {display:inline; background: url("chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/red2-16.png") right no-repeat} .vresult .r, .tl .r .wrc32{ display: none;}
+.wrc33 {display:none} .r .wrc33,  .fc .wrc33, #rhsline ol .wrc33 {display:inline; background: url("chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/red3-16.png") right no-repeat} .vresult .r, .tl .r .wrc33{ display: none;}
+.wrc_icon{margin:0;padding:0;padding-left:15px !important; margin-left: 5px; width:16px !important; height:16px !important;line-height:16px !important;}
+#wrchoverdiv{padding-bottom:20px;-webkit-border-radius: 4px; -webkit-box-shadow: 2px 2px 1px rgba(0,0,0,0.2); position:absolute; width:180px; background:transparent url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/background-body.jpg) top left repeat-x; display:none; font-family: Segoe UI, Arial Unicode MS, Arial, Sans-Serif; font-size: 14px; z-index:9999999;}
+#wrchoverdiv{cursor:default;}
+#wrchoverdiv #wrccontainer{width:180px;}
+#wrchoverdiv #wrcheader{width:140px; height:42px; background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/logo.jpg) bottom left no-repeat; text-align:right; line-height:42px; color:orange; margin:0 auto;}
+#wrchoverdiv .wrchorizontal{width:180px; height:2px; background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/horizontal-line.jpg) bottom left no-repeat;}
+#wrchoverdiv #wrccurrentvote{height:25px; line-height:25px; color:#FFF; text-align:center; text-transform:uppercase;}
+#wrchoverdiv #wrcrating{margin:5px auto; width:69px; height:55px; background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/grey-0.png) bottom left no-repeat;}
+#wrchoverdiv #wrcrating.wrcbx{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/grey-0.png);}
+#wrchoverdiv #wrcrating.wrcb0{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/grey-0.png);}
+#wrchoverdiv #wrcrating.wrcb11{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/green-1.png);}
+#wrchoverdiv #wrcrating.wrcb12{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/green-2.png);}
+#wrchoverdiv #wrcrating.wrcb13{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/green-3.png);}
+#wrchoverdiv #wrcrating.wrcb21{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/yellow-1.png);}
+#wrchoverdiv #wrcrating.wrcb22{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/yellow-2.png);}
+#wrchoverdiv #wrcrating.wrcb23{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/yellow-3.png);}
+#wrchoverdiv #wrcrating.wrcb31{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/red-1.png);}
+#wrchoverdiv #wrcrating.wrcb32{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/red-2.png);}
+#wrchoverdiv #wrcrating.wrcb33{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/red-3.png);}
+#wrchoverdiv #wrcratingtext{margin:3px 5px; color:#FFF; text-align:center; padding:0; font-size:12px;}
+#wrchoverdiv #wrcweighttext{margin:3px 5px; color:#FFF; text-align:center; padding:0; font-size:12px;}
+#wrchoverdiv #wrcflags{width:150px; height:70px; margin:0 auto;}
+#wrchoverdiv .wrcicon{width:30px; height:30px; float:left;}
+#wrchoverdiv #wrcicon_shopping{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/shopping-small-disable.png) top left no-repeat;}
+#wrchoverdiv #wrcicon_shopping.selected{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/shopping-small-selected.png) top left no-repeat;}
+#wrchoverdiv #wrcicon_social{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/social-small-disable.png) top left no-repeat;}
+#wrchoverdiv #wrcicon_social.selected{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/social-small-selected.png) top left no-repeat;}
+#wrchoverdiv #wrcicon_news{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/news-small-disable.png) top left no-repeat;}
+#wrchoverdiv #wrcicon_news.selected{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/news-small-selected.png) top left no-repeat;}
+#wrchoverdiv #wrcicon_it{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/it-small-disable.png) top left no-repeat;}
+#wrchoverdiv #wrcicon_it.selected{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/it-small-selected.png) top left no-repeat;}
+#wrchoverdiv #wrcicon_corporate{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/corporate-small-disable.png) top left no-repeat;}
+#wrchoverdiv #wrcicon_corporate.selected{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/corporate-small-selected.png) top left no-repeat;}
+#wrchoverdiv #wrcicon_pornography{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/pornography-small-disable.png) top left no-repeat;}
+#wrchoverdiv #wrcicon_pornography.selected{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/pornography-small-selected.png) top left no-repeat;}
+#wrchoverdiv #wrcicon_violence{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/violence-small-disable.png) top left no-repeat;}
+#wrchoverdiv #wrcicon_violence.selected{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/violence-small-selected.png) top left no-repeat;}
+#wrchoverdiv #wrcicon_gambling{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/gambling-small-disable.png) top left no-repeat;}
+#wrchoverdiv #wrcicon_gambling.selected{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/gambling-small-selected.png) top left no-repeat;}
+#wrchoverdiv #wrcicon_drugs{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/drugs-small-disable.png) top left no-repeat;}
+#wrchoverdiv #wrcicon_drugs.selected{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/drugs-small-selected.png) top left no-repeat;}
+#wrchoverdiv #wrcicon_illegal{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/illegal-small-disable.png) top left no-repeat;}
+#wrchoverdiv #wrcicon_illegal.selected{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/illegal-small-selected.png) top left no-repeat;}
+</style><style type="text/css">.fb_hidden{position:absolute;top:-10000px;z-index:10001}
+.fb_invisible{display:none}
+.fb_reset{background:none;border-spacing:0;border:0;color:#000;cursor:auto;direction:ltr;font-family:"lucida grande", tahoma, verdana, arial, sans-serif;font-size:11px;font-style:normal;font-variant:normal;font-weight:normal;letter-spacing:normal;line-height:1;margin:0;overflow:visible;padding:0;text-align:left;text-decoration:none;text-indent:0;text-shadow:none;text-transform:none;visibility:visible;white-space:normal;word-spacing:normal}
+.fb_link img{border:none}
+.fb_dialog{background:rgba(82, 82, 82, .7);position:absolute;top:-10000px;z-index:10001}
+.fb_dialog_advanced{padding:10px;-moz-border-radius:8px;-webkit-border-radius:8px;border-radius:8px}
+.fb_dialog_content{background:#fff;color:#333}
+.fb_dialog_close_icon{background:url(http://static.ak.fbcdn.net/rsrc.php/v2/yA/x/IE9JII6Z1Ys.png) no-repeat scroll 0 0 transparent;_background-image:url(http://static.ak.fbcdn.net/rsrc.php/v2/y6/x/s816eWC-2sl.gif);cursor:pointer;display:block;height:15px;position:absolute;right:18px;top:17px;width:15px;top:8px\9;right:7px\9}
+.fb_dialog_mobile .fb_dialog_close_icon{top:5px;left:5px;right:auto}
+.fb_dialog_padding{background-color:transparent;position:absolute;width:1px;z-index:-1}
+.fb_dialog_close_icon:hover{background:url(http://static.ak.fbcdn.net/rsrc.php/v2/yA/x/IE9JII6Z1Ys.png) no-repeat scroll 0 -15px transparent;_background-image:url(http://static.ak.fbcdn.net/rsrc.php/v2/y6/x/s816eWC-2sl.gif)}
+.fb_dialog_close_icon:active{background:url(http://static.ak.fbcdn.net/rsrc.php/v2/yA/x/IE9JII6Z1Ys.png) no-repeat scroll 0 -30px transparent;_background-image:url(http://static.ak.fbcdn.net/rsrc.php/v2/y6/x/s816eWC-2sl.gif)}
+.fb_dialog_loader{background-color:#f2f2f2;border:1px solid #606060;font-size:24px;padding:20px}
+.fb_dialog_top_left,
+.fb_dialog_top_right,
+.fb_dialog_bottom_left,
+.fb_dialog_bottom_right{height:10px;width:10px;overflow:hidden;position:absolute}
+/* @noflip */
+.fb_dialog_top_left{background:url(http://static.ak.fbcdn.net/rsrc.php/v2/yR/x/8YeTNIlTZjm.png) no-repeat 0 0;left:-10px;top:-10px}
+/* @noflip */
+.fb_dialog_top_right{background:url(http://static.ak.fbcdn.net/rsrc.php/v2/yR/x/8YeTNIlTZjm.png) no-repeat 0 -10px;right:-10px;top:-10px}
+/* @noflip */
+.fb_dialog_bottom_left{background:url(http://static.ak.fbcdn.net/rsrc.php/v2/yR/x/8YeTNIlTZjm.png) no-repeat 0 -20px;bottom:-10px;left:-10px}
+/* @noflip */
+.fb_dialog_bottom_right{background:url(http://static.ak.fbcdn.net/rsrc.php/v2/yR/x/8YeTNIlTZjm.png) no-repeat 0 -30px;right:-10px;bottom:-10px}
+.fb_dialog_vert_left,
+.fb_dialog_vert_right,
+.fb_dialog_horiz_top,
+.fb_dialog_horiz_bottom{position:absolute;background:#525252;filter:alpha(opacity=70);opacity:.7}
+.fb_dialog_vert_left,
+.fb_dialog_vert_right{width:10px;height:100%}
+.fb_dialog_vert_left{margin-left:-10px}
+.fb_dialog_vert_right{right:0;margin-right:-10px}
+.fb_dialog_horiz_top,
+.fb_dialog_horiz_bottom{width:100%;height:10px}
+.fb_dialog_horiz_top{margin-top:-10px}
+.fb_dialog_horiz_bottom{bottom:0;margin-bottom:-10px}
+.fb_dialog_iframe{line-height:0}
+.fb_dialog_content .dialog_title{background:#6d84b4;border:1px solid #3b5998;color:#fff;font-size:14px;font-weight:bold;margin:0}
+.fb_dialog_content .dialog_title > span{background:url(http://static.ak.fbcdn.net/rsrc.php/v2/yD/x/Cou7n-nqK52.gif)
+no-repeat 5px 50%;float:left;padding:5px 0 7px 26px}
+body.fb_hidden{-webkit-transform:none;height:100%;margin:0;left:-10000px;overflow:visible;position:absolute;top:-10000px;width:100%
+}
+.fb_dialog.fb_dialog_mobile.loading{background:url(http://static.ak.fbcdn.net/rsrc.php/v2/yc/x/3rhSv5V8j3o.gif)
+white no-repeat 50% 50%;min-height:100%;min-width:100%;overflow:hidden;position:absolute;top:0;z-index:10001}
+.fb_dialog.fb_dialog_mobile.loading.centered{max-height:590px;min-height:590px;max-width:500px;min-width:500px}
+#fb-root #fb_dialog_ipad_overlay{background:rgba(0, 0, 0, .45);position:absolute;left:0;top:0;width:100%;min-height:100%;z-index:10000}
+#fb-root #fb_dialog_ipad_overlay.hidden{display:none}
+.fb_dialog.fb_dialog_mobile.loading iframe{visibility:hidden}
+.fb_dialog_content .dialog_header{-webkit-box-shadow:white 0 1px 1px -1px inset;background:-webkit-gradient(linear, 0 0, 0 100%, from(#738ABA), to(#2C4987));border-bottom:1px solid;border-color:#1d4088;color:#fff;font:14px Helvetica, sans-serif;font-weight:bold;text-overflow:ellipsis;text-shadow:rgba(0, 30, 84, .296875) 0 -1px 0;vertical-align:middle;white-space:nowrap}
+.fb_dialog_content .dialog_header table{-webkit-font-smoothing:subpixel-antialiased;height:43px;width:100%
+}
+.fb_dialog_content .dialog_header td.header_left{font-size:12px;padding-left:5px;vertical-align:middle;width:60px
+}
+.fb_dialog_content .dialog_header td.header_right{font-size:12px;padding-right:5px;vertical-align:middle;width:60px
+}
+.fb_dialog_content .touchable_button{background:-webkit-gradient(linear, 0 0, 0 100%, from(#4966A6),
+color-stop(0.5, #355492), to(#2A4887));border:1px solid #29447e;-webkit-background-clip:padding-box;-webkit-border-radius:3px;-webkit-box-shadow:rgba(0, 0, 0, .117188) 0 1px 1px inset,
+rgba(255, 255, 255, .167969) 0 1px 0;display:inline-block;margin-top:3px;max-width:85px;line-height:18px;padding:4px 12px;position:relative}
+.fb_dialog_content .dialog_header .touchable_button input{border:none;background:none;color:#fff;font:12px Helvetica, sans-serif;font-weight:bold;margin:2px -12px;padding:2px 6px 3px 6px;text-shadow:rgba(0, 30, 84, .296875) 0 -1px 0}
+.fb_dialog_content .dialog_header .header_center{color:#fff;font-size:16px;font-weight:bold;line-height:18px;text-align:center;vertical-align:middle}
+.fb_dialog_content .dialog_content{background:url(http://static.ak.fbcdn.net/rsrc.php/v2/yJ/x/jKEcVPZFk-2.gif) no-repeat 50% 50%;border:1px solid #555;border-bottom:0;border-top:0;height:150px}
+.fb_dialog_content .dialog_footer{background:#f2f2f2;border:1px solid #555;border-top-color:#ccc;height:40px}
+#fb_dialog_loader_close{float:left}
+.fb_dialog.fb_dialog_mobile .fb_dialog_close_button{text-shadow:rgba(0, 30, 84, .296875) 0 -1px 0}
+.fb_dialog.fb_dialog_mobile .fb_dialog_close_icon{visibility:hidden}
+.fb_iframe_widget{position:relative;display:-moz-inline-block;display:inline-block}
+.fb_iframe_widget iframe{position:absolute}
+.fb_iframe_widget_lift{z-index:1}
+.fb_iframe_widget span{position:relative;display:inline-block;vertical-align:text-bottom;text-align:justify}
+.fb_hide_iframes iframe{position:relative;left:-10000px}
+.fb_iframe_widget_loader{position:relative;display:inline-block}
+.fb_iframe_widget_fluid{display:inline}
+.fb_iframe_widget_fluid span{width:100%}
+.fb_iframe_widget_loader iframe{min-height:32px;z-index:2;zoom:1}
+.fb_iframe_widget_loader .FB_Loader{background:url(http://static.ak.fbcdn.net/rsrc.php/v2/yJ/x/jKEcVPZFk-2.gif) no-repeat;height:32px;width:32px;margin-left:-16px;position:absolute;left:50%;z-index:4}
+.fb_button_simple,
+.fb_button_simple_rtl{background-image:url(http://static.ak.fbcdn.net/rsrc.php/v2/yH/x/eIpbnVKI9lR.png);background-repeat:no-repeat;cursor:pointer;outline:none;text-decoration:none}
+.fb_button_simple_rtl{background-position:right 0}
+.fb_button_simple .fb_button_text{margin:0 0 0 20px;padding-bottom:1px}
+.fb_button_simple_rtl .fb_button_text{margin:0 10px 0 0}
+a.fb_button_simple:hover .fb_button_text,
+a.fb_button_simple_rtl:hover .fb_button_text,
+.fb_button_simple:hover .fb_button_text,
+.fb_button_simple_rtl:hover .fb_button_text{text-decoration:underline}
+.fb_button,
+.fb_button_rtl{background:#29447e url(http://static.ak.fbcdn.net/rsrc.php/v2/yl/x/FGFbc80dUKj.png);background-repeat:no-repeat;cursor:pointer;display:inline-block;padding:0 0 0 1px;text-decoration:none;outline:none}
+.fb_button .fb_button_text,
+.fb_button_rtl .fb_button_text{background:#5f78ab url(http://static.ak.fbcdn.net/rsrc.php/v2/yl/x/FGFbc80dUKj.png);border-top:solid 1px #879ac0;border-bottom:solid 1px #1a356e;color:#fff;display:block;font-family:"lucida grande",tahoma,verdana,arial,sans-serif;font-weight:bold;padding:2px 6px 3px 6px;margin:1px 1px 0 21px;text-shadow:none}
+a.fb_button,
+a.fb_button_rtl,
+.fb_button,
+.fb_button_rtl{text-decoration:none}
+a.fb_button:active .fb_button_text,
+a.fb_button_rtl:active .fb_button_text,
+.fb_button:active .fb_button_text,
+.fb_button_rtl:active .fb_button_text{border-bottom:solid 1px #29447e;border-top:solid 1px #45619d;background:#4f6aa3;text-shadow:none}
+.fb_button_xlarge,
+.fb_button_xlarge_rtl{background-position:left -60px;font-size:24px;line-height:30px}
+.fb_button_xlarge .fb_button_text{padding:3px 8px 3px 12px;margin-left:38px}
+a.fb_button_xlarge:active{background-position:left -99px}
+.fb_button_xlarge_rtl{background-position:right -268px}
+.fb_button_xlarge_rtl .fb_button_text{padding:3px 8px 3px 12px;margin-right:39px}
+a.fb_button_xlarge_rtl:active{background-position:right -307px}
+.fb_button_large,
+.fb_button_large_rtl{background-position:left -138px;font-size:13px;line-height:16px}
+.fb_button_large .fb_button_text{margin-left:24px;padding:2px 6px 4px 6px}
+a.fb_button_large:active{background-position:left -163px}
+.fb_button_large_rtl{background-position:right -346px}
+.fb_button_large_rtl .fb_button_text{margin-right:25px}
+a.fb_button_large_rtl:active{background-position:right -371px}
+.fb_button_medium,
+.fb_button_medium_rtl{background-position:left -188px;font-size:11px;line-height:14px}
+a.fb_button_medium:active{background-position:left -210px}
+.fb_button_medium_rtl{background-position:right -396px}
+.fb_button_text_rtl,
+.fb_button_medium_rtl .fb_button_text{padding:2px 6px 3px 6px;margin-right:22px}
+a.fb_button_medium_rtl:active{background-position:right -418px}
+.fb_button_small,
+.fb_button_small_rtl{background-position:left -232px;font-size:10px;line-height:10px}
+.fb_button_small .fb_button_text{padding:2px 6px 3px;margin-left:17px}
+a.fb_button_small:active,
+.fb_button_small:active{background-position:left -250px}
+.fb_button_small_rtl{background-position:right -440px}
+.fb_button_small_rtl .fb_button_text{padding:2px 6px;margin-right:18px}
+a.fb_button_small_rtl:active{background-position:right -458px}
+.fb_share_count_wrapper{position:relative;float:left}
+.fb_share_count{background:#b0b9ec none repeat scroll 0 0;color:#333;font-family:"lucida grande", tahoma, verdana, arial, sans-serif;text-align:center}
+.fb_share_count_inner{background:#e8ebf2;display:block}
+.fb_share_count_right{margin-left:-1px;display:inline-block}
+.fb_share_count_right .fb_share_count_inner{border-top:solid 1px #e8ebf2;border-bottom:solid 1px #b0b9ec;margin:1px 1px 0 1px;font-size:10px;line-height:10px;padding:2px 6px 3px;font-weight:bold}
+.fb_share_count_top{display:block;letter-spacing:-1px;line-height:34px;margin-bottom:7px;font-size:22px;border:solid 1px #b0b9ec}
+.fb_share_count_nub_top{border:none;display:block;position:absolute;left:7px;top:35px;margin:0;padding:0;width:6px;height:7px;background-repeat:no-repeat;background-image:url(http://static.ak.fbcdn.net/rsrc.php/v2/yP/x/bSOHtKbCGYI.png)}
+.fb_share_count_nub_right{border:none;display:inline-block;padding:0;width:5px;height:10px;background-repeat:no-repeat;background-image:url(http://static.ak.fbcdn.net/rsrc.php/v2/yL/x/i_oIVTKMYsL.png);vertical-align:top;background-position:right 5px;z-index:10;left:2px;margin:0 2px 0 0;position:relative}
+.fb_share_no_count{display:none}
+.fb_share_size_Small .fb_share_count_right .fb_share_count_inner{font-size:10px}
+.fb_share_size_Medium .fb_share_count_right .fb_share_count_inner{font-size:11px;padding:2px 6px 3px;letter-spacing:-1px;line-height:14px}
+.fb_share_size_Large .fb_share_count_right .fb_share_count_inner{font-size:13px;line-height:16px;padding:2px 6px 4px;font-weight:normal;letter-spacing:-1px}
+.fb_share_count_hidden .fb_share_count_nub_top,
+.fb_share_count_hidden .fb_share_count_top,
+.fb_share_count_hidden .fb_share_count_nub_right,
+.fb_share_count_hidden .fb_share_count_right{visibility:hidden}
+.fb_connect_bar_container div,
+.fb_connect_bar_container span,
+.fb_connect_bar_container a,
+.fb_connect_bar_container img,
+.fb_connect_bar_container strong{background:none;border-spacing:0;border:0;direction:ltr;font-style:normal;font-variant:normal;letter-spacing:normal;line-height:1;margin:0;overflow:visible;padding:0;text-align:left;text-decoration:none;text-indent:0;text-shadow:none;text-transform:none;visibility:visible;white-space:normal;word-spacing:normal;vertical-align:baseline}
+.fb_connect_bar_container{position:fixed;left:0 !important;right:0 !important;height:42px !important;padding:0 25px !important;margin:0 !important;vertical-align:middle !important;border-bottom:1px solid #333 !important;background:#3b5998 !important;z-index:99999999 !important;overflow:hidden !important}
+.fb_connect_bar_container_ie6{position:absolute;top:expression(document.compatMode=="CSS1Compat"? document.documentElement.scrollTop+"px":body.scrollTop+"px")}
+.fb_connect_bar{position:relative;margin:auto;height:100%;width:100%;padding:6px 0 0 0 !important;background:none;color:#fff !important;font-family:"lucida grande", tahoma, verdana, arial, sans-serif !important;font-size:13px !important;font-style:normal !important;font-variant:normal !important;font-weight:normal !important;letter-spacing:normal !important;line-height:1 !important;text-decoration:none !important;text-indent:0 !important;text-shadow:none !important;text-transform:none !important;white-space:normal !important;word-spacing:normal !important}
+.fb_connect_bar a:hover{color:#fff}
+.fb_connect_bar .fb_profile img{height:30px;width:30px;vertical-align:middle;margin:0 6px 5px 0}
+.fb_connect_bar div a,
+.fb_connect_bar span,
+.fb_connect_bar span a{color:#bac6da;font-size:11px;text-decoration:none}
+.fb_connect_bar .fb_buttons{float:right;margin-top:7px}
+.fb_edge_widget_with_comment{position:relative;*z-index:1000}
+.fb_edge_widget_with_comment span.fb_edge_comment_widget{position:absolute}
+.fb_edge_widget_with_comment span.fb_send_button_form_widget{z-index:1}
+.fb_edge_widget_with_comment span.fb_send_button_form_widget .FB_Loader{left:0;top:1px;margin-top:6px;margin-left:0;background-position:50% 50%;background-color:#fff;height:150px;width:394px;border:1px #666 solid;border-bottom:2px solid #283e6c;z-index:1}
+.fb_edge_widget_with_comment span.fb_send_button_form_widget.dark .FB_Loader{background-color:#000;border-bottom:2px solid #ccc}
+.fb_edge_widget_with_comment span.fb_send_button_form_widget.siderender
+.FB_Loader{margin-top:0}
+.fbpluginrecommendationsbarleft,
+.fbpluginrecommendationsbarright{position:fixed !important;bottom:0;z-index:999}
+/* @noflip */
+.fbpluginrecommendationsbarleft{left:10px}
+/* @noflip */
+.fbpluginrecommendationsbarright{right:10px}</style><style>.gc-bubbleDefault{background-color:transparent !important;text-align:left;padding:0 !important;margin:0 !important;border:0 !important;table-layout:auto !important}.gc-reset{background-color:transparent !important;border:0 !important;padding:0 !important;margin:0 !important;text-align:left}.pls-bubbleTop{border-bottom:1px solid #ccc !important}.pls-topTail,.pls-vertShimLeft,.pls-contentLeft{background-image:url(//ssl.gstatic.com/s2/oz/images/stars/po/bubblev1/border_3.gif) !important}.pls-topTail{background-repeat:repeat-x !important;background-position:bottom !important}.pls-vertShim{background-color:#fff !important;text-align:right}.pls-vertShimLeft{background-repeat:repeat-y !important;background-position:right !important;height:4px}.pls-vertShimRight{height:4px}.pls-confirm-container .pls-vertShim{background-color:#fff3c2 !important}.pls-contentWrap{background-color:#fff !important;position:relative !important;vertical-align:top}.pls-contentLeft{background-repeat:repeat-y;background-position:right;vertical-align:top}.pls-dropRight{background-image:url(//ssl.gstatic.com/s2/oz/images/stars/po/bubblev1/bubbleDropR_3.png) !important;background-repeat:repeat-y !important;vertical-align:top}.pls-vert,.pls-tailleft,.pls-dropTR .pls-dropBR,.pls-dropBL,.pls-vert img{vertical-align:top}.pls-dropBottom{background-image:url(//ssl.gstatic.com/s2/oz/images/stars/po/bubblev1/bubbleDropB_3.png) !important;background-repeat:repeat-x !important;width:100%;vertical-align:top}.pls-topLeft{background:inherit !important;text-align:right;vertical-align:bottom}.pls-topRight{background:inherit !important;text-align:left;vertical-align:bottom}.pls-bottomLeft{background:inherit !important;text-align:right}.pls-bottomRight{background:inherit !important;text-align:left;vertical-align:top}.pls-tailtop,.pls-tailright,.pls-tailbottom,.pls-tailleft{display:none;position:relative}.pls-tailbottom,.pls-tailtop,.pls-tailright,.pls-tailleft,.pls-dropTR,.pls-dropBR,.pls-dropBL{background-image:url(//ssl.gstatic.com/s2/oz/images/stars/po/bubblev1/bubbleSprite_3.png) !important;background-repeat:no-repeat}.pls-tailbottom{background-position:-23px 0}.pls-confirm-container .pls-tailbottom{background-position:-23px -10px}.pls-tailtop{background-position:-19px -20px}.pls-tailright{background-position:0 0}.pls-tailleft{background-position:-10px 0}.pls-tailtop{vertical-align:top}.gc-bubbleDefault td{line-height:0;font-size:0}.pls-topLeft img,.pls-topRight img,.pls-tailbottom{vertical-align:bottom}.pls-bottomLeft img,.bubbleDropTR,.pls-dropBottomL img,.pls-dropBottom img,.pls-dropBottomR img,.pls-bottomLeft{vertical-align:top}.pls-dropTR{background-position:0 -22px}.pls-dropBR{background-position:0 -27px}.pls-dropBL{background-position:0 -16px}.pls-spacertop,.pls-spacerright,.pls-spacerbottom,.pls-spacerleft{position:static !important}.pls-spinner{bottom:0;position:absolute;left:0;margin:auto;right:0;top:0}</style></head><style type="text/css">embed[type*="application/x-shockwave-flash"],embed[src*=".swf"],object[type*="application/x-shockwave-flash"],object[codetype*="application/x-shockwave-flash"],object[src*=".swf"],object[codebase*="swflash.cab"],object[classid*="D27CDB6E-AE6D-11cf-96B8-444553540000"],object[classid*="d27cdb6e-ae6d-11cf-96b8-444553540000"],object[classid*="D27CDB6E-AE6D-11cf-96B8-444553540000"]{	display: none !important;}</style>
+<body class="sidebar-right" data-twttr-rendered="true"><iframe id="twttrHubFrameSecure" allowtransparency="true" frameborder="0" scrolling="no" tabindex="0" name="twttrHubFrameSecure" style="position: absolute; top: -9999em; width: 10px; height: 10px;" src="./02_Simple Popen2 Implementation   DZone_files/hub(1).htm"></iframe><iframe id="twttrHubFrame" allowtransparency="true" frameborder="0" scrolling="no" tabindex="0" name="twttrHubFrame" style="position: absolute; top: -9999em; width: 10px; height: 10px;" src="./02_Simple Popen2 Implementation   DZone_files/hub.htm"></iframe>
+
+<div id="page_wrapper">
+
+
+<div class="global_menu">
+    <div class="menu_wrapper">
+        <div id="menu_login">
+                        <a href="http://www.dzone.com/user">LOG IN</a> or <a href="http://www.dzone.com/user/register?clean=true">JOIN</a>
+                    </div>
+                <ul class="nice-menu nice-menu-down" id="nice-menu-1"><li id="menu-211" class="menu-path-www.dzone.com"><a href="http://www.dzone.com/" title="">Home</a></li>
+<li id="menu-167" class="menu-path-refcardz.dzone.com-"><a href="http://refcardz.dzone.com/" wrc_done="true">Refcardz</a><span class="wrc_icon wrc11" rating="{&quot;icon&quot;:&quot;green1-16.png&quot;,&quot;rating&quot;:1,&quot;weight&quot;:1}"></span></li>
+<li id="menu-4979" class="menuparent menu-path-www.dzone.com-mz"><a href="http://www.dzone.com/mz" title="">Microzones</a><ul><li id="menu-5713" class="menu-path-dzone.com-mz-agile"><a href="http://dzone.com/mz/agile" title="">Agile Zone</a></li>
+<li id="menu-5029" class="menu-path-domain-cloud.dzone.com"><a href="http://www.dzone.com/domain/cloud.dzone.com" title="Go to cloud.dzone.com">Cloud Zone</a></li>
+<li id="menu-5221" class="menu-path-dzone.com-mz-nosql"><a href="http://dzone.com/mz/nosql" title="">NoSQL Zone</a></li>
+<li id="menu-5187" class="menu-path-dzone.com-mz-html5"><a href="http://dzone.com/mz/html5" title="">HTML5 Zone</a></li>
+<li id="menu-5081" class="menu-path-dzone.com-mz-devops"><a href="http://dzone.com/mz/devops" title="">DevOps Zone</a></li>
+<li id="menu-5451" class="menu-path-dzone.com-mz-enterprise-integration"><a href="http://dzone.com/mz/enterprise-integration" title="">Enterprise Integration</a></li>
+<li id="menu-4987" class="menu-path-dzone.com-mz-windowsphone7"><a href="http://dzone.com/mz/windowsphone7" title="">Windows Phone</a></li>
+<li id="menu-5293" class="menu-path-dzone.com-mz-dotnet"><a href="http://dzone.com/mz/dotnet" title="">.NET Zone</a></li>
+<li id="menu-5607" class="menu-path-dzone.com-mz-performance"><a href="http://dzone.com/mz/performance" title="">Performance Zone</a></li>
+<li id="menu-5613" class="menu-path-dzone.com-mz-big-data"><a href="http://dzone.com/mz/big-data" title="">Big Data/BI Zone</a></li>
+</ul>
+</li>
+<li id="menu-125" class="menuparent menu-path-domain"><a href="http://www.dzone.com/domain">Zones</a><ul><li id="menu-4849" class="menu-path-domain-mobile.dzone.com"><a href="http://www.dzone.com/domain/mobile.dzone.com" title="Go to mobile.dzone.com">Mobile Zone</a></li>
+<li id="menu-426" class="menu-path-domain-java.dzone.com"><a href="http://www.dzone.com/domain/java.dzone.com" title="Go to java.dzone.com">Javalobby</a></li>
+<li id="menu-454" class="menu-path-domain-css.dzone.com"><a href="http://www.dzone.com/domain/css.dzone.com" title="Go to css.dzone.com">Web Builder Zone</a></li>
+<li id="menu-4991" class="menuparent menu-path-front"><a href="http://www.dzone.com/" title="">IDEs and Tools</a><ul><li id="menu-413" class="menu-path-domain-eclipse.dzone.com"><a href="http://www.dzone.com/domain/eclipse.dzone.com" title="Go to eclipse.dzone.com">Eclipse Zone</a></li>
+<li id="menu-317" class="menu-path-domain-jetbrains.dzone.com"><a href="http://www.dzone.com/domain/jetbrains.dzone.com" title="Go to jetbrains.dzone.com">JetBrains Zone</a></li>
+<li id="menu-431" class="menu-path-domain-netbeans.dzone.com"><a href="http://www.dzone.com/domain/netbeans.dzone.com" title="Go to netbeans.dzone.com">NetBeans Zone</a></li>
+</ul>
+</li>
+<li id="menu-4999" class="menuparent menu-path-front"><a href="http://www.dzone.com/" title="">Languages</a><ul><li id="menu-5295" class="menu-path-php.dzone.com"><a href="http://php.dzone.com/" title="Go to php.dzone.com" wrc_done="true">PHP Zone</a><span class="wrc_icon wrc11" rating="{&quot;icon&quot;:&quot;green1-16.png&quot;,&quot;rating&quot;:1,&quot;weight&quot;:1}"></span></li>
+<li id="menu-5001" class="menu-path-groovy.dzone.com"><a href="http://groovy.dzone.com/" title="" wrc_done="true">Groovy Zone</a><span class="wrc_icon wrc11" rating="{&quot;icon&quot;:&quot;green1-16.png&quot;,&quot;rating&quot;:1,&quot;weight&quot;:1}"></span></li>
+<li id="menu-5003" class="menu-path-python.dzone.com"><a href="http://python.dzone.com/" title="" wrc_done="true">Python Zone</a><span class="wrc_icon wrc11" rating="{&quot;icon&quot;:&quot;green1-16.png&quot;,&quot;rating&quot;:1,&quot;weight&quot;:1}"></span></li>
+<li id="menu-5457" class="menu-path-ruby.dzone.com"><a href="http://ruby.dzone.com/" title="" wrc_done="true">Ruby Zone</a><span class="wrc_icon wrc11" rating="{&quot;icon&quot;:&quot;green1-16.png&quot;,&quot;rating&quot;:1,&quot;weight&quot;:1}"></span></li>
+</ul>
+</li>
+<li id="menu-189" class="menu-path-domain-architects.dzone.com"><a href="http://www.dzone.com/domain/architects.dzone.com" title="Go to architects.dzone.com">Architects Zone</a></li>
+<li id="menu-400" class="menu-path-domain-books.dzone.com"><a href="http://www.dzone.com/domain/books.dzone.com" title="Go to books.dzone.com">Book Zone</a></li>
+<li id="menu-287" class="menu-path-domain-server.dzone.com"><a href="http://www.dzone.com/domain/server.dzone.com">Server Zone</a></li>
+</ul>
+</li>
+<li id="menu-367" class="menu-path-library.dzone.com"><a href="http://library.dzone.com/" wrc_done="true">Library</a><span class="wrc_icon wrc11" rating="{&quot;icon&quot;:&quot;green1-16.png&quot;,&quot;rating&quot;:1,&quot;weight&quot;:1}"></span></li>
+<li id="menu-1349" class="menu-path-dzone.com-snippets-"><a href="http://dzone.com/snippets/" title="">Snippets</a></li>
+<li id="menu-5617" class="menu-path-www.dzone.com-tutorials-"><a href="http://www.dzone.com/tutorials/" title="">Tutorials</a></li>
+</ul>
+        <div id="search_bar">
+            <form action="http://www.dzone.com/search/google" accept-charset="UTF-8" method="get" id="google-cse-searchbox-form">
+<div><input type="hidden" name="cx" id="edit-cx" value="010821965829155306098:ogyaz_5nsc8">
+<input type="hidden" name="cof" id="edit-cof" value="FORID:11">
+<div class="form-item" id="edit-query-wrapper">
+ <input type="text" maxlength="128" name="query" id="edit-query" size="15" value="" title="Enter the terms you wish to search for." class="form-text" style="border: 1px solid rgb(126, 157, 185); padding: 2px; background-image: url(http://www.google.com/coop/intl/en/images/google_custom_search_watermark.gif); background-color: rgb(255, 255, 255); background-position: 0% 50%; background-repeat: no-repeat no-repeat;">
+</div>
+<input type="submit" name="op" id="edit-sa" value="Search" class="form-submit">
+<input type="hidden" name="form_build_id" id="form-57af2d90a81152d5fc24781d4320fe0c" value="form-57af2d90a81152d5fc24781d4320fe0c">
+<input type="hidden" name="form_id" id="edit-google-cse-searchbox-form" value="google_cse_searchbox_form">
+
+</div></form>
+        </div>
+    </div>
+</div>
+
+    
+
+
+<div class="siteHeader">
+</div>
+
+
+<div id="header-region" class="clear-block">
+</div>
+
+<div id="wrapper" class="fewerAds">
+<div id="container" class="clear-block">
+<div id="header">
+    <div id="masthead">
+
+        <div id="site_id">
+                        <a href="http://www.dzone.com/" title="DZone: Your Personal Tech Universe"><img class="dz_logo" src="./02_Simple Popen2 Implementation   DZone_files/mh_dzone_logo.png" alt="DZone: Your Personal Tech Universe" title="DZone: Your Personal Tech Universe"></a>
+            <!--                <div class="site_name"><a href="/" title="--><!--">--><!--</a></div>-->
+            <!--				<a href="/" title="--><!--"><img class="site_logo" src="--><!--"-->
+            <!--					 alt="--><!--" title="--><!--" /></a>-->
+            <!--				<span class="site_slogan">--><!--</span>-->
+
+                    </div>
+
+                <div class="mh_leader">
+            <div class="leaderboard">
+                <!-- zones_masthead_728x90_default -->
+                <div id="div-gpt-ad-1350569504085-1">
+                    <script type="text/javascript">
+                        googletag.display('div-gpt-ad-1350569504085-1');
+                    </script>
+                </div>
+            </div>
+        </div>
+        
+        
+    </div>
+</div>
+
+
+<div id="siteBar">
+    
+    <div class="site_name"><a href="http://www.dzone.com/snippets" title="Snippets">Snippets</a></div>
+    <div class="textads">
+        <!-- zones_masthead_728x90_default -->
+        <div id="div-gpt-ad-1350569504085-5" style="width:800px; height:20px;">
+            <script type="text/javascript">
+                googletag.display('div-gpt-ad-1350569504085-5');
+            </script>
+        </div>
+    </div>
+    </div>
+
+<!--    <div class="topics-trending fancyfont">-->
+<!--    --><!--    </div>-->
+
+    
+
+
+
+<!-- end of header -->
+<div id="center" class=""><div id="squeeze">
+    <div id="article">         <!-- Snippets Message Header -->
+                    <div id="snippets_header">
+                <div id="snippets_description">
+                    DZone Snippets is a public source code repository. Easily build up your personal collection of code snippets, categorize them with tags / keywords, and share them with the world
+                </div>
+
+                <div id="snippets_button">
+                    <a href="http://dzone.com/node/add/code-snippet"><img src="./02_Simple Popen2 Implementation   DZone_files/post_snippet_button.png"></a>
+                </div>
+            </div>
+                    <div style="clear:both;"></div>
+                                                                        
+            <!--Author Block-->
+                            <div class="meta">
+
+                    
+                                        <div class="submitted">
+                        <div id="author">
+                            <a href="http://www.dzone.com/users/dzonesnippets"><img src="./02_Simple Popen2 Implementation   DZone_files/picture-1018055.png" style="width:43px; float:left; margin-right: 10px;"></a>
+                                                        <a href="http://www.dzone.com/users/dzonesnippets"><b id="authorname">Snippets Manager</b> </a>
+                            <ul class="authorMetaData">
+                                                                                                                                                                                                                                                            </ul>
+
+                        </div>
+
+                    </div><div style="clear:both;"></div>
+                    
+                                        <div id="author_block" style=" padding: 5px; padding-right: 10px; margin-top: 7px; margin-bottom:10px;">
+                        <!--                                 -->                        <p style="padding-left: 80px; padding-top: 0; margin-top: 0;">
+                             Snippets has posted 5883 posts at DZone.<a href="http://www.dzone.com/users/dzonesnippets"> View Full User Profile</a></p></div>
+                                    </div>
+                            <!--End Author Block-->
+
+                        <div id="articleHead">
+                <!-- Print Breadcrumb for Tutorials -->
+                                <h1>Simple Popen2 Implementation</h1>            </div>
+                            <div class="under_the_title">
+                    <div id="date">01.10.2006                    </div>
+                    <span style="margin:0 8px;color:#ddd;">|</span>
+                    <span style="padding: 5px; vertical-align: middle; font-size:14px;">
+                        12264 views                    </span>
+                    <span style="margin:0 8px;color:#ddd;">|</span>
+
+                    <!-- AddThis Button BEGIN -->
+<!--                    <a href="/forward?path=node/--><!--" style="vertical-align: middle;"><img style="margin: 8px 5px 0 5px; vertical-align: top;" width="20" height="20" src="http://cdn.dzone.com/links/themes/reader/images/actions/email-32x32.png" border="0"> Email</a>-->
+                    <div class="addthis_toolbox addthis_default_style " style="display:inline-block; vertical-align:middle;margin-top:8px;">
+                        <a class="addthis_button_facebook_like at300b" fb:like:layout="button_count" title="Facebook_like" href="http://www.dzone.com/snippets/simple-popen2-implementation#"><iframe style="overflow: hidden; border: 0px none; width: 90px; height: 25px;" src="./02_Simple Popen2 Implementation   DZone_files/like(1).htm"></iframe></a>
+                        <a class="addthis_button_tweet at300b" title="Tweet" href="http://www.dzone.com/snippets/simple-popen2-implementation#"><iframe allowtransparency="true" frameborder="0" scrolling="no" src="./02_Simple Popen2 Implementation   DZone_files/tweet_button.1357735024(1).htm" class="twitter-share-button twitter-count-horizontal" style="width: 116px; height: 20px;" title="Twitter Tweet Button" data-twttr-rendered="true"></iframe></a>
+                        <a class="addthis_button_google_plusone" g:plusone:size="medium" title="Google_plusone" href="http://www.dzone.com/snippets/simple-popen2-implementation#"><div style="height: 20px; width: 90px; display: inline-block; text-indent: 0px; margin: 0px; padding: 0px; background-color: transparent; border-style: none; float: none; line-height: normal; font-size: 1px; vertical-align: baseline; background-position: initial initial; background-repeat: initial initial;" id="___plusone_1"><iframe frameborder="0" hspace="0" marginheight="0" marginwidth="0" scrolling="no" style="position: static; top: 0px; width: 90px; margin: 0px; border-style: none; left: 0px; visibility: visible; height: 20px;" tabindex="0" vspace="0" width="100%" id="I2_1358080685118" name="I2_1358080685118" src="./02_Simple Popen2 Implementation   DZone_files/fastbutton.htm" allowtransparency="true" data-gapiattached="true" title="+1"></iframe></div></a>
+                        <script src="./02_Simple Popen2 Implementation   DZone_files/in.js" type="text/javascript"></script>
+                        <span style="line-height: 1; vertical-align: baseline; display: inline-block; text-align: center;" class="IN-widget"><span style="padding: 0px !important; margin: 0px !important; text-indent: 0px !important; display: inline-block !important; vertical-align: baseline !important; font-size: 1px !important;"><span id="li_ui_li_gen_1358080684572_0"><a id="li_ui_li_gen_1358080684572_0-link" href="javascript:void(0);"><span id="li_ui_li_gen_1358080684572_0-logo">in</span><span id="li_ui_li_gen_1358080684572_0-title"><span id="li_ui_li_gen_1358080684572_0-mark"></span><span id="li_ui_li_gen_1358080684572_0-title-text">Share</span></span></a></span></span><span style="padding: 0px !important; margin: 0px !important; text-indent: 0px !important; display: inline-block !important; vertical-align: baseline !important; font-size: 1px !important;"><span id="li_ui_li_gen_1358080684587_1-container" class="IN-right IN-hidden"><span id="li_ui_li_gen_1358080684587_1" class="IN-right"><span id="li_ui_li_gen_1358080684587_1-inner" class="IN-right"><span id="li_ui_li_gen_1358080684587_1-content" class="IN-right">0</span></span></span></span></span></span><script type="IN/Share+init" data-counter="right"></script>
+                    <div class="atclear"></div></div>
+                    <script type="text/javascript" src="./02_Simple Popen2 Implementation   DZone_files/addthis_widget.js"></script>
+                </div>
+
+                <!-- AddThis Button END -->
+                                                    <div id="articleText" class="">
+                        
+            <ul id="sharebar" style="background-color: rgb(255, 255, 255); border-color: rgb(204, 204, 204); margin-top: 0px; width: 75px; float: left; margin-right: 10px; margin-left: -110px; top: 10px; position: fixed; display: none; background-position: initial initial; background-repeat: initial initial;"><li><script type="text/javascript">var dzone_url = 'http://www.dzone.com/snippets/simple-popen2-implementation';</script>
+<script type="text/javascript">var dzone_title = 'Simple Popen2 Implementation';</script>
+<script language="javascript" src="./02_Simple Popen2 Implementation   DZone_files/zoneit.js"></script><iframe src="./02_Simple Popen2 Implementation   DZone_files/zoneit.htm" height="70" width="50" scrolling="no" frameborder="0"></iframe></li><li><iframe allowtransparency="true" frameborder="0" scrolling="no" src="./02_Simple Popen2 Implementation   DZone_files/tweet_button.1357735024.htm" class="twitter-share-button twitter-count-vertical" style="width: 59px; height: 62px;" title="Twitter Tweet Button" data-twttr-rendered="true"></iframe><script type="text/javascript" src="./02_Simple Popen2 Implementation   DZone_files/widgets.js"></script></li><li><!-- Place this tag where you want the +1 button to render -->
+<div style="height: 60px; width: 50px; display: inline-block; text-indent: 0px; margin: 0px; padding: 0px; background-color: transparent; border-style: none; float: none; line-height: normal; font-size: 1px; vertical-align: baseline; background-position: initial initial; background-repeat: initial initial;" id="___plusone_0"><iframe frameborder="0" hspace="0" marginheight="0" marginwidth="0" scrolling="no" style="position: static; top: 0px; width: 50px; margin: 0px; border-style: none; left: 0px; visibility: visible; height: 60px;" tabindex="0" vspace="0" width="100%" id="I0_1358080684160" name="I0_1358080684160" src="./02_Simple Popen2 Implementation   DZone_files/fastbutton(1).htm" allowtransparency="true" data-gapiattached="true" title="+1"></iframe></div>
+
+<!-- Place this render call where appropriate -->
+<script type="text/javascript">
+  (function() {
+    var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+    po.src = 'https://apis.google.com/js/plusone.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+  })();
+</script></li><li><iframe src="./02_Simple Popen2 Implementation   DZone_files/like(2).htm" scrolling="no" frameborder="0" style="border:none; width:58px; height:62px;" allowtransparency="true"></iframe></li><li><script src="./02_Simple Popen2 Implementation   DZone_files/in.js" type="text/javascript"></script>
+<span style="line-height: 1; vertical-align: baseline; display: inline-block; text-align: center;" class="IN-widget"><span style="padding: 0px !important; margin: 0px !important; text-indent: 0px !important; display: inline-block !important; vertical-align: baseline !important; font-size: 1px !important;"><span id="li_ui_li_gen_1358080684594_3-container" class="IN-top IN-empty"><span id="li_ui_li_gen_1358080684594_3" class="IN-top"><span id="li_ui_li_gen_1358080684594_3-inner" class="IN-top"><span id="li_ui_li_gen_1358080684594_3-content" class="IN-top">0</span></span></span></span></span><br><span style="padding: 0px !important; margin: 0px !important; text-indent: 0px !important; display: inline-block !important; vertical-align: baseline !important; font-size: 1px !important;"><span id="li_ui_li_gen_1358080684591_2"><a id="li_ui_li_gen_1358080684591_2-link" href="javascript:void(0);"><span id="li_ui_li_gen_1358080684591_2-logo">in</span><span id="li_ui_li_gen_1358080684591_2-title"><span id="li_ui_li_gen_1358080684591_2-mark"></span><span id="li_ui_li_gen_1358080684591_2-title-text">Share</span></span></a></span></span></span><script type="IN/Share+init" data-counter="top"></script></li><li><a href="http://www.reddit.com/r/programming/submit" onclick="window.location = &#39;http://www.reddit.com/r/programming/submit?url=&#39; + encodeURIComponent(window.location); return false" wrc_done="true"> <img src="./02_Simple Popen2 Implementation   DZone_files/spreddit7.gif" alt="submit to reddit" border="0" width="64"> </a><span class="wrc_icon wrc13" rating="{&quot;icon&quot;:&quot;green3-16.png&quot;,&quot;rating&quot;:1,&quot;weight&quot;:3}"></span></li></ul>
+
+<!--Code Snippet (Only print like this for old Snippets)-->
+    <pre>        I needed a simple popen2 implementation. This is similar to popen, but allows for bidirectional communication with the application being executed. Based on some other examples, I put this together. It makes for a good base.
+
+</pre><div class="syntaxhighlighter " id="highlighter_74366" style=""><div class="bar"><div class="toolbar"><a href="http://www.dzone.com/snippets/simple-popen2-implementation#viewSource" title="view source" style="width: 16px; height: 16px;" class="item viewSource">view source</a><div class="item copyToClipboard"><div style="display: block; cursor: pointer; text-align: center; width: 16px; height: 16px; top: auto; left: auto; position: static;"><div style="-webkit-transition: opacity 150ms ease-out; background-image: url(chrome-extension://gofhjkjmkpinhpoiabjplobcaignabnl/icon_play.png); text-align: left; opacity: 0.25; border: 1px solid rgb(0, 0, 0); width: 100%; height: 100%; background-color: rgba(193, 217, 244, 0.498039); background-repeat: no-repeat no-repeat;"></div></div><embed width="16" height="16" id="highlighter_74366_clipboard" type="application/x-shockwave-flash" allowscriptaccess="always" wmode="transparent" flashvars="highlighterId=highlighter_74366" menu="false" src="/sites/all/themes/dzone2012/scripts/syntaxHighlighter/clipboard.swf" style="display: none !important;"></div><a href="http://www.dzone.com/snippets/simple-popen2-implementation#printSource" title="print" style="width: 16px; height: 16px;" class="item printSource">print</a><a href="http://www.dzone.com/snippets/simple-popen2-implementation#about" title="?" style="width: 16px; height: 16px;" class="item about">?</a></div></div><div class="lines"><div class="line alt1"><code class="number">01.</code><span class="content"><span class="block" style="margin-left: 0px;"><code class="preprocessor">#include &lt;sys/types.h&gt;</code></span></span></div><div class="line alt2"><code class="number">02.</code><span class="content"><span class="block" style="margin-left: 0px;"><code class="preprocessor">#include &lt;fcntl.h&gt;</code></span></span></div><div class="line alt1"><code class="number">03.</code><span class="content"><span class="block" style="margin-left: 0px;"><code class="preprocessor">#include &lt;stdio.h&gt;</code></span></span></div><div class="line alt2"><code class="number">04.</code><span class="content"><span class="block" style="margin-left: 0px;"><code class="preprocessor">#include &lt;stdlib.h&gt;</code></span></span></div><div class="line alt1"><code class="number">05.</code><span class="content"><span class="block" style="margin-left: 0px;"><code class="preprocessor">#include &lt;unistd.h&gt;</code></span></span></div><div class="line alt2"><code class="number">06.</code><span class="content"><span class="block" style="margin-left: 0px;">&nbsp;</span></span></div><div class="line alt1"><code class="number">07.</code><span class="content"><span class="block" style="margin-left: 0px;"><code class="preprocessor">#define READ 0</code></span></span></div><div class="line alt2"><code class="number">08.</code><span class="content"><span class="block" style="margin-left: 0px;"><code class="preprocessor">#define WRITE 1</code></span></span></div><div class="line alt1"><code class="number">09.</code><span class="content"><span class="block" style="margin-left: 0px;">&nbsp;</span></span></div><div class="line alt2"><code class="number">10.</code><span class="content"><span class="block" style="margin-left: 0px;"><code class="plain">pid_t</code></span></span></div><div class="line alt1"><code class="number">11.</code><span class="content"><span class="block" style="margin-left: 0px;"><code class="plain">popen2(</code><code class="keyword bold">const</code> <code class="color1 bold">char</code> <code class="plain">*command, </code><code class="color1 bold">int</code> <code class="plain">*infp, </code><code class="color1 bold">int</code> <code class="plain">*outfp)</code></span></span></div><div class="line alt2"><code class="number">12.</code><span class="content"><span class="block" style="margin-left: 0px;"><code class="plain">{</code></span></span></div><div class="line alt1"><code class="number">13.</code><span class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><span class="block" style="margin-left: 28px;"><code class="color1 bold">int</code> <code class="plain">p_stdin[2], p_stdout[2];</code></span></span></div><div class="line alt2"><code class="number">14.</code><span class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><span class="block" style="margin-left: 28px;"><code class="plain">pid_t pid;</code></span></span></div><div class="line alt1"><code class="number">15.</code><span class="content"><span class="block" style="margin-left: 0px;">&nbsp;</span></span></div><div class="line alt2"><code class="number">16.</code><span class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><span class="block" style="margin-left: 28px;"><code class="keyword bold">if</code> <code class="plain">(pipe(p_stdin) != 0 || pipe(p_stdout) != 0)</code></span></span></div><div class="line alt1"><code class="number">17.</code><span class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><span class="block" style="margin-left: 56px;"><code class="keyword bold">return</code> <code class="plain">-1;</code></span></span></div><div class="line alt2"><code class="number">18.</code><span class="content"><span class="block" style="margin-left: 0px;">&nbsp;</span></span></div><div class="line alt1"><code class="number">19.</code><span class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><span class="block" style="margin-left: 28px;"><code class="plain">pid = fork();</code></span></span></div><div class="line alt2"><code class="number">20.</code><span class="content"><span class="block" style="margin-left: 0px;">&nbsp;</span></span></div><div class="line alt1"><code class="number">21.</code><span class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><span class="block" style="margin-left: 28px;"><code class="keyword bold">if</code> <code class="plain">(pid &lt; 0)</code></span></span></div><div class="line alt2"><code class="number">22.</code><span class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><span class="block" style="margin-left: 56px;"><code class="keyword bold">return</code> <code class="plain">pid;</code></span></span></div><div class="line alt1"><code class="number">23.</code><span class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><span class="block" style="margin-left: 28px;"><code class="keyword bold">else</code> <code class="keyword bold">if</code> <code class="plain">(pid == 0)</code></span></span></div><div class="line alt2"><code class="number">24.</code><span class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><span class="block" style="margin-left: 28px;"><code class="plain">{</code></span></span></div><div class="line alt1"><code class="number">25.</code><span class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><span class="block" style="margin-left: 56px;"><code class="plain">close(p_stdin[WRITE]);</code></span></span></div><div class="line alt2"><code class="number">26.</code><span class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><span class="block" style="margin-left: 56px;"><code class="plain">dup2(p_stdin[READ], READ);</code></span></span></div><div class="line alt1"><code class="number">27.</code><span class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><span class="block" style="margin-left: 56px;"><code class="plain">close(p_stdout[READ]);</code></span></span></div><div class="line alt2"><code class="number">28.</code><span class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><span class="block" style="margin-left: 56px;"><code class="plain">dup2(p_stdout[WRITE], WRITE);</code></span></span></div><div class="line alt1"><code class="number">29.</code><span class="content"><span class="block" style="margin-left: 0px;">&nbsp;</span></span></div><div class="line alt2"><code class="number">30.</code><span class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><span class="block" style="margin-left: 56px;"><code class="plain">execl(</code><code class="string">"/bin/sh"</code><code class="plain">, </code><code class="string">"sh"</code><code class="plain">, </code><code class="string">"-c"</code><code class="plain">, command, NULL);</code></span></span></div><div class="line alt1"><code class="number">31.</code><span class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><span class="block" style="margin-left: 56px;"><code class="functions bold">perror</code><code class="plain">(</code><code class="string">"execl"</code><code class="plain">);</code></span></span></div><div class="line alt2"><code class="number">32.</code><span class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><span class="block" style="margin-left: 56px;"><code class="functions bold">exit</code><code class="plain">(1);</code></span></span></div><div class="line alt1"><code class="number">33.</code><span class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><span class="block" style="margin-left: 28px;"><code class="plain">}</code></span></span></div><div class="line alt2"><code class="number">34.</code><span class="content"><span class="block" style="margin-left: 0px;">&nbsp;</span></span></div><div class="line alt1"><code class="number">35.</code><span class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><span class="block" style="margin-left: 28px;"><code class="keyword bold">if</code> <code class="plain">(infp == NULL)</code></span></span></div><div class="line alt2"><code class="number">36.</code><span class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><span class="block" style="margin-left: 56px;"><code class="plain">close(p_stdin[WRITE]);</code></span></span></div><div class="line alt1"><code class="number">37.</code><span class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><span class="block" style="margin-left: 28px;"><code class="keyword bold">else</code></span></span></div><div class="line alt2"><code class="number">38.</code><span class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><span class="block" style="margin-left: 56px;"><code class="plain">*infp = p_stdin[WRITE];</code></span></span></div><div class="line alt1"><code class="number">39.</code><span class="content"><span class="block" style="margin-left: 0px;">&nbsp;</span></span></div><div class="line alt2"><code class="number">40.</code><span class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><span class="block" style="margin-left: 28px;"><code class="keyword bold">if</code> <code class="plain">(outfp == NULL)</code></span></span></div><div class="line alt1"><code class="number">41.</code><span class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><span class="block" style="margin-left: 56px;"><code class="plain">close(p_stdout[READ]);</code></span></span></div><div class="line alt2"><code class="number">42.</code><span class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><span class="block" style="margin-left: 28px;"><code class="keyword bold">else</code></span></span></div><div class="line alt1"><code class="number">43.</code><span class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><span class="block" style="margin-left: 56px;"><code class="plain">*outfp = p_stdout[READ];</code></span></span></div><div class="line alt2"><code class="number">44.</code><span class="content"><span class="block" style="margin-left: 0px;">&nbsp;</span></span></div><div class="line alt1"><code class="number">45.</code><span class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><span class="block" style="margin-left: 28px;"><code class="keyword bold">return</code> <code class="plain">pid;</code></span></span></div><div class="line alt2"><code class="number">46.</code><span class="content"><span class="block" style="margin-left: 0px;"><code class="plain">}</code></span></span></div></div></div><pre>
+Simple usage would be:
+
+</pre><div class="syntaxhighlighter " id="highlighter_379826" style=""><div class="bar"><div class="toolbar"><a href="http://www.dzone.com/snippets/simple-popen2-implementation#viewSource" title="view source" style="width: 16px; height: 16px;" class="item viewSource">view source</a><div class="item copyToClipboard"><div style="display: block; cursor: pointer; text-align: center; width: 16px; height: 16px; top: auto; left: auto; position: static;"><div style="-webkit-transition: opacity 150ms ease-out; background-image: url(chrome-extension://gofhjkjmkpinhpoiabjplobcaignabnl/icon_play.png); text-align: left; opacity: 0.25; border: 1px solid rgb(0, 0, 0); width: 100%; height: 100%; background-color: rgba(193, 217, 244, 0.498039); background-repeat: no-repeat no-repeat;"></div></div><embed width="16" height="16" id="highlighter_379826_clipboard" type="application/x-shockwave-flash" allowscriptaccess="always" wmode="transparent" flashvars="highlighterId=highlighter_379826" menu="false" src="/sites/all/themes/dzone2012/scripts/syntaxHighlighter/clipboard.swf" style="display: none !important;"></div><a href="http://www.dzone.com/snippets/simple-popen2-implementation#printSource" title="print" style="width: 16px; height: 16px;" class="item printSource">print</a><a href="http://www.dzone.com/snippets/simple-popen2-implementation#about" title="?" style="width: 16px; height: 16px;" class="item about">?</a></div></div><div class="lines"><div class="line alt1"><code class="number">01.</code><span class="content"><span class="block" style="margin-left: 0px;"><code class="color1 bold">int</code></span></span></div><div class="line alt2"><code class="number">02.</code><span class="content"><span class="block" style="margin-left: 0px;"><code class="plain">main(</code><code class="color1 bold">int</code> <code class="plain">argc, </code><code class="color1 bold">char</code> <code class="plain">**argv)</code></span></span></div><div class="line alt1"><code class="number">03.</code><span class="content"><span class="block" style="margin-left: 0px;"><code class="plain">{</code></span></span></div><div class="line alt2"><code class="number">04.</code><span class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><span class="block" style="margin-left: 28px;"><code class="color1 bold">int</code> <code class="plain">infp, outfp;</code></span></span></div><div class="line alt1"><code class="number">05.</code><span class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><span class="block" style="margin-left: 28px;"><code class="color1 bold">char</code> <code class="plain">buf[128];</code></span></span></div><div class="line alt2"><code class="number">06.</code><span class="content"><span class="block" style="margin-left: 0px;">&nbsp;</span></span></div><div class="line alt1"><code class="number">07.</code><span class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><span class="block" style="margin-left: 28px;"><code class="keyword bold">if</code> <code class="plain">(popen2(</code><code class="string">"sort"</code><code class="plain">, &amp;infp, &amp;outfp) &lt;= 0)</code></span></span></div><div class="line alt2"><code class="number">08.</code><span class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><span class="block" style="margin-left: 28px;"><code class="plain">{</code></span></span></div><div class="line alt1"><code class="number">09.</code><span class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><span class="block" style="margin-left: 56px;"><code class="functions bold">printf</code><code class="plain">(</code><code class="string">"Unable to exec sort\n"</code><code class="plain">);</code></span></span></div><div class="line alt2"><code class="number">10.</code><span class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><span class="block" style="margin-left: 56px;"><code class="functions bold">exit</code><code class="plain">(1);</code></span></span></div><div class="line alt1"><code class="number">11.</code><span class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><span class="block" style="margin-left: 28px;"><code class="plain">}</code></span></span></div><div class="line alt2"><code class="number">12.</code><span class="content"><span class="block" style="margin-left: 0px;">&nbsp;</span></span></div><div class="line alt1"><code class="number">13.</code><span class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><span class="block" style="margin-left: 28px;"><code class="plain">write(infp, </code><code class="string">"Z\n"</code><code class="plain">, 2);</code></span></span></div><div class="line alt2"><code class="number">14.</code><span class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><span class="block" style="margin-left: 28px;"><code class="plain">write(infp, </code><code class="string">"D\n"</code><code class="plain">, 2);</code></span></span></div><div class="line alt1"><code class="number">15.</code><span class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><span class="block" style="margin-left: 28px;"><code class="plain">write(infp, </code><code class="string">"A\n"</code><code class="plain">, 2);</code></span></span></div><div class="line alt2"><code class="number">16.</code><span class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><span class="block" style="margin-left: 28px;"><code class="plain">write(infp, </code><code class="string">"C\n"</code><code class="plain">, 2);</code></span></span></div><div class="line alt1"><code class="number">17.</code><span class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><span class="block" style="margin-left: 28px;"><code class="plain">close(infp);</code></span></span></div><div class="line alt2"><code class="number">18.</code><span class="content"><span class="block" style="margin-left: 0px;">&nbsp;</span></span></div><div class="line alt1"><code class="number">19.</code><span class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><span class="block" style="margin-left: 28px;"><code class="plain">*buf = </code><code class="string">'\0'</code><code class="plain">;</code></span></span></div><div class="line alt2"><code class="number">20.</code><span class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><span class="block" style="margin-left: 28px;"><code class="plain">read(outfp, buf, 128);</code></span></span></div><div class="line alt1"><code class="number">21.</code><span class="content"><span class="block" style="margin-left: 0px;">&nbsp;</span></span></div><div class="line alt2"><code class="number">22.</code><span class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><span class="block" style="margin-left: 28px;"><code class="functions bold">printf</code><code class="plain">(</code><code class="string">"buf = '%s'\n"</code><code class="plain">, buf);</code></span></span></div><div class="line alt1"><code class="number">23.</code><span class="content"><span class="block" style="margin-left: 0px;">&nbsp;</span></span></div><div class="line alt2"><code class="number">24.</code><span class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><span class="block" style="margin-left: 28px;"><code class="keyword bold">return</code> <code class="plain">0;</code></span></span></div><div class="line alt1"><code class="number">25.</code><span class="content"><span class="block" style="margin-left: 0px;"><code class="plain">}</code></span></span></div></div></div><pre>    </pre>
+
+<!--Description-->
+
+<!--Language-->
+<!--<strong>Language:</strong> -->
+<!-- TAGS -->
+
+<ul class="tags">
+<span style="float: left;margin: 4px;font-weight: bold;">Tags: </span>
+<li class="tag"><a href="http://www.dzone.com/snippets/tag/C">C</a></li><li class="tag"><a href="http://www.dzone.com/snippets/tag/IPC">IPC</a></li><li class="tag"><a href="http://www.dzone.com/snippets/tag/pipes">pipes</a></li><li class="tag"><a href="http://www.dzone.com/snippets/tag/popen">popen</a></li><li class="tag"><a href="http://www.dzone.com/snippets/tag/popen2">popen2</a></li><li class="tag"><a href="http://www.dzone.com/snippets/tag/Unix">Unix</a></li></ul>
+<div style="clear:both;"></div>
+
+<div id="comments"><h2 class="comments">Comments</h2><a id="comment-78435"></a>
+<div class="comment odd">
+		
+			  <a href="http://www.dzone.com/users/petercooper"><img src="./02_Simple Popen2 Implementation   DZone_files/default_48.gif" class="avatar"></a>    <div class="comment-wrap">
+      <div class="tl"><!-- --></div>  
+	    	<h3>Peter Cooper replied on Thu, 2006/08/03 - 10:23pm</h3>
+  	   	
+	<div class="comment-content">
+		   <!--paging_filter-->I just got a mail from someone who submitted new code that fixes some problems in the above. I'm not a C programmer so cannot vouch for it, but supposedly it cleans up some memory leaks of some sort:
+
+<code>
+#include 
+#include 
+#include 
+#include 
+#include 
+
+#define READ 0
+#define WRITE 1
+
+pid_t
+popen2(const char *command, int *infp, int *outfp)
+{
+    int p_stdin[2], p_stdout[2];
+    pid_t pid;
+
+    if (pipe(p_stdin) != 0 || pipe(p_stdout) != 0)
+        return -1;
+
+    pid = fork();
+
+    if (pid &lt; 0)
+        return pid;
+    else if (pid == 0)
+    {
+        close(p_stdin[WRITE]);
+        dup2(p_stdin[READ], READ);
+        close(p_stdout[READ]);
+        dup2(p_stdout[WRITE], WRITE);
+
+        execl("/bin/sh", "sh", "-c", command, NULL);
+        perror("execl");
+        exit(1);
+    }
+
+    if (infp == NULL)
+        close(p_stdin[WRITE]);
+    else
+        *infp = p_stdin[WRITE];
+	// The way it was p_stdin[read] in this program is still open
+    if (outfp == NULL)
+        close(p_stdout[READ]);
+    else
+        *outfp = p_stdout[READ];
+	// as well as p_stdout[write], they're closed in the fork, but not in the original program
+	//fix is ez:
+	close(p_stdin[READ]); // We only write to the forks input anyway
+	close(p_stdout[WRITE]); // and we only read from its output
+    return pid;
+}
+</code>		       			<div class="actions"><ul class="links"><li class="comment_forbidden first last"><span><a href="http://www.dzone.com/user/login?destination=node%2F97081%23comment-form">Login</a> or <a href="http://www.dzone.com/user/register?destination=node%2F97081%23comment-form">register</a> to post comments</span></li>
+</ul></div>
+  				</div>
+ </div>
+</div><a id="comment-78433"></a>
+<div class="comment even">
+		
+		  	   		<a href="http://www.dzone.com/users/dzonesnippets"><img src="./02_Simple Popen2 Implementation   DZone_files/picture-1018055(1).png" alt="" title="" class="avatar" width="48" height="48"></a> 
+    <div class="comment-wrap">
+      <div class="tl"><!-- --></div>  
+	    	<h3>Snippets Manager replied on Sat, 2006/07/08 - 8:43pm</h3>
+  	   	
+	<div class="comment-content">
+		   <!--paging_filter-->Thanks for this code snippet.  It was a lifesaver.
+
+When I tried using the code, I found I had to add several close statements.  After
+        close(p_stdin[WRITE]);
+        dup2(p_stdin[READ], READ);
+        close(p_stdout[READ]);
+        dup2(p_stdout[WRITE], WRITE);
+I added
+        close(p_stdout[READ]);
+        close(p_stdin[WRITE]);
+since dup2 creates an extra copy of the file descriptors.
+
+Just before
+    return pid;
+I added
+        close(p_stdin[READ]);
+        close(p_stdout[WRITE]);
+since the parent process has no business reading from the child's stdin our writing to its stdout.		       			<div class="actions"><ul class="links"><li class="comment_forbidden first last"><span><a href="http://www.dzone.com/user/login?destination=node%2F97081%23comment-form">Login</a> or <a href="http://www.dzone.com/user/register?destination=node%2F97081%23comment-form">register</a> to post comments</span></li>
+</ul></div>
+  				</div>
+ </div>
+</div></div></div>
+    </div>
+</div></div>
+<!-- end of squeeze, center (main content) -->
+        <div id="sidebar-right" class="sidebar">
+        
+        <style>
+
+
+        </style>
+
+    <div id="social-box">
+        <div class="social-box-header">
+            Connect with DZone
+        </div>
+
+        <div class="content-buttons-wrapper">
+            <div class="content-buttons">
+                <div class="article-button">
+                    <a href="http://www.dzone.com/node/add"><i class="icon-file"></i>  Publish an Article</a>
+                </div>
+
+                <div class="tip-button">
+                    <a href="mailto:newsdesk@dzone.com"><i class="icon-envelope"></i> Share a Tip</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="social-box-wrapper">
+            <ul>
+                <div style="height: 69px; width: 282px; display: inline-block; text-indent: 0px; margin: 0px; padding: 0px; background-color: transparent; border-style: none; float: none; line-height: normal; font-size: 1px; vertical-align: baseline; background-position: initial initial; background-repeat: initial initial;" id="___plus_0"><iframe frameborder="0" hspace="0" marginheight="0" marginwidth="0" scrolling="no" style="position: static; top: 0px; width: 282px; margin: 0px; border-style: none; left: 0px; visibility: visible; height: 69px;" tabindex="0" vspace="0" width="100%" id="I1_1358080684166" name="I1_1358080684166" src="./02_Simple Popen2 Implementation   DZone_files/badge.htm" allowtransparency="true" data-gapiattached="true" title="Google+ Badge"></iframe></div>
+                <li class="facebookbtn"><div class="fb-like fb_edge_widget_with_comment fb_iframe_widget" data-href="http://www.facebook.com/pages/DZone/259639764711" data-send="false" data-layout="button_count" data-width="285" data-show-faces="false" data-font="lucida grande" fb-xfbml-state="rendered"><span style="height: 20px; width: 84px;"><iframe id="f88df73c8" name="fe2ac8c8" scrolling="no" style="border: none; overflow: hidden; height: 20px; width: 84px;" title="Like this content on Facebook." class="fb_ltr" src="./02_Simple Popen2 Implementation   DZone_files/like.htm"></iframe></span></div></li>
+                <li class="twitterbtn"><iframe allowtransparency="true" frameborder="0" scrolling="no" src="./02_Simple Popen2 Implementation   DZone_files/follow_button.1357735024.htm" class="twitter-follow-button" style="width: 170px; height: 20px;" title="Twitter Follow Button" data-twttr-rendered="true"></iframe></li>
+                <li class="rssbtn">
+                                                                    <a href="http://www.dzone.com/rss.xml" onclick="_gaq.push([&#39;_trackEvent&#39;,&#39;Social Button Click&#39;, &#39;DZone RSS&#39;]);"><i class="icon-rss"></i></a>
+                                                            </li>
+            </ul>
+
+            <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+            <script type="text/javascript" src="./02_Simple Popen2 Implementation   DZone_files/plusone.js" gapi_processed="true"></script>
+        </div>
+    </div>
+
+    <div style="clear:both"></div>
+
+    <ul class="dzone-social-buttons" style="display:none;">
+            <li><a href="mailto:newsdesk@dzone.com" class="got_a_tip" onclick="_gaq.push([&#39;_trackEvent&#39;,&#39;Social Button Click&#39;, &#39;Tip Button&#39;]);">Got a story? Tell us!</a></li>
+            <li>
+                                                    <a href="http://www.dzone.com/rss.xml" class="dzone-social-rss" onclick="_gaq.push([&#39;_trackEvent&#39;,&#39;Social Button Click&#39;, &#39;DZone RSS&#39;]);"></a>
+                                                </li>
+            <li><a href="https://plus.google.com/+dzone/posts" class="dzone-social-google" onclick="_gaq.push([&#39;_trackEvent&#39;,&#39;Social Button Click&#39;, &#39;DZone Google+&#39;]);" "="" wrc_done="true"></a><span class="wrc_icon wrc13" rating="{&quot;icon&quot;:&quot;green3-16.png&quot;,&quot;rating&quot;:1,&quot;weight&quot;:3}"></span></li>
+            <li><a href="http://www.facebook.com/pages/DZone/259639764711" class="dzone-social-facebook" onclick="_gaq.push([&#39;_trackEvent&#39;,&#39;Social Button Click&#39;, &#39;DZone Facebook&#39;]);" "="" wrc_done="true"></a><span class="wrc_icon wrc13" rating="{&quot;icon&quot;:&quot;green3-16.png&quot;,&quot;rating&quot;:1,&quot;weight&quot;:3}"></span></li>
+            <li><a href="https://twitter.com/#!/Dzone" class="dzone-social-twitter" onclick="_gaq.push([&#39;_trackEvent&#39;,&#39;Social Button Click&#39;, &#39;DZone Twitter&#39;]);" "="" wrc_done="true"></a><span class="wrc_icon wrc13" rating="{&quot;icon&quot;:&quot;green3-16.png&quot;,&quot;rating&quot;:1,&quot;weight&quot;:3}"></span></li>
+            <li><a href="http://www.linkedin.com/groups/DZone-696877" class="dzone-social-linkedin" onclick="_gaq.push([&#39;_trackEvent&#39;,&#39;Social Button Click&#39;, &#39;DZone LinkedIn&#39;]);" "="" wrc_done="true"></a><span class="wrc_icon wrc13" rating="{&quot;icon&quot;:&quot;green3-16.png&quot;,&quot;rating&quot;:1,&quot;weight&quot;:3}"></span></li>
+            <!--                  <li><a href="#" class="careers-button" onClick= "pageTracker._trackEvent('Social Button Click', 'Careers Button');">Careers</a></li>-->
+
+        </ul>
+
+
+        <!--        Popular Snippets Sidebar Box-->
+                    <style>
+    #snippets_tags{
+        margin: 0 0 15px 0;
+        font-size:14px;
+        float:left;
+    }
+    #snippets_tags h2{
+        margin: 5px 0px;
+        padding: 5px 5px;
+        border-bottom: 2px solid #666;
+        font-family: "museoSans500","helvetica",Arial;
+        font-weight: bold;
+        font-size: 21px;
+        color: #666;
+    }
+</style>
+
+<div id="snippets_tags"><h2>Popular Tags</h2><a class="tag" href="http://www.dzone.com/snippets/tag/Ruby">Ruby</a> <a class="tag" href="http://www.dzone.com/snippets/tag/javascript">javascript</a> <a class="tag" href="http://www.dzone.com/snippets/tag/Rails">Rails</a> <a class="tag" href="http://www.dzone.com/snippets/tag/php">php</a> <a class="tag" href="http://www.dzone.com/snippets/tag/Python">Python</a> <a class="tag" href="http://www.dzone.com/snippets/tag/java">java</a> <a class="tag" href="http://www.dzone.com/snippets/tag/html">html</a> <a class="tag" href="http://www.dzone.com/snippets/tag/shell">shell</a> <a class="tag" href="http://www.dzone.com/snippets/tag/SQL">SQL</a> <a class="tag" href="http://www.dzone.com/snippets/tag/MySQL">MySQL</a> <a class="tag" href="http://www.dzone.com/snippets/tag/bash">bash</a> <a class="tag" href="http://www.dzone.com/snippets/tag/Linux">Linux</a> <a class="tag" href="http://www.dzone.com/snippets/tag/String">String</a> <a class="tag" href="http://www.dzone.com/snippets/tag/REBOL">REBOL</a> <a class="tag" href="http://www.dzone.com/snippets/tag/csharp">csharp</a> <a class="tag" href="http://www.dzone.com/snippets/tag/Perl">Perl</a> <a class="tag" href="http://www.dzone.com/snippets/tag/C">C</a> <a class="tag" href="http://www.dzone.com/snippets/tag/css">css</a> <a class="tag" href="http://www.dzone.com/snippets/tag/Array">Array</a> <a class="tag" href="http://www.dzone.com/snippets/tag/file">file</a> <a class="tag" href="http://www.dzone.com/snippets/tag/rubyonrails">rubyonrails</a> <a class="tag" href="http://www.dzone.com/snippets/tag/Unix">Unix</a> <a class="tag" href="http://www.dzone.com/snippets/tag/XML">XML</a> <a class="tag" href="http://www.dzone.com/snippets/tag/series60">series60</a> <a class="tag" href="http://www.dzone.com/snippets/tag/regex">regex</a> </div><div style="clear:both;"></div>            
+
+        
+                    <div id="mh_rectangle">
+
+                <!-- zones_sidebar_336x280_default -->
+                <div id="div-gpt-ad-1350569504085-2" style="width:300px; height:250px;">
+                    <script type="text/javascript">
+                        googletag.display('div-gpt-ad-1350569504085-2');
+                    </script>
+                </div>
+                <!-- End DART Ad -->
+
+            </div>
+            
+
+        
+
+
+            <div id="top-refcardz" style="margin-bottom:15px;"><div id="refbox_container">
+
+<style type="text/css">
+#refbox_container table {
+	font-family: Verdana, Geneva, sans-serif;
+	font-size: 11px;
+	font-weight: normal;
+
+}
+#refbox_container td {
+      }
+#refbox_container ol {
+	list-style-position: inside;
+	margin: 0px;
+	padding: 0px;
+	 }
+#refbox_container li {
+	padding-bottom: 3px; }
+
+.refbox-header {
+	padding: 0px;
+    background-color:#E5ECF9;
+	}
+.refbox-footer {
+	font-size: 13px;
+	color: #444;
+	background:#E5ECF9;
+}
+.refbox-spotlight{
+    font-size: 16px;
+    color: #444;
+    background:#E5ECF9;
+}
+</style>
+
+
+
+<table width="300" cellpadding="0" cellspacing="0" class="refbox">
+
+<tbody><tr><td colspan="2" class="refbox-spotlight" style="padding:85px 6px 6px 6px; background-image:url(http://cdn.dzone.com/sites/all/modules/dzone/assets/refbox-header.png);background-repeat: no-repeat;"><a href="http://refcardz.dzone.com/refcardz/essential-apache-http-server" wrc_done="true">Apache httpd</a><span class="wrc_icon wrc11" rating="{&quot;icon&quot;:&quot;green1-16.png&quot;,&quot;rating&quot;:1,&quot;weight&quot;:1}"></span></td></tr>
+<tr><td colspan="2" style="background:#E5ECF9; padding:0px 6px 11px 6px;"> Written by: Rich Bowen </td> </tr>
+
+<tr><td colspan="2" style="padding:6px;">
+
+  <strong>Featured Refcardz:</strong> <strong style="margin-left:23px;">Top Refcardz:</strong></td></tr>
+
+<tr><td width="141" style="padding-bottom:6px; padding-left:6px;">
+
+    <ol>
+    <!--     -->                         <li><a href="http://refcardz.dzone.com/refcardz/php-54-scalable" wrc_done="true">PHP 5.4</a><span class="wrc_icon wrc11" rating="{&quot;icon&quot;:&quot;green1-16.png&quot;,&quot;rating&quot;:1,&quot;weight&quot;:1}"></span></li>
+            <!--     -->                         <li><a href="http://refcardz.dzone.com/refcardz/deployment-automation-patterns" wrc_done="true">Deployment Automation Patterns</a><span class="wrc_icon wrc11" rating="{&quot;icon&quot;:&quot;green1-16.png&quot;,&quot;rating&quot;:1,&quot;weight&quot;:1}"></span></li>
+            <!--     -->                         <li><a href="http://refcardz.dzone.com/refcardz/patterns-modular-architecture" wrc_done="true">Modularity Patterns</a><span class="wrc_icon wrc11" rating="{&quot;icon&quot;:&quot;green1-16.png&quot;,&quot;rating&quot;:1,&quot;weight&quot;:1}"></span></li>
+            <!--     -->                         <li><a href="http://refcardz.dzone.com/refcardz/software-configuration" wrc_done="true">SCM</a><span class="wrc_icon wrc11" rating="{&quot;icon&quot;:&quot;green1-16.png&quot;,&quot;rating&quot;:1,&quot;weight&quot;:1}"></span></li>
+            <!--     -->                         <li><a href="http://refcardz.dzone.com/refcardz/essential-apache-http-server" wrc_done="true">Apache httpd</a><span class="wrc_icon wrc11" rating="{&quot;icon&quot;:&quot;green1-16.png&quot;,&quot;rating&quot;:1,&quot;weight&quot;:1}"></span></li>
+                </ol></td><td width="150" style="padding-bottom:6px;"><ol>
+                            <li><a href="http://refcardz.dzone.com/refcardz/essential-apache-http-server" wrc_done="true">Apache httpd</a><span class="wrc_icon wrc11" rating="{&quot;icon&quot;:&quot;green1-16.png&quot;,&quot;rating&quot;:1,&quot;weight&quot;:1}"></span></li>
+                                    <li><a href="http://refcardz.dzone.com/refcardz/refactoring-patterns" wrc_done="true">Refactoring</a><span class="wrc_icon wrc11" rating="{&quot;icon&quot;:&quot;green1-16.png&quot;,&quot;rating&quot;:1,&quot;weight&quot;:1}"></span></li>
+                                    <li><a href="http://refcardz.dzone.com/refcardz/patterns-modular-architecture" wrc_done="true">Modularity Patterns</a><span class="wrc_icon wrc11" rating="{&quot;icon&quot;:&quot;green1-16.png&quot;,&quot;rating&quot;:1,&quot;weight&quot;:1}"></span></li>
+                                    <li><a href="http://refcardz.dzone.com/refcardz/essential-mysql" wrc_done="true">MySQL 5.5 </a><span class="wrc_icon wrc11" rating="{&quot;icon&quot;:&quot;green1-16.png&quot;,&quot;rating&quot;:1,&quot;weight&quot;:1}"></span></li>
+                                    <li><a href="http://refcardz.dzone.com/refcardz/php-54-scalable" wrc_done="true">PHP 5.4</a><span class="wrc_icon wrc11" rating="{&quot;icon&quot;:&quot;green1-16.png&quot;,&quot;rating&quot;:1,&quot;weight&quot;:1}"></span></li>
+                </ol>
+
+</td></tr>
+
+ <tr>
+  <td colspan="2" class="refbox-footer" style="padding:6px;">
+
+
+    150+ Refcardz Available ·
+  <a href="http://refcardz.dzone.com/?oid=sb001" wrc_done="true">Get them all</a><span class="wrc_icon wrc11" rating="{&quot;icon&quot;:&quot;green1-16.png&quot;,&quot;rating&quot;:1,&quot;weight&quot;:1}"></span></td>
+ </tr>
+
+</tbody></table>
+</div>
+
+
+
+</div>
+            <script language="javascript" type="text/javascript">
+                document.addEventListener("DOMContentLoaded", function(){
+                    $('#top-refcardz').load('/sites/all/modules/dzone/assets/communities-top-refcardz.html');
+                }, false);
+
+            </script>
+            
+                    <style>
+    #snippets_popular{
+        margin: 0 0 15px 0;
+        font-size:14px;
+    }
+    #snippets_popular h2{
+        margin: 5px 0px;
+        padding: 5px 5px;
+        border-bottom: 2px solid #666;
+        font-family: "museoSans500","helvetica",Arial;
+        font-weight: bold;
+        font-size: 21px;
+        color: #666;
+    }
+
+    #snippets_popular ol{
+        margin-left:20px;
+    }
+
+    #snippets_popular li {
+        margin-bottom: 8px;
+    }
+</style>
+
+<div id="snippets_popular"><h2>Popular Snippets</h2><ol><li><a href="http://www.dzone.com/snippets/snippets/add-page-number-field-document">Add Page Number Field into Document Uploaded at Amazon S3 Storage</a></li><li><a href="http://www.dzone.com/snippets/snippets/merge-multiple-presentation">Merge Multiple Presentation by Passing List of All Files in .NET Apps</a></li></ol></div>            
+                        <div id="block-block-5" class="block block-block">
+
+  <div class="content">
+    <div id="sidebar_features"><h2 class="header">Spotlight Features</h2>				      	  	<div>
+	  		<a href="http://www.dzone.com/click/126835/1" class="sidebar_image_link"><img src="./02_Simple Popen2 Implementation   DZone_files/Screen Shot 2013-01-08 at 5.20.06 PM.png"></a>
+	  		<h2><a href="http://www.dzone.com/click/126835/1">No Takesies-Backsies: VMware Lays Claim to Vert.x</a></h2>
+	  	</div>
+                    	  	<div>
+	  		<a href="http://www.dzone.com/click/122611/1" class="sidebar_image_link"><img src="./02_Simple Popen2 Implementation   DZone_files/Screen shot 2012-11-14 at 5.36.31 PM.png"></a>
+	  		<h2><a href="http://www.dzone.com/click/122611/1">Single Page Web Apps: The Worst of Both Worlds</a></h2>
+	  	</div>
+                    	  	<div>
+	  		<a href="http://www.dzone.com/click/122661/1" class="sidebar_image_link"><img src="./02_Simple Popen2 Implementation   DZone_files/Screen Shot 2012-11-15 at 1.36.30 PM.png"></a>
+	  		<h2><a href="http://www.dzone.com/click/122661/1">The Evolution of Recommendation Systems</a></h2>
+	  	</div>
+                    	  	<div>
+	  		<a href="http://www.dzone.com/click/124543/1" class="sidebar_image_link"><img src="./02_Simple Popen2 Implementation   DZone_files/revolve.jpg"></a>
+	  		<h2><a href="http://www.dzone.com/click/124543/1"> 10 Software Process Management Best Practices </a></h2>
+	  	</div>
+              </div>  </div>
+</div>
+            </div>
+    <!-- end of right sidebar -->
+            
+<!-- Cache the footer block -->
+<div id="footer"><span class="footer-header">Around the DZone Network</span><div class="large-topics-articles"><div class="featured-articles"><a href="http://java.dzone.com/" class="featured-domains" onclick="_gaq.push([&#39;_trackEvent&#39;,&#39;Zone Footer&#39;, &#39;Thumbnail Zone Link Header Click&#39;,&#39;Javalobby&#39;]);" wrc_done="true">JAVALOBBY</a><span class="wrc_icon wrc11" rating="{&quot;icon&quot;:&quot;green1-16.png&quot;,&quot;rating&quot;:1,&quot;weight&quot;:1}"></span><a href="http://java.dzone.com/articles/meet-dzone-community" onclick="_gaq.push([&#39;_trackEvent&#39;, &#39;Zone Footer&#39;, &#39;Thumbnail Click&#39;, &#39;123331-The DZone Community&#39;s 2012 Developer Profile&#39;]);" wrc_done="true"><div class="featured-image" style="background-image:url(/sites/all/files/preview-images/November/Screen%20Shot%202012-11-26%20at%205.34.27%20PM_0.png);"></div><br>The DZone Community's 2012 Developer Profile</a><span class="wrc_icon wrc11" rating="{&quot;icon&quot;:&quot;green1-16.png&quot;,&quot;rating&quot;:1,&quot;weight&quot;:1}"></span></div><div class="featured-articles"><a href="http://architects.dzone.com/" class="featured-domains" onclick="_gaq.push([&#39;_trackEvent&#39;,&#39;Zone Footer&#39;, &#39;Thumbnail Zone Link Header Click&#39;,&#39;Architects Zone&#39;]);" wrc_done="true">ARCHITECTS </a><span class="wrc_icon wrc11" rating="{&quot;icon&quot;:&quot;green1-16.png&quot;,&quot;rating&quot;:1,&quot;weight&quot;:1}"></span><a href="http://architects.dzone.com/articles/hadoop-azure-introduction" onclick="_gaq.push([&#39;_trackEvent&#39;, &#39;Zone Footer&#39;, &#39;Thumbnail Click&#39;, &#39;122925-Hadoop on Azure: An Introduction&#39;]);" wrc_done="true"><div class="featured-image" style="background-image:url(/sites/all/files/preview-images/November/Screen%20Shot%202012-11-19%20at%201.09.47%20PM.png);"></div><br>Hadoop on Azure: An Introduction</a><span class="wrc_icon wrc11" rating="{&quot;icon&quot;:&quot;green1-16.png&quot;,&quot;rating&quot;:1,&quot;weight&quot;:1}"></span></div><div class="featured-articles"><a href="http://java.dzone.com/" class="featured-domains" onclick="_gaq.push([&#39;_trackEvent&#39;,&#39;Zone Footer&#39;, &#39;Thumbnail Zone Link Header Click&#39;,&#39;Javalobby&#39;]);" wrc_done="true">JAVALOBBY</a><span class="wrc_icon wrc11" rating="{&quot;icon&quot;:&quot;green1-16.png&quot;,&quot;rating&quot;:1,&quot;weight&quot;:1}"></span><a href="http://java.dzone.com/articles/programming-art-making-right" onclick="_gaq.push([&#39;_trackEvent&#39;, &#39;Zone Footer&#39;, &#39;Thumbnail Click&#39;, &#39;122499-Is Programming the Art of Making the Right Decision? &#39;]);" wrc_done="true"><div class="featured-image" style="background-image:url(/sites/all/files/preview-images/November/decision.jpg);"></div><br>Is Programming the Art of Making the Right Decisio...</a><span class="wrc_icon wrc11" rating="{&quot;icon&quot;:&quot;green1-16.png&quot;,&quot;rating&quot;:1,&quot;weight&quot;:1}"></span></div><div class="featured-articles"><a href="http://java.dzone.com/" class="featured-domains" onclick="_gaq.push([&#39;_trackEvent&#39;,&#39;Zone Footer&#39;, &#39;Thumbnail Zone Link Header Click&#39;,&#39;Javalobby&#39;]);" wrc_done="true">JAVALOBBY</a><span class="wrc_icon wrc11" rating="{&quot;icon&quot;:&quot;green1-16.png&quot;,&quot;rating&quot;:1,&quot;weight&quot;:1}"></span><a href="http://java.dzone.com/articles/modern-concurrency-and-java-ee" onclick="_gaq.push([&#39;_trackEvent&#39;, &#39;Zone Footer&#39;, &#39;Thumbnail Click&#39;, &#39;123333-Modern concurrency and Java EE&#39;]);" wrc_done="true"><div class="featured-image" style="background-image:url(/sites/all/files/preview-images/November/ff_0.png);"></div><br>Modern concurrency and Java EE</a><span class="wrc_icon wrc11" rating="{&quot;icon&quot;:&quot;green1-16.png&quot;,&quot;rating&quot;:1,&quot;weight&quot;:1}"></span></div><div class="featured-articles"><a href="http://architects.dzone.com/" class="featured-domains" onclick="_gaq.push([&#39;_trackEvent&#39;,&#39;Zone Footer&#39;, &#39;Thumbnail Zone Link Header Click&#39;,&#39;Architects Zone&#39;]);" wrc_done="true">ARCHITECTS </a><span class="wrc_icon wrc11" rating="{&quot;icon&quot;:&quot;green1-16.png&quot;,&quot;rating&quot;:1,&quot;weight&quot;:1}"></span><a href="http://architects.dzone.com/articles/lightweight-rpc-%C3%B8mq-and" onclick="_gaq.push([&#39;_trackEvent&#39;, &#39;Zone Footer&#39;, &#39;Thumbnail Click&#39;, &#39;123083-Lightweight RPC with ZeroMQ (ØMQ) and Protocol Buffers&#39;]);" wrc_done="true"><div class="featured-image" style="background-image:url(/sites/all/files/preview-images/November/zeromq1-300x115_0.png);"></div><br>Lightweight RPC with ZeroMQ (ØMQ) and Protocol Bu...</a><span class="wrc_icon wrc11" rating="{&quot;icon&quot;:&quot;green1-16.png&quot;,&quot;rating&quot;:1,&quot;weight&quot;:1}"></span></div><div class="featured-articles last-item"><a href="http://architects.dzone.com/" class="featured-domains" onclick="_gaq.push([&#39;_trackEvent&#39;,&#39;Zone Footer&#39;, &#39;Thumbnail Zone Link Header Click&#39;,&#39;Architects Zone&#39;]);" wrc_done="true">ARCHITECTS </a><span class="wrc_icon wrc11" rating="{&quot;icon&quot;:&quot;green1-16.png&quot;,&quot;rating&quot;:1,&quot;weight&quot;:1}"></span><a href="http://architects.dzone.com/articles/how-be-big-data-native" onclick="_gaq.push([&#39;_trackEvent&#39;, &#39;Zone Footer&#39;, &#39;Thumbnail Click&#39;, &#39;123289-How to Be Big-Data-Native&#39;]);" wrc_done="true"><div class="featured-image" style="background-image:url(/sites/all/files/preview-images/November/bigdata_1.png);"></div><br>How to Be Big-Data-Native</a><span class="wrc_icon wrc11" rating="{&quot;icon&quot;:&quot;green1-16.png&quot;,&quot;rating&quot;:1,&quot;weight&quot;:1}"></span></div></div><div class="hail_mary"><span class="block-title">You Might Also Like</span><ul class="footer-links"><li class="footer-links-item"><a href="http://architects.dzone.com/articles/weekly-poll-json-vs-xml" onclick="_gaq.push([&#39;_trackEvent&#39;, &#39;Zone Footer&#39;, &#39;Hail Mary&#39;, &#39;126441-Weekly Poll: JSON vs XML&#39;]);" wrc_done="true">Weekly Poll: JSON vs XML</a><span class="wrc_icon wrc11" rating="{&quot;icon&quot;:&quot;green1-16.png&quot;,&quot;rating&quot;:1,&quot;weight&quot;:1}"></span></li><li class="footer-links-item"><a href="http://architects.dzone.com/articles/my-very-own-daily-wtf" onclick="_gaq.push([&#39;_trackEvent&#39;, &#39;Zone Footer&#39;, &#39;Hail Mary&#39;, &#39;127019-My very own daily WTF&#39;]);" wrc_done="true">My very own daily WTF</a><span class="wrc_icon wrc11" rating="{&quot;icon&quot;:&quot;green1-16.png&quot;,&quot;rating&quot;:1,&quot;weight&quot;:1}"></span></li><li class="footer-links-item"><a href="http://architects.dzone.com/articles/martin-fowler-schemaless-data" onclick="_gaq.push([&#39;_trackEvent&#39;, &#39;Zone Footer&#39;, &#39;Hail Mary&#39;, &#39;126709-Martin Fowler on Schemaless Data Structures&#39;]);" wrc_done="true">Martin Fowler on Schemaless Data Structures</a><span class="wrc_icon wrc11" rating="{&quot;icon&quot;:&quot;green1-16.png&quot;,&quot;rating&quot;:1,&quot;weight&quot;:1}"></span></li><li class="footer-links-item"><a href="http://architects.dzone.com/articles/why-scrum-won" onclick="_gaq.push([&#39;_trackEvent&#39;, &#39;Zone Footer&#39;, &#39;Hail Mary&#39;, &#39;126707-Why Scrum Won&#39;]);" wrc_done="true">Why Scrum Won</a><span class="wrc_icon wrc11" rating="{&quot;icon&quot;:&quot;green1-16.png&quot;,&quot;rating&quot;:1,&quot;weight&quot;:1}"></span></li><li class="footer-links-item"><a href="http://architects.dzone.com/articles/creating-your-first-java" onclick="_gaq.push([&#39;_trackEvent&#39;, &#39;Zone Footer&#39;, &#39;Hail Mary&#39;, &#39;126363-Creating Your First Java Application with Cassandra&#39;]);" wrc_done="true">Creating Your First Java Application with Cassandra</a><span class="wrc_icon wrc11" rating="{&quot;icon&quot;:&quot;green1-16.png&quot;,&quot;rating&quot;:1,&quot;weight&quot;:1}"></span></li><li class="footer-links-item"><a href="http://architects.dzone.com/articles/debugging-visualvm-and-jmx" onclick="_gaq.push([&#39;_trackEvent&#39;, &#39;Zone Footer&#39;, &#39;Hail Mary&#39;, &#39;126937-Debugging with VisualVM and JMX&#39;]);" wrc_done="true">Debugging with VisualVM and JMX</a><span class="wrc_icon wrc11" rating="{&quot;icon&quot;:&quot;green1-16.png&quot;,&quot;rating&quot;:1,&quot;weight&quot;:1}"></span></li><li class="footer-links-item"><a href="http://architects.dzone.com/articles/why-its-right-time-learn" onclick="_gaq.push([&#39;_trackEvent&#39;, &#39;Zone Footer&#39;, &#39;Hail Mary&#39;, &#39;126761-Why It&#39;s the Right Time to Learn MongoDB&#39;]);" wrc_done="true">Why It's the Right Time to Learn MongoDB</a><span class="wrc_icon wrc11" rating="{&quot;icon&quot;:&quot;green1-16.png&quot;,&quot;rating&quot;:1,&quot;weight&quot;:1}"></span></li><li class="footer-links-item"><a href="http://architects.dzone.com/articles/no-takesies-backsies-vmware" onclick="_gaq.push([&#39;_trackEvent&#39;, &#39;Zone Footer&#39;, &#39;Hail Mary&#39;, &#39;126835-No Takesies-Backsies: VMware Lays Claim to Vert.x&#39;]);" wrc_done="true">No Takesies-Backsies: VMware Lays Claim to Vert.x</a><span class="wrc_icon wrc11" rating="{&quot;icon&quot;:&quot;green1-16.png&quot;,&quot;rating&quot;:1,&quot;weight&quot;:1}"></span></li><li class="footer-links-item"><a href="http://architects.dzone.com/articles/nosql-week-review-11" onclick="_gaq.push([&#39;_trackEvent&#39;, &#39;Zone Footer&#39;, &#39;Hail Mary&#39;, &#39;126425-NoSQL Week in Review #11&#39;]);" wrc_done="true">NoSQL Week in Review #11</a><span class="wrc_icon wrc11" rating="{&quot;icon&quot;:&quot;green1-16.png&quot;,&quot;rating&quot;:1,&quot;weight&quot;:1}"></span></li><li class="footer-links-item"><a href="http://architects.dzone.com/articles/generic-exceptions-java" onclick="_gaq.push([&#39;_trackEvent&#39;, &#39;Zone Footer&#39;, &#39;Hail Mary&#39;, &#39;126327-Generic Exceptions in Java&#39;]);" wrc_done="true">Generic Exceptions in Java</a><span class="wrc_icon wrc11" rating="{&quot;icon&quot;:&quot;green1-16.png&quot;,&quot;rating&quot;:1,&quot;weight&quot;:1}"></span></li><li class="footer-links-item"><a href="http://architects.dzone.com/articles/curated-list-best-and-worst" onclick="_gaq.push([&#39;_trackEvent&#39;, &#39;Zone Footer&#39;, &#39;Hail Mary&#39;, &#39;126991-Curated List of The Best and Worst Practices of APIs&#39;]);" wrc_done="true">Curated List of The Best and Worst Practices of APIs</a><span class="wrc_icon wrc11" rating="{&quot;icon&quot;:&quot;green1-16.png&quot;,&quot;rating&quot;:1,&quot;weight&quot;:1}"></span></li><li class="footer-links-item"><a href="http://architects.dzone.com/articles/concise-comparison-rabbitmq" onclick="_gaq.push([&#39;_trackEvent&#39;, &#39;Zone Footer&#39;, &#39;Hail Mary&#39;, &#39;126507-A Concise Comparison of RabbitMQ, ActiveMQ, and ZeroMQ Message Brokers&#39;]);" wrc_done="true">A Concise Comparison of RabbitMQ, ActiveMQ, and ZeroMQ Message Brokers</a><span class="wrc_icon wrc11" rating="{&quot;icon&quot;:&quot;green1-16.png&quot;,&quot;rating&quot;:1,&quot;weight&quot;:1}"></span></li><li class="footer-links-item"><a href="http://architects.dzone.com/articles/pet-catalog-javaee-6" onclick="_gaq.push([&#39;_trackEvent&#39;, &#39;Zone Footer&#39;, &#39;Hail Mary&#39;, &#39;126631-Pet catalog for JavaEE 6 Reengineered&#39;]);" wrc_done="true">Pet catalog for JavaEE 6 Reengineered</a><span class="wrc_icon wrc11" rating="{&quot;icon&quot;:&quot;green1-16.png&quot;,&quot;rating&quot;:1,&quot;weight&quot;:1}"></span></li><li class="footer-links-item"><a href="http://architects.dzone.com/articles/some-what-you-need-know-about" onclick="_gaq.push([&#39;_trackEvent&#39;, &#39;Zone Footer&#39;, &#39;Hail Mary&#39;, &#39;126511-[Some of] What You Need to Know About the Cloud for 2013&#39;]);" wrc_done="true">[Some of] What You Need to Know About the Cloud for 2013</a><span class="wrc_icon wrc11" rating="{&quot;icon&quot;:&quot;green1-16.png&quot;,&quot;rating&quot;:1,&quot;weight&quot;:1}"></span></li><li class="footer-links-item"><a href="http://architects.dzone.com/articles/workless-clean-classy-html5" onclick="_gaq.push([&#39;_trackEvent&#39;, &#39;Zone Footer&#39;, &#39;Hail Mary&#39;, &#39;126403-Workless - A Clean &amp; Classy HTML5, CSS3 Framework&#39;]);" wrc_done="true">Workless - A Clean &amp; Classy HTML5, CSS3 Framework</a><span class="wrc_icon wrc11" rating="{&quot;icon&quot;:&quot;green1-16.png&quot;,&quot;rating&quot;:1,&quot;weight&quot;:1}"></span></li></ul></div><div id="footer-articles"><div id="block-wrapper"><div id="left-block" class="footer-article-block"><span class="block-title">Popular on Snippets</span><ul><li><a href="http://www.dzone.com/snippets/let-php-show-all-errors" onclick="_gaq.push([&#39;_trackEvent&#39;, &#39;Zone Footer&#39;, &#39;Popular Current Zone Link Click&#39;, &#39;98149-Let Php Show All Errors&#39;]);">Let Php Show All Errors</a></li><li><a href="http://www.dzone.com/snippets/java-read-file-string" onclick="_gaq.push([&#39;_trackEvent&#39;, &#39;Zone Footer&#39;, &#39;Popular Current Zone Link Click&#39;, &#39;97459-Java - To Read A File Into A String&#39;]);">Java - To Read A File Into A String</a></li><li><a href="http://www.dzone.com/snippets/javascript-trim" onclick="_gaq.push([&#39;_trackEvent&#39;, &#39;Zone Footer&#39;, &#39;Popular Current Zone Link Click&#39;, &#39;96333-Javascript Trim&#39;]);">Javascript Trim</a></li><li><a href="http://www.dzone.com/snippets/convert-array-javautillist" onclick="_gaq.push([&#39;_trackEvent&#39;, &#39;Zone Footer&#39;, &#39;Popular Current Zone Link Click&#39;, &#39;95285-Convert Array To Java.util.List&#39;]);">Convert Array To Java.util.List</a></li><li><a href="http://www.dzone.com/snippets/convert-int-byte-array" onclick="_gaq.push([&#39;_trackEvent&#39;, &#39;Zone Footer&#39;, &#39;Popular Current Zone Link Click&#39;, &#39;95299-Convert An Int To A Byte Array&#39;]);">Convert An Int To A Byte Array</a></li><li><a href="http://www.dzone.com/snippets/ruby-open-file-write-it-and" onclick="_gaq.push([&#39;_trackEvent&#39;, &#39;Zone Footer&#39;, &#39;Popular Current Zone Link Click&#39;, &#39;103465-Ruby: Open A File, Write To It, And Close It In One Line&#39;]);">Ruby: Open A File, Write To It, And Close It In One Line</a></li><li><a href="http://www.dzone.com/snippets/date-time-format-ruby" onclick="_gaq.push([&#39;_trackEvent&#39;, &#39;Zone Footer&#39;, &#39;Popular Current Zone Link Click&#39;, &#39;99043-Date Time Format In RUBY&#39;]);">Date Time Format In RUBY</a></li><li><a href="http://www.dzone.com/snippets/find-table-column-sql-server" onclick="_gaq.push([&#39;_trackEvent&#39;, &#39;Zone Footer&#39;, &#39;Popular Current Zone Link Click&#39;, &#39;98675-Find A Table Column On SQL Server&#39;]);">Find A Table Column On SQL Server</a></li></ul></div><div id="middle-block" class="footer-article-block"><span class="block-title">Latest Articles</span><ul><li><a href="http://www.dzone.com/articles/decomposing-applications" onclick="_gaq.push([&#39;_trackEvent&#39;, &#39;Zone Footer&#39;, &#39;Latest Articles Link Click&#39;, &#39;127173-Decomposing applications for scalability and deployability&#39;]);">Decomposing applications for scalability and deployability</a></li><li><a href="http://www.dzone.com/articles/lap-around-roslyn-ctp-syntax-0" onclick="_gaq.push([&#39;_trackEvent&#39;, &#39;Zone Footer&#39;, &#39;Latest Articles Link Click&#39;, &#39;127171-Lap Around Roslyn CTP: Syntax Rewriting with Symbol Information&#39;]);">Lap Around Roslyn CTP: Syntax Rewriting with Symbol Information</a></li><li><a href="http://www.dzone.com/articles/code-css-windows-8-app" onclick="_gaq.push([&#39;_trackEvent&#39;, &#39;Zone Footer&#39;, &#39;Latest Articles Link Click&#39;, &#39;127159-Code for CSS for Windows 8 App Development&#39;]);">Code for CSS for Windows 8 App Development</a></li><li><a href="http://www.dzone.com/articles/azure-cloud-building-best" onclick="_gaq.push([&#39;_trackEvent&#39;, &#39;Zone Footer&#39;, &#39;Latest Articles Link Click&#39;, &#39;127089-Azure Cloud Building Best Practices&#39;]);">Azure Cloud Building Best Practices</a></li><li><a href="http://www.dzone.com/articles/metro-style-combo-box-java" onclick="_gaq.push([&#39;_trackEvent&#39;, &#39;Zone Footer&#39;, &#39;Latest Articles Link Click&#39;, &#39;126953-Metro style Combo Box for Java (JMetro) &#39;]);">Metro style Combo Box for Java (JMetro) </a></li><li><a href="http://www.dzone.com/articles/probability-distribution" onclick="_gaq.push([&#39;_trackEvent&#39;, &#39;Zone Footer&#39;, &#39;Latest Articles Link Click&#39;, &#39;126951-Probability Distribution for Programmers &#39;]);">Probability Distribution for Programmers </a></li><li><a href="http://www.dzone.com/articles/tryting-understand-cap" onclick="_gaq.push([&#39;_trackEvent&#39;, &#39;Zone Footer&#39;, &#39;Latest Articles Link Click&#39;, &#39;127093-Tryting to Understand CAP&#39;]);">Tryting to Understand CAP</a></li><li><a href="http://www.dzone.com/articles/steamdrill-and-top-k-problem" onclick="_gaq.push([&#39;_trackEvent&#39;, &#39;Zone Footer&#39;, &#39;Latest Articles Link Click&#39;, &#39;127137-Steamdrill and the Top-K-Problem&#39;]);">Steamdrill and the Top-K-Problem</a></li></ul></div></div></div><div id="right-block" class="footer-article-spotlight-block"><h2 class="block-title">Spotlight Resources</h2><div class="spotlight" style="margin-top: 5px; clear: both;"><div class="callout"><a href="http://refcardz.dzone.com/refcardz/patterns-modular-architecture" onclick="_gaq.push([&#39;_trackEvent&#39;, &#39;Zone Footer&#39;, &#39;Spotlight Features Thumbnail Click&#39;, &#39;166-Patterns of Modular Architecture&#39;]);" wrc_done="true"><img border="0" style="float: left;" src="./02_Simple Popen2 Implementation   DZone_files/thumb.png"></a><span class="wrc_icon wrc11" rating="{&quot;icon&quot;:&quot;green1-16.png&quot;,&quot;rating&quot;:1,&quot;weight&quot;:1}"></span></div><h3 style="margin-left: 120px;"><a href="http://refcardz.dzone.com/refcardz/patterns-modular-architecture" onclick="_gaq.push([&#39;_trackEvent&#39;, &#39;Zone Footer&#39;, &#39;Spotlight Features Title Click&#39;, &#39;166-Patterns of Modular Architecture&#39;]);" wrc_done="true">Patterns of Modular Architecture</a><span class="wrc_icon wrc11" rating="{&quot;icon&quot;:&quot;green1-16.png&quot;,&quot;rating&quot;:1,&quot;weight&quot;:1}"></span></h3><div class="blurb" style="margin-left: 120px;"></div></div><div class="spotlight" style="margin-top: 5px; clear: both;"><div class="callout"><a href="http://refcardz.dzone.com/refcardz/scala" onclick="_gaq.push([&#39;_trackEvent&#39;, &#39;Zone Footer&#39;, &#39;Spotlight Features Thumbnail Click&#39;, &#39;164-Scala: The Scalable JVM Language&#39;]);" wrc_done="true"><img border="0" style="float: left;" src="./02_Simple Popen2 Implementation   DZone_files/thumb(1).png"></a><span class="wrc_icon wrc11" rating="{&quot;icon&quot;:&quot;green1-16.png&quot;,&quot;rating&quot;:1,&quot;weight&quot;:1}"></span></div><h3 style="margin-left: 120px;"><a href="http://refcardz.dzone.com/refcardz/scala" onclick="_gaq.push([&#39;_trackEvent&#39;, &#39;Zone Footer&#39;, &#39;Spotlight Features Title Click&#39;, &#39;164-Scala: The Scalable JVM Language&#39;]);" wrc_done="true">Scala: The Scalable JVM Language</a><span class="wrc_icon wrc11" rating="{&quot;icon&quot;:&quot;green1-16.png&quot;,&quot;rating&quot;:1,&quot;weight&quot;:1}"></span></h3><div class="blurb" style="margin-left: 120px;"><p>Scala is a general-purpose programming language that has both object oriented and functional programming language features. The name Scala comes...</p></div></div><div class="spotlight" style="margin-top: 5px; clear: both;"><div class="callout"><a href="http://refcardz.dzone.com/refcardz/java-profiling-visualvm" onclick="_gaq.push([&#39;_trackEvent&#39;, &#39;Zone Footer&#39;, &#39;Spotlight Features Thumbnail Click&#39;, &#39;162-Java Profiling with VisualVM: X-Ray Vision for Dramatic Performance Gains&#39;]);" wrc_done="true"><img border="0" style="float: left;" src="./02_Simple Popen2 Implementation   DZone_files/thumb(2).png"></a><span class="wrc_icon wrc11" rating="{&quot;icon&quot;:&quot;green1-16.png&quot;,&quot;rating&quot;:1,&quot;weight&quot;:1}"></span></div><h3 style="margin-left: 120px;"><a href="http://refcardz.dzone.com/refcardz/java-profiling-visualvm" onclick="_gaq.push([&#39;_trackEvent&#39;, &#39;Zone Footer&#39;, &#39;Spotlight Features Title Click&#39;, &#39;162-Java Profiling with VisualVM: X-Ray Vision for Dramatic Performance Gains&#39;]);" wrc_done="true">Java Profiling with VisualVM: X-Ray Vision for Dramatic Performance Gains</a><span class="wrc_icon wrc11" rating="{&quot;icon&quot;:&quot;green1-16.png&quot;,&quot;rating&quot;:1,&quot;weight&quot;:1}"></span></h3><div class="blurb" style="margin-left: 120px;">VisualVM is a visual tool integrating several command-line JDK tools
+and lightweight profiling capabilities. Designed for both production...</div></div></div></div>
+<!-- end of footer -->
+</div>
+<!-- end of container -->
+</div>
+<!-- end of wrapper -->
+
+<div class="subfooter fancyfont">
+    <div class="subfooter_center">
+        <div class="subfooter_top">
+            <div class="subfooter_logo">
+            </div>
+            <div class="subfooter_search">
+                <form action="http://www.dzone.com/search/google" accept-charset="UTF-8" method="get" id="google-cse-searchbox-form-1">
+<div><input type="hidden" name="cx" id="edit-cx-1" value="010821965829155306098:ogyaz_5nsc8">
+<input type="hidden" name="cof" id="edit-cof-1" value="FORID:11">
+<div class="form-item" id="edit-query-1-wrapper">
+ <input type="text" maxlength="128" name="query" id="edit-query-1" size="15" value="" title="Enter the terms you wish to search for." class="form-text">
+</div>
+<input type="submit" name="op" id="edit-sa-1" value="Search" class="form-submit">
+<input type="hidden" name="form_build_id" id="form-c6c6f0e81f25b4431cbea32ac90487e5" value="form-c6c6f0e81f25b4431cbea32ac90487e5">
+<input type="hidden" name="form_id" id="edit-google-cse-searchbox-form-1" value="google_cse_searchbox_form">
+
+</div></form>
+            </div>
+        </div>
+        <div>
+        </div>
+        <div class="subfooter_box">
+            <ul class="menu"><li class="expanded first"><a href="http://dzone.com/" title="">DZone</a><ul class="menu"><li class="leaf first"><a href="http://refcardz.dzone.com/" title="" wrc_done="true">Refcardz</a><span class="wrc_icon wrc11" rating="{&quot;icon&quot;:&quot;green1-16.png&quot;,&quot;rating&quot;:1,&quot;weight&quot;:1}"></span></li>
+<li class="leaf"><a href="http://books.dzone.com/" title="" wrc_done="true">Book Reviews</a><span class="wrc_icon wrc11" rating="{&quot;icon&quot;:&quot;green1-16.png&quot;,&quot;rating&quot;:1,&quot;weight&quot;:1}"></span></li>
+<li class="leaf"><a href="http://library.dzone.com/" title="" wrc_done="true">Tech Library</a><span class="wrc_icon wrc11" rating="{&quot;icon&quot;:&quot;green1-16.png&quot;,&quot;rating&quot;:1,&quot;weight&quot;:1}"></span></li>
+<li class="leaf"><a href="http://itquestions.com/index.html" title="" wrc_done="true">IT Questions</a><span class="wrc_icon wrc0" rating="{&quot;icon&quot;:&quot;grey0-16.png&quot;,&quot;rating&quot;:0,&quot;weight&quot;:0}"></span></li>
+<li class="leaf"><a href="http://snippets.dzone.com/" title="" wrc_done="true">Snippets</a><span class="wrc_icon wrc11" rating="{&quot;icon&quot;:&quot;green1-16.png&quot;,&quot;rating&quot;:1,&quot;weight&quot;:1}"></span></li>
+<li class="leaf"><a href="http://dzone.com/user" title="">My Profile</a></li>
+<li class="leaf"><a href="http://www.dzone.com/links/about.jsp" title="">About DZone</a></li>
+<li class="leaf"><a href="http://www.dzone.com/corporate/advertise" title="">Advertise</a></li>
+<li class="leaf"><a href="http://www.dzone.com/links/buttons.jsp" title="">Tools &amp; Buttons</a></li>
+<li class="leaf last"><a href="http://ask.dzone.com/index.html" title="" wrc_done="true">Send Feedback</a><span class="wrc_icon wrc11" rating="{&quot;icon&quot;:&quot;green1-16.png&quot;,&quot;rating&quot;:1,&quot;weight&quot;:1}"></span></li>
+</ul></li>
+<li class="expanded last"><a href="http://dzone.com/mz/html5" title="">Topics</a><ul class="menu"><li class="leaf first"><a href="http://dzone.com/mz/html5" title="">HTML5</a></li>
+<li class="leaf"><a href="http://dzone.com/mz/windowsphone7" title="">Windows Phone</a></li>
+<li class="leaf"><a href="http://cloud.dzone.com/" title="" wrc_done="true">Cloud</a><span class="wrc_icon wrc11" rating="{&quot;icon&quot;:&quot;green1-16.png&quot;,&quot;rating&quot;:1,&quot;weight&quot;:1}"></span></li>
+<li class="leaf"><a href="http://mobile.dzone.com/" title="" wrc_done="true">Mobile</a><span class="wrc_icon wrc11" rating="{&quot;icon&quot;:&quot;green1-16.png&quot;,&quot;rating&quot;:1,&quot;weight&quot;:1}"></span></li>
+<li class="leaf"><a href="http://dzone.com/mz/dotnet" title="">.NET</a></li>
+<li class="leaf"><a href="http://java.dzone.com/" title="" wrc_done="true">Java</a><span class="wrc_icon wrc11" rating="{&quot;icon&quot;:&quot;green1-16.png&quot;,&quot;rating&quot;:1,&quot;weight&quot;:1}"></span></li>
+<li class="leaf"><a href="http://php.dzone.com/" title="" wrc_done="true">PHP</a><span class="wrc_icon wrc11" rating="{&quot;icon&quot;:&quot;green1-16.png&quot;,&quot;rating&quot;:1,&quot;weight&quot;:1}"></span></li>
+<li class="leaf"><a href="http://eclipse.dzone.com/" title="" wrc_done="true">Eclipse</a><span class="wrc_icon wrc11" rating="{&quot;icon&quot;:&quot;green1-16.png&quot;,&quot;rating&quot;:1,&quot;weight&quot;:1}"></span></li>
+<li class="leaf"><a href="http://dzone.com/mz/performance" title="">Performance</a></li>
+<li class="leaf"><a href="http://www.dzone.com/mz/big-data" title="">Big Data</a></li>
+<li class="leaf"><a href="http://agile.dzone.com/" title="" wrc_done="true">Agile</a><span class="wrc_icon wrc11" rating="{&quot;icon&quot;:&quot;green1-16.png&quot;,&quot;rating&quot;:1,&quot;weight&quot;:1}"></span></li>
+<li class="leaf last"><a href="http://dzone.com/mz/devops" title="">DevOps</a></li>
+</ul></li>
+</ul>
+            <ul class="menu">
+                <li class="expanded follow-buttons">
+                    <a href="http://www.dzone.com/snippets/simple-popen2-implementation#">Follow Us</a>
+                    <ul class="menu">
+                        <li>
+                                                                                        <a href="http://www.dzone.com/rss.xml" class="subfooter-social subfooter-social-rss">RSS</a>
+                                                                                    </li>
+                        <li>
+                            <a href="https://plus.google.com/+dzone/posts" class="subfooter-social subfooter-social-google" wrc_done="true">Google +</a><span class="wrc_icon wrc13" rating="{&quot;icon&quot;:&quot;green3-16.png&quot;,&quot;rating&quot;:1,&quot;weight&quot;:3}"></span>
+                        </li>
+                        <li>
+                            <a href="http://www.facebook.com/pages/DZone/259639764711" class="subfooter-social subfooter-social-facebook" wrc_done="true">Facebook</a><span class="wrc_icon wrc13" rating="{&quot;icon&quot;:&quot;green3-16.png&quot;,&quot;rating&quot;:1,&quot;weight&quot;:3}"></span>
+                        </li>
+                        <li>
+                            <a href="http://www.linkedin.com/groups/DZone-696877" class="subfooter-social subfooter-social-linkedin" wrc_done="true">LinkedIn</a><span class="wrc_icon wrc13" rating="{&quot;icon&quot;:&quot;green3-16.png&quot;,&quot;rating&quot;:1,&quot;weight&quot;:3}"></span>
+                        </li>
+                        <li>
+                            <a href="https://twitter.com/#!/Dzone" class="subfooter-social subfooter-social-twitter" wrc_done="true">Twitter</a><span class="wrc_icon wrc13" rating="{&quot;icon&quot;:&quot;green3-16.png&quot;,&quot;rating&quot;:1,&quot;weight&quot;:3}"></span>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+
+            <div class="subfooter-right">
+
+                "Starting from scratch" is seductive but disease ridden <br><span>-Pithy Advice for Programmers</span>
+
+            </div>
+
+
+        </div>
+        <div id="legal"><a href="http://www.dzone.com/page/advertise">Advertising</a> - <a href="http://www.dzone.com/page/tos">Terms of Service</a> - <a href="http://www.dzone.com/page/privacy">Privacy</a> - © 1997-2012, DZone, Inc.</div>
+    </div>
+</div>
+    
+<!-- end of page wrapper -->
+</div>
+<script type="text/javascript" src="./02_Simple Popen2 Implementation   DZone_files/js_1853ae2420e0b7822f0d9f171c0a5427.js"></script>
+<script type="text/javascript" src="./02_Simple Popen2 Implementation   DZone_files/jquery.form-3.18.js"></script>
+<script type="text/javascript" src="./02_Simple Popen2 Implementation   DZone_files/sharebar.js"></script>
+<script type="text/javascript">
+<!--//--><![CDATA[//><!--
+jQuery.extend(Drupal.settings, {"basePath":"\/","fivestar":{"titleUser":"Your rating: ","titleAverage":"Average: ","feedbackSavingVote":"Saving your vote...","feedbackVoteSaved":"Your vote has been saved.","feedbackDeletingVote":"Deleting your vote...","feedbackVoteDeleted":"Your vote has been deleted."},"jstools":{"cleanurls":true,"basePath":"\/"},"activemenu":{"#block-book-0":"activemenu\/book","#block-menu-devel":"activemenu\/menu","#block-menu-menu-library-navigat":"activemenu\/menu","#block-menu-primary-links":"activemenu\/menu","#block-menu-secondary-links":"activemenu\/menu","#block-menu-menu-sections":"activemenu\/menu","#block-menu-menu-sitemap":"activemenu\/menu","#block-menu-menu-zones":"activemenu\/menu","#block-user-1":"activemenu\/menu"}});
+//--><!]]>
+</script>
+
+<script type="text/javascript">
+    if(document.title.indexOf("Page not found") != 0){
+        $('.sharebar').sharebar({horizontal:'false',swidth:'75',minwidth:1100,position:'left',leftOffset:35,rightOffset:10});
+        $('#sharebar').css('display', 'none');
+        $(parent.document).scroll(function() {
+            var scroll_position =  $(window).scrollTop();
+            if(scroll_position > 350)
+                $('#sharebar').fadeIn();
+            else
+                $('#sharebar').fadeOut();
+        });}
+</script>
+
+<script type="text/javascript">
+    SyntaxHighlighter.config.bloggerMode = true;
+    SyntaxHighlighter.config.taName = "pre";
+    SyntaxHighlighter.config.clipboardSwf = '/sites/all/themes/dzone2012/scripts/syntaxHighlighter/clipboard.swf';
+    SyntaxHighlighter.all();
+    dp.SyntaxHighlighter.HighlightAll('code');
+</script>
+    
+<script type="text/javascript" src="./02_Simple Popen2 Implementation   DZone_files/js_5dc0c13b5c27146aba8b38245e272fc2.js"></script>
+<script type="text/javascript">
+<!--//--><![CDATA[//><!--
+jQuery.extend(Drupal.settings, {"googleCSE":{"language":"en"}});
+//--><!]]>
+</script>
+
+<!--Track Microzones -->
+
+
+
+<!-- Social Tracking Scripts -->
+<script type="text/javascript">
+    fancyBoxOpen = false;
+
+    try {
+        if (FB && FB.Event && FB.Event.subscribe) {
+            FB.Event.subscribe('edge.create', function(targetUrl) {
+                if(fancyBoxOpen) {
+                    _gaq.push(['_trackSocial','Facebook', 'popup like']);
+//                    pageTracker._trackEvent('Facebook', 'popup like');
+                } else {
+                    _gaq.push(['_trackSocial', 'Facebook', 'like']);
+                }
+            });
+        }
+    } catch(e) {}
+
+    try {
+        $(window).ready(function() {
+            $('.IN-widget').click(function() {
+                if(fancyBoxOpen) {
+                    _gaq.push(['_trackSocial','LinkedIn', 'popup share']);
+//                    pageTracker._trackEvent('LinkedIn', 'popup share');
+                } else {
+                    _gaq.push(['_trackSocial','LinkedIn', 'share']);
+                }
+            });
+        });
+    } catch(e) {}
+
+    function track_plusone(gpovote) {
+        try {
+            if(fancyBoxOpen) {
+                _gaq.push(['_trackSocial','Google', 'popup +1']);
+//                pageTracker._trackEvent('Google', 'popup +1');
+            } else {
+                _gaq.push(['_trackSocial','Google', '+1']);
+            }
+        } catch (e) {}
+    }
+
+    try {
+        twttr.events.bind('tweet', function(event) {
+            if (event) {
+                var targetUrl;
+                if (event.target && event.target.nodeName == 'IFRAME') {
+                    targetUrl = extractParamFromUri(event.target.src, 'url');
+                }
+                if(fancyBoxOpen) {
+                    _gaq.push(['_trackSocial','Twitter', 'popup tweet']);
+//                    pageTracker._trackEvent('Twitter', 'popup tweet');
+                } else {
+                    _gaq.push(['_trackSocial','Twitter', 'tweet']);
+                }
+            }
+        });
+    } catch(e) {}
+
+    function extractParamFromUri(uri, paramName) {
+        if (!uri) {
+            return;
+        }
+        var uri = uri.split('#')[0];  // Remove anchor.
+        var parts = uri.split('?');  // Check for query params.
+        if (parts.length == 1) {
+            return;
+        }
+        var query = decodeURI(parts[1]);
+
+        // Find url param.
+        paramName += '=';
+        var params = query.split('&');
+        for (var i = 0, param; param = params[i]; ++i) {
+            if (param.indexOf(paramName) === 0) {
+                return unescape(param.split('=')[1]);
+            }
+        }
+    }
+
+    </script>
+
+    <div id="fb-root" class=" fb_reset"><div style="position: absolute; top: -10000px; height: 0px; width: 0px;"><div><iframe id="fb_xdm_frame_http" name="fb_xdm_frame_http" src="./02_Simple Popen2 Implementation   DZone_files/xd_arbiter.htm" tabindex="-1"></iframe><iframe id="fb_xdm_frame_https" name="fb_xdm_frame_https" src="./02_Simple Popen2 Implementation   DZone_files/xd_arbiter(1).htm" tabindex="-1"></iframe></div></div><div style="position: absolute; top: -10000px; height: 0px; width: 0px;"><div></div></div></div>
+    <script>(function(d, s, id) {
+        var js, fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) return;
+        js = d.createElement(s); js.id = id;
+        js.src = "//connect.facebook.net/en_US/all.js#xfbml=1";
+        fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));</script>
+
+
+<div id="woopra_bar" style="display: block;"><ul id="woopra_barul"><li class="woopra_barli" id="_woopra_logo" style="display: none;"><a class="woopra_logotab" href="http://www.woopra.com/?woo_campaign=chatbar&woo_medium=widget&woo_source=www.dzone.com" target="_blank"><img style="margin: 6px 6px 0 6px" src="./02_Simple Popen2 Implementation   DZone_files/woopra_widget.gif" alt="Woopra"></a></li><li class="woopra_barli" id="_woopra_visitors_widget" style="display: block;"><a class="woopra_tab" href="http://www.dzone.com/snippets/simple-popen2-implementation#">Online Visitors: 149</a><div id="box_8w4Yt" class="woopra_widgetbox woopra_presence"><div class="wwb_head"></div><div class="wwb_content"></div></div></li><li class="woopra_barli" id="_woopra_chat_widget" style="display: none;"><a class="woopra_tab" href="http://www.dzone.com/snippets/simple-popen2-implementation#">Sorry, we're away.</a><div id="box_RJNpB" class="woopra_widgetbox woopra_presence"><div class="wwb_head">Online Agents</div><div class="wwb_content"><div class="wwb_desc">Sorry, we're away.</div></div></div></li></ul></div><div id="wrchoverdiv"><div id="wrccontainer"><div id="wrcheader"><div id="wrctitle"> WebRep</div></div><div class="wrchorizontal"></div><div id="wrccurrentvote">總體評價</div><div class="wrchorizontal"></div><div id="wrcrating"></div><div id="wrcratingtext">此網站沒有任何評價資訊</div><div id="wrcweighttext">（票數不足）</div><div id="wrcflags"><div id="wrcicon_shopping" class="wrcicon"></div><div id="wrcicon_social" class="wrcicon"></div><div id="wrcicon_news" class="wrcicon"></div><div id="wrcicon_it" class="wrcicon"></div><div id="wrcicon_corporate" class="wrcicon"></div><div id="wrcicon_pornography" class="wrcicon"></div><div id="wrcicon_violence" class="wrcicon"></div><div id="wrcicon_gambling" class="wrcicon"></div><div id="wrcicon_drugs" class="wrcicon"></div><div id="wrcicon_illegal" class="wrcicon"></div></div><div class="wrchorizontal"></div></div></div><div style="display: block; visibility: visible; position: absolute; width: 250px; left: 477px; top: 455px; height: 52px; z-index: 2000000000;"><table cellpadding="0" cellspacing="0" dir="ltr" style="width: 250px; height: 52px;" frame="void" rules="none" class="gc-bubbleDefault pls-container"><tbody><tr class="gc-reset"><td class="pls-topLeft gc-reset"><img class="gc-reset" width="1" height="1" src="./02_Simple Popen2 Implementation   DZone_files/border_3.gif"></td><td class="pls-topTail gc-reset"><img class="pls-tailbottom gc-reset" width="15" height="9" src="./02_Simple Popen2 Implementation   DZone_files/spacer.gif" style="display: none;"><img class="pls-spacerbottom gc-reset" width="1" height="1" src="./02_Simple Popen2 Implementation   DZone_files/spacer.gif" style="display: block;"></td><td class="pls-topRight gc-reset"><img class="gc-reset" width="1" height="1" src="./02_Simple Popen2 Implementation   DZone_files/border_3.gif"></td></tr><tr class="gc-reset"><td class="pls-vertShimLeft gc-reset"><img class="gc-reset" width="1" height="4" src="./02_Simple Popen2 Implementation   DZone_files/spacer.gif"></td><td class="pls-vertShim gc-reset"><img class="gc-reset" width="1" height="4" src="./02_Simple Popen2 Implementation   DZone_files/spacer.gif"></td><td class="pls-vertShimRight gc-reset"><img class="pls-dropTR gc-reset" width="5" height="4" src="./02_Simple Popen2 Implementation   DZone_files/spacer.gif"></td></tr><tr class="gc-reset"><td class="pls-contentLeft gc-reset"><img class="pls-tailright gc-reset" width="9" height="15" src="./02_Simple Popen2 Implementation   DZone_files/spacer.gif" style="display: inline; left: 0px; top: 13px;"><img class="pls-spacerright gc-reset" width="1" height="1" src="./02_Simple Popen2 Implementation   DZone_files/spacer.gif" style="display: none;"></td><td class="pls-contentWrap gc-reset"><img class="pls-spinner " width="16" height="16" src="./02_Simple Popen2 Implementation   DZone_files/spinner-1.gif" style="visibility: hidden;"><div class="goog-bubble-content gc-reset" style="width: 236px; height: 42px;"><iframe frameborder="0" hspace="0" marginheight="0" marginwidth="0" scrolling="no" style="margin: 0px; position: absolute; z-index: 1; border-style: none; outline: none; width: 236px; height: 42px;" tabindex="0" vspace="0" width="100%" id="I4_1358081296732" name="I4_1358081296732" src="./02_Simple Popen2 Implementation   DZone_files/hover.htm"></iframe></div></td><td class="pls-dropRight gc-reset"><img class="pls-tailleft gc-reset" width="12" height="19" src="./02_Simple Popen2 Implementation   DZone_files/spacer.gif" style="display: none;"><img class="pls-spacerleft gc-reset" width="1" height="1" src="./02_Simple Popen2 Implementation   DZone_files/spacer.gif" style="display: block;"></td></tr><tr class="gc-reset"><td class="pls-bottomLeft gc-reset"><img class="gc-reset" width="1" height="1" src="./02_Simple Popen2 Implementation   DZone_files/border_3.gif"></td><td class="gc-reset"><table cellpadding="0" cellspacing="0" style="width:100%" class="gc-reset"><tbody><tr class="gc-reset"><td class="pls-vert gc-reset"><img class="pls-dropBL gc-reset" width="4" height="5" src="./02_Simple Popen2 Implementation   DZone_files/spacer.gif"></td><td class="pls-dropBottom gc-reset"><img class="pls-tailtop gc-reset" width="19" height="13" src="./02_Simple Popen2 Implementation   DZone_files/spacer.gif" style="display: none;"><img class="pls-spacertop gc-reset" width="1" height="1" src="./02_Simple Popen2 Implementation   DZone_files/spacer.gif" style="display: block;"></td></tr></tbody></table></td><td class="pls-vert gc-reset"><img class="pls-dropBR gc-reset" width="5" height="5" src="./02_Simple Popen2 Implementation   DZone_files/spacer.gif"></td></tr></tbody></table></div><ins style="position: absolute; background-color: transparent; left: 445px; top: 471px; width: 32px; height: 20px; z-index: -10000; background-position: initial initial; background-repeat: initial initial;"></ins></body></html>

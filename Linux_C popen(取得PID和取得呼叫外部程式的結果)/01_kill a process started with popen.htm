@@ -1,0 +1,1396 @@
+<!DOCTYPE html>
+<!-- saved from url=(0075)http://stackoverflow.com/questions/548063/kill-a-process-started-with-popen -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+    <title>c - kill a process started with popen - Stack Overflow</title>
+    <link rel="shortcut icon" href="http://cdn.sstatic.net/stackoverflow/img/favicon.ico">
+    <link rel="apple-touch-icon" href="http://cdn.sstatic.net/stackoverflow/img/apple-touch-icon.png">
+    <link rel="search" type="application/opensearchdescription+xml" title="Stack Overflow" href="http://stackoverflow.com/opensearch.xml">
+
+    
+    <script type="text/javascript" async="" src="http://engine.adzerk.net/z/8277/adzerk1_2_4_43,adzerk2_2_17_45,adzerk3_2_4_44?keywords=c,multithreading,kill,popen&xReferrer=https://www.google.com/"></script><script type="text/javascript" async="" src="./01_kill a process started with popen_files/ga.js"></script><script type="text/javascript" async="" src="./01_kill a process started with popen_files/quant.js"></script><script type="text/javascript" src="./01_kill a process started with popen_files/jquery.min.js"></script><style type="text/css"></style>
+    <script type="text/javascript" src="./01_kill a process started with popen_files/stub.js"></script>
+    <link rel="stylesheet" type="text/css" href="./01_kill a process started with popen_files/all.css">
+    
+    <meta name="relativepagescore" content="171020">
+    <link rel="canonical" href="./01_kill a process started with popen_files/01_kill a process started with popen.htm">
+    <link rel="alternate" type="application/atom+xml" title="Feed for question &#39;kill a process started with popen&#39;" href="http://stackoverflow.com/feeds/question/548063">
+    <script type="text/javascript">
+        
+        StackExchange.ready(function () {
+            
+            StackExchange.question.init({showAnswerHelp:true,totalCommentCount:0,shownCommentCount:0,highlightColor:'#F4A83D',backgroundColor:'#FFF',questionId:548063});
+
+            styleCode();
+
+                StackExchange.realtime.subscribeToQuestion('1', '548063');
+            
+                
+        });
+    </script>
+
+
+    <script type="text/javascript">
+        StackExchange.init({"stackAuthUrl":"https://stackauth.com","serverTime":1358080772,"styleCode":true,"enableUserHovercards":true,"site":{"name":"Stack Overflow","description":"Q&A for professional and enthusiast programmers","isNoticesTabEnabled":true,"recaptchaPublicKey":"6LdchgIAAAAAAJwGpIzRQSOFaO0pU6s44Xt8aTwc","enableSocialMediaInSharePopup":true},"user":{"fkey":"607be6b7e3e0a3d0ddca709ab0db12f9","isAnonymous":true}});
+        StackExchange.using.setCacheBreakers({"js/prettify-full.js":"c862bf93b3ec","js/moderator.js":"53a4fbf22d01","js/full-anon.js":"0c5a6d031738","js/full.js":"49f402052a06","js/wmd.js":"d11f8684ed6c","js/third-party/jquery.autocomplete.min.js":"e5f01e97f7c3","js/mobile.js":"6eb68240242f","js/help.js":"fc9fb0517db2","js/tageditor.js":"450c9e8426fc","js/tageditornew.js":"c36cbe2f618c","js/inline-tag-editing.js":"30f72b99548b","js/revisions.js":"7273bb714bba","js/review.js":"b0ed21b3aeef"});
+        
+    </script>
+
+
+    <script type="text/javascript">
+        StackExchange.using(
+            "gps",
+            function () {
+                StackExchange.gps.init(false);
+            }
+        );
+    </script>
+
+<script async="" type="text/javascript" src="./01_kill a process started with popen_files/full-anon.js"></script><script async="" type="text/javascript" src="./01_kill a process started with popen_files/prettify-full.js"></script><style id="wrc-middle-css" type="text/css">.wrc_whole_window{	display: none;	position: fixed; 	z-index: 2147483647;	background-color: rgba(40, 40, 40, 0.9);	word-spacing: normal !important;	margin: 0px !important;	padding: 0px !important;	border: 0px !important;	left: 0px;	top: 0px;	width: 100%;	height: 100%;	line-height: normal !important;	letter-spacing: normal !important;	overflow: hidden;}.wrc_bar_window{	display: none;	position: fixed; 	z-index: 2147483647;	background-color: rgba(60, 60, 60, 1.0);	word-spacing: normal !important;	font-family: Segoe UI, Arial Unicode MS, Arial, Sans-Serif;	margin: 0px !important;	padding: 0px !important;	border: 0px !important;	left: 0px;	top: 0px;	width: 100%;	height: 40px;	line-height: normal !important;	letter-spacing: normal !important;	color: white !important;	font-size: 13px !important;}.wrc_middle {	display: table-cell;	vertical-align: middle;	width: 100%;}.wrc_middle_main {	font-family: Segoe UI, Arial Unicode MS, Arial, Sans-Serif;	font-size: 14px;	width: 600px;	height: auto;    background: url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/background-body.jpg) repeat-x left top;	background-color: rgb(39, 53, 62);	position: relative;	margin-left: auto;	margin-right: auto;	text-align: left;}.wrc_middle_tq_main {	font-family: Segoe UI, Arial Unicode MS, Arial, Sans-Serif;	font-size: 16px;	width: 615px;	height: 460px;    background: url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/background-sitecorrect.png) no-repeat;	background-color: white;	color: black !important;	position: relative;	margin-left: auto;	margin-right: auto;	text-align: center;}.wrc_middle_logo {    background: url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/logo.jpg) no-repeat left bottom;    width: 140px;    height: 42px;    color: orange;    display: table-cell;    text-align: right;    vertical-align: middle;}.wrc_icon_warning {	margin: 20px 10px 20px 15px;	float: left;	background-color: transparent;}.wrc_middle_title {    color: #b6bec7;	height: auto;    margin: 0px auto;	font-size: 2.2em;	white-space: nowrap;	text-align: center;}.wrc_middle_hline {    height: 2px;	width: 100%;    display: block;}.wrc_middle_description {	text-align: center;	margin: 15px;	font-size: 1.4em;	padding: 20px;	height: auto;	color: white;	min-height: 3.5em;}.wrc_middle_actions_main_div {	margin-bottom: 15px;	text-align: center;}.wrc_middle_actions_blue_button div {	display: inline-block;	width: auto;	cursor: Pointer;	margin: 3px 10px 3px 10px;	color: white;	font-size: 1.2em;	font-weight: bold;}.wrc_middle_actions_blue_button {	-moz-appearance: none;	border-radius: 7px;	-moz-border-radius: 7px/7px;	border-radius: 7px/7px;	background-color: rgb(0, 173, 223) !important;	display: inline-block;	width: auto;	cursor: Pointer;	border: 2px solid #00dddd;	padding: 0px 20px 0px 20px;}.wrc_middle_actions_blue_button:hover {	background-color: rgb(0, 159, 212) !important;}.wrc_middle_actions_blue_button:active {	background-color: rgb(0, 146, 200) !important;	border: 2px solid #00aaaa;}.wrc_middle_actions_grey_button div {	display: inline-block;	width: auto;	cursor: Pointer;	margin: 3px 10px 3px 10px;	color: white !important;	font-size: 15px;	font-weight: bold;}.wrc_middle_actions_grey_button {	-moz-appearance: none;	border-radius: 7px;	-moz-border-radius: 7px/7px;	border-radius: 7px/7px;	background-color: rgb(100, 100, 100) !important;	display: inline-block;	width: auto;	cursor: Pointer;	border: 2px solid #aaaaaa;	text-decoration: none;	padding: 0px 20px 0px 20px;}.wrc_middle_actions_grey_button:hover {	background-color: rgb(120, 120, 120) !important;}.wrc_middle_actions_grey_button:active {	background-color: rgb(130, 130, 130) !important;	border: 2px solid #00aaaa;}.wrc_middle_action_low {	font-size: 0.9em;	white-space: nowrap;	cursor: Pointer;	color: grey !important;	margin: 10px 10px 0px 10px;	text-decoration: none;}.wrc_middle_action_low:hover {	color: #aa4400 !important;}.wrc_middle_actions_rest_div {	padding-top: 5px;	white-space: nowrap;	text-align: center;}.wrc_middle_action {	white-space: nowrap;	cursor: Pointer;	color: red !important;	font-size: 1.2em;	margin: 10px 10px 0px 10px;	text-decoration: none;}.wrc_middle_action:hover {	color: #aa4400 !important;}</style><script id="wrc-script-middle_window" type="text/javascript" language="JavaScript">var g_inputsCnt = 0;var g_InputThis = new Array(null, null, null, null);var g_alerted = false;/* we test the input if it includes 4 digits   (input is a part of 4 inputs for filling the credit-card number)*/function is4DigitsCardNumber(val){	var regExp = new RegExp('[0-9]{4}');	return (val.length == 4 && val.search(regExp) == 0);}/* testing the whole credit-card number 19 digits devided by three '-' symbols or   exactly 16 digits without any dividers*/function isCreditCardNumber(val){	if(val.length == 19)	{		var regExp = new RegExp('[0-9]{4}-[0-9]{4}-[0-9]{4}-[0-9]{4}');		return (val.search(regExp) == 0);	}	else if(val.length == 16)	{		var regExp = new RegExp('[0-9]{4}[0-9]{4}[0-9]{4}[0-9]{4}');		return (val.search(regExp) == 0);	}	return false;}function CheckInputOnCreditNumber(self){	if(g_alerted)		return false;	var value = self.value;	if(self.type == 'text')	{		if(is4DigitsCardNumber(value))		{			var cont = true;			for(i = 0; i < g_inputsCnt; i++)				if(g_InputThis[i] == self)					cont = false;			if(cont && g_inputsCnt < 4)			{				g_InputThis[g_inputsCnt] = self;				g_inputsCnt++;			}		}		g_alerted = (g_inputsCnt == 4);		if(g_alerted)			g_inputsCnt = 0;		else			g_alerted = isCreditCardNumber(value);	}	return g_alerted;}function CheckInputOnPassword(self){	if(g_alerted)		return false;	var value = self.value;	if(self.type == 'password')	{		g_alerted = (value.length > 0);	}	return g_alerted;}function onInputBlur(self, bRatingOk, bFishingSite){	var bCreditNumber = CheckInputOnCreditNumber(self);	var bPassword = CheckInputOnPassword(self);	if((!bRatingOk || bFishingSite == 1) && (bCreditNumber || bPassword) )	{		var warnDiv = document.getElementById("wrcinputdiv");		if(warnDiv)		{			/* show the warning div in the middle of the screen */			warnDiv.style.left = "0px";			warnDiv.style.top = "0px";			warnDiv.style.width = "100%";			warnDiv.style.height = "100%";			document.getElementById("wrc_warn_fs").style.display = 'none';			document.getElementById("wrc_warn_cn").style.display = 'none';			if(bFishingSite)				document.getElementById("wrc_warn_fs").style.display = 'block';			else				document.getElementById("wrc_warn_cn").style.display = 'block';			warnDiv.style.display = 'table';		}	}}</script><style id="wrc-css" type="text/css">.wrcx {display:none} .post-text .wrcx {display:inline !important; background: url("chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/grey0-16.png") right no-repeat}"}
+.wrc0 {display:none} .post-text .wrc0 {display:inline !important; background: url("chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/grey0-16.png") right no-repeat}"}
+.wrc11 {display:none} .post-text .wrc11 {display:inline !important; background: url("chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/green1-16.png") right no-repeat}"}
+.wrc12 {display:none} .post-text .wrc12 {display:inline !important; background: url("chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/green2-16.png") right no-repeat}"}
+.wrc13 {display:none} .post-text .wrc13 {display:inline !important; background: url("chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/green3-16.png") right no-repeat}"}
+.wrc21 {display:none} .post-text .wrc21 {display:inline !important; background: url("chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/yellow1-16.png") right no-repeat}"}
+.wrc22 {display:none} .post-text .wrc22 {display:inline !important; background: url("chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/yellow2-16.png") right no-repeat}"}
+.wrc23 {display:none} .post-text .wrc23 {display:inline !important; background: url("chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/yellow3-16.png") right no-repeat}"}
+.wrc31 {display:none} .post-text .wrc31 {display:inline !important; background: url("chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/red1-16.png") right no-repeat}"}
+.wrc32 {display:none} .post-text .wrc32 {display:inline !important; background: url("chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/red2-16.png") right no-repeat}"}
+.wrc33 {display:none} .post-text .wrc33 {display:inline !important; background: url("chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/red3-16.png") right no-repeat}"}
+.wrc_icon{margin:0;padding:0;padding-left:15px !important; margin-left: 5px; width:16px !important; height:16px !important;line-height:16px !important;}
+#wrchoverdiv{padding-bottom:20px;-webkit-border-radius: 4px; -webkit-box-shadow: 2px 2px 1px rgba(0,0,0,0.2); position:absolute; width:180px; background:transparent url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/background-body.jpg) top left repeat-x; display:none; font-family: Segoe UI, Arial Unicode MS, Arial, Sans-Serif; font-size: 14px; z-index:9999999;}
+#wrchoverdiv{cursor:default;}
+#wrchoverdiv #wrccontainer{width:180px;}
+#wrchoverdiv #wrcheader{width:140px; height:42px; background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/logo.jpg) bottom left no-repeat; text-align:right; line-height:42px; color:orange; margin:0 auto;}
+#wrchoverdiv .wrchorizontal{width:180px; height:2px; background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/horizontal-line.jpg) bottom left no-repeat;}
+#wrchoverdiv #wrccurrentvote{height:25px; line-height:25px; color:#FFF; text-align:center; text-transform:uppercase;}
+#wrchoverdiv #wrcrating{margin:5px auto; width:69px; height:55px; background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/grey-0.png) bottom left no-repeat;}
+#wrchoverdiv #wrcrating.wrcbx{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/grey-0.png);}
+#wrchoverdiv #wrcrating.wrcb0{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/grey-0.png);}
+#wrchoverdiv #wrcrating.wrcb11{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/green-1.png);}
+#wrchoverdiv #wrcrating.wrcb12{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/green-2.png);}
+#wrchoverdiv #wrcrating.wrcb13{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/green-3.png);}
+#wrchoverdiv #wrcrating.wrcb21{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/yellow-1.png);}
+#wrchoverdiv #wrcrating.wrcb22{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/yellow-2.png);}
+#wrchoverdiv #wrcrating.wrcb23{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/yellow-3.png);}
+#wrchoverdiv #wrcrating.wrcb31{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/red-1.png);}
+#wrchoverdiv #wrcrating.wrcb32{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/red-2.png);}
+#wrchoverdiv #wrcrating.wrcb33{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/red-3.png);}
+#wrchoverdiv #wrcratingtext{margin:3px 5px; color:#FFF; text-align:center; padding:0; font-size:12px;}
+#wrchoverdiv #wrcweighttext{margin:3px 5px; color:#FFF; text-align:center; padding:0; font-size:12px;}
+#wrchoverdiv #wrcflags{width:150px; height:70px; margin:0 auto;}
+#wrchoverdiv .wrcicon{width:30px; height:30px; float:left;}
+#wrchoverdiv #wrcicon_shopping{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/shopping-small-disable.png) top left no-repeat;}
+#wrchoverdiv #wrcicon_shopping.selected{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/shopping-small-selected.png) top left no-repeat;}
+#wrchoverdiv #wrcicon_social{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/social-small-disable.png) top left no-repeat;}
+#wrchoverdiv #wrcicon_social.selected{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/social-small-selected.png) top left no-repeat;}
+#wrchoverdiv #wrcicon_news{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/news-small-disable.png) top left no-repeat;}
+#wrchoverdiv #wrcicon_news.selected{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/news-small-selected.png) top left no-repeat;}
+#wrchoverdiv #wrcicon_it{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/it-small-disable.png) top left no-repeat;}
+#wrchoverdiv #wrcicon_it.selected{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/it-small-selected.png) top left no-repeat;}
+#wrchoverdiv #wrcicon_corporate{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/corporate-small-disable.png) top left no-repeat;}
+#wrchoverdiv #wrcicon_corporate.selected{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/corporate-small-selected.png) top left no-repeat;}
+#wrchoverdiv #wrcicon_pornography{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/pornography-small-disable.png) top left no-repeat;}
+#wrchoverdiv #wrcicon_pornography.selected{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/pornography-small-selected.png) top left no-repeat;}
+#wrchoverdiv #wrcicon_violence{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/violence-small-disable.png) top left no-repeat;}
+#wrchoverdiv #wrcicon_violence.selected{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/violence-small-selected.png) top left no-repeat;}
+#wrchoverdiv #wrcicon_gambling{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/gambling-small-disable.png) top left no-repeat;}
+#wrchoverdiv #wrcicon_gambling.selected{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/gambling-small-selected.png) top left no-repeat;}
+#wrchoverdiv #wrcicon_drugs{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/drugs-small-disable.png) top left no-repeat;}
+#wrchoverdiv #wrcicon_drugs.selected{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/drugs-small-selected.png) top left no-repeat;}
+#wrchoverdiv #wrcicon_illegal{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/illegal-small-disable.png) top left no-repeat;}
+#wrchoverdiv #wrcicon_illegal.selected{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/illegal-small-selected.png) top left no-repeat;}
+</style></head><style type="text/css">embed[type*="application/x-shockwave-flash"],embed[src*=".swf"],object[type*="application/x-shockwave-flash"],object[codetype*="application/x-shockwave-flash"],object[src*=".swf"],object[codebase*="swflash.cab"],object[classid*="D27CDB6E-AE6D-11cf-96B8-444553540000"],object[classid*="d27cdb6e-ae6d-11cf-96b8-444553540000"],object[classid*="D27CDB6E-AE6D-11cf-96B8-444553540000"]{	display: none !important;}</style>
+<body class="question-page">
+    <noscript>&lt;div id="noscript-padding"&gt;&lt;/div&gt;</noscript>
+    <div id="notify-container"></div>
+    <div id="overlay-header"></div>
+    <div id="custom-header"></div>
+
+    <div class="container">
+        <div id="header">
+            <div id="portalLink">
+                <a class="genu" onclick="StackExchange.ready(function(){genuwine.click();});return false;">Stack Exchange</a>
+            </div>
+            <div id="topbar">
+                <div id="hlinks">
+                    
+
+
+
+
+
+
+
+
+
+<span id="hlinks-user">
+
+</span>
+<span id="hlinks-nav">
+                   <a href="http://stackoverflow.com/users/login?returnurl=%2fquestions%2f548063%2fkill-a-process-started-with-popen">log in</a>
+
+ <span class="lsep">|</span>
+                    <a href="http://careers.stackoverflow.com/" wrc_done="true">careers 2.0</a><span class="wrc_icon wrc13" rating="{&quot;icon&quot;:&quot;green3-16.png&quot;,&quot;rating&quot;:1,&quot;weight&quot;:3}"></span>
+
+ <span class="lsep">|</span>
+
+</span>
+<span id="hlinks-custom">
+        <a href="http://chat.stackoverflow.com/" wrc_done="true">chat</a><span class="wrc_icon wrc13" rating="{&quot;icon&quot;:&quot;green3-16.png&quot;,&quot;rating&quot;:1,&quot;weight&quot;:3}"></span>
+
+ <span class="lsep">|</span>
+            <a href="http://meta.stackoverflow.com/" wrc_done="true">meta</a><span class="wrc_icon wrc13" rating="{&quot;icon&quot;:&quot;green3-16.png&quot;,&quot;rating&quot;:1,&quot;weight&quot;:3}"></span>
+
+ <span class="lsep">|</span>
+        <a href="http://stackoverflow.com/about">about</a>
+
+ <span class="lsep">|</span>
+    <a href="http://stackoverflow.com/faq">faq</a>
+
+</span>
+                </div>
+                <div id="hsearch">
+                    <form id="search" action="http://stackoverflow.com/search" method="get" autocomplete="off">
+                    <div>
+                        <input autocomplete="off" name="q" class="textbox" placeholder="search" tabindex="1" type="text" maxlength="140" size="28" value="">
+                    </div>
+                    </form>
+                </div>
+            </div>
+            <br class="cbt">
+            <div id="hlogo">
+                <a href="http://stackoverflow.com/">Stack Overflow</a>
+            </div>
+            <div id="hmenus">
+                <div class="nav mainnavs">
+                    <ul>
+                        <li class="youarehere"><a id="nav-questions" href="http://stackoverflow.com/questions">Questions</a></li>
+                        <li><a id="nav-tags" href="http://stackoverflow.com/tags">Tags</a></li>
+                        <li><a id="nav-users" href="http://stackoverflow.com/users">Users</a></li>
+                        <li><a id="nav-badges" href="http://stackoverflow.com/badges">Badges</a></li>
+                        <li><a id="nav-unanswered" href="http://stackoverflow.com/unanswered">Unanswered</a></li>
+                    </ul>
+                </div>
+                <div class="nav askquestion">
+                    <ul>
+                        <li>
+                            <a id="nav-askquestion" href="http://stackoverflow.com/questions/ask">Ask Question</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        
+
+
+
+        <div id="content">
+            
+
+<div itemscope="" itemtype="http://schema.org/Article">
+<link itemprop="image" href="http://cdn.sstatic.net/stackoverflow/img/apple-touch-icon.png">
+<div id="question-header">
+    <h1 itemprop="name"><a href="./01_kill a process started with popen_files/01_kill a process started with popen.htm" class="question-hyperlink">kill a process started with popen</a></h1>
+</div>
+<div id="mainbar">
+
+
+
+<div class="question" id="question" data-questionid="548063">
+            <div class="everyonelovesstackoverflow" id="adzerk1">
+        </div>
+
+
+
+    <table>
+    <tbody><tr>
+    <td class="votecell">
+        
+
+<div class="vote">
+    <input type="hidden" value="548063">
+    <a class="vote-up-off" title="This question shows research effort; it is useful and clear (click again to undo)">up vote</a>
+    <span class="vote-count-post ">3</span>
+    <a class="vote-down-off" title="This question does not show any research effort; it is unclear or not useful (click again to undo)">down vote</a>
+    
+    <a class="star-off" href="http://stackoverflow.com/questions/548063/kill-a-process-started-with-popen#" title="This is a favorite question (click again to undo)">favorite</a>
+    <div class="favoritecount"><b>4</b></div>   
+
+ 
+</div>
+
+    </td>
+    
+<td class="postcell">
+<div>          
+    <div class="post-text" itemprop="description">
+        <p>After opening a pipe to a process with <code>popen</code>, is there a way to kill the thread that is started? Using <code>pclose</code> is not what I want because that will wait for the thread to finish, but I need to kill it.</p>
+
+    </div>            
+    <div class="post-taglist">
+        <a href="http://stackoverflow.com/questions/tagged/c" class="post-tag" title="show questions tagged &#39;c&#39;" rel="tag">c</a> <a href="http://stackoverflow.com/questions/tagged/multithreading" class="post-tag" title="show questions tagged &#39;multithreading&#39;" rel="tag">multithreading</a> <a href="http://stackoverflow.com/questions/tagged/kill" class="post-tag" title="show questions tagged &#39;kill&#39;" rel="tag">kill</a> <a href="http://stackoverflow.com/questions/tagged/popen" class="post-tag" title="show questions tagged &#39;popen&#39;" rel="tag">popen</a> 
+    </div>
+    <table class="fw">
+    <tbody><tr>
+    <td class="vt">
+
+
+
+
+
+
+
+
+
+<div class="post-menu"><a href="http://stackoverflow.com/q/548063" title="short permalink to this question" class="short-link" id="link-post-548063">share</a><span class="lsep">|</span><a href="http://stackoverflow.com/posts/548063/edit" class="suggest-edit-post" title="">improve this question</a></div>
+    </td>
+    <td class="post-signature owner">
+    
+
+    <div class="user-info user-hover">
+        <div class="user-action-time">
+                                    asked
+ <span title="2009-02-13 23:16:18Z" class="relativetime">Feb 13 '09 at 23:16</span>
+        </div>
+        <div class="user-gravatar32">
+            <a href="http://stackoverflow.com/users/49485/ben-alpert"><div class=""><img src="./01_kill a process started with popen_files/5a6ea2485c7fc9b8eb0867ba6a3d40af" alt="" width="32" height="32"></div></a>
+        </div>
+        <div class="user-details">
+            <a href="http://stackoverflow.com/users/49485/ben-alpert">Ben Alpert</a><br>
+            <span class="reputation-score" title="reputation score 16088" dir="ltr">16.1k</span><span title="4 gold badges"><span class="badge1"></span><span class="badgecount">4</span></span><span title="54 silver badges"><span class="badge2"></span><span class="badgecount">54</span></span><span title="87 bronze badges"><span class="badge3"></span><span class="badgecount">87</span></span>
+        </div>
+    </div>
+
+        <br class="cbt">
+        <div class="accept-rate accept-answer-link" title="this user has accepted an answer for 29 of 35 eligible questions">83% accept rate</div>
+    </td>
+    </tr>
+    </tbody></table>
+</div>
+</td>    </tr>
+
+
+<tr>
+<td class="votecell"></td>
+<td>
+    <div id="comments-548063" class="comments dno">
+        <table>
+        <tbody>
+        
+            <tr><td></td><td></td></tr>
+        
+        </tbody>
+    
+        </table>
+    </div>
+    
+    
+    <div class="was-this-helpful" style="color: rgb(0, 0, 0);">Was this post useful to you? &nbsp;&nbsp;<input style="" class="anon-vote" type="button" value="Yes"> &nbsp;<input style="" class="anon-vote" type="button" value="No"></div>
+    
+</td>
+</tr>            </tbody></table>    
+</div>
+
+
+    
+
+
+<div id="answers">
+
+    <a name="tab-top"></a>
+    <div id="answers-header">
+        <div class="subheader answers-subheader">
+            <h2>
+                    6 Answers
+            </h2>
+            <div id="tabs">
+                <a href="http://stackoverflow.com/questions/548063/kill-a-process-started-with-popen?answertab=active#tab-top" title="Answers with the latest activity first">active</a>
+<a href="http://stackoverflow.com/questions/548063/kill-a-process-started-with-popen?answertab=oldest#tab-top" title="Answers in the order they were provided">oldest</a>
+<a class="youarehere" href="http://stackoverflow.com/questions/548063/kill-a-process-started-with-popen?answertab=votes#tab-top" title="Answers with the highest score first">votes</a>
+
+            </div>
+        </div>    
+    </div>    
+
+
+
+
+
+  
+    <a name="548148"></a>
+    <div id="answer-548148" class="answer accepted-answer" data-answerid="548148">
+        <table>
+        <tbody><tr>
+        <td class="votecell">
+            
+
+<div class="vote">
+    <input type="hidden" value="548148">
+    <a class="vote-up-off" title="This answer is useful (click again to undo)">up vote</a>
+    <span class="vote-count-post ">10</span>
+    <a class="vote-down-off" title="This answer is not useful (click again to undo)">down vote</a>
+    
+
+            <span class="vote-accepted-on load-accepted-answer-date" title="loading when this answer was accepted...">accepted</span>
+ 
+</div>
+
+        </td>
+        
+
+
+<td class="answercell">
+    <div class="post-text"><p>Don't use popen(), and write your own wrapper that does what you'd like. </p>
+
+<p>It's fairly straightforward to fork(), and then replace stdin &amp; stdout
+by using dup2(), and then calling exec() on your child.</p>
+
+<p>That way, your parent will have the exact child PID, and you can use
+kill() on that.</p>
+
+<p>Google search for "popen2() implementation" for some sample code on
+how to implement what popen() is doing.  It's only a dozen or so lines
+long.  Taken from <a href="http://snippets.dzone.com/posts/show/1134" rel="nofollow" wrc_done="true">dzone.com</a><span class="wrc_icon wrc11" rating="{&quot;icon&quot;:&quot;green1-16.png&quot;,&quot;rating&quot;:1,&quot;weight&quot;:1}"></span> we can see
+an example that looks like this:</p>
+
+<pre class="lang-c prettyprint prettyprinted" style=""><code><span class="com">#define</span><span class="pln"> READ </span><span class="lit">0</span><span class="pln">
+</span><span class="com">#define</span><span class="pln"> WRITE </span><span class="lit">1</span><span class="pln">
+
+</span><span class="typ">pid_t</span><span class="pln">
+popen2</span><span class="pun">(</span><span class="kwd">const</span><span class="pln"> </span><span class="kwd">char</span><span class="pln"> </span><span class="pun">*</span><span class="pln">command</span><span class="pun">,</span><span class="pln"> </span><span class="typ">int</span><span class="pln"> </span><span class="pun">*</span><span class="pln">infp</span><span class="pun">,</span><span class="pln"> </span><span class="typ">int</span><span class="pln"> </span><span class="pun">*</span><span class="pln">outfp</span><span class="pun">)</span><span class="pln">
+</span><span class="pun">{</span><span class="pln">
+    </span><span class="typ">int</span><span class="pln"> p_stdin</span><span class="pun">[</span><span class="lit">2</span><span class="pun">],</span><span class="pln"> p_stdout</span><span class="pun">[</span><span class="lit">2</span><span class="pun">];</span><span class="pln">
+    </span><span class="typ">pid_t</span><span class="pln"> pid</span><span class="pun">;</span><span class="pln">
+
+    </span><span class="kwd">if</span><span class="pln"> </span><span class="pun">(</span><span class="pln">pipe</span><span class="pun">(</span><span class="pln">p_stdin</span><span class="pun">)</span><span class="pln"> </span><span class="pun">!=</span><span class="pln"> </span><span class="lit">0</span><span class="pln"> </span><span class="pun">||</span><span class="pln"> pipe</span><span class="pun">(</span><span class="pln">p_stdout</span><span class="pun">)</span><span class="pln"> </span><span class="pun">!=</span><span class="pln"> </span><span class="lit">0</span><span class="pun">)</span><span class="pln">
+        </span><span class="kwd">return</span><span class="pln"> </span><span class="pun">-</span><span class="lit">1</span><span class="pun">;</span><span class="pln">
+
+    pid </span><span class="pun">=</span><span class="pln"> fork</span><span class="pun">();</span><span class="pln">
+
+    </span><span class="kwd">if</span><span class="pln"> </span><span class="pun">(</span><span class="pln">pid </span><span class="pun">&lt;</span><span class="pln"> </span><span class="lit">0</span><span class="pun">)</span><span class="pln">
+        </span><span class="kwd">return</span><span class="pln"> pid</span><span class="pun">;</span><span class="pln">
+    </span><span class="kwd">else</span><span class="pln"> </span><span class="kwd">if</span><span class="pln"> </span><span class="pun">(</span><span class="pln">pid </span><span class="pun">==</span><span class="pln"> </span><span class="lit">0</span><span class="pun">)</span><span class="pln">
+    </span><span class="pun">{</span><span class="pln">
+        close</span><span class="pun">(</span><span class="pln">p_stdin</span><span class="pun">[</span><span class="pln">WRITE</span><span class="pun">]);</span><span class="pln">
+        dup2</span><span class="pun">(</span><span class="pln">p_stdin</span><span class="pun">[</span><span class="pln">READ</span><span class="pun">],</span><span class="pln"> READ</span><span class="pun">);</span><span class="pln">
+        close</span><span class="pun">(</span><span class="pln">p_stdout</span><span class="pun">[</span><span class="pln">READ</span><span class="pun">]);</span><span class="pln">
+        dup2</span><span class="pun">(</span><span class="pln">p_stdout</span><span class="pun">[</span><span class="pln">WRITE</span><span class="pun">],</span><span class="pln"> WRITE</span><span class="pun">);</span><span class="pln">
+
+        execl</span><span class="pun">(</span><span class="str">"/bin/sh"</span><span class="pun">,</span><span class="pln"> </span><span class="str">"sh"</span><span class="pun">,</span><span class="pln"> </span><span class="str">"-c"</span><span class="pun">,</span><span class="pln"> command</span><span class="pun">,</span><span class="pln"> NULL</span><span class="pun">);</span><span class="pln">
+        perror</span><span class="pun">(</span><span class="str">"execl"</span><span class="pun">);</span><span class="pln">
+        exit</span><span class="pun">(</span><span class="lit">1</span><span class="pun">);</span><span class="pln">
+    </span><span class="pun">}</span><span class="pln">
+
+    </span><span class="kwd">if</span><span class="pln"> </span><span class="pun">(</span><span class="pln">infp </span><span class="pun">==</span><span class="pln"> NULL</span><span class="pun">)</span><span class="pln">
+        close</span><span class="pun">(</span><span class="pln">p_stdin</span><span class="pun">[</span><span class="pln">WRITE</span><span class="pun">]);</span><span class="pln">
+    </span><span class="kwd">else</span><span class="pln">
+        </span><span class="pun">*</span><span class="pln">infp </span><span class="pun">=</span><span class="pln"> p_stdin</span><span class="pun">[</span><span class="pln">WRITE</span><span class="pun">];</span><span class="pln">
+
+    </span><span class="kwd">if</span><span class="pln"> </span><span class="pun">(</span><span class="pln">outfp </span><span class="pun">==</span><span class="pln"> NULL</span><span class="pun">)</span><span class="pln">
+        close</span><span class="pun">(</span><span class="pln">p_stdout</span><span class="pun">[</span><span class="pln">READ</span><span class="pun">]);</span><span class="pln">
+    </span><span class="kwd">else</span><span class="pln">
+        </span><span class="pun">*</span><span class="pln">outfp </span><span class="pun">=</span><span class="pln"> p_stdout</span><span class="pun">[</span><span class="pln">READ</span><span class="pun">];</span><span class="pln">
+
+    </span><span class="kwd">return</span><span class="pln"> pid</span><span class="pun">;</span><span class="pln">
+</span><span class="pun">}</span></code></pre>
+
+<p>NB: Seems like popen2() is what you want, but my distribution doesn't seem to come with this method. </p>
+</div>
+    <table class="fw">
+    <tbody><tr>
+    <td class="vt">
+
+
+
+
+
+
+
+
+
+<div class="post-menu"><a href="http://stackoverflow.com/a/548148" title="short permalink to this answer" class="short-link" id="link-post-548148">share</a><span class="lsep">|</span><a href="http://stackoverflow.com/posts/548148/edit" class="suggest-edit-post" title="">improve this answer</a></div>                    </td>
+            
+
+
+    <td align="right" class="post-signature">   
+       
+
+    
+
+    <div class="user-info ">
+        <div class="user-action-time">
+                                    answered
+ <span title="2009-02-13 23:54:01Z" class="relativetime">Feb 13 '09 at 23:54</span>
+        </div>
+        <div class="user-gravatar32">
+            <a href="http://stackoverflow.com/users/66289/slacy"><div class=""><img src="./01_kill a process started with popen_files/8a9d0c522461ae0dd46e9f99fbb45724" alt="" width="32" height="32"></div></a>
+        </div>
+        <div class="user-details">
+            <a href="http://stackoverflow.com/users/66289/slacy">slacy</a><br>
+            <span class="reputation-score" title="reputation score" dir="ltr">3,105</span><span title="9 silver badges"><span class="badge2"></span><span class="badgecount">9</span></span><span title="29 bronze badges"><span class="badge3"></span><span class="badgecount">29</span></span>
+        </div>
+    </div>
+
+    </td>
+    </tr>
+    </tbody></table>
+</td>        </tr>
+
+
+<tr>
+<td class="votecell"></td>
+<td>
+    <div id="comments-548148" class="comments">
+        <table>
+        <tbody>
+                    
+    <tr id="comment-10927113" class="comment">
+        <td></td>
+        <td class="comment-text"><div><span class="comment-copy">this doesn't solve the issue of fork's memory duplication. its possible that we don't want a call to fork for this reason</span> –&nbsp;<a href="http://stackoverflow.com/users/190952/will" title="575 reputation" class="comment-user">Will</a> <span class="comment-date" dir="ltr"><a class="comment-link" onclick="StackExchange.question.highlightComment(10927113, 548148)" href="http://stackoverflow.com/questions/548063/kill-a-process-started-with-popen#comment10927113_548148"><span title="2012-01-07 02:03:47Z" class="relativetime-clean">Jan 7 '12 at 2:03</span></a></span></div></td>
+    </tr>
+            
+    <tr id="comment-14141959" class="comment">
+        <td></td>
+        <td class="comment-text"><div><span class="comment-copy">@phooji what does python have to do with anything?</span> –&nbsp;<a href="http://stackoverflow.com/users/17027/mahmoud-al-qudsi" title="11872 reputation" class="comment-user">Mahmoud Al-Qudsi</a> <span class="comment-date" dir="ltr"><a class="comment-link" onclick="StackExchange.question.highlightComment(14141959, 548148)" href="http://stackoverflow.com/questions/548063/kill-a-process-started-with-popen#comment14141959_548148"><span title="2012-06-01 20:22:32Z" class="relativetime-clean">Jun 1 '12 at 20:22</span></a></span></div></td>
+    </tr>
+            
+    <tr id="comment-14154341" class="comment">
+        <td></td>
+        <td class="comment-text"><div><span class="comment-copy">@MahmoudAl-Qudsi: Whoops. I must've been loooking at too many python questions. [Earlier python-related comment redacted]</span> –&nbsp;<a href="http://stackoverflow.com/users/569266/phooji" title="4540 reputation" class="comment-user">phooji</a> <span class="comment-date" dir="ltr"><a class="comment-link" onclick="StackExchange.question.highlightComment(14154341, 548148)" href="http://stackoverflow.com/questions/548063/kill-a-process-started-with-popen#comment14154341_548148"><span title="2012-06-02 18:15:04Z" class="relativetime-clean">Jun 2 '12 at 18:15</span></a></span><span class="edited-yes" title="this comment was edited"></span></div></td>
+    </tr>
+            
+    <tr id="comment-17458873" class="comment">
+        <td></td>
+        <td class="comment-text"><div><span class="comment-copy">The above needs "close(p_stdin[READ]); close(p_stdout[WRITE]);" to avoid two unwanted open file descriptors lingering (which prevents calls such as fgets() detecting that the forked child has exited).</span> –&nbsp;<a href="http://stackoverflow.com/users/325366/chris" title="163 reputation" class="comment-user">Chris</a> <span class="comment-date" dir="ltr"><a class="comment-link" onclick="StackExchange.question.highlightComment(17458873, 548148)" href="http://stackoverflow.com/questions/548063/kill-a-process-started-with-popen#comment17458873_548148"><span title="2012-10-15 08:41:17Z" class="relativetime-clean">Oct 15 '12 at 8:41</span></a></span></div></td>
+    </tr>
+
+        </tbody>
+    
+        </table>
+    </div>
+    
+    
+    <div class="was-this-helpful">
+        feedback
+    </div>
+    
+</td>
+</tr>            </tbody></table>
+</div>
+        <div class="everyonelovesstackoverflow" id="adzerk3">
+        </div>
+
+
+
+
+  
+    <a name="548098"></a>
+    <div id="answer-548098" class="answer" data-answerid="548098">
+        <table>
+        <tbody><tr>
+        <td class="votecell">
+            
+
+<div class="vote">
+    <input type="hidden" value="548098">
+    <a class="vote-up-off" title="This answer is useful (click again to undo)">up vote</a>
+    <span class="vote-count-post ">4</span>
+    <a class="vote-down-off" title="This answer is not useful (click again to undo)">down vote</a>
+    
+
+ 
+</div>
+
+        </td>
+        
+
+
+<td class="answercell">
+    <div class="post-text"><p>popen does not actually start a thread, but rather forks a process. As I look at the definition, it doesn't look like there is an easy way to get PID of that process and kill it. There might be difficult ways like examining process tree, but i guess you'd be better off with using pipe, fork and exec functions to mimic behaviour of popen. Then you can use PID you get from fork() to kill the child process.</p>
+</div>
+    <table class="fw">
+    <tbody><tr>
+    <td class="vt">
+
+
+
+
+
+
+
+
+
+<div class="post-menu"><a href="http://stackoverflow.com/a/548098" title="short permalink to this answer" class="short-link" id="link-post-548098">share</a><span class="lsep">|</span><a href="http://stackoverflow.com/posts/548098/edit" class="suggest-edit-post" title="">improve this answer</a></div>                    </td>
+            
+
+
+    <td align="right" class="post-signature">   
+       
+
+    
+
+    <div class="user-info ">
+        <div class="user-action-time">
+                                    answered
+ <span title="2009-02-13 23:28:08Z" class="relativetime">Feb 13 '09 at 23:28</span>
+        </div>
+        <div class="user-gravatar32">
+            <a href="http://stackoverflow.com/users/7806/che"><div class=""><img src="./01_kill a process started with popen_files/1595b03e30f6846f4232cba7e3583ddd" alt="" width="32" height="32"></div></a>
+        </div>
+        <div class="user-details">
+            <a href="http://stackoverflow.com/users/7806/che">che</a><br>
+            <span class="reputation-score" title="reputation score" dir="ltr">5,286</span><span title="2 gold badges"><span class="badge1"></span><span class="badgecount">2</span></span><span title="12 silver badges"><span class="badge2"></span><span class="badgecount">12</span></span><span title="30 bronze badges"><span class="badge3"></span><span class="badgecount">30</span></span>
+        </div>
+    </div>
+
+    </td>
+    </tr>
+    </tbody></table>
+</td>        </tr>
+
+
+<tr>
+<td class="votecell"></td>
+<td>
+    <div id="comments-548098" class="comments dno">
+        <table>
+        <tbody>
+        
+            <tr><td></td><td></td></tr>
+        
+        </tbody>
+    
+        </table>
+    </div>
+    
+    
+    <div class="was-this-helpful">
+        feedback
+    </div>
+    
+</td>
+</tr>            </tbody></table>
+</div>
+
+
+  
+    <a name="548157"></a>
+    <div id="answer-548157" class="answer" data-answerid="548157">
+        <table>
+        <tbody><tr>
+        <td class="votecell">
+            
+
+<div class="vote">
+    <input type="hidden" value="548157">
+    <a class="vote-up-off" title="This answer is useful (click again to undo)">up vote</a>
+    <span class="vote-count-post ">2</span>
+    <a class="vote-down-off" title="This answer is not useful (click again to undo)">down vote</a>
+    
+
+ 
+</div>
+
+        </td>
+        
+
+
+<td class="answercell">
+    <div class="post-text"><p>Actually if the process is doing I/O (which it should be, otherwise why <code>popen</code> instead of <code>system</code>(3)?), then <code>pclose</code> should whack it with a <code>SIGPIPE</code> the next time it tries to read or write, and it should fall over nicely :-)</p>
+</div>
+    <table class="fw">
+    <tbody><tr>
+    <td class="vt">
+
+
+
+
+
+
+
+
+
+<div class="post-menu"><a href="http://stackoverflow.com/a/548157" title="short permalink to this answer" class="short-link" id="link-post-548157">share</a><span class="lsep">|</span><a href="http://stackoverflow.com/posts/548157/edit" class="suggest-edit-post" title="">improve this answer</a></div>                    </td>
+            
+
+
+    <td align="right" class="post-signature">   
+       
+
+    
+
+    <div class="user-info user-hover">
+        <div class="user-action-time">
+                                    answered
+ <span title="2009-02-13 23:57:55Z" class="relativetime">Feb 13 '09 at 23:57</span>
+        </div>
+        <div class="user-gravatar32">
+            <a href="http://stackoverflow.com/users/41661/norman-ramsey"><div class=""><img src="./01_kill a process started with popen_files/7dd45a27a5616b8a5608b84007e4e08f" alt="" width="32" height="32"></div></a>
+        </div>
+        <div class="user-details">
+            <a href="http://stackoverflow.com/users/41661/norman-ramsey">Norman Ramsey</a><br>
+            <span class="reputation-score" title="reputation score 93100" dir="ltr">93.1k</span><span title="19 gold badges"><span class="badge1"></span><span class="badgecount">19</span></span><span title="165 silver badges"><span class="badge2"></span><span class="badgecount">165</span></span><span title="344 bronze badges"><span class="badge3"></span><span class="badgecount">344</span></span>
+        </div>
+    </div>
+
+    </td>
+    </tr>
+    </tbody></table>
+</td>        </tr>
+
+
+<tr>
+<td class="votecell"></td>
+<td>
+    <div id="comments-548157" class="comments dno">
+        <table>
+        <tbody>
+        
+            <tr><td></td><td></td></tr>
+        
+        </tbody>
+    
+        </table>
+    </div>
+    
+    
+    <div class="was-this-helpful">
+        feedback
+    </div>
+    
+</td>
+</tr>            </tbody></table>
+</div>
+
+
+  
+    <a name="548095"></a>
+    <div id="answer-548095" class="answer" data-answerid="548095">
+        <table>
+        <tbody><tr>
+        <td class="votecell">
+            
+
+<div class="vote">
+    <input type="hidden" value="548095">
+    <a class="vote-up-off" title="This answer is useful (click again to undo)">up vote</a>
+    <span class="vote-count-post ">0</span>
+    <a class="vote-down-off" title="This answer is not useful (click again to undo)">down vote</a>
+    
+
+ 
+</div>
+
+        </td>
+        
+
+
+<td class="answercell">
+    <div class="post-text"><p>The obvious way is system("pkill process_name");</p>
+
+<p>Clearly this is problematic if you have more than one instance of the process running.</p>
+</div>
+    <table class="fw">
+    <tbody><tr>
+    <td class="vt">
+
+
+
+
+
+
+
+
+
+<div class="post-menu"><a href="http://stackoverflow.com/a/548095" title="short permalink to this answer" class="short-link" id="link-post-548095">share</a><span class="lsep">|</span><a href="http://stackoverflow.com/posts/548095/edit" class="suggest-edit-post" title="">improve this answer</a></div>                    </td>
+            
+
+
+    <td align="right" class="post-signature">   
+       
+
+    
+
+    <div class="user-info user-hover">
+        <div class="user-action-time">
+                                    answered
+ <span title="2009-02-13 23:27:39Z" class="relativetime">Feb 13 '09 at 23:27</span>
+        </div>
+        <div class="user-gravatar32">
+            <a href="http://stackoverflow.com/users/1043/andrew-grant"><div class=""><img src="./01_kill a process started with popen_files/0163290b3bd95a0dfb748d844792765b" alt="" width="32" height="32"></div></a>
+        </div>
+        <div class="user-details">
+            <a href="http://stackoverflow.com/users/1043/andrew-grant">Andrew Grant</a><br>
+            <span class="reputation-score" title="reputation score 27409" dir="ltr">27.4k</span><span title="11 gold badges"><span class="badge1"></span><span class="badgecount">11</span></span><span title="82 silver badges"><span class="badge2"></span><span class="badgecount">82</span></span><span title="105 bronze badges"><span class="badge3"></span><span class="badgecount">105</span></span>
+        </div>
+    </div>
+
+    </td>
+    </tr>
+    </tbody></table>
+</td>        </tr>
+
+
+<tr>
+<td class="votecell"></td>
+<td>
+    <div id="comments-548095" class="comments">
+        <table>
+        <tbody>
+                    
+    <tr id="comment-1625772" class="comment">
+        <td></td>
+        <td class="comment-text"><div><span class="comment-copy">This does the case where multiple instances are running and one needs to target a precise instance.</span> –&nbsp;<a href="http://stackoverflow.com/users/171461/jldupont" title="23705 reputation" class="comment-user">jldupont</a> <span class="comment-date" dir="ltr"><a class="comment-link" onclick="StackExchange.question.highlightComment(1625772, 548095)" href="http://stackoverflow.com/questions/548063/kill-a-process-started-with-popen#comment1625772_548095"><span title="2009-11-16 20:16:15Z" class="relativetime-clean">Nov 16 '09 at 20:16</span></a></span></div></td>
+    </tr>
+
+        </tbody>
+    
+        </table>
+    </div>
+    
+    
+    <div class="was-this-helpful">
+        feedback
+    </div>
+    
+</td>
+</tr>            </tbody></table>
+</div>
+
+
+  
+    <a name="548160"></a>
+    <div id="answer-548160" class="answer" data-answerid="548160">
+        <table>
+        <tbody><tr>
+        <td class="votecell">
+            
+
+<div class="vote">
+    <input type="hidden" value="548160">
+    <a class="vote-up-off" title="This answer is useful (click again to undo)">up vote</a>
+    <span class="vote-count-post ">0</span>
+    <a class="vote-down-off" title="This answer is not useful (click again to undo)">down vote</a>
+    
+
+ 
+</div>
+
+        </td>
+        
+
+
+<td class="answercell">
+    <div class="post-text"><p>I did something similar in python, where you could kill a subprocess and any subprocesses forked for that. It's similar to slacy's solution actually.
+<a href="http://www.pixelbeat.org/libs/subProcess.py" rel="nofollow" wrc_done="true">http://www.pixelbeat.org/libs/subProcess.py</a><span class="wrc_icon wrc0" rating="{&quot;icon&quot;:&quot;grey0-16.png&quot;,&quot;rating&quot;:0,&quot;weight&quot;:0}"></span></p>
+</div>
+    <table class="fw">
+    <tbody><tr>
+    <td class="vt">
+
+
+
+
+
+
+
+
+
+<div class="post-menu"><a href="http://stackoverflow.com/a/548160" title="short permalink to this answer" class="short-link" id="link-post-548160">share</a><span class="lsep">|</span><a href="http://stackoverflow.com/posts/548160/edit" class="suggest-edit-post" title="">improve this answer</a></div>                    </td>
+            
+
+
+    <td align="right" class="post-signature">   
+       
+
+    
+
+    <div class="user-info user-hover">
+        <div class="user-action-time">
+                                    answered
+ <span title="2009-02-13 23:58:20Z" class="relativetime">Feb 13 '09 at 23:58</span>
+        </div>
+        <div class="user-gravatar32">
+            <a href="http://stackoverflow.com/users/4421/pixelbeat"><div class=""><img src="./01_kill a process started with popen_files/0d4eae4d8a759deacb031139c09b7a9c" alt="" width="32" height="32"></div></a>
+        </div>
+        <div class="user-details">
+            <a href="http://stackoverflow.com/users/4421/pixelbeat">pixelbeat</a><br>
+            <span class="reputation-score" title="reputation score" dir="ltr">7,317</span><span title="5 gold badges"><span class="badge1"></span><span class="badgecount">5</span></span><span title="17 silver badges"><span class="badge2"></span><span class="badgecount">17</span></span><span title="22 bronze badges"><span class="badge3"></span><span class="badgecount">22</span></span>
+        </div>
+    </div>
+
+    </td>
+    </tr>
+    </tbody></table>
+</td>        </tr>
+
+
+<tr>
+<td class="votecell"></td>
+<td>
+    <div id="comments-548160" class="comments dno">
+        <table>
+        <tbody>
+        
+            <tr><td></td><td></td></tr>
+        
+        </tbody>
+    
+        </table>
+    </div>
+    
+    
+    <div class="was-this-helpful">
+        feedback
+    </div>
+    
+</td>
+</tr>            </tbody></table>
+</div>
+
+
+  
+    <a name="12788169"></a>
+    <div id="answer-12788169" class="answer" data-answerid="12788169">
+        <table>
+        <tbody><tr>
+        <td class="votecell">
+            
+
+<div class="vote">
+    <input type="hidden" value="12788169">
+    <a class="vote-up-off" title="This answer is useful (click again to undo)">up vote</a>
+    <span class="vote-count-post ">0</span>
+    <a class="vote-down-off" title="This answer is not useful (click again to undo)">down vote</a>
+    
+
+ 
+</div>
+
+        </td>
+        
+
+
+<td class="answercell">
+    <div class="post-text"><p>Here is an improved version of popen2 (credit is due to Sergey L.). The version posted by slacy does not return the PID of the process created in popen2, but the PID assigned to <code>sh</code>.</p>
+
+<pre class="lang-c prettyprint prettyprinted" style=""><code><span class="typ">pid_t</span><span class="pln"> popen2</span><span class="pun">(</span><span class="kwd">const</span><span class="pln"> </span><span class="kwd">char</span><span class="pln"> </span><span class="pun">**</span><span class="pln">command</span><span class="pun">,</span><span class="pln"> </span><span class="typ">int</span><span class="pln"> </span><span class="pun">*</span><span class="pln">infp</span><span class="pun">,</span><span class="pln"> </span><span class="typ">int</span><span class="pln"> </span><span class="pun">*</span><span class="pln">outfp</span><span class="pun">)</span><span class="pln">
+</span><span class="pun">{</span><span class="pln">
+    </span><span class="typ">int</span><span class="pln"> p_stdin</span><span class="pun">[</span><span class="lit">2</span><span class="pun">],</span><span class="pln"> p_stdout</span><span class="pun">[</span><span class="lit">2</span><span class="pun">];</span><span class="pln">
+    </span><span class="typ">pid_t</span><span class="pln"> pid</span><span class="pun">;</span><span class="pln">
+
+    </span><span class="kwd">if</span><span class="pln"> </span><span class="pun">(</span><span class="pln">pipe</span><span class="pun">(</span><span class="pln">p_stdin</span><span class="pun">)</span><span class="pln"> </span><span class="pun">!=</span><span class="pln"> </span><span class="lit">0</span><span class="pln"> </span><span class="pun">||</span><span class="pln"> pipe</span><span class="pun">(</span><span class="pln">p_stdout</span><span class="pun">)</span><span class="pln"> </span><span class="pun">!=</span><span class="pln"> </span><span class="lit">0</span><span class="pun">)</span><span class="pln">
+        </span><span class="kwd">return</span><span class="pln"> </span><span class="pun">-</span><span class="lit">1</span><span class="pun">;</span><span class="pln">
+
+    pid </span><span class="pun">=</span><span class="pln"> fork</span><span class="pun">();</span><span class="pln">
+
+    </span><span class="kwd">if</span><span class="pln"> </span><span class="pun">(</span><span class="pln">pid </span><span class="pun">&lt;</span><span class="pln"> </span><span class="lit">0</span><span class="pun">)</span><span class="pln">
+        </span><span class="kwd">return</span><span class="pln"> pid</span><span class="pun">;</span><span class="pln">
+    </span><span class="kwd">else</span><span class="pln"> </span><span class="kwd">if</span><span class="pln"> </span><span class="pun">(</span><span class="pln">pid </span><span class="pun">==</span><span class="pln"> </span><span class="lit">0</span><span class="pun">)</span><span class="pln">
+    </span><span class="pun">{</span><span class="pln">
+        close</span><span class="pun">(</span><span class="pln">p_stdin</span><span class="pun">[</span><span class="pln">WRITE</span><span class="pun">]);</span><span class="pln">
+        dup2</span><span class="pun">(</span><span class="pln">p_stdin</span><span class="pun">[</span><span class="pln">READ</span><span class="pun">],</span><span class="pln"> READ</span><span class="pun">);</span><span class="pln">
+        close</span><span class="pun">(</span><span class="pln">p_stdout</span><span class="pun">[</span><span class="pln">READ</span><span class="pun">]);</span><span class="pln">
+        dup2</span><span class="pun">(</span><span class="pln">p_stdout</span><span class="pun">[</span><span class="pln">WRITE</span><span class="pun">],</span><span class="pln"> WRITE</span><span class="pun">);</span><span class="pln">
+
+        execvp</span><span class="pun">(*</span><span class="pln">command</span><span class="pun">,</span><span class="pln"> command</span><span class="pun">);</span><span class="pln">
+        perror</span><span class="pun">(</span><span class="str">"execvp"</span><span class="pun">);</span><span class="pln">
+        exit</span><span class="pun">(</span><span class="lit">1</span><span class="pun">);</span><span class="pln">
+    </span><span class="pun">}</span><span class="pln">
+
+    </span><span class="kwd">if</span><span class="pln"> </span><span class="pun">(</span><span class="pln">infp </span><span class="pun">==</span><span class="pln"> NULL</span><span class="pun">)</span><span class="pln">
+        close</span><span class="pun">(</span><span class="pln">p_stdin</span><span class="pun">[</span><span class="pln">WRITE</span><span class="pun">]);</span><span class="pln">
+    </span><span class="kwd">else</span><span class="pln">
+        </span><span class="pun">*</span><span class="pln">infp </span><span class="pun">=</span><span class="pln"> p_stdin</span><span class="pun">[</span><span class="pln">WRITE</span><span class="pun">];</span><span class="pln">
+
+    </span><span class="kwd">if</span><span class="pln"> </span><span class="pun">(</span><span class="pln">outfp </span><span class="pun">==</span><span class="pln"> NULL</span><span class="pun">)</span><span class="pln">
+        close</span><span class="pun">(</span><span class="pln">p_stdout</span><span class="pun">[</span><span class="pln">READ</span><span class="pun">]);</span><span class="pln">
+    </span><span class="kwd">else</span><span class="pln">
+        </span><span class="pun">*</span><span class="pln">outfp </span><span class="pun">=</span><span class="pln"> p_stdout</span><span class="pun">[</span><span class="pln">READ</span><span class="pun">];</span><span class="pln">
+
+    </span><span class="kwd">return</span><span class="pln"> pid</span><span class="pun">;</span><span class="pln">
+</span><span class="pun">}</span></code></pre>
+
+<p>The new version is to be called with</p>
+
+<pre class="lang-c prettyprint prettyprinted" style=""><code><span class="kwd">char</span><span class="pln"> </span><span class="pun">*</span><span class="pln">command</span><span class="pun">[]</span><span class="pln"> </span><span class="pun">=</span><span class="pln"> </span><span class="pun">{</span><span class="str">"program"</span><span class="pun">,</span><span class="pln"> </span><span class="str">"arg1"</span><span class="pun">,</span><span class="pln"> </span><span class="str">"arg2"</span><span class="pun">,</span><span class="pln"> </span><span class="pun">...,</span><span class="pln"> NULL</span><span class="pun">};</span></code></pre>
+</div>
+    <table class="fw">
+    <tbody><tr>
+    <td class="vt">
+
+
+
+
+
+
+
+
+
+<div class="post-menu"><a href="http://stackoverflow.com/a/12788169" title="short permalink to this answer" class="short-link" id="link-post-12788169">share</a><span class="lsep">|</span><a href="http://stackoverflow.com/posts/12788169/edit" class="suggest-edit-post" title="">improve this answer</a></div>                    </td>
+            
+
+
+    <td align="right" class="post-signature">   
+       
+
+    
+
+    <div class="user-info ">
+        <div class="user-action-time">
+                                    answered
+ <span title="2012-10-08 19:26:05Z" class="relativetime">Oct 8 '12 at 19:26</span>
+        </div>
+        <div class="user-gravatar32">
+            <a href="http://stackoverflow.com/users/197221/chessweb"><div class=""><img src="./01_kill a process started with popen_files/6b52d54f79e65172d25e450639f530d9" alt="" width="32" height="32"></div></a>
+        </div>
+        <div class="user-details">
+            <a href="http://stackoverflow.com/users/197221/chessweb">chessweb</a><br>
+            <span class="reputation-score" title="reputation score" dir="ltr">645</span><span title="6 silver badges"><span class="badge2"></span><span class="badgecount">6</span></span><span title="12 bronze badges"><span class="badge3"></span><span class="badgecount">12</span></span>
+        </div>
+    </div>
+
+    </td>
+    </tr>
+    </tbody></table>
+</td>        </tr>
+
+
+<tr>
+<td class="votecell"></td>
+<td>
+    <div id="comments-12788169" class="comments dno">
+        <table>
+        <tbody>
+        
+            <tr><td></td><td></td></tr>
+        
+        </tbody>
+    
+        </table>
+    </div>
+    
+    
+    <div class="was-this-helpful">
+        feedback
+    </div>
+    
+</td>
+</tr>            </tbody></table>
+</div>
+    <a name="new-answer"></a>
+    <form id="post-form" action="http://stackoverflow.com/questions/548063/answer/submit" method="post" class="post-form">
+        <h2 class="space">Your Answer</h2>
+
+
+
+
+<script type="text/javascript">
+    StackExchange.ready(function() {
+        initTagRenderer("".split(" "), "".split(" "));
+         
+        prepareEditor({
+            heartbeatType: 'answer',
+            bindNavPrevention: true,
+            postfix: "",
+            onDemand: true,
+            discardSelector: ".discard-answer"
+            ,immediatelyShowMarkdownHelp:true
+        });
+        
+
+    });  
+</script>
+
+
+<div id="post-editor" class="post-editor">  
+
+    
+    <div class="wmd-container">
+        <div id="wmd-button-bar" class="wmd-button-bar"><ul id="wmd-button-row" class="wmd-button-row"><li id="wmd-bold-button" class="wmd-button" style="left: 0px;"><span style="background-position: 0px -20px;"></span></li><li id="wmd-italic-button" class="wmd-button" style="left: 25px;"><span style="background-position: -20px -20px;"></span></li><li id="wmd-spacer1" class="wmd-spacer" style="left: 50px;"><span style="background-position: -40px -20px;"></span></li><li id="wmd-link-button" class="wmd-button" style="left: 75px;"><span style="background-position: -40px -20px;"></span></li><li id="wmd-quote-button" class="wmd-button" style="left: 100px;"><span style="background-position: -60px -20px;"></span></li><li id="wmd-code-button" class="wmd-button" style="left: 125px;"><span style="background-position: -80px -20px;"></span></li><li id="wmd-image-button" class="wmd-button" style="left: 150px;"><span style="background-position: -100px -20px;"></span></li><li id="wmd-spacer2" class="wmd-spacer" style="left: 175px;"><span style="background-position: -120px -20px;"></span></li><li id="wmd-olist-button" class="wmd-button" style="left: 200px;"><span style="background-position: -120px -20px;"></span></li><li id="wmd-ulist-button" class="wmd-button" style="left: 225px;"><span style="background-position: -140px -20px;"></span></li><li id="wmd-heading-button" class="wmd-button" style="left: 250px;"><span style="background-position: -160px -20px;"></span></li><li id="wmd-hr-button" class="wmd-button" style="left: 275px;"><span style="background-position: -180px -20px;"></span></li><li id="wmd-spacer3" class="wmd-spacer" style="left: 300px;"><span style="background-position: -200px -20px;"></span></li><li id="wmd-undo-button" class="wmd-button" style="left: 325px;"><span style="background-position: -200px -20px;"></span></li><li id="wmd-redo-button" class="wmd-button" style="left: 350px;"><span style="background-position: -220px -20px;"></span></li></ul></div>
+        <textarea id="wmd-input" class="wmd-input" name="post-text" cols="92" rows="15" tabindex="101"></textarea>
+    </div>
+
+    <div class="fl" style="margin-top: 8px; height:24px;">&nbsp;</div>
+    <div id="draft-saved" class="draft-saved community-option fl" style="margin-top: 8px; height:24px; display:none;">draft saved</div>
+
+    <div id="draft-discarded" class="draft-discarded community-option fl" style="margin-top: 8px; height:24px; display:none;">draft discarded</div>
+
+
+
+    <div id="wmd-preview" class="wmd-preview"></div>
+    <div></div>
+    <div class="edit-block">
+        <input id="fkey" name="fkey" type="hidden" value="607be6b7e3e0a3d0ddca709ab0db12f9">
+        <input id="author" name="author" type="text">
+    </div>
+</div>            <div class="form-item">
+        <table>
+        <tbody><tr>
+            <td class="vm open-id-login">
+                <a id="login-link" style="font-size: 200%; margin-left: 30px;" href="http://stackoverflow.com/users/login?returnurl=%2fquestions%2f548063%2fkill-a-process-started-with-popen">log in</a>
+                <script type="text/javascript">
+                    StackExchange.ready(function () {
+                        StackExchange.helpers.onClickDraftSave('#login-link');
+                    });
+                </script>
+            </td>
+            <script type="text/javascript">
+                StackExchange.ready(function () {
+                    StackExchange.helpers.bindHelpOverlayEvents($('.vm input'));
+                });
+            </script>
+            <td class="orcell">
+                <div class="orword">or</div>
+                <div class="orline"></div>
+            </td>
+            <td class="vm">
+                    <div>
+                        <label for="display-name">Name</label>
+                        <input type="text" size="30" maxlength="30" value="" tabindex="105" style="opacity: 1; position: absolute; background-color: white; color: black; -webkit-text-fill-color: black; width: 209px; height: 16px; line-height: normal; font-family: &#39;Helvetica Neue&#39;, Helvetica, Arial, sans-serif; font-size: 13px; text-align: start; border: 1px solid rgb(153, 153, 153);" class="actual-edit-overlay" disabled="disabled"><input id="display-name" name="display-name" type="text" size="30" maxlength="30" value="" tabindex="105" style="opacity: 0.4; z-index: 1; position: relative;" class="edit-field-overlayed">
+                    </div>
+                    <div>
+                        <label for="m-address">Email</label>
+                        <input type="text" size="40" maxlength="100" value="" tabindex="106" style="opacity: 1; position: absolute; background-color: white; color: black; -webkit-text-fill-color: black; width: 269px; height: 16px; line-height: normal; font-family: &#39;Helvetica Neue&#39;, Helvetica, Arial, sans-serif; font-size: 13px; text-align: start; border: 1px solid rgb(153, 153, 153);" class="actual-edit-overlay" disabled="disabled"><input id="m-address" name="m-address" type="text" size="40" maxlength="100" value="" tabindex="106" style="opacity: 0.4; z-index: 1; position: relative;" class="edit-field-overlayed">
+                        <span class="edit-field-overlay">required, but never shown</span>
+                    </div>
+                    <div>
+                        <label for="home-page">Home Page</label>
+                        <input type="text" size="40" maxlength="200" value="" tabindex="107" style="opacity: 1; position: absolute; background-color: white; color: black; -webkit-text-fill-color: black; width: 269px; height: 16px; line-height: normal; font-family: &#39;Helvetica Neue&#39;, Helvetica, Arial, sans-serif; font-size: 13px; text-align: start; border: 1px solid rgb(153, 153, 153);" class="actual-edit-overlay" disabled="disabled"><input id="home-page" name="home-page" type="text" size="40" maxlength="200" value="" tabindex="107" style="opacity: 0.4; z-index: 1; position: relative;" class="edit-field-overlayed">
+                    </div>
+            </td>
+        </tr>
+        </tbody></table>
+    </div>
+           
+            <div class="form-submit cbt">
+            <input id="submit-button" type="submit" value="Post Your Answer" tabindex="110">
+            <a href="http://stackoverflow.com/questions/548063/kill-a-process-started-with-popen#" class="discard-answer dno">discard</a>
+    <p class="privacy-policy-agreement">
+        By posting your answer, you agree to the 
+        <a href="http://stackexchange.com/legal/privacy-policy" target="_blank" wrc_done="true">privacy policy</a><span class="wrc_icon wrc11" rating="{&quot;icon&quot;:&quot;green1-16.png&quot;,&quot;rating&quot;:1,&quot;weight&quot;:1}"></span> and 
+        <a href="http://stackexchange.com/legal/terms-of-service" target="_blank" wrc_done="true">terms of service</a><span class="wrc_icon wrc11" rating="{&quot;icon&quot;:&quot;green1-16.png&quot;,&quot;rating&quot;:1,&quot;weight&quot;:1}"></span>.
+    </p>
+        </div>
+    </form>
+
+
+
+        <h2 class="bottom-notice">
+                Not the answer you're looking for? 
+            Browse other questions tagged <a href="http://stackoverflow.com/questions/tagged/c" class="post-tag" title="show questions tagged &#39;c&#39;" rel="tag">c</a> <a href="http://stackoverflow.com/questions/tagged/multithreading" class="post-tag" title="show questions tagged &#39;multithreading&#39;" rel="tag">multithreading</a> <a href="http://stackoverflow.com/questions/tagged/kill" class="post-tag" title="show questions tagged &#39;kill&#39;" rel="tag">kill</a> <a href="http://stackoverflow.com/questions/tagged/popen" class="post-tag" title="show questions tagged &#39;popen&#39;" rel="tag">popen</a> 
+                or <a href="http://stackoverflow.com/questions/ask">ask your own question</a>.
+        </h2>
+</div>
+</div>
+<div id="sidebar">
+
+
+
+     <script type="text/javascript">
+        window.showNewUser = true;
+
+            
+                (function(){
+                    var cs = window.sessionStorage && window.sessionStorage['tNewsletter'];
+                    var m = /:\/\/([^\/]*)/.exec(document.referrer);
+                    var h = {'www.reddit.com':1,'news.ycombinator.com':1};
+                    if(window.sessionStorage && (cs || (m && m.length == 2 && h[m[1]]))){
+                        showNewUser = false;
+                        StackExchange.ready(function(){
+                            StackExchange.newsletterAd.loader(m[1], cs);
+                        });
+                    }
+                    if (window.localStorage && showNewUser){
+                        var c = parseInt(localStorage['nuCounter'],10); 
+                        c = isNaN(c) ? 1 : c+1;
+                        window.localStorage['nuCounter'] = c; 
+                        showNewUser = c < 10;
+                    }
+                })()
+            
+     </script>
+    <div class="module newuser newuser-greeting" id="newuser-box" style="">
+        <h4>Hello World!</h4>
+        <div>
+            <p>This is a collaboratively edited question and answer site for <b>professional and enthusiast programmers</b>. It's 100% free, no registration required.</p>
+            <p class="ar"><a href="http://stackoverflow.com/about?mnu=1">about »</a>&nbsp;&nbsp;&nbsp;<a href="http://stackoverflow.com/faq?mnu=1">faq »</a>
+            </p>
+        </div>
+    </div>
+     <script type="text/javascript">
+        if (showNewUser) {
+            document.getElementById('newuser-box').style.display = '';
+        }
+     </script>
+        <div class="module question-stats">
+        <p class="label-key">tagged</p>
+        <div class="tagged"><a href="http://stackoverflow.com/questions/tagged/c" class="post-tag" title="show questions tagged &#39;c&#39;" rel="tag">c</a>&nbsp;<span class="item-multiplier"><span class="item-multiplier-x">×</span>&nbsp;<span class="item-multiplier-count">81254</span></span><br>
+<a href="http://stackoverflow.com/questions/tagged/multithreading" class="post-tag" title="show questions tagged &#39;multithreading&#39;" rel="tag">multithreading</a>&nbsp;<span class="item-multiplier"><span class="item-multiplier-x">×</span>&nbsp;<span class="item-multiplier-count">32201</span></span><br>
+<a href="http://stackoverflow.com/questions/tagged/popen" class="post-tag" title="show questions tagged &#39;popen&#39;" rel="tag">popen</a>&nbsp;<span class="item-multiplier"><span class="item-multiplier-x">×</span>&nbsp;<span class="item-multiplier-count">515</span></span><br>
+<a href="http://stackoverflow.com/questions/tagged/kill" class="post-tag" title="show questions tagged &#39;kill&#39;" rel="tag">kill</a>&nbsp;<span class="item-multiplier"><span class="item-multiplier-x">×</span>&nbsp;<span class="item-multiplier-count">497</span></span><br>
+</div>
+        <table id="qinfo">
+            <tbody><tr>
+                <td><p class="label-key">asked</p></td>
+                <td style="padding-left:10px"><p class="label-key" title="2009-02-13 23:16:18Z"><b>3 years ago</b></p></td>
+            </tr>
+            <tr>
+                <td><p class="label-key">viewed</p></td>
+
+                <td style="padding-left:10px">
+                    <p class="label-key">
+                        <b>5480 times</b>
+                    </p>
+                </td>
+            </tr>
+            <tr>
+                <td><p class="label-key">active</p></td>
+                <td style="padding-left:10px"><p class="label-key"><b><a href="http://stackoverflow.com/questions/548063/kill-a-process-started-with-popen?lastactivity" class="lastactivity-link" title="2012-10-08 19:26:05Z">3 months ago</a></b></p></td>
+            </tr>
+        </tbody></table>
+    </div>
+    
+<div class="module community-bulletin" data-tracker="cb=1">
+    <h4>Community Bulletin</h4>
+    <div class="related">
+        <div class="spacer">
+            <div class="bulletin-item-type"><a href="http://blog.stackoverflow.com/?cb=1" class="event-date" target="_blank" wrc_done="true">blog</a><span class="wrc_icon wrc13" rating="{&quot;icon&quot;:&quot;green3-16.png&quot;,&quot;rating&quot;:1,&quot;weight&quot;:3}"></span></div>
+            <div class="bulletin-item-content">
+                <a href="http://blog.stackoverflow.com/2013/01/podcast-40-2/?cb=1" class="question-hyperlink" target="_blank" wrc_done="true">Podcast #40 – Random Musings (Plus a Suprise Guest)</a><span class="wrc_icon wrc13" rating="{&quot;icon&quot;:&quot;green3-16.png&quot;,&quot;rating&quot;:1,&quot;weight&quot;:3}"></span>
+            </div>
+            <br class="cbt">
+        </div>
+    </div>
+</div>    
+                <script type="text/javascript">
+                var scriptSrc = "http://engine.adzerk.net/z/8277/adzerk1_2_4_43,adzerk2_2_17_45,adzerk3_2_4_44?keywords=c,multithreading,kill,popen";
+                if (document.referrer) {
+                    if (/\?/.test(scriptSrc))
+                        scriptSrc += "&";
+                    else
+                        scriptSrc += "?";
+                    scriptSrc += "xReferrer=" + document.referrer;
+                }
+                StackExchange.ready(function () {
+                    var z = document.createElement("script");
+                    z.type = "text/javascript";
+                    z.async = "true";
+                    z.src = scriptSrc;
+                    var s = document.getElementsByTagName("script")[0];
+                    s.parentNode.insertBefore(z, s);
+                });
+            </script>
+        <div class="everyonelovesstackoverflow" id="adzerk2">
+        </div>
+    <div id="hireme">
+        <script type="text/javascript">
+            var careers_adurl="http://careers.stackoverflow.com/gethired/js",careers_cssurl="http://careerscdn.sstatic.net/careers/gethired/sidebar.css?fffffffff879eaa0",careers_leaderboardcssurl="http://careerscdn.sstatic.net/careers/gethired/ninja.min.css?39e9fe",careers_companycssurl="http://careerscdn.sstatic.net/careers/gethired/company",careers_adselector="div.hireme, div#hireme";StackExchange.ready(function(){$.ajax({url:"http://careerscdn.sstatic.net/careers/gethired/loader.min.js?39e9fe",dataType:"script",cache:!0})})
+        </script>
+    </div>
+
+
+
+      
+    
+    <div class="module sidebar-related">
+        <h4 id="h-related">Related</h4>
+        <div class="related" data-tracker="rq=1">
+            <div class="spacer">
+<a href="http://stackoverflow.com/questions/1223569/alternatives-to-popen-pclose?rq=1" class="question-hyperlink">Alternatives to popen/pclose?</a>
+</div>
+<div class="spacer">
+<a href="http://stackoverflow.com/questions/1624254/how-do-i-close-the-stdout-pipe-when-killing-a-process-started-with-python-subpro?rq=1" class="question-hyperlink">How do I close the stdout-pipe when killing a process started with python subprocess Popen?</a>
+</div>
+<div class="spacer">
+<a href="http://stackoverflow.com/questions/1842985/kill-windows-asynchronous-popen-process-in-2-4?rq=1" class="question-hyperlink">Kill Windows asynchronous Popen process in 2.4</a>
+</div>
+<div class="spacer">
+<a href="http://stackoverflow.com/questions/2072676/using-popen-to-invoke-a-shell-command?rq=1" class="question-hyperlink">Using popen() to invoke a shell command?</a>
+</div>
+<div class="spacer">
+<a href="http://stackoverflow.com/questions/3472981/first-process-of-python-popen-pipe-cant-be-killed?rq=1" class="question-hyperlink">first process of python popen pipe can't be killed</a>
+</div>
+<div class="spacer">
+<a href="http://stackoverflow.com/questions/4304737/do-streams-have-to-be-closed-when-using-popen?rq=1" class="question-hyperlink">Do streams have to be closed when using popen</a>
+</div>
+<div class="spacer">
+<a href="http://stackoverflow.com/questions/4731637/killing-processes-opened-with-popen?rq=1" class="question-hyperlink">Killing processes opened with popen()?</a>
+</div>
+<div class="spacer">
+<a href="http://stackoverflow.com/questions/5302196/popen-to-pass-binary-data-between-processes?rq=1" class="question-hyperlink">popen to pass binary data between processes</a>
+</div>
+<div class="spacer">
+<a href="http://stackoverflow.com/questions/6341358/subprocess-wait-not-waiting-for-popen-process-to-finish-when-using-threads?rq=1" class="question-hyperlink">subprocess.wait() not waiting for Popen process to finish (when using threads)?</a>
+</div>
+<div class="spacer">
+<a href="http://stackoverflow.com/questions/6501522/how-to-kill-a-child-process-by-the-parent-process?rq=1" class="question-hyperlink">How to kill a child process by the parent process?</a>
+</div>
+<div class="spacer">
+<a href="http://stackoverflow.com/questions/6699992/c-language-popen-with-fread?rq=1" class="question-hyperlink">C Language: popen() with fread()?</a>
+</div>
+<div class="spacer">
+<a href="http://stackoverflow.com/questions/6742635/popen-creates-an-extra-sh-process?rq=1" class="question-hyperlink">popen creates an extra sh process</a>
+</div>
+<div class="spacer">
+<a href="http://stackoverflow.com/questions/6743771/popen-alternative?rq=1" class="question-hyperlink">popen() alternative</a>
+</div>
+<div class="spacer">
+<a href="http://stackoverflow.com/questions/7003836/how-to-kill-a-process-which-is-create-by-popen-and-uses-communicate?rq=1" class="question-hyperlink">How to kill a process which is create by popen and uses communicate()?</a>
+</div>
+<div class="spacer">
+<a href="http://stackoverflow.com/questions/8440565/stopping-a-python-thread-waiting-for-popen?rq=1" class="question-hyperlink">stopping a python thread waiting for popen?</a>
+</div>
+<div class="spacer">
+<a href="http://stackoverflow.com/questions/9337597/suppress-output-from-popen?rq=1" class="question-hyperlink">Suppress output from popen()</a>
+</div>
+<div class="spacer">
+<a href="http://stackoverflow.com/questions/9462442/c-get-pid-of-process-opened-with-popen?rq=1" class="question-hyperlink">C - Get PID of process opened with popen</a>
+</div>
+<div class="spacer">
+<a href="http://stackoverflow.com/questions/10079505/python-popen-how-do-i-stopkill-the-subprocess-that-created-using-popen?rq=1" class="question-hyperlink">python Popen: How do I stop(kill) the subprocess that created using Popen?</a>
+</div>
+<div class="spacer">
+<a href="http://stackoverflow.com/questions/10093515/using-popen-with-an-array-of-pointers?rq=1" class="question-hyperlink">Using popen with an array of pointers</a>
+</div>
+<div class="spacer">
+<a href="http://stackoverflow.com/questions/10117982/how-to-kill-a-process-in-c-when-pid-is-know?rq=1" class="question-hyperlink">How to kill a process in C when pid is know</a>
+</div>
+<div class="spacer">
+<a href="http://stackoverflow.com/questions/10801480/what-will-happen-to-thread-b-if-thread-a-is-killed-in-same-process?rq=1" class="question-hyperlink">What will happen to thread B if thread A is killed in same process?</a>
+</div>
+<div class="spacer">
+<a href="http://stackoverflow.com/questions/10960622/popen-pipe-slows-down-other-threads?rq=1" class="question-hyperlink">popen pipe slows down other threads</a>
+</div>
+<div class="spacer">
+<a href="http://stackoverflow.com/questions/12176076/kill-process-winword?rq=1" class="question-hyperlink">Kill process winword</a>
+</div>
+<div class="spacer">
+<a href="http://stackoverflow.com/questions/12625951/python-terminate-kill-subprocess-group?rq=1" class="question-hyperlink">python terminate/kill subprocess group</a>
+</div>
+<div class="spacer">
+<a href="http://stackoverflow.com/questions/12778672/killing-process-that-has-been-created-with-popen2?rq=1" class="question-hyperlink">Killing process that has been created with popen2</a>
+</div>
+
+        </div>
+    </div>
+        <div class="everyonelovesstackoverflow" id="adzerk3">
+        </div>
+
+
+</div>
+
+<div id="feed-link">
+    <div id="feed-link-text"><a href="http://stackoverflow.com/feeds/question/548063" title="feed of this question and its answers"><span class="feed-icon"></span>question feed</a></div>
+</div>
+<script type="text/javascript">
+StackExchange.ready(function(){$.get('/posts/548063/ivc/e9e9');});
+</script>
+<noscript>
+    &lt;div&gt;&lt;img src="/posts/548063/ivc/e9e9" class="dno" alt="" width="0" height="0"&gt;&lt;/div&gt;
+</noscript><div style="display:none" id="prettify-lang">lang-c</div></div>
+        </div>
+    </div>
+    <div id="footer">
+        <div class="footerwrap">
+            <div id="footer-menu">
+                <a href="http://stackoverflow.com/about">about</a> |
+                <a href="http://stackoverflow.com/faq">faq</a> |
+                <a href="http://blog.stackexchange.com/?blb=1" wrc_done="true">blog</a><span class="wrc_icon wrc11" rating="{&quot;icon&quot;:&quot;green1-16.png&quot;,&quot;rating&quot;:1,&quot;weight&quot;:1}"></span> |
+                    <a href="http://chat.stackoverflow.com/" wrc_done="true">chat</a><span class="wrc_icon wrc13" rating="{&quot;icon&quot;:&quot;green3-16.png&quot;,&quot;rating&quot;:1,&quot;weight&quot;:3}"></span> |
+                <a href="http://data.stackexchange.com/" wrc_done="true">data</a><span class="wrc_icon wrc11" rating="{&quot;icon&quot;:&quot;green1-16.png&quot;,&quot;rating&quot;:1,&quot;weight&quot;:1}"></span> |
+                <a href="http://stackexchange.com/legal" wrc_done="true">legal</a><span class="wrc_icon wrc11" rating="{&quot;icon&quot;:&quot;green1-16.png&quot;,&quot;rating&quot;:1,&quot;weight&quot;:1}"></span> |
+                <a href="http://stackexchange.com/legal/privacy-policy" wrc_done="true">privacy policy</a><span class="wrc_icon wrc11" rating="{&quot;icon&quot;:&quot;green1-16.png&quot;,&quot;rating&quot;:1,&quot;weight&quot;:1}"></span> |
+                <a href="http://stackexchange.com/about/hiring" wrc_done="true">jobs</a><span class="wrc_icon wrc11" rating="{&quot;icon&quot;:&quot;green1-16.png&quot;,&quot;rating&quot;:1,&quot;weight&quot;:1}"></span> |
+                <a href="http://engine.adzerk.net/redirect/0/2776/2751/0/4de3c60f719c4dfcb1a57531c7050090/0" wrc_done="true">advertising info</a><span class="wrc_icon wrc0" rating="{&quot;icon&quot;:&quot;grey0-16.png&quot;,&quot;rating&quot;:0,&quot;weight&quot;:0}"></span> |
+
+                <a onclick="StackExchange.switchMobile(&#39;on&#39;, &#39;/questions/548063/kill-a-process-started-with-popen&#39;)">mobile</a> |
+
+                <b><a href="http://stackoverflow.com/help">contact us</a></b>
+                  | <b><a href="http://meta.stackoverflow.com/" wrc_done="true">feedback</a><span class="wrc_icon wrc13" rating="{&quot;icon&quot;:&quot;green3-16.png&quot;,&quot;rating&quot;:1,&quot;weight&quot;:3}"></span></b>
+                <div id="footer-sites">
+                    
+                        <span style="color:#FE7A15;font-size:140%">■</span>&nbsp;<a href="http://stackoverflow.com/">stackoverflow.com</a>&nbsp; 
+                        <span style="color:#FE7A15;font-size:140%">■</span>&nbsp;<a href="http://stackapps.com/" wrc_done="true">api/apps</a><span class="wrc_icon wrc11" rating="{&quot;icon&quot;:&quot;green1-16.png&quot;,&quot;rating&quot;:1,&quot;weight&quot;:1}"></span>&nbsp; 
+                        <span style="color:#FE7A15;font-size:140%">■</span>&nbsp;<a href="http://careers.stackoverflow.com/" wrc_done="true">careers 2.0</a><span class="wrc_icon wrc13" rating="{&quot;icon&quot;:&quot;green3-16.png&quot;,&quot;rating&quot;:1,&quot;weight&quot;:3}"></span>&nbsp; 
+                        <span style="color:#E8272C;font-size:140%">■</span>&nbsp;<a href="http://serverfault.com/" wrc_done="true">serverfault.com</a><span class="wrc_icon wrc11" rating="{&quot;icon&quot;:&quot;green1-16.png&quot;,&quot;rating&quot;:1,&quot;weight&quot;:1}"></span>&nbsp; 
+                        <span style="color:#00AFEF;font-size:140%">■</span>&nbsp;<a href="http://superuser.com/" wrc_done="true">superuser.com</a><span class="wrc_icon wrc11" rating="{&quot;icon&quot;:&quot;green1-16.png&quot;,&quot;rating&quot;:1,&quot;weight&quot;:1}"></span>&nbsp; 
+                        <span style="color:#969696;font-size:140%">■</span>&nbsp;<a href="http://meta.stackoverflow.com/" wrc_done="true">meta</a><span class="wrc_icon wrc13" rating="{&quot;icon&quot;:&quot;green3-16.png&quot;,&quot;rating&quot;:1,&quot;weight&quot;:3}"></span>&nbsp; 
+                        <span style="color:#46937D;font-size:140%">■</span>&nbsp;<a href="http://area51.stackexchange.com/" wrc_done="true">area&nbsp;51</a><span class="wrc_icon wrc11" rating="{&quot;icon&quot;:&quot;green1-16.png&quot;,&quot;rating&quot;:1,&quot;weight&quot;:1}"></span>&nbsp; 
+                        <span style="color:#C0D0DC;font-size:140%">■</span>&nbsp;<a href="http://webapps.stackexchange.com/" wrc_done="true">webapps</a><span class="wrc_icon wrc11" rating="{&quot;icon&quot;:&quot;green1-16.png&quot;,&quot;rating&quot;:1,&quot;weight&quot;:1}"></span>&nbsp; 
+                        <span style="color:#000000;font-size:140%">■</span>&nbsp;<a href="http://gaming.stackexchange.com/" wrc_done="true">gaming</a><span class="wrc_icon wrc11" rating="{&quot;icon&quot;:&quot;green1-16.png&quot;,&quot;rating&quot;:1,&quot;weight&quot;:1}"></span>&nbsp; 
+                        <span style="color:#dd4814;font-size:140%">■</span>&nbsp;<a href="http://askubuntu.com/" wrc_done="true">ubuntu</a><span class="wrc_icon wrc0" rating="{&quot;icon&quot;:&quot;grey0-16.png&quot;,&quot;rating&quot;:0,&quot;weight&quot;:1}"></span>&nbsp; 
+                        <span style="color:#9ce4fe;font-size:140%">■</span>&nbsp;<a href="http://webmasters.stackexchange.com/" wrc_done="true">webmasters</a><span class="wrc_icon wrc11" rating="{&quot;icon&quot;:&quot;green1-16.png&quot;,&quot;rating&quot;:1,&quot;weight&quot;:1}"></span>&nbsp; 
+                        <span style="color:#cf4d3f;font-size:140%">■</span>&nbsp;<a href="http://cooking.stackexchange.com/" wrc_done="true">cooking</a><span class="wrc_icon wrc11" rating="{&quot;icon&quot;:&quot;green1-16.png&quot;,&quot;rating&quot;:1,&quot;weight&quot;:1}"></span>&nbsp; 
+                        <span style="color:#f4f28d;font-size:140%">■</span>&nbsp;<a href="http://gamedev.stackexchange.com/" wrc_done="true">game development</a><span class="wrc_icon wrc11" rating="{&quot;icon&quot;:&quot;green1-16.png&quot;,&quot;rating&quot;:1,&quot;weight&quot;:1}"></span>&nbsp; 
+                        <span style="color:#0f3559;font-size:140%">■</span>&nbsp;<a href="http://math.stackexchange.com/" wrc_done="true">math</a><span class="wrc_icon wrc11" rating="{&quot;icon&quot;:&quot;green1-16.png&quot;,&quot;rating&quot;:1,&quot;weight&quot;:1}"></span>&nbsp; 
+                        <span style="color:#f2f2f2;font-size:140%">■</span>&nbsp;<a href="http://photo.stackexchange.com/" wrc_done="true">photography</a><span class="wrc_icon wrc11" rating="{&quot;icon&quot;:&quot;green1-16.png&quot;,&quot;rating&quot;:1,&quot;weight&quot;:1}"></span>&nbsp; 
+                        <span style="color:#037187;font-size:140%">■</span>&nbsp;<a href="http://stats.stackexchange.com/" wrc_done="true">stats</a><span class="wrc_icon wrc11" rating="{&quot;icon&quot;:&quot;green1-16.png&quot;,&quot;rating&quot;:1,&quot;weight&quot;:1}"></span>&nbsp; 
+                        <span style="color:#f1e7cc;font-size:140%">■</span>&nbsp;<a href="http://tex.stackexchange.com/" wrc_done="true">tex</a><span class="wrc_icon wrc11" rating="{&quot;icon&quot;:&quot;green1-16.png&quot;,&quot;rating&quot;:1,&quot;weight&quot;:1}"></span>&nbsp; 
+                        <span style="color:#e1cdae;font-size:140%">■</span>&nbsp;<a href="http://english.stackexchange.com/" wrc_done="true">english</a><span class="wrc_icon wrc11" rating="{&quot;icon&quot;:&quot;green1-16.png&quot;,&quot;rating&quot;:1,&quot;weight&quot;:1}"></span>&nbsp; 
+                        <span style="color:#a2d9f6;font-size:140%">■</span>&nbsp;<a href="http://cstheory.stackexchange.com/" wrc_done="true">theoretical cs</a><span class="wrc_icon wrc11" rating="{&quot;icon&quot;:&quot;green1-16.png&quot;,&quot;rating&quot;:1,&quot;weight&quot;:1}"></span>&nbsp; 
+                        <span style="color:#1b3e6c;font-size:140%">■</span>&nbsp;<a href="http://programmers.stackexchange.com/" wrc_done="true">programmers</a><span class="wrc_icon wrc11" rating="{&quot;icon&quot;:&quot;green1-16.png&quot;,&quot;rating&quot;:1,&quot;weight&quot;:1}"></span>&nbsp; 
+                        <span style="color:#293a5d;font-size:140%">■</span>&nbsp;<a href="http://unix.stackexchange.com/" wrc_done="true">unix</a><span class="wrc_icon wrc11" rating="{&quot;icon&quot;:&quot;green1-16.png&quot;,&quot;rating&quot;:1,&quot;weight&quot;:1}"></span>&nbsp;
+                        <span style="color:#bec0cb;font-size:140%">■</span>&nbsp;<a href="http://apple.stackexchange.com/" wrc_done="true">apple</a><span class="wrc_icon wrc11" rating="{&quot;icon&quot;:&quot;green1-16.png&quot;,&quot;rating&quot;:1,&quot;weight&quot;:1}"></span>&nbsp;
+                        <span style="color:#939185;font-size:140%">■</span>&nbsp;<a href="http://wordpress.stackexchange.com/" wrc_done="true">wordpress</a><span class="wrc_icon wrc11" rating="{&quot;icon&quot;:&quot;green1-16.png&quot;,&quot;rating&quot;:1,&quot;weight&quot;:1}"></span>&nbsp;
+                        <span style="color:#ebf5f5;font-size:140%">■</span>&nbsp;<a href="http://physics.stackexchange.com/" wrc_done="true">physics</a><span class="wrc_icon wrc11" rating="{&quot;icon&quot;:&quot;green1-16.png&quot;,&quot;rating&quot;:1,&quot;weight&quot;:1}"></span>&nbsp;
+                        <span style="color:#4176ab;font-size:140%">■</span>&nbsp;<a href="http://diy.stackexchange.com/" wrc_done="true">home&nbsp;improvement</a><span class="wrc_icon wrc11" rating="{&quot;icon&quot;:&quot;green1-16.png&quot;,&quot;rating&quot;:1,&quot;weight&quot;:1}"></span>&nbsp;
+                        <span style="color:#d1d8d7;font-size:140%">■</span>&nbsp;<a href="http://gis.stackexchange.com/" wrc_done="true">gis</a><span class="wrc_icon wrc11" rating="{&quot;icon&quot;:&quot;green1-16.png&quot;,&quot;rating&quot;:1,&quot;weight&quot;:1}"></span>&nbsp;
+                        <span style="color:#e5e2d3;font-size:140%">■</span>&nbsp;<a href="http://electronics.stackexchange.com/" wrc_done="true">electrical&nbsp;engineering</a><span class="wrc_icon wrc11" rating="{&quot;icon&quot;:&quot;green1-16.png&quot;,&quot;rating&quot;:1,&quot;weight&quot;:1}"></span>&nbsp;
+                        <span style="color:#a4c639;font-size:140%">■</span>&nbsp;<a href="http://android.stackexchange.com/" wrc_done="true">android</a><span class="wrc_icon wrc11" rating="{&quot;icon&quot;:&quot;green1-16.png&quot;,&quot;rating&quot;:1,&quot;weight&quot;:1}"></span>&nbsp;
+                        <span style="color:#2e4e60;font-size:140%">■</span>&nbsp;<a href="http://security.stackexchange.com/" wrc_done="true">security</a><span class="wrc_icon wrc11" rating="{&quot;icon&quot;:&quot;green1-16.png&quot;,&quot;rating&quot;:1,&quot;weight&quot;:1}"></span>&nbsp;
+                        <span style="color:#45bcb5;font-size:140%">■</span>&nbsp;<a href="http://bicycles.stackexchange.com/" wrc_done="true">bicycles</a><span class="wrc_icon wrc11" rating="{&quot;icon&quot;:&quot;green1-16.png&quot;,&quot;rating&quot;:1,&quot;weight&quot;:1}"></span>&nbsp;
+                        <span style="color:#00adee;font-size:140%">■</span>&nbsp;<a href="http://dba.stackexchange.com/" wrc_done="true">dba</a><span class="wrc_icon wrc11" rating="{&quot;icon&quot;:&quot;green1-16.png&quot;,&quot;rating&quot;:1,&quot;weight&quot;:1}"></span>&nbsp;
+                        <span style="color:#2edaf0;font-size:140%">■</span>&nbsp;<a href="http://drupal.stackexchange.com/" wrc_done="true">drupal</a><span class="wrc_icon wrc11" rating="{&quot;icon&quot;:&quot;green1-16.png&quot;,&quot;rating&quot;:1,&quot;weight&quot;:1}"></span>&nbsp;
+                        <span style="color:#213951;font-size:140%">■</span>&nbsp;<a href="http://sharepoint.stackexchange.com/" wrc_done="true">sharepoint</a><span class="wrc_icon wrc11" rating="{&quot;icon&quot;:&quot;green1-16.png&quot;,&quot;rating&quot;:1,&quot;weight&quot;:1}"></span>&nbsp;
+                        <span style="color:#73abb3;font-size:140%">■</span>&nbsp;<a href="http://scifi.stackexchange.com/" wrc_done="true">scifi &amp; fantasy</a><span class="wrc_icon wrc11" rating="{&quot;icon&quot;:&quot;green1-16.png&quot;,&quot;rating&quot;:1,&quot;weight&quot;:1}"></span>&nbsp;
+                        <span style="color:#23629F;font-size:140%">■</span>&nbsp;<a href="http://ux.stackexchange.com/" wrc_done="true">user experience</a><span class="wrc_icon wrc11" rating="{&quot;icon&quot;:&quot;green1-16.png&quot;,&quot;rating&quot;:1,&quot;weight&quot;:1}"></span>&nbsp;
+                        <span style="color:#faff72;font-size:140%">■</span>&nbsp;<a href="http://skeptics.stackexchange.com/" wrc_done="true">skeptics</a><span class="wrc_icon wrc11" rating="{&quot;icon&quot;:&quot;green1-16.png&quot;,&quot;rating&quot;:1,&quot;weight&quot;:1}"></span>&nbsp;
+                        <span style="color:#623121;font-size:140%">■</span>&nbsp;<a href="http://rpg.stackexchange.com/" wrc_done="true">rpg</a><span class="wrc_icon wrc11" rating="{&quot;icon&quot;:&quot;green1-16.png&quot;,&quot;rating&quot;:1,&quot;weight&quot;:1}"></span>&nbsp;
+                        <span style="color:#e4be88;font-size:140%">■</span>&nbsp;<a href="http://judaism.stackexchange.com/" wrc_done="true">judaism</a><span class="wrc_icon wrc11" rating="{&quot;icon&quot;:&quot;green1-16.png&quot;,&quot;rating&quot;:1,&quot;weight&quot;:1}"></span>&nbsp;
+                        <span style="color:#ffecb1;font-size:140%">■</span>&nbsp;<a href="http://mathematica.stackexchange.com/" wrc_done="true">mathematica</a><span class="wrc_icon wrc11" rating="{&quot;icon&quot;:&quot;green1-16.png&quot;,&quot;rating&quot;:1,&quot;weight&quot;:1}"></span>&nbsp;
+                </div>
+            </div>
+            <div id="footer-flair">
+                <a class="peer1" href="http://www.peer1.com/stackoverflow" wrc_done="true"></a><span class="wrc_icon wrc0" rating="{&quot;icon&quot;:&quot;grey0-16.png&quot;,&quot;rating&quot;:0,&quot;weight&quot;:0}"></span>  
+	            <a href="http://creativecommons.org/licenses/by-sa/3.0/" class="cc-wiki-link" wrc_done="true"></a><span class="wrc_icon wrc11" rating="{&quot;icon&quot;:&quot;green1-16.png&quot;,&quot;rating&quot;:1,&quot;weight&quot;:1}"></span>
+                <div id="svnrev">rev 2013.1.11.910</div>
+                        </div>
+            <div id="copyright">
+                site design / logo © 2013 stack exchange inc; 
+                user contributions licensed under <a href="http://creativecommons.org/licenses/by-sa/3.0/" rel="license" wrc_done="true">cc-wiki</a><span class="wrc_icon wrc11" rating="{&quot;icon&quot;:&quot;green1-16.png&quot;,&quot;rating&quot;:1,&quot;weight&quot;:1}"></span> with <a href="http://blog.stackoverflow.com/2009/06/attribution-required/" rel="license" wrc_done="true">attribution required</a><span class="wrc_icon wrc13" rating="{&quot;icon&quot;:&quot;green3-16.png&quot;,&quot;rating&quot;:1,&quot;weight&quot;:3}"></span>
+            </div>
+            
+
+        </div>
+    </div>
+    
+    <noscript>
+        &lt;div id="noscript-warning"&gt;Stack Overflow works best with JavaScript enabled&lt;img src="http://pixel.quantserve.com/pixel/p-c1rF4kxgLUzNc.gif" alt="" class="dno"&gt;&lt;/div&gt;
+    </noscript>
+    <script type="text/javascript">var _gaq=_gaq||[];_gaq.push(['_setAccount','UA-5620270-1']);
+        _gaq.push(['_setCustomVar', 1, 'tags', '|c|multithreading|kill|popen|']); 
+_gaq.push(['_trackPageview']);
+    var _qevents = _qevents || [];
+    (function(){
+        var s=document.getElementsByTagName('script')[0];
+        var ga=document.createElement('script');
+        ga.type='text/javascript';
+        ga.async=true;
+        ga.src='http://www.google-analytics.com/ga.js';
+        s.parentNode.insertBefore(ga,s);
+        var sc=document.createElement('script');
+        sc.type='text/javascript';
+        sc.async=true;
+        sc.src='http://edge.quantserve.com/quant.js'; 
+        s.parentNode.insertBefore(sc,s);
+    })();
+    </script>
+    <script type="text/javascript">
+        _qevents.push({ qacct: "p-c1rF4kxgLUzNc" });
+    </script>    
+    
+
+<div id="wrchoverdiv"><div id="wrccontainer"><div id="wrcheader"><div id="wrctitle"> WebRep</div></div><div class="wrchorizontal"></div><div id="wrccurrentvote">總體評價</div><div class="wrchorizontal"></div><div id="wrcrating"></div><div id="wrcratingtext">此網站沒有任何評價資訊</div><div id="wrcweighttext">（票數不足）</div><div id="wrcflags"><div id="wrcicon_shopping" class="wrcicon"></div><div id="wrcicon_social" class="wrcicon"></div><div id="wrcicon_news" class="wrcicon"></div><div id="wrcicon_it" class="wrcicon"></div><div id="wrcicon_corporate" class="wrcicon"></div><div id="wrcicon_pornography" class="wrcicon"></div><div id="wrcicon_violence" class="wrcicon"></div><div id="wrcicon_gambling" class="wrcicon"></div><div id="wrcicon_drugs" class="wrcicon"></div><div id="wrcicon_illegal" class="wrcicon"></div></div><div class="wrchorizontal"></div></div></div><div id="wrchoverdiv"><div id="wrccontainer"><div id="wrcheader"><div id="wrctitle"> WebRep</div></div><div class="wrchorizontal"></div><div id="wrccurrentvote">總體評價</div><div class="wrchorizontal"></div><div id="wrcrating"></div><div id="wrcratingtext">此網站沒有任何評價資訊</div><div id="wrcweighttext">（票數不足）</div><div id="wrcflags"><div id="wrcicon_shopping" class="wrcicon"></div><div id="wrcicon_social" class="wrcicon"></div><div id="wrcicon_news" class="wrcicon"></div><div id="wrcicon_it" class="wrcicon"></div><div id="wrcicon_corporate" class="wrcicon"></div><div id="wrcicon_pornography" class="wrcicon"></div><div id="wrcicon_violence" class="wrcicon"></div><div id="wrcicon_gambling" class="wrcicon"></div><div id="wrcicon_drugs" class="wrcicon"></div><div id="wrcicon_illegal" class="wrcicon"></div></div><div class="wrchorizontal"></div></div></div></body></html>
