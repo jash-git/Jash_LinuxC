@@ -1,0 +1,260 @@
+<HTML
+><HEAD
+><TITLE
+>其它</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.49"><LINK
+REL="HOME"
+TITLE="用Open Source工具開發軟體"
+HREF="book1.html" tppabs="http://www.study-area.org/cyril/opentools/opentools/book1.html"><LINK
+REL="UP"
+TITLE="Makefile撰寫"
+HREF="makefile.html" tppabs="http://www.study-area.org/cyril/opentools/opentools/makefile.html"><LINK
+REL="PREVIOUS"
+TITLE="內隱規則(Implicit Rules)"
+HREF="x1176.html" tppabs="http://www.study-area.org/cyril/opentools/opentools/x1176.html"><LINK
+REL="NEXT"
+TITLE="除錯工具"
+HREF="debug.html" tppabs="http://www.study-area.org/cyril/opentools/opentools/debug.html"></HEAD
+><BODY
+CLASS="SECT1"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>用Open Source工具開發軟體: 新軟體開發關念</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="x1176.html" tppabs="http://www.study-area.org/cyril/opentools/opentools/x1176.html"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 5. Makefile撰寫</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="debug.html" tppabs="http://www.study-area.org/cyril/opentools/opentools/debug.html"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="AEN1207"
+>其它</A
+></H1
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN1209"
+>內建函式</A
+></H2
+><P
+>	GNU make有一些內建函式讓我們處理上方便些，函式呼叫的格式是
+	<TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>$(function arguments)
+	</PRE
+></TD
+></TR
+></TABLE
+>
+	例如
+	<TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+>$(subst from,to,text)
+$(patsubst %.o,%.c,$(objects))
+$(suffix src/foo.c src-1.0/bar.c hacks)
+files := $(shell echo *.c)
+	</PRE
+></TD
+></TR
+></TABLE
+>
+	其中最常用的是最後一個，把shell執行結果傳回Makefile做進一步處理
+      </P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN1214"
+>控制語法</A
+></H2
+><P
+>	GNU make 裡面可以有條件判斷後，決定要不要做設變數或make，
+	其實主要處理一些makefile內的變數與環境，例如
+	<TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>ifeq ($(CC),gcc)
+  libs=$(libs_for_gcc)
+else
+  libs=$(normal_libs)
+endif
+	</PRE
+></TD
+></TR
+></TABLE
+>
+	判斷$(CC)這個內隱規則的變數是不是gcc然後選擇函式庫，
+	其中ifeq或者ifneq有四種寫法
+	<TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>ifneq (arg1, arg2) 
+ifneq 'arg1' 'arg2' 
+ifneq "arg1" "arg2" 
+ifneq "arg1" 'arg2' 
+ifneq 'arg1' "arg2" 
+	</PRE
+></TD
+></TR
+></TABLE
+>
+	除了ifeq, ifneq還有ifdef, ifndef，很像c裡面的前置處理
+      </P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN1219"
+>遞迴make</A
+></H2
+><P
+>	在Makefile裡面叫make來用，請用$(MAKE)，例如我們常在source code的
+	最上層打個make，
+	它會自動跑到底下所有的目錄去，裡面都有個Makefile，然後每個都做make。
+	例如
+	<TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>all:
+	cd user;$(MAKE) $@
+	cd kernel;$(MAKE) $@
+	</PRE
+></TD
+></TR
+></TABLE
+>
+	所以，練習看Makefile吧，如果你有裝linux kernel source，
+	就去/usr/src/linux下看一下Linux Kernel的Makefile吧。
+      </P
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="x1176.html" tppabs="http://www.study-area.org/cyril/opentools/opentools/x1176.html"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="book1.html" tppabs="http://www.study-area.org/cyril/opentools/opentools/book1.html"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="debug.html" tppabs="http://www.study-area.org/cyril/opentools/opentools/debug.html"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>內隱規則(Implicit Rules)</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="makefile.html" tppabs="http://www.study-area.org/cyril/opentools/opentools/makefile.html"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>除錯工具</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

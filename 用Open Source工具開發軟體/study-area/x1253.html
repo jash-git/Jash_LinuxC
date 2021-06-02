@@ -1,0 +1,385 @@
+<HTML
+><HEAD
+><TITLE
+>基本gdb</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.49"><LINK
+REL="HOME"
+TITLE="用Open Source工具開發軟體"
+HREF="book1.html" tppabs="http://www.study-area.org/cyril/opentools/opentools/book1.html"><LINK
+REL="UP"
+TITLE="除錯工具"
+HREF="debug.html" tppabs="http://www.study-area.org/cyril/opentools/opentools/debug.html"><LINK
+REL="PREVIOUS"
+TITLE="ddd"
+HREF="x1240.html" tppabs="http://www.study-area.org/cyril/opentools/opentools/x1240.html"><LINK
+REL="NEXT"
+TITLE="進階gdb"
+HREF="x1265.html" tppabs="http://www.study-area.org/cyril/opentools/opentools/x1265.html"></HEAD
+><BODY
+CLASS="SECT1"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>用Open Source工具開發軟體: 新軟體開發關念</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="x1240.html" tppabs="http://www.study-area.org/cyril/opentools/opentools/x1240.html"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 6. 除錯工具</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="x1265.html" tppabs="http://www.study-area.org/cyril/opentools/opentools/x1265.html"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="AEN1253"
+>基本gdb</A
+></H1
+><P
+>gdb是個命令列模式的交談(interactive)除錯器，
+      跟telnet或其它的unix交談式程式一樣有個提示符號，然後要下命令
+      <TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+>(gdb)COMMAND
+      </PRE
+></TD
+></TR
+></TABLE
+>
+      不要忘了gcc編譯時要加 -g 參數，
+      基本gdb命令
+      <TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+>檔案處理
+========
+file a.out                 載入可執行檔a.out
+path                       告訴gdb obj code在那
+directory                  告訴gdb source code在那裡
+
+SHELL
+=====
+shell ls                   就會執行ls了
+cd xxx                     不過用shell的方法跟Makefile一樣喚起sub shell而已
+                           要真的cd到目錄要用cd
+
+中斷點(Break point and watch point)處理
+=======================================
+break                      設定中斷點 
+clear                      清除中斷點
+delete                     清除中斷點
+disable                    暫時使中斷無作用
+enable                     使中斷再作用
+condition                  進一步設中斷點的條件 如果條件為true則中斷
+commands                   如果中斷了則執行commands與end中的一連串gdb命令
+.....
+end
+      </PRE
+></TD
+></TR
+></TABLE
+>
+      其中
+      中斷點可以用source code的行數來代表(這些資訊藏在ELF格式
+      裡的.line這個section裡)，也可以用中斷點的流水號來表示
+      <TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+>br                         在目前位置設中斷點
+br 100                     在100行中斷
+br func1                   在func1中斷
+br +100                    目前位置+100行中斷
+br *0x08048123             在這位址中斷
+br file.c:100              因為如果是多個c檔案時指定file.c
+tbreak                     同break的寫法 不過中斷一次後 此中斷點就失效
+br 100 if (var == 5)       條件中斷 後面跟著c語法的條件判斷式
+br 100                     在第100行中斷並且執行command...end中的gdb命令
+commands
+  silent
+  printf "x is %d\n",x
+end
+break String::func1        C++ Function Overloading的中斷 String是class
+
+clear 100                  清除中斷點  後面跟著行號或函數名
+clear func1
+
+delete 5                   清除5號中斷點  後面是中斷點流水編號
+disable 3                  暫時使3號中斷點沒作用  後面是中斷點流水編號
+enable 2                   使2號中斷點作用  後面是中斷點流水編號
+
+condition 3 (var &#62; 3)      設3號中斷點的條件 如果條件為true則中斷
+condition 3                清除3號中斷點的條件
+
+程式執行
+========
+set args xxx               給執行程式參數xxx，就是main裡的**argv            
+run                        開始跑程式
+continue                   中斷後繼續跑
+next                       往下跳一步c程式 如果有副程式 執行完整個副程式
+step                       往下跳一步c程式 如果有副程式 追進副程式
+until                      跳離一個while for迴圈
+nexti                      往下一步CPU組語的指令(Instruction)執行完整個副程式
+stepi                      往下一步CPU組語的指令(Instruction)追進副程式
+until                      執行到source code的行數比目前的大
+                           如果目前所在行是loop的最後一行就會跳離loop
+
+程式變數值(data)處理
+====================
+print var                  看var的值
+print &#38;var             印出var的位址(其時這就是C 啦)
+print *var                 印出*var值 var是pointer
+display var                display會每次step, next時都會印出值來,print只印一次
+print (var=value)          設var的值為value
+                           其實print 可以只用p代替 很多指令都可以簡寫代替
+p/x                        /x表示印hex值
+                           /u表示unsigned digit
+                           /d    signed digit
+                           /t    二進位值
+                           
+                           /是列印的選項 在Solaris上的adb也有相似形式
+x/3uh 0x8048012            印出記憶體
+                           其中
+                           3表示看3個
+                           u      unsigned digit(跟上面p命令一樣意義) 
+                           h      halfword就是2bytes(bhwg分別是1248bytes)
+
+GDB內定變數(跟程式變數不一樣喔)
+===============================
+一些gdb方便的變數(convenience variable)
+$_                         用x命令所得到的最後一個位址
+$__                        用x命令所得到的最後一個位址的值
+$_exitcode                 程式離開的code就是用exit時的code
+
+CPU暫存器(registers)
+$pc                        program counter就是目前cpu指到的執行位置啦
+$sp                        stack pointer
+
+訊息觀看與設定
+==============
+info                       得到一些program debug資訊
+                           info break
+                           info frame
+                           info display
+
+                           info program
+                           info share
+                           info registers
+                           
+show                       得到一些系統(OS, CPU Arch), GDB資訊
+                           show args       (系統傳進來的argv[0],argv[1]...)
+                           show os         (OS是什麼)
+                           show endian
+                           show prompt     (gdb的提示符號)
+
+list                       看原始碼
+                           list x  從第x行的source code印出，x不寫從目前行印出
+	                   list *addr  秀出addr所在source code的行
+                                       可以先用info program找出目前PC的值
+                                       再用list *addr
+                           search REGEXP 在目前source code做RE搜尋
+
+disas                      想看machine code用這個
+
+whatis var                 告訴我var的資料型別是啥 int, char or double
+ptype var                  告訴我var的資料型別是啥 這用來看struct用的
+
+set                        設定gdb, 系統的控制變數值(這些變數不是program內的)
+                           set listsize xx  設定要看xx行source code
+                           set $pc xx       把PC設到 xx
+                           set convenience可以自己設變數
+
+help                       可以得到命令HELP
+
+程序與副程式(process and sub-function)
+======================================
+backtrace(bt)2             程式執行到這裡前的兩個副程式，2不寫則列出全部
+frame        2             選擇2號frame跳過去  2不寫就列出現在執行到那裡
+up           2             往上走2個副程式
+down         3             往下走2個副程式
+return       expression    不要玩了,回到上一層呼叫的routine去並return一個值
+finish                     繼續玩完一個選擇的stack frame(副程式)
+
+kill                       砍掉child process
+signal       procss-id     送signal給process
+attach       procss-id     debug一個已經在記憶體跑的process
+detach       procss-id     釋放attach的process脫離gdb的控制
+
+      </PRE
+></TD
+></TR
+></TABLE
+>
+      其中每次程式呼叫副程式時，
+      原本的執行的世界的東西(變數值啊等等)必需先保存起來，
+      然後再跳到新世界(將要執行的副程式)這就是stack，
+      每叫一個sub routine就等於進到一個stack frame
+    </P
+><P
+>      <TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+>(gdb)frame 2 
+      </PRE
+></TD
+></TR
+></TABLE
+>
+      就是選擇2號frame，而0號frame就是目前在執行的副程式，
+      1號是呼叫0號的副程式，以此類推，
+      finish搭配frame這個命令來用
+    </P
+><P
+>    所以bt這個命令很重要，可以追回之前叫了那些function來到目前的地方。
+    通常在命令列也有類似的追蹤system call的程式，因為system call很重要，
+    在Solaris上我們可以用
+    <TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+>$ truss prog1
+    </PRE
+></TD
+></TR
+></TABLE
+>
+    在Linux上
+    <TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+>$ strace prog1
+    </PRE
+></TD
+></TR
+></TABLE
+>
+    來看現在程式到底叫了甚麼system call導致他毀掉。
+    </P
+><P
+>      attach, detach必需在有支援process 的環境，
+      因為有的沒記憶體保護OS，或embadded system沒有支援，
+      另外也要有能力送signal給process的環境才行，
+      這主要可以來debug deamon或做multiprocess的除錯      
+    </P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="x1240.html" tppabs="http://www.study-area.org/cyril/opentools/opentools/x1240.html"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="book1.html" tppabs="http://www.study-area.org/cyril/opentools/opentools/book1.html"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="x1265.html" tppabs="http://www.study-area.org/cyril/opentools/opentools/x1265.html"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>ddd</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="debug.html" tppabs="http://www.study-area.org/cyril/opentools/opentools/debug.html"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>進階gdb</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

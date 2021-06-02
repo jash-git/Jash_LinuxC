@@ -1,0 +1,1326 @@
+<!DOCTYPE html>
+<!-- saved from url=(0079)http://stackoverflow.com/questions/16900874/using-cjson-to-read-in-a-json-array -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><script type="text/javascript" async="" src="./03_files/ados"></script>
+    
+    <title>c - Using cJSON to read in a JSON array - Stack Overflow</title>
+    <link rel="shortcut icon" href="http://cdn.sstatic.net/stackoverflow/img/favicon.ico">
+    <link rel="apple-touch-icon image_src" href="http://cdn.sstatic.net/stackoverflow/img/apple-touch-icon.png">
+    <link rel="search" type="application/opensearchdescription+xml" title="Stack Overflow" href="http://stackoverflow.com/opensearch.xml">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:domain" content="stackoverflow.com">
+    <meta name="og:type" content="website">
+    <meta name="og:image" content="http://cdn.sstatic.net/stackoverflow/img/apple-touch-icon@2.png?v=fde65a5a78c6">
+    <meta name="og:title" content="Using cJSON to read in a JSON array">
+    <meta name="og:description" content="First off, this is a very broad question, and it might come across as me asking for the community to write my code for me.  That is not my intent, but I am so lost, I don&#39;t know how to give enough ">
+    <meta name="og:url" content="http://stackoverflow.com/questions/16900874/using-cjson-to-read-in-a-json-array">
+    <link rel="canonical" href="./03_files/03.htm">
+
+    
+    
+    <script async="" src="./03_files/beacon.js"></script><script type="text/javascript" async="" src="./03_files/ga.js"></script><script type="text/javascript" async="" src="./03_files/quant.js"></script><script type="text/javascript" async="" src="./03_files/ados.js"></script><script type="text/javascript" src="./03_files/jquery.min.js"></script>
+    <script src="./03_files/stub.en.js" type="text/javascript"></script>
+    <link rel="stylesheet" type="text/css" href="./03_files/all.css">
+    
+    <link rel="alternate" type="application/atom+xml" title="Feed for question &#39;Using cJSON to read in a JSON array&#39;" href="http://stackoverflow.com/feeds/question/16900874">
+    <script type="text/javascript">
+        
+        StackExchange.ready(function () {
+            StackExchange.using("postValidation", function () {
+                StackExchange.postValidation.initOnBlurAndSubmit($('#post-form'), 2, 'answer');
+            });
+
+            
+            StackExchange.question.init({showAnswerHelp:true,totalCommentCount:5,shownCommentCount:5,highlightColor:'#F4A83D',backgroundColor:'#FFF',questionId:16900874});
+
+            styleCode();
+
+                StackExchange.realtime.subscribeToQuestion('1', '16900874');
+            
+                    });
+    </script>
+
+
+    <script type="text/javascript">
+        StackExchange.init({"locale":"en","stackAuthUrl":"https://stackauth.com","serverTime":1384687505,"styleCode":true,"enableUserHovercards":true,"site":{"name":"Stack Overflow","description":"Q&A for professional and enthusiast programmers","isNoticesTabEnabled":true,"recaptchaPublicKey":"6LdchgIAAAAAAJwGpIzRQSOFaO0pU6s44Xt8aTwc","enableSocialMediaInSharePopup":true},"user":{"fkey":"607be6b7e3e0a3d0ddca709ab0db12f9","isAnonymous":true}});
+        StackExchange.using.setCacheBreakers({"js/prettify-full.en.js":"e0bbd4760e83","js/moderator.en.js":"1a411fd265fe","js/full-anon.en.js":"978b6ac79763","js/full.en.js":"9c04c877896f","js/wmd.en.js":"bd9234d44a40","js/third-party/jquery.autocomplete.min.js":"e5f01e97f7c3","js/third-party/jquery.autocomplete.min.en.js":"","js/mobile.en.js":"d1d834ef85d2","js/help.en.js":"d3cc74d8a93a","js/tageditor.en.js":"6d51a5f8d7f3","js/tageditornew.en.js":"111b781cf314","js/inline-tag-editing.en.js":"f951bd09dc69","js/revisions.en.js":"33fd38144303","js/review.en.js":"f45b4ec094ea","js/tagsuggestions.en.js":"e4e7b952fcc7","js/post-validation.en.js":"c275fe37d674","js/explore-qlist.en.js":"73825bd006fc","js/events.en.js":"53bc48767091"});
+    </script>
+    <script type="text/javascript">
+        StackExchange.using("gps", function() {
+             StackExchange.gps.init(true);
+        });
+    </script>
+    
+        <script type="text/javascript">
+            StackExchange.ready(function () {
+                $('#nav-tour').click(function () {
+                    StackExchange.using("gps", function() {
+                        StackExchange.gps.track("aboutpage.click", { aboutclick_location: "headermain" }, true);
+                    });
+                });
+            });
+        </script>
+<script async="" type="text/javascript" src="./03_files/full-anon.en.js"></script><script async="" type="text/javascript" src="./03_files/post-validation.en.js"></script><script async="" type="text/javascript" src="./03_files/prettify-full.en.js"></script><link href="./03_files/sidebar.min.css" type="text/css" rel="stylesheet"><script type="text/javascript" src="./03_files/adFeedback.js"></script><link rel="stylesheet" href="http://static.adzerk.net/Extensions/adFeedback.css"></head>
+<body class="question-page">
+    <noscript>&lt;div id="noscript-padding"&gt;&lt;/div&gt;</noscript>
+    <div id="notify-container"></div>
+    <div id="overlay-header"></div>
+    <div id="custom-header"></div>
+    <div class="container">
+        <div id="header" class="headeranon">
+            <div id="portalLink">
+                <a class="genu" onclick="StackExchange.ready(function(){genuwine.click();});return false;">Stack Exchange</a>
+            </div>
+            <div id="topbar">
+                <div id="hlinks">
+                    
+<span id="hlinks-user"></span>
+<span id="hlinks-nav">                        <a href="http://stackoverflow.com/users/login?returnurl=%2fquestions%2f16900874%2fusing-cjson-to-read-in-a-json-array">sign up</a>
+
+ <span class="lsep">|</span>
+                    <a href="http://stackoverflow.com/users/login?returnurl=%2fquestions%2f16900874%2fusing-cjson-to-read-in-a-json-array">log in</a>
+
+ <span class="lsep">|</span>
+                    <a href="http://careers.stackoverflow.com/">careers 2.0</a>
+
+ <span class="lsep">|</span>
+</span>
+<span id="hlinks-custom"></span>
+                </div>
+                <div id="hsearch">
+                    <form id="search" action="http://stackoverflow.com/search" method="get" autocomplete="off">
+                        <div>
+                            <input autocomplete="off" name="q" class="textbox" placeholder="search" tabindex="1" type="text" maxlength="240" size="28" value="">
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <br class="cbt">
+            <div id="hlogo">
+                <a href="http://stackoverflow.com/">
+                    Stack Overflow
+                </a>
+            </div>
+            <div id="hmenus">
+                <div class="nav mainnavs mainnavsanon">
+                    <ul>
+                            <li class="youarehere"><a id="nav-questions" href="http://stackoverflow.com/questions">Questions</a></li>
+                            <li><a id="nav-tags" href="http://stackoverflow.com/tags">Tags</a></li>
+                            <li><a id="nav-tour" href="http://stackoverflow.com/about">Tour</a></li>
+                            <li><a id="nav-users" href="http://stackoverflow.com/users">Users</a></li>
+                    </ul>
+                </div>
+                <div class="nav askquestion">
+                    <ul>
+                        <li>
+                            <a id="nav-askquestion" href="http://stackoverflow.com/questions/ask">Ask Question</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+
+
+
+        <div id="content">
+            
+
+<div itemscope="" itemtype="http://schema.org/Article">
+	<link itemprop="image" href="http://cdn.sstatic.net/stackoverflow/img/apple-touch-icon.png">
+			<!--googleoff: all-->
+<div id="herobox-mini">
+    <div id="hero-content">
+        <span id="controls">
+            <a href="http://stackoverflow.com/about" id="tell-me-more" class="button">Tell me more</a>
+            <span id="close"><a title="click to dismiss">×</a></span>
+        </span>
+        <div id="blurb">
+            Stack Overflow is a question and answer site for professional and enthusiast programmers. It's 100% free, no registration required.
+        </div>        
+    </div>
+    <script>
+        $('#tell-me-more').click(function () {
+            var clickSource = $("body").attr("class") + '-mini';
+            if ($("body").hasClass("questions-page")) {
+                clickSource = 'questionpagemini';
+            }
+            if ($("body").hasClass("home-page")) {
+                clickSource = 'homepagemini';
+            }
+
+            StackExchange.using("gps", function () {
+                StackExchange.gps.track("aboutpage.click", { aboutclick_location: clickSource } , true);
+            });
+        });
+        $('#herobox-mini #close').click(function () {
+            StackExchange.using("gps", function () {
+                StackExchange.gps.track("hero.action", { hero_action_type: "close" }, true);
+            });
+            $.cookie("hero", "none", { path: "/" });
+            var $hero = $("#herobox-mini");
+            $hero.slideUp('fast', function () { $hero.remove(); });
+            return false;
+        });
+    </script>
+</div>
+			<!--googleon: all-->
+			<div id="question-header">
+			<h1 itemprop="name"><a href="./03_files/03.htm" class="question-hyperlink">Using cJSON to read in a JSON array</a></h1>
+		</div>
+			<div id="mainbar">
+
+			
+
+<div class="question" data-questionid="16900874" id="question">
+    
+                <script type="text/javascript">
+                var ados = ados || {};ados.run = ados.run || [];
+                ados.run.push(function() { ados_add_placement(22,8277,"adzerk56612267",4).setZone(43) ; });                    
+            </script>
+            <div class="everyonelovesstackoverflow adzerk-vote" id="adzerk56612267"><a href="http://engine.adzerk.net/r?e=eyJhdiI6NDE0LCJhdCI6NCwiY20iOjg0NywiY2giOjExNzgsImNyIjo1OTE5LCJkaSI6IjExZjYxYWFjM2VkOTQyZWE5OTg4NGYyOTcyMzQyYjQzIiwiZG0iOjEsImZjIjo4ODA1LCJmbCI6MjQ0NCwia3ciOiJjLGpzb24iLCJudyI6MjIsInJmIjoiaHR0cHM6Ly93d3cuZ29vZ2xlLmNvbS50dy8iLCJydiI6MCwicHIiOjE1NjgsInN0Ijo4Mjc3LCJ6biI6NDMsInRzIjoxMzg0Njg3NTI0Mjg2LCJ1ciI6Imh0dHA6Ly9jYXJlZXJzLnN0YWNrb3ZlcmZsb3cuY29tLyJ9&s=p7_kJSYM28ltH4hkvT_mJTRfeAk" rel="nofollow" target="_blank" title=""><img src="./03_files/4c4f1be011a447efbce49c1811022e7a.png" title="" alt="" border="0" width="728" height="90"></a><div class="adzerk-vote-controls" style="display: none;"><div class="adzerk-vote-option adzerk-vote-up"><div class="adzerk-vote-icon"></div></div><div class="adzerk-vote-option adzerk-vote-down"><div class="adzerk-vote-icon"></div></div></div><div class="adzerk-vote-survey" style="display:none;"><form><span>No problem. We won't show you that ad again. Why didn't you like it?</span><ul><li><label><input type="radio" value="12" name="downvoteReason">Uninteresting</label></li><li><label><input type="radio" value="13" name="downvoteReason">Misleading</label></li><li><label><input type="radio" value="14" name="downvoteReason">Offensive</label></li><li><label><input type="radio" value="15" name="downvoteReason">Repetitive</label></li></ul><a href="http://stackoverflow.com/questions/16900874/using-cjson-to-read-in-a-json-array#" class="adzerk-vote-cancel">Oops! I didn't mean to do this.</a></form></div><img height="0px" width="0px" border="0" src="./03_files/i.gif"></div>  
+
+
+    <table>
+        <tbody><tr>
+            <td class="votecell">
+                
+
+<div class="vote">
+    <input type="hidden" name="_id_" value="16900874">
+    <a class="vote-up-off" title="This question shows research effort; it is useful and clear">up vote</a>
+    <span class="vote-count-post ">0</span>
+    <a class="vote-down-off" title="This question does not show any research effort; it is unclear or not useful">down vote</a>
+    
+    <a class="star-off" href="http://stackoverflow.com/questions/16900874/using-cjson-to-read-in-a-json-array#" title="This is a favorite question (click again to undo)">favorite</a>
+    <div class="favoritecount"><b></b></div>   
+
+</div>
+
+            </td>
+            
+<td class="postcell">
+<div>
+    <div class="post-text" itemprop="description">
+
+        <p>First off, this is a very broad question, and it might come across as me asking for the community to write my code for me.  That is not my intent, but I am so lost, I don't know how to give enough information.</p>
+
+<p>I am attempting to use the cJSON library, written by Dave Gamble, to read in the following JSON array:</p>
+
+<pre class="lang-c prettyprint prettyprinted" style=""><code><span class="str">"items"</span><span class="pun">:</span><span class="pln"> 
+</span><span class="pun">[</span><span class="pln">
+    </span><span class="pun">{</span><span class="pln">
+        </span><span class="str">"name"</span><span class="pun">:</span><span class="pln"> </span><span class="str">"command"</span><span class="pun">,</span><span class="pln">
+        </span><span class="str">"index"</span><span class="pun">:</span><span class="pln"> </span><span class="str">"X"</span><span class="pun">,</span><span class="pln">
+        </span><span class="str">"optional"</span><span class="pun">:</span><span class="pln"> </span><span class="str">"0"</span><span class="pln">
+    </span><span class="pun">},</span><span class="pln">
+    </span><span class="pun">{</span><span class="pln">
+        </span><span class="str">"name"</span><span class="pun">:</span><span class="pln"> </span><span class="str">"status"</span><span class="pun">,</span><span class="pln">
+        </span><span class="str">"index"</span><span class="pun">:</span><span class="pln"> </span><span class="str">"X"</span><span class="pun">,</span><span class="pln">
+        </span><span class="str">"optional"</span><span class="pun">:</span><span class="pln"> </span><span class="str">"0"</span><span class="pln">
+    </span><span class="pun">}</span><span class="pln">
+</span><span class="pun">]</span></code></pre>
+
+<p>From reading his <a href="https://github.com/kbranigan/cJSON/blob/master/README.md" rel="nofollow">documentation</a>, I found ways to read in individual Objects, but nothing regarding Arrays, and I wasn't able to surmise how to do it from the examples given.  </p>
+
+<p>Here's what I'm trying:</p>
+
+<pre class="lang-c prettyprint prettyprinted" style=""><code><span class="pln">cJSON</span><span class="pun">*</span><span class="pln"> request_json </span><span class="pun">=</span><span class="pln"> NULL</span><span class="pun">;</span><span class="pln">
+cJSON</span><span class="pun">*</span><span class="pln"> items </span><span class="pun">=</span><span class="pln"> cJSON_CreateArray</span><span class="pun">();</span><span class="pln">
+cJSON</span><span class="pun">*</span><span class="pln"> name </span><span class="pun">=</span><span class="pln"> NULL</span><span class="pun">;</span><span class="pln">
+cJSON</span><span class="pun">*</span><span class="pln"> index </span><span class="pun">=</span><span class="pln"> NULL</span><span class="pun">;</span><span class="pln">
+cJSON</span><span class="pun">*</span><span class="pln"> optional </span><span class="pun">=</span><span class="pln"> NULL</span><span class="pun">;</span><span class="pln">
+
+request_json </span><span class="pun">=</span><span class="pln"> cJSON_Parse</span><span class="pun">(</span><span class="pln">request_body</span><span class="pun">);</span><span class="pln">
+
+items </span><span class="pun">=</span><span class="pln"> cJSON_GetObjectItem</span><span class="pun">(</span><span class="pln">request_json</span><span class="pun">,</span><span class="pln"> </span><span class="str">"items"</span><span class="pun">);</span><span class="pln">
+
+name </span><span class="pun">=</span><span class="pln"> cJSON_GetObjectItem</span><span class="pun">(</span><span class="pln">items</span><span class="pun">,</span><span class="pln"> </span><span class="str">"name"</span><span class="pun">);</span><span class="pln">
+index </span><span class="pun">=</span><span class="pln"> cJSON_GetObjectItem</span><span class="pun">(</span><span class="pln">items</span><span class="pun">,</span><span class="pln"> </span><span class="str">"index"</span><span class="pun">);</span><span class="pln">
+optional </span><span class="pun">=</span><span class="pln"> cJSON_GetObjectItem</span><span class="pun">(</span><span class="pln">items</span><span class="pun">,</span><span class="pln"> </span><span class="str">"optional"</span><span class="pun">);</span></code></pre>
+
+<p>I know this is wrong, and not just because it's not working, but I can't figure out how to make it right.</p>
+
+<p>Obviously I'm going to need to loop the process of reading in all of the entries for each index of the array.  I have no idea how I'm going to do that though, because I don't know where I should be using the indexes in this code, or if it is even the right start.  There is a <code>cJSON_GetArrayItem()</code>, but it takes only a number (presumably an index) and no string to indicate which field it wants.</p>
+
+<p>Please ask for more information as needed, and I will make edits to the question.  I in no way expect an answer right away.  Thank you.</p>
+
+    </div>
+    <div class="post-taglist">
+        <a href="http://stackoverflow.com/questions/tagged/c" class="post-tag" title="show questions tagged &#39;c&#39;" rel="tag">c</a> <a href="http://stackoverflow.com/questions/tagged/json" class="post-tag" title="show questions tagged &#39;json&#39;" rel="tag">json</a> 
+    </div>
+    <table class="fw">
+    <tbody><tr>
+    <td class="vt">
+
+
+
+
+
+
+
+
+
+
+
+<div class="post-menu"><a href="http://stackoverflow.com/q/16900874" title="short permalink to this question" class="short-link" id="link-post-16900874">share</a><span class="lsep">|</span><a href="http://stackoverflow.com/posts/16900874/edit" class="suggest-edit-post" title="">improve this question</a></div>        
+    </td>
+    <td class="post-signature owner">
+        
+<div class="user-info ">
+    <div class="user-action-time">
+        
+        
+            asked <span title="2013-06-03 15:55:19Z" class="relativetime">Jun 3 at 15:55</span>
+        
+
+    </div>
+    <div class="user-gravatar32">
+        <a href="http://stackoverflow.com/users/2130354/nealon"><div><img src="./03_files/59ae7bb7e296469a5625f52b094e7e2c" alt="" width="32" height="32"></div></a>
+    </div>
+    <div class="user-details">
+        <a href="http://stackoverflow.com/users/2130354/nealon">Nealon</a><br>
+        <span class="reputation-score" title="reputation score " dir="ltr">251</span><span title="1 silver badge"><span class="badge2"></span><span class="badgecount">1</span></span><span title="13 bronze badges"><span class="badge3"></span><span class="badgecount">13</span></span>
+    </div>
+</div>
+    </td>
+    </tr>
+    </tbody></table>
+</div>
+</td>
+        </tr>
+<tr>
+    <td class="votecell"></td>
+    <td>
+	    <div id="comments-16900874" class="comments" data-localized="true">
+		    <table>
+			    <tbody data-remaining-comments-count="0" data-addlink-html="" data-addlink-disabled="true">
+
+    <tr id="comment-24389712" class="comment">
+        <td>
+            <table>
+                <tbody>
+                    <tr>
+                        <td class="comment-score">
+                            
+                        </td>
+                        <td>
+                                &nbsp;
+                        </td>
+                    </tr>
+                </tbody>
+            </table>   
+        </td>
+        <td class="comment-text">
+            <div style="display: block;" class="comment-body">
+	<span class="comment-copy">If the value of "items" is an array, it seems to me you should be indexing an array in there somewhere.  Then that will give you back an "object" which you can then search by key.</span>
+	–&nbsp;
+		<a href="http://stackoverflow.com/users/581994/hot-licks" title="20614 reputation" class="comment-user">Hot Licks</a>
+	<span class="comment-date" dir="ltr"><a class="comment-link" href="http://stackoverflow.com/questions/16900874/using-cjson-to-read-in-a-json-array#comment24389712_16900874"><span title="2013-06-03 16:01:03Z" class="relativetime-clean">Jun 3 at 16:01</span></a></span>
+		<span class="edited-yes" title="this comment was edited 1 time"></span>
+				</div>
+
+        </td>
+    </tr>
+    <tr id="comment-24389858" class="comment">
+        <td>
+            <table>
+                <tbody>
+                    <tr>
+                        <td class="comment-score">
+                            
+                        </td>
+                        <td>
+                                &nbsp;
+                        </td>
+                    </tr>
+                </tbody>
+            </table>   
+        </td>
+        <td class="comment-text">
+            <div style="display: block;" class="comment-body">
+	<span class="comment-copy">(Note that you erroneously omitted the surrounding <code>{}</code> when you quoted the JSON.  The <code>{}</code> denotes an "object", and without it the above text is invalid JSON.)</span>
+	–&nbsp;
+		<a href="http://stackoverflow.com/users/581994/hot-licks" title="20614 reputation" class="comment-user">Hot Licks</a>
+	<span class="comment-date" dir="ltr"><a class="comment-link" href="http://stackoverflow.com/questions/16900874/using-cjson-to-read-in-a-json-array#comment24389858_16900874"><span title="2013-06-03 16:05:19Z" class="relativetime-clean">Jun 3 at 16:05</span></a></span>
+				</div>
+
+        </td>
+    </tr>
+    <tr id="comment-24390713" class="comment">
+        <td>
+            <table>
+                <tbody>
+                    <tr>
+                        <td class="comment-score">
+                            
+                        </td>
+                        <td>
+                                &nbsp;
+                        </td>
+                    </tr>
+                </tbody>
+            </table>   
+        </td>
+        <td class="comment-text">
+            <div style="display: block;" class="comment-body">
+	<span class="comment-copy">That wasn't how it was defined in the compiler, just showing it as an example</span>
+	–&nbsp;
+		<a href="http://stackoverflow.com/users/2130354/nealon" title="251 reputation" class="comment-user owner">Nealon</a>
+	<span class="comment-date" dir="ltr"><a class="comment-link" href="http://stackoverflow.com/questions/16900874/using-cjson-to-read-in-a-json-array#comment24390713_16900874"><span title="2013-06-03 16:32:51Z" class="relativetime-clean">Jun 3 at 16:32</span></a></span>
+				</div>
+
+        </td>
+    </tr>
+    <tr id="comment-24390811" class="comment">
+        <td>
+            <table>
+                <tbody>
+                    <tr>
+                        <td class="comment-score">
+                            
+                        </td>
+                        <td>
+                                &nbsp;
+                        </td>
+                    </tr>
+                </tbody>
+            </table>   
+        </td>
+        <td class="comment-text">
+            <div style="display: block;" class="comment-body">
+	<span class="comment-copy">It's important to understand the syntax of JSON.  That's the key to reading it.</span>
+	–&nbsp;
+		<a href="http://stackoverflow.com/users/581994/hot-licks" title="20614 reputation" class="comment-user">Hot Licks</a>
+	<span class="comment-date" dir="ltr"><a class="comment-link" href="http://stackoverflow.com/questions/16900874/using-cjson-to-read-in-a-json-array#comment24390811_16900874"><span title="2013-06-03 16:35:42Z" class="relativetime-clean">Jun 3 at 16:35</span></a></span>
+				</div>
+
+        </td>
+    </tr>
+    <tr id="comment-24390929" class="comment">
+        <td>
+            <table>
+                <tbody>
+                    <tr>
+                        <td class="comment-score">
+                            
+                        </td>
+                        <td>
+                                &nbsp;
+                        </td>
+                    </tr>
+                </tbody>
+            </table>   
+        </td>
+        <td class="comment-text">
+            <div style="display: block;" class="comment-body">
+	<span class="comment-copy">yeah, i get that, again, I was just quoting the text for people reading to understand it</span>
+	–&nbsp;
+		<a href="http://stackoverflow.com/users/2130354/nealon" title="251 reputation" class="comment-user owner">Nealon</a>
+	<span class="comment-date" dir="ltr"><a class="comment-link" href="http://stackoverflow.com/questions/16900874/using-cjson-to-read-in-a-json-array#comment24390929_16900874"><span title="2013-06-03 16:39:40Z" class="relativetime-clean">Jun 3 at 16:39</span></a></span>
+				</div>
+
+        </td>
+    </tr>
+			    </tbody>
+		    </table>
+	    </div>
+			<a id="comments-link-16900874" class="comments-link disabled-link" title="Use comments to ask for more information or suggest improvements. Avoid answering questions in comments."></a>
+    </td>
+</tr>            </tbody></table>    
+</div>
+
+
+			<div id="answers">
+
+				<a name="tab-top"></a>
+				<div id="answers-header">
+					<div class="subheader answers-subheader">
+						<h2>
+								2 Answers
+						</h2>
+						<div>
+							<div id="tabs">
+        <a href="http://stackoverflow.com/questions/16900874/using-cjson-to-read-in-a-json-array?answertab=active#tab-top" title="Answers with the latest activity first">active</a>
+        <a href="http://stackoverflow.com/questions/16900874/using-cjson-to-read-in-a-json-array?answertab=oldest#tab-top" title="Answers in the order they were provided">oldest</a>
+        <a class="youarehere" href="http://stackoverflow.com/questions/16900874/using-cjson-to-read-in-a-json-array?answertab=votes#tab-top" title="Answers with the highest score first">votes</a>
+</div>
+						</div>
+					</div>    
+				</div>    
+
+
+
+
+  
+<a name="16901333"></a>
+<div id="answer-16901333" class="answer accepted-answer" data-answerid="16901333">
+    <table>
+        <tbody><tr>
+            <td class="votecell">
+                
+
+<div class="vote">
+    <input type="hidden" name="_id_" value="16901333">
+    <a class="vote-up-off" title="This answer is useful">up vote</a>
+    <span class="vote-count-post ">1</span>
+    <a class="vote-down-off" title="This answer is not useful">down vote</a>
+    
+
+
+        <span class="vote-accepted-on load-accepted-answer-date" title="loading when this answer was accepted...">accepted</span>
+</div>
+
+            </td>
+
+
+
+<td class="answercell">
+    <div class="post-text"><p>Document mentions about parse_object().</p>
+
+<p>I think this is what you need to do.</p>
+
+<pre class="lang-c prettyprint prettyprinted" style=""><code><span class="kwd">void</span><span class="pln"> parse_object</span><span class="pun">(</span><span class="pln">cJSON </span><span class="pun">*</span><span class="pln">root</span><span class="pun">)</span><span class="pln">
+</span><span class="pun">{</span><span class="pln">
+  cJSON</span><span class="pun">*</span><span class="pln"> name </span><span class="pun">=</span><span class="pln"> NULL</span><span class="pun">;</span><span class="pln">
+  cJSON</span><span class="pun">*</span><span class="pln"> index </span><span class="pun">=</span><span class="pln"> NULL</span><span class="pun">;</span><span class="pln">
+  cJSON</span><span class="pun">*</span><span class="pln"> optional </span><span class="pun">=</span><span class="pln"> NULL</span><span class="pun">;</span><span class="pln">
+
+  </span><span class="typ">int</span><span class="pln"> i</span><span class="pun">;</span><span class="pln">
+
+  cJSON </span><span class="pun">*</span><span class="pln">item </span><span class="pun">=</span><span class="pln"> cJSON_GetObjectItem</span><span class="pun">(</span><span class="pln">items</span><span class="pun">,</span><span class="str">"items"</span><span class="pun">);</span><span class="pln">
+  </span><span class="kwd">for</span><span class="pln"> </span><span class="pun">(</span><span class="pln">i </span><span class="pun">=</span><span class="pln"> </span><span class="lit">0</span><span class="pln"> </span><span class="pun">;</span><span class="pln"> i </span><span class="pun">&lt;</span><span class="pln"> cJSON_GetArraySize</span><span class="pun">(</span><span class="pln">item</span><span class="pun">)</span><span class="pln"> </span><span class="pun">;</span><span class="pln"> i</span><span class="pun">++)</span><span class="pln">
+  </span><span class="pun">{</span><span class="pln">
+     cJSON </span><span class="pun">*</span><span class="pln"> subitem </span><span class="pun">=</span><span class="pln"> cJSON_GetArrayItem</span><span class="pun">(</span><span class="pln">item</span><span class="pun">,</span><span class="pln"> i</span><span class="pun">);</span><span class="pln">
+     name </span><span class="pun">=</span><span class="pln"> cJSON_GetObjectItem</span><span class="pun">(</span><span class="pln">subitem</span><span class="pun">,</span><span class="pln"> </span><span class="str">"name"</span><span class="pun">);</span><span class="pln">
+     index </span><span class="pun">=</span><span class="pln"> cJSON_GetObjectItem</span><span class="pun">(</span><span class="pln">subitem</span><span class="pun">,</span><span class="pln"> </span><span class="str">"index"</span><span class="pun">);</span><span class="pln">
+     optional </span><span class="pun">=</span><span class="pln"> cJSON_GetObjectItem</span><span class="pun">(</span><span class="pln">subitem</span><span class="pun">,</span><span class="pln"> </span><span class="str">"optional"</span><span class="pun">);</span><span class="pln"> 
+  </span><span class="pun">}</span><span class="pln">
+</span><span class="pun">}</span></code></pre>
+
+<p>Call this function as </p>
+
+<pre class="lang-c prettyprint prettyprinted" style=""><code><span class="pln">request_json </span><span class="pun">=</span><span class="pln"> cJSON_Parse</span><span class="pun">(</span><span class="pln">request_body</span><span class="pun">);</span><span class="pln">
+parse_object</span><span class="pun">(</span><span class="pln">request_json</span><span class="pun">);</span></code></pre>
+</div>
+    <table class="fw">
+    <tbody><tr>
+    <td class="vt">
+
+
+
+
+
+
+
+
+
+
+
+<div class="post-menu"><a href="http://stackoverflow.com/a/16901333" title="short permalink to this answer" class="short-link" id="link-post-16901333">share</a><span class="lsep">|</span><a href="http://stackoverflow.com/posts/16901333/edit" class="suggest-edit-post" title="">improve this answer</a></div>                    </td>
+    <td align="right" class="post-signature">
+
+<div class="user-info ">
+    <div class="user-action-time">
+        
+        
+        <a href="http://stackoverflow.com/posts/16901333/revisions" title="show all edits to this post">edited <span title="2013-06-03 16:29:08Z" class="relativetime">Jun 3 at 16:29</span></a>
+        
+
+    </div>
+    <div class="user-gravatar32">
+        
+    </div>
+    <div class="user-details">
+        <br>
+        
+    </div>
+</div>    </td>
+            
+
+
+    <td align="right" class="post-signature">   
+       
+
+    
+<div class="user-info ">
+    <div class="user-action-time">
+        
+        
+            answered <span title="2013-06-03 16:20:51Z" class="relativetime">Jun 3 at 16:20</span>
+        
+
+    </div>
+    <div class="user-gravatar32">
+        <a href="http://stackoverflow.com/users/2392482/denny-mathew"><div><img src="./03_files/365ebf5d9681880dc94ea3c657cc3050" alt="" width="32" height="32"></div></a>
+    </div>
+    <div class="user-details">
+        <a href="http://stackoverflow.com/users/2392482/denny-mathew">Denny Mathew</a><br>
+        <span class="reputation-score" title="reputation score " dir="ltr">112</span><span title="1 silver badge"><span class="badge2"></span><span class="badgecount">1</span></span><span title="5 bronze badges"><span class="badge3"></span><span class="badgecount">5</span></span>
+    </div>
+</div>
+    </td>
+    </tr>
+    </tbody></table>
+</td>        </tr>
+
+<tr>
+    <td class="votecell"></td>
+    <td>
+	    <div id="comments-16901333" class="comments" data-localized="true">
+		    <table>
+			    <tbody data-remaining-comments-count="0" data-addlink-html="" data-addlink-disabled="true">
+
+    <tr id="comment-24390801" class="comment">
+        <td>
+            <table>
+                <tbody>
+                    <tr>
+                        <td class="comment-score">
+                            
+                        </td>
+                        <td>
+                                &nbsp;
+                        </td>
+                    </tr>
+                </tbody>
+            </table>   
+        </td>
+        <td class="comment-text">
+            <div style="display: block;" class="comment-body">
+	<span class="comment-copy">looks solid to me, I'll give it a shot, thanks.</span>
+	–&nbsp;
+		<a href="http://stackoverflow.com/users/2130354/nealon" title="251 reputation" class="comment-user owner">Nealon</a>
+	<span class="comment-date" dir="ltr"><a class="comment-link" href="http://stackoverflow.com/questions/16900874/using-cjson-to-read-in-a-json-array#comment24390801_16901333"><span title="2013-06-03 16:35:22Z" class="relativetime-clean">Jun 3 at 16:35</span></a></span>
+				</div>
+
+        </td>
+    </tr>
+    <tr id="comment-24390839" class="comment">
+        <td>
+            <table>
+                <tbody>
+                    <tr>
+                        <td class="comment-score">
+                            
+                        </td>
+                        <td>
+                                &nbsp;
+                        </td>
+                    </tr>
+                </tbody>
+            </table>   
+        </td>
+        <td class="comment-text">
+            <div style="display: block;" class="comment-body">
+	<span class="comment-copy">you are welcome... :)</span>
+	–&nbsp;
+		<a href="http://stackoverflow.com/users/2392482/denny-mathew" title="112 reputation" class="comment-user">Denny Mathew</a>
+	<span class="comment-date" dir="ltr"><a class="comment-link" href="http://stackoverflow.com/questions/16900874/using-cjson-to-read-in-a-json-array#comment24390839_16901333"><span title="2013-06-03 16:36:32Z" class="relativetime-clean">Jun 3 at 16:36</span></a></span>
+				</div>
+
+        </td>
+    </tr>
+    <tr id="comment-24392310" class="comment">
+        <td>
+            <table>
+                <tbody>
+                    <tr>
+                        <td class="comment-score">
+                            
+                        </td>
+                        <td>
+                                &nbsp;
+                        </td>
+                    </tr>
+                </tbody>
+            </table>   
+        </td>
+        <td class="comment-text">
+            <div style="display: block;" class="comment-body">
+	<span class="comment-copy">worked perfectly, you're the man.</span>
+	–&nbsp;
+		<a href="http://stackoverflow.com/users/2130354/nealon" title="251 reputation" class="comment-user owner">Nealon</a>
+	<span class="comment-date" dir="ltr"><a class="comment-link" href="http://stackoverflow.com/questions/16900874/using-cjson-to-read-in-a-json-array#comment24392310_16901333"><span title="2013-06-03 17:24:10Z" class="relativetime-clean">Jun 3 at 17:24</span></a></span>
+				</div>
+
+        </td>
+    </tr>
+    <tr id="comment-24392975" class="comment">
+        <td>
+            <table>
+                <tbody>
+                    <tr>
+                        <td class="comment-score">
+                            
+                        </td>
+                        <td>
+                                &nbsp;
+                        </td>
+                    </tr>
+                </tbody>
+            </table>   
+        </td>
+        <td class="comment-text">
+            <div style="display: block;" class="comment-body">
+	<span class="comment-copy">SIDE NOTE: Storing values in a structure worked best for me.</span>
+	–&nbsp;
+		<a href="http://stackoverflow.com/users/2130354/nealon" title="251 reputation" class="comment-user owner">Nealon</a>
+	<span class="comment-date" dir="ltr"><a class="comment-link" href="http://stackoverflow.com/questions/16900874/using-cjson-to-read-in-a-json-array#comment24392975_16901333"><span title="2013-06-03 17:46:57Z" class="relativetime-clean">Jun 3 at 17:46</span></a></span>
+				</div>
+
+        </td>
+    </tr>
+			    </tbody>
+		    </table>
+	    </div>
+			<a id="comments-link-16901333" class="comments-link disabled-link" title="Use comments to ask for more information or suggest improvements. Avoid comments like “+1” or “thanks”."></a>
+    </td>
+</tr>
+    </tbody></table>
+</div>
+            <script type="text/javascript">
+                var ados = ados || {};ados.run = ados.run || [];
+                ados.run.push(function() { ados_add_placement(22,8277,"adzerk2037993062",4).setZone(44) ; });                    
+            </script>
+            <div class="everyonelovesstackoverflow adzerk-vote" id="adzerk2037993062"><a href="http://engine.adzerk.net/r?e=eyJhdiI6NDE0LCJhdCI6NCwiY20iOjI5MTEsImNoIjoxMTc4LCJjciI6MTA3NjksImRpIjoiMjVhZDE4OGU2ZmJhNDQ4MTkyY2M5NzZjYTFlMmI0NzAiLCJkbSI6MSwiZmMiOjE2ODc1LCJmbCI6NzQ3Miwia3ciOiJjLGpzb24iLCJudyI6MjIsInJmIjoiaHR0cHM6Ly93d3cuZ29vZ2xlLmNvbS50dy8iLCJydiI6MCwicHIiOjE2MDQsInN0Ijo4Mjc3LCJ6biI6NDQsInRzIjoxMzg0Njg3NTI0Mjg4LCJ1ciI6Imh0dHA6Ly9jYXJlZXJzLnN0YWNrb3ZlcmZsb3cuY29tL2pvYnMvdGVsZWNvbW11dGUifQ&s=Ms5qkARLvyDNjK_9iJkrf9V8kcE" rel="nofollow" target="_blank" title=""><img src="./03_files/d893babe671c41118c1fece177e0a21a.jpg" title="" alt="" border="0" width="728" height="90"></a><div class="adzerk-vote-controls" style="display: none;"><div class="adzerk-vote-option adzerk-vote-up"><div class="adzerk-vote-icon"></div></div><div class="adzerk-vote-option adzerk-vote-down"><div class="adzerk-vote-icon"></div></div></div><div class="adzerk-vote-survey" style="display:none;"><form><span>No problem. We won't show you that ad again. Why didn't you like it?</span><ul><li><label><input type="radio" value="12" name="downvoteReason">Uninteresting</label></li><li><label><input type="radio" value="13" name="downvoteReason">Misleading</label></li><li><label><input type="radio" value="14" name="downvoteReason">Offensive</label></li><li><label><input type="radio" value="15" name="downvoteReason">Repetitive</label></li></ul><a href="http://stackoverflow.com/questions/16900874/using-cjson-to-read-in-a-json-array#" class="adzerk-vote-cancel">Oops! I didn't mean to do this.</a></form></div><img height="0px" width="0px" border="0" src="./03_files/i(1).gif"></div>  
+
+
+
+  
+<a name="16901431"></a>
+<div id="answer-16901431" class="answer" data-answerid="16901431">
+    <table>
+        <tbody><tr>
+            <td class="votecell">
+                
+
+<div class="vote">
+    <input type="hidden" name="_id_" value="16901431">
+    <a class="vote-up-off" title="This answer is useful">up vote</a>
+    <span class="vote-count-post ">0</span>
+    <a class="vote-down-off" title="This answer is not useful">down vote</a>
+    
+
+
+</div>
+
+            </td>
+
+
+
+<td class="answercell">
+    <div class="post-text"><p>My guess (not having read the spec, and being a bit rusty with C):</p>
+
+<pre class="lang-c prettyprint prettyprinted" style=""><code><span class="pln">request_json </span><span class="pun">=</span><span class="pln"> cJSON_Parse</span><span class="pun">(</span><span class="pln">request_body</span><span class="pun">);</span><span class="pln">
+
+items </span><span class="pun">=</span><span class="pln"> cJSON_GetObjectItem</span><span class="pun">(</span><span class="pln">request_json</span><span class="pun">,</span><span class="pln"> </span><span class="str">"items"</span><span class="pun">);</span><span class="pln">
+</span><span class="kwd">for</span><span class="pln"> </span><span class="pun">(</span><span class="typ">int</span><span class="pln"> i </span><span class="pun">=</span><span class="pln"> </span><span class="lit">0</span><span class="pun">;</span><span class="pln"> i </span><span class="pun">&lt;</span><span class="pln"> max</span><span class="pun">;</span><span class="pln"> i</span><span class="pun">++)</span><span class="pln"> </span><span class="pun">{</span><span class="pln">  </span><span class="com">// Presumably "max" can be derived from "items" somehow</span><span class="pln">
+
+    cJSON</span><span class="pun">*</span><span class="pln"> item </span><span class="pun">=</span><span class="pln"> cJSON_GetArrayItem</span><span class="pun">(</span><span class="pln">items</span><span class="pun">,</span><span class="pln"> i</span><span class="pun">);</span><span class="pln">
+
+    name </span><span class="pun">=</span><span class="pln"> cJSON_GetObjectItem</span><span class="pun">(</span><span class="pln">item</span><span class="pun">,</span><span class="pln"> </span><span class="str">"name"</span><span class="pun">);</span><span class="pln">
+    index </span><span class="pun">=</span><span class="pln"> cJSON_GetObjectItem</span><span class="pun">(</span><span class="pln">item</span><span class="pun">,</span><span class="pln"> </span><span class="str">"index"</span><span class="pun">);</span><span class="pln">
+    optional </span><span class="pun">=</span><span class="pln"> cJSON_GetObjectItem</span><span class="pun">(</span><span class="pln">item</span><span class="pun">,</span><span class="pln"> </span><span class="str">"optional"</span><span class="pun">);</span><span class="pln">
+
+    </span><span class="com">// Stash above info somewhere</span><span class="pln">
+</span><span class="pun">}</span></code></pre>
+</div>
+    <table class="fw">
+    <tbody><tr>
+    <td class="vt">
+
+
+
+
+
+
+
+
+
+
+
+<div class="post-menu"><a href="http://stackoverflow.com/a/16901431" title="short permalink to this answer" class="short-link" id="link-post-16901431">share</a><span class="lsep">|</span><a href="http://stackoverflow.com/posts/16901431/edit" class="suggest-edit-post" title="">improve this answer</a></div>                    </td>
+            
+
+
+    <td align="right" class="post-signature">   
+       
+
+    
+<div class="user-info user-hover">
+    <div class="user-action-time">
+        
+        
+            answered <span title="2013-06-03 16:27:01Z" class="relativetime">Jun 3 at 16:27</span>
+        
+
+    </div>
+    <div class="user-gravatar32">
+        <a href="http://stackoverflow.com/users/581994/hot-licks"><div><img src="./03_files/d2ae9ac6fb51918297a0ce5dada0eb22" alt="" width="32" height="32"></div></a>
+    </div>
+    <div class="user-details">
+        <a href="http://stackoverflow.com/users/581994/hot-licks">Hot Licks</a><br>
+        <span class="reputation-score" title="reputation score 20614" dir="ltr">20.6k</span><span title="4 gold badges"><span class="badge1"></span><span class="badgecount">4</span></span><span title="27 silver badges"><span class="badge2"></span><span class="badgecount">27</span></span><span title="66 bronze badges"><span class="badge3"></span><span class="badgecount">66</span></span>
+    </div>
+</div>
+    </td>
+    </tr>
+    </tbody></table>
+</td>        </tr>
+
+<tr>
+    <td class="votecell"></td>
+    <td>
+	    <div id="comments-16901431" class="comments dno" data-localized="true">
+		    <table>
+			    <tbody data-remaining-comments-count="0" data-addlink-html="" data-addlink-disabled="true">
+					    <tr><td></td><td></td></tr>
+			    </tbody>
+		    </table>
+	    </div>
+			<a id="comments-link-16901431" class="comments-link disabled-link" title="Use comments to ask for more information or suggest improvements. Avoid comments like “+1” or “thanks”."></a>
+    </td>
+</tr>
+    </tbody></table>
+</div>
+									<a name="new-answer"></a>
+						<form id="post-form" action="http://stackoverflow.com/questions/16900874/answer/submit" method="post" class="post-form">
+							<input type="hidden" id="post-id" value="16900874">
+							<h2 class="space">Your Answer</h2>
+
+
+
+    
+
+<script type="text/javascript">
+    StackExchange.ready(function() {
+        initTagRenderer("".split(" "), "".split(" "));
+         
+        prepareEditor({
+            heartbeatType: 'answer',
+            bindNavPrevention: true,
+            postfix: "",
+            onDemand: true,
+            discardSelector: ".discard-answer"
+            ,immediatelyShowMarkdownHelp:true
+        });
+        
+
+    });  
+</script>
+
+
+<div id="post-editor" class="post-editor">
+
+    <div style="position: relative;">     
+        <div class="wmd-container">
+            <div id="wmd-button-bar" class="wmd-button-bar"><ul id="wmd-button-row" class="wmd-button-row"><li id="wmd-bold-button" class="wmd-button" style="left: 0px;"><span style="background-position: 0px -20px;"></span></li><li id="wmd-italic-button" class="wmd-button" style="left: 25px;"><span style="background-position: -20px -20px;"></span></li><li id="wmd-spacer1" class="wmd-spacer" style="left: 50px;"><span style="background-position: -40px -20px;"></span></li><li id="wmd-link-button" class="wmd-button" style="left: 75px;"><span style="background-position: -40px -20px;"></span></li><li id="wmd-quote-button" class="wmd-button" style="left: 100px;"><span style="background-position: -60px -20px;"></span></li><li id="wmd-code-button" class="wmd-button" style="left: 125px;"><span style="background-position: -80px -20px;"></span></li><li id="wmd-image-button" class="wmd-button" style="left: 150px;"><span style="background-position: -100px -20px;"></span></li><li id="wmd-spacer2" class="wmd-spacer" style="left: 175px;"><span style="background-position: -120px -20px;"></span></li><li id="wmd-olist-button" class="wmd-button" style="left: 200px;"><span style="background-position: -120px -20px;"></span></li><li id="wmd-ulist-button" class="wmd-button" style="left: 225px;"><span style="background-position: -140px -20px;"></span></li><li id="wmd-heading-button" class="wmd-button" style="left: 250px;"><span style="background-position: -160px -20px;"></span></li><li id="wmd-hr-button" class="wmd-button" style="left: 275px;"><span style="background-position: -180px -20px;"></span></li><li id="wmd-spacer3" class="wmd-spacer" style="left: 300px;"><span style="background-position: -200px -20px;"></span></li><li id="wmd-undo-button" class="wmd-button" style="left: 325px;"><span style="background-position: -200px -20px;"></span></li><li id="wmd-redo-button" class="wmd-button" style="left: 350px;"><span style="background-position: -220px -20px;"></span></li></ul></div>
+            <textarea id="wmd-input" class="wmd-input" name="post-text" cols="92" rows="15" tabindex="101" data-min-length=""></textarea>
+        </div>
+    </div>
+
+    <div class="fl" style="margin-top: 8px; height:24px;">&nbsp;</div>
+    <div id="draft-saved" class="draft-saved community-option fl" style="margin-top: 8px; height:24px; display:none;">draft saved</div>
+
+    <div id="draft-discarded" class="draft-discarded community-option fl" style="margin-top: 8px; height:24px; display:none;">draft discarded</div>
+
+
+
+    <div id="wmd-preview" class="wmd-preview"></div>
+    <div></div>
+    <div class="edit-block">
+        <input id="fkey" name="fkey" type="hidden" value="607be6b7e3e0a3d0ddca709ab0db12f9">
+        <input id="author" name="author" type="text">
+    </div>
+</div>
+							<div style="position: relative;">
+								
+            <div class="form-item new-post-login">
+        
+                <div class="new-login-form">
+                    <div class="new-login-left">
+                        <h3>Sign up or <a id="login-link" href="http://stackoverflow.com/users/login?returnurl=%2fquestions%2f16900874%2fusing-cjson-to-read-in-a-json-array%23new-answer">login</a></h3>
+                        <script type="text/javascript">
+                            StackExchange.ready(function () {
+                                StackExchange.helpers.onClickDraftSave('#login-link');
+                            });
+                        </script>
+                        <div class="preferred-login google-login">
+                            <p><span class="icon"></span><span>Sign up using Google</span></p>
+                        </div>
+                        <div class="preferred-login facebook-login">
+                            <p><span class="icon"></span><span>Sign up using Facebook</span></p>
+                        </div>
+                        <div class="preferred-login stackexchange-login">
+                            <p><span class="icon"></span><span>Sign up using Stack Exchange</span></p>
+                        </div>
+                    </div>
+                    <input type="hidden" name="manual-openid" class="manual-openid">
+                    <input type="hidden" name="use-facebook" class="use-facebook" value="false">
+                    <input type="button" class="submit-openid" value="Submit" style="display:none">
+                    <div class="new-login-right">
+                                <h3>Post as a guest</h3>
+    <div class="form-item">
+        <table>
+        <tbody><tr>
+                    <script type="text/javascript">
+                StackExchange.ready(function () {
+                    StackExchange.helpers.bindHelpOverlayEvents($('.vm input'));
+                });
+            </script>
+            <td class="vm">
+                <div>
+                    <label for="display-name">Name</label>
+                    <input id="display-name" name="display-name" type="text" size="30" maxlength="30" value="" tabindex="105">
+                </div>
+                <div>
+                    <label for="m-address">Email</label>
+                    <input id="m-address" name="m-address" type="text" size="30" maxlength="100" value="" tabindex="106">
+                    <span class="edit-field-overlay">required, but not shown</span>
+                </div>
+            </td>
+        </tr>
+        </tbody></table>
+    </div>
+
+                    </div>
+                </div>
+            </div>
+            <script type="text/javascript">
+                StackExchange.ready(
+                    function () {
+                        StackExchange.openid.initPostLogin('.new-post-login', '%2fquestions%2f16900874%2fusing-cjson-to-read-in-a-json-array%23new-answer');
+                    }
+                );
+            </script>
+            <noscript>
+                        &lt;h3&gt;Post as a guest&lt;/h3&gt;
+    &lt;div class="form-item"&gt;
+        &lt;table&gt;
+        &lt;tr&gt;
+                    &lt;script type="text/javascript"&gt;
+                StackExchange.ready(function () {
+                    StackExchange.helpers.bindHelpOverlayEvents($('.vm input'));
+                });
+            &lt;/script&gt;
+            &lt;td class="vm"&gt;
+                &lt;div&gt;
+                    &lt;label for="display-name"&gt;Name&lt;/label&gt;
+                    &lt;input id="display-name" name="display-name" type="text" size="30" maxlength="30" value="" tabindex="105"&gt;
+                &lt;/div&gt;
+                &lt;div&gt;
+                    &lt;label for="m-address"&gt;Email&lt;/label&gt;
+                    &lt;input id="m-address" name="m-address" type="text" size="30" maxlength="100" value="" tabindex="106"&gt;
+                    &lt;span class="edit-field-overlay"&gt;required, but not shown&lt;/span&gt;
+                &lt;/div&gt;
+            &lt;/td&gt;
+        &lt;/tr&gt;
+        &lt;/table&gt;
+    &lt;/div&gt;
+
+            </noscript>
+							</div>
+           
+															<div class="form-submit cbt">
+									<input id="submit-button" type="submit" value="Post Your Answer" tabindex="110">
+									<a href="http://stackoverflow.com/questions/16900874/using-cjson-to-read-in-a-json-array#" class="discard-answer dno">discard</a>
+
+<p class="privacy-policy-agreement">
+By posting your answer, you agree to the <a href="http://stackexchange.com/legal/privacy-policy" target="_blank">privacy policy</a> and <a href="http://stackexchange.com/legal/terms-of-service" target="_blank">terms of service</a>.</p>
+<input type="hidden" name="legalLinksShown" value="1">								</div>
+						</form>
+
+
+
+						<h2 class="bottom-notice">
+Not the answer you're looking for?							Browse other questions tagged <a href="http://stackoverflow.com/questions/tagged/c" class="post-tag" title="show questions tagged &#39;c&#39;" rel="tag">c</a> <a href="http://stackoverflow.com/questions/tagged/json" class="post-tag" title="show questions tagged &#39;json&#39;" rel="tag">json</a>  or <a href="http://stackoverflow.com/questions/ask">ask your own question</a>.						</h2>
+			</div>
+		</div>
+				<div id="sidebar" class="show-votes">
+							<div class="module question-stats">
+					<p class="label-key">tagged</p>
+					<div class="tagged"><a href="http://stackoverflow.com/questions/tagged/c" class="post-tag" title="show questions tagged &#39;c&#39;" rel="tag">c</a>&nbsp;<span class="item-multiplier"><span class="item-multiplier-x">×</span>&nbsp;<span class="item-multiplier-count">115918</span></span><br>
+<a href="http://stackoverflow.com/questions/tagged/json" class="post-tag" title="show questions tagged &#39;json&#39;" rel="tag">json</a>&nbsp;<span class="item-multiplier"><span class="item-multiplier-x">×</span>&nbsp;<span class="item-multiplier-count">60288</span></span><br>
+</div>
+					<table id="qinfo">
+						<tbody><tr>
+							<td>
+								<p class="label-key">asked</p>
+							</td>
+							<td style="padding-left: 10px">
+								<p class="label-key" title="2013-06-03 15:55:19Z"><b>5 months ago</b></p>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<p class="label-key">viewed</p>
+							</td>
+
+							<td style="padding-left: 10px">
+								<p class="label-key">
+									<b>1104 times</b>
+								</p>
+							</td>
+						</tr>
+							<tr>
+								<td>
+									<p class="label-key">active</p>
+								</td>
+								<td style="padding-left: 10px">
+									<p class="label-key"><b><a href="http://stackoverflow.com/questions/16900874/using-cjson-to-read-in-a-json-array?lastactivity" class="lastactivity-link" title="2013-06-03 16:29:08Z">5 months ago</a></b></p>
+								</td>
+							</tr>
+					</tbody></table>
+				</div>
+			<div class="module community-bulletin" data-tracker="cb=1">
+    <h4>Community Bulletin</h4>
+    <div class="related">
+
+            <div class="spacer">
+                <div class="bulletin-item-type"><a href="http://blog.stackoverflow.com/?cb=1" class="event-date" target="_blank">blog</a></div>
+                <div class="bulletin-item-content">
+                    <a href="http://blog.stackoverflow.com/2013/11/podcast-54-the-one-with-all-the-anachronisms/?cb=1" class="question-hyperlink" target="_blank">Podcast #54 – The One With All The Anachronisms</a>
+                </div>
+                <br class="cbt">
+            </div>
+    </div>
+</div>
+
+			
+			            <script type="text/javascript">
+                var ados = ados || {};ados.run = ados.run || [];
+                ados.run.push(function() { ados_add_placement(22,8277,"adzerk286421346",17).setZone(45) ; });                    
+            </script>
+              
+    <div id="hireme"> <a href="http://careers.stackoverflow.com/jobs?a=144" class="top" target="_blank"></a> <ul class="jobs"> <li> <a href="http://careers.stackoverflow.com/jobs/43186/technical-director-a-different-engine-llc?a=QFwpbMAg" target="_blank" title="Technical Director at A Different Engine. Click to learn more."> Technical Director<br> <span class="company">A Different Engine</span> <span class="location">San Francisco, CA</span> </a> </li> <li> <a href="http://careers.stackoverflow.com/jobs/14433/senior-operations-developer-london-uk-or-boston-tim-group?a=hBm3saze" target="_blank" title="Senior Operations Developer, London UK or Boston MA at TIM Group. Click to learn more."> Senior Operations Developer, London UK or Boston MA<br> <span class="company">TIM Group</span> <span class="location">Boston, MA / relocation</span> </a> </li> <li> <a href="http://careers.stackoverflow.com/jobs/43628/software-engineer-thorlabs?a=RcWze6AM" target="_blank" title="Software Engineer at THORLABS. Click to learn more."> Software Engineer<br> <span class="company">THORLABS</span> <span class="location">Austin, TX / relocation</span> </a> </li> </ul> <img alt="" class="impression" src="./03_files/QFwpbMAg-hBm3saze-RcWze6AM-144" style="display:none"></div>
+
+
+
+			    <div style="margin-bottom: 10px;">
+        
+
+<style type="text/css">
+#newsletter-ad {
+    width: 190px;
+    height: 250px;
+    overflow: hidden;
+    background: url('//cdn.sstatic.net/stackoverflow/img/newsletter-ad.png');
+    padding: 0 15px 0 15px;
+}
+#newsletter-ad-header {
+    margin-top: 60px;
+}
+#newsletter-ad ul {
+    margin: 1em 0 1em 1.5em;
+}
+#newsletter-ad ul li {
+    margin-bottom: 5px;
+}
+#newsletter-signup-container {
+    text-align: center;
+}
+#newsletter-preview-container {
+    margin-top: 10px;
+    text-align: center;
+}
+#newsletter-email-input {
+    width: 200px;
+}
+</style>
+
+<script>
+    StackExchange.ready(function () {
+        StackExchange.newsletterAd.init();
+    });
+</script>
+
+<div id="newsletter-ad">
+    <p id="newsletter-ad-header">Get the <b>weekly newsletter!</b></p>
+    <ul>
+        <li>Top questions and answers</li>
+        <li>Important announcements</li>
+        <li>Unanswered questions</li>
+    </ul>
+    <div id="newsletter-signup-container"><input id="newsletter-signup" type="button" value="Sign up for the newsletter"></div>
+    <p id="newsletter-preview-container">see an <a href="http://stackexchange.com/newsletters/newsletter?site=stackoverflow.com" id="newsletter-preview">example newsletter</a></p>
+    <div class="dno">
+        
+<p class="privacy-policy-agreement">
+By subscribing, you agree to the <a href="http://stackexchange.com/legal/privacy-policy" target="_blank">privacy policy</a> and <a href="http://stackexchange.com/legal/terms-of-service" target="_blank">terms of service</a>.</p>
+<input type="hidden" name="legalLinksShown" value="1">
+    </div>
+</div>
+
+    </div>
+  
+    
+            
+
+				<div class="module sidebar-related">
+					<h4 id="h-related">Related</h4>
+					<div class="related" data-tracker="rq=1">
+						<div class="spacer">
+<a href="http://stackoverflow.com/q/206384?rq=1" title="Vote score (upvotes - downvotes)">
+    <div class="answer-votes answered-accepted large">855
+    </div>
+</a><a href="http://stackoverflow.com/questions/206384/how-to-format-a-json-date?rq=1" class="question-hyperlink">How to format a JSON date?</a>
+</div>
+<div class="spacer">
+<a href="http://stackoverflow.com/q/244777?rq=1" title="Vote score (upvotes - downvotes)">
+    <div class="answer-votes answered-accepted large">946
+    </div>
+</a><a href="http://stackoverflow.com/questions/244777/can-i-comment-a-json-file?rq=1" class="question-hyperlink">Can I comment a JSON file?</a>
+</div>
+<div class="spacer">
+<a href="http://stackoverflow.com/q/338586?rq=1" title="Vote score (upvotes - downvotes)">
+    <div class="answer-votes answered-accepted large">589
+    </div>
+</a><a href="http://stackoverflow.com/questions/338586/a-better-java-json-library?rq=1" class="question-hyperlink">A better Java JSON library?</a>
+</div>
+<div class="spacer">
+<a href="http://stackoverflow.com/q/477816?rq=1" title="Vote score (upvotes - downvotes)">
+    <div class="answer-votes answered-accepted extra-large">3609
+    </div>
+</a><a href="http://stackoverflow.com/questions/477816/what-is-the-correct-json-content-type?rq=1" class="question-hyperlink">What is the correct JSON content type?</a>
+</div>
+<div class="spacer">
+<a href="http://stackoverflow.com/q/7039172?rq=1" title="Vote score (upvotes - downvotes)">
+    <div class="answer-votes default">0
+    </div>
+</a><a href="http://stackoverflow.com/questions/7039172/reading-json-array?rq=1" class="question-hyperlink">Reading JSON array</a>
+</div>
+<div class="spacer">
+<a href="http://stackoverflow.com/q/9142418?rq=1" title="Vote score (upvotes - downvotes)">
+    <div class="answer-votes answered-accepted default">0
+    </div>
+</a><a href="http://stackoverflow.com/questions/9142418/json-read-inner-array?rq=1" class="question-hyperlink">JSon Read inner array</a>
+</div>
+<div class="spacer">
+<a href="http://stackoverflow.com/q/9360017?rq=1" title="Vote score (upvotes - downvotes)">
+    <div class="answer-votes answered-accepted default">-1
+    </div>
+</a><a href="http://stackoverflow.com/questions/9360017/simple-case-of-json-parsing-where-input-is-an-array-in-c-using-cjson-library?rq=1" class="question-hyperlink">Simple case of json parsing where input is an array in c++ using cJSON library</a>
+</div>
+<div class="spacer">
+<a href="http://stackoverflow.com/q/16898731?rq=1" title="Vote score (upvotes - downvotes)">
+    <div class="answer-votes answered-accepted default">5
+    </div>
+</a><a href="http://stackoverflow.com/questions/16898731/creating-an-json-array-in-c-sharp?rq=1" class="question-hyperlink">Creating an JSON array in C#</a>
+</div>
+<div class="spacer">
+<a href="http://stackoverflow.com/q/17403103?rq=1" title="Vote score (upvotes - downvotes)">
+    <div class="answer-votes answered-accepted default">0
+    </div>
+</a><a href="http://stackoverflow.com/questions/17403103/how-to-read-json-array-in-jquery?rq=1" class="question-hyperlink">How to read JSON array in jQuery</a>
+</div>
+<div class="spacer">
+<a href="http://stackoverflow.com/q/19292174?rq=1" title="Vote score (upvotes - downvotes)">
+    <div class="answer-votes default">0
+    </div>
+</a><a href="http://stackoverflow.com/questions/19292174/cant-read-json-array-value-with-a-in-the-array-name?rq=1" class="question-hyperlink">Can't read JSON array value with a “$” in the array name,</a>
+</div>
+
+					</div>
+				</div>
+		</div>
+	
+<div id="feed-link">
+    <div id="feed-link-text"><a href="http://stackoverflow.com/feeds/question/16900874" title="feed of this question and its answers"><span class="feed-icon"></span>question feed</a></div>
+</div>
+	<script type="text/javascript">
+StackExchange.ready(function(){$.get('/posts/16900874/ivc/8d49');});
+</script>
+<noscript>
+    &lt;div&gt;&lt;img src="/posts/16900874/ivc/8d49" class="dno" alt="" width="0" height="0"&gt;&lt;/div&gt;
+</noscript><div style="display:none" id="prettify-lang">lang-c</div></div>
+
+
+        </div>
+    </div>
+    <div id="footer" class="categories">
+        <div class="footerwrap">
+            <div id="footer-menu">
+                <div class="top-footer-links">
+                        <a href="http://stackoverflow.com/about">about</a>
+                    <a href="http://stackoverflow.com/help">help</a>
+                        <a href="http://stackoverflow.com/help/badges">badges</a>
+                    <a href="http://blog.stackexchange.com/?blb=1">blog</a>
+                        <a href="http://chat.stackoverflow.com/">chat</a>
+                    <a href="http://data.stackexchange.com/">data</a>
+                    <a href="http://stackexchange.com/legal">legal</a>
+                    <a href="http://stackexchange.com/legal/privacy-policy">privacy policy</a>
+                    <a href="http://stackexchange.com/about/hiring">jobs</a>
+                    <a href="http://engine.adzerk.net/r?e=eyJhdiI6NDE0LCJhdCI6MjAsImNtIjo5NTQsImNoIjoxMTc4LCJjciI6Mjc3NiwiZG0iOjQsImZjIjoyODYyLCJmbCI6Mjc1MSwibnciOjIyLCJydiI6MCwicHIiOjExNSwic3QiOjAsInVyIjoiaHR0cDovL3N0YWNrb3ZlcmZsb3cuY29tL2Fib3V0L2NvbnRhY3QiLCJyZSI6MX0&s=hRods5B22XvRBwWIwtIMekcyNF8">advertising info</a>
+
+                    <a onclick="StackExchange.switchMobile(&quot;on&quot;, &quot;/questions/16900874/using-cjson-to-read-in-a-json-array&quot;)">mobile</a>
+                    <b><a href="http://stackoverflow.com/contact">contact us</a></b>
+                        <b><a href="http://meta.stackoverflow.com/">feedback</a></b>
+                    
+                </div>
+                <div id="footer-sites">
+                    <table>
+    <tbody><tr>
+            <th colspan="3">
+                Technology
+            </th>
+            <th>
+                Life / Arts
+            </th>
+            <th>
+                Culture / Recreation
+            </th>
+            <th>
+                Science
+            </th>
+            <th>
+                Other
+            </th>
+    </tr>
+    <tr>
+            <td>
+                <ol>
+                        <li><a href="http://stackoverflow.com/" title="professional and enthusiast programmers">Stack Overflow</a></li>
+                        <li><a href="http://serverfault.com/" title="professional system and network administrators">Server Fault</a></li>
+                        <li><a href="http://superuser.com/" title="computer enthusiasts and power users">Super User</a></li>
+                        <li><a href="http://webapps.stackexchange.com/" title="power users of web applications">Web Applications</a></li>
+                        <li><a href="http://askubuntu.com/" title="Ubuntu users and developers">Ask Ubuntu</a></li>
+                        <li><a href="http://webmasters.stackexchange.com/" title="pro webmasters">Webmasters</a></li>
+                        <li><a href="http://gamedev.stackexchange.com/" title="professional and independent game developers">Game Development</a></li>
+                        <li><a href="http://tex.stackexchange.com/" title="users of TeX, LaTeX, ConTeXt, and related typesetting systems">TeX - LaTeX</a></li>
+                            </ol></td><td><ol>
+                        <li><a href="http://programmers.stackexchange.com/" title="professional programmers interested in conceptual questions about software development">Programmers</a></li>
+                        <li><a href="http://unix.stackexchange.com/" title="users of Linux, FreeBSD and other Un*x-like operating systems.">Unix &amp; Linux</a></li>
+                        <li><a href="http://apple.stackexchange.com/" title="power users of Apple hardware and software">Ask Different (Apple)</a></li>
+                        <li><a href="http://wordpress.stackexchange.com/" title="WordPress developers and administrators">WordPress Answers</a></li>
+                        <li><a href="http://gis.stackexchange.com/" title="cartographers, geographers and GIS professionals">Geographic Information Systems</a></li>
+                        <li><a href="http://electronics.stackexchange.com/" title="electronics and electrical engineering professionals, students, and enthusiasts">Electrical Engineering</a></li>
+                        <li><a href="http://android.stackexchange.com/" title="enthusiasts and power users of the Android operating system">Android Enthusiasts</a></li>
+                        <li><a href="http://security.stackexchange.com/" title="Information security professionals">Information Security</a></li>
+                            </ol></td><td><ol>
+                        <li><a href="http://dba.stackexchange.com/" title="database professionals who wish to improve their database skills and learn from others in the community">Database Administrators</a></li>
+                        <li><a href="http://drupal.stackexchange.com/" title="Drupal developers and administrators">Drupal Answers</a></li>
+                        <li><a href="http://sharepoint.stackexchange.com/" title="SharePoint enthusiasts">SharePoint</a></li>
+                        <li><a href="http://ux.stackexchange.com/" title="user experience researchers and experts">User Experience</a></li>
+                        <li><a href="http://mathematica.stackexchange.com/" title="users of Mathematica">Mathematica</a></li>
+                    
+                        <li>
+                            <a href="http://stackexchange.com/sites#technology" class="more">
+                                more (14)
+                            </a>
+                        </li>
+                </ol>
+            </td>
+            <td>
+                <ol>
+                        <li><a href="http://photo.stackexchange.com/" title="professional, enthusiast and amateur photographers">Photography</a></li>
+                        <li><a href="http://scifi.stackexchange.com/" title="science fiction and fantasy enthusiasts">Science Fiction &amp; Fantasy</a></li>
+                        <li><a href="http://cooking.stackexchange.com/" title="professional and amateur chefs">Seasoned Advice (cooking)</a></li>
+                        <li><a href="http://diy.stackexchange.com/" title="contractors and serious DIYers">Home Improvement</a></li>
+                    
+                        <li>
+                            <a href="http://stackexchange.com/sites#lifearts" class="more">
+                                more (13)
+                            </a>
+                        </li>
+                </ol>
+            </td>
+            <td>
+                <ol>
+                        <li><a href="http://english.stackexchange.com/" title="linguists, etymologists, and serious English language enthusiasts">English Language &amp; Usage</a></li>
+                        <li><a href="http://skeptics.stackexchange.com/" title="scientific skepticism">Skeptics</a></li>
+                        <li><a href="http://judaism.stackexchange.com/" title="those who base their lives on Jewish law and tradition and anyone interested in learning more">Mi Yodeya (Judaism)</a></li>
+                        <li><a href="http://travel.stackexchange.com/" title="road warriors and seasoned travelers">Travel</a></li>
+                        <li><a href="http://christianity.stackexchange.com/" title="committed Christians, experts in Christianity and those interested in learning more">Christianity</a></li>
+                        <li><a href="http://gaming.stackexchange.com/" title="passionate videogamers on all platforms">Arqade (gaming)</a></li>
+                        <li><a href="http://bicycles.stackexchange.com/" title="people who build and repair bicycles, people who train cycling, or commute on bicycles">Bicycles</a></li>
+                        <li><a href="http://rpg.stackexchange.com/" title="gamemasters and players of tabletop, paper-and-pencil role-playing games">Role-playing Games</a></li>
+                    
+                        <li>
+                            <a href="http://stackexchange.com/sites#culturerecreation" class="more">
+                                more (21)
+                            </a>
+                        </li>
+                </ol>
+            </td>
+            <td>
+                <ol>
+                        <li><a href="http://math.stackexchange.com/" title="people studying math at any level and professionals in related fields">Mathematics</a></li>
+                        <li><a href="http://stats.stackexchange.com/" title="statisticians, data analysts, data miners and data visualization experts">Cross Validated (stats)</a></li>
+                        <li><a href="http://cstheory.stackexchange.com/" title="theoretical computer scientists and researchers in related fields">Theoretical Computer Science</a></li>
+                        <li><a href="http://physics.stackexchange.com/" title="active researchers, academics and students of physics">Physics</a></li>
+                        <li><a href="http://mathoverflow.net/" title="professional mathematicians">MathOverflow</a></li>
+                    
+                        <li>
+                            <a href="http://stackexchange.com/sites#science" class="more">
+                                more (7)
+                            </a>
+                        </li>
+                </ol>
+            </td>
+            <td>
+                <ol>
+                        <li><a href="http://stackapps.com/" title="apps, scripts, and development with the Stack Exchange API">Stack Apps</a></li>
+                        <li><a href="http://meta.stackoverflow.com/" title="meta-discussion of the Stack Exchange family of Q&amp;A websites">Meta Stack Overflow</a></li>
+                        <li><a href="http://area51.stackexchange.com/" title="proposing new sites in the Stack Exchange network">Area 51</a></li>
+                        <li><a href="http://careers.stackoverflow.com/">Stack Overflow Careers</a></li>
+                    
+                </ol>
+            </td>
+    </tr>
+</tbody></table>
+                </div>
+            </div>
+
+            <div id="copyright">
+                site design / logo © 2013 stack exchange inc; user contributions licensed under <a href="http://creativecommons.org/licenses/by-sa/3.0/" rel="license">cc-wiki</a> 
+ with <a href="http://blog.stackoverflow.com/2009/06/attribution-required/" rel="license">attribution required</a>
+            </div>
+            <div id="footer-flair">
+                <a href="http://creativecommons.org/licenses/by-sa/3.0/" class="cc-wiki-link"></a>
+            </div>
+            <div id="svnrev">
+                rev 2013.11.15.1158
+            </div>
+            
+        </div>
+    <iframe id="global-auth-frame" style="display:none" src="./03_files/read.htm"></iframe></div>
+    <noscript>
+        &lt;div id="noscript-warning"&gt;Stack Overflow works best with JavaScript enabled&lt;img src="http://pixel.quantserve.com/pixel/p-c1rF4kxgLUzNc.gif" alt="" class="dno"&gt;&lt;/div&gt;
+    </noscript>
+<script type="text/javascript">var p = "http", d = "static"; if (document.location.protocol == "https:") { p += "s"; d = "engine"; } var z = document.createElement("script"); z.type = "text/javascript"; z.async = true; z.src = p + "://" + d + ".adzerk.net/ados.js"; var s = document.getElementsByTagName("script")[0]; s.parentNode.insertBefore(z, s);</script>
+<script type="text/javascript">
+    var ados = ados || {};
+    ados.run = ados.run || [];
+    ados.run.push(function () { ados_setKeywords('c,json');; ados_load(); });         
+</script>
+
+    <script type="text/javascript">var _gaq=_gaq||[];_gaq.push(['_setAccount','UA-5620270-1']);
+        _gaq.push(['_setCustomVar', 1, 'tags', '|c|json|']); 
+_gaq.push(['_trackPageview']);
+    var _qevents = _qevents || [];
+    var _comscore = _comscore || [];
+    (function () {
+        var ssl='https:'==document.location.protocol,
+            s=document.getElementsByTagName('script')[0],
+            ga=document.createElement('script');
+        ga.type='text/javascript';
+        ga.async=true;
+        ga.src=(ssl?'https://ssl':'http://www')+'.google-analytics.com/ga.js';
+        s.parentNode.insertBefore(ga,s);
+        var sc=document.createElement('script');
+        sc.type='text/javascript';
+        sc.async=true;
+        sc.src=(ssl?'https://secure':'http://edge')+'.quantserve.com/quant.js';
+        s.parentNode.insertBefore(sc, s);
+        
+        var s = document.createElement("script"), el = document.getElementsByTagName("script")[0]; s.async = true;
+        s.src = (document.location.protocol == "https:" ? "https://sb" : "http://b") + ".scorecardresearch.com/beacon.js";
+        el.parentNode.insertBefore(s, el);
+        
+    })();
+    _comscore.push({ c1: "2", c2: "17440561" });
+    _qevents.push({ qacct: "p-c1rF4kxgLUzNc" });
+    </script>        
+    
+
+</body></html>

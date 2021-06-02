@@ -1,0 +1,88 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!-- saved from url=(0081)https://neil.fraser.name/software/diff_match_patch/svn/trunk/demos/demo_diff.html -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=Big5">
+  <title>Diff, Match and Patch: Demo of Diff</title>
+  <script type="text/javascript" language="JavaScript" src="./Diff, Match and Patch  Demo of Diff_files/diff_match_patch.js"></script>
+</head>
+
+<body>
+<h1>Diff, Match and Patch</h1>
+<h2>Demo of Diff</h2>
+
+<p>Diff takes two texts and finds the differences.  This implementation works on a character by character basis.
+The result of any diff may contain 'chaff', irrelevant small commonalities which complicate the output.
+A post-diff cleanup algorithm factors out these trivial commonalities.</p>
+
+<script type="text/javascript" language="JavaScript">
+var dmp = new diff_match_patch();
+
+function launch() {
+  var text1 = document.getElementById('text1').value;
+  var text2 = document.getElementById('text2').value;
+  dmp.Diff_Timeout = parseFloat(document.getElementById('timeout').value);
+  dmp.Diff_EditCost = parseFloat(document.getElementById('editcost').value);
+
+  var ms_start = (new Date()).getTime();
+  var d = dmp.diff_main(text1, text2);
+  var ms_end = (new Date()).getTime();
+
+  if (document.getElementById('semantic').checked) {
+    dmp.diff_cleanupSemantic(d);
+  }
+  if (document.getElementById('efficiency').checked) {
+    dmp.diff_cleanupEfficiency(d);
+  }
+  var ds = dmp.diff_prettyHtml(d);
+  document.getElementById('outputdiv').innerHTML = ds + '<BR>Time: ' + (ms_end - ms_start) / 1000 + 's';
+}
+</script>
+
+<form action="https://neil.fraser.name/software/diff_match_patch/svn/trunk/demos/demo_diff.html#" onsubmit="return false">
+<table width="100%"><tbody><tr>
+  <td width="50%">
+<h3>Text Version 1:</h3>
+<textarea id="text1" style="width: 100%" rows="10">I am the very model of a modern Major-General,
+I've information vegetable, animal, and mineral,
+I know the kings of England, and I quote the fights historical,
+From Marathon to Waterloo, in order categorical.</textarea></td>
+  <td width="50%">
+<h3>Text Version 2:</h3>
+<textarea id="text2" style="width: 100%" rows="10">I am the very model of a cartoon individual,
+My animation's comical, unusual, and whimsical,
+I'm quite adept at funny gags, comedic theory I have read,
+From wicked puns and stupid jokes to anvils that drop on your head.</textarea></td>
+</tr></tbody></table>
+
+<h3>Diff timeout:</h3>
+<p><input type="text" size="3" maxlength="5" value="1" id="timeout"> seconds<br>
+If the mapping phase of the diff computation takes longer than this, then the computation
+is truncated and the best solution to date is returned.  While guaranteed to be correct,
+it may not be optimal.  A timeout of '0' allows for unlimited computation.</p>
+
+<h3>Post-diff cleanup:</h3>
+<dl>
+<dt><input type="radio" name="cleanup" id="semantic" checked="">
+<label for="semantic">Semantic Cleanup</label></dt>
+<dd>Increase human readability by factoring out commonalities which are likely to be
+coincidental.</dd>
+<dt><input type="radio" name="cleanup" id="efficiency">
+<label for="efficiency">Efficiency Cleanup</label>,
+edit cost: <input type="text" size="3" maxlength="5" value="4" id="editcost">
+</dt><dd>Increase computational efficiency by factoring out short commonalities which are
+not worth the overhead.  The larger the edit cost, the more agressive the cleanup.</dd>
+<dt><input type="radio" name="cleanup" id="raw">
+<label for="raw">No Cleanup</label></dt>
+<dd>Raw output.</dd>
+</dl>
+
+<p><input type="button" onclick="launch()" value="Compute Diff"></p>
+</form>
+
+<div id="outputdiv"></div>
+
+<hr>
+Back to <a href="http://code.google.com/p/google-diff-match-patch/">Diff, Match and Patch</a>
+
+
+
+</body></html>

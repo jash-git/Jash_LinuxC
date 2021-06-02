@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html lang="zh-TW" xml:lang="zh-TW" xmlns="http://www.w3.org/1999/xhtml">
+<head><meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+ <meta http-equiv="PICS-Label" content='(PICS-1.1 "http://www.icra.org/ratingsv02.html"  labels ratings (ca 1 lz 1 nz 1 oz 1 vz 1) "http://www.rsac.org/ratingsv01.html"  labels ratings (n 0 s 0 v 0 l 0))'/>
+ <title>如何在 Linux 下撰寫程式來使用 I/O 埠: 介紹</title>
+ <link href="IO-Port-Programming-2.html" tppabs="http://www.linux.org.tw/CLDP/MiniHOWTO/prog/IO-Port-Programming/IO-Port-Programming-2.html" rel="next" />
+ <link href="index.html" tppabs="http://www.linux.org.tw/CLDP/MiniHOWTO/prog/IO-Port-Programming/index.html" rel="prev" />
+
+ <link href="index.html" tppabs="http://www.linux.org.tw/CLDP/MiniHOWTO/prog/IO-Port-Programming/index.html" rel="contents" />
+  <link href="index.html" tppabs="http://www.linux.org.tw/CLDP/MiniHOWTO/prog/IO-Port-Programming/index.html" rel="start" />
+  <link href="IO-Port-Programming-1.html" tppabs="http://www.linux.org.tw/CLDP/MiniHOWTO/prog/IO-Port-Programming/IO-Port-Programming-1.html" rel="chapter" title="1.介紹" />
+ <link href="IO-Port-Programming-2.html" tppabs="http://www.linux.org.tw/CLDP/MiniHOWTO/prog/IO-Port-Programming/IO-Port-Programming-2.html" rel="chapter" title="2.如何在 C 語言下使用 I/O 埠" />
+ <link href="IO-Port-Programming-3.html" tppabs="http://www.linux.org.tw/CLDP/MiniHOWTO/prog/IO-Port-Programming/IO-Port-Programming-3.html" rel="chapter" title="3.硬體中斷 (IRQs) 與 DMA 存取" />
+ <link href="IO-Port-Programming-4.html" tppabs="http://www.linux.org.tw/CLDP/MiniHOWTO/prog/IO-Port-Programming/IO-Port-Programming-4.html" rel="chapter" title="4.高精確的時序" />
+ <link href="IO-Port-Programming-5.html" tppabs="http://www.linux.org.tw/CLDP/MiniHOWTO/prog/IO-Port-Programming/IO-Port-Programming-5.html" rel="chapter" title="5.使用其他程式語言" />
+ <link href="IO-Port-Programming-6.html" tppabs="http://www.linux.org.tw/CLDP/MiniHOWTO/prog/IO-Port-Programming/IO-Port-Programming-6.html" rel="chapter" title="6.一些有用的 I/O 埠" />
+ <link href="IO-Port-Programming-7.html" tppabs="http://www.linux.org.tw/CLDP/MiniHOWTO/prog/IO-Port-Programming/IO-Port-Programming-7.html" rel="chapter" title="7.提示 " />
+ <link href="IO-Port-Programming-8.html" tppabs="http://www.linux.org.tw/CLDP/MiniHOWTO/prog/IO-Port-Programming/IO-Port-Programming-8.html" rel="chapter" title="8.問題排除" />
+ <link href="IO-Port-Programming-9.html" tppabs="http://www.linux.org.tw/CLDP/MiniHOWTO/prog/IO-Port-Programming/IO-Port-Programming-9.html" rel="chapter" title="9.程式碼範例" />
+ <link href="IO-Port-Programming-10.html" tppabs="http://www.linux.org.tw/CLDP/MiniHOWTO/prog/IO-Port-Programming/IO-Port-Programming-10.html" rel="chapter" title="10.致謝" />
+ <link href="javascript:if(confirm('http://tldp.org/HOWTO/mini/IO-Port-Programming.html  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://tldp.org/HOWTO/mini/IO-Port-Programming.html'" tppabs="http://tldp.org/HOWTO/mini/IO-Port-Programming.html" rel="alternate" title="原版" />
+ <link href="style.css" tppabs="http://www.linux.org.tw/CLDP/MiniHOWTO/style.css" rel="stylesheet" type="text/css" />
+ <link href="javascript:if(confirm('http://sunsite.unc.edu/pub/Linux/docs/HOWTO/COPYRIGHT  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://sunsite.unc.edu/pub/Linux/docs/HOWTO/COPYRIGHT'" tppabs="http://sunsite.unc.edu/pub/Linux/docs/HOWTO/COPYRIGHT" rel="copyright" title="版權" />
+ <link href="IO-Port-Programming.rdf" tppabs="http://www.linux.org.tw/CLDP/MiniHOWTO/prog/IO-Port-Programming/IO-Port-Programming.rdf" rel="meta" title="各章節的說明資訊" />
+</head> <body> 
+<table
+
+
+
+
+>
+  <tr
+>
+    <th
+colspan="3" class="HdTitle"
+>Mini
+    HOWTO：Linux I/O port programming</th>
+  </tr
+>
+  <tr
+>
+    <td class="TtdL"
+><a href="index.html" tppabs="http://www.linux.org.tw/CLDP/MiniHOWTO/prog/IO-Port-Programming/index.html" accesskey="P">上一頁(P)</a></td
+>
+    <td class="TtdC"
+></td
+>
+    <td class="TtdR"
+><a href="IO-Port-Programming-2.html" tppabs="http://www.linux.org.tw/CLDP/MiniHOWTO/prog/IO-Port-Programming/IO-Port-Programming-2.html" accesskey="N">下一頁(N)</a></td
+>
+  </tr
+>
+</table
+>
+<hr />
+<h1><a name="s1" id="s1">1.</a> 介紹</h1>
+
+<p>本文的內容說明了 Intel x86 架構下如何在使用者模式 (user-mode) 中撰寫程式來使用硬體
+I/O 埠以及等待一小段的時間周期. 內容源自於一篇非常短的文章
+IO-Port mini-HOWTO 其作者與本文同.</p>
+<p>本文 1995-1997 的版權屬於 Riku Saikkonen 所有. 版權聲明詳見網頁
+<a href="javascript:if(confirm('http://sunsite.unc.edu/pub/Linux/docs/HOWTO/COPYRIGHT  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://sunsite.unc.edu/pub/Linux/docs/HOWTO/COPYRIGHT'" tppabs="http://sunsite.unc.edu/pub/Linux/docs/HOWTO/COPYRIGHT">Linux HOWTO copyright</a>.</p>
+<p>如果您對本文有任何指教不論是錯誤修正或是內容補述, 都歡迎寄信給我
+(<code>Riku.Saikkonen@hut.fi</code>)...</p>
+<p>本文對前一次發行的版本 (Mar 30 1997) 作了如下的修正:</p>
+<p></p>
+<ul>
+<li>對於 <code>inb_p</code>/<code>outb_p</code> 和埠位址 0x80 之間的關係做出了澄清.</li>
+<li>刪除了關於 <code>udelay()</code> 函式的資料, 因為 <code>nanosleep()</code> 函式
+提供了比較明確的使用方法.</li>
+<li>將內容轉換成 Linuxdoc-SGML 格式, 並且重新作了些許的編排.</li>
+<li>對很多地方作了些許的補述與修正.</li>
+</ul>
+
+
+
+<hr />
+<table
+
+
+
+
+>
+  <tr
+>
+    <td class="BtdL"
+><a href="index.html" tppabs="http://www.linux.org.tw/CLDP/MiniHOWTO/prog/IO-Port-Programming/index.html" accesskey="P">上一頁(P)</a></td
+>
+    <td class="BtdC"
+><a href="index.html" tppabs="http://www.linux.org.tw/CLDP/MiniHOWTO/prog/IO-Port-Programming/index.html" accesskey="H">目錄(H)</a></td
+>
+    <td class="BtdR"
+><a
+href="IO-Port-Programming-2.html" tppabs="http://www.linux.org.tw/CLDP/MiniHOWTO/prog/IO-Port-Programming/IO-Port-Programming-2.html"
+>下一頁(N)</a
+></td
+>
+  </tr
+>
+  <tr
+>
+    <td  class="BtdL"
+>目錄</td
+>
+    <td class="BtdC"
+><a href="IO-Port-Programming-1.html" tppabs="http://www.linux.org.tw/CLDP/MiniHOWTO/prog/IO-Port-Programming/IO-Port-Programming-1.html" accesskey="T">到頂層(T)</a></td
+>
+    <td class="BtdR"
+>如何在 C 語言下使用 I/O 埠</td
+>
+  </tr
+>
+</table
+>
+<div>
+<a href="javascript:if(confirm('http://validator.w3.org/check/referer  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://validator.w3.org/check/referer'" tppabs="http://validator.w3.org/check/referer"><img src="valid-xhtml10.png" tppabs="http://www.linux.org.tw/CLDP/valid-xhtml10.png"  alt="符合 XHTML 1.0" width="88" height="31" style="border:0;width:88px;height:31px"/></a>
+<a href="javascript:if(confirm('http://jigsaw.w3.org/css-validator/  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://jigsaw.w3.org/css-validator/'" tppabs="http://jigsaw.w3.org/css-validator/"><img style="border:0;width:88px;height:31px" src="vcss.png" tppabs="http://www.linux.org.tw/CLDP/vcss.png"  alt="符合 CSS"/></a>
+<a href="javascript:if(confirm('http://www.w3.org/WAI/WCAG1AA-Conformance  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://www.w3.org/WAI/WCAG1AA-Conformance'" tppabs="http://www.w3.org/WAI/WCAG1AA-Conformance" title="Explanation of Level Double-A Conformance"><img style="border:0;width:88px;height:32px" src="wcag1AA.gif" tppabs="http://www.linux.org.tw/CLDP/wcag1AA.gif" alt="Level Double-A conformance icon,  W3C-WAI Web Content Accessibility Guidelines 1.0"/></a>
+<a href="javascript:if(confirm('http://www.w3.org/RDF/  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://www.w3.org/RDF/'" tppabs="http://www.w3.org/RDF/" title="RDF 資源描述架構"><img  src="rdf.gif" tppabs="http://www.linux.org.tw/CLDP/rdf.gif" style="border:0" alt="表示該網頁支援資源描述架構"/></a>
+</div>
+</body>
+</html>

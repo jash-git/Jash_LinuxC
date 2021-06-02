@@ -1,0 +1,1179 @@
+<HTML
+><HEAD
+><TITLE
+>進階gdb</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.49"><LINK
+REL="HOME"
+TITLE="用Open Source工具開發軟體"
+HREF="book1.html" tppabs="http://www.study-area.org/cyril/opentools/opentools/book1.html"><LINK
+REL="UP"
+TITLE="除錯工具"
+HREF="debug.html" tppabs="http://www.study-area.org/cyril/opentools/opentools/debug.html"><LINK
+REL="PREVIOUS"
+TITLE="基本gdb"
+HREF="x1253.html" tppabs="http://www.study-area.org/cyril/opentools/opentools/x1253.html"><LINK
+REL="NEXT"
+TITLE="結語"
+HREF="x1347.html" tppabs="http://www.study-area.org/cyril/opentools/opentools/x1347.html"></HEAD
+><BODY
+CLASS="SECT1"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>用Open Source工具開發軟體: 新軟體開發關念</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="x1253.html" tppabs="http://www.study-area.org/cyril/opentools/opentools/x1253.html"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 6. 除錯工具</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="x1347.html" tppabs="http://www.study-area.org/cyril/opentools/opentools/x1347.html"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="AEN1265"
+>進階gdb</A
+></H1
+><P
+>      所謂進階gdb處理，這邊其實需要一些系統的資訊與知識，
+      包括了一些比較深入的程式寫作與環境
+    </P
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN1268"
+>訊號(signal)處理</A
+></H2
+><P
+>	除了可以送signal給程式外孩可以指定如何處理signal
+	<TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+>handle signal keyword
+	</PRE
+></TD
+></TR
+></TABLE
+>
+	signal是下面其中一個
+	<TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+>(gdb) shell kill -l
+ 1) SIGHUP       2) SIGINT       3) SIGQUIT      4) SIGILL
+ 5) SIGTRAP      6) SIGABRT      7) SIGBUS       8) SIGFPE
+ 9) SIGKILL     10) SIGUSR1     11) SIGSEGV     12) SIGUSR2
+13) SIGPIPE     14) SIGALRM     15) SIGTERM     17) SIGCHLD
+18) SIGCONT     19) SIGSTOP     20) SIGTSTP     21) SIGTTIN
+22) SIGTTOU     23) SIGURG      24) SIGXCPU     25) SIGXFSZ
+26) SIGVTALRM   27) SIGPROF     28) SIGWINCH    29) SIGIO
+30) SIGPWR      31) SIGSYS      
+	</PRE
+></TD
+></TR
+></TABLE
+>
+	keyword是
+	<TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+>nostop 
+     當接到這個signal時GDB 不要停止你的程式
+stop
+     當接到這個signal時GDB 停止你的程式
+print 
+     當接到這個signal時GDB 印出這是什麼sginal
+noprint
+     當接到這個signal時GDB 不印出這是什麼sginal
+pass 
+     GDB pass這個signal給你的程式 也就是你的程式有能力處理這個siganl
+nopass 
+     GDB 不會讓你的程式看到這個signal
+	</PRE
+></TD
+></TR
+></TABLE
+>
+      </P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN1274"
+>multi-thread與multi-process除錯</A
+></H2
+><P
+>	multi-thread mutli-process除錯最討厭的是程式邏輯不再是一步一步，
+	而是會有時這個process or thread執行到一半，時間到就被排程到後面去了，
+	造成輸出的沒有前後關係
+	所以講到thread/process，就一定要講到OS的Scheduler
+      </P
+><P
+>	一個thread就是一個sub-routine在同一個process image下，
+	所以常聽教科書說stack pointer不一樣
+	(所以thread的text執行位置還是跟process一樣，
+	不過stack區域每個thread有自己的保存區，原本process的是在最下面)
+	programe couter(就是目前CPU應該指到的執行位置)不一樣，
+	可以同時access變數(所以此變數為global變數)，
+	其實只要說是可以fork subroutine的就是thread，
+	看一下前面Linux的執行image，
+	然後真的寫個multithread程式就懂了，
+	以pthread而言
+	<TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>pthread_create(&#38;t_id, &#38;t_attr_obj, sub_func_name, &#38;arg);
+	</PRE
+></TD
+></TR
+></TABLE
+>
+	這就是一個thread的建立方法，每次呼叫這個就會把一個執行的單位(context)放到
+	OS的scheduler後面去。等到一個個的執行一直到這個context了，就會被執行了。
+	<TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>pthread_join(t_id, &#38;status)
+        </PRE
+></TD
+></TR
+></TABLE
+>
+	相當於waitpid()會block住的等著這個要返回的thread，status是個指標的指標**status。
+	其中作為thread的副程式如果要還回一個值，通常要還回一個指標型的位址，指著一串的還回值。
+	<TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>void * func_thread(void *arg)
+{
+       xxxxx
+       xxxxx
+}
+       </PRE
+></TD
+></TR
+></TABLE
+>
+       arg就是在create的傳進去的arg，sub_func_name就是這個func_thread副程式名。
+       return必須return一個pointer。(gcc比較好compile時不會complain傳回不是void *，
+       其他有的compile就會complain)
+      </P
+><P
+>	multi-thread程式中比較常見的錯誤是如果caller thread不等forked thread，
+	也就是不join，
+	而傳遞local變數像在用一般程式傳遞，
+	因為local變數如果副程式走完了stack也消失了，
+	而scheduler的單位是thread，
+	此時forked thread往往得到錯誤的值，
+	thread的除錯跟傳統的很像，只是要追蹤thread編號
+	<TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+>info threads                   跟info frame很像看thread號碼(pthread_create的ID)
+thread xxx                     跳到xxx號thread
+break 13 thread 2              執行第二號thread時在第13行中斷
+break frik.c:13 thread 28 if bartab &#62; lim
+	</PRE
+></TD
+></TR
+></TABLE
+>
+	break 的用法跟一般一樣，不過多一個thread的字眼其餘是一樣的
+      </P
+><P
+>	multi-process其實沒什麼工具，
+	只能在fork後的小孩放個sleep，
+	讓child進到sleeping狀態停住，
+	然後再開一個gdb用attach的方法把小孩叫進來，
+	在不同的process(就是不同的gdb啦所以要另外喚起一個gdb)中切換trace，
+	每走一步每改一個想要的值，這相當於把多個process放到gdb來控管，
+	以下面程式做例子
+	<TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>int main()
+{
+	int a, pid, status;
+
+	if ((pid = fork()) &#60; 0)
+	    printf("fork error");
+	else if (!pid) {  /* child */
+	    sleep(100);
+	    printf("I dont want to be a zombie");
+	}
+	else {
+	    printf("I dont want to be a orphaned");
+	    waitpid(pid, &#38;status, 0);
+	}
+	func1();
+	return 0;
+}
+	</PRE
+></TD
+></TR
+></TABLE
+>
+	先開一個gdb並且用file命令來load進a.out在parent直接run
+	<TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+>GNU gdb 19990928
+Copyright 1998 Free Software Foundation, Inc.
+GDB is free software, covered by the GNU General Public License, and you are
+welcome to change it and/or distribute copies of it under certain conditions.
+Type "show copying" to see the conditions.
+There is absolutely no warranty for GDB.  Type "show warranty" for details.
+This GDB was configured as "i686-pc-linux-gnu".
+(gdb) file a.out
+Reading symbols from a.out...done.
+(gdb) run
+Starting program: /home/cyril/tmp/a.out
+
+	</PRE
+></TD
+></TR
+></TABLE
+>
+	由於我們放了waitpid()，爸爸會停下來
+	再開一個gdb也把a.out load進來，並且用shell ps -aef|grep a.out來看
+	child的process id並且把它attach進來
+	<TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+>cyril    26689 26678  0 12:20 pts/1    00:00:00 /home/cyril/tmp/a.out
+cyril    26690 26689  0 12:20 pts/1    00:00:00 /home/cyril/tmp/a.out
+cyril    26691 26687  0 12:20 pts/5    00:00:00 ps -aef
+(gdb) attach 26690
+Attaching to program: /home/cyril/tmp/a.out, Pid 26690
+Reading symbols from /lib/libm.so.6...done.
+Reading symbols from /lib/libc.so.6...done.
+Reading symbols from /lib/ld-linux.so.2...done.
+0x400b2081 in nanosleep () from /lib/libc.so.6
+	</PRE
+></TD
+></TR
+></TABLE
+>
+	0x400b2081是libc裡的sleep這個function，我們不要理它，所以我們下
+	<TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+>(gdb) return
+	</PRE
+></TD
+></TR
+></TABLE
+>
+	讓它回到我們main裡來
+	<TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+>(gdb) info program
+Using the running image of attached Pid 26690.
+Program stopped at 0x400b2081.
+It stopped with signal SIGSTOP, Stopped (signal).
+(gdb) return 
+Make selected stack frame return now? (y or n) y
+#0  0x80486b8 in main ()
+    at debug.c:45
+45                  sleep(100);
+(gdb) s
+Single stepping until exit from function nanosleep, 
+which has no line number information.
+46                  printf("I dont want to be a zombie");
+(gdb) s
+47              }
+	</PRE
+></TD
+></TR
+></TABLE
+>
+	可以看到小孩process在我們掌控下了，接下來就可以step, next...來追它了
+      </P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN1289"
+>遠端除錯</A
+></H2
+><P
+>	一般device或者遠端機器上，如果沒有環境跑gdb來除錯，
+	可以用gdb這項特異功能來除錯，或者我在i386機器上跑ddd 或gdb
+	遠端是VxWorks embadded 系統或Sun的binary環境
+	這是說gdb在local跑，遠端機器跑要被除錯的程式，
+	gdb可以透過serial line或TCP/IP來對遠端除錯，
+	常用的serial line方法會透過terminal console server
+	(Cisco的2500系列, Nortel的annex系列)
+	<TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+>target remote /dev/ttyA
+target remote machine:TCP_port (machine 是terminal server)
+target cisco machine:TCP_port
+	</PRE
+></TD
+></TR
+></TABLE
+>
+	target此target非Makefile彼targe，target指的是一個環境
+	通常就是被除錯的機器與程式，
+	cisco有它們特有的protocol，
+	cisco的system admin不是蓋的，
+	功力還蠻強的
+      </P
+><P
+>	這個要被除錯的可執行檔除了-g以外還要link到一些特殊的sub-routine
+	這些subroutine是跟機器有關的程式叫stub，
+	用來在遠端執行然後跟本地的gdb溝通用的，
+	stub跟target CPU有關才知道怎樣控制target CPU的trace功能，
+	另外stub還要能解釋gdb送過來的message也就是gdb自己溝通用的protocol。
+	所以是伴隨gdb package過來有的程式，
+	現在有的stub i386-stub.c, sh-stub.c, VxWorks, sparc, m68k...，
+	這些是伴隨gdb來的.c source code，
+	例如 i386-stub.c，
+	這些xxx-stub.c裡面都含有
+	<TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+>set_debug_traps()
+handle_exception()
+breakpoint()
+	</PRE
+></TD
+></TR
+></TABLE
+>
+	但是gdb只曉得CPU而已，CPU跟外界溝通的I/O chip gdb不管，
+	自己必需寫5個低階的函數來溝通。所以去看stub的code都會去呼叫下面函數，
+	不過這要自己implement。
+	<TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+>getDebugChar()
+putDebugChar()
+flush_i_cache()
+exceptionHandler()
+
+memset()     這是ANSI C的標準應該都有的不用寫了
+	</PRE
+></TD
+></TR
+></TABLE
+>
+	也就是set_debug_traps breakpoint負責處理掉target CPU中的單步trace部份，
+	並且會處理由gdb送來的訊息，也就是remote protocol知道怎麼處理。像Cisco有他們自己的
+	protocol。ok gdb經由Host serial port到target，但是target系統中CPU還是要靠
+	I/O serial chip來跟Host溝通，這邊每家的I/O chip是gdb不知道的，不像Host這邊
+	OS已經處理掉serial port driver。所以target那邊的gdb stub會去呼叫自己
+	要implement的getDebugChar putDebugChar...。另一種作法是用JTAG，
+	也就是target CPU跟外界溝通用JTAG，不用serial port，target CPU只跟JTAG
+	控制晶片溝通，JTAG message protocol算是一種介面，凡是想要給CPU的命令用JTAG的好處
+	是不比針對某個特定CPU寫instruction，有比較大的general特性，JTAG會負責跟後面的
+	CPU溝通，把該要的Instruction轉成這一個CPU懂的instruction。如果用這種方法
+	則不需要stub在target CPU上compile，但必須要有個中介box作gdb remote protocol與
+	JTAG的轉換。(有人在賣這種盒子還貴的嚇人)
+      </P
+><P
+>      <DIV
+CLASS="FIGURE"
+><P
+><B
+>Figure 6-3. Remote Debug</B
+></P
+><P
+><IMG
+SRC="remote_debug.jpg" tppabs="http://www.study-area.org/cyril/opentools/opentools/images/remote_debug.jpg"></P
+></DIV
+>
+	在要被debug的程式最前面需要呼叫
+	<TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+>set_debug_trap();
+breakpoint();
+	</PRE
+></TD
+></TR
+></TABLE
+>
+	然後編譯時要把這些一起link起來最後丟到遠端機器跑，
+	然後在gdb ddd 下
+	<TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+>target remote /dev/ttySx
+or
+target remote machine:TCP_port
+	</PRE
+></TD
+></TR
+></TABLE
+>
+	就可以像正常的gdb用法來用了，不過要注意的是image是不是有symbol table，
+	有些image的格式當初編譯時由於是embadded system，image大小很重要，所以拿掉了
+	symbol table。記住gdb參照的symbol table image與source code是在local端喔，
+	所以local host用gdb命令"path"指的image要有symbol table喔。
+      </P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN1302"
+>client/server程式除錯</A
+></H2
+><P
+>	寫過socket程式的人都知道有個無窮迴圈在那邊等待request，
+	這部份應該跟用multiprocess的方法一樣，
+	只不過變成兩台機器的multiprocess或multithread程式除錯	
+      </P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN1305"
+>core dump的除錯</A
+></H2
+><P
+>	Basic Perl等語言處理的可以說是User的資料，
+	C可以說在那邊把資料在記憶體移來移去，
+	組語可說把資料在暫存器搬來搬去，
+	越低階的處理表示握有的資源越少
+      </P
+><P
+>	所以C處理不好的話很容易記憶體跨出範圍，
+	或者系統毀了(panic)，
+	這時都會產生一個core dump，
+	就是毀掉的瞬間記憶體內部的內容會搬到一個檔案core，
+	core file 包含了程式的read/write的memory部份，
+	也就是程式躺在記憶體時的狀態，
+	executable只是一個可執行檔也就是程式躺在硬碟時。
+	gdb可以根據這個檔來除錯，只是這時的target是core 或exec
+	不是remote。
+	通常這可以拿來做系統毀掉時的debug
+	<TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+>gdb a.out core        命令列上給executable與core file
+target exec a.out     跟file命令不一樣的是exec不load symbol table 
+                      只loadTEXT與initialized DATA這時程式只可run
+                      無法看source code與檢查任何變數
+
+target core core      core file 
+	</PRE
+></TD
+></TR
+></TABLE
+>
+      </P
+><P
+>	用下面程式做例子
+	<TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>#include &#60;stdio.h&#62;
+int main()
+{
+        char *x = 0x0;
+        *x = 1;
+        printf("%s", x);
+        strcpy(x, "This is wrong");
+}
+	</PRE
+></TD
+></TR
+></TABLE
+>
+	跑它之後產生core dump檔並用gdb來看它
+	<TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+>[cyril@megami cyril]gdb a.out core
+GNU gdb 5.0
+Copyright 2000 Free Software Foundation, Inc.
+GDB is free software, covered by the GNU General Public License, and you are
+welcome to change it and/or distribute copies of it under certain conditions.
+Type "show copying" to see the conditions.
+There is absolutely no warranty for GDB.  Type "show warranty" for details.
+This GDB was configured as "sparc-sun-solaris2.7"...
+Core was generated by `./a.out'.
+Program terminated with signal 11, Segmentation Fault.
+Reading symbols from /usr/lib/libc.so.1...done.
+Loaded symbols for /usr/lib/libc.so.1
+Reading symbols from /usr/lib/libdl.so.1...done.
+Loaded symbols for /usr/lib/libdl.so.1
+Reading symbols from /usr/platform/SUNW,Ultra-Enterprise/lib/libc_psr.so.1...
+done.
+Loaded symbols for /usr/platform/SUNW,Ultra-Enterprise/lib/libc_psr.so.1
+#0  0x10870 in main () at core.c:5
+5               *x = 1;
+(gdb) print x
+$1 = 0x0
+(gdb) print *x
+Cannot access memory at address 0x0
+	</PRE
+></TD
+></TR
+></TABLE
+>
+	當然這例子很簡單，不過不用自己一步步追到死掉的地方，
+	gdb a.out core自動用file命令load了symbol table進來，所以我可以用
+	print x來看它。通常捉到問題點就是用bt(backtrace)捉出之前到底叫了甚麼。
+      </P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN1313"
+>kernel除錯</A
+></H2
+><P
+>	一般來說應用程式必需在kernel監督下執行應用程式，
+	毀掉時有時會產生一個core dump，
+	就是錯誤時瞬間的CPU記憶體狀態，
+	好的OS不會隨隨便便就讓應用程式毀了整個系統造成系統不能使用，
+	頂多是這個程式會Hang住，kernel與其它process還是照樣執行，
+	而如果整台電腦完全不能用了我們叫它作crash，
+	crash有兩種可能，
+	kernel太爛自己死掉(panic)，
+	硬體發生問題導至一個bad trap，
+	software panic或者hardware bad trap都會去呼叫一個
+	kernel routine - panic()，
+	panic()會做
+	<TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+>1.瞬間停止所有scheduler的process
+2.copy所有記憶體內容到一個dump device,通常就是swap device
+  (因為這個device上不能有任何file system - superblock indoe....)
+3.dump記憶體時會先寫個magic number在dump device前
+  (因為如果是swap device則此magic number是用來識別目前swap device內的內容
+   是否為kernel core dump還是一般swap memory)
+4.把一些目前CPU重要registers記下來例如stack pointer
+5.reboot
+	</PRE
+></TD
+></TR
+></TABLE
+>
+	reboot 後系統回來了檔案系統也回來了可以把在dump device內存成一個
+	kernel core dump以便後來用debug工具來除錯
+      </P
+><P
+>	kernel除錯通常不是像User小程式用debugger追，
+	而是盡量用print或向系統要目前的狀態值來做除錯，
+	這些資訊通常存在所謂的kernel ring buffer，
+	如果要用debugger必需找另外工具來完成，而且沒有source code時，
+	通常要用nm或strings找出想要的symbol來做很低階的debug
+      </P
+><P
+>	另外kernel的除錯使用者必需是root
+      </P
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="AEN1319"
+>Linux</A
+></H3
+><P
+>	  Linux kernel的除錯可以在程式碼中用
+	  printk()印出來
+	  printk(log_level "msgs", arg);
+	  用法很像一般printf只不過多了log_level定義在&#60;linux/kernel.h&#62;
+	  可以丟到console(就是kernel專屬印出資訊的地方)或/var/log/messages
+	  /var/adm/messages(syslogd根據/etc/syslog.conf覺定/proc/kmesg的
+	  東西要不要丟出)
+	</P
+><P
+>	  driver除錯另一種方法是建立自己的/proc下的檔案，
+	  /proc下的檔案是代表了目前kernel下的狀態，
+	  可以在程式碼中建立/proc/xxxx把想要的資訊丟出，
+	  或者是給ioctl()很多不為人知的功能，
+	  ioctl()是正常I/O動作例如read(), write(), open()....外，
+	  設定device的特殊功能的一種函式，
+	  當然read write...等功能也可含在ioctl裡，
+	  例如ethernet chip裡有promiscuous mode允許所有的packet進來，
+	  可以透過ethernet driver給的特殊ioctl函式介面來指定，
+	  不過必須另寫一個User Ap呼叫ioctl來跟driver要資訊
+	</P
+><P
+>	  ooops(linux kernel的特有用語)訊息是由於hardware bad trap產生的
+	  會顯示trap時的CPU狀態
+	  <TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+>Unable to handle kernel NULL pointer dereference at virtual address  00000014
+*pde = 00000000
+Oops: 0000
+CPU:    0
+EIP:    0010:[&#60;c017d558&#62;]
+EFLAGS: 00210213
+eax: 00000000   ebx: c6155c6c   ecx: 00000038   edx: 00000000
+esi: c672f000   edi: c672f07c   ebp: 00000004   esp: c6155b0c
+ds: 0018   es: 0018   ss: 0018
+Process tar (pid: 2293, stackpage=c6155000)
+Stack: c672f000 c672f07c 00000000 00000038 00000060 00000000 c6d7d2a0 c6c79018 
+       00000001 c6155c6c 00000000 c6d7d2a0 c017eb4f c6155c6c 00000000 00000098 
+       c017fc44 c672f000 00000084 00001020 00001000 c7129028 00000038 00000069 
+Call Trace: [&#60;c017eb4f&#62;] [&#60;c017fc44&#62;] [&#60;c0180115&#62;] [&#60;c018a1c8&#62;] [&#60;c017bb3a&#62;] [&#60;c018738f&#62;] [&#60;c0177a13&#62;] 
+       [&#60;d0871044&#62;] [&#60;c0178274&#62;] [&#60;c0142e36&#62;] [&#60;c013c75f&#62;] [&#60;c013c7f8&#62;] [&#60;c0108f77&#62;] [&#60;c010002b&#62;] 
+
+Code: 8b 40 14 ff d0 89 c2 8b 06 83 c4 10 01 c2 89 16 8b 83 8c 01 
+	  </PRE
+></TD
+></TR
+></TABLE
+>
+	</P
+><P
+>	  kernel的core dump與目前kernel記憶體資訊/proc/kcore可以用gdb，
+	  用gdb時別忘了要用gcc -g 重新編譯kernel
+	  <TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+># gdb -q vmlinux /proc/kcore
+Core was generated by `auto BOOT_IMAGE=247-p6 ro root=302
+BOOT_FILE=/boot/vmlinuz-2.4.7-pre6'.
+#0  0x0 in ?? ()
+(gdb) printf "%d\n", sizeof(struct inode)
+464
+
+# gdb -q vmlinux /proc/kcore
+(gdb) p jiffies
+$1 = 58863
+	  </PRE
+></TD
+></TR
+></TABLE
+>   
+	  module可以這樣加symbol table
+	  <TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+># insmod -m bfs &#62; bfs.map
+# vi bfs.map
+# gdb -q vmlinux /proc/kcore
+Core was generated by `auto BOOT_IMAGE=247-p6 ro root=302
+BOOT_FILE=/boot/vmlinuz-2.4.7-pre6'.
+#0  0x0 in ?? ()
+(gdb) add-symbol-file /lib/modules/2.4.7-pre6/kernel/fs/bfs/bfs.o
+0xc8834060
+add symbol table from file
+"/lib/modules/2.4.7-pre6/kernel/fs/bfs/bfs.o" at
+         .text_addr = 0xc8834060
+(y or n) y
+Reading symbols from /lib/modules/2.4.7-pre6/kernel/fs/bfs/bfs.o...done.
+(gdb) disas bfs_read_super
+Dump of assembler code for function bfs_read_super:
+0xc8834514 &#60;bfs_read_super&#62;:    sub    $0x10,%esp
+0xc8834517 &#60;bfs_read_super+3&#62;:  push   %ebp
+0xc8834518 &#60;bfs_read_super+4&#62;:  push   %edi
+0xc8834519 &#60;bfs_read_super+5&#62;:  push   %esi
+0xc883451a &#60;bfs_read_super+6&#62;:  push   %ebx
+0xc883451b &#60;bfs_read_super+7&#62;:  mov    0x2c(%esp,1),%esi
+0xc883451f &#60;bfs_read_super+11&#62;: push   $0x200
+0xc8834524 &#60;bfs_read_super+16&#62;: mov    0x28(%esp,1),%eax
+0xc8834528 &#60;bfs_read_super+20&#62;: movzwl 0x8(%eax),%ebx
+0xc883452c &#60;bfs_read_super+24&#62;: push   %ebx
+0xc883452d &#60;bfs_read_super+25&#62;: call   0xc012e258 &#60;set_blocksize&#62;
+	  </PRE
+></TD
+></TR
+></TABLE
+>
+	  其中vi map file主要是要把text的address轉到0xc8834060
+	  .text_addr = 0xc8834060
+	</P
+><P
+>	  kernel source level debugger，
+	  由於沒有source只能靠看symbol方式除錯，
+	  kgdb提供在x86平台上可以像除一般應用程式般的有source level的除錯，
+	  http://kgdb.sourceforge.net
+	</P
+></DIV
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="AEN1329"
+>Solaris</A
+></H3
+><P
+>	  Solaris上有adb kadb做kernel的除錯，
+	  主要是像Linux上的一些查詢系統資訊的方式，
+	  adb也可以拿來做一般程式的處理，不過沒有gdb這麼powrful做
+	  source level除錯，通常是
+	  <TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+>adb -k unix_kernl kernel_core   -&#62;除錯某個特殊的kernel core dump
+adb -k                          -&#62;這是除錯目前正在跑的kernel
+adb -k /dev/ksyms /dev/mem
+adb a.out                       -&#62;除錯一般程式
+	  </PRE
+></TD
+></TR
+></TABLE
+>
+	  一些用法
+	  <TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+>add:b        設中斷點add可以是address或函數名(symbol)(其實兩個意義是一樣的)
+add:d        Delete中斷點
+:z           Zap(Delete所有中斷點)
+:r           Run
+:c           Continue
+:s           Step
+:e           nExt
+
+$c           這個就是gdb的backtrace這很重要的，看系統毀掉前叫了什麼函數
+$q           離開adb
+
+$&#60;巨集        執行巨集(有些巨集已經寫好可以完成特定工作)
+             例如察看現在所有註冊的file system有個vfslist這個巨集
+	     kernel除錯大致上靠這些巨集
+add$&#60;巨集     將目前add的內容餵給巨集處理
+$&#62;file       redirect結果到檔案file，要再導回螢幕，不要給檔名file就好
+$m           address map
+	  </PRE
+></TD
+></TR
+></TABLE
+>
+	  跟gdb一樣要有一個執行檔還要有core file來除錯，
+	  通常系統crash掉時的core是vmcore.0 vmcore.1 .......，
+	  每次毀掉的kernel symbol table叫vmunix.0 vmunix.1 ......
+	</P
+><P
+>	  savecore這個命令會把之前在dump device的內容存起來，
+	  如果發現dump device前有magic number而且版本跟目前OS一樣，
+	  就把它存到一個savecore directory，
+	  savecore directory是在/var/crash，
+	  會存成vmcore.X X是流水號，
+	  可以在/etc/init.d/sysetup裡設定每次boot up後就做一次savecore，
+	  然後用
+	  <TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+>	    
+adb -k vmunix.0 vmcore.0
+crash -d vmcore.0 -n unix.0
+	  </PRE
+></TD
+></TR
+></TABLE
+>
+	  來除錯
+	</P
+><P
+>	  查看某個kernel內部位址或symbol名的內容可以用
+	  <TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+>symbol_name?      看obj file symbol
+symbol_name/      看core file symbol
+symbol_name=      看symbol位址
+	  </PRE
+></TD
+></TR
+></TABLE
+>
+	  其中?, / 與=後面跟著的選項
+	  <TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+>X           heX              十六進位
+D           Decimal          十進位
+f           Float            小數形態資料
+s           String           印出字串
+Y           Year             印出日期形式
+i           Instruction      印出assembly指令
+W value     Write            這會把value設給symbol
+	  </PRE
+></TD
+></TR
+></TABLE
+>
+	  這些選項前面可以跟著數字代表要印出的數目
+	</P
+><P
+>	  特殊系統資訊與symbol字串，
+	  可以用nm或strings找出kernel的symbol名，然後在adb裡除錯
+	  例如solaris kernel裡有個cpu_list這個變數(symbol)
+	  <TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+>cpu_list/X
+	  </PRE
+></TD
+></TR
+></TABLE
+>
+	  如果是一顆cpu會顯示0
+	  <TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+>*panicstr/s     系統crash掉時的原因會放在這      
+rootdir/X       rootdir是VFS中root vnode的struct
+rootdir/W 0     這會把系統毀了(哈哈)
+
+6ef2c9a0/2X     從位址0x6ef2c9a0看兩個Hex的值
+0x6ef2c9a0:     38e955fc        f68c61d7
+	  </PRE
+></TD
+></TR
+></TABLE
+>
+	</P
+><P
+>	  adb可以把常用的命令寫成巨集完成某特定工作，
+	  例如
+	  <TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+>$&#60;msgbuf
+rootvfs$&#60;vfslist
+rootfs$&#60;bootobj
+	  </PRE
+></TD
+></TR
+></TABLE
+>
+	  Solaris系統內有一些內定巨集了，藏在/usr/lib/adb。一些常用巨集如下
+	  <TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+>msgbuf      message buffer是kernel ring buffer
+            是這個core的一些重要message，這個巨集會用比較好看的格式秀出
+proc        看目前系統的process
+thread      
+threadlist
+mutex       
+pid         
+proc2u      
+
+vfslist     看目前vfs裡有那些filesystem
+file        
+vnode       
+inode       
+
+modules     Solaris裡的modules結構
+stdata      
+queue
+qinit
+mblk
+regs
+stacktrace
+utsname
+	  </PRE
+></TD
+></TR
+></TABLE
+>
+	</P
+><P
+>	  kernel除錯通常必需用到core dump檔，
+	  抓進來後用backtrace(在solaris裡就是$c)，
+	  捉出死掉前倒底叫了什麼子函式，
+	  <TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+>$c
+complete_panic(?) + 24
+do_panic(0x10404000,0x1,0x1040cf58,0x0,0x20,0x0)
+vcmn_err(0x3,0x1040e128,0x3,0x3066b214,0x0,0x1043ea60) + 190
+cmn_err(0x3,0x1040e128,0xeffff9a0,0x18d,0x18d,0x10407400) + 1c
+die(0x31,0x3066b3f8,0xf68c61d7,0x0,0x1040e128,0x0) + a0
+trap(0x3066b3f8,0x0,0xf68c6000,0x1,0x0,0x5) + 830
+.....
+	  </PRE
+></TD
+></TR
+></TABLE
+>
+	  然後一步步追蹤一些重要的symbol, struct等等，
+	  追到看看是那個symbol出問題找，到相對應的C code來debug，
+	  通常傳進來的address都有問題，或者多工狀態時的parametersr沒有處理好
+	</P
+></DIV
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="x1253.html" tppabs="http://www.study-area.org/cyril/opentools/opentools/x1253.html"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="book1.html" tppabs="http://www.study-area.org/cyril/opentools/opentools/book1.html"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="x1347.html" tppabs="http://www.study-area.org/cyril/opentools/opentools/x1347.html"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>基本gdb</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="debug.html" tppabs="http://www.study-area.org/cyril/opentools/opentools/debug.html"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>結語</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

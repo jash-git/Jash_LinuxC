@@ -1,0 +1,374 @@
+<HTML
+><HEAD
+><TITLE
+>CVS快速入門</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.49"><LINK
+REL="HOME"
+TITLE="用Open Source工具開發軟體"
+HREF="book1.html" tppabs="http://www.study-area.org/cyril/opentools/opentools/book1.html"><LINK
+REL="UP"
+TITLE="CVS 版本控制系統(Concurrent Version System)"
+HREF="cvs.html" tppabs="http://www.study-area.org/cyril/opentools/opentools/cvs.html"><LINK
+REL="PREVIOUS"
+TITLE="設定"
+HREF="x661.html" tppabs="http://www.study-area.org/cyril/opentools/opentools/x661.html"><LINK
+REL="NEXT"
+TITLE="CVS進階功能"
+HREF="x745.html" tppabs="http://www.study-area.org/cyril/opentools/opentools/x745.html"></HEAD
+><BODY
+CLASS="SECT1"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>用Open Source工具開發軟體: 新軟體開發關念</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="x661.html" tppabs="http://www.study-area.org/cyril/opentools/opentools/x661.html"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 3. CVS 版本控制系統(Concurrent Version System)</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="x745.html" tppabs="http://www.study-area.org/cyril/opentools/opentools/x745.html"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="AEN718"
+>CVS快速入門</A
+></H1
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN720"
+>基本使用步驟</A
+></H2
+><P
+>	首先login用
+	<TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+>1.$ cvs login
+	</PRE
+></TD
+></TR
+></TABLE
+>
+      </P
+><P
+>	然後進到一個source 的最上層，例如$HOME/myproj裡面，然後用
+	<TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+>2.$ cvs import myproj dev_team r_0_0_1
+	</PRE
+></TD
+></TR
+></TABLE
+>
+	就會把所有下面的檔案通通放進CVS管理，其中import是CVS一個命令，
+	myproj是模組module名字，這可以亂取的，不一定要是目錄名，dev_team
+	是一個廠商標籤(vendor tag)，誰放進去的識別名字，r_0_0_1是版本標籤。
+	這時會跳出vi來叫你輸入對這次import的感想。就是這個模組的log資訊。
+      </P
+><P
+>	這樣原本的$HOME/myproj就沒有用了，必須新從櫃子裡面拿出一個module，
+	在$HOME下面用
+	<TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+>3.$ cvs checkout myproj
+	</PRE
+></TD
+></TR
+></TABLE
+>
+	就會拿出櫃子的檔案來，這時新的myproj才是真的有用了，裡面會多一個CVS
+	的目錄，裡面是client端的admin files 用來做管理的。
+      </P
+><P
+>	從此你要改myproj的程式，通通都在這個目錄下，然後如果你開始更動檔案，
+	改完了檔案，要用
+	<TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+>4.$ cvs commit file.c
+	</PRE
+></TD
+></TR
+></TABLE
+>
+	把你的改變送回櫃子去。file.c不寫就自動是整個source tree.
+	你可以偷偷看一下遠端櫃子裡面有什麼東西。	
+	可以有很多不同的模組module，也就是專案在櫃子裡面，重複上面用法就好了。
+      </P
+><P
+>	當別人有commit行為時，你要進到這個module目錄上用
+	<TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+>5.$ cvs update
+	</PRE
+></TD
+></TR
+></TABLE
+>
+	來下載新的版本。
+      </P
+><P
+>	其中commit完會叫你輸入一些紀錄訊息，型式是隨意的沒有特定格式。
+	會去叫vi起來，如下圖
+	<DIV
+CLASS="FIGURE"
+><P
+><B
+>Figure 3-1. CVS log</B
+></P
+><P
+><IMG
+SRC="cvslog.gif" tppabs="http://www.study-area.org/cyril/opentools/opentools/images/cvslog.gif"></P
+></DIV
+>	
+      其中
+	<TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+>CVS: xxxx.....
+CVS: xxxx.....
+CVS: xxxxx.....
+	</PRE
+></TD
+></TR
+></TABLE
+>
+	  這些行只是提醒你而已，打完就存檔然後這些行就會自動消失，只有你
+	  寫的log資訊會被存起來。
+      </P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN737"
+>常用命令快速入門</A
+></H2
+><P
+>	<TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+>cvs login	:簽入CVS
+cvs import	:放個module進CVS管理
+cvs chekcout	:拿出一個module
+cvs add		:增加個檔案
+cvs remove	:移除檔案
+cvs commit	:送交改變，每次都要輸入這次的送交資訊，叫log message。
+cvs update	:別人有新的送交行為時，更新自己的版本，同步櫃子的版本。
+
+cvs status      :看目前repository裡面有那些檔，檔案版本等等資訊 -l只看local
+cvs diff	:看兩個版本的差異
+cvs log		:看一下log歷史紀錄
+cvs logout	:簽離CVS
+	</PRE
+></TD
+></TR
+></TABLE
+>
+	增加檔案與刪除檔案除了要用add remove之外，還要有commit的動作。主要
+	是add remove 只是先讓在Client這邊做個增加刪除的記錄，只有commit
+	才會完成批次的所有增加與刪除。remove 的動作沒辦法一次remove掉目錄，
+	與目錄下所有檔案， 而是要一個一個先rm後再cvs remove，
+	另外也不能將它們從repository清乾淨，
+	主要原因是舊的版本中，這個目錄是存在的，將來或許還需要check out舊版本，
+	所以check out 新版本時，將會看到一個空的已經移走的目錄，
+	如果不想看到這個空目錄，則check out與update要
+	<TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+>cvs co -P module_name
+cvs update -P
+	</PRE
+></TD
+></TR
+></TABLE
+>
+      </P
+><P
+>	另外如果要處理binary檔，例如jpg
+	Micorsoft DOC檔，commit時要加-kb選項，update時加-A這個選項。
+	請看參考篇的說明。
+	<TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+>cvs tag         : 為目前檔案建立一個名稱 發行存取等等  都可以用tag來辨認
+                : 通常是站在top of source給全部的檔
+                : cvs tag xxxx .
+cvs export -r tag-name module
+                : 建立一個沒有admin files的版本 也就是沒有CVS這些目錄在source下
+cvs release     : release (cvs checkout 不能再用了)
+cvs rdiff       : 建立目前版本與指定版本的source patch file
+	</PRE
+></TD
+></TR
+></TABLE
+>
+	在上面的命令中後面都還可以跟著一些選項，例如
+	<TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+>-d              : 後面跟著repository所在可以動態改變一下repository
+-m              : 是說check in的log message.
+
+-l              : 是說只有目前所在目錄下檔案(local)不會把子目錄的檔案考慮進來
+-r              : 是存取某個tag的版本(reversion)
+-D              : 存取某個特定日期版本
+	</PRE
+></TD
+></TR
+></TABLE
+>
+      </P
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="x661.html" tppabs="http://www.study-area.org/cyril/opentools/opentools/x661.html"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="book1.html" tppabs="http://www.study-area.org/cyril/opentools/opentools/book1.html"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="x745.html" tppabs="http://www.study-area.org/cyril/opentools/opentools/x745.html"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>設定</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="cvs.html" tppabs="http://www.study-area.org/cyril/opentools/opentools/cvs.html"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>CVS進階功能</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

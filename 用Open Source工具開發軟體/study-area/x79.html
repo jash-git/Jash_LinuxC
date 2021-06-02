@@ -1,0 +1,642 @@
+<HTML
+><HEAD
+><TITLE
+>程式與編輯器</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.49"><LINK
+REL="HOME"
+TITLE="用Open Source工具開發軟體"
+HREF="book1.html" tppabs="http://www.study-area.org/cyril/opentools/opentools/book1.html"><LINK
+REL="UP"
+TITLE="編輯器 - emacs and vi"
+HREF="editor.html" tppabs="http://www.study-area.org/cyril/opentools/opentools/editor.html"><LINK
+REL="PREVIOUS"
+TITLE="vi 快速入門"
+HREF="x62.html" tppabs="http://www.study-area.org/cyril/opentools/opentools/x62.html"><LINK
+REL="NEXT"
+TITLE="進階emacs使用"
+HREF="x140.html" tppabs="http://www.study-area.org/cyril/opentools/opentools/x140.html"></HEAD
+><BODY
+CLASS="SECT1"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>用Open Source工具開發軟體: 新軟體開發關念</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="x62.html" tppabs="http://www.study-area.org/cyril/opentools/opentools/x62.html"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 1. 編輯器 - emacs and vi</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="x140.html" tppabs="http://www.study-area.org/cyril/opentools/opentools/x140.html"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="AEN79"
+>程式與編輯器</A
+></H1
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN81"
+>程式語言syntax的顏色</A
+></H2
+><P
+>	程式語言裡面有些保留字例如void,char。或者一些名字是函式名字，func() {。
+	emacs會根據內定的規則將顏色show出來，有時我們會打錯字，這時如果發現字
+	沒有顏色，就知道我們寫錯了，可以回去修正。單一程式的syntax 顏色請在
+	.emacs裡面加這一行，
+	<TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>(setq c-mode-hook 'turn-on-font-lock)
+	</PRE
+></TD
+></TR
+></TABLE
+>
+
+	如果要perl也要有顏色就把c-mode-hook改成perl-mode-hook再多加一行，
+	以此類推。
+      </P
+><P
+>	或者
+	<TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>(if window-system
+	(add-hook 'find-file-hooks 'turn-on-font-lock))
+	</PRE
+></TD
+></TR
+></TABLE
+>
+	則perl, shell script, lisp, tcl/tk....通通都會有顏色了。如圖
+	<DIV
+CLASS="FIGURE"
+><P
+><B
+>Figure 1-1. emacs的程式語法顏色</B
+></P
+><P
+><IMG
+SRC="emacs.gif" tppabs="http://www.study-area.org/cyril/opentools/opentools/images/emacs.gif"></P
+></DIV
+>
+      </P
+><P
+>	本來vi是沒有顏色，但如果用的是vim，可以下個
+	<TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>:syntax on
+	</PRE
+></TD
+></TR
+></TABLE
+>
+	就可以有顏色了。不過這個要小心，在新版vim，它其實也跟emacs很像去讀一個
+	/usr/share/vim/syntax.vim的檔，
+	如果你沒裝就沒有，這個在vim裡面是分開來的叫run time的檔案，跟
+	source code檔是分開的，所以如果沒有，要自己從光碟裝這個package或者去
+	www.vim.org下載來裝。在~/.vimrc加這一行
+	<TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>syntax on
+	</PRE
+></TD
+></TR
+></TABLE
+>
+	下次進vim時就自動有顏色了。如圖
+	<DIV
+CLASS="FIGURE"
+><P
+><B
+>Figure 1-2. vi的syntax顏色</B
+></P
+><P
+><IMG
+SRC="vim.gif" tppabs="http://www.study-area.org/cyril/opentools/opentools/images/vim.gif"></P
+></DIV
+>
+      </P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN96"
+>indentation對齊</A
+></H2
+><P
+>	coding style裡面跟編輯器很大關係的應該是indentation了，這個就是如何將
+	你的程式碼的邏輯與層級表示出來的手法。例如
+      </P
+><TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>if (condition==ture) {
+	do_1;
+	do_2;
+}
+else {
+	while(condition == true) {
+		do_3;
+		do_4;
+	}
+	do_5;
+}
+      </PRE
+></TD
+></TR
+></TABLE
+><P
+>	這樣每行一層一層的表現手法有人認為應該統一規定，每次一個層級就是一
+	個TAB鍵，有人認為不一定，因為標準的TAB其實從螢幕上看起來是空了８格，
+	如果層級一多就不好看。但也有如Linux的首創者Linus就認為層級多，表示
+	程式邏輯不夠好，應該避免。不管如何，那是見仁見智的看法，要怎麼定，
+	看你們團隊的coding style是怎麼定的。emacs內定是按TAB鍵表示是一個
+	indent層級，但是它不再是真的TAB鍵，所以不會看起來空８格。當你換行後
+	，按TAB鍵，emacs會自動把你的游標根據indent規則放過去。像C裡面的
+	while, if else, switch case,等等他都會自動幫你indent，非常方便。
+	程式它看起來是這樣的：
+      </P
+><DIV
+CLASS="FIGURE"
+><P
+><B
+>Figure 1-3. emacs程式對齊(indent)</B
+></P
+><P
+><IMG
+SRC="indent.gif" tppabs="http://www.study-area.org/cyril/opentools/opentools/images/indent.gif"></P
+></DIV
+><P
+>	如果你想要真的TAB以符合Linus的coding style，請把這個放到你的.emacs裡面
+	<TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>(defun linux-c-mode ()
+        "C mode with adjusted defaults for use with the Linux kernel."
+	(interactive)
+	(c-mode)
+	(setq c-indent-level 8)
+	(setq c-brace-imaginary-offset 0)
+	(setq c-brace-offset -8)
+	(setq c-argdecl-indent 8)
+	(setq c-label-offset -8)
+        (setq c-continued-statement-offset 8)
+	(setq indent-tabs-mode nil)
+	(setq tab-width 8))
+	</PRE
+></TD
+></TR
+></TABLE
+>
+	並且按M-x 執行emacs命令
+	<TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>linux-c-mode
+	</PRE
+></TD
+></TR
+></TABLE
+>
+
+	則以後按TAB鍵就是一次跳個TAB了，如果要emacs自動開始就執行linux-c-mode
+	這個命令，加這一行到你的.emacs
+	<TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>(setq auto-mode-alist 
+            (append 
+	     (list
+	    '("\\.h" . linux-c-mode)
+	    '("\\.c" . linux-c-mode)
+	    '("\\.cxx" . linux-c-mode)
+	    '("\\.cpp" . linux-c-mode))
+             auto-mode-alist))
+	</PRE
+></TD
+></TR
+></TABLE
+>
+      </P
+><P
+>	indent時，如果上下括號不對稱，你按tab鍵時就會發現有錯誤了。這時就可以回
+	去訂正。非常方便
+      </P
+><P
+>	VIM中也有autoindent可以給命令或在.vimrc
+	<TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+>set cindent 
+set autoindent
+	</PRE
+></TD
+></TR
+></TABLE
+>
+      </P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN111"
+>C程式的游標移動</A
+></H2
+><P
+>	C語言中有些一塊一塊的組織，例如函式用{}括起來這塊叫sentence,
+	空白行隔開的叫paragraph.
+	emacs中
+	<TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+>M-{,M-}		:往前往後跳一個空白行
+	</PRE
+></TD
+></TR
+></TABLE
+>
+	vi用
+	<TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+>{, }		:往前往後跳一個空白行
+(, )		:往前往後跳一個函式(sentence)
+[[, ]]		:往前往後跳一個section
+      </PRE
+></TD
+></TR
+></TABLE
+>
+      </P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN116"
+>追蹤程式碼Trace code</A
+></H2
+><P
+>	如果你有處理大型軟體，你就知道幾十萬行的code跳來跳去有些東西找起來很吃
+	力，放心，既然叫做程式師的編輯器，就不會少了程式碼搜尋的能力。
+	在emacs裡面有找tag這個東西就是用etags做出一個TAGS然後會記錄一些相關
+	變數的資訊，然後根據這些Symbol來找出要的程式在那個檔的那一行
+      </P
+><P
+>	在source code的最上層目錄
+	<TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+>$ etags -d `find . -name "*.[ch]"`
+$ find . -name "*.[ch]" | xargs etags -a -d
+$ find . \(-name "*.[ch]"\) -o \(-name "*.cc"\) | xargs etags -a -d --c++
+	</PRE
+></TD
+></TR
+></TABLE
+>
+      </P
+><P
+>	這是說從目前目錄開始找，找出.c 與.h .cc檔案，然後用pipe加上xargs，一個
+	一個餵給etags來產生有C++特性的TAGS檔。在游標處按下列按鍵會根據游標的所
+	在字串找。 -a 表示每次造出的tags要放到TAGS檔後面。
+      </P
+><P
+>	<TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+>&#13;M-.		:找一個TAG也就是symbol(就是一個變數或函式名)
+C-u M-.		:繼續找，因為這個不是你想要的。
+M-*		:回去剛剛按尋找TAG的起始處。
+	</PRE
+></TD
+></TR
+></TABLE
+>
+      </P
+><P
+>	vi的找tag要用ctags創造出一個tags然後紀錄相關變數的資訊在這個檔裡面。
+	<TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+>$ ctags -d -t -w `find . -name "*.[ch]"`
+	</PRE
+></TD
+></TR
+></TABLE
+>
+	-d 表示#define的macro, -t 表示typedef的也放進tags，-w 表示不要warning.
+      </P
+><P
+>	在vi內給這個命令
+	<TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>:ta symbol
+	</PRE
+></TD
+></TR
+></TABLE
+>
+	就會找到想要的symbol。也可以直接在command line給 vi -t symbol。
+	如果想退回去剛剛叫tag的地方用
+	<TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>:pop
+	</PRE
+></TD
+></TR
+></TABLE
+>
+	不過老一點的vi不支援，可以用e#切換回去。如果你不是用telnet方式進
+	機器，用rsh ssh可以用Ctrl-] 跳到游標指的symbol，Ctrl-t跳回去。
+	因為Ctrl-]會回到telnet的prompt去。
+      </P
+><P
+>	csocpe提供一個vi愛好者更好的介面跟搜尋，在原始程式的最上層目錄下命令
+	<TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+>$ cscope -R -q
+	</PRE
+></TD
+></TR
+></TABLE
+>
+
+	則會根據c程式中的*.h *.c *.cxx *.cpp等檔案建立
+
+	<TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+>cscope.out	Symbol交叉參考(cross-reference)檔
+cscope.in.out	反向索引檔用來做快速Symbol
+cscope.po.out	反向索引檔
+	</PRE
+></TD
+></TR
+></TABLE
+>
+	並且進入cscope。我們用XCIN的原始程式來做例子。
+	要搜尋某個symbol(變數名或函式名)，如圖，我找main這個symbol，
+	則所有含main的檔案都會被列出來讓你選擇，按Enter就會叫vi起來編輯了，
+	非常方便。如果你喜歡用emacs，環境變數EDITOR就設emacs，則cscope會去
+	叫emacs出來。通常我是cscope與vi的:ta搭配使用。
+
+	<DIV
+CLASS="FIGURE"
+><P
+><B
+>Figure 1-4. cscope展示</B
+></P
+><P
+><IMG
+SRC="cscope.gif" tppabs="http://www.study-area.org/cyril/opentools/opentools/images/cscope.gif"></P
+></DIV
+>
+	它還可以找甚麼程式呼叫這個函式，什麼函式被這個函式呼叫等等，
+	功能非常強大。
+	要切換上面列出檔案的索引與下面搜尋條件的提示請用TAB鍵，
+	要結束請按Ctrl-D。
+      </P
+><P
+>	下次要再進入cscope如果有新的symbols，請用
+	<TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+>$ cscope -R -q
+	</PRE
+></TD
+></TR
+></TABLE
+>
+    不要把原有的symbol檔給毀掉請用
+	<TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+>$ cscope -d
+	</PRE
+></TD
+></TR
+></TABLE
+>
+      </P
+><P
+>	如果要看kernel code可以加-k表示不找/usr/include下的header files.
+	cscope可以在http://cscope.sourceforge.net/找到。
+	cscope有個cbroswer喔，非常的正點，可以在web上執行cscope的功能，
+	可以在cscope的網頁找到。
+      </P
+><P
+>	在RedHat的網頁上，
+	http://sources.redhat.com/projects.html
+	還有一個IDE叫source-navigator也相當不錯。
+      </P
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="x62.html" tppabs="http://www.study-area.org/cyril/opentools/opentools/x62.html"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="book1.html" tppabs="http://www.study-area.org/cyril/opentools/opentools/book1.html"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="x140.html" tppabs="http://www.study-area.org/cyril/opentools/opentools/x140.html"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>vi 快速入門</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="editor.html" tppabs="http://www.study-area.org/cyril/opentools/opentools/editor.html"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>進階emacs使用</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

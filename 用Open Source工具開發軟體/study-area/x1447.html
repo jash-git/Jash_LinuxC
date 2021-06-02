@@ -1,0 +1,476 @@
+<HTML
+><HEAD
+><TITLE
+>deb檔的包裝</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.49"><LINK
+REL="HOME"
+TITLE="用Open Source工具開發軟體"
+HREF="book1.html" tppabs="http://www.study-area.org/cyril/opentools/opentools/book1.html"><LINK
+REL="UP"
+TITLE="套件包裝製作"
+HREF="package.html" tppabs="http://www.study-area.org/cyril/opentools/opentools/package.html"><LINK
+REL="PREVIOUS"
+TITLE="End User(Sys Admin)的觀點"
+HREF="x1406.html" tppabs="http://www.study-area.org/cyril/opentools/opentools/x1406.html"><LINK
+REL="NEXT"
+TITLE="rpm檔的包裝"
+HREF="x1479.html" tppabs="http://www.study-area.org/cyril/opentools/opentools/x1479.html"></HEAD
+><BODY
+CLASS="SECT1"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>用Open Source工具開發軟體: 新軟體開發關念</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="x1406.html" tppabs="http://www.study-area.org/cyril/opentools/opentools/x1406.html"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 8. 套件包裝製作</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="x1479.html" tppabs="http://www.study-area.org/cyril/opentools/opentools/x1479.html"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="AEN1447"
+>deb檔的包裝</A
+></H1
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN1449"
+>簡介</A
+></H2
+><P
+>	deb檔要包裝前要寫一堆資訊檔才行，其中包括了
+	像pkgtools一樣的scripts，debian也有像Solaris裡的
+	postinstall preinstall postremove preremove這些scripts可以用，
+	其中最重要的資訊檔是一個名叫control的檔
+      </P
+><P
+>	需要的一些工具
+	<TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+>dpkg
+dpkg-deb        這兩個是最基本的
+	</PRE
+></TD
+></TR
+></TABLE
+>
+	如果想成為Debian的distribution開發者，因為他們有一些遊戲規矩，
+	包括source code的改版，必要文件等規則，
+	下面的套件會幫你，如果不想submit你的deb檔給Debian，就不用裝了
+	<TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+>dh-make         製做必要資訊檔的sample檔案 這其實還蠻有用的
+debhelper       dh-make 的dependency
+devscripts      一些scripts
+fakeroot        假裝是root的工具
+lintian         測試與檢查package檔的工具
+	</PRE
+></TD
+></TR
+></TABLE
+>
+      </P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN1455"
+>建立步驟</A
+></H2
+><P
+>	deb必須先有source tree，站在source tree的最上面，
+	解開後直接用
+	<TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+>$ dh_make
+	</PRE
+></TD
+></TR
+></TABLE
+>
+	幫你建一個叫debian的目錄及寫一堆sample後再自己改，
+	我用cscope 15.1 做例子。
+	</P
+><DIV
+CLASS="PROCEDURE"
+><OL
+TYPE="1"
+><LI
+><P
+>	      先去cscope.sourceforge.net捉原始檔.tar.gz回來
+	    </P
+></LI
+><LI
+><P
+>	      解開在/home/cyril/cscope-15.1，這邊一定要用
+	      pkgname-version這樣形式的目錄
+	    </P
+></LI
+><LI
+><P
+>	      進去cscope-15.1在source code最上層直接執行dh_make，
+	      會創造一個目錄叫debian，然後改這裡面的資訊檔
+	    </P
+></LI
+><LI
+><P
+>	      有兩種情況，
+	      想成為Debian的distribution開發者，
+	      如果有configure檔可直接執行
+	      <TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+>$ dpkg-buildpackage -rfakeroot
+	      </PRE
+></TD
+></TR
+></TABLE
+>
+	      ，會自己叫configure創造Makefile，
+	      不然必需自己想辦法創造一個Makefile再叫
+	      dpkg-buildpackage -rfakeroot就會自己創造出xxxx.deb。
+	      只想自己包裝一個套件不把包裝檔送到Debian組織，
+	      只必需把它安裝到一個假的根目錄就好
+	      <TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+>$ ./configure --prefix=~/fakeroot/usr/
+$ make ; make install
+	      </PRE
+></TD
+></TR
+></TABLE
+>
+	      在~/fakeroot下建一個叫DEBIAN的目錄，
+	      這裡面要放套件資訊檔control與安裝移除scripts檔。
+	      <TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+>control
+preinst     四個shell script檔會被dpkg自動呼叫做該做的事
+postinst    可以看/var/lib/dpkg/info下的範例
+prerm
+postrm
+	      </PRE
+></TD
+></TR
+></TABLE
+>
+	      fakeroot就像一個假的根目錄，想放檔案到/etc/或 /usr/share/doc
+	      下就把它放到 fakeroot/etc/ fakeroot/usr/share/doc下就好。
+	      在fakeroot外
+	      <TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+>$ dpkg -b fakeroot cscope_15.1.0_i386.deb
+	      </PRE
+></TD
+></TR
+></TABLE
+>
+	      創造一個deb檔，有個命名規矩pkgname_version_cpuarch.deb。version
+	      通常有三層level， ver.patch.sublevel。也不一定要遵守啦。
+	      用
+	      <TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+>$ dpkg -c cscope_15.1.deb
+	      </PRE
+></TD
+></TR
+></TABLE
+>
+	      看有那些檔案，用
+	      <TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+>$ dpkg -i cscope_15.1.deb
+	      </PRE
+></TD
+></TR
+></TABLE
+>
+	      看有那些資訊。
+	    </P
+></LI
+></OL
+></DIV
+><P
+>	其中資訊檔的意義與使用格式，
+	兩個方法不一樣，
+	一般開發者只要在DEBIAN下放control與install/remove scripts就好，
+	要送給Debian組織的開發者比較囉唆，進debian這個目錄改一些檔，
+	注意debian與DEBIAN兩個目錄的意義不同。
+	在dh_make創造的檔中，
+	<TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+>    control     這是主要package的資訊檔
+    copyright   這個檔在很多商用的軟體中也會出現就是你的版權申明
+    changlog    就是跟上一版的差別
+                這兩個會放在/usr/share/doc/cscope/
+    rules       這是主要install script是個Makefile，
+                會去叫很多dh_xxx command
+
+    其中上面四個檔在Debian組織是必需要的  下面的檔案可有可無
+
+    READ.Debian 就是readme吧，有什麼跟原始程式不一樣特別為debian的事
+    conffiles   configuration file 的所在，通常是/etc/xxx
+                有的軟體不用configuration file
+                例如
+                init.d      
+                debian是system V style的 initial script 放在/etc/init.d
+                有的軟體不用initial script，通常是deamon才需要
+                這些也可以用postinstall script來裝
+
+    dirs        真的要裝的目錄
+
+    docs        這是除了man page外其它的文件
+                這會放在/usr/share/doc/pkgname/
+    manpage.1 manpage.2 .....manpage.9
+                這是你的man page檔
+                我們要把manpage的source code改成cscope.1
+                /usr/share/man/
+                其實這也不用，只要make install有裝man page
+                不用寫在這
+    doc-base    除了man page外的文件說明檔
+                /usr/share/doc-base/
+
+    menu        debian有一套為X-window的menu install系統
+                在/usr/lib/menu
+                可以寫一些資訊讓menu系統幫user安裝
+
+    preinst     四個shell script檔會被dpkg自動呼叫做該做的事
+    postinst    可以看/var/lib/dpkg/info下的範例
+    prerm
+    postrm
+	</PRE
+></TD
+></TR
+></TABLE
+>
+	自動建立example file 如preinst.ex, 
+	ex.doc-base.package等等，把ex拿掉並自己改完即可呼叫，
+	dpkg-buildpackage -rfakeroot.
+	這會放一個假根目錄在debian/tmp
+      </P
+><P
+>	其中各檔的格式中最重要的是control這個檔，
+	即使是自己包裝的在DEBIAN目錄下一定要有此檔，
+	man deb-control可以有詳細解釋
+	<TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+>Package: grep
+Essential: yes
+Priority: required
+Section: base
+Maintainer: Wichert Akkerman &#60;wakkerma@debian.org&#62;
+Architecture: sparc
+Version: 2.4-1
+Pre-Depends: libc6 (&#62;= 2.0.105)
+Provides: rgrep
+Conflicts: rgrep
+Description: GNU grep, egrep and fgrep.
+The GNU family of grep utilities may be the "fastest grep in the west".
+GNU grep is based on a fast lazy-state deterministic matcher (about
+twice as fast as stock Unix egrep) hybridized with a Boyer-Moore-Gosper
+search for a fixed string that eliminates impossible text from being
+considered by the full regexp matcher without necessarily having to
+look at every character. The result is typically many times faster
+than Unix grep or egrep. (Regular expressions containing backreferencing
+will run more slowly, however.)
+	</PRE
+></TD
+></TR
+></TABLE
+>
+	  section 與priority是debian有的定義用dselect可以看出有那些
+	<TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+>Section: base
+         admin
+         doc
+         libs
+         editors
+         devel
+         x11 ......
+         這個可以看debian的CD distribution裡的目錄名就知道了
+
+Priority: Required
+	  Standard
+          Important
+          Optional        
+	  Extra
+	</PRE
+></TD
+></TR
+></TABLE
+>
+      </P
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="x1406.html" tppabs="http://www.study-area.org/cyril/opentools/opentools/x1406.html"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="book1.html" tppabs="http://www.study-area.org/cyril/opentools/opentools/book1.html"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="x1479.html" tppabs="http://www.study-area.org/cyril/opentools/opentools/x1479.html"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>End User(Sys Admin)的觀點</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="package.html" tppabs="http://www.study-area.org/cyril/opentools/opentools/package.html"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>rpm檔的包裝</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

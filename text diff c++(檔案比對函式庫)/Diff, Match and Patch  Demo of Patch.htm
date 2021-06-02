@@ -1,0 +1,122 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!-- saved from url=(0082)https://neil.fraser.name/software/diff_match_patch/svn/trunk/demos/demo_patch.html -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=Big5">
+  <title>Diff, Match and Patch: Demo of Patch</title>
+  <script type="text/javascript" language="JavaScript" src="./Diff, Match and Patch  Demo of Patch_files/diff_match_patch.js"></script>
+</head>
+
+<body>
+<h1>Diff, Match and Patch</h1>
+<h2>Demo of Patch</h2>
+
+<p>Two texts can be diffed against each other, generating a list of patches.
+These patches can then be applied against a third text.  If the third text has edits of its own, this version of patch
+will apply its changes on a best-effort basis, reporting which patches succeeded and which failed.</p>
+
+<p>In this scenario Shakespeare wrote Hamlet in Early Modern English, the source document.  Then two derivative
+works were created.  One is Hamlet updated to Modern English.  The other is a Star Trek parody in Early Modern English.
+This demonstrantion creates a list of patches between the source and the Modern English version.  Then it
+applies those patches onto the Star Trek parody, thus creating a Star Trek parody in
+Modern English.</p>
+
+<script type="text/javascript" language="JavaScript">
+var dmp = new diff_match_patch();
+
+var patch_text = '';
+
+function diff_launch() {
+  var text1 = document.getElementById('text1a').value;
+  var text2 = document.getElementById('text2a').value;
+
+  var ms_start = (new Date).getTime();
+  var diff = dmp.diff_main(text1, text2, true);
+  var ms_end = (new Date).getTime();
+
+  if (diff.length > 2) {
+    dmp.diff_cleanupSemantic(diff);
+  }
+
+  var patch_list = dmp.patch_make(text1, text2, diff);
+  patch_text = dmp.patch_toText(patch_list);
+
+  document.getElementById('diffdatediv').innerHTML =
+      'Time: ' + (ms_end - ms_start) / 1000 + 's';
+  document.getElementById('diffoutputdiv').innerHTML =
+      '<FIELDSET><LEGEND>Patch:</' + 'LEGEND><PRE>' + patch_text +
+      '</' + 'PRE></' + 'FIELDSET>';
+  //document.getElementById('diffoutputdiv').innerHTML = dmp.diff_prettyHtml(diff);
+  document.getElementById('patchbutton').disabled = false;
+}
+
+
+function patch_launch() {
+  var text1 = document.getElementById('text1b').value;
+  var patches = dmp.patch_fromText(patch_text);
+
+  var ms_start = (new Date).getTime();
+  var results = dmp.patch_apply(patches, text1);
+  var ms_end = (new Date).getTime();
+
+  document.getElementById('patchdatediv').innerHTML =
+      'Time: ' + (ms_end - ms_start) / 1000 + 's';
+  document.getElementById('text2b').value = results[0];
+  results = results[1];
+  var html = '';
+  for (var x = 0; x < results.length; x++) {
+    if (results[x]) {
+      html += '<LI><FONT COLOR="#009900">Ok</' + 'FONT>';
+    } else {
+      html += '<LI><FONT COLOR="#990000">Fail</' + 'FONT>';
+    }
+  }
+  document.getElementById('passfaildiv').innerHTML = html;
+}
+</script>
+
+<form action="https://neil.fraser.name/software/diff_match_patch/svn/trunk/demos/demo_patch.html#" onsubmit="return false">
+<h3>Shakespeare's copy:</h3>
+<table width="100%"><tbody><tr>
+  <td width="50%">Old Version:<br><textarea id="text1a" style="width: 100%" rows="10">Hamlet: Do you see yonder cloud that's almost in shape of a camel?
+Polonius: By the mass, and 'tis like a camel, indeed.
+Hamlet: Methinks it is like a weasel.
+Polonius: It is backed like a weasel.
+Hamlet: Or like a whale?
+Polonius: Very like a whale.
+-- Shakespeare</textarea></td>
+  <td width="50%">New Version:<br><textarea id="text2a" style="width: 100%" rows="10">Hamlet: Do you see the cloud over there that's almost the shape of a camel?
+Polonius: By golly, it is like a camel, indeed.
+Hamlet: I think it looks like a weasel.
+Polonius: It is shaped like a weasel.
+Hamlet: Or like a whale?
+Polonius: It's totally like a whale.
+-- Shakespeare</textarea></td>
+</tr></tbody></table>
+<p><input type="button" onclick="diff_launch()" value="Compute Patch"></p>
+<blockquote><div id="diffoutputdiv"></div></blockquote>
+
+<div id="diffdatediv"></div>
+
+<h3>Trekkie's copy:</h3>
+<table width="100%"><tbody><tr>
+  <td width="50%">Old Version:<br><textarea id="text1b" style="width: 100%" rows="10">Kirk: Do you see yonder cloud that's almost in shape of a Klingon?
+Spock: By the mass, and 'tis like a Klingon, indeed.
+Kirk: Methinks it is like a Vulcan.
+Spock: It is backed like a Vulcan.
+Kirk: Or like a Romulan?
+Spock: Very like a Romulan.
+-- Trekkie</textarea></td>
+  <td width="50%">New Version:<br><textarea readonly="" id="text2b" style="width: 100%" rows="10"></textarea></td>
+</tr></tbody></table>
+<input type="button" id="patchbutton" onclick="patch_launch()" value="Apply Patch" disabled="">
+</form>
+
+<ol id="passfaildiv"></ol>
+<div id="patchdatediv"></div>
+
+<hr>
+Back to <a href="http://code.google.com/p/google-diff-match-patch/">Diff, Match and Patch</a>
+
+
+
+
+</body></html>

@@ -1,0 +1,247 @@
+<HTML
+><HEAD
+><TITLE
+>GNU Compiler Collection</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.49"><LINK
+REL="HOME"
+TITLE="用Open Source工具開發軟體"
+HREF="book1.html" tppabs="http://www.study-area.org/cyril/opentools/opentools/book1.html"><LINK
+REL="PREVIOUS"
+TITLE="CVS進階功能"
+HREF="x745.html" tppabs="http://www.study-area.org/cyril/opentools/opentools/x745.html"><LINK
+REL="NEXT"
+TITLE="重要的選項或旗標(FLAGS)"
+HREF="x864.html" tppabs="http://www.study-area.org/cyril/opentools/opentools/x864.html"></HEAD
+><BODY
+CLASS="CHAPTER"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>用Open Source工具開發軟體: 新軟體開發關念</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="x745.html" tppabs="http://www.study-area.org/cyril/opentools/opentools/x745.html"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="x864.html" tppabs="http://www.study-area.org/cyril/opentools/opentools/x864.html"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="CHAPTER"
+><H1
+><A
+NAME="GCC"
+>Chapter 4. GNU Compiler Collection</A
+></H1
+><DIV
+CLASS="TOC"
+><DL
+><DT
+><B
+>Table of Contents</B
+></DT
+><DT
+><A
+HREF="gcc.html#AEN848" tppabs="http://www.study-area.org/cyril/opentools/opentools/gcc.html#AEN848"
+>簡介</A
+></DT
+><DT
+><A
+HREF="x864.html" tppabs="http://www.study-area.org/cyril/opentools/opentools/x864.html"
+>重要的選項或旗標(FLAGS)</A
+></DT
+><DT
+><A
+HREF="x869.html" tppabs="http://www.study-area.org/cyril/opentools/opentools/x869.html"
+>標頭檔 函式庫與gcc</A
+></DT
+><DT
+><A
+HREF="x909.html" tppabs="http://www.study-area.org/cyril/opentools/opentools/x909.html"
+>gcc與Obj檔，動態連結與ELF檔</A
+></DT
+><DT
+><A
+HREF="x952.html" tppabs="http://www.study-area.org/cyril/opentools/opentools/x952.html"
+>gcc與OS - User space/Kernel space</A
+></DT
+><DT
+><A
+HREF="x969.html" tppabs="http://www.study-area.org/cyril/opentools/opentools/x969.html"
+>binutils</A
+></DT
+><DT
+><A
+HREF="x1058.html" tppabs="http://www.study-area.org/cyril/opentools/opentools/x1058.html"
+>結語</A
+></DT
+></DL
+></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="AEN848"
+>簡介</A
+></H1
+><P
+>      GCC
+      Gnu Compiler Collection(GCC)，應該是GNU最有名的傑作了。很多研
+      究單位不想多花錢買商用的compiler就用gcc來compile。本來gcc的意思是
+      專指gnu c compiler，不過後來延伸出pascal,fortran等等只要是GNU負責的
+      都是，不過我們還是指有c/c++/object c 的gnu compiler package
+      。他的功能跟強大不是一般compiler比得上的。
+    </P
+><P
+>      它可以是個cross-compiler，也就是它可以在Intel的機器上編譯程式，但是這
+      個程式是Sun Sparc Solaris的執行檔，反之也可以，只要他有支援的機器，作
+      業系統，就可這樣亂七八糟的愛怎麼編就怎麼編。現在最流行的就是arm這顆
+      CPU，或者palm的程式寫作，用gcc實在是太好用了。
+    </P
+><P
+>      而且這個編譯器是免費的，不要說怎麼這麼陽春，沒有IDE，基本上寫作大程式，
+      是沒有這些東西的，寫程式寫到好幾萬行時，那些已經沒有一個清醒的頭
+      腦重要了。因此要會真正的C功力，要寫真正有用的程式，非gcc莫屬了。
+      這是一個免費的練習的好軟體。
+    </P
+><P
+>      一個編譯過程通常需要4道程序
+      <P
+></P
+><OL
+TYPE="1"
+><LI
+><P
+>	    preprocess	先處理那些#ifdef #define這些東西並做一些巨集代換
+	  </P
+></LI
+><LI
+><P
+>	    compile	做語意分析，翻譯成組合語言
+	  </P
+></LI
+><LI
+><P
+>	    assemble	翻成機器碼與OS有關的格式，做成relocatable obj檔。
+	  </P
+></LI
+><LI
+><P
+>	    link  	找到symbol(函式，變數名)與程式庫(shared obj)中的副程式
+	    ，做成可執行obj檔(executable obj)。
+	  </P
+></LI
+></OL
+>
+      分別由cpp,cc1,as,ld來完成。但我們通常用個
+      <TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+>$ gcc xxx.c
+      </PRE
+></TD
+></TR
+></TABLE
+>
+      就好了，這是因為
+      gcc或者g++只是個編譯驅動器(compiler driver)，這個驅動器去叫cpp這些
+      工具來完成編譯過程中所需要的步驟。其中as, ld這些工具又放在另一個
+      package叫binutil的裡面，所以要裝好gcc，不僅要gcc的套件最好連binutil
+      這個套件都要小心。另外更重要的是函式庫的版本與kernel的版本(安裝gcc要小
+      心很多東西，像gpref也要更新成有support)
+    </P
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="x745.html" tppabs="http://www.study-area.org/cyril/opentools/opentools/x745.html"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="book1.html" tppabs="http://www.study-area.org/cyril/opentools/opentools/book1.html"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="x864.html" tppabs="http://www.study-area.org/cyril/opentools/opentools/x864.html"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>CVS進階功能</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+>&nbsp;</TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>重要的選項或旗標(FLAGS)</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

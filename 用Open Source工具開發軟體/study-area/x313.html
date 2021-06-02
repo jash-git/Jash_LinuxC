@@ -1,0 +1,973 @@
+<HTML
+><HEAD
+><TITLE
+>文件結構簡介</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.49"><LINK
+REL="HOME"
+TITLE="用Open Source工具開發軟體"
+HREF="book1.html" tppabs="http://www.study-area.org/cyril/opentools/opentools/book1.html"><LINK
+REL="UP"
+TITLE="製作文件工具"
+HREF="doc.html" tppabs="http://www.study-area.org/cyril/opentools/opentools/doc.html"><LINK
+REL="PREVIOUS"
+TITLE="製作文件工具"
+HREF="doc.html" tppabs="http://www.study-area.org/cyril/opentools/opentools/doc.html"><LINK
+REL="NEXT"
+TITLE="LaTeX與SGML的範例"
+HREF="x401.html" tppabs="http://www.study-area.org/cyril/opentools/opentools/x401.html"></HEAD
+><BODY
+CLASS="SECT1"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>用Open Source工具開發軟體: 新軟體開發關念</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="doc.html" tppabs="http://www.study-area.org/cyril/opentools/opentools/doc.html"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 2. 製作文件工具</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="x401.html" tppabs="http://www.study-area.org/cyril/opentools/opentools/x401.html"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="AEN313"
+>文件結構簡介</A
+></H1
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN315"
+>文件框架</A
+></H2
+><P
+>	文件的組成架構中有個像寫C程式般的框架，然後處理程式根據框架來處理。
+	其實一份文件就是我們以前說的八股文，
+	要寫好八股文也不是簡單事，主要是有內容的八股文，通常要有起承轉合，
+	一份LaTeX或SGML文件，像這樣子
+      </P
+><P
+>LaTeX框架
+	<TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>\documentclass{article} (\documentstyle是\LaTeX 2.09版的寫法)
+\usepackage{CJK}
+\begin{document}
+......
+\end{document}
+	</PRE
+></TD
+></TR
+></TABLE
+>
+      </P
+><P
+>SGML 框架
+	<TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>&#60;!doctype book PUBLIC "-//OASIS//DTD DocBook V3.1//EN" []&#62;
+&#60;book&#62;
+......
+&#60;/book&#62;
+	</PRE
+></TD
+></TR
+></TABLE
+>
+	sgml很像HTML前後用&#60;tag&#62;&#60;/tag&#62;夾住，其中
+	-//OASIS//DTD DocBook V3.1//EN大小寫有差。
+	LaTeX很多是用\begin{xxx} \end{xxxx}夾住，
+	其中\usepackage{CJK}是拿來處理中文的，
+	如果文章中碰到中文時還要用\begin{CJK}{Bg5}{kai} \end{CJK}，
+	這樣的命令夾住中文。
+      </P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN322"
+>文件屬性</A
+></H2
+><P
+>	一份文件的屬性是什麼 決定了這個輸出應該要有什麼樣的樣子，
+	例如最常見到的兩種型態book 與article，
+	一本書(book) 通常有目錄(table of content) 有章節  有索引(index)，
+	相對的文章(article)可能就不需要目錄了。
+	其他的可能像信件(Letter)或備忘錄(MEMO)等等都算是一種文件屬性，
+	不同文章屬性有不同的格式需求，所以要寫作前，要先設定文章的屬性為何，
+	讓處理程式有辦法往下處理。
+      </P
+><P
+>	在LaTeX的例子裡 我們用
+	<TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>\documentclass{book}
+\documentclass{article}
+\documentclass{report}
+	</PRE
+></TD
+></TR
+></TABLE
+>
+      </P
+><P
+>在sgml裡 我們用
+	<TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>&#60;!doctype book  xxxx&#62;
+&#60;book&#62;
+  xxxxx
+&#60;/book&#62;
+
+&#60;!doctype article  xxxxx&#62;
+&#60;article&#62;
+  xxxx
+&#60;/article&#62;
+	</PRE
+></TD
+></TR
+></TABLE
+>
+	來宣告文件的屬性，
+	其中sgml裡這個第一個標籤叫root tag，一定是這個屬性的名字，
+	所以book屬性的root tag是&#60;book&#62;。
+      </P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN329"
+>Metadata</A
+></H2
+><P
+>	通常一本書或一篇文章除了內容外還有其它資訊，
+	例如書名作者出版商等資訊還有像ISBN編號等，
+	這些資訊叫metadata，也就是說不屬於正式內容但是很重要的資訊，
+	所以緊跟著框架與文件屬性後通常就是metadata。
+      </P
+><P
+>	LaTeX
+	<TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>\title{Test Plan for Automation System}
+  \author{
+    Cyril Huang\\
+    Veritas Software
+  \and 
+    HaiShan Chen\\
+    Alcatel Systems}
+\maketitle
+
+也可以用
+\beign{title}
+  xxxx
+
+\end{title}
+	</PRE
+></TD
+></TR
+></TABLE
+>
+	\begin{title} \end{title}裡面的內容是任意的，
+	不過就是要自己控制字型字的大小與排版，
+	尤其是寫一本book時比較有用，一般report 或article，
+	可以用\title \maketile就好。
+      </P
+><P
+>	SGML
+	<TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>&#60;author&#62;
+  &#60;firstname&#62;Cyril&#60;/firstname&#62;      
+  &#60;surname&#62;Huang&#60;/surname&#62;
+  &#60;affiliation&#62;
+    &#60;orgname&#62;Veritas Software&#60;/orgname&#62;
+  &#60;/affiliation&#62;
+&#60;/author&#62;
+&#60;author&#62;
+  &#60;firstname&#62;HaiShan&#60;/firstname&#62;      
+  &#60;surname&#62;Chen&#60;/surname&#62;
+  &#60;affiliation&#62;
+    &#60;orgname&#62;Alcatel Systems&#60;/orgname&#62;
+  &#60;/affiliation&#62;
+&#60;/author&#62;
+
+&#60;revhistory&#62;
+  &#60;revision&#62;
+    &#60;revnumber&#62;0.1&#60;/revnumber&#62;
+    &#60;date&#62;13 Mar 2001&#60;/date&#62;
+    &#60;authorinitials&#62;C.H&#60;/authorinitials&#62;
+    &#60;revremark&#62;first draft&#60;/revremark&#62;
+  &#60;/revision&#62;
+  &#60;revision&#62;
+    &#60;revnumber&#62;0.2&#60;/revnumber&#62;
+    &#60;date&#62;25 Apr 2001&#60;/date&#62;
+    &#60;authorinitials&#62;C.H&#60;/authorinitials&#62;
+    &#60;revremark&#62;Second draft&#60;/revremark&#62;
+  &#60;/revision&#62;
+&#60;/revhistory&#62;
+	</PRE
+></TD
+></TR
+></TABLE
+>
+      </P
+><P
+>	其中LaTeX是由\maketitle來完成，所以叫\maketitle前，
+	要先把\title \author寫好，
+	\\在\LaTeX中代表newline換行，
+	日期會自己印出來，
+	在article中只會印成像論文般的header，
+	如果想另成一個page，要寫成
+	\documentclass[titlepage]{article}。
+      </P
+><P
+>	sgml的metadata如果是在book時要夾在&#60;bookinfo&#62;&#60;/bookinfo&#62;，
+	article是在&#60;artheader&#62;&#60;/artheader&#62;，
+	SGML裡不只這些還有更多的標籤可以用。
+      </P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN338"
+>文章結構元素</A
+></H2
+><P
+>	正式文件裡有些元素是需要的，
+	例如論文中我們通常都要有個摘要(abstract)來貫穿整個文章，
+	另外文件裡其它的常聽到的元素就是章節段落了。
+      </P
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="AEN341"
+>摘要(abstract)</A
+></H3
+><P
+>	  LaTeX
+	  <TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>\begin{abstract}
+   xxxx
+\end{abstract}
+	  </PRE
+></TD
+></TR
+></TABLE
+>
+	</P
+><P
+>	  SGML
+	  <TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>&#60;abstract&#62;
+   xxxx
+&#60;/abstract&#62;
+	  </PRE
+></TD
+></TR
+></TABLE
+>
+	  摘要不能出現在book型式的文件中
+	</P
+></DIV
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="AEN347"
+>章(chapter)</A
+></H3
+><P
+>	  LaTeX
+	  <TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>\chapter{This is Chapter 1 Title}
+	  </PRE
+></TD
+></TR
+></TABLE
+>
+	</P
+><P
+>	  SGML
+	  <TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>&#60;chapter&#62;
+&#60;title&#62;This is Chapter 1 Title&#60;/title&#62;
+
+&#60;/chapter&#62;
+	  </PRE
+></TD
+></TR
+></TABLE
+>
+	</P
+></DIV
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="AEN353"
+>節(section)</A
+></H3
+><P
+>	  LaTeX
+	  <TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>\section{The Section 1 title}
+\subsection{The Section 1.1 title}
+\subsubsection{The Section 1.1.1 title }
+	  </PRE
+></TD
+></TR
+></TABLE
+>
+	</P
+><P
+>	  SGML
+	  <TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>&#60;sect1&#62;
+&#60;title&#62; The Section 1 title &#60;/title&#62;
+&#60;sect2&#62;
+&#60;title&#62; The Section 1.1 title &#60;/title&#62;
+&#60;sect3&#62;
+&#60;title&#62; The Section 1.1.1 title &#60;/title&#62;
+	  </PRE
+></TD
+></TR
+></TABLE
+>
+	    會有如下表現
+	  <TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+>1 The Section 1 title
+1.1 The Section 1.1 title 
+1.1.1 The Section 1.1.1 title 
+	  </PRE
+></TD
+></TR
+></TABLE
+>
+	    注意book要有chapter，但article/report要從section開始不能有chapter
+	</P
+></DIV
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="AEN360"
+>段落(paragraph)</A
+></H3
+><P
+>	  LaTeX
+	  <TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>\\\\
+\par
+	  </PRE
+></TD
+></TR
+></TABLE
+>
+	</P
+><P
+>	  SGML
+	  <TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>&#60;para&#62;
+xxxx
+&#60;/para&#62;
+	  </PRE
+></TD
+></TR
+></TABLE
+>
+	  \\在LaTeX中代表換行，所以其實用\\\\就可以有段落的效果了，
+	  不過如果在tex原始檔中多一個空白行，就會有段落並造成縮排效果。
+	  跟用\par一樣
+	</P
+><P
+>	  SGML比較囉唆一點的是很多文字部份有時一定要para這個標籤，
+	  不過如果少了也沒關係，有時還是可以轉成我們想要的格式檔出來。
+	</P
+></DIV
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN367"
+>其他文字常用元素</A
+></H2
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="AEN369"
+>加強注意(emphasize)</A
+></H3
+><P
+>	  LaTeX
+	  <TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>\emph{注意文字}
+	  </PRE
+></TD
+></TR
+></TABLE
+>
+	</P
+><P
+>	  SGML
+	  <TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>&#60;emphasis&#62;
+注意文字
+&#60;/emphasis&#62;
+	  </PRE
+></TD
+></TR
+></TABLE
+>
+	</P
+></DIV
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="AEN375"
+>列舉文字(list)</A
+></H3
+><P
+>	  LaTeX
+	  <TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>\begin{itemize}
+  \item item1
+  \item item2
+\end{itemize}
+	  </PRE
+></TD
+></TR
+></TABLE
+>
+	</P
+><P
+>	  SGML
+	  <TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>&#60;itemizedlist&#62;
+  &#60;listitem&#62;
+  &#60;para&#62;
+    item1
+  &#60;/para&#62;
+  &#60;/listitem&#62;
+  &#60;listitem&#62;
+  &#60;para&#62;
+    item2
+  &#60;/para&#62;
+  &#60;/listitem&#62;
+&#60;/itemizedlist&#62;
+	  </PRE
+></TD
+></TR
+></TABLE
+>
+	  常用list除了前面有圓點的外還有1 2 3 4....
+	</P
+><P
+>	  LaTeX
+	  <TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>\begin{enumerate}
+  \item item1
+  \item item2
+\end{enumerate}
+	  </PRE
+></TD
+></TR
+></TABLE
+>
+	</P
+><P
+>	  SGML
+	  <TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>&#60;orderedlist&#62;
+  &#60;listitem&#62;
+  &#60;para&#62;
+    item1
+  &#60;/para&#62;
+  &#60;/listitem&#62;
+  &#60;listitem&#62;
+  &#60;para&#62;
+    item2
+  &#60;/para&#62;
+  &#60;/listitem&#62;
+&#60;/orderedlist&#62;
+	  </PRE
+></TD
+></TR
+></TABLE
+>
+	  其它還有縮排的list等等
+	</P
+></DIV
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="AEN385"
+>表格(table)</A
+></H3
+><P
+>	  表格是比較複雜的元素之一
+	</P
+><P
+>	  LaTeX
+	  <TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>\begin{table}
+  \caption{Test Cases}
+  \begin{tabular}{r|p{6cm}|l|c}\hline
+  Test Case ID &#38; Test Case Descriptions &#38; (pass/fail) &#38; Comment \\ \hline
+  1            &#38; 
+  Installation Test: This test is for the Solaris pkgtools
+  test, give the command pkgadd -d /pkg/dir to test if the installation
+  is correct                            &#38;             &#38;         \\ \hline\hline
+  2            &#38; Another test           &#38; \multicolumn{2}{|c|}{}\\ \cline{1-2}
+  \multicolumn{2}{|c|}{}                &#38; \multicolumn{2}{|c|}{}\\ \hline
+  \multicolumn{4}{|c||}{This is foot of Table}                  \\ \hline
+  \end{tabular}
+\end{table}
+	  </PRE
+></TD
+></TR
+></TABLE
+>
+	  LaTeX的表格由\begin{table}開始表示是一個浮動的表格，
+	  就是說它自己會根據表格大小找到最適當的位置然後才放到適當位置，
+	  如果希望照自己想要的順序出現表格，
+	  則可以把\begin{table} \caption{}拿掉，
+	  \caption{Test Cases}caption是表格的標題。
+	</P
+><P
+>	  <TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>\begin{tabular}開始做表格
+	  </PRE
+></TD
+></TR
+></TABLE
+>
+	  <TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>{r|p{6cm}|l|c}
+	  </PRE
+></TD
+></TR
+></TABLE
+>
+	  表示有4個欄位(column)其中
+	  <TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>第一欄內文字向右對齊
+第二欄位寬6公分，不這樣定會一欄只有一個很長的行的文字
+第三欄向左對齊
+第四欄向中對齊
+|表示要畫垂直格線||表示畫兩道
+	  </PRE
+></TD
+></TR
+></TABLE
+>
+	</P
+><P
+>	  <TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>\hline表示要畫橫格線 
+\hline\hline就會畫兩條橫線
+	  </PRE
+></TD
+></TR
+></TABLE
+>
+	  每一橫列(row)不同欄的內容用 &#38; 分開  最後用\\代表結束換行
+	  <TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>\cline{1-2}表示從第一欄畫橫線到第二欄，
+\multicolumn{4}{|c||}{This is foot of Table}
+表示接下來的4個欄位看成一欄，裡面文字(This is foot of Table)置中對齊
+三個中括號是這個命令的參數，一定要有
+	  </PRE
+></TD
+></TR
+></TABLE
+>
+	</P
+><P
+>	  SGML
+	  <TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>&#60;table frame='all'&#62;
+     &#60;title&#62;Test Cases&#60;/title&#62;
+	&#60;tgroup cols='4'&#62;
+	&#60;colspec colname=c1 colwidth="1*"&#62;
+	&#60;colspec colname=c2 colwidth="7*"&#62;
+	&#60;colspec colname=c3 colwidth="2*"&#62;
+	&#60;colspec colname=c4 colwidth="2*"&#62;
+	&#60;spanspec spanname=hspan0 namest=c1 nameend=c4 align=left&#62;
+	&#60;spanspec spanname=hspan1 namest=c1 nameend=c2 align=left&#62;
+	&#60;spanspec spanname=hspan2 namest=c3 nameend=c4 align=center&#62;
+
+	&#60;thead&#62;
+	  &#60;row&#62;
+	    &#60;entry&#62;TC ID&#60;/entry&#62;
+	    &#60;entry&#62;Test Case Description&#60;/entry&#62;
+	    &#60;entry&#62;(pass/fail)&#60;/entry&#62;
+	    &#60;entry&#62;Comment&#60;/entry&#62;
+	  &#60;/row&#62;
+	&#60;/thead&#62;
+
+	&#60;tfoot&#62;
+	  &#60;row&#62;
+	    &#60;entry spanname=hspan0&#62;This is foot of Table&#60;/entry&#62;
+	  &#60;/row&#62;
+	&#60;/tfoot&#62;
+        &#60;tbody&#62;
+	      &#60;row&#62;
+		&#60;entry&#62;1&#60;/entry&#62;
+		&#60;entry&#62;
+		  Installation Test
+		  This test try to check if the installation of pkg. 
+		  give the command pkgadd -d /pkg/dir to test if 
+		  the installation is  correct
+		&#60;/entry&#62;
+		&#60;entry&#62; &#60;/entry&#62;
+		&#60;entry&#62; &#60;/entry&#62;
+	      &#60;/row&#62;
+
+	      &#60;row&#62;
+		&#60;entry&#62;2&#60;/entry&#62;
+		&#60;entry&#62;Another Test&#60;/entry&#62;
+		&#60;entry spanname=hspan2 morerows=1&#62; &#60;/entry&#62;
+	      &#60;/row&#62;
+	&#60;/tbody&#62;
+     &#60;/tgroup&#62;
+&#60;/table&#62;
+	  </PRE
+></TD
+></TR
+></TABLE
+>
+	  <TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>&#60;table&#62;    frame=all表示要格線
+&#60;tgroup&#62;
+&#60;colspec&#62;  欄位名字定義，欄位寬度，1*表示一個單位，所以第一欄佔了1/12總寬度
+&#60;spanspec&#62; 把多欄看成一欄的定義 名字 起始與結束欄位名
+&#60;thead&#62;    表格的頭
+&#60;tfoot&#62;    腳
+&#60;tbody&#62;    身體
+	  </PRE
+></TD
+></TR
+></TABLE
+>
+	  一定要這個順序thead tfoot tbody，不過可以不要某個元素如tfoot。
+	</P
+><P
+>	  還有很多命令與標籤  
+	  可以隨心所欲的製作出想要的表格來，
+	  不過基本上這已經很好用了。
+	</P
+></DIV
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="doc.html" tppabs="http://www.study-area.org/cyril/opentools/opentools/doc.html"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="book1.html" tppabs="http://www.study-area.org/cyril/opentools/opentools/book1.html"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="x401.html" tppabs="http://www.study-area.org/cyril/opentools/opentools/x401.html"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>製作文件工具</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="doc.html" tppabs="http://www.study-area.org/cyril/opentools/opentools/doc.html"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>LaTeX與SGML的範例</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

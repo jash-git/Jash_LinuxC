@@ -1,0 +1,265 @@
+<HTML
+><HEAD
+><TITLE
+>Makefile撰寫</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.49"><LINK
+REL="HOME"
+TITLE="用Open Source工具開發軟體"
+HREF="book1.html" tppabs="http://www.study-area.org/cyril/opentools/opentools/book1.html"><LINK
+REL="PREVIOUS"
+TITLE="結語"
+HREF="x1058.html" tppabs="http://www.study-area.org/cyril/opentools/opentools/x1058.html"><LINK
+REL="NEXT"
+TITLE="組成元素"
+HREF="x1075.html" tppabs="http://www.study-area.org/cyril/opentools/opentools/x1075.html"></HEAD
+><BODY
+CLASS="CHAPTER"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>用Open Source工具開發軟體: 新軟體開發關念</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="x1058.html" tppabs="http://www.study-area.org/cyril/opentools/opentools/x1058.html"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="x1075.html" tppabs="http://www.study-area.org/cyril/opentools/opentools/x1075.html"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="CHAPTER"
+><H1
+><A
+NAME="MAKEFILE"
+>Chapter 5. Makefile撰寫</A
+></H1
+><DIV
+CLASS="TOC"
+><DL
+><DT
+><B
+>Table of Contents</B
+></DT
+><DT
+><A
+HREF="makefile.html#MAKE-INTRO" tppabs="http://www.study-area.org/cyril/opentools/opentools/makefile.html#MAKE-INTRO"
+>簡介</A
+></DT
+><DT
+><A
+HREF="x1075.html" tppabs="http://www.study-area.org/cyril/opentools/opentools/x1075.html"
+>組成元素</A
+></DT
+><DT
+><A
+HREF="x1176.html" tppabs="http://www.study-area.org/cyril/opentools/opentools/x1176.html"
+>內隱規則(Implicit Rules)</A
+></DT
+><DT
+><A
+HREF="x1207.html" tppabs="http://www.study-area.org/cyril/opentools/opentools/x1207.html"
+>其它</A
+></DT
+></DL
+></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="MAKE-INTRO"
+>簡介</A
+></H1
+><P
+>      寫程式寫很大時，我們會分成好幾個模組，就是一個個的C或其他程式語言的
+      小檔案。make是編譯大量的source code一定要用到的工具，最常用的就是寫一個
+      Makefile，他會根據這裡面的目標(target)所定義的規則(rule)來做編譯的
+      動作，並創造出可執行的程式來。一般人都會說拿到source code不知從何
+      讀起，其實除了README等文件外，Makdefile是最能知道程式流程的檔案，
+      你可以看Makefile然後找到程式的入口檔案，一步步追下去，用我們在
+      編輯器講到的方法來追程式。不過現在Makefile越寫越專業越來越大也
+      不太容易看懂。
+    </P
+><P
+>      一個Makefile其實只是一堆的規則(rule)所組成。
+      一個規則的型式是這樣的
+      target:prequiste ; command
+      通常是寫成
+      <TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+>target: prerequiste
+	command
+	command
+	command
+      </PRE
+></TD
+></TR
+></TABLE
+>
+
+      如果一行不夠寫要分兩行，可以用\來變成兩行
+      底下是一個例子
+
+      <DIV
+CLASS="EXAMPLE"
+><P
+><B
+>Example 5-1. 簡單Makefile</B
+></P
+><TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>SHELL=/usr/bin/bash
+
+edit:	main.o kbd.o command.o display.o \
+	insert.o search.o files.o utils.o
+	$(CC) -o edit main.o kbd.o command.o display.o \
+	insert.o search.o files.o utils.o
+      
+command.o :command.c command.h
+	$(CC) -o command.o command.c
+
+clean:
+	@rm *.o *~
+	</PRE
+></TD
+></TR
+></TABLE
+></DIV
+>
+      其中定義了SHELL這個變數，有3個目標(target)edit command.o clean，
+      雖然沒有定義CC這個變數，用了內定變數$(CC)去編譯程式。
+      如果給
+      <TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+>$ make clean
+      </PRE
+></TD
+></TR
+></TABLE
+>
+      make會另外叫起一個shell來執行command這裡面的字串也就是rm *.o。
+      如果給
+      <TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+>$ make edit
+      </PRE
+></TD
+></TR
+></TABLE
+>
+      make會去檢查需要的先決條件(prerequiste)發現有個檔名target command.o 
+      存在，會依序根據規則來編譯。
+    </P
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="x1058.html" tppabs="http://www.study-area.org/cyril/opentools/opentools/x1058.html"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="book1.html" tppabs="http://www.study-area.org/cyril/opentools/opentools/book1.html"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="x1075.html" tppabs="http://www.study-area.org/cyril/opentools/opentools/x1075.html"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>結語</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+>&nbsp;</TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>組成元素</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

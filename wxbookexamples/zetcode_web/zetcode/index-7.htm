@@ -1,0 +1,656 @@
+<!DOCTYPE html> 
+<html lang="en">
+<head>
+<title>Dialogs in wxWidgets</title>
+<link rel="stylesheet" href="format.css" tppabs="http://zetcode.com/cfg/format.css">
+<meta charset="utf-8">
+<meta name="keywords" content="wxWidgets, tutorial, widgets, dialogs, C++, programming, GUI, multiplatform">
+<meta name="description" content="This part of the wxWidgets tutorial covers dialogs.">
+<meta name="author" content="Jan Bodnar">
+
+<script src="jquery.js" tppabs="http://zetcode.com/lib/jquery.js"></script>
+<script src="common.js" tppabs="http://zetcode.com/lib/common.js"></script>
+
+</head>
+
+<body>
+
+<div class="container">
+
+<div id="wide_ad" class="ltow">
+<script async src="adsbygoogle.js" tppabs="http://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- 160x600, August 2011 -->
+<ins class="adsbygoogle"
+     style="display:inline-block;width:160px;height:600px"
+     data-ad-client="ca-pub-9706709751191532"
+     data-ad-slot="2484182563"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+</div>
+
+<div class="content">
+
+
+<header>
+
+<a href="javascript:if(confirm('http://zetcode.com/  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://zetcode.com/'" tppabs="http://zetcode.com/" title="Home">Home</a>&#160;
+<a href=".-6.htm" tppabs="http://zetcode.com/gui/wxwidgets/dialogs/..">Contents</a>
+
+</header>
+
+
+<h1>Dialogs in wxWidgets</h1>
+
+<p>
+Dialog windows or dialogs are an indispensable part of most modern GUI 
+applications. A dialog is defined as a conversation between two or more 
+persons. In a computer application a dialog is a window which is used to 
+"talk" to the application. A dialog is used to input data, modify data, 
+change the application settings etc. Dialogs are important means of 
+communication between a user and a computer program.
+</p>
+
+<div class="med_rec">
+<script async src="adsbygoogle.js" tppabs="http://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- NewSquare -->
+<ins class="adsbygoogle"
+     style="display:inline-block;width:300px;height:250px"
+     data-ad-client="ca-pub-9706709751191532"
+     data-ad-slot="0364418177"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+</div>
+
+<p>
+There are essentially two types of dialogs: predefined dialogs 
+and custom dialogs. 
+</p>
+
+
+<h2>Predefined dialogs</h2>
+
+<p>
+Predefined dialogs are dialogs available in the wxWidgets toolkit. These are 
+dialogs for common programming tasks like showing text, receiving input, 
+loading and saving files etc. They save programmer's time and enhance 
+using some standard behaviour. 
+</p>
+
+
+<h2>Message dialogs</h2>
+
+<p>
+Message dialogs are used to show messages to the user. They are customisable. 
+We can change icons and buttons that will be shown in a dialog.
+</p>
+
+<div class="codehead">Messages.h</div>
+<pre class="code">
+#include &lt;wx/wx.h&gt;
+
+class Messages : public wxFrame
+{
+public:
+    Messages(const wxString&amp; title);
+    
+    void ShowMessage1(wxCommandEvent &amp; event);
+    void ShowMessage2(wxCommandEvent &amp; event);
+    void ShowMessage3(wxCommandEvent &amp; event);
+    void ShowMessage4(wxCommandEvent &amp; event);
+
+};
+
+const int ID_INFO = 1;
+const int ID_ERROR = 2;
+const int ID_QUESTION = 3;
+const int ID_ALERT = 4;
+</pre>
+
+<div class="codehead">Messages.cpp</div>
+<pre class="code">
+#include "Messages.h"
+
+Messages::Messages(const wxString&amp; title)
+       : wxFrame(NULL, wxID_ANY, title, wxDefaultPosition, wxSize(210, 110))
+{
+
+  wxPanel *panel = new wxPanel(this, wxID_ANY);
+
+  wxBoxSizer *hbox = new wxBoxSizer(wxHORIZONTAL);
+  wxGridSizer *gs = new wxGridSizer(2, 2, 2, 2);
+
+  wxButton *btn1 = new wxButton(panel, ID_INFO, wxT("Info"));
+  wxButton *btn2 = new wxButton(panel, ID_ERROR, wxT("Error"));
+  wxButton *btn3 = new wxButton(panel, ID_QUESTION, wxT("Question"));
+  wxButton *btn4 = new wxButton(panel, ID_ALERT, wxT("Alert"));
+
+  Connect(ID_INFO, wxEVT_COMMAND_BUTTON_CLICKED, 
+      wxCommandEventHandler(Messages::ShowMessage1));
+  Connect(ID_ERROR, wxEVT_COMMAND_BUTTON_CLICKED, 
+      wxCommandEventHandler(Messages::ShowMessage2));
+  Connect(ID_QUESTION, wxEVT_COMMAND_BUTTON_CLICKED, 
+      wxCommandEventHandler(Messages::ShowMessage3));
+  Connect(ID_ALERT, wxEVT_COMMAND_BUTTON_CLICKED, 
+      wxCommandEventHandler(Messages::ShowMessage4));
+
+  gs->Add(btn1, 1, wxEXPAND);
+  gs->Add(btn2, 1);
+  gs->Add(btn3, 1);
+  gs->Add(btn4, 1);
+
+  hbox->Add(gs, 0, wxALL, 15);
+  panel->SetSizer(hbox);
+
+  Center();
+}
+
+
+void Messages::ShowMessage1(wxCommandEvent&amp; event) 
+{
+  wxMessageDialog *dial = new wxMessageDialog(NULL, 
+      wxT("Download completed"), wxT("Info"), wxOK);
+  dial->ShowModal();
+}
+
+void Messages::ShowMessage2(wxCommandEvent&amp; event) 
+{
+   wxMessageDialog *dial = new wxMessageDialog(NULL, 
+      wxT("Error loading file"), wxT("Error"), wxOK | wxICON_ERROR);
+   dial->ShowModal();
+}
+
+void Messages::ShowMessage3(wxCommandEvent&amp; event) 
+{
+  wxMessageDialog *dial = new wxMessageDialog(NULL, 
+      wxT("Are you sure to quit?"), wxT("Question"), 
+      wxYES_NO | wxNO_DEFAULT | wxICON_QUESTION);
+  dial->ShowModal();
+}
+
+void Messages::ShowMessage4(wxCommandEvent&amp; event) 
+{
+  wxMessageDialog *dial = new wxMessageDialog(NULL, 
+      wxT("Unallowed operation"), wxT("Exclamation"), 
+      wxOK | wxICON_EXCLAMATION);
+  dial->ShowModal();
+}
+</pre>
+
+<div class="codehead">main.h</div>
+<pre class="code">
+#include &lt;wx/wx.h&gt;
+
+class MyApp : public wxApp
+{
+  public:
+    virtual bool OnInit();
+};
+</pre>
+
+<div class="codehead">main.cpp</div>
+<pre class="code">
+#include "main.h"
+#include "Messages.h"
+
+IMPLEMENT_APP(MyApp)
+
+bool MyApp::OnInit()
+{
+
+  Messages *msgs = new Messages(wxT("Messages"));
+  msgs->Show(true);
+
+  return true;
+}
+</pre>
+
+<p>
+In our example, we have created four buttons and put them in a grid sizer. 
+These buttons will show four different dialog windows. We create them by 
+specifying different style flags.
+</p>
+
+<pre class="explanation">
+wxMessageDialog *dial = new wxMessageDialog(NULL, 
+   wxT("Error loading file"), wxT("Error"), wxOK | wxICON_ERROR);
+dial->ShowModal();
+</pre>
+
+<p>
+The creation of the message dialog is simple. We set the dialog to be a toplevel 
+window by providing <code>NULL</code> as a parent. The two strings provide the 
+message text and the dialog title. We show an OK button and an error icon by 
+specifying the <code>wxOK</code> and <code>wxICON_ERROR</code> flags. To show 
+the dialog on screen, we call the <code>ShowModal()</code> method.
+</p>
+
+<img src="idialog.jpg" tppabs="http://zetcode.com/img/gui/wxwidgets/idialog.jpg" alt="Info dialog">
+<img src="qdialog.jpg" tppabs="http://zetcode.com/img/gui/wxwidgets/qdialog.jpg" alt="Question dialog">
+<img src="adialog.jpg" tppabs="http://zetcode.com/img/gui/wxwidgets/adialog.jpg" alt="Alert dialog">
+<img src="edialog.jpg" tppabs="http://zetcode.com/img/gui/wxwidgets/edialog.jpg" alt="Error dialog">
+
+
+<h2>wxFileDialog</h2>
+
+<p>
+This is a common dialog for opening and saving files. 
+</p>
+
+<div class="codehead">openfile.h</div>
+<pre class="code">
+#include &lt;wx/wx.h&gt;
+
+class Openfile : public wxFrame
+{
+public:
+  Openfile(const wxString&amp; title);
+
+  void OnOpen(wxCommandEvent&amp; event);
+
+  wxTextCtrl *tc;
+
+};
+</pre>
+
+<div class="codehead">openfile.cpp</div>
+<pre class="code">
+#include "openfile.h"
+
+Openfile::Openfile(const wxString &amp; title)
+       : wxFrame(NULL, wxID_ANY, title, wxDefaultPosition, wxSize(300, 200))
+{
+
+  wxMenuBar *menubar = new wxMenuBar;
+  wxMenu *file = new wxMenu;
+  file->Append(wxID_OPEN, wxT("&amp;Open"));
+  menubar->Append(file, wxT("&amp;File"));
+  SetMenuBar(menubar);
+
+  Connect(wxID_OPEN, wxEVT_COMMAND_MENU_SELECTED, 
+      wxCommandEventHandler(Openfile::OnOpen));
+
+
+  tc = new wxTextCtrl(this, -1, wxT(""), wxPoint(-1, -1), 
+      wxSize(-1, -1), wxTE_MULTILINE);
+
+  Center();
+
+}
+
+void Openfile::OnOpen(wxCommandEvent&amp; event)
+{
+
+  wxFileDialog * openFileDialog = new wxFileDialog(this);
+
+  if (openFileDialog->ShowModal() == wxID_OK){
+      wxString fileName = openFileDialog->GetPath();
+      tc->LoadFile(fileName);     
+  }
+}
+</pre>
+
+<div class="codehead">main.h</div>
+<pre class="code">
+#include &lt;wx/wx.h&gt;
+
+class MyApp : public wxApp
+{
+  public:
+    virtual bool OnInit();
+};
+</pre>
+
+<div class="codehead">main.cpp</div>
+<pre class="code">
+#include "main.h"
+#include "openfile.h"
+
+IMPLEMENT_APP(MyApp)
+
+bool MyApp::OnInit()
+{
+
+    Openfile *open = new Openfile(wxT("Openfile"));
+    open->Show(true);
+
+    return true;
+}
+</pre>
+
+<p>
+In our example, we display a open file menu item and a simple 
+multiline text control. If we click on the open file menu item 
+a <code>wxFileDialog</code> is displayed. We can load some simple 
+text files into the text control.
+</p>
+
+<pre class="explanation">
+tc = new wxTextCtrl(this, -1, wxT(""), wxPoint(-1, -1), 
+    wxSize(-1, -1), wxTE_MULTILINE);
+</pre>
+
+<p>
+We load text files into this text control.
+</p>
+
+<pre class="explanation">
+wxFileDialog * openFileDialog = new wxFileDialog(this);
+</pre>
+
+<p>
+Here we create a wxFileDialog. We use the default parameters. 
+(The open file dialog is the default dialog.)
+</p>
+
+<pre class="explanation">
+if (openFileDialog->ShowModal() == wxID_OK){
+    wxString fileName = openFileDialog->GetPath();
+    tc->LoadFile(fileName);     
+}
+</pre>
+
+<p>
+Here we show the dialog. We get the selected file name and load the file 
+into the text control. 
+</p>
+
+<img src="wxfiledialog.jpg" tppabs="http://zetcode.com/img/gui/wxwidgets/wxfiledialog.jpg" alt="wxFileDialog">
+<div class="figure">Figure: wxFileDialog on Linux</div>
+
+
+<h2>wxFontDialog</h2>
+
+<p>
+This is a common dialog for choosing a font. 
+</p>
+
+<div class="codehead">fontdialog.h</div>
+<pre class="code">
+#include &lt;wx/wx.h&gt;
+
+class ChangeFont : public wxFrame
+{
+public:
+  ChangeFont(const wxString&amp; title);
+
+  void OnOpen(wxCommandEvent&amp; event);
+
+  wxStaticText *st;
+
+};
+
+const int ID_FONTDIALOG = 1;
+</pre>
+
+<div class="codehead">fontdialog.cpp</div>
+<pre class="code">
+#include &lt;wx/fontdlg.h&gt;
+#include "fontdialog.h"
+
+ChangeFont::ChangeFont(const wxString &amp; title)
+       : wxFrame(NULL, wxID_ANY, title, wxDefaultPosition, wxSize(300, 200))
+{
+
+  wxPanel *panel = new wxPanel(this, -1);
+
+  wxMenuBar *menubar = new wxMenuBar;
+  wxMenu *file = new wxMenu;
+  file->Append(ID_FONTDIALOG, wxT("&amp;Change font"));
+  menubar->Append(file, wxT("&amp;File"));
+  SetMenuBar(menubar);
+
+  Connect(ID_FONTDIALOG, wxEVT_COMMAND_MENU_SELECTED, 
+      wxCommandEventHandler(ChangeFont::OnOpen));
+
+  st = new wxStaticText(panel, wxID_ANY, wxT("The Agoge"), 
+      wxPoint(20, 20));
+
+  Center();
+
+}
+
+
+void ChangeFont::OnOpen(wxCommandEvent&amp; WXUNUSED(event))
+{
+  wxFontDialog *fontDialog = new wxFontDialog(this);
+
+  if (fontDialog->ShowModal() == wxID_OK) {
+    st->SetFont(fontDialog->GetFontData().GetChosenFont());
+  }
+
+}
+</pre>
+
+<div class="codehead">main.h</div>
+<pre class="code">
+#include &lt;wx/wx.h&gt;
+
+class MyApp : public wxApp
+{
+  public:
+    virtual bool OnInit();
+};
+</pre>
+
+<div class="codehead">main.cpp</div>
+<pre class="code">
+#include "main.h"
+#include "fontdialog.h"
+
+IMPLEMENT_APP(MyApp)
+
+bool MyApp::OnInit()
+{
+
+    ChangeFont *change = new ChangeFont(wxT("Change font"));
+    change->Show(true);
+
+    return true;
+}
+</pre>
+
+<p>
+In this example, we will change the font of a static text example. 
+</p>
+
+<pre class="explanation">
+st = new wxStaticText(panel, wxID_ANY, wxT("The Agoge"), 
+    wxPoint(20, 20));
+</pre>
+
+<p>
+Here we display a static text on the panel. We will change its font 
+using the <code>wxFontDialog</code>.
+</p>
+
+<pre class="explanation">
+wxFontDialog *fontDialog = new wxFontDialog(this);
+
+if (fontDialog->ShowModal() == wxID_OK) {
+  st->SetFont(fontDialog->GetFontData().GetChosenFont());
+}
+</pre>
+
+<p>
+In these code lines, we show the font dialog. Then we get the choosen font. 
+And finally, we change the font of the static text, we created earlier.
+</p>
+
+<img src="fontdialog.jpg" tppabs="http://zetcode.com/img/gui/wxwidgets/fontdialog.jpg" alt="Font dialog">
+<div class="figure">Figure: Font dialog</div>
+
+
+<h2>A custom dialog</h2>
+
+<p>
+In the next example we create a custom dialog. An image editing application 
+can change a color depth of a picture. To provide this funcionality, we could 
+create a suitable custom dialog. 
+</p>
+
+<div class="codehead">customdialog.h</div>
+<pre class="code">
+#include &lt;wx/wx.h&gt;
+
+class CustomDialog : public wxDialog
+{
+public:
+  CustomDialog(const wxString&amp; title);
+
+};
+</pre>
+
+<div class="codehead">customdialog.cpp</div>
+<pre class="code">
+#include "customdialog.h"
+
+CustomDialog::CustomDialog(const wxString &amp; title)
+       : wxDialog(NULL, -1, title, wxDefaultPosition, wxSize(250, 230))
+{
+
+  wxPanel *panel = new wxPanel(this, -1);
+
+  wxBoxSizer *vbox = new wxBoxSizer(wxVERTICAL);
+  wxBoxSizer *hbox = new wxBoxSizer(wxHORIZONTAL);
+
+  wxStaticBox *st = new wxStaticBox(panel, -1, wxT("Colors"), 
+      wxPoint(5, 5), wxSize(240, 150));
+  wxRadioButton *rb = new wxRadioButton(panel, -1, 
+      wxT("256 Colors"), wxPoint(15, 30), wxDefaultSize, wxRB_GROUP);
+
+  wxRadioButton *rb1 = new wxRadioButton(panel, -1, 
+      wxT("16 Colors"), wxPoint(15, 55));
+  wxRadioButton *rb2 = new wxRadioButton(panel, -1, 
+      wxT("2 Colors"), wxPoint(15, 80));
+  wxRadioButton *rb3 = new wxRadioButton(panel, -1, 
+      wxT("Custom"), wxPoint(15, 105));
+  wxTextCtrl *tc = new wxTextCtrl(panel, -1, wxT(""), 
+      wxPoint(95, 105));
+
+  wxButton *okButton = new wxButton(this, -1, wxT("Ok"), 
+      wxDefaultPosition, wxSize(70, 30));
+  wxButton *closeButton = new wxButton(this, -1, wxT("Close"), 
+      wxDefaultPosition, wxSize(70, 30));
+
+  hbox->Add(okButton, 1);
+  hbox->Add(closeButton, 1, wxLEFT, 5);
+
+  vbox->Add(panel, 1);
+  vbox->Add(hbox, 0, wxALIGN_CENTER | wxTOP | wxBOTTOM, 10);
+
+  SetSizer(vbox);
+
+  Centre();
+  ShowModal();
+
+  Destroy(); 
+}
+</pre>
+
+<div class="codehead">main.h</div>
+<pre class="code">
+#include &lt;wx/wx.h&gt;
+
+class MyApp : public wxApp
+{
+  public:
+    virtual bool OnInit();
+};
+</pre>
+
+<div class="codehead">main.cpp</div>
+<pre class="code">
+#include "main.h"
+#include "customdialog.h"
+
+IMPLEMENT_APP(MyApp)
+
+bool MyApp::OnInit()
+{
+
+    CustomDialog *custom = new CustomDialog(wxT("CustomDialog"));
+    custom->Show(true);
+
+    return true;
+}
+</pre>
+
+<p>
+This example is a dialog based application. We illustrate, how to 
+create a custom dialog. 
+</p>
+
+<pre class="explanation">
+class CustomDialog : public wxDialog
+</pre>
+
+<p>
+A custom dialog is based on the <code>wxDialog</code> class.
+</p>
+
+
+<pre class="explanation">
+wxStaticBox *st = new wxStaticBox(panel, -1, wxT("Colors"), 
+    wxPoint(5, 5), wxSize(240, 150));
+wxRadioButton *rb = new wxRadioButton(panel, -1, 
+    wxT("256 Colors"), wxPoint(15, 30), wxDefaultSize, wxRB_GROUP);
+</pre>
+
+<p>
+Note that <code>wxStaticBox</code> widget must be created before the widgets that 
+it contains, and that those widgets should be siblings, not children, 
+of the static box.
+</p>
+
+<pre class="explanation">
+ShowModal();
+Destroy();
+</pre>
+
+<p>
+To show the dialog on the screen, we call the <code>ShowModal()</code> method. 
+To clear the dialog from the memory, we call the <code>Destroy()</code> method.
+</p>
+
+
+<img src="customdialog.jpg" tppabs="http://zetcode.com/img/gui/wxwidgets/customdialog.jpg" alt="Custom dialog">
+<div class="figure">Figure: Custom dialog</div>
+
+
+<p>
+This part of the wxWidgets tutorial was dedicated to dialogs.
+</p>
+
+<div class="hor">
+<script async src="adsbygoogle.js" tppabs="http://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- horizontal -->
+<ins class="adsbygoogle"
+     style="display:inline-block;width:468px;height:60px"
+     data-ad-client="ca-pub-9706709751191532"
+     data-ad-slot="1734478269"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+</div>
+
+<footer>
+
+<div class="botNav center">
+<span class="botNavItem"><a href="javascript:if(confirm('http://zetcode.com/  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://zetcode.com/'" tppabs="http://zetcode.com/">Home</a></span> ‡ <span class="botNavItem"><a href=".-6.htm" tppabs="http://zetcode.com/gui/wxwidgets/dialogs/..">Contents</a></span> ‡
+<span class="botNavItem"><a href="#">Top of Page</a></span>
+</div>
+
+<div class="signature">
+<a href="javascript:if(confirm('http://zetcode.com/  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://zetcode.com/'" tppabs="http://zetcode.com/">ZetCode</a> last modified October 13, 2014  <span class="copyright">&copy; 2007 - 2014 Jan Bodnar</span>
+</div>
+
+</footer>
+
+</div> <!-- content -->
+
+</div> <!-- container -->
+
+</body>
+</html>

@@ -1,0 +1,481 @@
+<HTML
+><HEAD
+><TITLE
+>rpm檔的包裝</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.49"><LINK
+REL="HOME"
+TITLE="用Open Source工具開發軟體"
+HREF="book1.html" tppabs="http://www.study-area.org/cyril/opentools/opentools/book1.html"><LINK
+REL="UP"
+TITLE="套件包裝製作"
+HREF="package.html" tppabs="http://www.study-area.org/cyril/opentools/opentools/package.html"><LINK
+REL="PREVIOUS"
+TITLE="deb檔的包裝"
+HREF="x1447.html" tppabs="http://www.study-area.org/cyril/opentools/opentools/x1447.html"></HEAD
+><BODY
+CLASS="SECT1"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>用Open Source工具開發軟體: 新軟體開發關念</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="x1447.html" tppabs="http://www.study-area.org/cyril/opentools/opentools/x1447.html"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 8. 套件包裝製作</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+>&nbsp;</TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="AEN1479"
+>rpm檔的包裝</A
+></H1
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN1481"
+>簡介</A
+></H2
+><P
+>	rpm檔主要是他有一個主控制檔在/etc/rpmrc，
+	這主要設定rpm的一些環境，不是要包裝package的資訊。
+	想要知道目前rpm所屬系統狀態，例如build的platform用
+	<TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+># rpm --showrc
+	</PRE
+></TD
+></TR
+></TABLE
+>
+	不過這個目前先不管它了，有些內定值已經都設好了。
+      </P
+><P
+>	rpm真正的像debian的control這種information檔，是在一個叫xxxx.spec的檔
+	這個才是我們真正要準備的。
+	通常命名是packagename-versionnumber-releasenumber.spec，
+	通常是放在/usr/src/redhat/SPECS下。
+      </P
+><P
+>      rpm檔建立時是連source binary package一起建立的，
+      所以要把source code, patch檔案等等準備好。
+      /usr/src/redhat/下有5個目錄
+	<TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+>      SOURCES  source code, patch檔放在這  .tar.gz的形式
+      SPECS    這就是放資訊檔xxx.spec的的地方
+      BUILD    source code會在這裡被解開並且compile與make
+      RPMS     binary package最後在這裡產生
+      SRPMS    source package最後在這裡產生
+	</PRE
+></TD
+></TR
+></TABLE
+>
+      </P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN1488"
+>建立package檔實例</A
+></H2
+><P
+>	以eject-2.0.2-1.spec為例子
+	<TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+> Summary: A program that ejects removable media using software control.
+ Name: eject
+ Version: 2.0.2
+ Release: 3
+ Copyright: GPL
+ Group: System Environment/Base
+ Source: http://metalab.unc.edu/pub/Linux/utils/disk-management/eject-2.0.2.tar.gz
+ Patch: eject-2.0.2-buildroot.patch
+ URL:
+ Vendor: ComC Software Corporation
+ Packager: Santa Claus &#60; sclaus@northpole.com&#62;
+ BuildRoot: /var/tmp/%{name}-buildroot
+ Requires: libc &#62;= 2.2
+
+
+ %description
+ The eject program allows the user to eject removable media
+ (typically CD-ROMs, floppy disks or Iomega Jaz or Zip disks)
+ using software control. Eject can also control some multi-
+ disk CD changers and even some devices' auto-eject features.
+
+ Install eject if you'd like to eject removable media using
+ software control.
+
+ %prep
+ %setup
+ %patch -p1 -b .buildroot
+
+ %build
+ configure --prefix=$RPM_BUILD_ROOT
+ make RPM_OPT_FLAGS="$RPM_OPT_FLAGS"
+
+ %install
+ rm -rf $RPM_BUILD_ROOT
+ mkdir -p $RPM_BUILD_ROOT/usr/bin
+ mkdir -p $RPM_BUILD_ROOT/usr/man/man1
+ install -s -m 755 eject $RPM_BUILD_ROOT/usr/bin/eject
+ install -m 644 eject.1 $RPM_BUILD_ROOT/usr/man/man1/eject.1
+
+ %clean
+ rm -rf $RPM_BUILD_ROOT
+
+ %files
+ %defattr(-,root,root)
+ %doc README TODO COPYING ChangeLog
+ %attr(-, root, root) /usr/local/bin/cdplay
+ /usr/bin/eject
+
+/usr/man/man1/eject.1
+
+ %pre
+ if test; then cmd1; fi  #pre-install script code
+ %post
+ %preun
+ %postun 
+
+ %changelog
+ * Sun Mar 21 1999 Cristian Gafton &#60; gafton@redhat.com&#62;
+ - auto rebuild in the new build environment (release 3)
+
+ * Wed Feb 24 1999 Preston Brown &#60; pbrown@redhat.com&#62; 
+ - Injected new description and group.
+	</PRE
+></TD
+></TR
+></TABLE
+>
+      </P
+><P
+>	其中比較要說明的有:
+	GROUP很像debain的Section分類用的，在/usr/doc/rpm/GROUP找的到。
+	BuildRoot:這個就是假的root，等下在%build與%install時，有個
+	$RPM_BUILD_ROOT，
+	這個內定環境變數就是這個設定值。
+	Requires:是手動設定dependency。rpm可以自動幫你找
+	dependency，不過也可以手動指定。
+      </P
+><P
+>	%prep這邊是prepare準備build的動作
+	通常是你download的source code需要做一些你自己做的patch，
+	要作untar等動作。例如
+	<TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+>%prep
+rm -rf $RPM_BUILD_DIR/cdplayer-1.0
+zcat $RPM_SOURCE_DIR/cdplayer-1.0.tgz | tar -xvf -
+	</PRE
+></TD
+></TR
+></TABLE
+>
+	其中$RPM_SOURCE_DIR $RPM_BUILD_DIR是rpm跑起來時設定的環境變數。
+	不過由於這樣的動作幾乎已經是公式化的動作，所以有人把他寫好成一個
+	macro%setup，
+	prep下有兩個常用的macro，%setup與%patch，可以只給下面的%prep就好。
+	<TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+>%prep
+%setup
+%patch
+	</PRE
+></TD
+></TR
+></TABLE
+>
+      </P
+><P
+>	%build就是當你要從source來build binary時要打的命令。
+	通常就是
+	<TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+>configure --prefix=$RPM_BUILD_ROOT
+make
+	</PRE
+></TD
+></TR
+></TABLE
+>
+	不過由於rpm是跨平台的，
+	在/usr/lib/rpm/rpmrc有一些定義了的變數，
+	make可以這樣比較有彈性，
+	make CFLAGS="$RPM_OPT_FLAGS" LDFLAGS=-s。
+	%install就是我們常在source上用的
+	<TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+>make install
+        </PRE
+></TD
+></TR
+></TABLE
+>
+	%clean通常是把我們剛剛創造的build檔案清除掉。
+	其實在%build與%install可以光打我們熟悉的
+	configure; make; make install這樣就好，
+	這樣會真的把東西裝到source的Makefile內定的地方，通常就是/usr/local下。
+	%prep %build %install %clean會真的run一次我們熟悉的從source code編譯成
+	binary的步驟，而且如果我們沒有用個假的root的話，
+	會真的裝東西到目前系統上，通常這是不好的作法，最好還是設定假root。
+      </P
+><P
+>	%files才是真正告訴package是要裝到那裡的files list，
+	%doc裡的檔會被裝到/usr/doc/$NAME-$VERSION-$RELEASE，
+	%attr是設定安裝時檔案的權限，
+	<TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+>%attr(mode, user, group)
+        </PRE
+></TD
+></TR
+></TABLE
+>
+	mode如果不指定0755而只指定-的話表示，
+	不寫%attr話用%defattr，或者用root的權限。
+      </P
+><P
+>	如果有用BuildRoot的話，rpm自動知道要到相對應的假
+	root，下去把~fakeroot/usr/bin/
+	根據%files指定的檔放到package的正確/usr/bin/。 
+      </P
+><P
+>	rpm的pre- post- install與remove
+	不像solaris或debian的另寫真正的額外shell script檔，
+	而是把shell script含進spec檔內的%pre %post %preun %postun下。
+      </P
+><P
+>	寫完後到存到/usr/src/redhat/SPECS下並且給命令
+	<TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+># rpm -ba eject-2.0.2-1.spec
+	</PRE
+></TD
+></TR
+></TABLE
+>
+	就會把該做的事與檔案放進去package，
+	最後去/usr/src/redhat/RPMS找binary package，
+	/usr/src/redhat/SRPMS找source package。
+      </P
+><P
+>    從maximum rpm下抄一個例子出來
+	<TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+># rpm -ba cdplayer-1.0.spec
+* Package: cdplayer
+Executing: %prep
++ cd /usr/src/redhat/BUILD
+?
++ exit 0
+Executing: %build
++ cd /usr/src/redhat/BUILD
++ cd cdplayer-1.0
+?
++ exit 0
++ umask 022
+Executing: %install
++ cd /usr/src/redhat/BUILD
++ cd cdplayer-1.0
++ make ROOT=/tmp/cdplayer install
+install -m 755 -o 0 -g 0 -d /tmp/cdplayer/usr/local/bin/
+install -m 755 -o 0 -g 0 cdp /tmp/cdplayer/usr/local/bin/cdp
+ln -s ./cdp /tmp/cdplayer/usr/local/bin/cdplay
+install -m 755 -o 0 -g 0 -d /tmp/cdplayer/usr/local/man/man1/
+install -m 755 -o 0 -g 0 cdp.1 /tmp/cdplayer/usr/local/man/man1/cdp.1
++ exit 0
+Executing: special doc
++ cd /usr/src/redhat/BUILD
++ cd cdplayer-1.0
++ DOCDIR=/tmp/cdplayer//usr/doc/cdplayer-1.0-1
++ rm -rf /tmp/cdplayer//usr/doc/cdplayer-1.0-1
++ mkdir -p /tmp/cdplayer//usr/doc/cdplayer-1.0-1
++ cp -ar README /tmp/cdplayer//usr/doc/cdplayer-1.0-1
++ exit 0
+Binary Packaging: cdplayer-1.0-1
+Finding dependencies...
+Requires (2): libc.so.5 libncurses.so.2.0
+usr/doc/cdplayer-1.0-1
+usr/doc/cdplayer-1.0-1/README
+usr/local/bin/cdp
+usr/local/bin/cdplay
+usr/local/man/man1/cdp.1
+93 blocks
+Generating signature: 0
+Wrote: /usr/src/redhat/RPMS/i386/cdplayer-1.0-1.i386.rpm
++ umask 022
++ echo Executing: %clean
+Executing: %clean
++ cd /usr/src/redhat/BUILD
++ cd cdplayer-1.0
++ exit 0
+Source Packaging: cdplayer-1.0-1
+cdplayer-1.0.spec
+cdplayer-1.0.tgz
+82 blocks
+Generating signature: 0
+Wrote: /usr/src/redhat/SRPMS/cdplayer-1.0-1.src.rpm
+	</PRE
+></TD
+></TR
+></TABLE
+>
+      </P
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="x1447.html" tppabs="http://www.study-area.org/cyril/opentools/opentools/x1447.html"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="book1.html" tppabs="http://www.study-area.org/cyril/opentools/opentools/book1.html"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>&nbsp;</TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>deb檔的包裝</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="package.html" tppabs="http://www.study-area.org/cyril/opentools/opentools/package.html"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>&nbsp;</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

@@ -1,0 +1,986 @@
+<!DOCTYPE html> 
+<html lang="en">
+<head>
+<title>wxWidgets widgets</title>
+<link rel="stylesheet" href="format.css" tppabs="http://zetcode.com/cfg/format.css">
+<meta charset="utf-8">
+<meta name="keywords" content="wxWidgets, tutorial, widgets, examples, C++, programming, GUI, multiplatform">
+<meta name="description" content="This part of the wxWidgets tutorial covers widgets.">
+<meta name="author" content="Jan Bodnar">
+</head>
+
+<body>
+
+<div class="container">
+
+<div id="wide_ad" class="ltow">
+<script async src="adsbygoogle.js" tppabs="http://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- 160x600, August 2011 -->
+<ins class="adsbygoogle"
+     style="display:inline-block;width:160px;height:600px"
+     data-ad-client="ca-pub-9706709751191532"
+     data-ad-slot="2484182563"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+</div>
+
+<div class="content">
+
+
+<header>
+
+<a href="javascript:if(confirm('http://zetcode.com/  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://zetcode.com/'" tppabs="http://zetcode.com/" title="Home">Home</a>&#160;
+<a href=".-7.htm" tppabs="http://zetcode.com/gui/wxwidgets/widgets/..">Contents</a>
+
+</header>
+
+
+<h1>wxWidgets widgets</h1>
+
+<p>
+In this chapter, we will show small examples of several widgets, 
+available in wxWidgets. Widgets are building blocks of our applications. 
+wxWidgets consists of a large amount of useful widgets. A <em>widget</em> 
+is a basic GUI object. A widget gave wxWidgets toolkit a name. 
+This term is used on UNIX systems. On windows, a widget is often called a control. 
+</p>
+
+<div class="med_rec">
+<script async src="adsbygoogle.js" tppabs="http://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- NewSquare -->
+<ins class="adsbygoogle"
+     style="display:inline-block;width:300px;height:250px"
+     data-ad-client="ca-pub-9706709751191532"
+     data-ad-slot="0364418177"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+</div>
+
+
+<h2>wxCheckBox</h2>
+
+<p>
+<code>wxCheckBox</code> is a widget that has two states: on and off. It is 
+a box with a label. The label can be set to the right or to the left of the 
+box. If the checkbox is checked, it is represented by a tick in a box. A checkbox 
+can be used to show or hide a splashscreen at startup, toggle visibility 
+of a toolbar etc.
+</p>
+
+<div class="codehead">checkbox.h</div>
+<pre class="code">
+#include &lt;wx/wx.h&gt;
+
+class CheckBox : public wxFrame
+{
+public:
+    CheckBox(const wxString&amp; title);
+
+    void OnToggle(wxCommandEvent&amp; event);
+
+    wxCheckBox *m_cb;
+
+};
+
+const int ID_CHECKBOX = 100;
+</pre>
+
+<div class="codehead">checkbox.cpp</div>
+<pre class="code">
+#include "checkbox.h"
+
+CheckBox::CheckBox(const wxString&amp; title)
+       : wxFrame(NULL, wxID_ANY, title, wxDefaultPosition, wxSize(270, 150))
+{
+  wxPanel *panel = new wxPanel(this, wxID_ANY);
+
+  m_cb = new wxCheckBox(panel, ID_CHECKBOX, wxT("Show title"), 
+                        wxPoint(20, 20));
+  m_cb->SetValue(true);
+  Connect(ID_CHECKBOX, wxEVT_COMMAND_CHECKBOX_CLICKED, 
+          wxCommandEventHandler(CheckBox::OnToggle));
+  Centre();
+}
+
+void CheckBox::OnToggle(wxCommandEvent&amp; WXUNUSED(event))
+{
+
+  if (m_cb->GetValue()) {
+      this->SetTitle(wxT("CheckBox"));
+  } else {
+      this->SetTitle(wxT(" "));
+  }
+}
+</pre>
+
+<div class="codehead">main.h</div>
+<pre class="code">
+#include &lt;wx/wx.h&gt;
+
+class MyApp : public wxApp
+{
+  public:
+    virtual bool OnInit();
+};
+</pre>
+
+<div class="codehead">main.cpp</div>
+<pre class="code">
+#include "main.h"
+#include "checkbox.h"
+
+IMPLEMENT_APP(MyApp)
+
+bool MyApp::OnInit()
+{
+
+    CheckBox *cb = new CheckBox(wxT("CheckBox"));
+    cb->Show(true);
+
+    return true;
+}
+</pre>
+
+<p>
+In our example, we display one checkbox on the window. We toggle the 
+title of the window by clicking on the checkbox.
+</p>
+
+<pre class="explanation">
+m_cb = new wxCheckBox(panel, ID_CHECKBOX, wxT("Show title"), 
+                    wxPoint(20, 20));
+m_cb->SetValue(true);
+</pre>
+
+<p>
+We create a checkbox. By default, the title is visible. So we check 
+the checkbox by calling the method <code>SetValue()</code>.
+</p>
+
+<pre class="explanation">
+Connect(ID_CHECKBOX, wxEVT_COMMAND_CHECKBOX_CLICKED, 
+        wxCommandEventHandler(CheckBox::OnToggle));
+</pre>
+
+<p>
+If we click on the checkbox, a <code>wxEVT_COMMAND_CHECKBOX_CLICKED</code> event 
+is generated. We connect this event to the
+user defined <code>OnToggle()</code> method.
+</p>
+
+
+<pre class="explanation">
+if (m_cb->GetValue()) {
+    this->SetTitle(wxT("CheckBox"));
+} else {
+    this->SetTitle(wxT(" "));
+}
+</pre>
+
+<p>
+Inside the <code>OnToggle()</code> method, we check the state of the 
+checkbox. If it is checked, we display "CheckBox" string in the titlebar, 
+otherwise we clear the title.
+</p>
+
+
+<img src="checkbox.png" tppabs="http://zetcode.com/img/gui/wxwidgets/checkbox.png" alt="wxCheckBox">
+<div class="figure">Figure: wxCheckBox</div>
+
+
+<h2>wxBitmapButton</h2>
+
+<p>
+A bitmap button is a button that displays a bitmap. A bitmap button can 
+have three other states. Selected, focused and displayed. We can set a 
+specific bitmap for those states.
+</p>
+
+<div class="codehead">bitmapbutton.h</div>
+<pre class="code">
+#include &lt;wx/wx.h&gt;
+#include &lt;wx/slider.h&gt;
+
+class BitmapButton : public wxFrame
+{
+public:
+  BitmapButton(const wxString&amp; title);
+
+  wxSlider *slider;
+  wxBitmapButton *button;
+  int pos;
+
+  void OnScroll(wxScrollEvent&amp; event);
+
+};
+
+const int ID_SLIDER = 100;
+</pre>
+
+<div class="codehead">bitmapbutton.cpp</div>
+<pre class="code">
+#include "bitmapbutton.h"
+
+BitmapButton::BitmapButton(const wxString&amp; title)
+       : wxFrame(NULL, wxID_ANY, title, wxDefaultPosition, wxSize(250, 130))
+{
+  wxImage::AddHandler( new wxPNGHandler );
+  wxPanel *panel = new wxPanel(this);
+  slider = new wxSlider(panel, ID_SLIDER, 0, 0, 100, 
+      wxPoint(10, 30), wxSize(140, -1));
+
+  button = new wxBitmapButton(panel, wxID_ANY, wxBitmap(wxT("mute.png"), 
+      wxBITMAP_TYPE_PNG), wxPoint(180, 20));
+
+  Connect(ID_SLIDER, wxEVT_COMMAND_SLIDER_UPDATED, 
+      wxScrollEventHandler(BitmapButton::OnScroll));  
+  Center();
+}
+
+
+void BitmapButton::OnScroll(wxScrollEvent&amp; event)
+{
+  pos = slider->GetValue(); 
+
+  if (pos == 0) {
+      button->SetBitmapLabel(wxBitmap(wxT("mute.png"), wxBITMAP_TYPE_PNG));
+  } else if (pos > 0 &amp;&amp; pos &lt;= 30 ) {
+      button->SetBitmapLabel(wxBitmap(wxT("min.png"), wxBITMAP_TYPE_PNG));
+  } else if (pos > 30 &amp;&amp; pos &lt; 80 ) {
+      button->SetBitmapLabel(wxBitmap(wxT("med.png"), wxBITMAP_TYPE_PNG));
+  } else {
+      button->SetBitmapLabel(wxBitmap(wxT("max.png"), wxBITMAP_TYPE_PNG));
+  }
+}
+</pre>
+
+<div class="codehead">main.h</div>
+<pre class="code">
+#include &lt;wx/wx.h&gt;
+
+class MyApp : public wxApp
+{
+  public:
+    virtual bool OnInit();
+};
+</pre>
+
+<div class="codehead">main.cpp</div>
+<pre class="code">
+#include "main.h"
+#include "bitmapbutton.h"
+
+IMPLEMENT_APP(MyApp)
+
+bool MyApp::OnInit()
+{
+
+    BitmapButton *bb = new BitmapButton(wxT("BitmapButton"));
+    bb->Show(true);
+
+    return true;
+}
+</pre>
+
+<p>
+In our example, we have a slider and a bitmap button. We simulate a 
+volume control. By dragging the handle of a slider, we change a bitmap on the button.
+</p>
+
+
+<pre class="explanation">
+wxImage::AddHandler( new wxPNGHandler );
+</pre>
+
+<p>
+We will use PNG images, so we must initialise a PNG image handler. 
+</p>
+
+<pre class="explanation">
+button = new wxBitmapButton(panel, wxID_ANY, wxBitmap(wxT("mute.png"), 
+    wxBITMAP_TYPE_PNG), wxPoint(180, 20));
+</pre>
+
+<p>
+We create a bitmap button. We specify a bitmap type, in our case 
+<code>wxBITMAP_TYPE_PNG</code>
+</p>
+
+<pre class="explanation">
+pos = slider->GetValue(); 
+</pre>
+
+<p>
+We get the slider value. Depending on this value, we set a bitmap for 
+our button. We have four volume states: mute, minimum, medium, and maximum. 
+To change a bitmap on the button, we call the <code>SetBitmapLabel()</code> method.
+</p>
+
+
+<img src="bitmapbutton.jpg" tppabs="http://zetcode.com/img/gui/wxwidgets/bitmapbutton.jpg" alt="wxBitmapButton">
+<div class="figure">Figure: wxBitmapButton</div>
+
+
+<h2>wxToggleButton</h2>
+
+<p>
+A <code>wxToggleButton</code> is a button that has two states: pressed 
+and not pressed. You toggle between these two states by clicking on it. 
+There are situations where this functionality fits well.
+</p>
+
+<div class="codehead">togglebutton.h</div>
+<pre class="code">
+#include &lt;wx/wx.h&gt;
+#include &lt;wx/tglbtn.h&gt;
+
+class ToggleButton : public wxFrame
+{
+public:
+  ToggleButton(const wxString&amp; title);
+
+  void OnToggleRed(wxCommandEvent&amp; event);
+  void OnToggleGreen(wxCommandEvent&amp; event);
+  void OnToggleBlue(wxCommandEvent&amp; event);
+
+protected:
+  wxToggleButton *m_tgbutton1;
+  wxToggleButton *m_tgbutton2;
+  wxToggleButton *m_tgbutton3;
+ 
+  wxPanel *m_panel;
+  wxColour *colour;
+
+};
+
+const int ID_TGBUTTON1 = 101;
+const int ID_TGBUTTON2 = 102;
+const int ID_TGBUTTON3 = 103;
+</pre>
+
+<div class="codehead">togglebutton.cpp</div>
+<pre class="code">
+#include "togglebutton.h"
+
+
+ToggleButton::ToggleButton(const wxString&amp; title)
+       : wxFrame(NULL, wxID_ANY, title, wxDefaultPosition, wxSize(280, 180))
+{
+  wxPanel *panel = new wxPanel(this, wxID_ANY);
+
+  colour = new wxColour(0, 0, 0);
+
+  m_tgbutton1 = new wxToggleButton(panel, ID_TGBUTTON1, 
+                                   wxT("Red"), wxPoint(20, 20));
+  m_tgbutton2 = new wxToggleButton(panel, ID_TGBUTTON2, 
+                                   wxT("Green"), wxPoint(20, 70));
+  m_tgbutton3 = new wxToggleButton(panel, ID_TGBUTTON3, 
+                                   wxT("Blue"), wxPoint(20, 120));
+
+  Connect(ID_TGBUTTON1, wxEVT_COMMAND_TOGGLEBUTTON_CLICKED, 
+      wxCommandEventHandler(ToggleButton::OnToggleRed));
+  Connect(ID_TGBUTTON2, wxEVT_COMMAND_TOGGLEBUTTON_CLICKED, 
+      wxCommandEventHandler(ToggleButton::OnToggleGreen));
+  Connect(ID_TGBUTTON3, wxEVT_COMMAND_TOGGLEBUTTON_CLICKED,  
+      wxCommandEventHandler(ToggleButton::OnToggleBlue));
+
+  m_panel = new wxPanel(panel, wxID_NEW, wxPoint(150, 20), 
+                        wxSize(110, 110), wxSUNKEN_BORDER);
+  m_panel->SetBackgroundColour(colour->GetAsString());
+
+}
+
+void ToggleButton::OnToggleRed(wxCommandEvent&amp; WXUNUSED(event))
+{
+  unsigned char green = colour->Green(); 
+  unsigned char blue = colour->Blue(); 
+
+
+  if ( colour->Red() ) {
+      colour->Set(0, green, blue);
+
+  } else { 
+      colour->Set(255, green, blue);
+  }
+
+  m_panel->SetBackgroundColour(colour->GetAsString());
+
+}
+
+void ToggleButton::OnToggleGreen(wxCommandEvent&amp; WXUNUSED(event))
+{
+  unsigned char red = colour->Red(); 
+  unsigned char blue = colour->Blue(); 
+
+
+  if ( colour->Green() ) {
+      colour->Set(red, 0, blue);
+
+  } else { 
+      colour->Set(red, 255, blue);
+  }
+
+  m_panel->SetBackgroundColour(colour->GetAsString());
+
+}
+
+void ToggleButton::OnToggleBlue(wxCommandEvent&amp; WXUNUSED(event))
+{
+  unsigned char red = colour->Red(); 
+  unsigned char green = colour->Green(); 
+
+
+  if ( colour->Blue() ) {
+      colour->Set(red, green, 0);
+
+  } else { 
+      colour->Set(red, green, 255);
+  }
+
+  m_panel->SetBackgroundColour(colour->GetAsString());
+}
+</pre>
+
+<div class="codehead">main.h</div>
+<pre class="code">
+#include &lt;wx/wx.h&gt;
+
+class MyApp : public wxApp
+{
+  public:
+    virtual bool OnInit();
+};
+</pre>
+
+<div class="codehead">main.cpp</div>
+<pre class="code">
+#include "main.h"
+#include "togglebutton.h"
+
+IMPLEMENT_APP(MyApp)
+
+bool MyApp::OnInit()
+{
+
+    ToggleButton *button = new ToggleButton(wxT("ToggleButton"));
+
+    button->Centre();
+    button->Show(true);
+
+    return true;
+}
+</pre>
+
+<p>
+In our example, we show three toggle buttons and a panel. We set the 
+background colour of the panel to black. The togglebuttons will toggle 
+the red, green, and blue parts of the colour value. The background colour 
+will depend on which togglebuttons we have pressed.
+</p>
+
+
+<pre class="explanation">
+colour = new wxColour(0, 0, 0);
+</pre>
+
+<p>
+This is the initial colour value. No red, green and blue equals to black. 
+Theoretically speaking, black is not a color after all.
+</p>
+
+<pre class="explanation">
+m_tgbutton1 = new wxToggleButton(panel, ID_TGBUTTON1, 
+                                 wxT("Red"), wxPoint(20, 20));
+</pre>
+
+<p>
+Here we create a toggle button.
+</p>
+
+
+<pre class="explanation">
+Connect(ID_TGBUTTON1, wxEVT_COMMAND_TOGGLEBUTTON_CLICKED, 
+    wxCommandEventHandler(ToggleButton::OnToggleRed));
+</pre>
+
+<p>
+If we click on the toggle button, a <code>wxEVT_COMMAND_TOGGLEBUTTON_CLICKED</code> 
+event is generated. We connect the
+event handlers for this event. Notice that we do not connect events to the 
+button methods, but to the <code>wxFrame</code>. widget, which is a grand parent 
+of the toggle buttons. It is possible to do this, because command events 
+are propagated to their parents. In our case, button -> panel -> frame. If we 
+wanted to connect the event to the button, we would have to 
+create our derived button classe, which would mean more work.
+</p>
+
+<pre class="explanation">
+if ( colour->Blue() ) {
+    colour->Set(red, green, 0);
+
+} else { 
+    colour->Set(red, green, 255);
+}
+</pre>
+
+<p>
+In the event handlers, we set the respective <code>wxColour</code> parameters.
+</p>
+
+<pre class="explanation">
+m_panel->SetBackgroundColour(colour->GetAsString());
+</pre>
+
+<p>
+We set the background of the panel. 
+</p>
+
+
+<img src="togglebutton.jpg" tppabs="http://zetcode.com/img/gui/wxwidgets/togglebutton.jpg" alt="wxToggleButton">
+<div class="figure">Figure: wxToggleButton</div>
+
+
+<h2>wxStaticLine</h2>
+
+<p>
+This widget displays a simple line on the window. It can be horizontal or vertical.
+</p>
+
+<div class="codehead">staticline.h</div>
+<pre class="code">
+#include &lt;wx/wx.h&gt;
+
+class Staticline : public wxDialog
+{
+public:
+    Staticline(const wxString&amp; title);
+
+};
+</pre>
+
+<div class="codehead">staticline.cpp</div>
+<pre class="code">
+#include "staticline.h"
+#include &lt;wx/stattext.h&gt;
+#include &lt;wx/statline.h&gt;
+
+Staticline::Staticline(const wxString&amp; title) : wxDialog(NULL, wxID_ANY, title, 
+    wxDefaultPosition, wxSize(360, 350))
+{
+
+  wxFont font(10, wxDEFAULT, wxNORMAL, wxBOLD);
+  wxStaticText *heading = new wxStaticText(this, wxID_ANY, wxT("The Central Europe"), 
+      wxPoint(30, 15));
+  heading->SetFont(font);
+
+  wxStaticLine *sl1 = new wxStaticLine(this, wxID_ANY, wxPoint(25, 50), 
+      wxSize(300,1));
+
+  wxStaticText *st1 = new wxStaticText(this, wxID_ANY, wxT("Slovakia"), 
+      wxPoint(25, 80));
+  wxStaticText *st2 = new wxStaticText(this, wxID_ANY, wxT("Hungary"), 
+      wxPoint(25, 100));
+  wxStaticText *st3 = new wxStaticText(this, wxID_ANY, wxT("Poland"), 
+      wxPoint(25, 120));
+  wxStaticText *st4 = new wxStaticText(this, wxID_ANY, wxT("Czech Republic"), 
+      wxPoint(25, 140));
+  wxStaticText *st5 = new wxStaticText(this, wxID_ANY, wxT("Germany"), 
+      wxPoint(25, 160));
+  wxStaticText *st6 = new wxStaticText(this, wxID_ANY, wxT("Slovenia"), 
+      wxPoint(25, 180));
+  wxStaticText *st7 = new wxStaticText(this, wxID_ANY, wxT("Austria"), 
+      wxPoint(25, 200));
+  wxStaticText *st8 = new wxStaticText(this, wxID_ANY, wxT("Switzerland"), 
+      wxPoint(25, 220));
+
+
+  wxStaticText *st9  = new wxStaticText(this, wxID_ANY, wxT("5 379 000"), 
+      wxPoint(220, 80), wxSize(90, -1), wxALIGN_RIGHT);
+  wxStaticText *st10 = new wxStaticText(this, wxID_ANY, wxT("10 084 000"), 
+      wxPoint(220, 100), wxSize(90, -1), wxALIGN_RIGHT);
+  wxStaticText *st11 = new wxStaticText(this, wxID_ANY, wxT("38 635 000"), 
+      wxPoint(220, 120), wxSize(90, -1), wxALIGN_RIGHT);
+  wxStaticText *st12 = new wxStaticText(this, wxID_ANY, wxT("10 240 000"), 
+      wxPoint(220, 140), wxSize(90, -1), wxALIGN_RIGHT);
+  wxStaticText *st13 = new wxStaticText(this, wxID_ANY, wxT("82 443 000"), 
+      wxPoint(220, 160), wxSize(90, -1), wxALIGN_RIGHT);
+  wxStaticText *st14 = new wxStaticText(this, wxID_ANY, wxT("2 001 000"),  
+      wxPoint(220, 180), wxSize(90, -1), wxALIGN_RIGHT);
+  wxStaticText *st15 = new wxStaticText(this, wxID_ANY, wxT("8 032 000"),  
+      wxPoint(220, 200), wxSize(90, -1), wxALIGN_RIGHT);
+  wxStaticText *st16 = new wxStaticText(this, wxID_ANY, wxT("7 288 000"),  
+      wxPoint(220, 220), wxSize(90, -1), wxALIGN_RIGHT);
+
+  wxStaticLine *sl2 = new wxStaticLine(this, wxID_ANY, wxPoint(25, 260), 
+      wxSize(300, 1));
+
+  wxStaticText *sum = new wxStaticText(this, wxID_ANY, wxT("164 102 000"), 
+      wxPoint(220, 280));
+  wxFont sum_font = sum->GetFont();
+  sum_font.SetWeight(wxBOLD);
+  sum->SetFont(sum_font);
+
+  this->Centre();
+}
+</pre>
+
+<div class="codehead">main.h</div>
+<pre class="code">
+#include &lt;wx/wx.h&gt;
+
+class MyApp : public wxApp
+{
+  public:
+    virtual bool OnInit();
+};
+</pre>
+
+<div class="codehead">main.cpp</div>
+<pre class="code">
+#include "main.h"
+#include "staticline.h"
+
+IMPLEMENT_APP(MyApp)
+
+bool MyApp::OnInit()
+{
+    Staticline *sl = new Staticline(wxT("The Central Europe"));
+    sl->ShowModal();
+    sl->Destroy();
+
+    return true;
+}
+</pre>
+
+<p>
+In the previous example, we show Centreal European countries and their 
+populations. The use of <code>wxStaticLine</code>
+makes it more visually attractive.
+</p>
+
+<pre class="explanation">
+wxStaticLine *sl1 = new wxStaticLine(this, wxID_ANY, wxPoint(25, 50), 
+   wxSize(300,1));
+</pre>
+
+<p>
+Here we create a horizontal static line. It is 300 px wide. The height is 1 px.
+</p>
+
+<img src="staticline.png" tppabs="http://zetcode.com/img/gui/wxwidgets/staticline.png" alt="wxStaticLine">
+<div class="figure">Figure: wxStaticLine</div>
+
+
+<h2>wxStaticText</h2>
+
+<p>
+A <code>wxStaticText</code> widget displays one or more lines of read-only text.
+</p>
+
+<div class="codehead">statictext.h</div>
+<pre class="code">
+#include &lt;wx/wx.h&gt;
+
+class StaticText : public wxFrame
+{
+public:
+  StaticText(const wxString&amp; title);
+
+};
+</pre>
+
+<div class="codehead">statictext.cpp</div>
+<pre class="code">
+#include "statictext.h"
+
+StaticText::StaticText(const wxString&amp; title)
+       : wxFrame(NULL, wxID_ANY, title)
+{
+
+  wxPanel *panel = new wxPanel(this, wxID_ANY);
+  wxString  text = wxT("'Cause sometimes you feel tired,\n\
+feel weak, and when you feel weak,\
+you feel like you wanna just give up.\n\
+But you gotta search within you,\
+you gotta find that inner strength\n\
+and just pull that shit out of you\
+and get that motivation to not give up\n\
+and not be a quitter,\
+no matter how bad you wanna just fall flat on your face and collapse.");
+
+
+  wxStaticText *st = new wxStaticText(panel, wxID_ANY, text, 
+      wxPoint(10, 10), wxDefaultSize, wxALIGN_CENTRE);
+
+  this->SetSize(600, 110);
+  this->Centre();
+}
+</pre>
+
+<div class="codehead">main.h</div>
+<pre class="code">
+#include &lt;wx/wx.h&gt;
+
+class MyApp : public wxApp
+{
+  public:
+    virtual bool OnInit();
+};
+</pre>
+
+<div class="codehead">main.cpp</div>
+<pre class="code">
+#include "main.h"
+#include "statictext.h"
+
+IMPLEMENT_APP(MyApp)
+
+bool MyApp::OnInit()
+{
+
+  StaticText *st = new StaticText(wxT("StaticText"));
+  st->Show(true);
+
+  return true;
+}
+</pre>
+
+<p>
+In our example, we display a part of the Eminem's Till I Collapse lyrics on the window.
+</p>
+
+<pre class="explanation">
+wxStaticText *st = new wxStaticText(panel, wxID_ANY, text, 
+   wxPoint(10, 10), wxDefaultSize, wxALIGN_CENTRE);
+</pre>
+
+<p>
+Here we create the <code>wxStaticText</code> widget. The static text is 
+aligned to the cetre.
+</p>
+
+<img src="statictext.jpg" tppabs="http://zetcode.com/img/gui/wxwidgets/statictext.jpg" alt="wxStaticText">
+<div class="figure">Figure: wxStaticText</div>
+
+
+<h2>wxSlider</h2>
+
+<p>
+A <code>wxSlider</code> is a widget that has a simple handle. This 
+handle can be pulled back and forth. This way we are choosing a value 
+for a specific task. Sometimes using a slider is more natural than 
+simply providing a number or using a spin control.
+</p>
+
+<div class="codehead">Slider.h</div>
+<pre class="code">
+#include &lt;wx/wx.h&gt;
+#include &lt;wx/slider.h&gt;
+
+class MyPanel : public wxPanel
+{
+public:
+    MyPanel(wxFrame *parent);
+
+    void OnPaint(wxPaintEvent&amp; event);
+    void OnScroll(wxScrollEvent&amp; event);
+
+    wxSlider *slider;
+    int fill;
+
+};
+
+class Slider : public wxFrame
+{
+public:
+    Slider(const wxString&amp; title);
+
+    MyPanel *panel;
+
+};
+
+const int ID_SLIDER = 100;
+</pre>
+
+<div class="codehead">Slider.cpp</div>
+<pre class="code">
+#include "Slider.h"
+
+Slider::Slider(const wxString&amp; title)
+       : wxFrame(NULL, wxID_ANY, title, wxDefaultPosition, 
+       wxSize(270, 200))
+{
+  panel = new MyPanel(this);
+  Center();
+}
+
+
+MyPanel::MyPanel(wxFrame * parent)
+       : wxPanel(parent, wxID_ANY)
+{
+  fill = 0;
+  slider = new wxSlider(this, ID_SLIDER, 0, 0, 140, wxPoint(50, 30), 
+      wxSize(-1, 140), wxSL_VERTICAL);
+
+  Connect(ID_SLIDER, wxEVT_COMMAND_SLIDER_UPDATED, 
+      wxScrollEventHandler(MyPanel::OnScroll));  
+  Connect(wxEVT_PAINT, wxPaintEventHandler(MyPanel::OnPaint));
+
+}
+
+void MyPanel::OnScroll(wxScrollEvent&amp; event)
+{
+  fill = slider->GetValue();
+  Refresh();
+}
+
+void MyPanel::OnPaint(wxPaintEvent&amp; event)
+{
+  wxPaintDC dc(this);
+
+  wxPen pen(wxColour(212, 212, 212));
+  dc.SetPen(pen);
+
+  dc.DrawRectangle(wxRect(140, 30, 80, 140));  
+
+  wxBrush brush1(wxColour(197, 108, 0));
+  dc.SetBrush(brush1);
+
+  dc.DrawRectangle(wxRect(140, 30, 80, fill));
+}
+</pre>
+
+<div class="codehead">main.h</div>
+<pre class="code">
+#include &lt;wx/wx.h&gt;
+
+class MyApp : public wxApp
+{
+  public:
+    virtual bool OnInit();
+};
+</pre>
+
+<div class="codehead">main.cpp</div>
+<pre class="code">
+#include "main.h"
+#include "Slider.h"
+
+IMPLEMENT_APP(MyApp)
+
+bool MyApp::OnInit()
+{
+
+    Slider *slider = new Slider(wxT("Slider"));
+    slider->Show(true);
+
+    return true;
+}
+</pre>
+
+<p>
+In our example, we display a slider widget. By pulling the handle 
+of the slider, we control the background color of the panel. In 
+such an example, using slider is more natural than using e.g. a spin control. 
+</p>
+
+<pre class="explanation">
+slider = new wxSlider(this, ID_SLIDER, 0, 0, 140, wxPoint(50, 30), 
+   wxSize(-1, 140), wxSL_VERTICAL);
+</pre>
+
+<p>
+We create a vertical slider. The initial value is 0, minimal value 
+is 0 and maximal value is 140.
+We display no ticks and no labels. 
+</p>
+
+<pre class="explanation">
+Connect(ID_SLIDER, wxEVT_COMMAND_SLIDER_UPDATED, 
+   wxScrollEventHandler(MyPanel::OnScroll));  
+</pre>
+
+<p>
+Here we connect a <code>wxEVT_COMMAND_SLIDER_UPDATED</code> event to the 
+<code>OnScroll()</code> user defined method.
+</p>
+
+<pre class="explanation">
+Connect(wxEVT_PAINT, wxPaintEventHandler(MyPanel::OnPaint));
+</pre>
+
+<p>
+We will also do some drawing, so we connect <code>OnPaint()</code> method 
+to the <code>wxEVT_PAINT</code> event.
+</p>
+
+
+<pre class="explanation">
+fill = slider->GetValue();
+Refresh();
+</pre>
+
+<p>
+In the <code>OnScroll()</code> method, we will get the current slider value. 
+We call the <code>Refresh()</code> method, which will 
+generate a <code>wxEVT_PAINT</code> event.
+</p>
+
+<pre class="explanation">
+dc.DrawRectangle(wxRect(140, 30, 80, 140)); 
+...
+dc.DrawRectangle(wxRect(140, 30, 80, fill));
+</pre>
+
+<p>
+Inside the <code>OnPaint()</code> event handler, we draw two rectangles. The 
+first method is draws a white rectangle with 
+a gray border.
+The second method draws the a rectangle with some brownish color. 
+The height of the rectangle is controled by the <code>fill</code> value, 
+which is set by the slider widget.
+</p>
+
+
+<img src="slider.png" tppabs="http://zetcode.com/img/gui/wxwidgets/slider.png" alt="wxSlider">
+<div class="figure">Figure: wxSlider</div>
+
+
+<p>
+In this part of the wxWidgets tutorial, we covered various widgets.
+</p>
+
+<div class="hor">
+<script async src="adsbygoogle.js" tppabs="http://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- horizontal -->
+<ins class="adsbygoogle"
+     style="display:inline-block;width:468px;height:60px"
+     data-ad-client="ca-pub-9706709751191532"
+     data-ad-slot="1734478269"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+</div>
+
+<footer>
+
+<div class="botNav center">
+<span class="botNavItem"><a href="javascript:if(confirm('http://zetcode.com/  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://zetcode.com/'" tppabs="http://zetcode.com/">Home</a></span> ‡ <span class="botNavItem"><a href=".-7.htm" tppabs="http://zetcode.com/gui/wxwidgets/widgets/..">Contents</a></span> ‡
+<span class="botNavItem"><a href="#">Top of Page</a></span>
+</div>
+
+<div class="signature">
+<a href="javascript:if(confirm('http://zetcode.com/  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://zetcode.com/'" tppabs="http://zetcode.com/">ZetCode</a> last modified October 13, 2014  <span class="copyright">&copy; 2007 - 2014 Jan Bodnar</span>
+</div>
+
+</footer>
+
+</div> <!-- content -->
+
+</div> <!-- container -->
+
+</body>
+</html>
+

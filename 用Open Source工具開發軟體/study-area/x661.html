@@ -1,0 +1,560 @@
+<HTML
+><HEAD
+><TITLE
+>設定</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.49"><LINK
+REL="HOME"
+TITLE="用Open Source工具開發軟體"
+HREF="book1.html" tppabs="http://www.study-area.org/cyril/opentools/opentools/book1.html"><LINK
+REL="UP"
+TITLE="CVS 版本控制系統(Concurrent Version System)"
+HREF="cvs.html" tppabs="http://www.study-area.org/cyril/opentools/opentools/cvs.html"><LINK
+REL="PREVIOUS"
+TITLE="Repository的觀念"
+HREF="x657.html" tppabs="http://www.study-area.org/cyril/opentools/opentools/x657.html"><LINK
+REL="NEXT"
+TITLE="CVS快速入門"
+HREF="x718.html" tppabs="http://www.study-area.org/cyril/opentools/opentools/x718.html"></HEAD
+><BODY
+CLASS="SECT1"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>用Open Source工具開發軟體: 新軟體開發關念</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="x657.html" tppabs="http://www.study-area.org/cyril/opentools/opentools/x657.html"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 3. CVS 版本控制系統(Concurrent Version System)</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="x718.html" tppabs="http://www.study-area.org/cyril/opentools/opentools/x718.html"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="AEN661"
+>設定</A
+></H1
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN663"
+>Unix Server設定</A
+></H2
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="AEN665"
+>安裝準備</A
+></H3
+><P
+>	  GNU/Linux的話，安裝時就會裝進去了，如果你是第一次安裝的話會問你
+	  repository在那裡?總之先不要理會錯誤訊息，先把程式裝起來，等到後面
+	  再來做configuration。用
+	  <TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+>$ which cvs
+	  </PRE
+></TD
+></TR
+></TABLE
+>
+	  請找找/bin /usr/bin /usr/local/bin 看有沒有cvs。
+	  如果沒有，有光碟用redhat型式套件的人就用rpm，找到後裝起來，
+	  用debain的人就用dselect找到後裝起來。大概是這樣
+	  <TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+>$ mount -t iso9660 /dev/cdrom /cdrom
+$ cd /cdrom/RPMS
+$ rpm -i cvs-xxxx.rpm
+	  </PRE
+></TD
+></TR
+></TABLE
+>
+	  
+	  如果在其他UNIX，就到www.cvshome.org下載原始碼。回來解壓縮後，
+	  執行configure;make;make install就好了，當然函式庫要裝好
+	  <TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+>$ gzip -d cvs-xxxx.tar.gz |tar xvf -
+$ cd cvs-xxxx
+$ configure --prefix=/dir/you/want/to/install
+$ make
+$ make install
+	  </PRE
+></TD
+></TR
+></TABLE
+>
+	</P
+></DIV
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="AEN671"
+>設定檔</A
+></H3
+><P
+>	  cvs是網路應用程式，有三個重要的網路設定檔
+	  <P
+></P
+><DL
+><P
+><B
+>CVS 網路設定檔</B
+></P
+><DT
+>/etc/inetd.conf</DT
+><DD
+><P
+>		  inetd是等在電腦內的背景程序(daemon)。他看到有telnet要求，
+		  就去叫
+		  telnetd來服務，有CVS要求就去叫cvs來服務，有的系統用xinetd，
+		  請自行修改/etc/xinetd.conf。應該要有這一行
+		  <TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="90%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+>2401 stream tcp nowait root /usr/local/bin/cvs cvs -f --allow-root=/var/cvsroot pserver
+		  </PRE
+></TD
+></TR
+></TABLE
+>
+		  其中後面兩欄位
+		  <TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="90%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+>/usr/local/bin/cvs
+		  </PRE
+></TD
+></TR
+></TABLE
+>
+		  是cvs的所在位置，如果不是用source code方法裝的，應該在
+		  /usr/bin/下
+		  <TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="90%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+>cvs -f --allow-root=/var/cvsroot pserver
+		  </PRE
+></TD
+></TR
+></TABLE
+>
+		  是說這個櫃子在/var/cvsroot下，外面的連接用pserver這種有
+		  passwd server的方法。當然櫃子可以亂定，不一定要在/var/cvsroot
+		</P
+></DD
+><DT
+>/etc/services</DT
+><DD
+><P
+>		  /etc/inetd.conf最好這樣子，如果你要用symbolic名字來代表
+		  2401這個是cvs server請加
+		  <TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="90%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+>	  
+cvspserver      2401/tcp
+		  </PRE
+></TD
+></TR
+></TABLE
+>
+		  到/etc/services，然後/etc/inetd.conf
+		  <TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="90%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+>cvspserver stream  tcp  nowait  root  /usr/local/bin/cvs  cvs -f --allow-root=/var/cvsroot pserver
+		  </PRE
+></TD
+></TR
+></TABLE
+>
+		</P
+></DD
+><DT
+>/etc/nsswitch.conf</DT
+><DD
+><P
+>		  因為有的公司是由NIS來管理的，你的/etc/nsswitch.conf裡面在
+		  搜尋services這個檔案時，其實可能不是你本地的/etc/services而是
+		  某個地方的services檔案，如果這個遠方的services檔案裡面沒有
+		  cvspserver，你的inetd就不認得了，如果你是在公司內，請確定一
+		  下你的整體NIS環境。
+		</P
+></DD
+></DL
+>
+	    最後不要忘了重新啟動inetd這個deamon讓他去讀新的inetd.conf
+	    # kill -HUP `pidof inetd`
+	    還有一個問題是可能有別的application正在用2401這個port，
+	    如果起不來請先把inetd.conf改成
+	    2401 stream tcp nowait root /bin/echo /bin/echo "port not used"
+	    然後telnet host 2401看有沒有echo出東西來，如果沒有就是2401被拿去用了
+	</P
+></DIV
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN693"
+>設定櫃子</A
+></H2
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="AEN695"
+>創造櫃子</A
+></H3
+><P
+>	  cvs init會創造出儲存櫃子來，給下面的命令
+	  <TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+>	    $ cvs -d /var/cvsroot init
+	  </PRE
+></TD
+></TR
+></TABLE
+>
+	  這時會在/var/cvsroot下面跑出CVSROOT這個新目錄，這個裡面放著很多
+	  管理的資訊檔案，叫做Administrative Files。這些檔案是專案模組的
+	  歷史紀錄，還有像你可以設定通知其他的程式開發者，你對專案的檔案
+	  做了什麼事等等的一些設定。
+	</P
+></DIV
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="AEN699"
+>設定密碼</A
+></H3
+><P
+>	  CVS可以設定存取權限，CVS內定密碼檔在$CVSROOT/CVSROOT/passwd，格式是
+	  <TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+>bach:ULtgRLXo7NRxs
+spwang:1sOp854gDF3DY
+melissa:tGX1fS8sun6rY:pubcvs
+	  </PRE
+></TD
+></TR
+></TABLE
+>
+	    跟/etc/passwd下一樣用crypt()來加密的，你可以copy /etc/passwd
+	    來修改，也可以用apache下的httpasswd來產生並修改，這是比較好的做法。
+	    如果沒有CVS密碼檔，就會用/etc/passwd，內定是大家都可以讀寫。
+	    基本上如果貴單位沒有用NIS紀錄龐大的/etc/passwd，通常用這個就好了，
+	    不用copy 到$CVSROOT/CVSROOT下面來。
+	</P
+></DIV
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="AEN703"
+>設定讀寫權限</A
+></H3
+><P
+>	  除了存取權限外，可進一步設讀寫權限，在$CVSROOT/CVSROOT下可以有
+	  兩個檔案
+	  
+	  $CVSROOT/CVSROOT/readers
+	  
+	  裡面的人名只有read權力，其他人有write權力。
+	  
+	  $CVSROOT/CVSROOT/writers
+	  
+	  裡面的人有write權力，其他人只有read權力。
+	  格式就是
+	  <TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+>nick
+cyril
+
+	  </PRE
+></TD
+></TR
+></TABLE
+>
+	  這樣子就好，不過最後一個人一定要按Enter才有newline.
+	</P
+></DIV
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN707"
+>Un*x系統的 CVS Client設定</A
+></H2
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="AEN709"
+>環境變數</A
+></H3
+><P
+>	  要存取CVS櫃子必須要告訴CVS要怎樣存取，因此要先設環境變數CVSROOT，
+	  他的格式是
+	  <TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+>:method:user@hostname:/path/to/repository
+	  </PRE
+></TD
+></TR
+></TABLE
+>
+	  這邊的method有很多種，內定值是local，可是這無法顯現CVS的威力，通常有
+	  <TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+>local:		櫃子在本地
+server:		用rsh的方法
+ext:		用rsh的方法也可以設定CVS_RSH讓他用ssh比較安全
+pserver:	有權限的password方法
+kserver:	對你在網路上的封包傳遞加密的方法
+	  </PRE
+></TD
+></TR
+></TABLE
+>
+	  user就是有在密碼檔內的使用者
+	  hostname就是你的cvs server機器名稱
+	  /path/to/repository是剛剛設server時的設定，/var/cvsroot。
+	</P
+><P
+>	  
+	  因為目前只有pserver可以提供read only,read/write權限的控制。
+	  所以最常用的設定是像這個樣子
+	  <TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+>:pserver:cyril@debian.comc.com:/var/cvsroot
+	  </PRE
+></TD
+></TR
+></TABLE
+>
+	  在bash下請用
+	  <TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+>$ export CVSROOT=:pserver:cyril@debian.comc.com:/var/cvsroot
+	  </PRE
+></TD
+></TR
+></TABLE
+>
+	  如果不用環境變數每次就要打很累人的
+	  <TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+>$ cvs -d :pserver:cyril@debian.comc.com:/var/cvsroot cvs_command
+	  </PRE
+></TD
+></TR
+></TABLE
+>
+	  cvs_command就是使用cvs的命令，用了環境變數後只要用
+	  $ cvs cvs_command就好了
+	</P
+></DIV
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="x657.html" tppabs="http://www.study-area.org/cyril/opentools/opentools/x657.html"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="book1.html" tppabs="http://www.study-area.org/cyril/opentools/opentools/book1.html"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="x718.html" tppabs="http://www.study-area.org/cyril/opentools/opentools/x718.html"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Repository的觀念</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="cvs.html" tppabs="http://www.study-area.org/cyril/opentools/opentools/cvs.html"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>CVS快速入門</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

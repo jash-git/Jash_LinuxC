@@ -1,0 +1,761 @@
+<HTML
+><HEAD
+><TITLE
+>CVS進階功能</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.49"><LINK
+REL="HOME"
+TITLE="用Open Source工具開發軟體"
+HREF="book1.html" tppabs="http://www.study-area.org/cyril/opentools/opentools/book1.html"><LINK
+REL="UP"
+TITLE="CVS 版本控制系統(Concurrent Version System)"
+HREF="cvs.html" tppabs="http://www.study-area.org/cyril/opentools/opentools/cvs.html"><LINK
+REL="PREVIOUS"
+TITLE="CVS快速入門"
+HREF="x718.html" tppabs="http://www.study-area.org/cyril/opentools/opentools/x718.html"><LINK
+REL="NEXT"
+TITLE="GNU Compiler Collection"
+HREF="gcc.html" tppabs="http://www.study-area.org/cyril/opentools/opentools/gcc.html"></HEAD
+><BODY
+CLASS="SECT1"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>用Open Source工具開發軟體: 新軟體開發關念</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="x718.html" tppabs="http://www.study-area.org/cyril/opentools/opentools/x718.html"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 3. CVS 版本控制系統(Concurrent Version System)</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="gcc.html" tppabs="http://www.study-area.org/cyril/opentools/opentools/gcc.html"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="AEN745"
+>CVS進階功能</A
+></H1
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN747"
+>自動通知開發團隊</A
+></H2
+><P
+>	當有人commit了程式後，大家怎麼會知道呢，所以CVS內可以自動在特殊事件後
+	，做些特殊的動作。在server那端，$CVSROOT/CVSROOT下面有一些檔案
+	<P
+></P
+><DL
+><P
+><B
+>CVS管制檔案</B
+></P
+><DT
+>commitinfo</DT
+><DD
+><P
+>		這是CVS正式執行commit前的先行檢查程式，定義在這裡面。
+	      </P
+></DD
+><DT
+>loginfo</DT
+><DD
+><P
+>		當有人寫了log message之後就執行裡面定義的命令。通常是commit後
+		執行。
+	      </P
+></DD
+><DT
+>editinfo</DT
+><DD
+><P
+>		這已經不再用了
+	      </P
+></DD
+><DT
+>verifymsg</DT
+><DD
+><P
+>		檢查commit進來後的log message，可以用個script來檢查。因為
+		可能一個group裡面對於你的log message有格式的規定，例如一定
+		要有bug ID，一定要有人名name:的字眼，如果log message不合
+		團隊的規定，可以把他踢回去。
+		</P
+></DD
+></DL
+>
+      </P
+><P
+>	要修改這些檔案也請先用cvs來存取這些檔案。
+	其檔案內容格式是
+	<TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+>regular-express command
+	</PRE
+></TD
+></TR
+></TABLE
+>
+	regular-express是emacs裡的基本regular express只要符合這個
+	regular express的模組名稱都會執行後面的命令。
+	例如有這行在loginfo
+	<TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+>^study mail -s "information" &#60; info.file
+	</PRE
+></TD
+></TR
+></TABLE
+>	
+	如果repository裡面有study_computer，study，computer_study這三個模組，
+	則只有study_computer,study這兩個模組當有人commit 時會去執行mail的動
+	作。當然也可以用script作為執行命令。
+	<TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+>DEFAULT /usr/bin/cvs-log
+	</PRE
+></TD
+></TR
+></TABLE
+>
+	表示說如果沒有模組名符合regular express搜尋，則自動用cvs-log這隻程式。
+      </P
+><P
+>	有些字串是相對於版本有所變化的，例如版本號碼，你可以有3種format字串來
+	代表他們
+	<TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+>%s	檔案名
+%V	舊的版本號碼
+%v	新的版本號碼
+	</PRE
+></TD
+></TR
+></TABLE
+>
+
+如果有兩個以上要一起用，要用{}括起來
+例如我有下面這行在loginfo內
+	<TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+>study mail -s "%{sVv}" nick@debian.comc.com
+	</PRE
+></TD
+></TR
+></TABLE
+>
+	表示只要送交進study這個專案模組的檔案，則會送出這個檔的名字,
+	舊版本號碼,新版號碼放在mail的subtitle裡面送給nick。
+      </P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN775"
+>版本編號標籤(tag)與branch Merge</A
+></H2
+><P
+>	通常我們程式開發時，會有莫名的想法，可能是改進的演算法，
+	可能是其他的新功能。但是可能不是完全定案，這時我們可以另外
+	開一支分支來測試我們的新idea程式版本。如圖
+	<DIV
+CLASS="FIGURE"
+><P
+><B
+>Figure 3-2. CVS分支示意圖</B
+></P
+><P
+><IMG
+SRC="branch.jpg" tppabs="http://www.study-area.org/cyril/opentools/opentools/images/branch.jpg"></P
+></DIV
+>
+	原本的就是叫mainline branch
+      </P
+><P
+>	對於每次的release，可能我們要給一個tag來做識別，一個tag可以給
+	某個特定檔案，也可以給整個專案。將來要存取時也可以用tag來做辨認。
+	<TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+>$ cvs tag tag_name .                  建立一個tag叫tag_name給所有檔案
+$ cvs co -r tag_name module_name      從module_name下取出tag_name的所有檔
+$ cvs status -v                       看目前檔案的status可以看出有什麼tag
+	</PRE
+></TD
+></TR
+></TABLE
+>
+      </P
+><P
+>	用
+	<TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+>$ cvs status -vl [files]
+$ cvs log -l [files]
+	</PRE
+></TD
+></TR
+></TABLE
+>
+	檢查。
+	tag還有更有用的作用就是來建立branch，建立branch用
+	cvs tag -b來為branch建立一個tag。
+	<TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+>$ cvs tag -b r-1-0-patches
+$ cvs rtag -b -r r-1-0 r-1-0-patches myproj
+$ cvs checkout -r r-1-0-patches myproj
+$ cvs update -r r-1-0-patches myproj
+	</PRE
+></TD
+></TR
+></TABLE
+>
+	存取branch不管用commit,update...都要用symbol tag名稱了。
+      </P
+><P
+>	其中r-1-0-patches是有名字的tag(symbolic tag)。
+	<TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+>tag -b    是說相對於目前local工作目錄下的版本給一個分支
+rtag -b   是相對於r-1-0這個版本給一個分支r-1-0-patches
+	</PRE
+></TD
+></TR
+></TABLE
+>
+	checkout -r 也可以checkout -D用日期
+      </P
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="AEN788"
+>Branch 的Merge</A
+></H3
+><P
+>	  當嘗試完branch覺得不錯想要merge進原有的mainline版本，
+	  先用
+	  <TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+>cvs update -j branch_tag 
+	  </PRE
+></TD
+></TR
+></TABLE
+>
+	  再用cvs commit建立新版本。
+	  以上面例子言就是把1.2.2.2跟1.2的差異先merge到目前工作目錄，
+	  然後下次用commit時，就會產生新的mainline 版本1.5了。
+	</P
+></DIV
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN792"
+>Lock檔案與送交衝突(conflict)</A
+></H2
+><P
+>	基本上cvs是架在另一個古早的版本控制叫rcs上的，這裡面有一種機制
+	是可以lock檔案的，也就是只有你可以編輯別人不能編輯，
+	<TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+>$ cvs admin -l file.c
+	</PRE
+></TD
+></TR
+></TABLE
+>
+	就可以了
+      </P
+><P
+>	不過這不是好方法，因為當初cvs設計哲學就是要讓大家同時發展程式，
+	不過有時你改改我改改，程式送交時會發生衝突(conflict)的狀況，
+	也就是兩個人同時對同一行code修改，而且送交後這有點像race condition。
+	這時你必須要確定這段相衝的程式是被允許的，修改完後，才能再送交。
+	當用cvs update時，
+	如下
+	<TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+>#include &#60;stdlib.h&#62;
+#include &#60;stdio.h&#62;
+	      
+int main(int argc,
+         char **argv)
+{
+  init_scanner();
+  parse();
+  if (argc != 1) {
+    fprintf(stderr, "tc: No args expected.\n");
+    exit(1);
+  }
+  if (nerr == 0)
+    gencode();
+  else
+    fprintf(stderr, "No code generated.\n");
+&#60;&#60;&#60;&#60;&#60;&#60;&#60; driver.c
+    exit(nerr == 0 ? EXIT_SUCCESS : EXIT_FAILURE);
+=======
+    exit(!!nerr);
+&#62;&#62;&#62;&#62;&#62;&#62;&#62; 1.6
+}
+	</PRE
+></TD
+></TR
+></TABLE
+>
+	表示在exit(nerr == 0......這一行同時兩個人做了修改，
+	後來的這個人必需解決conflict的問題才行cvs commit。
+	減少conflict的狀況可以用watch edit機制，在程式發展時，可以知道
+	有誰同時在寫某個檔案，這樣就降低conflict的機會。用
+	<TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+>$ cvs watch on [files]
+	</PRE
+></TD
+></TR
+></TABLE
+>
+	這個在自己工作目錄的檔案將被標為read-only，files沒給的話內定為整
+	個repository。
+	<TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+>$ cvs edit [files]
+	</PRE
+></TD
+></TR
+></TABLE
+>
+	自己的工作目錄下的檔案將被標為read-write，而且通知所有watch檔案的
+	人，我要開始改了。
+	<TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+>$ cvs watch add
+	</PRE
+></TD
+></TR
+></TABLE
+>
+	將會把自己放到通知的名單上去，這樣有人用cvs edit就會通知我了。
+      </P
+><P
+>	通知的Administration file是$CVSROOT/CVSROOT/notify
+	notify內的%s是watch user的意思，跟前面loginfo的%s不一樣，所以應該是
+	<TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+>study mail %s -s "I am editing" &#60; info.file
+	</PRE
+></TD
+></TR
+></TABLE
+>
+	    表示在study這個模組下watch的user會被通知info.file的內容。
+      </P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN803"
+>CVS Client GUI介面</A
+></H2
+><P
+>	CVS有Client的GUI介面，有了以上的觀念，你可以輕易的設定CVS Client 
+	GUI了。
+      </P
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="AEN806"
+>Gnome</A
+></H3
+><P
+>	  在Gnu/Linux下用gtk這個interface函式庫寫成的，這個我就不多加介紹了。
+	  秀一下ScreenShot
+	  <DIV
+CLASS="FIGURE"
+><P
+><B
+>Figure 3-3. </B
+></P
+><P
+><IMG
+SRC="gtkcvs.gif" tppabs="http://www.study-area.org/cyril/opentools/opentools/images/gtkcvs.gif"></P
+></DIV
+>
+	</P
+></DIV
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="AEN812"
+>MS Windows</A
+></H3
+><P
+>	  在windows下有個WinCVS，請到www.cvsgui.org/download.html
+	  在選單裡面
+	  <TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+>	    Admin -&#62; Preference設定CVSROOT　　以及"passwd" 這個方法
+	    Admin -&#62; Login
+	    選擇一個目錄
+	    Create -&#62; Import module  這邊會問一些問題，其實就是Unix命令列下的
+	    那些欄位。
+	    Create -&#62; Chekcout module
+	  </PRE
+></TD
+></TR
+></TABLE
+>
+	  秀一下ScreenShot
+	  <DIV
+CLASS="FIGURE"
+><P
+><B
+>Figure 3-4. WinCVS</B
+></P
+><P
+><IMG
+SRC="wincvs.gif" tppabs="http://www.study-area.org/cyril/opentools/opentools/images/wincvs.gif"></P
+></DIV
+>
+	</P
+></DIV
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="AEN819"
+>CVSWeb</A
+></H3
+><P
+>	  把你的CVS倉庫丟到網路上去用Web的方式呈現出來。這在做code 
+	  review是很有用的，只要買一台infocus之類可以接電腦螢幕的投影機，
+	  或者講好時間大家都在電腦前面，
+	  用X 視窗把netscape或emacs丟到每個人的螢幕前面，就可以code review了。
+	  請在
+	  <A
+HREF="javascript:if(confirm('http://stud.fh-heilbronn.de/~zeller/cgi/cvsweb.cgi  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://stud.fh-heilbronn.de/~zeller/cgi/cvsweb.cgi'" tppabs="http://stud.fh-heilbronn.de/~zeller/cgi/cvsweb.cgi"
+TARGET="_top"
+>	    <I
+CLASS="CITETITLE"
+>	      http://stud.fh-heilbronn.de/~zeller/cgi/cvsweb.cgi/ 
+	    </I
+>
+	  </A
+>
+	  捉cvsweb。解開後2個perl檔
+	</P
+><P
+>	  把cvsweb.conf拷到apache web server裡面的conf目錄，
+	  改%CVSROOT這個hash，你可以有很多個repository被管理，
+	</P
+><P
+>	  將cvssweb.cgi 放到apache的cgi-bin alias目錄下，
+	  改$config讓它指到cvsweb.conf的路徑，
+	</P
+><P
+>	  http://xxx.xxx.com/cgi-bin/cvsweb.cgi，
+	  就會執行cvsweb CGI程式了。
+	</P
+><P
+>	  秀一下screenshot
+	  <DIV
+CLASS="FIGURE"
+><P
+><B
+>Figure 3-5. CVSWeb</B
+></P
+><P
+><IMG
+SRC="cvsweb.gif" tppabs="http://www.study-area.org/cyril/opentools/opentools/images/cvsweb.gif"></P
+></DIV
+>
+	  <DIV
+CLASS="FIGURE"
+><P
+><B
+>Figure 3-6. CVSWeb的diff</B
+></P
+><P
+><IMG
+SRC="cvsdiff.gif" tppabs="http://www.study-area.org/cyril/opentools/opentools/images/cvsdiff.gif"></P
+></DIV
+>
+	  CVSWeb只能做讀，沒法做commit的動作，不過另外有可以commit的Web介
+	  面的程式，另外還有corss reference的web 介面，也就是每個symbol
+	  都有一個超連結，
+	  可以想看那個function call就看那個function call，看那個變數就
+	  看那個變數。目前都是在一個叫
+	  <A
+HREF="javascript:if(confirm('http://lxr.linux.no/  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://lxr.linux.no/'" tppabs="http://lxr.linux.no/"
+TARGET="_top"
+>	    <I
+CLASS="CITETITLE"
+>	      lxr(linux Cross Reference)
+	    </I
+>
+	  </A
+>
+	    的基礎上發展出很多分支，最有名的是bonsai(日本話的園丁，
+	    因為是個source "tree"嘛），
+	    另外有一個可以看Java C/C++...的叫
+	  <A
+HREF="javascript:if(confirm('http://www.doxygen.org/  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://www.doxygen.org/'" tppabs="http://www.doxygen.org/"
+TARGET="_top"
+>	    <I
+CLASS="CITETITLE"
+>	      doxygen
+	    </I
+>
+	  </A
+>
+	  的。
+	</P
+><P
+>	  sourceforge.net與gnome web site可以看到相當嘆為觀止的展示。
+	  annotated表示有每次版本改變的紀錄在source code 上。cross 
+	  reference表示可以有超連結。請看
+	</P
+><P
+>	  <A
+HREF="javascript:if(confirm('http://cvs.gnome.org/bonsai/  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://cvs.gnome.org/bonsai/'" tppabs="http://cvs.gnome.org/bonsai/"
+TARGET="_top"
+>	    <I
+CLASS="CITETITLE"
+>	      http://cvs.gnome.org/bonsai/
+	    </I
+>
+	  </A
+>
+	</P
+><P
+>	  <A
+HREF="javascript:if(confirm('http://sourceforge.net/  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://sourceforge.net/'" tppabs="http://sourceforge.net/"
+TARGET="_top"
+>	    <I
+CLASS="CITETITLE"
+>	      http://sourceforge.net
+	    </I
+>
+	  </A
+>
+	</P
+><P
+>	  稍微介紹一下CVS有沒有覺得太不可思議了，最不可思議的是這些通通
+	  是不用錢的。我記得以前我在台灣工作時，好像大家還在你copy給我，
+	  我copy給你，想想open source的威力實在太不可思議了，這種程
+	  式的品質，不是兩三天就建立的起來的。想想。想完後，將
+	  帶你進入最不可思議的大驚奇。GNU Compiler Collection。
+	</P
+></DIV
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="x718.html" tppabs="http://www.study-area.org/cyril/opentools/opentools/x718.html"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="book1.html" tppabs="http://www.study-area.org/cyril/opentools/opentools/book1.html"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="gcc.html" tppabs="http://www.study-area.org/cyril/opentools/opentools/gcc.html"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>CVS快速入門</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="cvs.html" tppabs="http://www.study-area.org/cyril/opentools/opentools/cvs.html"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>GNU Compiler Collection</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

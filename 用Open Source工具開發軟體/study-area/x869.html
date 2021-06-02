@@ -1,0 +1,519 @@
+<HTML
+><HEAD
+><TITLE
+>標頭檔 函式庫與gcc</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.49"><LINK
+REL="HOME"
+TITLE="用Open Source工具開發軟體"
+HREF="book1.html" tppabs="http://www.study-area.org/cyril/opentools/opentools/book1.html"><LINK
+REL="UP"
+TITLE="GNU Compiler Collection"
+HREF="gcc.html" tppabs="http://www.study-area.org/cyril/opentools/opentools/gcc.html"><LINK
+REL="PREVIOUS"
+TITLE="重要的選項或旗標(FLAGS)"
+HREF="x864.html" tppabs="http://www.study-area.org/cyril/opentools/opentools/x864.html"><LINK
+REL="NEXT"
+TITLE="gcc與Obj檔，動態連結與ELF檔"
+HREF="x909.html" tppabs="http://www.study-area.org/cyril/opentools/opentools/x909.html"></HEAD
+><BODY
+CLASS="SECT1"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>用Open Source工具開發軟體: 新軟體開發關念</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="x864.html" tppabs="http://www.study-area.org/cyril/opentools/opentools/x864.html"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 4. GNU Compiler Collection</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="x909.html" tppabs="http://www.study-area.org/cyril/opentools/opentools/x909.html"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="AEN869"
+>標頭檔 函式庫與gcc</A
+></H1
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN871"
+>標頭定義檔.h</A
+></H2
+><P
+>	當我們給
+	<TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+>$ gcc -o foo.o foo.c
+	</PRE
+></TD
+></TR
+></TABLE
+>
+	gcc怎麼知道去哪裡找foo.c裡面所include的header檔,連結資料庫
+	與系統定義呢?
+	總共有下列來源指定gcc去那找。
+	<P
+></P
+><OL
+TYPE="1"
+><LI
+><P
+>	      當初在編譯時指定的(在~gcc/gcc/collect2.c:locatelib()
+	    </P
+></LI
+><LI
+><P
+>	      寫在specs內的
+	    </P
+></LI
+><LI
+><P
+>	      後來用-D -I -L指定的
+	    </P
+></LI
+><LI
+><P
+>	      gcc環境變數設定(編譯的時候)
+	    </P
+></LI
+><LI
+><P
+>	      ld.so的環境變數(這是run time的時候)
+	    </P
+></LI
+></OL
+>
+
+	在
+	<TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+>prefix/lib/gcc-lib/xxxx-xxx-xxx-gnulibc/2.9.5/
+	</PRE
+></TD
+></TR
+></TABLE
+>
+	裡面有個很重要的specs這個檔案
+	gcc根據這個檔，做一些內定的動作。
+	通常系統上的specs內定裝起來是在
+	<TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+>/usr/lib/gcc-lib/xxxx-gnulibc/version/
+	</PRE
+></TD
+></TR
+></TABLE
+>
+	specs檔看起來是像這樣
+	<TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>*asm:
+%{v:-V} %{Qy:} %{!Qn:-Qy} %{n} %{T} %{Ym,*} %{Yd,*} %{Wa,*:%*}
+
+*asm_final:
+%|
+
+*cpp:
+%(cpp_cpu) %{fPIC:-D__PIC__ -D__pic__} %{fpic:-D__PIC__ -D__pic__} %{posix:
+-D_POSIX_SOURCE} %{pthread:-D_REENTRANT}
+
+*cc1:
+%(cc1_cpu) %{profile:-p}
+
+*cc1plus:
+
+
+*endfile:
+%{!shared:crtend.o%s} %{shared:crtendS.o%s} crtn.o%s
+
+*link:
+-m elf_i386 %{shared:-shared}   %{!shared:     %{!ibcs:       %{!static:  
+%{rdynamic:-export-dynamic}     %{!dynamic-linker:-dynamic-linker 
+/lib/ld-linux.so.2}}  %{static:-static}}}
+
+*lib:
+%{shared: -lc --version-script libgcc.map%s}    %{!shared: %{mieee-fp:-lieee} 
+%{pthread:-lpthread}      %{profile:-lc_p} %{!profile: -lc}}
+
+*libgcc:
+-lgcc
+
+*startfile:
+%{!shared:      %{pg:gcrt1.o%s} %{!pg:%{p:gcrt1.o%s} %{!p:%{profile:gcrt1.o%s} 
+%{!profile:crt1.o%s}}}}    crti.o%s %{!shared:crtbegin.o%s} 
+%{shared:crtbeginS.o%s}
+
+*switches_need_spaces:
+
+*signed_char:
+%{funsigned-char:-D__CHAR_UNSIGNED__}
+
+*predefines:
+-D__ELF__ -Dunix -Di386 -D__i386__ -Dlinux -Asystem(posix)
+
+*cross_compile:
+0
+
+*version:
+egcs-2.91.66
+
+*multilib:
+. ;
+
+*multilib_defaults:
+
+*multilib_extra:
+
+*multilib_matches:
+
+*linker:
+collect2
+
+*cpp_cpu_default:
+-D__tune_i386__
+
+*cpp_cpu:
+-Asystem(unix) -Acpu(i386) -Amachine(i386) %{!ansi:-Di386} 
+-D__i386 -D__i386__ %{march=i486:-D__i486 -D__i486__} 
+%{march=pentium|march=i586:-D__pentium -D__pentium__ } 
+%{march=pentiumpro|march=i686:-D__pentiumpro -D__pentiumpro__ } 
+%{m386|mcpu=i386:-D__tune_i386__ } %{m486|mcpu=i486:-D__tune_i486__ } 
+%{mpentium|mcpu=pentium|mcpu=i586:-D__tune_pentium__ } 
+%{mpentiumpro|mcpu=pentiumpro|mcpu=i686:-D__tune_pentiumpro__ } 
+%{!mcpu*:%{!m386:%{!m486:%{!mpentium*:%(cpp_cpu_default)}}}}
+
+*cc1_cpu:
+%{!mcpu*: %{m386:-mcpu=i386} %{mno-486:-mcpu=i386 -march=i386} 
+%{m486:-mcpu=i486} %{mno-386:-mcpu=i486 -march=i486} 
+%{mno-pentium:-mcpu=i486 -march=i486} %{mpentium:-mcpu=pentium} 
+%{mno-pentiumpro:-mcpu=pentium} %{mpentiumpro:-mcpu=pentiumpro}}
+	</PRE
+></TD
+></TR
+></TABLE
+>
+
+在shell下用這行，-E 表示只做到preprocess就好
+
+	<TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+>$ echo 'main(){}' | gcc -E -v -
+	</PRE
+></TD
+></TR
+></TABLE
+>
+
+你會看到gcc去讀specs檔
+
+	<TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+>Reading specs from /usr/lib/gcc-lib/i386-linux/2.95.2/specs
+gcc version 2.95.2 20000220 (Debian GNU/Linux)
+ /usr/lib/gcc-lib/i386-linux/2.95.2/cpp -lang-c -v -D__GNUC__=2 -D__GNUC_MINOR__=95 -D__ELF__ -Dunix -D__i386__ -Dlinux -D__ELF__ -D__unix__ -D__i386__ -D__linux__ -D__unix -D__linux -Asystem(posix) -Acpu(i386) -Amachine(i386) -Di386 -D__i386 -D__i386__ -
+GNU CPP version 2.95.2 20000220 (Debian GNU/Linux) (i386 Linux/ELF)
+#include "..." search starts here:
+#include &#60;...&#62; search starts here:
+ /usr/local/include
+ /usr/lib/gcc-lib/i386-linux/2.95.2/include
+ /usr/include
+End of search list.
+The following default directories have been omitted from the search path:
+ /usr/lib/gcc-lib/i386-linux/2.95.2/../../../../include/g++-3
+ /usr/lib/gcc-lib/i386-linux/2.95.2/../../../../i386-linux/include
+End of omitted list.
+# 1 ""
+main(){}
+	</PRE
+></TD
+></TR
+></TABLE
+>
+	所以有內定的定義，(就是用在#if defined #ifndef #define這些東西，
+	如果有定義這個字串，就去編譯等等。)
+	-Dxxxx -Dxxxx -Axxxx。
+	還有內定的include檔的搜尋路徑
+	<TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+>/usr/include
+/usr/local/include
+/usr/lib/gcc-lib/i386-linux/2.95.2/include
+/usr/lib/gcc-lib/i386-linux/2.95.2/../../../../include/g++-3
+/usr/lib/gcc-lib/i386-linux/2.95.2/../../../../i386-linux/include
+	</PRE
+></TD
+></TR
+></TABLE
+>
+	但是如果裝gcc的時候，是有給定的prefix的話，那麼就是
+	<TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+>/usr/include
+prefix/include
+prefix/xxx-xxx-xxx-gnulibc/include
+prefix/lib/gcc-lib/xxxx-xxx-xxx-gnulibc/2.8.1/include
+	</PRE
+></TD
+></TR
+></TABLE
+>
+	所以header file的搜尋會從-I開始然後找gcc的環境變數
+	C_INCLUDE_PATH,CPLUS_INCLUDE_PATH,OBJC_INCLUDE_PATH
+	再找上述的內定目錄
+      </P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN893"
+>函式庫</A
+></H2
+><P
+>	當我們用到數學函式cos()，cos這個symbol，gcc並不曉它到底是什麼東西，
+	是變數，是函式，要預留多少空間給他等等，完全沒有任何訊息，你必須標頭
+	檔要#include &#60;math.h&#62;，gcc才知道。而且因為specs這個檔裡面只有要
+	link -lc也就是只有libc.so這個檔內的symbol會被蒐尋，
+	像printf scanf等都在這裡面，可是像cos()等就沒有了，
+	所以函式庫的選項要多加 -lm ，這時ld才會來找libm這個函式庫，
+      </P
+><P
+>        編譯的時候，gcc會去找-L，再找gcc的環境變數LIBRARY_PATH，再找內定目錄
+	/lib /usr/lib /usr/local/lib 這是當初compile gcc時寫在程式內的，
+	gcc環境變數與pass給ld的機制在~gcc/gcc/collect2.c下找得到。
+	這上面只是搜尋路徑而已，如果要不加-lm
+	也能正確的主動搜尋某個特定的lib，例如libm，
+	就要去在specs這個檔案改一下，把math這個函式庫加進自動聯結函式庫
+	之一。就不用寫-lm了。
+      </P
+><P
+>        RUN TIME的時候，
+	如果編譯時沒有指定-static這個選項，其實可執行檔並不是真的可執行，
+	它必須在執行(run time)時需要ld.so來做最後的連結動作，建造一個可執行的
+	image丟到記憶體。如果是靜態連結，編譯時ld會去找libm.a的檔
+	。如果是動態連結去找libm.so。
+	所以每次有新改版程式，
+	或新加動態函式庫如果不在原本的/etc/ld.so.conf搜尋路徑中，都要把路徑
+	加進來，然後用
+	<TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+>ldconfig -v 
+	</PRE
+></TD
+></TR
+></TABLE
+>
+	會重建cache並且顯示它所參照的函式庫。Run Time時ld.so才找得到lib"執行"。
+	ld與ld.so不一樣喔。
+      </P
+><P
+>	一些重要的程式
+	<TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+>ld		:Link Editor 連結各obj寫進一個可執行檔(executable)。
+ldd		:秀出一個執行檔用了那些動態函式庫。
+ld.so		:Dynamic Linker, 動態連結的話，是由ld.so完成執行時期symbol的
+	        :參照與連結。
+ld-linux.so	:ELF檔的動態連結，跟ld.so一樣。只是ld.so是給a.out format的。
+                :新的glicb2的ld-linux.so.2已經跟ld.so.2結合成單一程式了。
+ldconfig	:根據/etc/ld.so.conf內的目錄，做出動態連結所需的cache檔。
+	</PRE
+></TD
+></TR
+></TABLE
+>
+	ld 就是負責各個函式庫檔的資訊寫進最後可執行檔(executable)，所以它叫做
+	link editor，編譯時根據flags -L搜尋需要的lib，gcc也會把他的設定pass下來。
+	ld.so ld-linux.so.2是負責最後動態連結，叫做dynamic linker，
+	RUN Time 執行程式時,它根據這個順序搜尋函式庫。
+	<P
+></P
+><OL
+TYPE="1"
+><LI
+><P
+>	      LD_LIBRARY_PATH 或LD_AOUT_LIBRARY_PATH環境變數所指的路逕
+	    </P
+></LI
+><LI
+><P
+>	      ldconfig所建立的cache
+	    </P
+></LI
+><LI
+><P
+>	      /lib /usr/lib內的檔
+	    </P
+></LI
+></OL
+>
+	  來找程式所需要的動態函式庫
+      </P
+><P
+>	ldconfig會根據/etc/ld.so.conf這個檔的設定，加上內定的兩個目錄
+	/lib /usr/lib來設定ld.so要用到所需要的連結
+	以及連結的cache到/etc/ld.so.cache。
+	
+	所以如果換了新的函式庫，新的kernel，內部的標頭檔可能會有變化，
+	都要跟著改變讓gcc正確的找到，喔不，應該是cpp, ld, ld.so能正確的找到。
+	不然編出來的執行檔可能是錯誤的，執行時還可能segmentation fault。
+      </P
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="x864.html" tppabs="http://www.study-area.org/cyril/opentools/opentools/x864.html"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="book1.html" tppabs="http://www.study-area.org/cyril/opentools/opentools/book1.html"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="x909.html" tppabs="http://www.study-area.org/cyril/opentools/opentools/x909.html"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>重要的選項或旗標(FLAGS)</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="gcc.html" tppabs="http://www.study-area.org/cyril/opentools/opentools/gcc.html"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>gcc與Obj檔，動態連結與ELF檔</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

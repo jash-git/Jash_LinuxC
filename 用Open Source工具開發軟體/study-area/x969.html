@@ -1,0 +1,797 @@
+<HTML
+><HEAD
+><TITLE
+>binutils</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.49"><LINK
+REL="HOME"
+TITLE="用Open Source工具開發軟體"
+HREF="book1.html" tppabs="http://www.study-area.org/cyril/opentools/opentools/book1.html"><LINK
+REL="UP"
+TITLE="GNU Compiler Collection"
+HREF="gcc.html" tppabs="http://www.study-area.org/cyril/opentools/opentools/gcc.html"><LINK
+REL="PREVIOUS"
+TITLE="gcc與OS - User space/Kernel space"
+HREF="x952.html" tppabs="http://www.study-area.org/cyril/opentools/opentools/x952.html"><LINK
+REL="NEXT"
+TITLE="結語"
+HREF="x1058.html" tppabs="http://www.study-area.org/cyril/opentools/opentools/x1058.html"></HEAD
+><BODY
+CLASS="SECT1"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>用Open Source工具開發軟體: 新軟體開發關念</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="x952.html" tppabs="http://www.study-area.org/cyril/opentools/opentools/x952.html"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 4. GNU Compiler Collection</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="x1058.html" tppabs="http://www.study-area.org/cyril/opentools/opentools/x1058.html"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="AEN969"
+>binutils</A
+></H1
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN971"
+>基本工具</A
+></H2
+><P
+>	binutils是一些用來處理執行檔的額外程式，除了前面說過的組譯用的as ld，
+	另外有觀看執行檔的變數函式名稱(symbol)用的nm，剔除symbol的strip等等。
+	有用的程式
+	<TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+>objdump :看OBJ檔的資訊
+nm	:看OBJ檔的symbol table。
+strip	:把symbol table還有debug stab拿掉，但這樣的OBJ檔無法用nm看出symbol，
+         也無法用gdb來除錯了。
+strings :看string table，只是看這個檔裡面有什麼秀的出來的文字。
+         sting在ELF格式裡面用來代表symbol與section的名字。
+ar	:archive(靜態連結函數庫libxxx.a)的建造
+ld	:link editor  同時也是建造shared obj(libxxx.so)的建造。
+	</PRE
+></TD
+></TR
+></TABLE
+>
+      我們用
+	<TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>int main(){return 0;}
+	</PRE
+></TD
+></TR
+></TABLE
+>
+      作例子gcc test.c後得到一個a.out
+	<TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+>$ objdump -x a.out
+	</PRE
+></TD
+></TR
+></TABLE
+>
+	<TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+>$ nm a.out
+	</PRE
+></TD
+></TR
+></TABLE
+>
+	<TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+>$ strip a.out
+	</PRE
+></TD
+></TR
+></TABLE
+>
+      strip還是只能拿掉一般symbol table與debug stab，有些section他還是沒拿掉，
+      這還不是簡化執行檔的最後手段，在embadded系統上，記憶體是錙銖必較的。
+      最精簡的做法還是要寫組合語言用gas或者nasm來組譯。而且strip不能
+      拿來用relocatable的obj，不然沒有symbol table怎能做連結，
+      另外strip用在shared lib的檔案不會把dynamic symbol table拿掉，
+      所以還可以做動態連結，用
+	<TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+>$ nm --dynamic /lib/libcxxxx.so
+	</PRE
+></TD
+></TR
+></TABLE
+>
+      可以看得出來。
+      </P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN980"
+>建造函數庫</A
+></H2
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="AEN982"
+>ar 與 ld</A
+></H3
+><P
+>	  前面介紹的.a .so這些函數庫如果自己想建造的話必須用ar
+	  一般靜態連結的.a檔由一堆.o檔
+          .so檔的obj必須在編譯時加上-fPIC的選項然後用
+	</P
+></DIV
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN985"
+>GAS與x86(IA32)的AT&#38;T syntax組語寫法</A
+></H2
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="AEN987"
+>基本介紹</A
+></H3
+><P
+>	  Unix下寫組合語言，
+	  這個需要組合語言的基礎也要有系統的觀念。
+
+	  使用的工具有nasm或GNU as，
+	  nasm用Intel的語法就可以，
+	  GNU as跟其它unix上的工具as一樣要按照AT&#38;T的語法規定，
+	  所以如果你是先學Intel的有些語法上需要注意。
+	  <P
+></P
+><DL
+><P
+><B
+>AT&#38;T assembly與Intel/Microsoft syntax的不同</B
+></P
+><DT
+>order(來源與目的暫存器順序不同)</DT
+><DD
+><P
+>		  source在前面destination在後面
+		  <TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="90%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+>Intex Syntax                            AT&#38;T Syntax
+
+instr   dest,source                     instr   source,dest
+mov     eax,[ecx]                       movl    (%ecx),%eax
+		  </PRE
+></TD
+></TR
+></TABLE
+>	      
+		</P
+></DD
+><DT
+>register naming(暫存器命名)</DT
+><DD
+><P
+>		  AT&#38;T前面要加個%
+		  <TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="90%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+>Intel Syntax                            AT&#38;T Syntax
+
+mov     eax,1                           movl    $1,%eax
+mov     ebx,0ffh                        movl    $0xff,%ebx
+int     80h                             int     $0x80
+		  </PRE
+></TD
+></TR
+></TABLE
+>
+		</P
+></DD
+><DT
+>imme operand(立即定址命名)</DT
+><DD
+><P
+>AT&#38;T前面要加個$
+		  <TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="90%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+>Intel Syntax                            AT&#38;T Syntax
+
+mov     eax,1                           movl    $1,%eax
+mov     ebx,0ffh                        movl    $0xff,%ebx
+int     80h                             int     $0x80
+		  </PRE
+></TD
+></TR
+></TABLE
+>
+		</P
+></DD
+><DT
+>memory reference(間接定址)</DT
+><DD
+><P
+>AT&#38;T用大括號()
+		  <TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="90%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+>Intel Syntax                                    AT&#38;T Syntax
+
+instr   foo,segreg:[base+index*scale+disp]      instr   %segreg:disp(base,index,scale),foo
+
+mov     eax,[ebx+20h]                           movl    0x20(%ebx),%eax
+add     eax,[ebx+ecx*2h]                        addl    (%ebx,%ecx,0x2),%eax
+lea     eax,[ebx+ecx]                           leal    (%ebx,%ecx),%eax
+sub     eax,[ebx+ecx*4h-20h]                    subl    -0x20(%ebx,%ecx,0x4),%eax
+		  </PRE
+></TD
+></TR
+></TABLE
+>
+		</P
+></DD
+><DT
+>opcode naming(指令命名)</DT
+><DD
+><P
+>		  必需指定長度
+		  根據系統而不一樣
+		  word有的是32 bits有的是16 bits
+		  <TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="90%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+>b : byte
+w : word
+l : long
+
+Intel Syntax                            AT&#38;T Syntax
+
+mov     al,bl                           movb    %bl,%al
+mov     ax,bx                           movw    %bx,%ax
+mov     eax,ebx                         movl    %ebx,%eax
+mov     eax, dword ptr [ebx]            movl    (%ebx),%eax
+		  </PRE
+></TD
+></TR
+></TABLE
+>
+		  type casting(型別轉換)
+		  <TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="90%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+>s  (signed)
+z  (zero)
+ 
+bl (from byte to long) 
+bw (from byte to word) 
+wl (from word to long)
+
+movsbl %al, %edx
+
+		  </PRE
+></TD
+></TR
+></TABLE
+>
+		  long jump, call與ret
+		  <TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="90%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+>Intel Syntax                            AT&#38;T Syntax
+
+jmp far seg:offsetljmp seg, offset
+
+jmp far  INITSEG:GO                     ljmp $INITSEG, $GO
+call far INITSEG:GO                     lcall $INITSEG, $GO
+ret far	 STACK_ADJUS                    lret $STACK_ADJUST
+		  </PRE
+></TD
+></TR
+></TABLE
+>
+		</P
+></DD
+></DL
+>
+	</P
+></DIV
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="AEN1019"
+>C下的inline組語</A
+></H3
+><P
+>     在C語言中勘進組語的程式碼加個__asm__("asm code");
+	  <TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+> __asm__("movl    $1,%eax\n\t"         // SYS_exit
+         "xor     %ebx,%ebx\n\t"
+         "int     $0x80"
+         );
+	  </PRE
+></TD
+></TR
+></TABLE
+>
+	  注意quote 與\n\t的位置 \n\t是因為gcc其實根據這些與其它c code產生一個.s檔
+	  \n\t只是在.s檔產生newline與tab這在每一行都要除了最後一行不用
+
+	  另外inline assembly的
+	  通式是
+	  <TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>__asm__(asm statements : outputs : inputs : clobber); 
+	  </PRE
+></TD
+></TR
+></TABLE
+>
+	  通式有兩個重要的概念，
+	  一個是可以和C程式傳變數來溝通，另外
+	  如果我們指定了eax ebx...等register，則這下可完了，如果其他的C code
+	  也正在用eax ebx，則compiler必須先把這些值推進stack才能跑你的asm code，
+	  所以我們可以不特別指定register，讓gcc自動作register運用的最佳化。
+	  其實這是其他mips和其他CPU的作法，別種CPU的register命名沒
+	  eax, ebx.....這麼死與囉唆，
+	  $1 $2 $3...就搞定，還可以換來換去很有彈性。
+	  這個通式就是在做這樣的事，請看一個例子
+	  <TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>int main (void) {
+      int operand1, operand2, sum, accumulator;
+    
+      operand1 = rand (); operand2 = rand ();
+      
+      __asm__ ("movl %1, %0\n\t"
+      	       "addl %2, %0"
+	       : "=r" (sum)			/* output operands */
+	       : "r" (operand1), "r" (operand2) /* input operands */
+	       : "0");				/* clobbered operands */
+      
+      accumulator = sum;
+      
+      __asm__ ("addl %1, %0\n\t"
+	       "addl %2, %0"
+	       : "=r" (accumulator)
+	       : "0" (accumulator), "g" (operand1), "r" (operand2)
+	       : "0");
+      return accumulator;
+}
+	  </PRE
+></TD
+></TR
+></TABLE
+>
+	  第一個__asm__是說input的東西把operand1(C的變數)放到r，也就是%1， 
+	  operand2(C的變數)放到r，也就是%2，然後執行assembly code的 movl與addl，
+	  然後結果放到sum(C的變數)=r 也就是%0，
+	  在這邊我們沒有指定eax ebx，只是很單純的%0 %1 %2 r。
+	  %0 %1 %2 分別對應了output r， input r， input r，
+	  %0 %1 %2.....會先對應output裡的register，再對應input裡的register，
+	  就是它們出現的順序。
+	  gcc會幫我們最佳化register的使用。
+	  clobbered operands是一堆registers，
+	  我們告訴gcc說這些registers的值已經被暴力的摧毀(被改變了)，
+	  你要重新考慮它們的合法性才行，
+	  在這邊0就是%0，gcc會特別照顧一下它所選的%0的值。
+	  有一些規則要說明
+	  <P
+></P
+><UL
+><LI
+><P
+>		r, g, 0這些東西叫constraints(限制的意思)，每一個符號有特殊意義
+		代表這個暫存器必需是什麼型式的(暫存器有通用暫存器，符點運算暫存器，
+		cpu指令有的允許直接對memory做運算，有的不準等等條件的暫存器，
+		r代表通用型暫存器)。
+	      </P
+></LI
+><LI
+><P
+>	      output operand前一定要有個"="表示這個constraint是read-ony，
+	      "="叫constraint modifier。
+	      </P
+></LI
+><LI
+><P
+>	      input output operands後一定要跟著相對應的C 變數的參數，
+	      這是給asm的參數。
+	      </P
+></LI
+><LI
+><P
+>	      如果statement裡真要指定register要多加個%變成<TT
+CLASS="LITERAL"
+>%%eax</TT
+>
+	      </P
+></LI
+></UL
+>
+	  通用constraints
+	  <TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+>I, J, K .... P 是根據不同cpu可以做不同的解釋來表示一個範圍的立即定址整數
+Q, R, S .... U 
+0, 1, 2 .... 相對於assembly statement裡的%0 %1 %2 ....
+a, b, c .... f 可以根據不同cpu可以做不同定義的registers
+
+m  表示這是一個memory的operand  例如mov eax, data中的data
+
+p  合法的記憶體位址
+r  一般通用型register
+g  任何的通用型register, memory operand, 立即定址的整數
+
+constraints在386上有
+a        eax
+b        ebx
+c        ecx
+d        edx
+S        esi
+D        edi
+I        表示只有constant value (0 to 31)才行
+
+r        可以是eax ebx ecx edx esi edi
+q        可以是eax ebx ecx edx
+g        eax, ebx, ecx, edx or variable in memory
+A        eax and edx combined into a 64-bit integer (use long longs)
+           </PRE
+></TD
+></TR
+></TABLE
+>
+         Intel真不知搞什麼鬼創造這些一點不合邏輯的register。
+	</P
+></DIV
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="AEN1036"
+>volatile宣告</A
+></H3
+><P
+>	  在C裡面有volatile這個宣告，通常是說這個變數會被外在routine改變，
+	  在kernel裡面通常是指會被interrupt handler（有時就是硬體中斷的routine）
+	  改變值，也就是被非同步的改變的變數。例如
+	  <TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>unsigned long vloatile  jiffies;
+	  </PRE
+></TD
+></TR
+></TABLE
+>
+	    jiffies在kernel是時間每次hardware的中斷會來改這個值
+	</P
+><P
+>	在asm裡面是說這個東西compiler時，gcc不要雞婆作optimized，因為
+	最佳化的結果，compiler會把code按照他想的方法放到記憶體裡，
+	但是有的code我們需要特定指定他一定要在某個記憶體上，
+	在kernel裡常有這樣情形發生，我們可以用
+	__asm__ __volatile__宣告一段assembly的code是不要做最佳化的。
+	例如cli sti
+	  <TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>#define disable() __asm__ __volatile__ ("cli");
+#define enable() __asm__ __volatile__ ("sti");
+	  </PRE
+></TD
+></TR
+></TABLE
+>
+
+	</P
+></DIV
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="AEN1042"
+>GAS 的assembler directives</A
+></H3
+><P
+>	  在MASM裡有一些特殊的假指令，也就是真正的CPU裡沒有這些指令，
+	  但MASM給了方便的假指令，例如
+	  <TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+>.DATA
+	  </PRE
+></TD
+></TR
+></TABLE
+>
+	  相同的在GNU as裡面有一些類似的東西，gas會認得這些符號知道如何處理
+	  例如
+	  <P
+></P
+><UL
+><LI
+><P
+>	        .byte expression expression送到下個byte的位置
+	      </P
+></LI
+><LI
+><P
+>	        .data subsection
+		告訴as下面的code要編在data section的尾巴裡
+		並且給一個編號subsection
+	      </P
+></LI
+><LI
+><P
+>	        .section name
+		告訴as下面的code要編在section裡 並給這個section一個名字
+	      </P
+></LI
+><LI
+><P
+>		.text subsection
+		告訴as下面的code要編在text section的尾巴裡
+		並且給一個編號subsection
+	      </P
+></LI
+><LI
+><P
+>		.word expression
+		expression送到下個word
+		</P
+></LI
+></UL
+>
+	    底下有個例子
+	  <TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>#define RDTSC(llptr) ({ \
+__asm__ __volatile__ ( \
+        ".byte 0x0f; .byte 0x31" \
+        : "=A" (llptr) \
+        : /* no input operand */
+	: "%eax", "%edx"); })
+	  </PRE
+></TD
+></TR
+></TABLE
+>
+	  這是讀pentium timestamp counter的code注意.byte。
+	  請看http://www.gnu.org/manual/gas-2.9.1/html_chapter/as_7.html#SEC67
+	  有詳細解說。
+	</P
+></DIV
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="x952.html" tppabs="http://www.study-area.org/cyril/opentools/opentools/x952.html"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="book1.html" tppabs="http://www.study-area.org/cyril/opentools/opentools/book1.html"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="x1058.html" tppabs="http://www.study-area.org/cyril/opentools/opentools/x1058.html"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>gcc與OS - User space/Kernel space</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="gcc.html" tppabs="http://www.study-area.org/cyril/opentools/opentools/gcc.html"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>結語</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

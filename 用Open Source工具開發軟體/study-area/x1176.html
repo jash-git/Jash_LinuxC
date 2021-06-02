@@ -1,0 +1,361 @@
+<HTML
+><HEAD
+><TITLE
+>內隱規則(Implicit Rules)</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.49"><LINK
+REL="HOME"
+TITLE="用Open Source工具開發軟體"
+HREF="book1.html" tppabs="http://www.study-area.org/cyril/opentools/opentools/book1.html"><LINK
+REL="UP"
+TITLE="Makefile撰寫"
+HREF="makefile.html" tppabs="http://www.study-area.org/cyril/opentools/opentools/makefile.html"><LINK
+REL="PREVIOUS"
+TITLE="組成元素"
+HREF="x1075.html" tppabs="http://www.study-area.org/cyril/opentools/opentools/x1075.html"><LINK
+REL="NEXT"
+TITLE="其它"
+HREF="x1207.html" tppabs="http://www.study-area.org/cyril/opentools/opentools/x1207.html"></HEAD
+><BODY
+CLASS="SECT1"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>用Open Source工具開發軟體: 新軟體開發關念</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="x1075.html" tppabs="http://www.study-area.org/cyril/opentools/opentools/x1075.html"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 5. Makefile撰寫</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="x1207.html" tppabs="http://www.study-area.org/cyril/opentools/opentools/x1207.html"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="AEN1176"
+>內隱規則(Implicit Rules)</A
+></H1
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN1178"
+>簡介</A
+></H2
+><P
+>	通常我們編譯程式時有很多算是每個人都有的共同習慣，例如我就是把
+	foo.c 編成foo.o。像這樣的編譯習慣，gnu make有一些內定規則來編譯，
+	也就是有的target你不寫，make也可以根據內定規則把他編譯出來。不用
+	對每個不同的.o寫不同的規則，
+	如果有個程式由foo.c foo1.c foo2.c......寫這些就寫得會發瘋了，例如
+	<TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>foo.o:foo.c
+	gcc -c -o foo.o foo.c
+foo1.o:foo1.c
+	gcc -c -o foo1.o foo1.c
+....
+	</PRE
+></TD
+></TR
+></TABLE
+>
+	因此
+	如果你不寫foo.o的規則，那麼make當別的規則用到foo.o時，他找不到規則
+	來編，就會自動找foo.c來編譯。這樣看不到的編譯規則有很多，如
+	<TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+>C程式
+$(CC) -c $(CPPFLAGS) $(CFLAGS) xxx.c來編譯
+或者找不到.c時會去找.cc, .cpp, .C檔
+
+C++程式
+$(CXX) -c $(CPPFLAGS) xxx.cpp
+
+TeX
+xxx.dvi 由xxx.tex產生
+
+Pascal
+$(PC) -c $(PFLAGS) xxx.p
+	</PRE
+></TD
+></TR
+></TABLE
+>
+      </P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN1183"
+>自己的內隱規則</A
+></H2
+><P
+>	因為可能有的時候你希望做些dependency檢查，或者加上一些gcc
+	用的旗標，不是很單純的編譯而已你可以給make自訂的內隱規則
+      </P
+><P
+></P
+><DL
+><P
+><B
+>自訂規則</B
+></P
+><DT
+>樣式規則(pattern rule)</DT
+><DD
+><P
+>	      你可以用pattern rule來做一些自定的內隱規則。像這樣
+	      <TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="90%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>%.o : %.c prog.h
+	$(CC) $(CFLAGS) $(DEBUG_FLAG) -c -o $@ $&#60;
+	      </PRE
+></TD
+></TR
+></TABLE
+>
+	      或者
+	      <TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="90%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>%.pdf : %.sgml
+	db2pdf $&#60;
+	      </PRE
+></TD
+></TR
+></TABLE
+>
+	      %表示所有相對於後面先決條件的檔名的意思，他不是*，因為他
+	      有一對一的相對應關係，foo.o 就要找foo.c，foo1.o就要找foo1.c，
+	      所以他不是*。所以上面的意思是所有碰到要.o的target時，去找相
+	      對應的.c檔，並根據先決條件prog.h做檢查，如果找不到prog.h就不
+	      做下去了。%不只可以表現主檔名，其實可以表現任一個相對應的字串，
+	      所以叫pattern，你可以用s.%.c，不只用&#38;.c，其中對應到%的子字
+	      串叫stem。另外$@ $&#60;...這種符號，叫自動變數，請往後翻一下，
+	      看一下解說。
+	    </P
+><P
+>	      pattern rule也可以有特定變數設值，特定樣式(pattern)的變數，例如
+	      <TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="90%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>%.o : CFLAGS = -O
+	      </PRE
+></TD
+></TR
+></TABLE
+>
+	      表示只要有要編譯xxxx.o的規則時，通通要設CFLAGS為-O。
+	    </P
+></DD
+><DT
+>副檔名規則</DT
+><DD
+><P
+>	      還有更古老的一種叫suffix rule的方法來做，這種方法就有限制性
+	      了，因為只能用在副檔名的規則。例如
+	      <TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="90%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>.c.o:
+	$(CC) -c -o $*.o $&#60;
+.S.o:
+	$(CC) -c -o $*.o $&#60;
+	      </PRE
+></TD
+></TR
+></TABLE
+>
+	      小心喔，跟%o : %c順序不一樣喔
+	    </P
+></DD
+></DL
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN1201"
+>自動變數與內隱規則</A
+></H2
+><P
+>	因為這樣動態的編譯手法，它需要像在CVS裡面的%v %V %s這種東西來代替一些
+	動態改變的字串(幫你複習一下CVS)。所以有所謂的自動變數
+	<TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+>$@	同一個規則的目標名
+$*	這個只有在內隱規則中有用。表示樣式或副檔名規則中對應到的字串。
+$&#60;	同一規則的第一個先決條件名，這個大部分用在suffix rule，因為
+	suffix rule只有一個檔。
+$?	同一個規則的所有先決條件名，但是只有原始程式碼改過的比obj檔新才會
+        符合，也就是比target還新的先決條件檔案。
+$^      所有先決條件，但是有的make像solaris make可能不認得這個自動變數。
+	</PRE
+></TD
+></TR
+></TABLE
+>
+	上面是比較常用的
+      </P
+><P
+>	內隱規則內也預設了一些變數，例如
+	<TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+>AR = ar
+CC = cc
+MAKE = make
+CXX = g++
+	</PRE
+></TD
+></TR
+></TABLE
+>
+	如果你沒有設CC這個變數，則自動是cc這個值，可以直接拿$(CC)來用。
+	自定內隱規則可以寫在任何地方，make會自動先找到他們，等到要用時就會
+	去用。通常在一些系統上例如Solaris, AIX...已經有Sun IBM的make了，
+	所以系統管理者通常會把GNU make叫gmake，這時可以設MAKE = gmake。
+      </P
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="x1075.html" tppabs="http://www.study-area.org/cyril/opentools/opentools/x1075.html"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="book1.html" tppabs="http://www.study-area.org/cyril/opentools/opentools/book1.html"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="x1207.html" tppabs="http://www.study-area.org/cyril/opentools/opentools/x1207.html"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>組成元素</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="makefile.html" tppabs="http://www.study-area.org/cyril/opentools/opentools/makefile.html"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>其它</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

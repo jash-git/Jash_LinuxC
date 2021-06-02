@@ -1,0 +1,269 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html lang="zh-TW" xml:lang="zh-TW" xmlns="http://www.w3.org/1999/xhtml">
+<head><meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+ <meta http-equiv="PICS-Label" content='(PICS-1.1 "http://www.icra.org/ratingsv02.html"  labels ratings (ca 1 lz 1 nz 1 oz 1 vz 1) "http://www.rsac.org/ratingsv01.html"  labels ratings (n 0 s 0 v 0 l 0))'/>
+ <title>如何在 Linux 下撰寫程式來使用 I/O 埠: 一些有用的 I/O 埠</title>
+ <link href="IO-Port-Programming-7.html" tppabs="http://www.linux.org.tw/CLDP/MiniHOWTO/prog/IO-Port-Programming/IO-Port-Programming-7.html" rel="next" />
+ <link href="IO-Port-Programming-5.html" tppabs="http://www.linux.org.tw/CLDP/MiniHOWTO/prog/IO-Port-Programming/IO-Port-Programming-5.html" rel="previous" />
+ <link href="index.html" tppabs="http://www.linux.org.tw/CLDP/MiniHOWTO/prog/IO-Port-Programming/index.html" rel="contents" />
+  <link href="index.html" tppabs="http://www.linux.org.tw/CLDP/MiniHOWTO/prog/IO-Port-Programming/index.html" rel="start" />
+  <link href="IO-Port-Programming-1.html" tppabs="http://www.linux.org.tw/CLDP/MiniHOWTO/prog/IO-Port-Programming/IO-Port-Programming-1.html" rel="chapter" title="1.介紹" />
+ <link href="IO-Port-Programming-2.html" tppabs="http://www.linux.org.tw/CLDP/MiniHOWTO/prog/IO-Port-Programming/IO-Port-Programming-2.html" rel="chapter" title="2.如何在 C 語言下使用 I/O 埠" />
+ <link href="IO-Port-Programming-3.html" tppabs="http://www.linux.org.tw/CLDP/MiniHOWTO/prog/IO-Port-Programming/IO-Port-Programming-3.html" rel="chapter" title="3.硬體中斷 (IRQs) 與 DMA 存取" />
+ <link href="IO-Port-Programming-4.html" tppabs="http://www.linux.org.tw/CLDP/MiniHOWTO/prog/IO-Port-Programming/IO-Port-Programming-4.html" rel="chapter" title="4.高精確的時序" />
+ <link href="IO-Port-Programming-5.html" tppabs="http://www.linux.org.tw/CLDP/MiniHOWTO/prog/IO-Port-Programming/IO-Port-Programming-5.html" rel="chapter" title="5.使用其他程式語言" />
+ <link href="IO-Port-Programming-6.html" tppabs="http://www.linux.org.tw/CLDP/MiniHOWTO/prog/IO-Port-Programming/IO-Port-Programming-6.html" rel="chapter" title="6.一些有用的 I/O 埠" />
+ <link href="IO-Port-Programming-7.html" tppabs="http://www.linux.org.tw/CLDP/MiniHOWTO/prog/IO-Port-Programming/IO-Port-Programming-7.html" rel="chapter" title="7.提示 " />
+ <link href="IO-Port-Programming-8.html" tppabs="http://www.linux.org.tw/CLDP/MiniHOWTO/prog/IO-Port-Programming/IO-Port-Programming-8.html" rel="chapter" title="8.問題排除" />
+ <link href="IO-Port-Programming-9.html" tppabs="http://www.linux.org.tw/CLDP/MiniHOWTO/prog/IO-Port-Programming/IO-Port-Programming-9.html" rel="chapter" title="9.程式碼範例" />
+ <link href="IO-Port-Programming-10.html" tppabs="http://www.linux.org.tw/CLDP/MiniHOWTO/prog/IO-Port-Programming/IO-Port-Programming-10.html" rel="chapter" title="10.致謝" />
+ <link href="javascript:if(confirm('http://tldp.org/HOWTO/mini/IO-Port-Programming.html  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://tldp.org/HOWTO/mini/IO-Port-Programming.html'" tppabs="http://tldp.org/HOWTO/mini/IO-Port-Programming.html" rel="alternate" title="原版" />
+ <link href="IO-Port-Programming.rdf" tppabs="http://www.linux.org.tw/CLDP/MiniHOWTO/prog/IO-Port-Programming/IO-Port-Programming.rdf" rel="meta" title="各章節的說明資訊" />
+ <link href="style.css" tppabs="http://www.linux.org.tw/CLDP/MiniHOWTO/style.css" rel="stylesheet" type="text/css" />
+ <link href="javascript:if(confirm('http://www.easysw.com/~mike/serial/index.html  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://www.easysw.com/~mike/serial/index.html'" tppabs="http://www.easysw.com/~mike/serial/index.html" rel="bookmark" title="Unix 作業系統撰寫串列埠程式的相關資料" />
+ <link href="javascript:if(confirm('ftp://sunsite.unc.edu/pub/Linux/kernel/p  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='ftp://sunsite.unc.edu/pub/Linux/kernel/p'" tppabs="ftp://sunsite.unc.edu/pub/Linux/kernel/p" rel="bookmark" title="操縱桿驅動程式" />
+ <link href="javascript:if(confirm('http://www.hut.fi/Misc/Electronics/circu  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://www.hut.fi/Misc/Electronics/circu'" tppabs="http://www.hut.fi/Misc/Electronics/circu" rel="bookmark" title="非 IBM 規格的並列埠" />
+ <link href="javascript:if(confirm('http://www.fapo.com/  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://www.fapo.com/'" tppabs="http://www.fapo.com/" rel="bookmark" title="ECP/EPP 模式 (以及一般的 IEEE 1284 標準) 埠口的相關資料(1)" />
+ <link href="javascript:if(confirm('http://www.senet.com.au/~cpeacock/parall  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://www.senet.com.au/~cpeacock/parall'" tppabs="http://www.senet.com.au/~cpeacock/parall" rel="bookmark" title="ECP/EPP 模式 (以及一般的 IEEE 1284 標準) 埠口的相關資料(2)" />
+ <link rel="bookmark" title="一般印表機的動作" href="javascript:if(confirm('http://sunsite.unc.edu/pub/Linux/docs/HOWTO/Printing-HOWTO  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://sunsite.unc.edu/pub/Linux/docs/HOWTO/Printing-HOWTO'" tppabs="http://sunsite.unc.edu/pub/Linux/docs/HOWTO/Printing-HOWTO"/>
+ <link href="javascript:if(confirm('http://www.hut.fi/Misc/Electronics/  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://www.hut.fi/Misc/Electronics/'" tppabs="http://www.hut.fi/Misc/Electronics/" rel="bookmark" title="連接電子裝置到電腦的相關資訊" />
+ <link href="IO-Port-Programming-6.html#ss6.1" tppabs="http://www.linux.org.tw/CLDP/MiniHOWTO/prog/IO-Port-Programming/IO-Port-Programming-6.html#ss6.1" rel="section" title="6.1 並列埠 (parallel port) " />
+ <link href="IO-Port-Programming-6.html#ss6.2" tppabs="http://www.linux.org.tw/CLDP/MiniHOWTO/prog/IO-Port-Programming/IO-Port-Programming-6.html#ss6.2" rel="section" title="6.2 遊戲 (操縱桿) 埠 (game port)" />
+ <link href="IO-Port-Programming-6.html#ss6.3" tppabs="http://www.linux.org.tw/CLDP/MiniHOWTO/prog/IO-Port-Programming/IO-Port-Programming-6.html#ss6.3" rel="section" title="6.3 串列埠 (serial port) " />
+ <link href="javascript:if(confirm('http://sunsite.unc.edu/pub/Linux/docs/HOWTO/COPYRIGHT  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://sunsite.unc.edu/pub/Linux/docs/HOWTO/COPYRIGHT'" tppabs="http://sunsite.unc.edu/pub/Linux/docs/HOWTO/COPYRIGHT" rel="copyright" title="版權" />
+</head> <body> 
+<table
+
+
+
+
+>
+  <tr
+>
+    <th
+colspan="3" class="HdTitle"
+>Mini
+    HOWTO：Linux I/O port programming</th>
+  </tr
+>
+  <tr
+>
+    <td class="TtdL"
+><a href="IO-Port-Programming-5.html" tppabs="http://www.linux.org.tw/CLDP/MiniHOWTO/prog/IO-Port-Programming/IO-Port-Programming-5.html" accesskey="P">上一頁(P)</a></td
+>
+    <td class="TtdC"
+></td
+>
+    <td class="TtdR"
+><a href="IO-Port-Programming-7.html" tppabs="http://www.linux.org.tw/CLDP/MiniHOWTO/prog/IO-Port-Programming/IO-Port-Programming-7.html" accesskey="N">下一頁(N)</a></td
+>
+  </tr
+>
+</table
+>
+<hr />
+<h1><a name="s6" id="s6">6.</a> 一些有用的 I/O 埠</h1>
+
+<p>本節提供一些常用 I/O 埠的程式撰寫資訊這些都是可以直接拿來用的一般目的
+TTL (或 CMOS) 邏輯位準的 I/O 埠.</p>
+<p>如果你要按照其原始的設計目的來使用這些或其他常用的I/O 埠 
+(例如, 控制一般的印表機或數據機), 你應該會使用現成的裝置驅動程式 
+(他通常被含在核心中) 而不會如本文所說地去撰寫 I/O 埠程式.
+本節主要是提供給那些想要將 LCD 顯示器, 步進馬達, 或是其他商業電子產品
+連接到 PC 標準 I/O 埠的人.</p>
+<p>如果你想要控制大眾市場所販賣的裝置像是掃描器 (已經在市場販賣了一段期間),
+去找看看是否有現成的 Linux 裝置驅動程式.
+網頁 
+<a href="javascript:if(confirm('http://sunsite.unc.edu/pub/Linux/docs/HOWTO/Hardware-HOWTO  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://sunsite.unc.edu/pub/Linux/docs/HOWTO/Hardware-HOWTO'" tppabs="http://sunsite.unc.edu/pub/Linux/docs/HOWTO/Hardware-HOWTO">Hardware-HOWTO</a> 是個好的參考起點.</p>
+<p>至於想要知道更多有關如何連接電子裝置到電腦(以及一般的電子學原理)的相關資訊則網頁
+<a href="javascript:if(confirm('http://www.hut.fi/Misc/Electronics/  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://www.hut.fi/Misc/Electronics/'" tppabs="http://www.hut.fi/Misc/Electronics/">http://www.hut.fi/Misc/Electronics/</a> 是個好的資料來源. </p>
+
+
+<h2><a name="ss6.1" id="ss6.1">6.1</a> 並列埠 (parallel port)
+</h2>
+
+<p>並列埠的基本埠位址 (以下稱之為 ``<code>BASE</code>'') 之於 <code>/dev/lp0</code> 
+是 0x3bc , 之於 <code>/dev/lp1</code> 是 0x378 , 之於 <code>/dev/lp2</code> 是 0x278 .
+如果你只是想要控制一些像是一般印表機的動作, 可以參考網頁 
+<a href="javascript:if(confirm('http://sunsite.unc.edu/pub/Linux/docs/HOWTO/Printing-HOWTO  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://sunsite.unc.edu/pub/Linux/docs/HOWTO/Printing-HOWTO'" tppabs="http://sunsite.unc.edu/pub/Linux/docs/HOWTO/Printing-HOWTO">Printing-HOWTO</a>. </p>
+<p>除了下面即將描述的標準僅輸出 (output-only) 模式, 大多數的並列埠都有 `擴充的'
+雙向 (bidirectional) 模式. 至於較新的 ECP/EPP 模式 (以及一般的 IEEE 1284 標準) 埠口的相關資料,
+可以參考網頁 
+<a href="javascript:if(confirm('http://www.fapo.com/  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://www.fapo.com/'" tppabs="http://www.fapo.com/">http://www.fapo.com/</a> 以及 
+<a href="javascript:if(confirm('http://www.senet.com.au/%7Ecpeacock/parallel.htm  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://www.senet.com.au/%7Ecpeacock/parallel.htm'" tppabs="http://www.senet.com.au/%7Ecpeacock/parallel.htm">http://www.senet.com.au/~cpeacock/parallel.htm</a>.
+因為在使用者模式 (user-mode) 中的程式無法使用 IRQs 或 DMA, 想要使用 ECP/EPP 
+模式你或許得撰寫一個核心的裝置驅動程式; 我想應該有人寫了這類的裝置驅動程式, 
+但是詳情我並不知道. </p>
+<p>埠位址 <code>BASE+0</code> (資料埠) 用來控制資料埠的信號位準 (D0 到 D7 分別代表著 
+bits 0 到 7, 位準狀態: 0 = 低位準 (0 V), 1 = 高位準 (5 V)). 
+一個寫入資料到該埠的動作會將資料信號位準拴住 (latches) 在埠的腳位 (pins) 上.
+一個將該埠的資料讀出的動作會將上一次以標準僅輸出 (output-only) 
+模式或擴充的寫入模式所拴住的資料信號位準讀回, 或是以擴充讀出模式 從另外一
+個裝置將腳位上的資料信號位準讀回.</p>
+<p>埠位址 <code>BASE+1</code> (狀態埠) 是個僅讀 (read-only) 的埠, 會將下面的輸入信號位準讀回:</p>
+<ul>
+<li>Bits 0 和 1 保留不用.</li>
+<li>Bit 2 IRQ 的狀態 (不是個腳位 (pin) , 我不知道他的工作原理)</li>
+<li>Bit 3 ERROR (1=高位準)</li>
+<li>Bit 4 SLCT (1=高位準)</li>
+<li>Bit 5 PE (1=高位準)</li>
+<li>Bit 6 ACK (1=高位準)</li>
+<li>Bit 7 -BUSY (0=高位準)</li>
+</ul>
+
+<p>(我不確定高低位準的電壓狀態.)</p>
+<p>埠位址 <code>BASE+2</code> (控制埠) 是個僅寫 (write-only) 的埠 
+(一個將該埠的資料讀出的動作僅會將上一次寫入的資料信號位準讀回), 用來控制下面的狀態信號:</p>
+<ul>
+<li>Bit 0 -STROBE (0=高位準)</li>
+<li>Bit 1 AUTO_FD_XT (1=高位準)</li>
+<li>Bit 2 -INIT (0=高位準)</li>
+<li>Bit 3 SLCT_IN (1=高位準)</li>
+<li>Bit 4 當被設定為 1 時允許並列埠產生 IRQ 信號 
+(發生在 ACK 腳位的位準由低變高的瞬間)  </li>
+<li>Bit 5 用來控制擴充模式時埠的輸出入方向 (0 = 寫, 1 = 讀),
+這是個僅寫 (write-only) 的埠 (一個將該埠的資料讀出的動作對此 bit 一點用處也沒有).</li>
+<li>Bits 6 and 7 保留不用.</li>
+</ul>
+
+<p>(同樣地, 我不確定高低位準的電壓狀態.)</p>
+<p>埠的腳位排列 (Pinout) 方式 (該埠是一個 25 隻腳 D 字形外殼 (D-shell) 的母頭連接器)
+(i=輸入, o=輸出):</p>
+<pre class="sample">
+1io -STROBE, 2io D0, 3io D1, 4io D2, 5io D3, 6io D4, 7io D5, 8io D6,
+9io D7, 10i ACK, 11i -BUSY, 12i PE, 13i SLCT, 14o AUTO_FD_XT,
+15i ERROR, 16o -INIT, 17o SLCT_IN, 18-25 Ground
+  </pre>
+
+<p>IBM 的規格文件上說腳位 1, 14, 16, 和 17 (控制信號的輸出) 採用電晶體的開集極
+(open collector) 驅動方式必需使用 4.7 仟歐姆 (kiloohm) 的提升電阻接至 
+5 V 的電壓 (可流入電流 20 mA, 流出電流 0.55 mA, 高位準的輸出電壓就是 
+5.0 V 減去提升電阻的電壓). 剩下來的腳位可流入電流 24 mA, 流出電流 15 mA, 
+高位準的輸出電壓最小 2.4 V. 低位準的輸出電壓二者都是最大 0.5 V.
+那些<a href="javascript:if(confirm('http://www.hut.fi/Misc/Electronics/circuits/lptpower.html  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://www.hut.fi/Misc/Electronics/circuits/lptpower.html'" tppabs="http://www.hut.fi/Misc/Electronics/circuits/lptpower.html">非 IBM 規格的並列埠</a>或許會偏離這個標準.</p>
+<p>最後, 給你一個警告: 留心接地的問題. 我曾經在電腦還是開機的狀況就去連接他因而
+弄壞好幾個並列埠. 發生了這種事情你可能會覺得還是不要將並列埠整
+合到主機板裡面比較好. (你通常可以拿一片便宜的標準 `multi-I/O' 卡安裝第二個
+並列埠; 只要將其他不需要的埠停用, 然後將卡片上並列埠的埠位址設定在
+空著的位址即可. 你不需在意並列埠的 IRQ 設定, 因為通常不會被用到.)</p>
+
+<h2><a name="ss6.2" id="ss6.2">6.2</a> 遊戲 (操縱桿) 埠 (game port)
+</h2>
+
+<p>遊戲埠的埠位址範圍為 0x200-0x207. 想要控制一般的操縱桿, 
+有一個核心層次的操縱桿驅動程式, 可參考網址 
+<a href="javascript:if(confirm('ftp://sunsite.unc.edu/pub/Linux/kernel/patches/  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='ftp://sunsite.unc.edu/pub/Linux/kernel/patches/'" tppabs="ftp://sunsite.unc.edu/pub/Linux/kernel/patches/">ftp://sunsite.unc.edu/pub/Linux/kernel/patches/</a>,
+檔名 <code>joystick-*</code>.</p>
+<p>埠的腳位排列 (Pinout) 方式 (該埠是一個 15 隻腳 D 字形外殼 (D-shell) 的母頭連接器):</p>
+<ul>
+<li>1,8,9,15: +5 V (電源)</li>
+<li>4,5,12: 接地</li>
+<li>2,7,10,14: 分別是 BA1, BA2, BB1, 和 BB2 等數位輸入</li>
+<li>3,6,11,13: 分別是 AX, AY, BX, 和 BY 等``類比''輸入</li>
+</ul>
+
+<p>+5 V 的腳位似乎通常會被直接連接到主機板的電源線上, 所以他應該能夠提供相當的電力,
+這還要看所使用主機板, 電源供給器, 以及遊戲埠的類型.</p>
+<p>數位輸入用於操縱桿的按鈕可以讓你連接二個操縱桿的四個按鈕 (操縱桿 A 和 操縱桿 B, 
+各有二個按鈕) 到遊戲埠也就是數位輸入的四個腳位. 他們應該是一般 TTL 電壓位準的輸入,
+你可以直接從狀態埠 (參考下面說明) 讀出他們的位準狀態. 
+一個實際的操縱桿在按鈕被壓下時會傳回低位準 (0 V) 狀態否則就是高位準 
+(5V 經由 1 Kohm 的電阻連接到電源腳位) 狀態. </p>
+<p>所謂的類比輸入實際是量測到的阻抗值. 遊戲埠有四個單擊多諧振盪器
+(one-shot multivibrator) (一個 558 晶片) 連接到四個類比輸入腳位. 
+每個類比輸入腳位與多諧振盪器的輸出之間連接著一個 2.2 Kohm 的電阻, 
+而且多諧振盪器的輸出與地之間連接著一個 0.01 uF 的時序電容
+(timing capacitor).  一個實際的操縱桿其每個座標 (X 和 Y) 上會有一個可變電阻, 
+連接在 +5 V 與每個相對的類比輸入腳位之間 (腳位 AX 或 AY 是給操縱桿 A 用的, 
+而腳位 BX 或 BY 是給操縱桿 B用的).</p>
+<p>操作的時候, 多諧振盪器將其輸出設定為高位準 (5 V) 並且等到時序電容上的電壓達到
+3.3 V 之後將相對的輸出設定為低位準. 因此操縱桿中多諧振盪器輸出的高位準時間周期
+與可變電阻的電阻值成正比 (也就是, 操縱桿在相對座標的位置), 如下所示:</p>
+
+<pre class="sample">R = (t - 24.2) / 0.011,</pre>
+
+
+<p>其中 R 是可變電阻的阻抗值 (ohms) 而 t 是高位準時間周期的長度 (秒).</p>
+<p>因此要讀出類比輸入腳位的數值, 首先你得啟動多諧振盪器 (以埠寫入的方式; 請看下面),
+然後查詢四個座標的信號狀態(以持續的埠讀出方式)一直到信號狀態由高位準變成低位準,
+計算其高位準時間周期的長度. 這個持續查詢的動作花費相當多的 CPU 時間, 
+而且在一個非即時的多工環境像是 (一般的使用者模式 (user-mode) ) Linux, 
+所得的結果不是非常準確因為你無法以固定的時間來查詢信號的狀態 
+(除非你使用核心層次的驅動程式而且你得在你查詢的時候抑制掉中斷的產生,
+但是這樣做會浪費更多的 CPU 時間). 如果你知道信號的狀態將會花費一段不短的時間
+(數十毫秒) 纔會成為低位準, 你可以在查詢之前呼叫函式 usleep() 將 CPU 
+的時間讓給其他想要執行的行程 (processes).</p>
+<p>遊戲埠中唯一需要你來存取的埠位址是 0x201 (其他的埠位址不是動作一樣就是沒用).
+任何對這個埠位址所做的寫入動作 (不論你寫入什麼) 都會啟動多諧振盪器.
+對這個埠位址做讀出動作會取回輸入信號的狀態:</p>
+<ul>
+<li>Bit 0: AX ( (1=高位準) 多諧振盪器的輸出狀態)</li>
+<li>Bit 1: AY ( (1=高位準) 多諧振盪器的輸出狀態)</li>
+<li>Bit 2: BX ( (1=高位準) 多諧振盪器的輸出狀態)</li>
+<li>Bit 3: BY ( (1=高位準) 多諧振盪器的輸出狀態)</li>
+<li>Bit 4: BA1 (數位輸入, 1=高位準)</li>
+<li>Bit 5: BA2 (數位輸入, 1=高位準)</li>
+<li>Bit 6: BB1 (數位輸入, 1=高位準)</li>
+<li>Bit 7: BB2 (數位輸入, 1=高位準)</li>
+</ul>
+
+
+
+<h2><a name="ss6.3" id="ss6.3">6.3</a> 串列埠 (serial port)
+</h2>
+
+<p>如果你所說的裝置是支援一些像是 RS-232 那類的東西, 你應該可以如你所願地使用串列埠.
+Linux 所提供的串列埠驅動程式應該能夠應用在任何地方 (你應該不需要直接撰寫串列埠程式,
+或是核心的驅動程式); 他相當具有通用性, 所以像是使用非標準的 bps 速率以及其他等等應該不是問題.
+請參考 <code>termios(3)</code> 說明文件, 串列埠驅動程式原始程式碼
+(<code>linux/drivers/char/serial.c</code>), 以及網頁 
+<a href="javascript:if(confirm('http://www.easysw.com/~mike/serial/index.html  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://www.easysw.com/~mike/serial/index.html'" tppabs="http://www.easysw.com/~mike/serial/index.html">http://www.easysw.com/~mike/serial/index.html</a> 
+上有更多在 Unix 作業系統撰寫串列埠程式的相關資料.</p>
+
+<hr />
+<table
+
+
+
+
+>
+  <tr
+>
+    <td class="BtdL"
+><a href="IO-Port-Programming-5.html" tppabs="http://www.linux.org.tw/CLDP/MiniHOWTO/prog/IO-Port-Programming/IO-Port-Programming-5.html" accesskey="P">上一頁(P)</a></td
+>
+    <td class="BtdC"
+><a href="index.html" tppabs="http://www.linux.org.tw/CLDP/MiniHOWTO/prog/IO-Port-Programming/index.html" accesskey="H">目錄(H)</a></td
+>
+    <td class="BtdR"
+><a
+href="IO-Port-Programming-7.html" tppabs="http://www.linux.org.tw/CLDP/MiniHOWTO/prog/IO-Port-Programming/IO-Port-Programming-7.html"
+>下一頁(N)</a
+></td
+>
+  </tr
+>
+  <tr
+>
+    <td class="BtdL"
+>使用其他程式語言</td
+>
+    <td class="BtdC"
+><a href="IO-Port-Programming-6.html" tppabs="http://www.linux.org.tw/CLDP/MiniHOWTO/prog/IO-Port-Programming/IO-Port-Programming-6.html" accesskey="T">到頂層(T)</a></td
+>
+    <td class="BtdR"
+>提示</td
+>
+  </tr
+>
+</table
+>
+<div>
+<a href="javascript:if(confirm('http://validator.w3.org/check/referer  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://validator.w3.org/check/referer'" tppabs="http://validator.w3.org/check/referer"><img src="valid-xhtml10.png" tppabs="http://www.linux.org.tw/CLDP/valid-xhtml10.png"  alt="符合 XHTML 1.0" width="88" height="31" style="border:0;width:88px;height:31px"/></a>
+<a href="javascript:if(confirm('http://jigsaw.w3.org/css-validator/  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://jigsaw.w3.org/css-validator/'" tppabs="http://jigsaw.w3.org/css-validator/"><img style="border:0;width:88px;height:31px" src="vcss.png" tppabs="http://www.linux.org.tw/CLDP/vcss.png"  alt="符合 CSS"/></a>
+<a href="javascript:if(confirm('http://www.w3.org/WAI/WCAG1AA-Conformance  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://www.w3.org/WAI/WCAG1AA-Conformance'" tppabs="http://www.w3.org/WAI/WCAG1AA-Conformance" title="Explanation of Level Double-A Conformance"><img style="border:0;width:88px;height:32px" src="wcag1AA.gif" tppabs="http://www.linux.org.tw/CLDP/wcag1AA.gif" alt="Level Double-A conformance icon,  W3C-WAI Web Content Accessibility Guidelines 1.0"/></a>
+<a href="javascript:if(confirm('http://www.w3.org/RDF/  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://www.w3.org/RDF/'" tppabs="http://www.w3.org/RDF/" title="RDF 資源描述架構"><img  src="rdf.gif" tppabs="http://www.linux.org.tw/CLDP/rdf.gif" style="border:0" alt="表示該網頁支援資源描述架構"/></a>
+</div>
+</body>
+</html>

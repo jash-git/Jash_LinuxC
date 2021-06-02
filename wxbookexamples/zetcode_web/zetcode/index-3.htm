@@ -1,0 +1,589 @@
+<!DOCTYPE html> 
+<html lang="en">
+<head>
+<title>First programs in wxWidgets</title>
+<link rel="stylesheet" href="format.css" tppabs="http://zetcode.com/cfg/format.css">
+<meta charset="utf-8">
+<meta name="keywords" content="wxWidgets, tutorial, First programs, C++, programming, GUI, multiplatform">
+<meta name="description" content="In this part of the wxWidgets tutorial we create first programs in wxWidgets">
+<meta name="author" content="Jan Bodnar">
+
+<script src="jquery.js" tppabs="http://zetcode.com/lib/jquery.js"></script>
+<script src="common.js" tppabs="http://zetcode.com/lib/common.js"></script>
+
+</head>
+
+<body>
+
+<div class="container">
+
+<div id="wide_ad" class="ltow">
+<script async src="adsbygoogle.js" tppabs="http://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- 160x600, August 2011 -->
+<ins class="adsbygoogle"
+     style="display:inline-block;width:160px;height:600px"
+     data-ad-client="ca-pub-9706709751191532"
+     data-ad-slot="2484182563"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+</div>
+
+
+<div class="content">
+
+
+<header>
+
+<a href="javascript:if(confirm('http://zetcode.com/  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://zetcode.com/'" tppabs="http://zetcode.com/" title="Home">Home</a>&#160;
+<a href=".-2.htm" tppabs="http://zetcode.com/gui/wxwidgets/firstprograms/..">Contents</a>
+
+</header>
+
+
+<h1>First programs in wxWidgets</h1>
+
+
+<p>
+In this chapter, we will cover the basics needed to create wxWidgets applications. 
+We will create our first simple example, show how to display an icon. 
+Next we will create a simple example demonstrating
+usage of an event. Finally, we will see how widgets communicate in 
+wxWidgets applications.
+</p>
+
+<div class="med_rec">
+<script async src="adsbygoogle.js" tppabs="http://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- NewSquare -->
+<ins class="adsbygoogle"
+     style="display:inline-block;width:300px;height:250px"
+     data-ad-client="ca-pub-9706709751191532"
+     data-ad-slot="0364418177"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+</div>
+
+
+<h2>A simple application</h2>
+
+<p>
+First we create the very basic wxWidgets program. 
+</p>
+
+<div class="codehead">simple.h</div>
+<pre class="code">
+#include &lt;wx/wx.h&gt;
+
+class Simple : public wxFrame
+{
+public:
+    Simple(const wxString&amp; title);
+
+};
+</pre>
+
+<div class="codehead">simple.cpp</div>
+<pre class="code">
+#include "simple.h"
+
+Simple::Simple(const wxString&amp; title)
+       : wxFrame(NULL, wxID_ANY, title, wxDefaultPosition, wxSize(250, 150))
+{
+  Centre();
+}
+</pre>
+
+<div class="codehead">main.h</div>
+<pre class="code">
+#include &lt;wx/wx.h&gt;
+
+class MyApp : public wxApp
+{
+  public:
+    virtual bool OnInit();
+};
+</pre>
+
+<div class="codehead">main.cpp</div>
+<pre class="code">
+#include "main.h"
+#include "simple.h"
+
+IMPLEMENT_APP(MyApp)
+
+bool MyApp::OnInit()
+{
+    Simple *simple = new Simple(wxT("Simple"));
+    simple->Show(true);
+
+    return true;
+}
+</pre>
+
+<p>
+This very basic example shows a small window on the screen. The window 
+is centered.
+</p>
+
+<pre class="explanation">
+Centre();
+</pre>
+
+<p>
+This method centers the window on the screen, both horizontally and 
+vertically. 
+</p>
+
+<pre class="explanation">
+IMPLEMENT_APP(MyApp)
+</pre>
+
+<p>
+The code that implements the application is hidden behind this macro. 
+This is copy and paste code, we usually do not have to care about.
+</p>
+
+<pre>
+g++ main.cpp main.h simple.cpp simple.h  `wx-config --cxxflags --libs` -o simple
+</pre>
+
+<p>
+To compile the example on Unix, run the above command.
+</p>
+
+<img src="simple.png" tppabs="http://zetcode.com/img/gui/wxwidgets/simple.png" alt="Simple">
+<div class="figure">Figure: Simple</div>
+
+
+<h2>Application icon</h2>
+
+<p>
+In this example, we provide an icon for our application. 
+It became a standard to display a small icon in the upper 
+left corner of the window. The icon is a graphical identity of the program. 
+</p>
+
+<div class="codehead">icon.h</div>
+<pre class="code">
+#include &lt;wx/wx.h&gt;
+
+class Icon : public wxFrame
+{
+public:
+    Icon(const wxString&amp; title);
+
+};
+</pre>
+
+<div class="codehead">icon.cpp</div>
+<pre class="code">
+#include "icon.h"
+
+Icon::Icon(const wxString&amp; title)
+       : wxFrame(NULL, wxID_ANY, title, wxDefaultPosition, wxSize(250, 150))
+{
+  SetIcon(wxIcon(wxT("web.xpm")));
+  Centre();
+}
+</pre>
+
+<div class="codehead">main.h</div>
+<pre class="code">
+#include &lt;wx/wx.h&gt;
+
+class MyApp : public wxApp
+{
+  public:
+    virtual bool OnInit();
+};
+
+</pre>
+
+<div class="codehead">main.cpp</div>
+<pre class="code">
+#include "main.h"
+#include "icon.h"
+
+IMPLEMENT_APP(MyApp)
+
+bool MyApp::OnInit()
+{
+    Icon *icon = new Icon(wxT("Icon"));
+    icon->Show(true);
+
+    return true;
+}
+</pre>
+
+<p>
+In our example we show a small web icon. 
+</p>
+
+
+<pre class="explanation">
+SetIcon(wxIcon(wxT("web.xpm")));
+</pre>
+
+<p>
+To display an application icon is a matter of one code line.
+XPM (X PixMap) is an ASCII image format.
+</p>
+
+<img src="icon.png" tppabs="http://zetcode.com/img/gui/wxwidgets/icon.png" alt="Icon">
+<div class="figure">Figure: Icon</div>
+
+
+<h2>A simple button</h2>
+
+<p>
+In the following example, we create a button on the frame widget. 
+We will show, how to create a simple event handler.
+</p>
+
+<div class="codehead">button.h</div>
+<pre class="code">
+#include &lt;wx/wx.h&gt;
+
+class Button : public wxFrame
+{
+public:
+    Button(const wxString&amp; title);
+
+    void OnQuit(wxCommandEvent &amp; event);
+};
+</pre>
+
+<div class="codehead">button.cpp</div>
+<pre class="code">
+#include "button.h"
+
+Button::Button(const wxString&amp; title)
+       : wxFrame(NULL, wxID_ANY, title, wxDefaultPosition, wxSize(270, 150))
+{
+  wxPanel *panel = new wxPanel(this, wxID_ANY);
+
+  wxButton *button = new wxButton(panel, wxID_EXIT, wxT("Quit"), 
+      wxPoint(20, 20));
+  Connect(wxID_EXIT, wxEVT_COMMAND_BUTTON_CLICKED, 
+      wxCommandEventHandler(Button::OnQuit));
+  button->SetFocus();
+  Centre();
+}
+
+void Button::OnQuit(wxCommandEvent &amp; WXUNUSED(event))
+{
+    Close(true);
+}
+</pre>
+
+<div class="codehead">main.h</div>
+<pre class="code">
+#include &lt;wx/wx.h&gt;
+
+class MyApp : public wxApp
+{
+  public:
+    virtual bool OnInit();
+};
+</pre>
+
+<div class="codehead">main.cpp</div>
+<pre class="code">
+#include "main.h"
+#include "button.h"
+
+IMPLEMENT_APP(MyApp)
+
+bool MyApp::OnInit()
+{
+
+    Button *btnapp = new Button(wxT("Button"));
+    btnapp->Show(true);
+
+    return true;
+}
+</pre>
+
+
+<pre class="explanation">
+wxPanel *panel = new wxPanel(this, wxID_ANY);
+</pre>
+
+<p>
+First we create a <code>wxPanel</code> widget. It will be placed inside 
+a <code>wxFrame</code> widget.
+</p>
+
+<pre class="explanation">
+wxButton *button = new wxButton(panel, wxID_EXIT, wxT("Quit"), wxPoint(20, 20));
+</pre>
+
+<p>
+We create a <code>wxButton</code> widget. It is placed on the panel. We use 
+the predefined <code>wxID_EXIT</code> id for the button.
+It will cause to display a small exit icon on the button. The label of 
+the button is "Quit". The button is positioned manually at x=20, y=20 coordinates. 
+The beginning of the coordinate system is at the upper left hand corner.
+</p>
+
+<pre class="explanation">
+Connect(wxID_EXIT, wxEVT_COMMAND_BUTTON_CLICKED, 
+    wxCommandEventHandler(Button::OnQuit));
+</pre>
+
+<p>
+If we click on the button, a <code>wxEVT_COMMAND_BUTTON_CLICKED</code> event is 
+generated. We connect the event to the <code>OnQuit()</code> method of the 
+<code>Button</code> class. So when we click on the button, the <code>OnQuit()</code> 
+method is called.
+</p>
+
+<pre class="explanation">
+button->SetFocus();
+</pre>
+
+<p>
+We set the keyboard focus to the button. So if we press the enter key, the 
+button is being clicked.
+</p>
+
+<pre class="explanation">
+Close(true);
+</pre>
+
+<p>
+Inside the <code>OnQuit()</code> method, we call the <code>Close()</code> 
+method. This will terminate our application.
+</p>
+
+<img src="button.png" tppabs="http://zetcode.com/img/gui/wxwidgets/button.png" alt="Button">
+<div class="figure">Figure: Button</div>
+
+
+<h2>Widgets communicate</h2>
+
+<p>
+It is important to know, how widgets can communicate in application. Follow the 
+next example.
+</p>
+
+
+<div class="codehead">Panels.h</div>
+<pre class="code">
+#include &lt;wx/wx.h&gt;
+#include &lt;wx/panel.h&gt;
+
+class LeftPanel : public wxPanel
+{
+public:
+    LeftPanel(wxPanel *parent);
+
+    void OnPlus(wxCommandEvent &amp; event);
+    void OnMinus(wxCommandEvent &amp; event);
+
+    wxButton *m_plus;
+    wxButton *m_minus;
+    wxPanel *m_parent;
+    int count;
+
+};
+
+class RightPanel : public wxPanel
+{
+public:
+    RightPanel(wxPanel *parent);
+
+    void OnSetText(wxCommandEvent &amp; event);
+
+    wxStaticText *m_text;
+
+};
+
+const int ID_PLUS = 101;
+const int ID_MINUS = 102;
+</pre>
+
+<div class="codehead">Panels.cpp</div>
+<pre class="code">
+#include &lt;wx/stattext.h&gt;
+#include "Communicate.h"
+
+LeftPanel::LeftPanel(wxPanel * parent)
+       : wxPanel(parent, -1, wxPoint(-1, -1), wxSize(-1, -1), wxBORDER_SUNKEN)
+{
+  count = 0;
+  m_parent = parent;
+  m_plus = new wxButton(this, ID_PLUS, wxT("+"), 
+      wxPoint(10, 10));
+  m_minus = new wxButton(this, ID_MINUS, wxT("-"), 
+      wxPoint(10, 60));
+  Connect(ID_PLUS, wxEVT_COMMAND_BUTTON_CLICKED, 
+      wxCommandEventHandler(LeftPanel::OnPlus));
+  Connect(ID_MINUS, wxEVT_COMMAND_BUTTON_CLICKED, 
+      wxCommandEventHandler(LeftPanel::OnMinus));
+}
+
+void LeftPanel::OnPlus(wxCommandEvent &amp; WXUNUSED(event))
+{
+  count++;
+
+  Communicate *comm = (Communicate *) m_parent->GetParent();
+  comm->m_rp->m_text->SetLabel(wxString::Format(wxT("%d"), count));
+}
+
+void LeftPanel::OnMinus(wxCommandEvent &amp; WXUNUSED(event))
+{
+  count--;
+
+  Communicate *comm = (Communicate *) m_parent->GetParent();
+  comm->m_rp->m_text->SetLabel(wxString::Format(wxT("%d"), count));
+}
+
+
+RightPanel::RightPanel(wxPanel * parent)
+       : wxPanel(parent, wxID_ANY, wxDefaultPosition, 
+         wxSize(270, 150), wxBORDER_SUNKEN)
+{
+    m_text = new wxStaticText(this, -1, wxT("0"), wxPoint(40, 60));
+}
+</pre>
+
+<div class="codehead">Communicate.h</div>
+<pre class="code">
+#include "Panels.h"
+#include &lt;wx/wxprec.h&gt;
+
+
+class Communicate : public wxFrame
+{
+public:
+    Communicate(const wxString&amp; title);
+
+
+    LeftPanel *m_lp;
+    RightPanel *m_rp;
+    wxPanel *m_parent;
+
+};
+</pre>
+
+
+<div class="codehead">Communicate.cpp</div>
+<pre class="code">
+#include "Communicate.h"
+
+Communicate::Communicate(const wxString&amp; title)
+       : wxFrame(NULL, wxID_ANY, title, wxDefaultPosition, wxSize(290, 150))
+{
+  m_parent = new wxPanel(this, wxID_ANY);
+
+  wxBoxSizer *hbox = new wxBoxSizer(wxHORIZONTAL);
+
+  m_lp = new LeftPanel(m_parent);
+  m_rp = new RightPanel(m_parent);
+
+  hbox->Add(m_lp, 1, wxEXPAND | wxALL, 5);
+  hbox->Add(m_rp, 1, wxEXPAND | wxALL, 5);
+
+  m_parent->SetSizer(hbox);
+
+  this->Centre();
+}
+</pre>
+
+<div class="codehead">main.h</div>
+<pre class="code">
+#include &lt;wx/wx.h&gt;
+
+class MyApp : public wxApp
+{
+  public:
+    virtual bool OnInit();
+};
+</pre>
+
+<div class="codehead">main.cpp</div>
+<pre class="code">
+#include "main.h"
+#include "Communicate.h"
+
+IMPLEMENT_APP(MyApp)
+
+bool MyApp::OnInit()
+{
+
+    Communicate *communicate = new Communicate(wxT("Widgets communicate"));
+    communicate->Show(true);
+
+    return true;
+}
+</pre>
+
+<p>
+In our example we have two panels. A left and right panel. The left panel has 
+two buttons. The right panel has one static text. The buttons change the number 
+displayed in the static text. The question is, how do we grab the pointer to 
+the static text?
+</p>
+
+<pre class="explanation">
+m_parent = parent;
+</pre>
+
+<p>
+Here we save the pointer to the parent widget of the <code>LeftPanel</code>. 
+It is a <code>wxPanel</code> widget.
+</p>
+
+<pre class="explanation">
+Communicate *comm = (Communicate *) m_parent->GetParent();
+comm->m_rp->m_text->SetLabel(wxString::Format(wxT("%d"), count));
+</pre>
+
+<p>
+These two lines are the most important lines of the example. It is shown, how we 
+get access to the static text widget, which
+is placed on a different panel. First we get the parent of the both left and right
+panels. This parent widget has a pointer to the right panel. And the right panel 
+has a pointer to the static text. 
+</p>
+
+<img src="wcommunicate.png" tppabs="http://zetcode.com/img/gui/wxwidgets/wcommunicate.png" alt="Widgets communicate">
+<div class="figure">Figure: Widgets communicate</div>
+
+<p>
+In this part of the wxWidgets tutorial, we have created some simple programs.
+</p>
+
+<div class="hor">
+<script async src="adsbygoogle.js" tppabs="http://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- horizontal -->
+<ins class="adsbygoogle"
+     style="display:inline-block;width:468px;height:60px"
+     data-ad-client="ca-pub-9706709751191532"
+     data-ad-slot="1734478269"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+</div>
+
+<footer>
+
+<div class="botNav center">
+<span class="botNavItem"><a href="javascript:if(confirm('http://zetcode.com/  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://zetcode.com/'" tppabs="http://zetcode.com/">Home</a></span> ‡ <span class="botNavItem"><a href=".-2.htm" tppabs="http://zetcode.com/gui/wxwidgets/firstprograms/..">Contents</a></span> ‡
+<span class="botNavItem"><a href="#">Top of Page</a></span>
+</div>
+
+<div class="signature">
+<a href="javascript:if(confirm('http://zetcode.com/  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://zetcode.com/'" tppabs="http://zetcode.com/">ZetCode</a> last modified October 13, 2014  <span class="copyright">&copy; 2007 - 2014 Jan Bodnar</span>
+</div>
+
+</footer>
+
+</div> <!-- content -->
+
+</div> <!-- container -->
+
+</body>
+</html>

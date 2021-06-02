@@ -1,0 +1,1050 @@
+<HTML
+><HEAD
+><TITLE
+>進階emacs使用</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.49"><LINK
+REL="HOME"
+TITLE="用Open Source工具開發軟體"
+HREF="book1.html" tppabs="http://www.study-area.org/cyril/opentools/opentools/book1.html"><LINK
+REL="UP"
+TITLE="編輯器 - emacs and vi"
+HREF="editor.html" tppabs="http://www.study-area.org/cyril/opentools/opentools/editor.html"><LINK
+REL="PREVIOUS"
+TITLE="程式與編輯器"
+HREF="x79.html" tppabs="http://www.study-area.org/cyril/opentools/opentools/x79.html"><LINK
+REL="NEXT"
+TITLE="總結"
+HREF="x265.html" tppabs="http://www.study-area.org/cyril/opentools/opentools/x265.html"></HEAD
+><BODY
+CLASS="SECT1"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>用Open Source工具開發軟體: 新軟體開發關念</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="x79.html" tppabs="http://www.study-area.org/cyril/opentools/opentools/x79.html"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 1. 編輯器 - emacs and vi</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="x265.html" tppabs="http://www.study-area.org/cyril/opentools/opentools/x265.html"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="AEN140"
+>進階emacs使用</A
+></H1
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN142"
+>按鍵設定</A
+></H2
+><P
+>	有沒有發現前面的按鍵少了很重要的一個東西，就是跳到指定的行數去，
+	因為你編譯程式時，編譯程式有時會給你一個錯誤訊息，xx行出錯了。
+	內定上有這麼一個命令，goto-line，但是每次都要按M-x來執行很不方便，
+	因此我們可以給他一個熱鍵HotKey。設熱鍵的命令是global-set-key，
+	或者define-key，define-key是比較低階的寫法，通常是要寫.el檔時用的。
+	所以在你的.emacs裡面加上
+	<TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>(global-set-key [f8] 'goto-line)
+	</PRE
+></TD
+></TR
+></TABLE
+>
+	每個key跟命令的對應叫key binding，上面的意思就是連結(bind)F8
+	與goto-line這個命令。如果想要重新設定C-x C-\為移動游標到下一行，
+	藉由設key的值為next-line這個命令。
+      </P
+><P
+>	設key有3種寫法，隨便你愛用那一種，因為\是像C裡面的逃脫符號，要多
+	加一個\來表示:
+	<TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>(global-set-key "\C-x\C-\\" 'next-line)
+(global-set-key [?\C-x ?\C-\\] 'next-line)
+(global-set-key [(control ?x) (control ?\\)] 'next-line)
+	</PRE
+></TD
+></TR
+></TABLE
+>
+	  其中[]可以表示一群的組合鍵，?表示單一字元，有的鍵有名字對應，
+	  例如control代表Ctrl。Control或者Meta組合的按鍵是一個控制單一字
+	  元，很簡單，ASCII裡面有127個代表符號，裡面每個字元很多其實是控
+	  制符號。用()或者?來表示。也可以設老鼠的動作。
+	<TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>(global-set-key [M-mouse-1] 'mouse-set-point)
+	</PRE
+></TD
+></TR
+></TABLE
+>
+	表示同時按Meta鍵與老鼠左鍵。
+      </P
+><P
+>在中括號裡常用的鍵有
+	<TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+>一般字母        -&#62; 用?a ?b ?C ?D.....大小寫小心。
+Ctrl            -&#62; 用?\C  或者control
+Meta            -&#62; 用?\M  或者meta
+ESC             -&#62; ESC
+HOME            -&#62; home
+f1-f12          -&#62; f1 ~ f12
+Backspace       -&#62; backspace
+RETURN          -&#62; return
+TAB             -&#62; tab
+	</PRE
+></TD
+></TR
+></TABLE
+>
+
+	例如我可以設
+	<TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>(global-set-key [f7] [?\C-e return tab])
+	</PRE
+></TD
+></TR
+></TABLE
+>	
+	這樣把f7這個鍵設成C-e先跑到後面然後按return，接著我做indent。
+	如果你很懶惰，可以用巨集的方法把一堆鍵紀錄下來，如下
+	<TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+>	  開始巨集
+C-x (
+按
+C-e
+return
+tab
+C-x )
+	  結束巨集
+	</PRE
+></TD
+></TR
+></TABLE
+>
+
+把巨集給個名字
+
+	<TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+>M-x name-last-kbd-macro 
+	</PRE
+></TD
+></TR
+></TABLE
+>
+
+	給一個新巨集命令，叫new-open-line，以後就可以用這個你自定的命令。
+      </P
+><P
+>	但是一但離開emacs，下次進來又沒有了，
+	所以叫emacs幫你寫LISP code。
+	<TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+>M-x insert-kbd-macro
+	</PRE
+></TD
+></TR
+></TABLE
+>
+
+	假設叫做new-open-line，這時就會有一行出現在寫字緩衝區內
+
+	<TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>(fset [?\C-e return tab] 'new-open-line)
+	</PRE
+></TD
+></TR
+></TABLE
+>
+
+	並且把這個定義存到你的.emacs裡面，下次就可以繼續用了。加這行
+
+	<TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>(global-set-key [f7] 'new-open-line)
+	</PRE
+></TD
+></TR
+></TABLE
+>
+
+	就可以設f7這個鍵了。
+      </P
+><P
+>	在menu裡面的Help裡有選項可以查現有的key-binding，也可以用C-h b
+	來查一下現在所有的鍵設定。
+      </P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN159"
+>major mode與Hook</A
+></H2
+><P
+>	emacs 如果你編輯不同的檔案，他會根據副檔名去猜這是一某種檔案，
+	例如xxx.c是C程式碼xxx.sh是shell script。這時候你會看到上面的menu長的不
+	一樣。其實現在有很多公司的軟體也是這樣發展的，外觀長相一模一樣，但是
+	如果你只買公司的某部分產品某部分功能，在menu裡面的功能就有不同。
+	emacs也算這種模組觀念老祖宗。每種檔案有所謂的major mode，就是說在這
+	種mode下有特殊命令或特殊按鍵。例如Text-mode的TAB按鍵是真的TAB，但是在
+	cc-mode程式模式下面，TAB按鍵就變成indentation的功能了。不同的mode有不
+	同的功能，emacs可以拿來當debug程式用的debug mode，讀寫mail的mail 
+	模式等等。另外還有所謂的minormode，就是Major mode下的次要功能，通常
+	是下emacs命令來完成，例如我們要做版本控制，版本控制不見得一定要是C程式
+	下，但是它可以是各種major mode下的子功能。一般說來，這個不用你操心，
+	讀檔案時就會自動起來。Gnus是一個可以看news/mail的mode，下這個命令就跑
+	到news這個mode來了。
+	<TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+>M-x gnus	讀mail/news
+	</PRE
+></TD
+></TR
+></TABLE
+>
+	<DIV
+CLASS="FIGURE"
+><P
+><B
+>Figure 1-5. 另一種emacs - xemacs的news模式</B
+></P
+><P
+><IMG
+SRC="xemacs.gif" tppabs="http://www.study-area.org/cyril/opentools/opentools/images/xemacs.gif"></P
+></DIV
+>
+      </P
+><P
+>	另外emacs有個HOOK這個東西，它其實很像event driving，就是說
+	在某個情況下，特別的emacs函數要被呼叫。例如
+	<TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>(add-hook 'text-mode-hook 'turn-on-auto-fill)
+
+(add-hook 'c-mode-common-hook
+  (function (lambda ()
+    (c-add-style "my-style" my-c-style t))))
+	</PRE
+></TD
+></TR
+></TABLE
+>
+	用add-hook這個命令來增加原本emacs就有定義的normal hook的動作。
+	例子一是說捉到text-mode就要去執行turn-on-auto-fill。
+	例子二是自己定義一個函數，這個函數從(function.....開始，
+	只要一捉到c-mode-common就去執行這個自定函數。
+      </P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN168"
+>emacs LISP(LISt Processing)</A
+></H2
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="AEN170"
+>基本觀念</A
+></H3
+><P
+>	  最後我們要來談談前面所寫的這些lisp語法與emacs的內定規則了。這些在
+	  emacs內用的lisp，其實可以叫elisp，主要原因是他加了一些emacs才有的
+	  內定值。lisp就是處理LIST的語言，一個LIST表示式(expression)是用括號
+	  ()包起來，裡面的成員是一個個物件(object)。長相大概是這樣子，
+
+	  <TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>(+ 1 1)
+(c-mode)
+(setq indent-tabs-mode nil)
+(global-set-key [f8] 'goto-line)
+	  </PRE
+></TD
+></TR
+></TABLE
+>
+
+	LISP註解就加個";"就好了
+
+	  <TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>;這是註解
+	  </PRE
+></TD
+></TR
+></TABLE
+>
+	</P
+></DIV
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="AEN175"
+>運算(Evaluation)與物件(object)</A
+></H3
+><P
+>	  運算是emacs內部的解譯器接受物件後，算出結果，然後還回表示式
+	  (expression)的一個動作。以上面(+ 1 1)例子來說，就是有+ 1 1 三個
+	  物件，被emacs lisp解譯器運算，然後會還回2。一個要被運算的物件也
+	  叫做一個型式(form)，例如這樣的表示式(expression)，(+ 1 1)，要被拿
+	  來運算了。所以這個物件是個form。相反的，1是個物件，但不是form。
+	  而因為一個物件也可以是一個LIST表示式，
+	  所以這邊有巢狀無窮遞迴的觀念。
+	  <TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>(listobj (listobj (listobj1 listboj2 listobj3 listobj4)))。
+	  </PRE
+></TD
+></TR
+></TABLE
+>
+	  因此如果有一個函式的話，一個函式一定是個form，因為函式通常都要做運算
+	  的。
+	</P
+><P
+>	  在emacs裡要對LIST做運算練習可以先在寫字的緩衝區裡隨便寫個LIST，
+	  把游標放到最後，然後下
+	  <TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+>C-x C-e
+	  </PRE
+></TD
+></TR
+></TABLE
+>
+	</P
+><P
+>	  物件必須至少是一種lisp的資料型別(data type)。
+	  既然它是一種程式，就有資料型別，資料型別有很多種，整數(integer), 
+	  小數點(foateing point),字元(char), 符號(symbol),函式(function), 
+	  原始函式(primitive function),串列(list-這個是資料結構的linked list，
+	  不要跟原本的LIST搞混了)等等。資料型別裡面，symbol是比較常搞不清楚的，
+	  一個symbol就是有名字的物件，所以它可以是一個變數，
+	  一個函式等等，只要給了名字，就叫一個symbol。
+	  (emacs裡面名稱一大堆，是蠻討厭的)。因此一個list大概是這樣子的
+	  <TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>(func1 obj1 (primitive_func2 obj2))
+	  </PRE
+></TD
+></TR
+></TABLE
+>
+	</P
+></DIV
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="AEN183"
+>特殊型式(Special Form)</A
+></H3
+><P
+>	  特殊型式是一種特別的原始函式(primitive function)，它的參數不會被運算
+	  (evaluated).。每一個special form都有對他的參數定義，那個要被運算那個
+	  不需要都有定義好。一個原始函式也叫做內建函式(built-in)，是由emacs程式
+	  當初寫時就定義好的，不像函式，是由後來定義的。
+	</P
+><P
+>	  大部分的特殊型式用來定義迴圈，控制，定義函式，或做變數設值，記住
+	  這些動作都沒有做運算。其中一些重要的特殊型式是
+	</P
+><P
+></P
+><DL
+><P
+><B
+>特殊型式(Special Form)</B
+></P
+><DT
+>quote object</DT
+><DD
+><P
+>		傳回object。記住這個object是不做運算。
+		例如(quote (+ 1 2))就不做1+2=3這個運算了，只傳回(+ 1 2)這個
+		LIST物件。可以用'object來簡寫，例如'foo就等於(quote foo)。
+		所以其實(+ 1 2)正規寫法應該是(+ (quote 1) (quote 2))或者
+		(+ '1 '2)。不過用(+ 1 2)也可以是因為+本身是個內建函式，所以
+		當初是寫emacs的人給予的方便，所以內建函式當初的寫作決定了
+		special form的彈性。+也是個special form。
+	      </P
+></DD
+><DT
+>setq symbol (quote object)</DT
+><DD
+><P
+>		通常是這種樣子 - (setq symbol (quote object))。
+		改變symbol的值，將後面的傳回的值設給symbol，記住
+		symbol沒做運算喔。
+	      </P
+></DD
+><DT
+>defvar</DT
+><DD
+><P
+>		定義一個變數物件
+	      </P
+></DD
+><DT
+>defun</DT
+><DD
+><P
+>		定義一個函式物件
+	      </P
+></DD
+></DL
+><P
+>	  相對於函式(function)，其後面的參數都要先做運算才行。例如跟
+	  setq很像的set	這是一個函式喔，是後來定義的，不是原始函式喔，
+	  它的參數一定被做運算。
+	  希望上面的解說沒有搞昏你的邏輯，現在我們來看看之前我們用過的
+
+	<TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>(setq c-mode-hook 'turn-on-font-lock)
+	</PRE
+></TD
+></TR
+></TABLE
+>
+
+	  是說改變c-mode-hook這個已有的變數(或是叫symbol，whatever)的值，變成
+	  後面相對應的(quote turn-on-font-lock)這個物件(或叫做LIST，whatever)
+	  所傳回來的值。其實它也等於
+
+	<TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>(set 'c-mode-hook 'turn-on-font-lock)
+	</PRE
+></TD
+></TR
+></TABLE
+>
+
+	  但是你會說奇怪，為什麼不是寫成
+	  (set c-mode-hook 'turn-on-font-lock)，設c-mode-hook這個變數呢?
+	  因為set是一個函式，不是一個原型函式，所以它會被做運算，每個參數都要
+	  做運算，所以要用(quote c-mode-hook)傳回c-mode-hook這個symbol。
+	  單單只擺c-mode-hook是不會做運算的。
+	</P
+><P
+>	  另外nil t這兩個常數很重要，nil就像C裡面的NULL，可以代表null pointer
+	  也就是空LIST，也可以代表boolean中的false，相反的t 可以代表true。
+	</P
+></DIV
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="AEN209"
+>函式與控制的寫法</A
+></H3
+><P
+>&#13;	  <P
+></P
+><DL
+><P
+><B
+>函式</B
+></P
+><DT
+>lambda寫法</DT
+><DD
+><P
+>	  
+		  <TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="90%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>(lambda (arg-variables...)
+  [documentation-string]
+  [interactive-declaration]
+  body-forms...)
+		  </PRE
+></TD
+></TR
+></TABLE
+>
+
+		  例子
+
+		  <TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="90%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>((lambda (a b c) (+ a b c))
+ 1 2 3)
+		  </PRE
+></TD
+></TR
+></TABLE
+>
+
+		  游標跑到LIST最後，下C-x C-e執行後就會跑出6這個值出來。
+		</P
+><P
+>		  其中document-string是文件字串，說明這個函式是做什麼用途或
+		  者註解等等。用"xxxx"表示。interactive-declaration是決定
+		  這個函式要不要提供跟使用者的互動，通常就是加個
+		  <TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="90%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>(interactive)
+		  </PRE
+></TD
+></TR
+></TABLE
+>
+		  這兩個不是必須的。
+		</P
+></DD
+><DT
+>函式定義寫法</DT
+><DD
+><P
+>		  lambda寫法不是很好，我們想要給個名字讓它變成symbol，
+		  以便將來能用它，例如
+		  <TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="90%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>(defun add-three-element(a b c)
+	"testing the add function"
+	(+ a b c)
+)
+	
+(add-three-element 1 2 3)
+		  </PRE
+></TD
+></TR
+></TABLE
+>
+		</P
+><DIV
+CLASS="PROCEDURE"
+><OL
+TYPE="1"
+><LI
+><P
+>			執行第一個LIST會定義了add-three-element這個函式，
+		      </P
+></LI
+><LI
+><P
+>			執行第二個LIST就會去呼叫它並且算1+2+3。
+		      </P
+></LI
+></OL
+></DIV
+><TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="90%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>(defun capitalize-backwards ()
+       "Upcase the last letter of a word."
+       (interactive)
+       (backward-word 1)
+       (forward-word 1)
+       (backward-char 1)
+       (capitalize-word 1))
+		  </PRE
+></TD
+></TR
+></TABLE
+><P
+>		  定義了capitalize-backwards這個函式名，先往前跳到字首，然
+		  後跳到字尾巴，游標往前一個字元，最後把這個字元變成大寫。
+		  以後可以用M-x下capitalize-backwards這個命令來使用這個功能。
+		</P
+></DD
+></DL
+> 
+	
+	  <P
+></P
+><DL
+><P
+><B
+>控制敘述</B
+></P
+><DT
+>if-then-else的寫法</DT
+><DD
+><P
+>		  <TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="90%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>(if true-or-false-test
+    action-to-carry-out-if-the-test-returns-true)
+  action-to-carry-out-if-the-test-returns-false)
+		  </PRE
+></TD
+></TR
+></TABLE
+>
+		  例如
+		  <TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="90%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>(if (&#62; 4 5)                             ; if-part
+    (message "5 is greater than 4!")    ; then-part
+  (message "4 is not greater than 5!")) ; else-part
+		  </PRE
+></TD
+></TR
+></TABLE
+>
+		</P
+></DD
+></DL
+> 
+	</P
+></DIV
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="AEN242"
+>內建命令變數與新加.el檔</A
+></H3
+><P
+>	  所以其實之前我們用的emacs命令只是一個後來定義的函式，像open-file
+	  這個命令，或goto-line這個命令。不過命令通常可以不加參數的，或者
+	  如果需要參數，可以在設定函式時，給一個(interactive)，這樣如果下命
+	  令後可以跟使用者有所溝通，等待輸入參數。不過要注意的是LISP裡面的
+	  東西，有可能有的是原型函式裡的特殊型式(special form)，有的是函式。
+	  有的是命令。用久了通常也就忘了這麼複雜的機制了。
+	</P
+><P
+>	  另外，我們設了一些變數值後，emacs會根據這個值做一些動作，例如設
+	  (setq cc-mode-hook 'turn-on-font-lock)，
+	  這樣emacs發現這個cc-mode-hook這個值變成打開了，就會把c/c++的code
+	  變成顯示語法的顏色。
+	  這些變數值也是在那些*.el或者*.elc或者你的.emacs裡用defvar這個
+	  speical form先定義好了，然後改變值，就可以千變萬化了。
+	</P
+><P
+>	  其中內定的路徑就是
+	  <TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+>/usr/share/emacs/version_num/site_lisp
+	  </PRE
+></TD
+></TR
+></TABLE
+>
+	  如果你想裝新的.el檔案，
+	  但又不想放到系統內定路徑上，
+	  可以放在一個目錄裡然後用
+	  <TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+>(setq load-path (cons "/dir/you/want" load-path))
+	  </PRE
+></TD
+></TR
+></TABLE
+>
+	  這樣你的emacs起來時就會自動把/dir/you/want這下面的.el檔案load進來，
+	  很像在設PATH這個環境變數
+	</P
+><P
+>	  另外emacs下面有個目錄
+	  <TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+>/usr/share/emacs/version_num/leim
+	  </PRE
+></TD
+></TR
+></TABLE
+>
+	  下面的檔案就是有關輸入法的.el檔
+	</P
+><P
+>	  可是那麼多的變數與命令怎麼曉得什麼是什麼，emacs裡面已有的函式，
+	  命令，變數相當繁雜，本來就有的，後來又新加的.el檔。隨著版本變化，
+	  也越來越多變成不成文的標準了。
+	  例如
+	  <TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>(line-number-mode 1)
+(column-number-mode 1)
+(display-time)
+	  </PRE
+></TD
+></TR
+></TABLE
+>
+	  設定顯視行數欄位以及顯示時間。這邊實在太多了，老實說，我也不
+	  是全部都知道。
+	  這邊的參考請到網路上。一般說來參考資料有按功能分類的，這邊只好看看
+	  <A
+HREF="javascript:if(confirm('http://www.gnu.org/manual  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://www.gnu.org/manual'" tppabs="http://www.gnu.org/manual"
+TARGET="_top"
+>	    <I
+CLASS="CITETITLE"
+>	    http://www.gnu.org/manual
+	  </I
+>
+	  </A
+>
+	是GNU的網路文件，也有按照字母排列的，請看
+	<A
+HREF="javascript:if(confirm('http://www.gnu.org/manual/emacs-20.3/html_node/emacs_511.html  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://www.gnu.org/manual/emacs-20.3/html_node/emacs_511.html#SEC527'" tppabs="http://www.gnu.org/manual/emacs-20.3/html_node/emacs_511.html#SEC527"
+TARGET="_top"
+>	  <I
+CLASS="CITETITLE"
+>http://www.gnu.org/manual/emacs-20.3/html_node/emacs_511.html#SEC527
+	    </I
+>
+	  </A
+>
+	  <A
+HREF="javascript:if(confirm('http://www.gnu.org/manual/emacs-20.3/html_node/emacs_512.html  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://www.gnu.org/manual/emacs-20.3/html_node/emacs_512.html#SEC528'" tppabs="http://www.gnu.org/manual/emacs-20.3/html_node/emacs_512.html#SEC528"
+TARGET="_top"
+>	    <I
+CLASS="CITETITLE"
+>http://www.gnu.org/manual/emacs-20.3/html_node/emacs_512.html#SEC528
+	    </I
+>
+	  </A
+>
+	</P
+><P
+>	  可能會變化喔，因為emacs的版本已經不是20.3了
+	</P
+><P
+>	  vim 的link可以看
+	  <A
+HREF="javascript:if(confirm('http://www.vim.org/html/  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://www.vim.org/html/'" tppabs="http://www.vim.org/html/"
+TARGET="_top"
+>	    <I
+CLASS="CITETITLE"
+>http://www.vim.org/html/
+	    </I
+>
+	  </A
+>
+	  新加進來的.el檔可能是對應一種新的major mode這時候可以用
+	  <TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>(autoload 'xxx-mode "xxfilexx") 來設定
+	  </PRE
+></TD
+></TR
+></TABLE
+>
+	  例如
+	  我有一個新major mode叫psgml
+	  <TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>(autoload 'psgml-mode "psgml.el")
+	  </PRE
+></TD
+></TR
+></TABLE
+>
+	  每次編輯一個看到是sgml就自動執行psgml.el
+	</P
+></DIV
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="x79.html" tppabs="http://www.study-area.org/cyril/opentools/opentools/x79.html"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="book1.html" tppabs="http://www.study-area.org/cyril/opentools/opentools/book1.html"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="x265.html" tppabs="http://www.study-area.org/cyril/opentools/opentools/x265.html"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>程式與編輯器</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="editor.html" tppabs="http://www.study-area.org/cyril/opentools/opentools/editor.html"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>總結</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

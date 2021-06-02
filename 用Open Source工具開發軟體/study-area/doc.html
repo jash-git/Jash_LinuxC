@@ -1,0 +1,241 @@
+<HTML
+><HEAD
+><TITLE
+>製作文件工具</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.49"><LINK
+REL="HOME"
+TITLE="用Open Source工具開發軟體"
+HREF="book1.html" tppabs="http://www.study-area.org/cyril/opentools/opentools/book1.html"><LINK
+REL="PREVIOUS"
+TITLE="總結"
+HREF="x265.html" tppabs="http://www.study-area.org/cyril/opentools/opentools/x265.html"><LINK
+REL="NEXT"
+TITLE="文件結構簡介"
+HREF="x313.html" tppabs="http://www.study-area.org/cyril/opentools/opentools/x313.html"></HEAD
+><BODY
+CLASS="CHAPTER"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>用Open Source工具開發軟體: 新軟體開發關念</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="x265.html" tppabs="http://www.study-area.org/cyril/opentools/opentools/x265.html"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="x313.html" tppabs="http://www.study-area.org/cyril/opentools/opentools/x313.html"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="CHAPTER"
+><H1
+><A
+NAME="DOC"
+>Chapter 2. 製作文件工具</A
+></H1
+><DIV
+CLASS="TOC"
+><DL
+><DT
+><B
+>Table of Contents</B
+></DT
+><DT
+><A
+HREF="doc.html#AEN305" tppabs="http://www.study-area.org/cyril/opentools/opentools/doc.html#AEN305"
+>簡介</A
+></DT
+><DT
+><A
+HREF="x313.html" tppabs="http://www.study-area.org/cyril/opentools/opentools/x313.html"
+>文件結構簡介</A
+></DT
+><DT
+><A
+HREF="x401.html" tppabs="http://www.study-area.org/cyril/opentools/opentools/x401.html"
+>LaTeX與SGML的範例</A
+></DT
+><DT
+><A
+HREF="x441.html" tppabs="http://www.study-area.org/cyril/opentools/opentools/x441.html"
+>其它重要使用</A
+></DT
+><DT
+><A
+HREF="x496.html" tppabs="http://www.study-area.org/cyril/opentools/opentools/x496.html"
+>出版與dvi driver</A
+></DT
+><DT
+><A
+HREF="x529.html" tppabs="http://www.study-area.org/cyril/opentools/opentools/x529.html"
+>LaTeX其它功能</A
+></DT
+><DT
+><A
+HREF="x647.html" tppabs="http://www.study-area.org/cyril/opentools/opentools/x647.html"
+>結語</A
+></DT
+></DL
+></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="AEN305"
+>簡介</A
+></H1
+><P
+>      文件在開發過程中扮演很重要的角色，idea的產生，架構的構思，邏輯的推衍，
+      筆記的重點，歷史記錄的保存，都需要相當好的文件與文件管理。
+    </P
+><P
+>      Mircosoft Windows系統上一般的WYSIWYG的文件，可能是一般人接觸電腦重要的原
+      因，但伴隨著文件的專業化與複雜化，這樣的文件系統因為文件的真實內容與
+      輸出的糾結，使得文件的可攜性上面，變得非常複雜，除非全天下就用一種電腦叫
+      Microsoft電腦。即使用Word排專業點的文章也不是搖搖滑鼠就可以的。
+    </P
+><P
+>      又因為輸入方式的原因，在自動化上面，往往變得無法有效率的處理。
+      另外這種文件的格式與儲存方式也相當的浪費資源，當公司還小時，問題看不出來
+      ，但是除非公司不成長，否則整個文件系統會變得肥大而無法有效處理。
+      另外在一些文件的格式上，例如以前有什麼莎士比亞等等的特殊格式，
+      這些到最後沒有人支援，文件也無法長期保存下來。
+      用typesetting ASCII方式不用binary檔方式還有一個好處就是可以用CVS輕鬆管理
+      長期保存備份容易。
+    </P
+><P
+>      Unix的文件系統都是輸出輸入分的很開的，因此一個檔案可以經由很多已經寫好的
+      處理程式，
+      轉換成想要的輸出格式postscript, pdf, rtf, html, xml, man page,
+      我們只要維護最原始的那個小文件就好了，而最原始的小文件都是Text形式，
+      只要有個vi, emacs就可以了，學會了終生受用。以我自己而言，我們必須寫
+      design document, test plan, report等等。我常常就可以轉成html檔，
+      group member想看就來看，有involve在計劃中的人可能需要hardcopy，這時也有
+      pdf ps可以印出來，我不用維護一堆不同格式的文件，我只要有一個就好了，
+      最重要的是我可以用Ascii Text的形式做自動化的處理，例如自動化的測試得到
+      的結果數據等資料可以經由轉換自動變成報告。
+    </P
+><P
+>      這裡要介紹的有專業排版的LaTeX/TeX ，還有目前很多open source專案指定的
+      docbook SGML寫作，尤其TeX就是Unix上的排版聖經。
+      這裡介紹的純脆只是如何寫，沒有這些文件系統的內部架構。
+      我們假設在快速使用時假定安裝Linux與相關套件安裝已經不是問題，
+      只要有Linux就把CJK, LaTeX 相關套件裝起來。其中大概要安裝的有
+      <TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+>	LaTeX要裝
+	CJK
+	teTeX
+	pdftex
+	latex2html
+
+	SGML要裝
+	docbook的相關套件
+	jadetex
+	cygnus-stylesheet
+	sgmltools
+      </PRE
+></TD
+></TR
+></TABLE
+>
+      sgmltools要選擇用來處理docbook的新版才行，舊版的只能處理linuxdoc，
+      無法處理docbook。
+      安裝時有其相依性要注意。
+    </P
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="x265.html" tppabs="http://www.study-area.org/cyril/opentools/opentools/x265.html"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="book1.html" tppabs="http://www.study-area.org/cyril/opentools/opentools/book1.html"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="x313.html" tppabs="http://www.study-area.org/cyril/opentools/opentools/x313.html"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>總結</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+>&nbsp;</TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>文件結構簡介</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

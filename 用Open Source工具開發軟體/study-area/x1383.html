@@ -1,0 +1,313 @@
+<HTML
+><HEAD
+><TITLE
+>client - client端的使用者命令</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.49"><LINK
+REL="HOME"
+TITLE="用Open Source工具開發軟體"
+HREF="book1.html" tppabs="http://www.study-area.org/cyril/opentools/opentools/book1.html"><LINK
+REL="UP"
+TITLE="臭蟲追蹤系統"
+HREF="gnats.html" tppabs="http://www.study-area.org/cyril/opentools/opentools/gnats.html"><LINK
+REL="PREVIOUS"
+TITLE="重要目錄與檔案"
+HREF="x1360.html" tppabs="http://www.study-area.org/cyril/opentools/opentools/x1360.html"><LINK
+REL="NEXT"
+TITLE="套件包裝製作"
+HREF="package.html" tppabs="http://www.study-area.org/cyril/opentools/opentools/package.html"></HEAD
+><BODY
+CLASS="SECT1"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>用Open Source工具開發軟體: 新軟體開發關念</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="x1360.html" tppabs="http://www.study-area.org/cyril/opentools/opentools/x1360.html"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 7. 臭蟲追蹤系統</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="package.html" tppabs="http://www.study-area.org/cyril/opentools/opentools/package.html"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="AEN1383"
+>client - client端的使用者命令</A
+></H1
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN1385"
+>Email回報PR</A
+></H2
+><P
+>	有下面四隻程式會被用到
+	<TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+>send-pr    回報問題的人用的(tester, customer)
+query-pr   developer查詢整個database，通常是給查詢條件(regular express)，
+           找出一群符合條件的PR。例如PR狀態是還open的(表示問題還沒解決)。
+edit-pr    developer修改PR(problem report)
+view-pr    developer看某一特定pr
+	</PRE
+></TD
+></TR
+></TABLE
+>
+	一個PR的應該有大致的元件如下
+	1. Mail headers
+	像電子郵件開頭的協定字串。
+
+	2. GNATS fields
+	一個field就是像資料庫內的欄位，例如姓名，年齡這種欄位。
+	由'&#62;'開始最後有個':'. 
+	一個field的資料形態有可能是
+	文字(TEXT)，
+	數字(ENUMERATED其實是c裡面的enum所以可以是代表數字的文字)，
+	或多行文字(MULTITEXT)，
+	
+	在命令列上下send-pr，會去叫出vi來
+	<TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+>SEND-PR: -*- send-pr  -*-
+SEND-PR: Lines starting with `SEND-PR' will be removed
+SEND-PR: automatically as well as all comments (the text 
+SEND-PR: below enclosed in `&#60;' and `&#62;').
+SEND-PR: 
+SEND-PR: Please consult the document `Reporting Problems 
+SEND-PR: Using send-pr' if you are not sure how to fill out
+SEND-PR: a problem report.
+SEND-PR:
+SEND-PR: Choose from the following categories:
+SEND-PR: apache           bfd              binutils
+SEND-PR: bison            build            byacc
+To: support-site
+Subject: complete this field
+From: your-login@your-site
+Reply-To: your-login@your-site
+X-send-pr-version: send-pr 3.11
+X-GNATS-Notify:
+
+
+&#62;Submitter-Id: your submitter-id
+&#62;Originator:   your name here
+&#62;Organization: your organization
+&#62;Confidential:[ yes | no ] (one line)  -&#62;回答yes/no只有一行不能多行
+&#62;Synopsis:    synopsis of the problem (one line)
+&#62;Severity:    [non-critical | serious | critical](one line)
+&#62;Priority:    [ low | medium | high ] (one line)
+&#62;Category:    name of the product (one line)
+&#62;Class:       [sw-bug | doc-bug | change-request | support]
+&#62;Release:     release number (one line)
+&#62;Environment: machine, os, target, libraries (multiple lines)
+......
+	</PRE
+></TD
+></TR
+></TABLE
+>
+	SEND-PR:是註解欄會自動消失的，不會進database裡面，跟那個CVS很像。
+	apache bfd binutils....
+	這些是在prefix/share/gnats下的檔案內容的project，
+	這也是&#62;Category要填的值，
+	其中在郵件的`Subject:' 和在GNATS欄位中的`&#62;Synopsis:' 通常是一樣的值，
+	只是mail的主題，通常是問題摘要
+	<TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+>To:            bugs@xxx (就是上面email aliases的address)
+Subject:       就是問題的摘要
+From:          xxx@host
+
+&#62;Submitter-Id: 系統會自動給這個PR 一個ID
+&#62;Originator:   你的名字
+&#62;Organization: 你的單位
+&#62;Confidential:[ yes | no ] (one line)
+&#62;Synopsis:    可以跟Mail Header的Subject一樣
+&#62;Severity:    [non-critical | serious | critical](one line)
+&#62;Priority:    [ low | medium | high ] (one line)
+&#62;Category:    name of the product (one line)
+&#62;Class:       [sw-bug | doc-bug | change-request | support]
+&#62;Release:     release number (one line)
+&#62;Environment: machine, os, target, libraries (multiple lines)
+......
+	</PRE
+></TD
+></TR
+></TABLE
+>
+	其餘欄位就照著提示填，
+	把每一欄位填完後離開editor會問你要不要送出
+      </P
+><P
+>	用query-pr去看gnats database結果
+	<TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+>query-pr
+         --full     全部資訊都輸出
+         --summary  只印出重要資訊
+         --sql      輸出成SQL格式
+
+         -c "category"     (專案名稱)
+         -C "confidential"
+         -e "severity"
+         -r "responsible"  (誰負責的)
+         -s "state"        (open/closed/
+         gnats-id          (每個PR都有個ID來識別)
+
+edit-pr gnats-id 
+view-pr gnats-id
+	</PRE
+></TD
+></TR
+></TABLE
+>
+	emacs上有gnats的命令，請下send-pr命令
+	<TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+>M-x send-pr
+M-x query-pr
+	</PRE
+></TD
+></TR
+></TABLE
+>
+      </P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN1394"
+>Client/Server回報PR</A
+></H2
+><P
+>	
+      </P
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="x1360.html" tppabs="http://www.study-area.org/cyril/opentools/opentools/x1360.html"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="book1.html" tppabs="http://www.study-area.org/cyril/opentools/opentools/book1.html"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="package.html" tppabs="http://www.study-area.org/cyril/opentools/opentools/package.html"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>重要目錄與檔案</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="gnats.html" tppabs="http://www.study-area.org/cyril/opentools/opentools/gnats.html"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>套件包裝製作</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

@@ -1,0 +1,323 @@
+<HTML
+><HEAD
+><TITLE
+>vi 快速入門</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.49"><LINK
+REL="HOME"
+TITLE="用Open Source工具開發軟體"
+HREF="book1.html" tppabs="http://www.study-area.org/cyril/opentools/opentools/book1.html"><LINK
+REL="UP"
+TITLE="編輯器 - emacs and vi"
+HREF="editor.html" tppabs="http://www.study-area.org/cyril/opentools/opentools/editor.html"><LINK
+REL="PREVIOUS"
+TITLE="emacs 快速入門"
+HREF="x42.html" tppabs="http://www.study-area.org/cyril/opentools/opentools/x42.html"><LINK
+REL="NEXT"
+TITLE="程式與編輯器"
+HREF="x79.html" tppabs="http://www.study-area.org/cyril/opentools/opentools/x79.html"></HEAD
+><BODY
+CLASS="SECT1"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>用Open Source工具開發軟體: 新軟體開發關念</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="x42.html" tppabs="http://www.study-area.org/cyril/opentools/opentools/x42.html"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 1. 編輯器 - emacs and vi</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="x79.html" tppabs="http://www.study-area.org/cyril/opentools/opentools/x79.html"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="AEN62"
+>vi 快速入門</A
+></H1
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN64"
+>簡介</A
+></H2
+><P
+>	有了強大的emacs還要來學什麼vi呢?其實vi應該是每個初學Unix的人所必備的，
+	在每台機器上一定都可以用，不像emacs沒有裝搞不好就沒有的用。另外vi的好
+	處是它很小，不佔記憶體，terminal可以動的地方就可以用。在做遠端管理
+	等等狀況非常好用。它算是一種標準編輯器,就像windows上一定有筆記本
+	這個程式一樣
+      </P
+><P
+>	一般說來vi沒有選單可以用(其實有變種vi,像gvim就有選單功能)
+	，所以一定要在兩個模式間跳來跳去。一開始就是在命令模式內，你要先跳到
+	編輯模式才可以亂打內容。其實也不一定啦，要看當初的設定為何，只是正
+	常古老時代應該是這樣。如果你按了老半天跑不出字來，就按個i
+      </P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN68"
+>快速命令</A
+></H2
+><P
+>	以下是常用按鍵：
+      </P
+><P
+>	<TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+>一。從命令到編輯模式
+a	：將游標放到目前游標後一個字元，開始文字編輯模式。insert
+i	：將游標放在目前游標位置，開始文字編輯模式。append
+o	：將游標放到下一行起始位置，開始文字編輯模式。open new line
+比較常用就是i,a,o,I,A,O了，將來多試幾次就好了，就很熟悉了。
+
+二從編輯到命令
+ESC	:沒事多按逃脫鍵，有益身體健康。
+
+三命令模式中的其他命令
+在命令模式中的按鍵就很多了，這些需要好好熟練一下了。
+在vi命令模式裡面，有的按鍵按完後他還是在命令模式，有的改個字元或copy/paste後
+又回到命令模式，有的就一去不回頭變成文字編輯模式了。
+有些按鍵會把你原本想改的內容做特殊的定位，例如要改個word，也會把你帶離命令模式
+
+檔案
+:q		離開vi
+:e xxxx		編輯xxxx
+:w		存檔
+:w xxxx		另存檔案xxxx
+:q!		不存檔強迫離開
+:w!		強迫存檔
+:wq		存檔與離開
+
+游標移動
+h,j,k,l		往左，往下，往上，往右
+0		到行首
+$		到行尾
+^		到這行的第一個非空白字元
+
+w,W		到下個字, 到下個非空白的字
+b,B		回上個字, 到上個非空白的字
+e,E		到這個字的字尾, 到下個非空白的字字尾
+
+Ctrl-F ,Ctrl-B	往後一頁，往前一頁
+G		到檔尾
+:n		到第n行　(所以到檔頭就是:1)
+Ctrl-G		顯示第幾行
+J		合併兩行
+
+搜尋與取代
+/
+/pattern	尋找pattern
+?pattern        往上尋找pattern
+n		再往下尋找
+N		再往上尋找
+:s/patrn/str/cgi搜尋patrn取代str
+                其中:跟s間必需指定範圍(range)沒設範圍就是游標這行 
+                1,10 表示 1-10行
+                %    表示整篇
+                最後cgi
+                c 表示confirm尋問
+                g 表示global全部
+                i 表示ignore不分大小寫
+
+常用字元字串處理
+cc		改變整行
+dd		砍掉整行
+yy		拷貝整行(yank whole line)
+p,P		貼上(paste) 你最近砍掉或拷貝的
+
+cw		改變一個字
+d$		砍到行尾
+ye		拷貝到這個字尾
+
+r,R		取代一個字元, 取代整行
+u,U		undo 最後修改,UNCHANGE整行
+x,X		砍一個字元, 往回砍個字元(等於按backspace)
+
+重複的處理
+. 		重複剛剛的命令或輸入
+
+這些試試看
+ce, 3x, 5dd, 10w, d0, y$, 5G
+
+indentation
+&#62;&#62;		往右一個indent
+&#60;&#60;		往左一個indent
+	  
+vim的多檔與多窗
+:e xxx          編輯xxx
+:buffers        列出所有編輯檔
+:bn             n是數 b1 b2 b3....表是開第n個buffer
+:bdn            n是數:bd1 :bd2 表示殺掉第n個buffer 
+
+:new		一個水平新窗
+:vnew		開個垂直新窗
+:only           只留一個窗窗
+
+C-w j k h l     移到下 上 左 右 窗去
+	</PRE
+></TD
+></TR
+></TABLE
+>
+      </P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN73"
+>vi設定檔</A
+></H2
+><P
+>	用命令可以設定一些編輯器的屬性，例如tab鍵是跳幾格啦等等
+	<TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>:set tabstop=8
+:set number
+	</PRE
+></TD
+></TR
+></TABLE
+>
+	這些可以寫進
+	一個設定檔，下次啟動vi就自然會用到了。不過在用命令設定時是要多加:，
+	寫到.exrc就不用多加:。例如.exrc裡面
+	<TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>set tabstop=8
+set number
+	</PRE
+></TD
+></TR
+></TABLE
+>
+	一般vi的正常起動設定檔是$HOME/.exrc
+      </P
+><P
+>	另外vi有所謂的加強型vi，vi其實有很多的程式實作了他，因為到了後來
+	很多人把它的大概有的功能再擴張開來，例如顏色，例如一些特殊按鍵。
+	比較常見的如vim, elvis等等，都長的像vi，只不過symbolic link到vi。
+	就好像漢書長的跟PE2看起來一模一樣，但是是不同程式。其實我們的
+	emacs也有兩個兄弟一個是GNU emacs，一個是Xemacs。
+	如果用的是vim，它有個額外的設定檔，是$HOME/.vimrc
+      </P
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="x42.html" tppabs="http://www.study-area.org/cyril/opentools/opentools/x42.html"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="book1.html" tppabs="http://www.study-area.org/cyril/opentools/opentools/book1.html"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="x79.html" tppabs="http://www.study-area.org/cyril/opentools/opentools/x79.html"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>emacs 快速入門</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="editor.html" tppabs="http://www.study-area.org/cyril/opentools/opentools/editor.html"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>程式與編輯器</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

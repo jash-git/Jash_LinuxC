@@ -1,0 +1,1 @@
+document.write('<iframe src="http://funp.com.tw/tools/buttoniframe.php?t=b&s=9&id=55262&user=DreamYeh&via=blogs" height="34" width="100" scrolling="no" frameborder="0" marginheight="0" marginwidth="0"></iframe>');

@@ -1,0 +1,219 @@
+<HTML
+><HEAD
+><TITLE
+>套件包裝製作</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.49"><LINK
+REL="HOME"
+TITLE="用Open Source工具開發軟體"
+HREF="book1.html" tppabs="http://www.study-area.org/cyril/opentools/opentools/book1.html"><LINK
+REL="PREVIOUS"
+TITLE="client - client端的使用者命令"
+HREF="x1383.html" tppabs="http://www.study-area.org/cyril/opentools/opentools/x1383.html"><LINK
+REL="NEXT"
+TITLE="End User(Sys Admin)的觀點"
+HREF="x1406.html" tppabs="http://www.study-area.org/cyril/opentools/opentools/x1406.html"></HEAD
+><BODY
+CLASS="CHAPTER"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>用Open Source工具開發軟體: 新軟體開發關念</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="x1383.html" tppabs="http://www.study-area.org/cyril/opentools/opentools/x1383.html"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="x1406.html" tppabs="http://www.study-area.org/cyril/opentools/opentools/x1406.html"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="CHAPTER"
+><H1
+><A
+NAME="PACKAGE"
+>Chapter 8. 套件包裝製作</A
+></H1
+><DIV
+CLASS="TOC"
+><DL
+><DT
+><B
+>Table of Contents</B
+></DT
+><DT
+><A
+HREF="package.html#AEN1399" tppabs="http://www.study-area.org/cyril/opentools/opentools/package.html#AEN1399"
+>簡介</A
+></DT
+><DT
+><A
+HREF="x1406.html" tppabs="http://www.study-area.org/cyril/opentools/opentools/x1406.html"
+>End User(Sys Admin)的觀點</A
+></DT
+><DT
+><A
+HREF="x1447.html" tppabs="http://www.study-area.org/cyril/opentools/opentools/x1447.html"
+>deb檔的包裝</A
+></DT
+><DT
+><A
+HREF="x1479.html" tppabs="http://www.study-area.org/cyril/opentools/opentools/x1479.html"
+>rpm檔的包裝</A
+></DT
+></DL
+></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="AEN1399"
+>簡介</A
+></H1
+><P
+>      package tools是release的包裝工具，
+      很多人都在抱怨Linux很難安裝，其實是不懂得Linux的安裝機制，
+      只要你懂得運作原理的話，就可以順利的把想要的檔案
+      自動裝到特定的地方去。在unix的世界裡面，Solaris, HP-UX, 等也都有一套
+      套件管理的辦法，像Solaris有pkg tools，
+      只要用pkgadd, pkgrm都可以劈哩啪啦就裝好或移除一個軟體，而且裝到哪裡去，
+      其實也可以知道。當然也可以自己寫給INSTALL script，不過這樣比較不好，
+      改版管理沒有中央集權會很混亂。
+    </P
+><P
+>      套件製作原理只是寫一堆資訊檔，還有安裝/移除的script，
+      顧名思義，這些scripts會被自動叫起來，當install/remove套件時
+      <TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+>Solaris的scripts
+preinstall   主要是做軟體安裝前環境的檢查例如需要什麼OS幾版以上等等
+postinstall  主要是做軟體安裝後的設定例如sendmail DNS的設定
+preremove    主要是移除軟體前的環境例如有別的套件需要這個軟體(dependency)
+postremove   主要是清除一些這個套件產生的東西例如log檔等等
+      </PRE
+></TD
+></TR
+></TABLE
+>
+
+      然後有工具將這些檔案綑成一個套件，
+      這些檔案所以有一些製作上的規定與格式，
+      例如版本啦或者一些檔名等等的規定。至於GUI介面，
+      各distribution會有軟體，就不用自己操心了。
+    </P
+><P
+>      建立package的原則是，
+      寫一個資訊檔，
+      build source code原始程式碼到一個假的root目錄，
+      用工具把這個假root directory建立 binary package檔。
+      通常在原始程式碼社群中不僅要
+      build binary package也要build source package，
+      這個source package包含了包裝者對原始碼的更動或patch，
+      主要因為open source community的package包裝者與source coding的人往往不是同一人。
+    </P
+><P
+>      Linux上有deb與rpm兩種格式，tgz用在slackware這個distribution上，
+      FreeBSD也有ports的安裝方式。
+      Debian這個distribution製作優良，結構嚴謹早為社群內人士所肯定，
+      其實覺得他的package
+      工具與upgrade的方法也是比較好的。他的binary package
+      是檔名為xxx.deb的檔案。他還可以用
+      apt 工具來進行網路upgrade，比Solaris pkgtools還先進喔。
+      rpm為redhat及很多distribution的使用，在社群中被大量的使用，
+      很多廠商都把它視為第一包裝選擇，它也可以網路安裝喔。
+    </P
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="x1383.html" tppabs="http://www.study-area.org/cyril/opentools/opentools/x1383.html"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="book1.html" tppabs="http://www.study-area.org/cyril/opentools/opentools/book1.html"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="x1406.html" tppabs="http://www.study-area.org/cyril/opentools/opentools/x1406.html"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>client - client端的使用者命令</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+>&nbsp;</TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>End User(Sys Admin)的觀點</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

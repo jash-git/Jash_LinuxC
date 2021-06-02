@@ -1,0 +1,675 @@
+<HTML
+><HEAD
+><TITLE
+>組成元素</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.49"><LINK
+REL="HOME"
+TITLE="用Open Source工具開發軟體"
+HREF="book1.html" tppabs="http://www.study-area.org/cyril/opentools/opentools/book1.html"><LINK
+REL="UP"
+TITLE="Makefile撰寫"
+HREF="makefile.html" tppabs="http://www.study-area.org/cyril/opentools/opentools/makefile.html"><LINK
+REL="PREVIOUS"
+TITLE="Makefile撰寫"
+HREF="makefile.html" tppabs="http://www.study-area.org/cyril/opentools/opentools/makefile.html"><LINK
+REL="NEXT"
+TITLE="內隱規則(Implicit Rules)"
+HREF="x1176.html" tppabs="http://www.study-area.org/cyril/opentools/opentools/x1176.html"></HEAD
+><BODY
+CLASS="SECT1"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>用Open Source工具開發軟體: 新軟體開發關念</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="makefile.html" tppabs="http://www.study-area.org/cyril/opentools/opentools/makefile.html"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 5. Makefile撰寫</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="x1176.html" tppabs="http://www.study-area.org/cyril/opentools/opentools/x1176.html"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="AEN1075"
+>組成元素</A
+></H1
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN1077"
+>變數(variables)</A
+></H2
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="AEN1079"
+>簡介</A
+></H3
+><P
+>	  像寫程式一樣，make規則裡面的組成可以有動態的值，這時就需要用變數來
+	  設值來取代與轉換以及日後維護。另外還有就是有時字太多了，打字打到
+	  可能會出錯，這樣除錯起Makefile很不好除錯，用變數代換值可以減少一
+	  些打字錯誤。變數也有一些規定，
+	  
+	  <P
+></P
+><UL
+><LI
+><P
+>		字母大小有差。
+	      </P
+></LI
+><LI
+><P
+>		不要用字母數字底線以外的字元。可以有空格在前面後面。
+		(像shell script就不行有空格在變數前後。Var = value跟
+		Var=value是不一樣的)。
+	      </P
+></LI
+><LI
+><P
+>		使用變數用$(VAR)或者${VAR}都可以。
+	      </P
+></LI
+><LI
+><P
+>		如果要用$，請多加一個$變成$$，在Shell Command會用到Shell
+		變數此時就要加$。
+	      </P
+></LI
+></UL
+>
+	</P
+><DIV
+CLASS="EXAMPLE"
+><P
+><B
+>Example 5-2. 設objects</B
+></P
+><TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>objects = program.o foo.o utils.o
+program : $(objects)
+        cc -o program $(objects)
+	  </PRE
+></TD
+></TR
+></TABLE
+></DIV
+></DIV
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="AEN1094"
+>變數代換</A
+></H3
+><P
+>	  變數代換有兩種很重要的不同代換。遞迴的變數代換
+	  (recursively expand)只要變數的值又是另一個變數值時，
+	  就會一直代換下去。簡單的變數代換(simple expand)只代換一次變數的值。
+
+	  <P
+></P
+><DL
+><P
+><B
+>變數代換</B
+></P
+><DT
+>遞迴的變數代換</DT
+><DD
+><P
+>		  var  = value
+		</P
+></DD
+><DT
+>簡單的變數代換</DT
+><DD
+><P
+>		  var := value
+		</P
+></DD
+></DL
+>
+	  
+	  <DIV
+CLASS="EXAMPLE"
+><P
+><B
+>Example 5-3. 例子</B
+></P
+><TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>foo = $(bar)
+bar = $(ugh)
+ugh = Huh?
+	      
+all:
+	echo $(foo)
+	    </PRE
+></TD
+></TR
+></TABLE
+></DIV
+>
+	  會echo `Huh?'
+	</P
+><P
+>	  遞迴的方法有個壞處，不能夠加東西上去，例如
+	  <TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>CFLAGS = -Isrc/include
+CFLAGS = $(CFLAGS) -O
+	  </PRE
+></TD
+></TR
+></TABLE
+>
+	  不過這可以用另一種方法來解決
+	  <TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>CFLAGS += -O
+	  </PRE
+></TD
+></TR
+></TABLE
+>	    
+	  變數通常都是Global的，也就是到處都可以適用的，除非你重設值。
+	  但是在某些地方我們希望設一些值是根據某種情況的target或者些規則。
+	</P
+></DIV
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="AEN1113"
+>Shell變數與Makefile變數</A
+></H3
+><P
+>	  wildcard在變數中可以展成所有的意義，但是在Makefile中使用要小心
+	  例如
+	  <TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>OBJECTS = *.o
+foo: $(OBJECTS)
+	cc -o foo $(OBJECTS)
+	  </PRE
+></TD
+></TR
+></TABLE
+>
+	  如果目前目錄下面沒有.o檔，則make並不知道你要的target是那些.o檔
+	  他以為要去找一個叫*.o的target，這時就會跟你說找不到。如果目前目錄下有.o檔，
+	  則會自動用這些.o檔作target不過這樣沒有任何意義了。
+	  所以OBJECTS要設成prog1.o prog2.o這樣的形式。另外每一行command其實是喚起一個
+	  sub shell來執行所以*.o會被shell解讀而沒有問題。
+	  cc -o foo $(OBJECTS)的$(OBJECTS)是可以展成所有的.o檔的。
+	</P
+><P
+>	  所以如果要傳Shell的變數給Shell就不要讓make對$這個符號做解釋，
+	  所以要多加$。例如
+	  <TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>linuxsubdirs: dummy
+	  set -e; for i in $(Subdirs); do $(MAKE) -C $$i; done
+	  </PRE
+></TD
+></TR
+></TABLE
+>
+	  裡面的$$i就是這個意思。
+	</P
+><P
+>	  傳變數給Shell可以用
+	  <TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+>export var1 var2 var3....
+	  </PRE
+></TD
+></TR
+></TABLE
+>
+	  而想要把shell變數的值傳給Makefile變數有兩個情況，
+	  一個是原本的環境變數自動會變成同樣的Makefile變數名，
+	  可以直接使用。如果兩個有相同的變數名，用make -e 則
+	  Shell的會蓋掉Makefile裡的定義。
+	  另一個狀況是想要根據一個shell的執行傳回的字串來設變數，
+	  這時需要用內建函式，$(shell shell_command)
+	  <TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+>VAR := $(shell shell_command)
+	  </PRE
+></TD
+></TR
+></TABLE
+>
+	</P
+></DIV
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="AEN1122"
+>特定Target的變數</A
+></H3
+><P
+>	  例如
+	  <TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>prog : CFLAGS = -g
+prog : prog.o foo.o bar.o
+	  </PRE
+></TD
+></TR
+></TABLE
+>
+	  當要編譯`prog'這個target時，才設CFLAGS為`-g'，同時當要編譯
+	  prog.o foo.o,bar.o時也會同時設CFLAGS=-g，這是因為某種設定只為了
+	  某個特定的target才須要，例如程式除錯時就很有用。
+	</P
+></DIV
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN1126"
+>目標(target)</A
+></H2
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="AEN1128"
+>簡介</A
+></H3
+><P
+>	  目標可以是檔名或者是一個代表動作的識別符號，如果不是檔名的Target叫
+	  phony target。make根據指定的target來做相關動作。
+	</P
+><P
+>	  要完成一個目標前會先檢查他所需要的檔案或要先做的phnoy target，即
+	  相依性檔案或先決條件目標(dependency or prerequiste)
+	  如果要的相依或先決目標不存在，則make會失敗。如果這裡的先決目標是
+	  phony target則PHONY TARGET每次都會被執行。
+	</P
+><P
+>	  如果你在shell prompt只下make命令而已，第一個rule永遠被執行。
+	  這叫default goal。如果你有指定target名字，例如make clean，則會
+	  去執行這個target的動作，以上面例子看就是會執行
+	  rm *.o *~ 這個動作。
+	</P
+></DIV
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="AEN1133"
+>一些目標規定</A
+></H3
+><P
+>	有些phony目標是GNU建議的，不見得一定要有啦只是建議目標。例如
+	  <TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+>all		:內定的編譯動作
+install		:安裝binary檔的動作
+clean		:清除obj檔的動作
+dist		:產生configure的動作
+distclean	:清除configure所產生的檔
+	  </PRE
+></TD
+></TR
+></TABLE
+>
+	</P
+></DIV
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="AEN1137"
+>特別的內定目標(built-in target)</A
+></H3
+><P
+>	  有些目標名稱已經有特別規定了，例如
+	  <P
+></P
+><DL
+><P
+><B
+>一些內定目標</B
+></P
+><DT
+>.PHONY:</DT
+><DD
+><P
+>              
+		  在這個後面的target無條件執行。因為例如
+		  <TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="90%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>clean:
+	  rm *.o
+		  </PRE
+></TD
+></TR
+></TABLE
+>
+		  如果萬一真的有一個叫clean的檔案在make的目錄下，
+		  偏偏這個檔沒有update，日期沒變，所以當你make clean時，
+		  make認為這個clean已經有了，也沒有相依性檔案需要重新編譯，
+		  於是就不執行rm *.o了 。
+		  所以我們要把它寫在.PHONY，則每次make clean就無條件執行，
+		  不會把clean看成是檔名。
+		</P
+></DD
+><DT
+>.SUFFIXS:</DT
+><DD
+><P
+>		  make有一些內定方法編譯特別副檔名，這些副檔名規則的副檔名
+		  (名單)list，是在SUFFIXS這個變數裡，
+		  可能有.c .o .cpp 等等。
+		  用
+		  <TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="90%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>.SUFFIXS:
+		  </PRE
+></TD
+></TR
+></TABLE
+>
+		  清掉內定副檔名list。 用
+		  <TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="90%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>.SUFFIXS: .sgml .hack  
+		  </PRE
+></TD
+></TR
+></TABLE
+>
+		  加上.sgml .hack到內定list。
+		</P
+></DD
+><DT
+>.SILENT:</DT
+><DD
+><P
+>		  這裡面的target執行時 命令(command)將不會印出來
+		</P
+></DD
+><DT
+>.EXPORT_ALL_VARIABLES:</DT
+><DD
+><P
+>  
+		  把所有變數告訴後來sub shell的子程序
+		</P
+></DD
+></DL
+>
+	</P
+></DIV
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN1161"
+>命令(command)</A
+></H2
+><P
+>	命令就是要完成一個目標所要做的動作，
+	有幾個比較重要的規定要清楚
+	<P
+></P
+><UL
+><LI
+><P
+>	      command 前面一定要是個TAB鍵。不可以用空白鍵。
+	    </P
+></LI
+><LI
+><P
+>	      每一行的命令其實都是喚起一個sub shell來執行命令，做完了，
+	      這個sub shell就沒有了。
+	    </P
+><P
+>	      所以更改過的變化不能傳給下一行命令。如果要把執行結果傳給下一
+	      行必須寫在同一行裡。例如
+	      <TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="90%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+>cd editor
+$(MAKE) all
+	      </PRE
+></TD
+></TR
+></TABLE
+>
+	      這樣cd到editor目錄的結果並沒有傳給下一個make all的這個shell。
+	      必須這樣寫
+	      <TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="90%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+>cd editor; \
+$(MAKE) all
+	      </PRE
+></TD
+></TR
+></TABLE
+>
+	      所以如果有if, while等等判斷在shell內，就必須寫成一行，
+	      或用\來分成很多行。
+	    </P
+></LI
+><LI
+><P
+>	      要把錯誤掠過不看在命令前加個-
+	      要不秀出命令在螢幕上加個@，例如前面例子裡的clean這個target。
+	    </P
+></LI
+><LI
+><P
+>	      喚起的sub shell要用什麼shell，是定義在SHELL這個變數裡。
+	    </P
+></LI
+></UL
+>
+      </P
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="makefile.html" tppabs="http://www.study-area.org/cyril/opentools/opentools/makefile.html"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="book1.html" tppabs="http://www.study-area.org/cyril/opentools/opentools/book1.html"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="x1176.html" tppabs="http://www.study-area.org/cyril/opentools/opentools/x1176.html"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Makefile撰寫</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="makefile.html" tppabs="http://www.study-area.org/cyril/opentools/opentools/makefile.html"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>內隱規則(Implicit Rules)</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

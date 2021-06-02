@@ -1,0 +1,1 @@
+cat wowzastreamingengine_access.log|grep "	disconnect"|awk -F"	" '{print $2","$16","$17}'|awk '{if (($1>"10:56:02") && ($1<"10:56:25")) print}' > data.txt;sync;sync

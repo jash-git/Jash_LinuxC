@@ -1,0 +1,390 @@
+<!DOCTYPE html> 
+<html lang="en">
+<head>
+<title>Custom widgets in wxWidgets</title>
+<link rel="stylesheet" href="format.css" tppabs="http://zetcode.com/cfg/format.css">
+<meta charset="utf-8">
+<meta name="keywords" content="wxWidgets, tutorial, widgets, custom widgets, custom controls, 
+C++, programming, GUI, multiplatform">
+<meta name="description" content="This part of the wxWidgets tutorial covers custom widgets.">
+<meta name="author" content="Jan Bodnar">
+
+<script src="jquery.js" tppabs="http://zetcode.com/lib/jquery.js"></script>
+<script src="common.js" tppabs="http://zetcode.com/lib/common.js"></script>
+
+</head>
+
+<body>
+
+<div class="container">
+
+<div id="wide_ad" class="ltow">
+<script async src="adsbygoogle.js" tppabs="http://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- 160x600, August 2011 -->
+<ins class="adsbygoogle"
+     style="display:inline-block;width:160px;height:600px"
+     data-ad-client="ca-pub-9706709751191532"
+     data-ad-slot="2484182563"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+</div>
+
+<div class="content">
+
+
+<header>
+
+<a href="javascript:if(confirm('http://zetcode.com/  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://zetcode.com/'" tppabs="http://zetcode.com/" title="Home">Home</a>&#160;
+<a href=".-11.htm" tppabs="http://zetcode.com/gui/wxwidgets/customwidgets/..">Contents</a>
+
+</header>
+
+
+<h1>Custom widgets in wxWidgets</h1>
+
+<p>
+Toolkits usually provide only the most common widgets like buttons, 
+text widgets, scrollbars, sliders etc. No toolkit can provide 
+all possible widgets. wxWidgets has many various widgets; more specialised
+widgets are created by client programmers. 
+</p>
+
+
+<div class="med_rec">
+<script async src="adsbygoogle.js" tppabs="http://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- NewSquare -->
+<ins class="adsbygoogle"
+     style="display:inline-block;width:300px;height:250px"
+     data-ad-client="ca-pub-9706709751191532"
+     data-ad-slot="0364418177"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+</div>
+
+<p>
+Custom widgets are created by using the drawing tools provided by the 
+toolkit. There are two possibilities: a programmer can modify or enhance 
+an existing widget, or he can create a custom widget from scratch.
+</p>
+
+
+<h2>The Burning Widget</h2>
+
+<p>
+This is an example of a widget that we create from scratch.
+This widget can be found in various media burning applications, like Nero Burning ROM. 
+</p>
+
+<div class="codehead">widget.h</div>
+<pre class="code">
+#ifndef WIDGET_H
+#define WIDGET_H
+
+#include &lt;wx/wx.h&gt;
+
+class Widget : public wxPanel
+{
+public:
+  Widget(wxPanel *parent, int id );
+
+  wxPanel *m_parent;
+
+
+  void OnSize(wxSizeEvent&amp; event);
+  void OnPaint(wxPaintEvent&amp; event);  
+
+};
+
+#endif
+</pre>
+
+<div class="codehead">widget.cpp</div>
+<pre class="code">
+#include &lt;wx/wx.h&gt;
+#include "widget.h"
+#include "burning.h"
+
+int num[] = { 75, 150, 225, 300, 375, 450, 525, 600, 675 };
+int asize = sizeof(num)/sizeof(num[1]);
+
+Widget::Widget(wxPanel *parent, int id)
+      : wxPanel(parent, id, wxDefaultPosition, wxSize(-1, 30), wxSUNKEN_BORDER)
+{
+ 
+  m_parent = parent;
+
+  Connect(wxEVT_PAINT, wxPaintEventHandler(Widget::OnPaint));
+  Connect(wxEVT_SIZE, wxSizeEventHandler(Widget::OnSize));
+
+}
+
+void Widget::OnPaint(wxPaintEvent&amp; event)
+{
+  wxFont font(9, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL,
+            wxFONTWEIGHT_NORMAL, false, wxT("Courier 10 Pitch"));
+
+  wxPaintDC dc(this);
+  dc.SetFont(font);
+  wxSize size = GetSize();
+  int width = size.GetWidth();
+
+  Burning *burn = (Burning *) m_parent->GetParent();
+
+  int cur_width = burn->GetCurWidth();
+
+  int step = (int) round(width / 10.0);
+
+
+  int till = (int) ((width / 750.0) * cur_width);
+  int full = (int) ((width / 750.0) * 700);
+
+
+  if (cur_width >= 700) {
+
+      dc.SetPen(wxPen(wxColour(255, 255, 184))); 
+      dc.SetBrush(wxBrush(wxColour(255, 255, 184)));
+      dc.DrawRectangle(0, 0, full, 30);
+      dc.SetPen(wxPen(wxColour(255, 175, 175)));
+      dc.SetBrush(wxBrush(wxColour(255, 175, 175)));
+      dc.DrawRectangle(full, 0, till-full, 30);
+
+  } else { 
+
+      dc.SetPen(wxPen(wxColour(255, 255, 184)));
+      dc.SetBrush(wxBrush(wxColour(255, 255, 184)));
+      dc.DrawRectangle(0, 0, till, 30);
+
+  }
+
+  dc.SetPen(wxPen(wxColour(90, 80, 60)));
+  for ( int i=1; i &lt;= asize; i++ ) {
+
+  dc.DrawLine(i*step, 0, i*step, 6);
+  wxSize size = dc.GetTextExtent(wxString::Format(wxT("%d"), num[i-1]));
+  dc.DrawText(wxString::Format(wxT("%d"), num[i-1]), 
+      i*step-size.GetWidth()/2, 8);
+   }
+}
+
+void Widget::OnSize(wxSizeEvent&amp; event)
+{
+  Refresh();
+}
+</pre>
+
+<div class="codehead">burning.h</div>
+<pre class="code">
+#ifndef BURNING_H
+#define BURNING_H
+
+#include &lt;wx/wx.h&gt;
+#include "widget.h"
+
+class Burning : public wxFrame
+{
+public:
+  Burning(const wxString&amp; title);
+
+  void OnScroll(wxScrollEvent&amp; event);
+  int GetCurWidth();
+
+  
+  wxSlider *m_slider;
+  Widget *m_wid;
+
+  int cur_width;
+
+};
+
+#endif
+</pre>
+
+<div class="codehead">burning.cpp</div>
+<pre class="code">
+#include "burning.h"
+#include "widget.h"
+
+int ID_SLIDER = 1;
+
+Burning::Burning(const wxString&amp; title)
+       : wxFrame(NULL, wxID_ANY, title, wxDefaultPosition, wxSize(350, 200))
+{
+
+  cur_width = 75;
+
+  wxPanel *panel = new wxPanel(this, wxID_ANY);
+  wxPanel *centerPanel = new wxPanel(panel, wxID_ANY);
+
+  m_slider = new wxSlider(centerPanel, ID_SLIDER, 75, 0, 750, wxPoint(-1, -1), 
+      wxSize(150, -1), wxSL_LABELS);
+
+  wxBoxSizer *vbox = new wxBoxSizer(wxVERTICAL);
+  wxBoxSizer *hbox = new wxBoxSizer(wxHORIZONTAL);
+  wxBoxSizer *hbox2 = new wxBoxSizer(wxHORIZONTAL);
+  wxBoxSizer *hbox3 = new wxBoxSizer(wxHORIZONTAL);
+
+  m_wid = new Widget(panel, wxID_ANY);
+  hbox->Add(m_wid, 1, wxEXPAND);
+
+  hbox2->Add(centerPanel, 1, wxEXPAND);
+  hbox3->Add(m_slider, 0, wxTOP | wxLEFT, 35);
+
+  centerPanel->SetSizer(hbox3);
+
+  vbox->Add(hbox2, 1, wxEXPAND);
+  vbox->Add(hbox, 0, wxEXPAND);
+
+  panel->SetSizer(vbox);
+  m_slider->SetFocus();
+
+  Connect(ID_SLIDER, wxEVT_COMMAND_SLIDER_UPDATED, 
+      wxScrollEventHandler(Burning::OnScroll)); 
+
+  Centre();
+
+}
+
+void Burning::OnScroll(wxScrollEvent&amp; WXUNUSED(event))
+{
+ cur_width = m_slider->GetValue();
+ m_wid->Refresh();
+}
+
+
+int Burning::GetCurWidth() 
+{
+ return cur_width;
+}
+</pre>
+
+<div class="codehead">main.h</div>
+<pre class="code">
+#include &lt;wx/wx.h&gt;
+
+class MyApp : public wxApp
+{
+  public:
+    virtual bool OnInit();
+};
+</pre>
+
+<div class="codehead">main.cpp</div>
+<pre class="code">
+#include "main.h"
+#include "burning.h"
+
+IMPLEMENT_APP(MyApp)
+
+bool MyApp::OnInit()
+{
+
+    Burning *burning = new Burning(wxT("The Burning Widget"));
+    burning->Show(true);
+
+    return true;
+}
+</pre>
+
+<p>
+We put a <code>wxPanel</code> on the bottom of the window and draw the entire 
+widget manually. All the important code resides in the <code>OnPaint()</code>
+method of the widget class. This widget shows graphically the total 
+capacity of a medium and the free space available to us. The widget is controlled 
+by a slider. The minimum value of our custom widget is 0, the maximum is 750. 
+If we reach value 700, we began drawing in red colour. This indicates overburning.
+</p>
+
+
+<pre class="explanation">
+wxSize size = GetSize();
+int width = size.GetWidth();
+... 
+int till = (int) ((width / 750.0) * cur_width);
+int full = (int) ((width / 750.0) * 700);
+</pre>
+
+<p>
+We draw the widget dynamically. The greater the window, the greater the 
+burning widget. And vice versa. That is why we must calculate the size 
+of the <code>wxPanel</code> onto which we draw the custom widget. The <code>till</code> 
+parameter determines the total size to be drawn. This value comes from the slider 
+widget. It is a proportion of the whole area. The <code>full</code> parameter 
+determines the point, where we begin to draw in red colour. Notice the use of floating 
+point arithmetics. This is to achieve greater precision.
+</p>
+
+<p>
+The actual drawing consists of three steps. We draw the yellow or red 
+and yellow rectangle. Then we draw the vertical lines, which divide the 
+widget into several parts. Finally, we draw the numbers, which indicate 
+the capacity of the medium. 
+</p>
+
+<pre class="explanation">
+void Widget::OnSize(wxSizeEvent&amp; event)
+{
+  Refresh();
+}
+</pre>
+
+<p>
+Every time the window is resized, we refresh the widget. This causes 
+the widget to repaint itself.
+</p>
+
+<pre class="explanation">
+void Burning::OnScroll(wxScrollEvent&amp; WXUNUSED(event))
+{
+ cur_width = m_slider->GetValue();
+ m_wid->Refresh();
+}
+</pre>
+
+<p>
+If we scroll the thumb of the slider, we get the actual value and save it 
+into the <code>cur_width</code> variable. This value is used, when the burning 
+widget is drawn. Then we cause the widget to be redrawn.
+</p>
+
+<img src="burningwidget.png" tppabs="http://zetcode.com/img/gui/wxwidgets/burningwidget.png" alt="Burning Widget">
+<div class="figure">Figure: Burning Widget</div>
+
+
+<p>
+In this part of the wxWidgets tutorial, we have created a custom widget.
+</p>
+
+<div class="hor">
+<script async src="adsbygoogle.js" tppabs="http://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- horizontal -->
+<ins class="adsbygoogle"
+     style="display:inline-block;width:468px;height:60px"
+     data-ad-client="ca-pub-9706709751191532"
+     data-ad-slot="1734478269"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+</div>
+
+<footer>
+
+<div class="botNav center">
+<span class="botNavItem"><a href="javascript:if(confirm('http://zetcode.com/  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://zetcode.com/'" tppabs="http://zetcode.com/">Home</a></span> ‡ <span class="botNavItem"><a href=".-11.htm" tppabs="http://zetcode.com/gui/wxwidgets/customwidgets/..">Contents</a></span> ‡
+<span class="botNavItem"><a href="#">Top of Page</a></span>
+</div>
+
+<div class="signature">
+<a href="javascript:if(confirm('http://zetcode.com/  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://zetcode.com/'" tppabs="http://zetcode.com/">ZetCode</a> last modified October 13, 2014  <span class="copyright">&copy; 2007 - 2014 Jan Bodnar</span>
+</div>
+
+</footer>
+
+</div> <!-- content -->
+
+</div> <!-- container -->
+
+</body>
+</html>
+

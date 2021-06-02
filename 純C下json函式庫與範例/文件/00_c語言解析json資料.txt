@@ -1,0 +1,91 @@
+c語言解析json資料
+文章分類:C++編程 
+我使用的是cJSON:http://sourceforge.net/projects/cjson/
+先看json的資料結構 
+c中沒有物件，所以json資料是採用鏈表存儲的 
+C代碼  
+typedef struct cJSON {   
+    struct cJSON *next,*prev;   // 陣列 物件資料中用到   
+    struct cJSON *child;        // 陣列 和物件中指向子陣列物件或值   
+  
+    int type;           // 元素的類型，如是物件還是陣列   
+  
+    char *valuestring;          // 如果是字串   
+    int valueint;               // 如果是數值   
+    double valuedouble;         // 如果類型是cJSON_Number   
+  
+    char *string;               // The item's name string, if this item is the child of, or is in the list of subitems of an object.   
+} cJSON; 
+typedef struct cJSON {
+ struct cJSON *next,*prev; // 陣列 物件資料中用到
+ struct cJSON *child;  // 陣列 和物件中指向子陣列物件或值
+ int type;   // 元素的類型，如是物件還是陣列
+ char *valuestring;   // 如果是字串
+ int valueint;    // 如果是數值
+ double valuedouble;   // 如果類型是cJSON_Number
+ char *string;    // The item's name string, if this item is the child of, or is in the list of subitems of an object.
+} cJSON;
+比如你有一個json資料 
+Javascript代碼  
+{   
+    "name": "Jack (\"Bee\") Nimble",    
+    "format": {   
+        "type":       "rect",    
+        "width":      1920,    
+        "height":     1080,    
+        "interlace":  false,    
+        "frame rate": 24   
+    }   
+} 
+{
+    "name": "Jack (\"Bee\") Nimble", 
+    "format": {
+        "type":       "rect", 
+        "width":      1920, 
+        "height":     1080, 
+        "interlace":  false, 
+        "frame rate": 24
+    }
+}
+那麼你可以 
+1：講字串解析成json結構體。 
+C代碼  
+cJSON *root = cJSON_Parse(my_json_string); 
+cJSON *root = cJSON_Parse(my_json_string);
+2:獲取某個元素 
+C代碼  
+cJSON *format = cJSON_GetObjectItem(root,"format");   
+int framerate = cJSON_GetObjectItem(format,"frame rate")->valueint; 
+cJSON *format = cJSON_GetObjectItem(root,"format");
+int framerate = cJSON_GetObjectItem(format,"frame rate")->valueint;
+3:講json結構體轉換成字串 
+C代碼  
+char *rendered=cJSON_Print(root); 
+char *rendered=cJSON_Print(root);
+4：刪除 
+C代碼  
+cJSON_Delete(root); 
+cJSON_Delete(root);
+5：構建一個json結構體 
+C代碼  
+cJSON *root,*fmt;   
+root=cJSON_CreateObject();     
+cJSON_AddItemToObject(root, "name", cJSON_CreateString("Jack (\"Bee\") Nimble"));   
+cJSON_AddItemToObject(root, "format", fmt=cJSON_CreateObject());   
+cJSON_AddStringToObject(fmt,"type",     "rect");   
+cJSON_AddNumberToObject(fmt,"width",        1920);   
+cJSON_AddNumberToObject(fmt,"height",       1080);   
+cJSON_AddFalseToObject (fmt,"interlace");   
+cJSON_AddNumberToObject(fmt,"frame rate",   24); 
+
+
+extern cJSON *cJSON_Parse(const char *value);//解析一個json字串為cJSON物件
+extern char  *cJSON_Print(cJSON *item);//將json物件轉換成容易讓人看清結構的字串
+extern char  *cJSON_PrintUnformatted(cJSON *item);//將json物件轉換成一個很短的字串，無回車
+extern void   cJSON_Delete(cJSON *c);//刪除json對象
+extern int  cJSON_GetArraySize(cJSON *array);//返回json陣列大小
+extern cJSON *cJSON_GetArrayItem(cJSON *array,int item);//返回json陣列中指定位置物件
+extern cJSON *cJSON_GetObjectItem(cJSON *object,const char *string);//返回指定字串對應的json物件
+extern cJSON *cJSON_CreateIntArray(int *numbers,int count);//生成整型陣列json物件
+extern void cJSON_AddItemToArray(cJSON *array, cJSON *item);//向陣列中添加元素
+

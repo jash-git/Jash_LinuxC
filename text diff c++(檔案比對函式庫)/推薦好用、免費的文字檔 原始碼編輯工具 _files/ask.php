@@ -1,0 +1,1 @@
+pix.MIB.ysm.getSitemajiad({"s160x240":{"ad_num":1,"ad_size":"160x240","ad_list":[{"ad_type":"swf","ad_hash":"14422a1175","ad_url":"1","ad_img":"http%3A%2F%2Fs.pixgold.com%2Fupload%2F14422a1175.swf%3Fv%3D1380684355","ad_img2":"","ad_bg_img":"","ad_dlink":"","ad_align":""}]}})

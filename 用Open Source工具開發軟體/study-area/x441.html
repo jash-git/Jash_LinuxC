@@ -1,0 +1,722 @@
+<HTML
+><HEAD
+><TITLE
+>其它重要使用</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.49"><LINK
+REL="HOME"
+TITLE="用Open Source工具開發軟體"
+HREF="book1.html" tppabs="http://www.study-area.org/cyril/opentools/opentools/book1.html"><LINK
+REL="UP"
+TITLE="製作文件工具"
+HREF="doc.html" tppabs="http://www.study-area.org/cyril/opentools/opentools/doc.html"><LINK
+REL="PREVIOUS"
+TITLE="LaTeX與SGML的範例"
+HREF="x401.html" tppabs="http://www.study-area.org/cyril/opentools/opentools/x401.html"><LINK
+REL="NEXT"
+TITLE="出版與dvi driver"
+HREF="x496.html" tppabs="http://www.study-area.org/cyril/opentools/opentools/x496.html"></HEAD
+><BODY
+CLASS="SECT1"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>用Open Source工具開發軟體: 新軟體開發關念</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="x401.html" tppabs="http://www.study-area.org/cyril/opentools/opentools/x401.html"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 2. 製作文件工具</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="x496.html" tppabs="http://www.study-area.org/cyril/opentools/opentools/x496.html"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="AEN441"
+>其它重要使用</A
+></H1
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN443"
+>插入圖形(figure)</A
+></H2
+><P
+>	jpg, gif, eps或LaTeX圖檔
+	<TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>圖形工具
+xfig          強大的向量圖形製作，原始檔也是ASCII可以放進CVS，不過GUI很醜
+dia           畫流程圖的
+gimp          處理各種圖形檔，可以寫字
+gnuplot       2D/3D科學圖，command line的，自動化與real time畫圖的好工具
+grace         以前叫xmgr畫科學統計，不過有GUI
+LaTeX graphic package
+              LaTeX裡有個畫圖的package
+	</PRE
+></TD
+></TR
+></TABLE
+>
+
+	<DIV
+CLASS="FIGURE"
+><P
+><B
+>Figure 2-1. xfig</B
+></P
+><P
+><IMG
+SRC="xfig.jpg" tppabs="http://www.study-area.org/cyril/opentools/opentools/images/xfig.jpg"></P
+></DIV
+>
+	<DIV
+CLASS="FIGURE"
+><P
+><B
+>Figure 2-2. Dia</B
+></P
+><P
+><IMG
+SRC="dia.gif" tppabs="http://www.study-area.org/cyril/opentools/opentools/images/dia.gif"></P
+></DIV
+>
+	GNUPLOT是相當強大的繪圖工具，而且它可以用interactive或command line
+	方式，所以用command line時可以畫動態的圖，股市分析圖可以在一定的時間
+	內餵給gnuplot資料，用script動態的秀出圖形。
+	<TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+>$ gnuplot [command_file]
+	</PRE
+></TD
+></TR
+></TABLE
+>
+	如果command_file不給，就進入交談gnuplot，有個提示符號(gnuplot)下command
+	。重要的命令就是plot(畫二維)與splot(三維)set(設定輸出入格式)，
+	所以command_file就是這一堆一行行command集合。通用式是
+	<TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+>(gnuplot) plot {&#60;ranges&#62;}
+               {&#60;function&#62; 或者 {"&#60;datafile&#62;" {datafile-modifiers}}}
+               {axes &#60;axes&#62;} {&#60;title-spec&#62;} {with &#60;style&#62;}
+               {, {definitions,} &#60;function&#62; ...}
+	</PRE
+></TD
+></TR
+></TABLE
+>
+	例子
+	<TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+>(gnuplot) plot [x=1:100] [-pi : 2 * pi] f(x) = sin(a*(x**2)), a = 0.1, f(x), \
+	                                g(x) = cos(a*x)     , a = 0.2, g(x)
+ranges              就是x y軸的範圍
+f(x)= sin(a*(x**2)) 就是自己定義一個函數，sin的ax平方
+,a=0.1給常數值      就是definitions部份，所以前面有個逗點，這會畫出f(x), g(x)來
+	</PRE
+></TD
+></TR
+></TABLE
+>
+	用外部datafile來給值，這些資料通常都是實驗測量值，
+	第一欄是x軸，第二欄是y軸，要指定特殊欄用using
+	<TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+>(gnuplot) plot 'file.data' using 1:4
+(gnuplot) plot 'file.data' using 1:($3&#62;10 ? $2 : 1/0)
+
+使用第一欄畫x軸，而y軸
+如果第三欄的資料大於10 ，就還回第二欄的資料，不然就還回1/0
+這是C的語法，1/0會死掉，意思就是不畫這個點
+
+(gnuplot) plot [x=1:100] [-pi : 2 * pi] sin(x), \
+               "file.data" using (sin($2):($3/$4)) \
+               title "Sin(x) Plot"  with linepoints
+用sin(第二欄資料)當x軸，第三欄除第四欄當y軸，
+並給圖的title
+還有把點連起來看起來是平滑的曲線(with linepoints)
+
+抄一個中研院的例子
+
+gnuplot&#62; G1(x)= 135.64*exp(-0.5*x**2)
+gnuplot&#62; G2(x)= 57.5824*exp(-0.05556*(x-3)**2)
+gnuplot&#62; G(x) = G1(x)+G2(x)+13.38
+gnuplot&#62; plot "data" using 1:2:3 with errorbars, \
+              "data" with lines, \
+               G(x), \
+               G1(x), \
+               G2(x)
+
+所以自己定義變數也可以這樣定，看起來只是把以前手算功能變成gnuplot
+這可以寫成一行啦，故意分成多行是說每個逗號，就是要畫個曲線
+
+(gnuplot) mypiecewise(x) = (x &#62; 2) ? 2 : ((x &#60; -2) ? -2 : x)
+(gnuplot) plot mypiecewise(x)
+
+這個可以畫piecewise函數   有三個值喔
+	</PRE
+></TD
+></TR
+></TABLE
+>
+	設定輸出格式
+	<TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+>set terminal fig
+set terminal latex
+set terminal postscript eps
+set terminal png
+set terminal x11          輸出變回螢幕
+set output 'datafig.eps'  則plot splot或者replot命令就會輸出到datafig.eps檔了
+
+set title 'xxx'
+set xlabel 'xxx'
+set ylabel 'xxx'          這些title label文字可以用LaTeX語法勒
+set locale 'xxx'          還有I18N勒
+set label 'text' at 10,10 在座標(10, 10)的地方標出text這個字
+
+set xrange [1:100]
+set yrange
+set style                 這是設畫圖的style就是上面的plot裡面的with
+                          所以以前的plot命令裡的選項也可以單獨設定
+
+set ploar                 設(r, theta)座標系
+set angles radians        設角度單位為radins不是degrees
+
+load command-file         把命令檔load進來玩
+	</PRE
+></TD
+></TR
+></TABLE
+>
+	有一些內建的如sin(x) cos(x) log(x) exp(x)...
+	或者bessel function...已經建好了，help function看看。
+	當然如果你是物理系的畫畫黑體幅射的distribution，
+	fermion distribution(這就是那些IC Fab廠裡，人手一本綠綠的書，
+	前面大家也不知道怎麼來的equation)
+	來玩玩也不錯。因此裡面很多選項其實跟你的數學功力比較有關係。
+	gnuplot不是GNU組織的產品，相反的GNU自己有plotutils這個
+	產品，也可以畫pie圖喔。
+	這個教學站蠻不錯的
+	http://www.cs.uni.edu/Help/gnuplot/。
+      </P
+><P
+>	除了常見的jpg gif png bmp這種圖檔還有其它好多種
+	<TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>fig  xfig產生的原始檔，很像c tex，再轉換成其它格式
+eps  encapsulate postscript用來安插postscript的，不過常使用在LaTeX的插圖中
+tex  TeX也可以畫圖喔，其實TeX可以控制到很精細的點線面
+svg  也是一種向量圖檔
+HPGL HP的plotter format 是很多cad軟體都會產生的一項業界標準 也可以轉成TeX喔
+	</PRE
+></TD
+></TR
+></TABLE
+>
+	其中xfig所產生的fig檔可以用選單裡的export功能來export成別種格式，或用
+	<TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+>$ fig2dev -L 
+	</PRE
+></TD
+></TR
+></TABLE
+>
+	這個command line來轉換各種格式，我通常寫在Makefile裡做make doc的工作。
+	各種工具只要想辦法輸出成jpg gif eps圖就好了，
+	或者輸出成一個latex檔，
+	再用\include{image}的方式把LaTeX圖檔(image.tex)含進LaTeX文件中，
+	\includegraphics{image.eps}則含進eps圖形檔(image.eps)，
+	輸出格式的選項通常叫export要不就是Save As。
+	用\includegraphics要像用中文一樣加個package來處理，
+	請加\usepackage{graphics}在\documentclass{}下。
+      </P
+><P
+>	LaTeX
+	<TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>\begin{figure}
+  \caption{example of import graphics}
+  \includegraphics[options]{file.eps}
+\end{figure}
+	</PRE
+></TD
+></TR
+></TABLE
+>
+      </P
+><P
+>	SGML
+	<TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>&#60;figure&#62;
+&#60;title&#62;EMACS的例子&#60;/title&#62;
+  &#60;graphic fileref="images/emacs.gif"&#62;&#60;/graphic&#62;
+&#60;/figure&#62;
+	</PRE
+></TD
+></TR
+></TABLE
+>
+	LaTeX裡的\begin{figure}跟\begin{table}一樣是浮動的，
+	如果不要浮動就不要加\begin{figure}跟\caption{}。
+	LaTeX中的\includegraphics[]{}，
+	options選項比較常用有
+	<TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>height=2cm      &#62; 高2cm
+width=5cm       &#62; 寬5cm
+angle=30        &#62; 順時鐘旋轉30度
+scale=2         &#62; 放大2倍
+	</PRE
+></TD
+></TR
+></TABLE
+>
+      </P
+><P
+>	在LaTeX中命令都有選項的，
+	都用[]括起來放在{}的前面，多個選項用,分開。
+      </P
+><P
+>	圖檔裡面eps(Encapsulated PostScript)是最常見的，
+	因為ps是頁描述語言最好要有完整的整頁與postscript語法，
+	所以來個eps可以當成片段堪進文章中，
+	不過因為由postscript轉出的jpg檔很醜，
+	通常是要轉放在web的Html檔時用jpg，
+	要用ps或pdf的用eps，
+	如果有辦法存成TeX/LaTeX的還是LaTeX格式的比較漂亮。
+      </P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN468"
+>原封不動顯示(literal text)</A
+></H2
+><P
+>	有時要把打進去的文字原封不動的秀出來，不要做任何的保留字解釋，
+	或者有時後要表達某內容是從螢幕上原封不動下來的，或是這段文字是程式碼，
+	這裡面空白就是空白，換行就是換行，
+      </P
+><P
+>	LaTeX
+	<TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>\begin{verbatim}
+   xxxxxxx
+\end{verbatim}
+
+或者
+
+/verb=xxxxxxxx=
+	</PRE
+></TD
+></TR
+></TABLE
+>
+	其中=是叫做delimiter，兩個=間的文字原封不動印出來，不一定要用"="
+	另外
+	<TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>$ &#38; % # _ { }
+	</PRE
+></TD
+></TR
+></TABLE
+>
+要前面多加個\
+      </P
+><P
+>	SGML
+	<TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>&#60;literal&#62;xxxxxx&#60;/literal&#62;
+
+&#60;screen&#62;
+xxxx
+&#60;/screen&#62;
+
+&#60;programlisting&#62;
+xxxx
+&#60;/programlisting&#62;
+	</PRE
+></TD
+></TR
+></TABLE
+>
+	SGML用&#38;lt;表式&#60;符號，用&#38;amp;表示&#38;符號，
+	其中&#60;literal&#62;是用來對一行中的文字，
+	&#60;programlisting&#62;跟&#60;screen&#62;都是一個block的大範圍，
+	另外如果不想對&#60;做解釋，則前後要用&#60;programlisting&#62;
+	<TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+>&#60;programlisting&#62;
+&#60;![CDATA[
+   xxxxx.....
+   xxxx
+]] &#62;
+&#60;/programlisting&#62;
+	</PRE
+></TD
+></TR
+></TABLE
+>
+	  夾住
+      </P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN477"
+>註解</A
+></H2
+><P
+>      SGML
+	<TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>&#60;!-- this is a comment in sgml --&#62;
+	</PRE
+></TD
+></TR
+></TABLE
+>
+      </P
+><P
+>	LaTeX
+	<TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>% this is a comment in LaTeX
+	</PRE
+></TD
+></TR
+></TABLE
+>
+      </P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN483"
+>Bibliography</A
+></H2
+><P
+>	在文章最後通常要把你所參考的資料出處說明清楚。
+	用
+	<TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>\begin{thebibliography}{99}
+	\bibitem{key1}Leslie Lamport "The Document Preparation System"
+	Addision Wesley Co,
+	\bibitem{key2}xxx
+	\bibitem{key3}xxxxx
+\end{thebibliography}
+	</PRE
+></TD
+></TR
+></TABLE
+>
+	文章中的參照在要放參考的地方用
+	\cite{key1}，這樣的好處是不用自己去維護那個流水號，
+	只要參照key1 key2 key3....就好了，通常是一個文字，
+	用作者的名字來當key。
+      </P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN487"
+>Logical 與Physical division</A
+></H2
+><P
+>	當我們越寫越大時，我們會像寫C程式一樣分成很多小檔案，一個一個小檔案就是
+	physical division 或physical chunk，
+	而一本書的章節分段就是logical chunk，
+	要分成很多小檔案，
+      </P
+><P
+>	LaTeX
+	<TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>\include{chap1}
+\include{chap2}
+	</PRE
+></TD
+></TR
+></TABLE
+>
+	會自動引用副檔名.tex
+      </P
+><P
+>	sgml用
+	<TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>&#60;!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook V3.1//EN" [
+&#60;!ENTITY chap1 SYSTEM "chap1.sgml"&#62;
+&#60;!ENTITY chap2 SYSTEM "chap2.sgml"&#62;
+&#60;!ENTITY chap3 SYSTEM "chap3.sgml"&#62;
+&#60;!ENTITY appa SYSTEM "appa.sgml"&#62;
+]&#62;
+
+&#60;book&#62;&#60;title&#62;My First Book&#60;/title&#62;
+&#38;chap1;
+&#38;chap2;
+&#38;chap3;
+&#38;appa;
+&#60;/book&#62;
+	</PRE
+></TD
+></TR
+></TABLE
+>
+	chap1.sgml開頭不需要加
+	&#60;!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook V3.1//EN" []&#62;，
+	直接寫
+	<TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>&#60;chapter id="ch1"&#62;&#60;title&#62;My First Chapter&#60;/title&#62;
+&#60;para&#62;My first paragraph.&#60;/para&#62;
+&#60;/chapter&#62;
+	</PRE
+></TD
+></TR
+></TABLE
+>
+	就可以了
+      </P
+><P
+>	基本上的用法就差不多了，其它還有好幾百個命令跟用法，
+	例如要寫Index, Appdenix等單元都有特定的規矩。
+      </P
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="x401.html" tppabs="http://www.study-area.org/cyril/opentools/opentools/x401.html"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="book1.html" tppabs="http://www.study-area.org/cyril/opentools/opentools/book1.html"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="x496.html" tppabs="http://www.study-area.org/cyril/opentools/opentools/x496.html"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>LaTeX與SGML的範例</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="doc.html" tppabs="http://www.study-area.org/cyril/opentools/opentools/doc.html"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>出版與dvi driver</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

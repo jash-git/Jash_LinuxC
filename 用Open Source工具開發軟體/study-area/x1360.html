@@ -1,0 +1,308 @@
+<HTML
+><HEAD
+><TITLE
+>重要目錄與檔案</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.49"><LINK
+REL="HOME"
+TITLE="用Open Source工具開發軟體"
+HREF="book1.html" tppabs="http://www.study-area.org/cyril/opentools/opentools/book1.html"><LINK
+REL="UP"
+TITLE="臭蟲追蹤系統"
+HREF="gnats.html" tppabs="http://www.study-area.org/cyril/opentools/opentools/gnats.html"><LINK
+REL="PREVIOUS"
+TITLE="臭蟲追蹤系統"
+HREF="gnats.html" tppabs="http://www.study-area.org/cyril/opentools/opentools/gnats.html"><LINK
+REL="NEXT"
+TITLE="client - client端的使用者命令"
+HREF="x1383.html" tppabs="http://www.study-area.org/cyril/opentools/opentools/x1383.html"></HEAD
+><BODY
+CLASS="SECT1"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>用Open Source工具開發軟體: 新軟體開發關念</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="gnats.html" tppabs="http://www.study-area.org/cyril/opentools/opentools/gnats.html"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 7. 臭蟲追蹤系統</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="x1383.html" tppabs="http://www.study-area.org/cyril/opentools/opentools/x1383.html"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="AEN1360"
+>重要目錄與檔案</A
+></H1
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN1362"
+>GNATS_ROOT</A
+></H2
+><P
+>	GNATS_ROOT是gnats管理的database目錄所在
+	如果是從source自己compile安裝的在
+	prefix/share/gnats/gnats-db
+	如果是rpm或deb這樣的distribution套件方法安裝
+	也可能在/var/lib/gnats/gnats-db下
+	這下面的檔案是gnats用來管理的
+	<TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+>gnats-adm       目錄
+gnats-queue     目錄
+pending
+	</PRE
+></TD
+></TR
+></TABLE
+>
+	gnats-adm下面的檔案很重要
+	<TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+>categories
+config          這個檔案記錄了gnats的一些default值 重要
+responsible
+states
+submitters
+	</PRE
+></TD
+></TR
+></TABLE
+>
+      </P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN1367"
+>SUPPORT SITE</A
+></H2
+><P
+>	安裝gnats
+	prefix/share/gnats或/var/lib/gnats放了需要管理的project名單(categories)
+	裡面的檔案就是host名字也就是site(因為這是拿來做tech support)
+	每個檔案裡放了需要回報的專案名稱
+	例如我有一個檔
+	/var/lib/gnats/zeus的內容
+	<TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+>gcc
+gdb
+	</PRE
+></TD
+></TR
+></TABLE
+>
+	表示zues這台機器(site)管了gcc gdb這兩個project的問題回報
+      </P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN1371"
+>SUBMITTER-SITESUBMITTER-ID</A
+></H2
+><P
+></P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN1374"
+>Email Alias</A
+></H2
+><P
+>	使用email回報時必需用email alias，在`/etc/aliases'裡 ，
+	在gnats的機器建立一個email alias，
+	用像vacation的方法pipe到queue-pr這隻script來
+	<TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+>gnats-admin:    gnats
+bugs:           "| /usr/lib/gnats/queue-pr -q"
+query-pr:       "| /usr/lib/gnats/mail-query"
+
+或者小心目錄不一樣，總之要找到queue-pr mail-query的程式所在
+
+bugs:  "| exec-prefix/libexec/gnats/queue-pr -q"
+	</PRE
+></TD
+></TR
+></TABLE
+>
+	gnats這個帳號應該已經設起來了，Home 目錄可以設在GNATS_ROOT
+	bugs可以亂取名字的只是用email的To:這個欄位要填的收件人就對
+	有可能是/etc/mail/aliases，設完後給個
+	<TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+># newaliases
+	</PRE
+></TD
+></TR
+></TABLE
+>
+      </P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN1379"
+>GNATS Demon</A
+></H2
+><P
+>	使用client/server方法時必需有gnatsd這隻deamon
+	<TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+>/etc/services
+	support         1529/tcp                        # GNATS
+
+/etc/inetd.conf
+	support         stream  tcp     nowait  gnats   /usr/sbin/tcpd  /usr/lib/gnats/gnatsd
+	</PRE
+></TD
+></TR
+></TABLE
+>
+	同樣的目錄可能不同distribution不一樣
+      </P
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="gnats.html" tppabs="http://www.study-area.org/cyril/opentools/opentools/gnats.html"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="book1.html" tppabs="http://www.study-area.org/cyril/opentools/opentools/book1.html"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="x1383.html" tppabs="http://www.study-area.org/cyril/opentools/opentools/x1383.html"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>臭蟲追蹤系統</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="gnats.html" tppabs="http://www.study-area.org/cyril/opentools/opentools/gnats.html"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>client - client端的使用者命令</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

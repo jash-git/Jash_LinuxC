@@ -1,0 +1,183 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html lang="zh-TW" xml:lang="zh-TW" xmlns="http://www.w3.org/1999/xhtml">
+<head><meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+ <meta http-equiv="PICS-Label" content='(PICS-1.1 "http://www.icra.org/ratingsv02.html"  labels ratings (ca 1 lz 1 nz 1 oz 1 vz 1) "http://www.rsac.org/ratingsv01.html"  labels ratings (n 0 s 0 v 0 l 0))'/>
+ <title>如何在 Linux 下撰寫程式來使用 I/O 埠: 如何在 C 語言下使用 I/O 埠</title>
+ <link href="IO-Port-Programming-3.html" tppabs="http://www.linux.org.tw/CLDP/MiniHOWTO/prog/IO-Port-Programming/IO-Port-Programming-3.html" rel="next" />
+ <link href="IO-Port-Programming-1.html" tppabs="http://www.linux.org.tw/CLDP/MiniHOWTO/prog/IO-Port-Programming/IO-Port-Programming-1.html" rel="previous" />
+ <link href="index.html" tppabs="http://www.linux.org.tw/CLDP/MiniHOWTO/prog/IO-Port-Programming/index.html" rel="contents" />
+  <link href="index.html" tppabs="http://www.linux.org.tw/CLDP/MiniHOWTO/prog/IO-Port-Programming/index.html" rel="start" />
+  <link href="IO-Port-Programming-1.html" tppabs="http://www.linux.org.tw/CLDP/MiniHOWTO/prog/IO-Port-Programming/IO-Port-Programming-1.html" rel="chapter" title="1.介紹" />
+ <link href="IO-Port-Programming-2.html" tppabs="http://www.linux.org.tw/CLDP/MiniHOWTO/prog/IO-Port-Programming/IO-Port-Programming-2.html" rel="chapter" title="2.如何在 C 語言下使用 I/O 埠" />
+ <link href="IO-Port-Programming-3.html" tppabs="http://www.linux.org.tw/CLDP/MiniHOWTO/prog/IO-Port-Programming/IO-Port-Programming-3.html" rel="chapter" title="3.硬體中斷 (IRQs) 與 DMA 存取" />
+ <link href="IO-Port-Programming-4.html" tppabs="http://www.linux.org.tw/CLDP/MiniHOWTO/prog/IO-Port-Programming/IO-Port-Programming-4.html" rel="chapter" title="4.高精確的時序" />
+ <link href="IO-Port-Programming-5.html" tppabs="http://www.linux.org.tw/CLDP/MiniHOWTO/prog/IO-Port-Programming/IO-Port-Programming-5.html" rel="chapter" title="5.使用其他程式語言" />
+ <link href="IO-Port-Programming-6.html" tppabs="http://www.linux.org.tw/CLDP/MiniHOWTO/prog/IO-Port-Programming/IO-Port-Programming-6.html" rel="chapter" title="6.一些有用的 I/O 埠" />
+ <link href="IO-Port-Programming-7.html" tppabs="http://www.linux.org.tw/CLDP/MiniHOWTO/prog/IO-Port-Programming/IO-Port-Programming-7.html" rel="chapter" title="7.提示 " />
+ <link href="IO-Port-Programming-8.html" tppabs="http://www.linux.org.tw/CLDP/MiniHOWTO/prog/IO-Port-Programming/IO-Port-Programming-8.html" rel="chapter" title="8.問題排除" />
+ <link href="IO-Port-Programming-9.html" tppabs="http://www.linux.org.tw/CLDP/MiniHOWTO/prog/IO-Port-Programming/IO-Port-Programming-9.html" rel="chapter" title="9.程式碼範例" />
+ <link href="IO-Port-Programming-10.html" tppabs="http://www.linux.org.tw/CLDP/MiniHOWTO/prog/IO-Port-Programming/IO-Port-Programming-10.html" rel="chapter" title="10.致謝" />
+ <link href="javascript:if(confirm('http://tldp.org/HOWTO/mini/IO-Port-Programming.html  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://tldp.org/HOWTO/mini/IO-Port-Programming.html'" tppabs="http://tldp.org/HOWTO/mini/IO-Port-Programming.html" rel="alternate" title="原版" />
+ <link href="style.css" tppabs="http://www.linux.org.tw/CLDP/MiniHOWTO/style.css" rel="stylesheet" type="text/css" />
+ <link href="javascript:if(confirm('http://sunsite.unc.edu/pub/Linux/docs/HOWTO/COPYRIGHT  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://sunsite.unc.edu/pub/Linux/docs/HOWTO/COPYRIGHT'" tppabs="http://sunsite.unc.edu/pub/Linux/docs/HOWTO/COPYRIGHT" rel="copyright" title="版權" />
+ <link href="IO-Port-Programming-2.html#ss2.1" tppabs="http://www.linux.org.tw/CLDP/MiniHOWTO/prog/IO-Port-Programming/IO-Port-Programming-2.html#ss2.1" rel="section" title="2.1 正規的方法" />
+ <link href="IO-Port-Programming-2.html#ss2.2" tppabs="http://www.linux.org.tw/CLDP/MiniHOWTO/prog/IO-Port-Programming/IO-Port-Programming-2.html#ss2.2" rel="section" title="2.2 另一個替代的方法: /dev/port " />
+ <link href="IO-Port-Programming.rdf" tppabs="http://www.linux.org.tw/CLDP/MiniHOWTO/prog/IO-Port-Programming/IO-Port-Programming.rdf" rel="meta" title="各章節的說明資訊" />
+</head> <body> 
+<table
+
+
+
+
+>
+  <tr
+>
+    <th
+colspan="3" class="HdTitle"
+>Mini
+    HOWTO：Linux I/O port programming</th>
+  </tr
+>
+  <tr
+>
+    <td class="TtdL"
+><a href="IO-Port-Programming-1.html" tppabs="http://www.linux.org.tw/CLDP/MiniHOWTO/prog/IO-Port-Programming/IO-Port-Programming-1.html" accesskey="P">上一頁(P)</a></td
+>
+    <td class="TtdC"
+></td
+>
+    <td class="TtdR"
+><a href="IO-Port-Programming-3.html" tppabs="http://www.linux.org.tw/CLDP/MiniHOWTO/prog/IO-Port-Programming/IO-Port-Programming-3.html" accesskey="N">下一頁(N)</a></td
+>
+  </tr
+>
+</table
+>
+<hr />
+<h1><a name="s2" id="s2">2.</a> 如何在 C 語言下使用 I/O 埠</h1>
+
+<h2><a name="ss2.1" id="ss2.1">2.1</a> 正規的方法
+</h2>
+
+<p>用來存取 I/O 埠的常式 (Routine) 都放在檔案 <code>/usr/include/asm/io.h</code> 裡
+(或放在核心原始碼程式集的 <code>linux/include/asm-i386/io.h</code> 檔案裡).
+這些常式是以單行巨集 (inline macros) 的方式寫成的, 所以使用時只要以
+<code>#include &lt;asm/io.h&gt;</code> 的方式引用就夠了; 不需要附加任何函式館
+(libraries).</p>
+<p>譯注: 常式(Routine) 通常是指系統呼叫(System Call)與函式(Function)的總稱.</p>
+<p>因為 gcc (至少出現在 2.7.2.3 和以前的版本) 以及 egcs (所有的版本) 的限制,
+你在編譯任何使用到這些常式的原始碼時 <em>必須</em> 打開最佳化選項
+(<code>gcc -O1</code> 或較高層次的), 或者是在做 <code>#include &lt;asm/io.h&gt;</code> 
+這個動作前使用 <code>#define extern</code> 將 extern 定義成空白.</p>
+<p>為了除錯的目的, 你編譯時可以使用 <code>gcc -g -O</code> (至少現在的 gcc 版本是這樣),
+但是最佳化之後有時可能會讓除錯器 (debugger) 的行為變的有點奇怪. 
+如果這個狀況對你而言是個困擾, 你可以將所有使用到 I/O 
+埠的常式集中放在一個檔案裡並只在編譯該檔案時纔打開最佳化選項.</p>
+<p>在你存取任何 I/O 埠之前, 你必須讓你的程式有如此做的權限. 要達成這個目的
+你可以在你的程式一開始的地方 (但是要在任何 I/O 埠存取動作之前) 呼叫 
+<code>ioperm()</code> 這個函式 (該函式被宣告於檔案 <code>unistd.h</code> , 並且被定義在
+核心中). 使用語法是 <code>ioperm(from, num, turn_on)</code>,
+其中 <code>from</code> 是第一個允許存取的 I/O 埠位址, <code>num</code> 是接著連續存取
+I/O 埠位址的數目. 例如, <code>ioperm(0x300, 5, 1)</code> 的意思就是說允許存取埠
+0x300 到 0x304 (一共五個埠位址). 而最後一個參數是一個布林代數值用來指定是否
+給予程式存取 I/O 埠的權限 (true (1)) 或是除去存取的權限 (false (0)). 你
+可以多次呼叫函式 <code>ioperm()</code> 以便使用多個不連續的埠位址. 至於語法的細節請
+參考 <code>ioperm(2)</code> 的使用說明文件.</p>
+<p>你的程式必須擁有 root 的權限纔能呼叫函式 <code>ioperm()</code> ; 所以你如果不是以
+root 的身份執行該程式, 就是得將該程式 setuid 成 root. 當你呼叫過函式 <code>ioperm()</code>
+打開 I/O 埠的存取權限後你便可以拿掉 root 的權限. 在你的程式結束之後並不特別
+要求你以 <code>ioperm(..., 0)</code> 這個方式拿掉 I/O 埠的存取權限; 因為當你的程式
+執行完畢之後這個動作會自動完成.</p>
+<p>呼叫函式 <code>setuid()</code> 將目前執行程式的有效使用者識別碼 (ID) 設定成非 
+root 的使用者並不影響其先前以 <code>ioperm()</code> 的方式所取得的 I/O 埠存取權限,
+但是呼叫函式 <code>fork()</code> 的方式卻會有所影響 (雖然父行程 (parent process) 
+保有存取權限, 但是子行程 (child process) 卻無法取得存取權限). </p>
+<p>函式 <code>ioperm()</code> 只能讓你取得埠位址 0x000 到 0x3ff 的存取權限; 至於
+較高位址的埠, 你得使用函式 <code>iopl()</code>  (該函式讓你一次可以存取所有的埠位址).
+將權限等級參數值設為 3 (例如, <code>iopl(3)</code>) 以便你的程式能夠存取 <em>所有的</em>
+I/O 埠 (因此要小心 --- 如果存取到錯誤的埠位址將對你的電腦造成各種不可預期的損害. 
+同樣地, 呼叫函式 <code>iopl()</code> 你得擁有 root 的權限.至於語法的細節請參考 
+<code>iopl(2)</code> 的使用說明文件.</p>
+<p>接著, 我們來實際地存取 I/O 埠... 要從某個埠位址輸入一個 byte (8 個 bits)
+的資料, 你得呼叫函式 <code>inb(port)</code> , 該函式會傳回所取得的一個 byte 的資料.
+要輸出一個  byte 的資料, 你得呼叫函式 <code>outb(value, port)</code>  (請記住參數的次序).
+要從某二個埠位址 <code>x</code> 和 <code>x+1</code> (二個 byte 組成一個 word, 故使用組合語言
+指令 <code>inw</code>) 輸入一個 word (16 個 bits) 的資料, 你得呼叫函式 <code>inw(x)</code> ;
+要輸出一個 word 的資料到二個埠位址, 你得呼叫函式 <code>outw(value, x)</code> .
+如果你不確定使用那個埠指令 (byte 或 word), 你大概須要 <code>inb()</code> 與 <code>outb()</code>
+這二個埠指令 --- 因為大多數的裝置都是採用 byte 大小的埠存取方式來設計的. 
+注意所有的埠存取指令都至少需要大約一微秒的時間來執行.</p>
+<p>如果你使用的是 <code>inb_p()</code>, <code>outb_p()</code>, <code>inw_p()</code>, 以及 <code>outw_p()</code>
+等巨集指令, 在你對埠位作址存取動作之後只需很短的(大約一微秒)延遲時間就可以完成;
+你也可以讓延遲時間變成大約四微秒方法是在使用 <code>#include &lt;asm/io.h&gt;</code>
+之前使用 <code>#define REALLY_SLOW_IO</code>. 這些巨集指令通常 (除非你使用的是
+<code>#define SLOW_IO_BY_JUMPING</code>, 這個方法可能較不準確) 會利用輸出資料到埠位址 
+0x80 以便達到延遲時間的目的, 所以你得先以函式 <code>ioperm()</code> 取得埠位址 0x80
+的使用權限 (輸出資料到埠位址 0x80 不應該會對系統的其他其他部分造成影響). 至於
+其他通用的延遲時間的方法, 請繼續讀下去. </p>
+<p><code>ioperm(2)</code>, <code>iopl(2)</code> 等函式, 和上面所述及的巨集指令的使用說明會收錄在
+最近出版的 Linux 使用說明文件集中.</p>
+
+<h2><a name="ss2.2" id="ss2.2">2.2</a> 另一個替代的方法: <code>/dev/port</code>
+</h2>
+
+<p>另一個存取 I/O 埠的方法是以函式 <code>open()</code> 開啟檔案 <code>/dev/port</code> 
+(一個字元裝置,主要裝置編號為 1, 次要裝置編號為 4) 以便執行讀且/或寫的動作
+(注意標準輸出入 (stdio) 函式 <code>f*()</code> 有內部的緩衝 (buffering), 所以要避免使用).
+接著使用 <code>lseek()</code> 函式以便在該字元裝置檔案中找到某個 byte 資料的正確位置
+(檔案位置 0 = 埠位址 0x00, 檔案位置 1 = 埠位址 0x01, 以此類推), 然後你可以使用
+<code>read()</code> 或 <code>write()</code> 函式對某個埠位址做讀或寫一個 byte 或 word 資料的動作.</p>
+<p>這個替代的方法就是在你的程式裡使用 read/write 函式來存取 <code>/dev/port</code> 
+字元裝置檔案. 這個方法的執行速度或許比前面所講的一般方法還慢, 但是不需要編譯器
+的最佳化功能也不需要使用函式 <code>ioperm()</code> . 如果你允許非 root 使用者或群組存取
+<code>/dev/port</code> 字元設裝置案, 操作時就不需擁有 root 權限 -- 但是對於系統安全而言
+是個非常糟糕的事情, 因為他可能傷害到你的系統, 或許會有人因而取的 root 的權限,
+利用 <code>/dev/port</code> 字元裝置檔案直接存取硬碟, 網路卡, 等設備.</p>
+
+<hr />
+<table
+
+
+
+
+>
+  <tr
+>
+    <td class="BtdL"
+><a href="IO-Port-Programming-1.html" tppabs="http://www.linux.org.tw/CLDP/MiniHOWTO/prog/IO-Port-Programming/IO-Port-Programming-1.html" accesskey="P">上一頁(P)</a></td
+>
+    <td class="BtdC"
+><a href="index.html" tppabs="http://www.linux.org.tw/CLDP/MiniHOWTO/prog/IO-Port-Programming/index.html" accesskey="H">目錄(H)</a></td
+>
+    <td class="BtdR"
+><a
+href="IO-Port-Programming-3.html" tppabs="http://www.linux.org.tw/CLDP/MiniHOWTO/prog/IO-Port-Programming/IO-Port-Programming-3.html"
+>下一頁(N)</a
+></td
+>
+  </tr
+>
+  <tr
+>
+    <td class="BtdL"
+>介紹</td
+>
+    <td class="BtdC"
+><a href="IO-Port-Programming-2.html" tppabs="http://www.linux.org.tw/CLDP/MiniHOWTO/prog/IO-Port-Programming/IO-Port-Programming-2.html" accesskey="T">到頂層(T)</a></td
+>
+    <td class="BtdR"
+>硬體中斷 (IRQs) 與 DMA 存取</td
+>
+  </tr
+>
+</table
+>
+<div>
+<a href="javascript:if(confirm('http://validator.w3.org/check/referer  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://validator.w3.org/check/referer'" tppabs="http://validator.w3.org/check/referer"><img src="valid-xhtml10.png" tppabs="http://www.linux.org.tw/CLDP/valid-xhtml10.png"  alt="符合 XHTML 1.0" width="88" height="31" style="border:0;width:88px;height:31px"/></a>
+<a href="javascript:if(confirm('http://jigsaw.w3.org/css-validator/  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://jigsaw.w3.org/css-validator/'" tppabs="http://jigsaw.w3.org/css-validator/"><img style="border:0;width:88px;height:31px" src="vcss.png" tppabs="http://www.linux.org.tw/CLDP/vcss.png"  alt="符合 CSS"/></a>
+<a href="javascript:if(confirm('http://www.w3.org/WAI/WCAG1AA-Conformance  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://www.w3.org/WAI/WCAG1AA-Conformance'" tppabs="http://www.w3.org/WAI/WCAG1AA-Conformance" title="Explanation of Level Double-A Conformance"><img style="border:0;width:88px;height:32px" src="wcag1AA.gif" tppabs="http://www.linux.org.tw/CLDP/wcag1AA.gif" alt="Level Double-A conformance icon,  W3C-WAI Web Content Accessibility Guidelines 1.0"/></a>
+<a href="javascript:if(confirm('http://www.w3.org/RDF/  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://www.w3.org/RDF/'" tppabs="http://www.w3.org/RDF/" title="RDF 資源描述架構"><img  src="rdf.gif" tppabs="http://www.linux.org.tw/CLDP/rdf.gif" style="border:0" alt="表示該網頁支援資源描述架構"/></a>
+</div>
+</body>
+</html>

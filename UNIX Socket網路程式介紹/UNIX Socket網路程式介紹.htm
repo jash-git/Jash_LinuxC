@@ -1,0 +1,328 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<!-- saved from url=(0067)http://content.edu.tw/primary/info_edu/cy_sa/report/more/8611a8.htm -->
+<HTML><HEAD><TITLE>UNIX Socket網路程式介紹</TITLE>
+<META http-equiv=Content-Type content="text/html; charset=big5">
+<META content="MSHTML 6.00.2900.3020" name=GENERATOR></HEAD>
+<BODY>
+<P>UNIX Socket網路程式介紹 </P>
+<P>簡單的檔案傳輸應用例 中央大學電算中心 楊　　素　　 秋 Email: center7@cc.ncu.edu.tw </P>
+<P>　　學校的同學在熟悉了網路程式的應用功能後，總是會想進一步了解網路是如何運作、網路程式要如何撰寫。我們在暑期電腦網路訓練課程裡，也安排了〝UNIX 
+Socket網 路程式設計〞的課程，讓同學透過Solaris作業系統，認識Socket程式庫的使用，進而撰寫網路應用程式：如檔案傳輸、網路資料庫查詢等應用程式。 
+</P>
+<P>　　在這篇文章中，簡要的介紹Socket網路資料傳輸模式，運用此基礎再逐次擴增為單向的網路檔案傳輸程式。附錄的檔案傳輸程式，則套用相同的模式、擴增檔案傳輸功能：pwd、cd、ls、get、put、cat、bye。這些程式看似複雜，其實是相當容易的。希望讀者在了解Socket網路資料傳輸模式後，也能動手創作自己想要的網路應用程式。 
+</P>
+<P>壹、Socket網路傳輸概論 </P>
+<P>　　Internet為全世界最廣為接受的網路協定，幾乎任何網路都支援Internet IP網 路層協定，舉凡Ethernet、Token 
+Ring、FDDI、Serial Line的SLIP (Serial Line IP)、PPP (Point-To-Point) ，甚至IBM 
+的SNA網路、Digital 的DECNET網路 都訂定 
+有與IP網路層協定共通的網路傳輸協定。Internet採階層架構實現與管理網路（圖一），各網路層的功能分別為： </P>
+<P>1.應用層 (Application Layer) </P>
+<P>　　　各種網路應用如 telnet、Ftp、WWW、Email、News、BBS等。 </P>
+<P>2.傳輸層 (Transport Layer) </P>
+<P>負責網路連接之建立、分割／組合傳送訊息、提供使用節點間資料流量的控制、決定提供網路資料傳送的服務品質等。提供可靠、有效率的連接給網路應用節點使用。 
+</P>
+<P>3.網路層 (IP Network Layer) </P>
+<P>承接傳輸層傳送的封包，依所欲傳送的位址自動Route轉送路徑、轉換不同協定的封包格式、監控網路流量狀況，動態建構網路整體拓樸架構，動態提供最佳的Route資料傳送路徑。Internet網路層協定為 
+IP(Internet Protocol)。 </P>
+<P>4.鏈接層 (Network Access Layer) </P>
+<P>承接網路層傳送的封包，做更細的資料框(Frame)的切割／組合、檢出／更正錯誤的傳送資料、運用ACK 判斷資料的正常傳送與控制傳送速度，及負責傳送由0與 
+1組成的原始網路資料。 </P>
+<P>圖一　OSI與Internet網路分層架構比較 (省略) </P>
+<P>　　UNIX Socket程式庫 (/usr/lib/libsocket.a )，提供應用程式透過TCP網路層、完成資料收送功能的介面。撰寫Socket 
+網路程式有下列主要步驟： </P>
+<P>1.開啟 Socket介面：Socket 就如同傳輸管道的出入口，建立傳輸應用的兩端點須各自開啟一Socket，往後的資料傳送，均依賴 
+read（送入此Socket）或 write (由Socket讀出) 資料。需給AF_INET(socket family)、SOCK_STREAM 
+(socket type)、protocoltype等參數。 </P>
+<P>sock = socket(AF_INET, SOCK_STREAM, 0); </P>
+<P>2.Binding Socket地址：Socket 出入口需Binding到TCP address，網路上的電腦主 機才可以依據使用者所指定的TCP 
+address，建立資料傳送的通道。TCP address 包含IP address (如140.115.17.111) 及TCP Port 
+number。我們熟悉的網路應用： telnet 140.115.17.111 23與ftp 140.115.17.111 21，均需依據所指定的 host 
+IP與 Port，建立連接、傳輸資料。 </P>
+<P>name.sin_family = AF_INET; </P>
+<P>name.sin_addr.s_addr = INADDR_ANY; </P>
+<P>name.sin_port = 5000; </P>
+<P>bind(sock, (struct sockaddr *)&amp;name, sizeof name) </P>
+<P>3.Connection的建立：電腦主機可以使用Binding TCP address後的Sock et，建立資 
+料傳送通道（圖二）。Server/Client 的傳輸模式，Server 端需呼叫accept() 
+功能，等待Client的連接建立要求。Client端則呼叫connect()功能，要求與Server主機建立連接通道。 </P>
+<P>msgsock = accept(sock,(struct sockaddr *)0, (int *)0); </P>
+<P>connect(sock, (struct sockaddr *)&amp;server, sizeof server) </P>
+<P>4.傳輸網路資料：Client與Server主機間成功地建立連接通道後。兩端均可藉由各自的Socket出入口，read 或write 資料到對方。 
+</P>
+<P>rval = read(msgsock,buf,sizeof(buf)) </P>
+<P>wrval=write(msgsock,buf,sizeof(buf)) </P>
+<P>5.關閉 Socket介面：當應用程式不再使用Socket 出入口做資料傳送時 ，需關閉Socket 。 </P>
+<P>close(sock) </P>
+<P>貳、基本的Server / Client資料傳輸模式 </P>
+<P>　　表一的網路應用程式例為：Client主機透過網路傳送"Hello!"的簡短信息給 
+Server主機。Server則等待網路上任何Client來呼叫連接，讀取Client送來得信息、再將信息顯示到螢幕上。我們必須分別撰寫Server程式與Client程式的相對應動作，並分別Compiler以得到執行檔(例如serv 
+、clnt)，方可以透過網路，在不同電腦主機間傳輸資訊。 </P>
+<P>gcc serv.c -o serv -lsocket </P>
+<P>gcc clnt.c -o clnt -lsocket </P>
+<P>　　表一程式例的Server端首先呼叫socket()，開啟一Internet socket：sock。指 定好所欲接受連接端的TCP address 
+(此例的IP address設定為INADDR_ANY，表示可 以接受任何Client主機的服務要求，port 
+number取為5000，可指定為任意non-well-known port number)。bind此TCP 
+address結構到sock上。Server呼叫accept() 
+，開始等待任何Client的連接要求，一旦有Client要求建立連接，Server會create新的msgsock來服務此Client（圖二），透過此雙向的連接通道與Client收送信息。 
+</P>
+<P>Client端呼叫socket()，開啟一sock。同樣地需指定好所欲連接Server的TCP address 
+，此例呼叫gethostbyname()，將使用者敲入的主機名稱(例如sparc10)，取得hostent結構，取得hp-&gt;h_addr的IP 
+address，port number取為5000，呼叫connect()，與所指定TCP 
+address的Server建立連接，待成功地建立連接後，Client可透過此雙向的連接通道，與Server收送信息（圖二）。 </P>
+<P>圖二　Socket的開啟與建立連接 (省略) </P>
+<P>表一　Server/Client網路資料傳輸模式 </P>
+<TABLE border=1>
+  <TBODY>
+  <TR>
+    <TD>Server主機<BR>執行命令例：serv &amp; </TD>
+    <TD>Client主機 <BR>執行命令例：clnt sparc105000 </TD></TR>
+  <TR>
+    <TD>sock = socket(AF_INET, SOCK_STREAM, 0); <BR><BR><BR>name.sin_family = 
+      AF_INET; <BR>name.sin_addr.s_addr = INADDR_ANY; <BR>name.sin_port = 5000; 
+      <BR>bind(sock,(struct sockaddr *)&amp;name, <BR>sizeof (name) ); 
+      <BR><BR><BR>msgsock = accept(sock,(struct sockaddr <BR>*)0, (int *)0); 
+      <BR>rval = read(msgsock, buf, sizeof(buf)); <BR>printf("The Message is %s 
+      \\n",buf); <BR>....... <BR>Close(msgsock); <BR>close(sock); </TD>
+    <TD>sock = socket(AF_INET, SOCK_STREAM,0); <BR><BR><BR>server.sin_family = 
+      AF_INET; <BR>hp=gethostbyname(argv[1]); <BR>bcopy((char*)hp-&gt;h_addr, 
+      (char*) <BR>&amp;server.sin_addr,hp-&gt;h_length); <BR>server.sin_port = 
+      5000; <BR><BR><BR>connect(sock, (struct sockaddr*)&amp;server, 
+      <BR>sizeof(server)) <BR>wrval = write(sock, "Hello!",6 ); 
+      <BR><BR><BR>close(sock); <BR></TD></TR></TBODY></TABLE>
+<P>參、簡易的Ftp Server / Client程式例 </P>
+<P>　　根據上一節的Server/Client網路資料傳輸模式，我們稍加以修改便可以做相當多網路應用功能。下面所舉的應用例為簡單的ftp檔案傳輸應用： 
+</P>
+<P>　　Server執行ftp_serv程式，等待任何ftp_clnt的連接要求，一旦有ftp _clnt要 求建立連接，Server 
+create新的msgsock來服務此Client，接受傳來的檔案名稱，開啟該檔案、逐一讀出檔案內容、寫入msgsock透過通道送給Client端。 
+ftp_serv &amp; </P>
+<P>　　Client執行ftp_clnt程式，與sparc10主機以5000的port number建立連接。Server / 
+Client建立連接後，送出Client所要抓取的檔案名稱（例如 /etc/passwd），由sock讀 
+取Server送來的檔案內容，並儲存名為passwd的檔案在client主機上。 ftp_clnt sparc10 5000 /etc/passwd 
+passwd </P>
+<P>表二　簡單的Ftp Server/Client網路資料傳輸模式 </P>
+<TABLE border=1>
+  <TBODY>
+  <TR>
+    <TD>Server主機<BR>執行命令例：serv &amp; </TD>
+    <TD>Client主機<BR>執行命令例：clnt sparc10 5000</TD></TR>
+  <TR>
+    <TD>sock = socket(AF_INET, SOCK_STREAM, 0); <BR><BR><BR>name.sin_family = 
+      AF_INET; <BR>name.sin_addr.s_addr = INADDR_ANY; <BR>name.sin_port = 5000; 
+      <BR>bind(sock,(struct sockaddr *)&amp;name, <BR>sizeof (name) ); 
+      <BR><BR>msgsock = accept(sock,(struct sockaddr <BR>*)0, (int *)0); <BR>... 
+      <BR><BR>rval = read(msgsock, buf,1024) .....(1) <BR>fp=fopen(buf,"r") 
+      <BR><BR>fgets(buf,sizeof(buf),fp) .....(2) 
+      <BR>wrval=write(msgsock,buf,sizeof(buf) <BR><BR>Close(msgsock); 
+      <BR>close(sock); </TD>
+    <TD>sock = socket(AF_INET, SOCK_STREAM,0); <BR><BR><BR>server.sin_family = 
+      AF_INET; <BR>hp=gethostbyname(argv[1]); <BR>bcopy((char*)hp-&gt;h_addr, 
+      (char*) <BR>&amp;server.sin_addr,hp-&gt;h_length); <BR>server.sin_port = 
+      5000; <BR><BR>connect(sock, (struct sockaddr*)&amp;server, 
+      <BR>sizeof(server)) <BR>... <BR><BR>write(sock, 
+      argv[3],strlen(argv[3])...(3) <BR>fp=fopen(argv[4],"w+"); 
+      <BR><BR>rval=read(sock,buf,sizeof(buf) ...(4) <BR>fputs(buf,fp); <BR>... 
+      <BR>close(sock); <BR></TD></TR></TBODY></TABLE>
+<P>　</P>
+<P>表三　簡單的Ftp Server程式:ftp_serv.c </P>
+<TABLE border=0>
+  <TBODY>
+  <TR>
+    <TD>#include &lt;sys/types.h&gt; <BR>#include &lt;sys/socket.h&gt; 
+      <BR>#include &lt;netinet/in.h&gt; <BR>#include &lt;netdb.h&gt; 
+      <BR>#include &lt;stdio.h&gt; <BR>#include &lt;string.h&gt; <BR>#define 
+      TRUE 1 <BR>main() <BR>{ <BR>int sock, msgsock, length; <BR>struct 
+      sockaddr_in name; <BR>FILE *fp; <BR>int rval,wrval; <BR>char 
+      buf[1024],filename[1024]; <BR><BR>sock = socket(AF_INET, SOCK_STREAM, 0); 
+      <BR>if (sock &lt; 0) { <BR>perror("opening stream socket"); <BR>exit(1); 
+      <BR>} <BR>/*-------------------------------------------------------*/ 
+      <BR>/* Create the acceptable connection host with Wildcard */ 
+      <BR>/*-------------------------------------------------------*/ 
+      <BR>name.sin_family = AF_INET; <BR>name.sin_addr.s_addr = INADDR_ANY; 
+      <BR>name.sin_port = 5000; <BR>if (bind(sock, (struct sockaddr *)&amp;name, 
+      sizeof name) &lt; 0) {<BR>perror ("binding stream socket"); <BR>exit(1); 
+      <BR>} <BR>listen(sock,5); <BR>do{ <BR>msgsock = accept(sock,(struct 
+      sockaddr *)0, (int *)0); <BR>if (msgsock == -1) <BR>perror("accept error 
+      !\\n "); <BR>else do { <BR>bzero(buf, sizeof(buf) ); 
+      <P>/*--------------------------------------------------*/ <BR>/* Read 
+      filename from msgsock (sent from client) */ -------------(1) 
+      <BR>/*--------------------------------------------------*/ <BR>if ((rval = 
+      read(msgsock, buf,1024)) &lt; 0) <BR>perror("reading stream message"); 
+      <BR>if (rval == 0) <BR>printf("Ending connection\\n"); <BR>else { <BR>if 
+      ((fp=fopen(buf,"r")) == NULL) { <BR>printf("抱歉! 無法找到所要的檔案 : %s !\\n 
+      ",buf); <BR>break; <BR>} <BR>printf("開啟 [%s]檔案及傳輸中 !!\\n ",buf); 
+      <BR>bzero(filename,sizeof(filename)); <BR>strcpy(filename, buf); 
+      <BR>/*--------------------------------------------------*/ <BR>/* Read 
+      file content &amp; sent to msgsock ...&gt; client */-------------(2) 
+      <BR>/*--------------------------------------------------*/ <BR>while 
+      (fgets(buf,sizeof(buf),fp) != (char*)NULL) { <BR>if 
+      ((wrval=write(msgsock,buf,sizeof(buf))) &lt;0) <BR>break; <BR>printf("."); 
+      <BR>} <BR>fclose(fp); <BR>printf("\\n\\n 關閉 [%s]檔案 ! \\n",filename); 
+      <BR>rval=0; <BR>} <BR>}while (rval != 0); <BR>close(msgsock); <BR>printf(" 
+      [%s]檔案已傳輸完成* !! \\n ",filename); <BR>printf(" 檔案傳輸傳輸伺服器在 Port 5000 等待客戶連線中 
+      !!\\n\\n\\n"); <BR>}while (TRUE); <BR>close(sock); <BR>exit(0); <BR>} 
+    </P></TD></TR></TBODY></TABLE>
+<P>表四　簡單的Ftp Client程式:ftp_clnt.c </P>
+<TABLE border=1>
+  <TBODY>
+  <TR>
+    <TD>#include &lt;sys/types.h&gt; <BR>#include &lt;sys/socket.h&gt; 
+      <BR>#include &lt;netinet/in.h&gt; <BR>#include &lt;netdb.h&gt; 
+      <BR>#include &lt;stdio.h&gt; <BR>#define DATA "The sea is clam ...." 
+      <BR>main(int argc, char *argv[] ) <BR>{ <BR>int sock, rval, wrval; 
+      <BR>char buf[1024]; <BR>struct sockaddr_in server; <BR>struct hostent *hp, 
+      *gethostbyname(); <BR>FILE *fp; <BR><BR>sock = 
+      socket(AF_INET,SOCK_STREAM,0); <BR>if (sock &lt; 0) { <BR>perror("opening 
+      stream socket"); <BR>exit(1); <BR>} <BR>server.sin_family=AF_INET; 
+      <BR>hp=gethostbyname(argv[1]); <BR>if (hp == 0 ) { <BR>printf( "%s : 
+      unknown host\\n", argv[1]); <BR>exit(2); <BR>} 
+      <BR>bcopy((char*)hp-&gt;h_addr, (char *)&amp;server.sin_addr, 
+      hp-&gt;h_length); <BR>server.sin_port = 5000; <BR>if (connect(sock, 
+      (struct sockaddr *)&amp;server, sizeof server) &lt; 0) <BR>{ <BR>perror 
+      ("connecting stream socket"); <BR>exit(1); <BR>} 
+      <BR><BR>/*----------------------------------------------------------*/ 
+      <BR>/* FTP Client Command : ftp_clnt sparc10 5000 Source Dest */ <BR>/* 
+      Write the wanted filename to sock ...&gt; ftp_serv */ -------------(3) 
+      <BR>/*----------------------------------------------------------*/ <BR>if 
+      (write(sock, argv[3],strlen(argv[3])) &lt; 0) <BR>perror ("writing stream 
+      socket"); <BR>sleep(1); <BR>printf("要求取得檔案 [%s], 並儲存中...\\n",argv[3]); 
+      <BR>fp=fopen(argv[4],"w+"); 
+      <BR>/*---------------------------------------------------------*/ <BR>/* 
+      Read file content from sock (sent from ftp_serv ) */ <BR>/* and Write to 
+      local file */-------------(4) 
+      <BR>/*---------------------------------------------------------*/ 
+      <BR>while ( (rval=read(sock,buf,sizeof(buf) )) &gt;1) { <BR>printf("."); 
+      <BR>fputs(buf,fp); <BR>} <BR>fclose(fp); <BR>close(sock); 
+      <BR>printf("檔案存取完畢 !! \\n"); <BR>printf("結束連線 !! \\n"); <BR>exit(0); <BR>} 
+    </TD></TR></TBODY></TABLE>
+<P>肆、結論 </P>
+<P>　　網路ftp server儲存有相當多的UNIX網路應用共享程式集(Shareware )，由簡單 
+的tftp、ftp、telnet、talk，到具複雜網路應用協定的BIND (DNS，Domain Name Services)、inetd (Internet 
+service daemon) 、Gopher、HTTP(Hyper Text Transfer 
+Protocol)等等，他們都公開網路應用的原始C程式碼。有興趣的讀者可以藉著對Socket網路程式的基本了解，抓回、研讀Shareware網路程式、進一步去撰寫自己想要的網路應用程式，享受自己創作網路應用的樂趣。當然，在初次撰寫網路程式時，你還是會碰到相當多的小問題、花相當多的時間去debug程式，但看到自己的成果時，那種感覺會是相當美好的。 
+</P>
+<P>參考資料 </P>
+<P>1.Advanced Programming in the UNIX Environment，W. Richard Stevens， 
+Addison-Wesley 1992。 </P>
+<P>2.UNIX System Programming，Keith Haviland， Addison-Wesley 1987。 </P>
+<P>3.SunOS 5.5 STREAMS Programmer's Guide，SunSoft 1993。 </P>
+<P>附錄A　擴增功能的Ftp Server / Client程式 
+<BR><BR>/****************************************************************/ 
+<BR>/* Server of ftpserver The follows are functions */ <BR>/* get cd ls pwd cat 
+bye */ <BR>/****************************************************************/ 
+<BR>#include &lt;sys/types.h&gt; <BR>#include &lt;sys/socket.h&gt; <BR>#include 
+&lt;netinet/in.h&gt; <BR>#include &lt;netdb.h&gt; <BR>#include &lt;stdio.h&gt; 
+<BR>#include &lt;fcntl.h&gt; <BR>#define TRUE 1 <BR>main() <BR>{ <BR>int 
+sockfd,newsockfd,fd,fread; <BR>int nread,i,length,pid,k=0; <BR>struct 
+sockaddr_in server; <BR>char buf[1024],buf2[1024],file[81]; <BR>sockfd = 
+socket(AF_INET,SOCK_STREAM,0); <BR>if ( sockfd &lt; 0 ){ <BR>perror("Opening 
+stream socket\\n"); <BR>exit(1); <BR>} <BR>server.sin_family = AF_INET; 
+<BR>server.sin_addr.s_addr = INADDR_ANY; <BR>server.sin_port = 0; <BR>if ( 
+bind(sockfd,(struct sockaddr *) &amp;server, sizeof(server)) &lt; 0) { 
+<BR>perror("binding stream socket\\n"); <BR>exit(1); <BR>} <BR>length = 
+sizeof(server); <BR>if ( getsockname(sockfd,(struct sockaddr *) &amp;server, 
+&amp;length) &lt; 0) { <BR>perror("Getting socket name\\n"); <BR>exit(1); <BR>} 
+<BR>printf("Socket port #%d\\n",ntohs(server.sin_port)); <BR>/* The following do 
+the getting mesg */ <BR>listen(sockfd,5); <BR>do{ <BR>newsockfd = 
+accept(sockfd,(struct sockaddr *)0,(int *)0); <BR>k = 0; <BR>if(newsockfd == -1) 
+<BR>perror("accept\\n"); <BR>else do { <BR>bzero(buf,sizeof(buf)); 
+<BR>printf("-------&gt;LOOPS %d\\n",k); <BR>if((nread = 
+read(newsockfd,buf,1024)) &lt; 0) <BR>perror("reading stream newsockfd\\n"); 
+<BR>i=0; <BR>k++; <BR>printf("nread=%d\\n",nread); <BR>if(strcmp(buf,"\\0") == 0 
+){ <BR>write(newsockfd,"ftp #",sizeof("ftp #")); <BR>printf("Just put Enter 
+\\n");} <BR>else if (strcmp(buf,"HELO") == 0) { <BR>write(newsockfd,"\\t\\t 
+Welcome to howd's ftp server\\n",32); <BR>write(newsockfd,"ftp #",sizeof("ftp 
+#")); <BR>printf("----&gt;%s\\n",buf); <BR>} <BR>else if (strcmp(buf,"get") == 0 
+) <BR>{ <BR>nread=read(newsockfd,buf,sizeof(buf)); <BR>printf("The file %s will 
+be get \\n",buf); <BR>write(newsockfd,"TRANS",sizeof("TRANS")); 
+<BR>write(newsockfd,buf,nread); <BR>fd=open(buf,O_RDONLY); 
+<BR>while((nread=read(fd,buf2,sizeof(buf2))) &gt; 0) 
+<BR>write(newsockfd,buf2,nread); <BR>close(fd); <BR>printf("----&gt;%s BE 
+GET\\n",buf); <BR>nread = 111; <BR>} <BR>else if (strcmp(buf,"ls") == 0) <BR>{ 
+<BR>pid = fork(); <BR>if(pid == 0 ){ <BR>write(newsockfd,"LIST",sizeof("LIST")); 
+<BR>close(1); <BR>fd=open("/tmp/howd0001",O_RDWR|O_CREAT|O_TRUNC,0755); 
+<BR>execl("/usr/bin/ls","ls","-l",(char *)0);} <BR>else <BR>{ <BR>wait((char 
+*)0); <BR>fd=open("/tmp/howd0001",O_RDONLY); 
+<BR>while((nread=read(fd,buf,sizeof(buf))) &gt; 0) 
+<BR>write(newsockfd,buf,nread); <BR>close(fd); <BR>nread = 111; <BR>} <BR>} 
+<BR>else if (strcmp(buf,"bye") == 0){ <BR>write(newsockfd,"BYE",sizeof("BYE")); 
+<BR>printf("Ending connection !\\n"); <BR>} <BR>else if (strcmp(buf,"cd") == 0){ 
+<BR>nread = read(newsockfd,buf,sizeof(buf)); <BR>chdir(buf); 
+<BR>write(newsockfd,"ftp #",sizeof("ftp #")); <BR>} <BR>else if 
+(strcmp(buf,"cat") == 0){ <BR>nread = read(newsockfd,buf,sizeof(buf)); 
+<BR>write(newsockfd,"CAT",sizeof("CAT")); <BR>fd=open(buf,O_RDONLY); 
+<BR>while((nread=read(fd,buf2,sizeof(buf2))) &gt; 0) 
+<BR>write(newsockfd,buf2,nread); <BR>close(fd); <BR>nread = 111; <BR>} <BR>else 
+if (strcmp(buf,"pwd") == 0){ <BR>write(newsockfd,"PWD",sizeof("PWD")); 
+<BR>if((pid =fork()) == 0){ <BR>close(1); 
+<BR>fd=open("/tmp/howd0002",O_RDWR|O_CREAT|O_TRUNC,0755); 
+<BR>execl("/usr/bin/pwd","pwd",(char *)0); <BR>} <BR>else <BR>{ <BR>wait((char 
+*)0); <BR>fd=open("/tmp/howd0002",O_RDONLY); 
+<BR>while((fread=read(fd,buf,sizeof(buf))) &gt; 0) 
+<BR>write(newsockfd,buf,fread); <BR>close(fd); <BR>} <BR>} <BR>else <BR>{ 
+<BR>write(newsockfd,"UNKNOW",sizeof("UNKNOW")); <BR>printf("----&gt;%s 
+UNKNOW\\n",buf); <BR>} <BR>}while(nread != 0); <BR>close(newsockfd);\ 
+<BR>printf("Close newsockfd\\n"); <BR>}while(TRUE); <BR>exit(0); <BR>} 
+<BR><BR>附錄B　擴增功能的Ftp Client程式 
+<BR><BR>/*************************************************************/ <BR>/* 
+Client of howd-ftp The follows are functions 　　 　*/ <BR>/* get cd ls pwd cat bye 
+*/ <BR>/*************************************************************/ 
+<BR>#include &lt;sys/types.h&gt; <BR>#include &lt;sys/socket.h&gt; <BR>#include 
+&lt;netinet/in.h&gt; <BR>#include &lt;netdb.h&gt; <BR>#include &lt;stdio.h&gt; 
+<BR>#include &lt;fcntl.h&gt; <BR>char *flags[5]; <BR>void main(argc,argv) 
+<BR>int argc; <BR>char *argv[]; <BR>{ <BR>int sock,fd,nread,i,length,newsockfd; 
+<BR>char buf[1024],DATA[1024],file[81],*ff; <BR>struct sockaddr_in 
+server,client; <BR>struct hostent *hp,*gethostbyname(); 
+<BR>sock=socket(AF_INET,SOCK_STREAM,0); <BR>if(sock&lt;0) <BR>{ 
+<BR>perror("opening stream socket"); <BR>exit(1); <BR>} 
+<BR>server.sin_family=AF_INET; <BR>hp=gethostbyname(argv[1]); <BR>if(hp==0) 
+<BR>{ <BR>printf("%s:unknown host\\n",argv[1]); <BR>exit(2); <BR>bcopy((char 
+*)hp-&gt;h_addr,(char *)&amp;server.sin_addr,hp-&gt;h_length); 
+<BR>server.sin_port=htons(atoi(argv[2])); <BR>if(connect(sock,(struct sockaddr 
+*) &amp;server,sizeof server) &lt; 0) <BR>{ <BR>perror("connecting stream 
+socket"); <BR>exit(1); <BR>} 
+<BR>printf("\\n\\n\\t\\t==============================\\n"); 
+<BR>if(write(sock,"HELO",sizeof("HELO")) &lt; 0) /* This is the first connect */ 
+<BR>{ <BR>perror("writing stream socket"); <BR>close(sock); <BR>exit(0); <BR>} 
+<BR>nread=read(sock,buf,sizeof(buf)); /* Get welcome message */ 
+<BR>write(1,buf,nread); <BR>printf("\\t\\t ============================\\n\\n"); 
+<BR>printf("\\t\\t\\t\\t\\t\\tCopyright by Howd\\n"); 
+<BR>printf("\\t\\t\\t\\t\\t\\t-----------------\\n\\n"); <BR>do { 
+<BR>nread=read(sock,buf,sizeof(buf)); /* Getting the Data */ <BR>if ( 
+strcmp(buf,"TRANS") == 0) { <BR>read(sock,buf,sizeof(buf)); 
+<BR>fd=open(buf,O_RDWR|O_CREAT|O_TRUNC,0755); <BR>do{ 
+<BR>nread=read(sock,buf,sizeof(buf)); <BR>if( nread &lt; sizeof buf ) <BR>{ 
+<BR>write(fd,buf,nread); <BR>break; <BR>} <BR>else <BR>write(fd,buf,nread); 
+<BR>}while(nread != 0); <BR>write(1,"Transfer complete !\\n",20); 
+<BR>write(1,"ftp #",sizeof("ftp #")); <BR>} <BR>else if (strcmp(buf,"LIST") == 
+0) { <BR>bzero(buf,sizeof(buf)); <BR>do{ <BR>nread=read(sock,buf,sizeof(buf)); 
+<BR>if( nread &lt; sizeof buf ) <BR>{ <BR>write(1,buf,nread); <BR>break; <BR>} 
+<BR>else <BR>write(1,buf,nread); <BR>}while(nread != 0); <BR>printf("Command 
+complete !\\n\\n"); <BR>write(1,"ftp #",sizeof("ftp #")); <BR>} <BR>else if 
+(strcmp(buf,"BYE") == 0) { <BR>write(1,"Close connection !\\n",19); 
+<BR>close(sock); <BR>exit(0);} <BR>else if (strcmp(buf,"ftp #") == 0) { 
+<BR>write(1,buf,nread);} <BR>else if(strcmp(buf,"UNKNOW") == 0) { 
+<BR>printf("Bad command\\n"); <BR>printf("ftp #");} <BR>else 
+if(strcmp(buf,"CAT") == 0 ) { 
+<BR>write(1,"------------------------------------------------------\\n",80); 
+<BR>do{ <BR>nread=read(sock,buf,sizeof(buf)); <BR>if( nread &lt; sizeof buf ) 
+<BR>{ <BR>write(1,buf,nread); <BR>break; <BR>} <BR>else <BR>write(1,buf,nread); 
+<BR>}while(nread != 0); 
+<BR>write(1,"------------------------------------------------------\\n",80); 
+<BR>write(1,"ftp #",sizeof("ftp #")); <BR>} <BR>else if(strcmp(buf,"PWD") == 0) 
+{ <BR>do { <BR>nread=read(sock,buf,sizeof(buf)); <BR>if ( nread &lt; 1024 ){ 
+<BR>write(1,buf,nread); <BR>break;} <BR>else <BR>write(1,buf,nread); 
+<BR>}while(nread != 0); <BR>write(1,"ftp #",sizeof("ftp #")); <BR>} <BR>else 
+<BR>{ <BR>printf("Can't find any match\\n"); <BR>printf("ftp #"); <BR>} 
+<BR>gets(DATA); <BR><BR>if(strncmp(DATA,"get",3) == 0 ) <BR>{ 
+<BR>write(sock,"get",sizeof("get")); <BR>GetFileName(DATA); 
+<BR>strcpy(DATA,flags[1]); <BR>} <BR>else if (strncmp(DATA,"cd",2) == 0 ) <BR>{ 
+<BR><BR>write(sock,"cd",sizeof("cd")); <BR>GetFileName(DATA); 
+<BR>strcpy(DATA,flags[1]); <BR>} <BR>else if (strncmp(DATA,"cat",3) == 0 ) <BR>{ 
+<BR>write(sock,"cat",sizeof("cat")); <BR>GetFileName(DATA); 
+<BR>strcpy(DATA,flags[1]); <BR>} <BR><BR>if(write(sock,DATA,sizeof DATA) &lt; 0) 
+/* Send DATA */ <BR>{ <BR>perror("writing stream socket"); <BR>close(sock); 
+<BR>exit(0); <BR>} <BR>}while( strcmp(buf,"BYE") != 0 ); /* Do while the Server 
+return -1 */ <BR><BR><BR>close(sock); <BR>} <BR>int GetFileName(char *strptr) 
+<BR>{ <BR>char *args = strptr; <BR>int i=0; <BR>do { <BR>args = strtok(strptr," 
+\\t"); <BR>flags[i] = args; <BR>i=i+1; <BR>strptr = (char *) NULL; 
+<BR>}while(args != 0); <BR>i=i-1; <BR>return(i); <BR>} </P></BODY></HTML>

@@ -1,0 +1,336 @@
+<HTML
+><HEAD
+><TITLE
+>End User(Sys Admin)的觀點</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.49"><LINK
+REL="HOME"
+TITLE="用Open Source工具開發軟體"
+HREF="book1.html" tppabs="http://www.study-area.org/cyril/opentools/opentools/book1.html"><LINK
+REL="UP"
+TITLE="套件包裝製作"
+HREF="package.html" tppabs="http://www.study-area.org/cyril/opentools/opentools/package.html"><LINK
+REL="PREVIOUS"
+TITLE="套件包裝製作"
+HREF="package.html" tppabs="http://www.study-area.org/cyril/opentools/opentools/package.html"><LINK
+REL="NEXT"
+TITLE="deb檔的包裝"
+HREF="x1447.html" tppabs="http://www.study-area.org/cyril/opentools/opentools/x1447.html"></HEAD
+><BODY
+CLASS="SECT1"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>用Open Source工具開發軟體: 新軟體開發關念</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="package.html" tppabs="http://www.study-area.org/cyril/opentools/opentools/package.html"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 8. 套件包裝製作</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="x1447.html" tppabs="http://www.study-area.org/cyril/opentools/opentools/x1447.html"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="AEN1406"
+>End User(Sys Admin)的觀點</A
+></H1
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN1408"
+>簡介</A
+></H2
+><P
+>	package系統應該說套件管理系統，
+	其實不過是儲存了一些資訊在硬碟上所以可以知道裝了那些有什麼需要升級。
+	從系統管理者的角度看一個package
+	<TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+>package名     套件名稱不含版本  如dpkg (package)
+package檔     一個二位元套件檔檔案  如dpkg-1.6.deb (package_file)
+package集散地 一群套件檔的集中，可以是CD或是FTP Site等等
+              在debianCD 或FTP site通常有個Packages這個檔說明這裡面有什麼套件
+package系統   系統管理者的系統，通常有很多個套件集散地來源     
+              在系統中所有套件資訊藏在/var/lib/rpm /var/lib/dpkg下
+              這些檔是由眾多Packages檔組成的
+	</PRE
+></TD
+></TR
+></TABLE
+>
+	debian有個好用的dselect，還可以整合apt這個命令做網路升級。
+	當然rpm也有很多簡單好用的front-end工具。不用背那些命令
+      </P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN1412"
+>package檔的操作</A
+></H2
+><P
+></P
+><DL
+><P
+><B
+>package檔的操作</B
+></P
+><DT
+>安裝</DT
+><DD
+><P
+>	      <TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="90%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+># dpkg -i cscope-15.1.deb(package檔)
+# rpm  -i cscope-15.1.rpm(package檔)
+	      </PRE
+></TD
+></TR
+></TABLE
+>
+	    </P
+></DD
+><DT
+>移除</DT
+><DD
+><P
+>	      <TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="90%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+># dpkg -r cscope(package名)
+# rpm  -e cscope(package名)
+	      </PRE
+></TD
+></TR
+></TABLE
+>
+	    </P
+></DD
+><DT
+>升級</DT
+><DD
+><P
+>	      <TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="90%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+># dpkg -i cscope-15.1.deb(自動upgrade)
+# rpm -U  cscope-15.1.rpm
+	      </PRE
+></TD
+></TR
+></TABLE
+>
+	    </P
+></DD
+><DT
+>設定</DT
+><DD
+><P
+>	      <TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="90%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+>	      </PRE
+></TD
+></TR
+></TABLE
+>
+	    </P
+></DD
+><DT
+>查詢</DT
+><DD
+><P
+>	      <TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="90%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+># dpkg -I   cscope-15.1.deb(package檔) 看有那些information
+# dpkg -c   cscope-15.1.deb(package檔) 看有那些檔在套件裡
+# rpm -qpi  cscope-15.1.rpm(package檔) 看有那些information
+# rpm -qpl  cscope-15.1.rpm(package檔) 看有那些檔在套件裡
+
+rpm多加一個p表示對package動作
+	      </PRE
+></TD
+></TR
+></TABLE
+>
+	    </P
+></DD
+><DT
+>packages記錄資訊查詢增減</DT
+><DD
+><P
+>	      這是對系統上的整體pacakage資訊做查詢整理的動作，
+	      debian言，系統資訊藏在
+	      /var/lib/dpkg/available，
+	      /var/lib/dpkg/status，
+	      <TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="90%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+># dpkg -S "libc*.so" (filename-pattern) 找那個package包含了這個檔
+# dpkg -s cscope (package名)            目前pkg的狀態，例如裝了沒有，相依性
+# dpkg -l "csc*" (package名pattern)     列出所有含pattern的packages(記住是regex)
+# dpkg -L cscope (package名)            列出所有檔案是由這套件裝的
+	      </PRE
+></TD
+></TR
+></TABLE
+>
+	      rpm言，系統資訊藏在
+	      /var/lib/rpm/packages.rpm
+	      <TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="90%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+># rpm -q -f "libc*.so" (filename-pattern)  找那個package包含了這個檔
+# rpm -q -i cscope (package名)             目前pkg的狀態，例如裝了沒有，相依性
+# rpm -q -s "csc*"                         列出所有含pattern的packages
+# rpm -q -l cscope                         列出所有檔案由這套件裝的
+	      </PRE
+></TD
+></TR
+></TABLE
+>
+	    </P
+></DD
+></DL
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="package.html" tppabs="http://www.study-area.org/cyril/opentools/opentools/package.html"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="book1.html" tppabs="http://www.study-area.org/cyril/opentools/opentools/book1.html"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="x1447.html" tppabs="http://www.study-area.org/cyril/opentools/opentools/x1447.html"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>套件包裝製作</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="package.html" tppabs="http://www.study-area.org/cyril/opentools/opentools/package.html"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>deb檔的包裝</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>
