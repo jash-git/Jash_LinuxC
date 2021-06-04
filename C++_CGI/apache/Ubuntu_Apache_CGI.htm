@@ -1,0 +1,648 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<!-- saved from url=(0056)http://blog.csdn.net/ahstusujian/article/details/7646201 -->
+<html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Ubuntu Apache的安装和配置以及CGI的设置 - **我爱的，嵌入式** - 博客频道 - CSDN.NET</title>
+
+<meta name="description" content="2011-12-01 14:40:26|  分类：Linux |  标签：linux  ubuntu  apache  |字号大中小 订阅在学习Python CGI中，需要在Ubuntu下安装Apache，所以今天在Ubuntu11.04上对Apache的安装和配置进行了学习。一.Apache的安装       在网上查了些资料有两种安装方式：一种是从Apach">
+<script type="text/javascript" async="" src="./Ubuntu_Apache_CGI_files/ga.js"></script><script src="./Ubuntu_Apache_CGI_files/jquery.js" type="text/javascript"></script>
+<script src="./Ubuntu_Apache_CGI_files/plugins.js" type="text/javascript"></script>
+<script src="./Ubuntu_Apache_CGI_files/common.js" type="text/javascript"></script>
+<link rel="Stylesheet" type="text/css" href="./Ubuntu_Apache_CGI_files/style.css">
+<link id="RSSLink" title="RSS" type="application/rss+xml" rel="alternate" href="http://blog.csdn.net/ahstusujian/rss/list">
+<link rel="shortcut icon" href="http://blog.csdn.net/favicon.ico">
+<link type="text/css" rel="stylesheet" href="./Ubuntu_Apache_CGI_files/green_black.css">
+<script src="chrome-extension://lifbcibllhkdhoafpjfnlhfpfgnpldfl/document_iterator.js"></script><script src="chrome-extension://lifbcibllhkdhoafpjfnlhfpfgnpldfl/find_proxy.js"></script><script src="chrome-extension://lifbcibllhkdhoafpjfnlhfpfgnpldfl/get_html_text.js"></script><script src="chrome-extension://lifbcibllhkdhoafpjfnlhfpfgnpldfl/global_constants.js"></script><script src="chrome-extension://lifbcibllhkdhoafpjfnlhfpfgnpldfl/name_injection_builder.js"></script><script src="chrome-extension://lifbcibllhkdhoafpjfnlhfpfgnpldfl/number_injection_builder.js"></script><script src="chrome-extension://lifbcibllhkdhoafpjfnlhfpfgnpldfl/string_finder.js"></script><script src="chrome-extension://lifbcibllhkdhoafpjfnlhfpfgnpldfl/change_sink.js"></script><meta name="document_iterator.js"><meta name="find_proxy.js"><meta name="get_html_text.js"><meta name="global_constants.js"><meta name="name_injection_builder.js"><meta name="number_injection_builder.js"><meta name="string_finder.js"><meta name="change_sink.js"><style id="wrc-middle-css" type="text/css">.wrc_whole_window{	display: none;	position: fixed; 	z-index: 2147483647;	background-color: rgba(40, 40, 40, 0.9);	word-spacing: normal !important;	margin: 0px !important;	padding: 0px !important;	border: 0px !important;	left: 0px;	top: 0px;	width: 100%;	height: 100%;	line-height: normal !important;	letter-spacing: normal !important;	overflow: hidden;}.wrc_bar_window{	display: none;	position: fixed; 	z-index: 2147483647;	background-color: rgba(60, 60, 60, 1.0);	word-spacing: normal !important;	font-family: Segoe UI, Arial Unicode MS, Arial, Sans-Serif;	margin: 0px !important;	padding: 0px !important;	border: 0px !important;	left: 0px;	top: 0px;	width: 100%;	height: 40px;	line-height: normal !important;	letter-spacing: normal !important;	color: white !important;	font-size: 13px !important;}.wrc_middle {	display: table-cell;	vertical-align: middle;	width: 100%;}.wrc_middle_main {	font-family: Segoe UI, Arial Unicode MS, Arial, Sans-Serif;	font-size: 14px;	width: 600px;	height: auto;    background: url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/background-body.jpg) repeat-x left top;	background-color: rgb(39, 53, 62);	position: relative;	margin-left: auto;	margin-right: auto;	text-align: left;}.wrc_middle_tq_main {	font-family: Segoe UI, Arial Unicode MS, Arial, Sans-Serif;	font-size: 16px;	width: 615px;	height: 460px;    background: url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/background-sitecorrect.png) no-repeat;	background-color: white;	color: black !important;	position: relative;	margin-left: auto;	margin-right: auto;	text-align: center;}.wrc_middle_logo {    background: url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/logo.jpg) no-repeat left bottom;    width: 140px;    height: 42px;    color: orange;    display: table-cell;    text-align: right;    vertical-align: middle;}.wrc_icon_warning {	margin: 20px 10px 20px 15px;	float: left;	background-color: transparent;}.wrc_middle_title {    color: #b6bec7;	height: auto;    margin: 0px auto;	font-size: 2.2em;	white-space: nowrap;	text-align: center;}.wrc_middle_hline {    height: 2px;	width: 100%;    display: block;}.wrc_middle_description {	text-align: center;	margin: 15px;	font-size: 1.4em;	padding: 20px;	height: auto;	color: white;	min-height: 3.5em;}.wrc_middle_actions_main_div {	margin-bottom: 15px;	text-align: center;}.wrc_middle_actions_blue_button div {	display: inline-block;	width: auto;	cursor: Pointer;	margin: 3px 10px 3px 10px;	color: white;	font-size: 1.2em;	font-weight: bold;}.wrc_middle_actions_blue_button {	-moz-appearance: none;	border-radius: 7px;	-moz-border-radius: 7px/7px;	border-radius: 7px/7px;	background-color: rgb(0, 173, 223) !important;	display: inline-block;	width: auto;	cursor: Pointer;	border: 2px solid #00dddd;	padding: 0px 20px 0px 20px;}.wrc_middle_actions_blue_button:hover {	background-color: rgb(0, 159, 212) !important;}.wrc_middle_actions_blue_button:active {	background-color: rgb(0, 146, 200) !important;	border: 2px solid #00aaaa;}.wrc_middle_actions_grey_button div {	display: inline-block;	width: auto;	cursor: Pointer;	margin: 3px 10px 3px 10px;	color: white !important;	font-size: 15px;	font-weight: bold;}.wrc_middle_actions_grey_button {	-moz-appearance: none;	border-radius: 7px;	-moz-border-radius: 7px/7px;	border-radius: 7px/7px;	background-color: rgb(100, 100, 100) !important;	display: inline-block;	width: auto;	cursor: Pointer;	border: 2px solid #aaaaaa;	text-decoration: none;	padding: 0px 20px 0px 20px;}.wrc_middle_actions_grey_button:hover {	background-color: rgb(120, 120, 120) !important;}.wrc_middle_actions_grey_button:active {	background-color: rgb(130, 130, 130) !important;	border: 2px solid #00aaaa;}.wrc_middle_action_low {	font-size: 0.9em;	white-space: nowrap;	cursor: Pointer;	color: grey !important;	margin: 10px 10px 0px 10px;	text-decoration: none;}.wrc_middle_action_low:hover {	color: #aa4400 !important;}.wrc_middle_actions_rest_div {	padding-top: 5px;	white-space: nowrap;	text-align: center;}.wrc_middle_action {	white-space: nowrap;	cursor: Pointer;	color: red !important;	font-size: 1.2em;	margin: 10px 10px 0px 10px;	text-decoration: none;}.wrc_middle_action:hover {	color: #aa4400 !important;}</style><script id="wrc-script-middle_window" type="text/javascript" language="JavaScript">var g_inputsCnt = 0;var g_InputThis = new Array(null, null, null, null);var g_alerted = false;/* we test the input if it includes 4 digits   (input is a part of 4 inputs for filling the credit-card number)*/function is4DigitsCardNumber(val){	var regExp = new RegExp('[0-9]{4}');	return (val.length == 4 && val.search(regExp) == 0);}/* testing the whole credit-card number 19 digits devided by three '-' symbols or   exactly 16 digits without any dividers*/function isCreditCardNumber(val){	if(val.length == 19)	{		var regExp = new RegExp('[0-9]{4}-[0-9]{4}-[0-9]{4}-[0-9]{4}');		return (val.search(regExp) == 0);	}	else if(val.length == 16)	{		var regExp = new RegExp('[0-9]{4}[0-9]{4}[0-9]{4}[0-9]{4}');		return (val.search(regExp) == 0);	}	return false;}function CheckInputOnCreditNumber(self){	if(g_alerted)		return false;	var value = self.value;	if(self.type == 'text')	{		if(is4DigitsCardNumber(value))		{			var cont = true;			for(i = 0; i < g_inputsCnt; i++)				if(g_InputThis[i] == self)					cont = false;			if(cont && g_inputsCnt < 4)			{				g_InputThis[g_inputsCnt] = self;				g_inputsCnt++;			}		}		g_alerted = (g_inputsCnt == 4);		if(g_alerted)			g_inputsCnt = 0;		else			g_alerted = isCreditCardNumber(value);	}	return g_alerted;}function CheckInputOnPassword(self){	if(g_alerted)		return false;	var value = self.value;	if(self.type == 'password')	{		g_alerted = (value.length > 0);	}	return g_alerted;}function onInputBlur(self, bRatingOk, bFishingSite){	var bCreditNumber = CheckInputOnCreditNumber(self);	var bPassword = CheckInputOnPassword(self);	if((!bRatingOk || bFishingSite == 1) && (bCreditNumber || bPassword) )	{		var warnDiv = document.getElementById("wrcinputdiv");		if(warnDiv)		{			/* show the warning div in the middle of the screen */			warnDiv.style.left = "0px";			warnDiv.style.top = "0px";			warnDiv.style.width = "100%";			warnDiv.style.height = "100%";			document.getElementById("wrc_warn_fs").style.display = 'none';			document.getElementById("wrc_warn_cn").style.display = 'none';			if(bFishingSite)				document.getElementById("wrc_warn_fs").style.display = 'block';			else				document.getElementById("wrc_warn_cn").style.display = 'block';			warnDiv.style.display = 'table';		}	}}</script><style id="wrc-css" type="text/css">.wrcx {display:none} .r .wrcx, .osl .wrcx, .bc .wrcx, .fc .wrcx, #rhsline ol .wrcx {display:inline; background: url("chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/grey0-16.png") right no-repeat}
+.wrc0 {display:none} .r .wrc0, .osl .wrc0, .bc .wrc0, .fc .wrc0, #rhsline ol .wrc0 {display:inline; background: url("chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/grey0-16.png") right no-repeat}
+.wrc11 {display:none} .r .wrc11, .osl .wrc11, .bc .wrc11, .fc .wrc11, #rhsline ol .wrc11 {display:inline; background: url("chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/green1-16.png") right no-repeat}
+.wrc12 {display:none} .r .wrc12, .osl .wrc12, .bc .wrc12, .fc .wrc12, #rhsline ol .wrc12 {display:inline; background: url("chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/green2-16.png") right no-repeat}
+.wrc13 {display:none} .r .wrc13, .osl .wrc13, .bc .wrc13, .fc .wrc13, #rhsline ol .wrc13 {display:inline; background: url("chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/green3-16.png") right no-repeat}
+.wrc21 {display:none} .r .wrc21, .osl .wrc21, .bc .wrc21, .fc .wrc21, #rhsline ol .wrc21 {display:inline; background: url("chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/yellow1-16.png") right no-repeat}
+.wrc22 {display:none} .r .wrc22, .osl .wrc22, .bc .wrc22, .fc .wrc22, #rhsline ol .wrc22 {display:inline; background: url("chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/yellow2-16.png") right no-repeat}
+.wrc23 {display:none} .r .wrc23, .osl .wrc23, .bc .wrc23, .fc .wrc23, #rhsline ol .wrc23 {display:inline; background: url("chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/yellow3-16.png") right no-repeat}
+.wrc31 {display:none} .r .wrc31, .osl .wrc31, .bc .wrc31, .fc .wrc31, #rhsline ol .wrc31 {display:inline; background: url("chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/red1-16.png") right no-repeat}
+.wrc32 {display:none} .r .wrc32, .osl .wrc32, .bc .wrc32, .fc .wrc32, #rhsline ol .wrc32 {display:inline; background: url("chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/red2-16.png") right no-repeat}
+.wrc33 {display:none} .r .wrc33, .osl .wrc33, .bc .wrc33, .fc .wrc33, #rhsline ol .wrc33 {display:inline; background: url("chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/red3-16.png") right no-repeat}
+.wrc_icon{margin:0;padding:0;padding-left:15px !important;width:16px !important; height:16px !important;line-height:16px !important;}
+#wrchoverdiv{padding-bottom:20px; position:absolute; width:180px; background:transparent url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/background-body.jpg) top left repeat-x; display:none; font-family: Segoe UI, Arial Unicode MS, Arial, Sans-Serif; font-size: 14px; z-index:9999999;}
+#wrchoverdiv{cursor:default;}
+#wrchoverdiv #wrccontainer{width:180px;}
+#wrchoverdiv #wrcheader{width:140px; height:42px; background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/logo.jpg) bottom left no-repeat; text-align:right; line-height:42px; color:orange; margin:0 auto;}
+#wrchoverdiv .wrchorizontal{width:180px; height:2px; background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/horizontal-line.jpg) bottom left no-repeat;}
+#wrchoverdiv #wrccurrentvote{height:25px; line-height:25px; color:#FFF; text-align:center; text-transform:uppercase;}
+#wrchoverdiv #wrcrating{margin:5px auto; width:69px; height:55px; background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/grey-0.png) bottom left no-repeat;}
+#wrchoverdiv #wrcrating.wrcbx{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/grey-0.png);}
+#wrchoverdiv #wrcrating.wrcb0{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/grey-0.png);}
+#wrchoverdiv #wrcrating.wrcb11{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/green-1.png);}
+#wrchoverdiv #wrcrating.wrcb12{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/green-2.png);}
+#wrchoverdiv #wrcrating.wrcb13{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/green-3.png);}
+#wrchoverdiv #wrcrating.wrcb21{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/yellow-1.png);}
+#wrchoverdiv #wrcrating.wrcb22{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/yellow-2.png);}
+#wrchoverdiv #wrcrating.wrcb23{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/yellow-3.png);}
+#wrchoverdiv #wrcrating.wrcb31{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/red-1.png);}
+#wrchoverdiv #wrcrating.wrcb32{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/red-2.png);}
+#wrchoverdiv #wrcrating.wrcb33{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/red-3.png);}
+#wrchoverdiv #wrcratingtext{margin:3px 5px; color:#FFF; text-align:center; padding:0; font-size:12px;}
+#wrchoverdiv #wrcweighttext{margin:3px 5px; color:#FFF; text-align:center; padding:0; font-size:12px;}
+#wrchoverdiv #wrcflags{width:150px; height:70px; margin:0 auto;}
+#wrchoverdiv .wrcicon{width:30px; height:30px; float:left;}
+#wrchoverdiv #wrcicon_shopping{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/shopping-small-disable.png) top left no-repeat;}
+#wrchoverdiv #wrcicon_shopping.selected{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/shopping-small-selected.png) top left no-repeat;}
+#wrchoverdiv #wrcicon_social{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/social-small-disable.png) top left no-repeat;}
+#wrchoverdiv #wrcicon_social.selected{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/social-small-selected.png) top left no-repeat;}
+#wrchoverdiv #wrcicon_news{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/news-small-disable.png) top left no-repeat;}
+#wrchoverdiv #wrcicon_news.selected{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/news-small-selected.png) top left no-repeat;}
+#wrchoverdiv #wrcicon_it{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/it-small-disable.png) top left no-repeat;}
+#wrchoverdiv #wrcicon_it.selected{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/it-small-selected.png) top left no-repeat;}
+#wrchoverdiv #wrcicon_corporate{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/corporate-small-disable.png) top left no-repeat;}
+#wrchoverdiv #wrcicon_corporate.selected{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/corporate-small-selected.png) top left no-repeat;}
+#wrchoverdiv #wrcicon_pornography{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/pornography-small-disable.png) top left no-repeat;}
+#wrchoverdiv #wrcicon_pornography.selected{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/pornography-small-selected.png) top left no-repeat;}
+#wrchoverdiv #wrcicon_violence{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/violence-small-disable.png) top left no-repeat;}
+#wrchoverdiv #wrcicon_violence.selected{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/violence-small-selected.png) top left no-repeat;}
+#wrchoverdiv #wrcicon_gambling{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/gambling-small-disable.png) top left no-repeat;}
+#wrchoverdiv #wrcicon_gambling.selected{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/gambling-small-selected.png) top left no-repeat;}
+#wrchoverdiv #wrcicon_drugs{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/drugs-small-disable.png) top left no-repeat;}
+#wrchoverdiv #wrcicon_drugs.selected{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/drugs-small-selected.png) top left no-repeat;}
+#wrchoverdiv #wrcicon_illegal{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/illegal-small-disable.png) top left no-repeat;}
+#wrchoverdiv #wrcicon_illegal.selected{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/illegal-small-selected.png) top left no-repeat;}
+</style></head><style type="text/css">embed[type*="application/x-shockwave-flash"],embed[src*=".swf"],object[type*="application/x-shockwave-flash"],object[codetype*="application/x-shockwave-flash"],object[src*=".swf"],object[codebase*="swflash.cab"],object[classid*="D27CDB6E-AE6D-11cf-96B8-444553540000"],object[classid*="d27cdb6e-ae6d-11cf-96b8-444553540000"],object[classid*="D27CDB6E-AE6D-11cf-96B8-444553540000"]{	display: none !important;}</style>
+<body>
+<script src="./Ubuntu_Apache_CGI_files/pub_topnav_2011.js" type="text/javascript"></script><link rel="stylesheet" type="text/css" href="./Ubuntu_Apache_CGI_files/navtop_2012.css">
+<div class="nav_top_2011">
+<p><span style="color:red;">您还未登录！</span>|<a href="https://passport.csdn.net/account/login" target="_top" wrc_done="true">登录</a>&nbsp;<span class="wrc_icon wrc11" rating="{&quot;icon&quot;:&quot;green1-16.png&quot;,&quot;rating&quot;:1,&quot;weight&quot;:1,&quot;flags&quot;:{&quot;it&quot;:1}}"></span>|<a href="https://passport.csdn.net/account/register" target="_top" wrc_done="true">注册</a>&nbsp;<span class="wrc_icon wrc11" rating="{&quot;icon&quot;:&quot;green1-16.png&quot;,&quot;rating&quot;:1,&quot;weight&quot;:1,&quot;flags&quot;:{&quot;it&quot;:1}}"></span>|<a href="https://passport.csdn.net/help/faq" target="_blank" wrc_done="true">帮助</a>&nbsp;<span class="wrc_icon wrc11" rating="{&quot;icon&quot;:&quot;green1-16.png&quot;,&quot;rating&quot;:1,&quot;weight&quot;:1,&quot;flags&quot;:{&quot;it&quot;:1}}"></span></p><ul>
+<li><a href="http://www.csdn.net/" target="_blank" wrc_done="true">首页</a>&nbsp;<span class="wrc_icon wrc11" rating="{&quot;icon&quot;:&quot;green1-16.png&quot;,&quot;rating&quot;:1,&quot;weight&quot;:1,&quot;flags&quot;:{&quot;it&quot;:1}}"></span></li>
+<li><a href="http://news.csdn.net/" target="_blank" wrc_done="true">业界</a>&nbsp;<span class="wrc_icon wrc11" rating="{&quot;icon&quot;:&quot;green1-16.png&quot;,&quot;rating&quot;:1,&quot;weight&quot;:1,&quot;flags&quot;:{&quot;it&quot;:1}}"></span></li>
+<li><a href="http://mobile.csdn.net/" target="_blank" wrc_done="true">移动</a>&nbsp;<span class="wrc_icon wrc11" rating="{&quot;icon&quot;:&quot;green1-16.png&quot;,&quot;rating&quot;:1,&quot;weight&quot;:1,&quot;flags&quot;:{&quot;it&quot;:1}}"></span></li>
+<li><a href="http://cloud.csdn.net/" target="_blank" wrc_done="true">云计算</a>&nbsp;<span class="wrc_icon wrc11" rating="{&quot;icon&quot;:&quot;green1-16.png&quot;,&quot;rating&quot;:1,&quot;weight&quot;:1,&quot;flags&quot;:{&quot;it&quot;:1}}"></span></li>
+<li><a href="http://sd.csdn.net/" target="_blank" wrc_done="true">研发</a>&nbsp;<span class="wrc_icon wrc11" rating="{&quot;icon&quot;:&quot;green1-16.png&quot;,&quot;rating&quot;:1,&quot;weight&quot;:1,&quot;flags&quot;:{&quot;it&quot;:1}}"></span></li>
+<li><a href="http://bbs.csdn.net/" target="_blank" wrc_done="true">论坛</a>&nbsp;<span class="wrc_icon wrc11" rating="{&quot;icon&quot;:&quot;green1-16.png&quot;,&quot;rating&quot;:1,&quot;weight&quot;:1,&quot;flags&quot;:{&quot;it&quot;:1}}"></span></li>
+<li><a href="http://blog.csdn.net/" target="_blank">博客</a></li>
+<li><a href="http://download.csdn.net/" target="_blank" wrc_done="true">下载</a>&nbsp;<span class="wrc_icon wrc01" rating="{&quot;icon&quot;:&quot;grey0-16.png&quot;,&quot;rating&quot;:0,&quot;weight&quot;:1,&quot;flags&quot;:{}}"></span></li>
+<li class="more"><h2 id="topnav_btnmore" onclick="showNavMore(this)"><a href="javascript:void(0);">更多</a></h2>
+<div id="topnav_hidlist">
+<iframe name="nav_frm" src="about:blank" width="92" height="178" scrolling="no" frameborder="no"></iframe>
+</div>
+</li>
+</ul>
+</div>
+
+
+<div id="container">
+<div id="header">
+    <div class="header">
+        <div id="blog_title">
+            <h1><a href="http://blog.csdn.net/ahstusujian">**我爱的，嵌入式**</a></h1>
+            <h2>达则兼济天下，穷则独善其身！！</h2>
+            <div class="clear"></div>
+        </div>
+        <div class="clear"></div>
+    </div>
+</div>
+<div id="navigator">
+    <div class="navigator_bg"></div>
+    <div class="navigator">
+        <ul>
+            <li id="btnContents"><a href="http://blog.csdn.net/ahstusujian?viewmode=contents"><span><img src="./Ubuntu_Apache_CGI_files/ico_list.gif">目录视图</span></a></li>
+            <li id="btnView"><a href="http://blog.csdn.net/ahstusujian?viewmode=list"><span><img src="./Ubuntu_Apache_CGI_files/ico_summary.gif">摘要视图</span></a></li>
+            <li id="btnRss"><a href="http://blog.csdn.net/ahstusujian/rss/list"><span><img src="./Ubuntu_Apache_CGI_files/ico_rss.gif">订阅</span></a></li>
+</ul>
+    </div>
+</div>
+<script type="text/javascript">
+    var username = "ahstusujian";
+    var blog_address = "http://blog.csdn.net/ahstusujian";
+    var static_host = "http://static.blog.csdn.net";
+    var currentUserName = "";
+</script>
+        
+<div id="body">
+<div id="main">
+<div class="main">
+<div class="notice"> 
+
+<a href="http://hui.csdn.net/MeetingInfo.aspx?MID=151" target="_blank" wrc_done="true">
+<font color="red">
+【西安】开源云社区活动免费报名 </font></a>&nbsp;<span class="wrc_icon wrc11" rating="{&quot;icon&quot;:&quot;green1-16.png&quot;,&quot;rating&quot;:1,&quot;weight&quot;:1,&quot;flags&quot;:{&quot;it&quot;:1}}"></span>
+
+&nbsp;&nbsp;
+
+
+<a href="http://hbtc2012.hadooper.cn/" target="_blank" wrc_done="true">
+<font color="red"> 浓缩六届精华，国内大数据领域最纯粹技术盛会</font></a>&nbsp;<span class="wrc_icon wrc0" rating="{&quot;icon&quot;:&quot;grey0-16.png&quot;,&quot;rating&quot;:0,&quot;weight&quot;:0,&quot;flags&quot;:{}}"></span>
+
+&nbsp;&nbsp;&nbsp;
+
+
+<a href="http://blog.csdn.net/liushizao/article/details/8012164" target="_blank">
+<font color="red">CSDN高校俱乐部专家巡讲讲师招募  </font></a>
+
+<br>
+
+
+
+
+
+<a href="http://blog.csdn.net/csdnproduct/article/details/8139423" target="_blank">
+<font color="red">CSDN新版论坛即将正式上线，周末暂停服务 </font></a>
+
+&nbsp;&nbsp;
+
+<a href="http://www.csdn.net/article/2012-10-24/2811113" target="_blank" wrc_done="true">
+<font color="blue">“移动开发者大会参会感悟”有奖征文   </font></a>&nbsp;<span class="wrc_icon wrc11" rating="{&quot;icon&quot;:&quot;green1-16.png&quot;,&quot;rating&quot;:1,&quot;weight&quot;:1,&quot;flags&quot;:{&quot;it&quot;:1}}"></span>
+
+&nbsp;&nbsp;
+
+<a href="http://blog.csdn.net/blogdevteam/article/details/8123926" target="_blank">
+<font color="red">JavaEE参考示例SpringSide作者江南白衣专访   </font></a>
+
+</div><script type="text/javascript" src="./Ubuntu_Apache_CGI_files/ad.js"></script>
+
+<div id="article_details" class="details">
+    <div class="article_title">
+    <span class="ico ico_type_Repost"></span>
+    <h3>
+        <span class="link_title"><a href="./Ubuntu_Apache_CGI_files/Ubuntu_Apache_CGI.htm">
+        Ubuntu Apache的安装和配置以及CGI的设置
+        </a></span>
+    </h3>
+</div>
+
+        
+    <div class="article_manage">
+        <span class="link_categories">
+        分类：
+            <a href="http://blog.csdn.net/ahstusujian/article/category/959056">嵌入式</a> 
+        </span>
+    <span class="link_postdate">2012-06-08 17:22</span>
+    <span class="link_view" title="阅读次数">169人阅读</span>
+    <span class="link_comments" title="评论次数"><a href="http://blog.csdn.net/ahstusujian/article/details/7646201#comments">评论</a>(0)</span>
+    <span class="link_collect"><a href="javascript:void(0);" onclick="javascript:collectArticle(&#39;Ubuntu Apache的安装和配置以及CGI的设置&#39;,&#39;7646201&#39;);return false;" title="收藏">收藏</a></span>
+    <span class="link_report"><a href="http://blog.csdn.net/ahstusujian/article/details/7646201#report" onclick="javascript:report(7646201,2);return false;" title="举报">举报</a></span>
+    
+</div>
+
+
+    
+<div id="article_content" class="article_content">
+
+<p class="tdep clearfix nbw-act fc06" style="line-height:20px"><span class="pleft"><span class="blogsep">2011-12-01 14:40:26</span><span class="blogsep">|&nbsp;&nbsp;分类：</span>
+<a class="fc03 m2a" title="Linux" href="http://blog.163.com/djp1980_713/blog/#m=0&t=1&c=fks_084071086084081066080086083095085094086070087084087070092" wrc_done="true">
+Linux</a>&nbsp;<span class="wrc_icon wrc23" rating="{&quot;icon&quot;:&quot;yellow3-16.png&quot;,&quot;rating&quot;:2,&quot;weight&quot;:3,&quot;flags&quot;:{}}"></span> <span class="blogsep" id="$_blogTagTitle">|&nbsp;&nbsp;标签：</span><span class="fc03" id="$_blogTagInfo"><a class="fc03 m2a" href="http://blog.163.com/djp1980_713/blog/#m=0&t=3&c=linux" wrc_done="true">linux</a>&nbsp;<span class="wrc_icon wrc23" rating="{&quot;icon&quot;:&quot;yellow3-16.png&quot;,&quot;rating&quot;:2,&quot;weight&quot;:3,&quot;flags&quot;:{}}"></span>&nbsp;&nbsp;<a class="fc03 m2a" href="http://blog.163.com/djp1980_713/blog/#m=0&t=3&c=ubuntu" wrc_done="true">ubuntu</a>&nbsp;<span class="wrc_icon wrc23" rating="{&quot;icon&quot;:&quot;yellow3-16.png&quot;,&quot;rating&quot;:2,&quot;weight&quot;:3,&quot;flags&quot;:{}}"></span>&nbsp;&nbsp;<a class="fc03 m2a" href="http://blog.163.com/djp1980_713/blog/#m=0&t=3&c=apache" wrc_done="true">apache</a>&nbsp;<span class="wrc_icon wrc23" rating="{&quot;icon&quot;:&quot;yellow3-16.png&quot;,&quot;rating&quot;:2,&quot;weight&quot;:3,&quot;flags&quot;:{}}"></span>&nbsp;&nbsp;</span>
+</span><span class="pright fc07 ztag"><span class="blogsep">|</span><span class="zihao fc03" id="$_fontswitch">字号<span class="zihaoshow  phide" id="$_fontsTypes"><span class="zihaoc bdc0"><span class="stag"></span><span class="fc04 stag">大</span><span class="fc04 stag selected js-fcurrent fc05">中</span><span class="fc04 stag">小</span></span></span></span></span><span class="pright pnt fc03" id="$_blog_subscribe"><span class="iblock icn0 icn0-919">&nbsp;</span><a class="m2a">订阅</a></span>
+</p>
+<div></div>
+<div class="nbw-blog-start"></div>
+<div class="bct fc05 fc11 nbw-blog ztag js-fs2">在学习Python CGI中，需要在Ubuntu下安装Apache，所以今天在Ubuntu11.04上对Apache的安装和配置进行了学习。<br>
+一.Apache的安装<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 在网上查了些资料有两种安装方式：一种是从Apache网站上下载tar文件到自己的电脑上安装；另一种是直接通过网络安装。为了方便我就使用了第二种方式。<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Ubuntu提供了强大的apt-get install命令，在终端输入：<span style="color:#ff6600"><strong><span style="font-size:12px">sudo apt-get install apache2</span></strong></span>&nbsp;&nbsp;&nbsp;
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 这样就能方便快捷的安装Apache。但是，这里有个不便的地方，就是你不知道Apache被安装到了什么位置。<br>
+<br>
+二.启动、停止Apache服务<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Apache的启动和停止文件是：<span style="color:#800000">/etc/init.d/apache2</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 启动命令：<span style="color:#ff6600"><strong><span style="font-size:12px">sudo apache2ctl -k start</span></strong></span><br>
+<span style="color:#ff6600"><strong><span style="font-size:12px"></span></strong><span style="font-size:12px"><span style="color:#000000"></span></span></span><span style="color:#000000"><span style="font-size:12px">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span>停止命令：<span style="color:#ff6600"><strong><span style="font-size:12px">sudo apache2ctl -k stop</span></strong></span><br>
+<span style="color:#ff6600"><strong><span style="font-size:12px">&nbsp; &nbsp;</span></strong></span><span style="color:#000000"><span style="font-size:12px">&nbsp;&nbsp;&nbsp;
+</span></span>重新启动命令：<span style="color:#ff6600"><strong><span style="font-size:12px">sudo apache2ctl -k restart(sudo /etc/init.d/apache2 restart)</span></strong></span><span style="color:#000000"><span style="font-size:12px"><br>
+</span></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 重新启动这里有个问题，当我重启服务的时候会报错：<span style="color:#000000">“Could not reliably determine the server’s fully qualified domain name, using 127.0.1.1 for ServerName</span>”。我在网上搜了一下说是httpd.conf中ServerName IP：Port和Listen IP：Port不一致，即端口不一致。所以在httpd.conf文件中增加“ServerName
+ localhost:80”即可。<br>
+&nbsp; &nbsp; &nbsp;&nbsp; 说明下httpd.conf是一个Apache的配置文件，在<span style="color:#800000">/etc/apache2</span>目录下，在后面会有介绍。<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 在修改httpd.conf文件之前还需要修改该文件的权限，否则是没有权限修改的，命令为：<span style="color:#ff6600"><strong><span style="font-size:12px">sudo chmod 777 /etc/apache2/httpd.conf</span></strong></span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 顺便提下查看Apache的版本，使用的命令是：<span style="color:#ff6600"><strong><span style="font-size:12px">apache2ctl -v
+</span></strong></span>结果会显示：<br>
+<span style="color:#800000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Server version: Apache/2.2.17 (Ubuntu)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Server built:&nbsp;&nbsp; Nov&nbsp; 3 2011 02:13:18</span><br>
+<br>
+<br>
+三.Apache的配置文件<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 普通Apache发行版本的配置文件是：<span style="color:#800000">/etc/apache2/httpd.conf</span>，但发现这个文件是空的，其实这个是用户自己来进行配置的，后面会说到。<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 严格地说，Ubuntu的Apache配置文件是<span style="color:#800000">/etc/apache2/apache2.conf</span>，Apache在启动的时候会自动读取这个文件的配 置信息，而其他的一些配置文件，如<span style="color:#800000">httpd.conf</span>等，则是通过<span style="color:#800000">Include</span>指令包含进来的。可以在<span style="color:#800000">apache2.conf</span>中找到这些<span style="color:#800000">
+ Include</span>行：<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ● 动态模块的配置<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style="color:#800000">Include mods-enabled/*.load</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style="color:#800000">Include mods-enabled/*.conf</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ● 用户自己的配置<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style="color:#800000">Include httpd.conf</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ● 端口监听的配置<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style="color:#800000">Include ports.conf</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ● 一般性的配置语句片断<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style="color:#800000">Include conf.d/</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ● 虚拟主机的配置指令<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style="color:#800000">Include sites-enabled/</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 我们完全可以把所有的设置放在apache2.conf或者httpd.conf或者任何一个配置文件中，这种划分是一种比较好的习惯。<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 1.Web文档根目录<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 安装完Apache后最重要的一件事情就是要知道Web文档的根目录在什么地方。对于Ubuntu而言，默认的是<span style="color:#800000">/var/www</span>。那我们是怎么知道的呢？<span style="color:#800000">apache2.conf</span>里并没有描述，<span style="color:#800000">httpd.conf</span>也是空的，那肯定是在其他的配置文件中。后来搜索发现是在<span style="color:#800000">/etc/apache2/sites-enabled/000-default</span>中，里面有这样的内容：<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style="color:#800000">DocumentRoot /var/www<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;Directory /&gt;<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Options FollowSymLinks +ExecCGI<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; AllowOverride None<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;/Directory&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;Directory /var/www/&gt;<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Options Indexes FollowSymLinks MultiViews<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; AllowOverride None<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Order allow,deny<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; allow from all<br>
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &lt;/Directory&gt;</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp; 这里的<span style="color:#800000">DocumentRoot</span>中把根目录设置为了<span style="color:#800000">/var/www</span><br>
+&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp;&nbsp; 2.sites-enabled和sites-available目录<br>
+&nbsp;&nbsp;&nbsp;&nbsp; 刚才在apache2.conf中发现了sites-enabled目录，而在<span style="color:#800000">/etc/apache2</span>下还有一个sites-available目录。这两个目录放的是什么的？其实，sites-available里面放的才是真正的配置文件，而sites-enabled目录存放的只是一些指向这里的文件的符号连接，通过
+<span style="color:#ff6600"><strong><span style="font-size:12px">ls -l</span></strong></span> 命令查看到<span style="color:#800000">/etc/apache2/sites-enabled</span>中的000-default是指向<span style="color:#800000">/etc/apache2/sites-available/default</span>的。这里存放的是虚拟主机的配置指令。<br>
+&nbsp;&nbsp;&nbsp;&nbsp; 虽然sites-available是存放有效的内容，但不起作用，只有用 <span style="color:#ff6600"><strong><span style="font-size:12px">ln
+</span></strong></span>命令链接到enabled过去才能起作用。<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp;&nbsp; 3.mods-enabled和mods-available目录<br>
+&nbsp;&nbsp;&nbsp;&nbsp; 这两个目录的性质和上面说到sites-enabled、sites-available一致，这里存放apachegon功能模块的配置文件和链接。<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp; 4.ports.conf设置<br>
+&nbsp;&nbsp;&nbsp;&nbsp; 这里设置了Apache使用的端口。如果需要调整默认的端口设置，建议编辑这个文件。还有一种修改方式，可以把apache2.conf中的Include prots.conf一行去掉，在httpd.conf中设置自己想用的端口。<br>
+<br>
+四.CGI的配置<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 1.首先在根目录下建一个cgi-bin的目录，即/var/www/cgi-bin/。cgi程序都放在这个cgi-bin的目录中，不能放在其他的目录中。<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 2.打开<span style="color:#800000">/etc/apache2/sites-enabled/000-default</span>，找到以下的内容：<br>
+<br>
+<span style="color:#800000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ScriptAlias /cgi-bin/ /usr/lib/cgi-bin/<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;Directory "/usr/lib/cgi-bin/"&gt;<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; AllowOverride None<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Options +ExecCGI -MultiViews +SymLinksIfOwnerMatch<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Order allow,deny<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Allow from all<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;/Directory&gt;</span><br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 修改为：<br>
+<br>
+<span style="color:#800000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ScriptAlias /cgi-bin/ <span style="color:#ff0000">
+/var/www/cgi-bin/</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;Directory "/var/www/cgi-bin"&gt;<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; AllowOverride None<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Options <span style="color:#ff0000">+ExecCGI</span> -MultiViews +SymLinksIfOwnerMatch<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Order allow,deny<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Allow from all<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style="color:#ff0000">AddHandler cgi-script cgi</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;/Directory&gt;</span><br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 其中的<span style="color:#800000">/usr/lib/cgi-bin/</span>修改为<span style="color:#ff0000">/var/www/cgi-bin/</span>，并添加了<span style="color:#ff0000">AddHandler cgi-script cgi</span>。如果Options没有<span style="color:#ff0000">ExecCGI</span>这项，记住一定要加上。<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 3.重启Apache服务：<span style="color:#ff6600"><strong><span style="font-size:12px">sudo /etc/init.d/apache2 restart</span></strong></span><br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 4.如果还不能访问cgi脚本，则再修改<span style="color:#800000">/etc/apache2/mods-enabled/cigd.load</span>文件。在原本的<span style="color:#800000">LoadModule cgid_module /usr/lib/apache2/modules/mod_cgid.so</span>下，再加上：<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#800000"> AddHandler cgi-script .cgi .pl .py .sh</span>这句，再重启Apache服务。<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 5.修改cgi程序的权限。CGI程序属性一定要设为可运行（755），而与CGI有关的HTML文件的目录如果要被CGI程序写入，其权限一定要设为可写（666）。其命令为：<span style="color:#ff6600"><strong><span style="font-size:12px">sudo chmod 755 ~/simple.cgi</span></strong></span><br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 至此，通过浏览器输入相应的url应该能顺利的访问到cgi程序了，如<span style="color:#800000">http://localhost/cgi-bin/simple.cgi</span>。如果还不能的话，估计就是cgi程序本身的问题了，可以通过查找Log，发现其中的错误。Apache的log放置在<span style="color:#800000">/var/log/apache2</span>下。</div>
+
+</div>
+<div class="share_buttons" id="sharePanel"><span>分享到：</span> <a name="sina" class="share_sina" title="分享到新浪微博"></a><a name="qq" class="share_qq" title="分享到腾讯微博"></a></div>
+<!--192.168.1.237-->
+<div class="article_next_prev">
+    <li class="prev_article"><span>上一篇：</span><a href="http://blog.csdn.net/ahstusujian/article/details/7631518">cannot open output file debug\hello1.exe: Permission denied</a></li>
+    <li class="next_article"><span>下一篇：</span><a href="http://blog.csdn.net/ahstusujian/article/details/7646285">vi中跳到文件头和文件尾</a></li>
+</div>
+
+
+    
+</div>
+<div id="ad_cen"><iframe id="ad_frm_0" frameborder="0" scrolling="no" style="border-width: 0px; overflow: hidden; width: 738px; height: 92px; " src="./Ubuntu_Apache_CGI_files/ad(1).htm"></iframe></div>
+<script type="text/javascript">
+    new Ad(4, 'ad_cen');
+</script>
+<div id="comment_title" class="panel_head">查看评论<a name="comments"></a></div>
+<div id="comment_list"><br>&nbsp;&nbsp;暂无评论<br><br><div class="clear"></div></div>
+<div id="comment_bar"></div>
+<div id="comment_form"><div class="guest_link">您还没有登录,请<a href="http://passport.csdn.net/account/login?from=http%3A%2F%2Fblog.csdn.net%2Fahstusujian%2Farticle%2Fdetails%2F7646201">[登录]</a>或<a href="http://passport.csdn.net/account/register?from=http%3A%2F%2Fblog.csdn.net%2Fahstusujian%2Farticle%2Fdetails%2F7646201">[注册]</a></div></div>
+<div class="announce">* 以上用户言论只代表其个人观点，不代表CSDN网站的观点或立场<a name="reply"></a><a name="quote"></a></div>
+<script type="text/javascript">
+    var fileName = '7646201';
+    var commentscount = 0;
+    var islock = false
+</script>
+<script type="text/javascript" src="./Ubuntu_Apache_CGI_files/comment.js"></script>
+<div id="ad_bot"><iframe id="ad_frm_1" frameborder="0" scrolling="no" style="border-width: 0px; overflow: hidden; width: 738px; height: 170px; " src="./Ubuntu_Apache_CGI_files/ad(2).htm"></iframe></div>
+<script type="text/javascript">
+    new Ad(5, 'ad_bot');
+</script>
+<div id="report_dialog"></div>
+
+<div id="d-top">
+<a href="http://blog.csdn.net/ahstusujian/article/details/7646201#" onclick="javascript:document.body.scrollTop=0;document.documentElement.scrollTop=0;this.blur();return false;" title="回到顶部">
+<img src="./Ubuntu_Apache_CGI_files/top.png" alt="TOP"></a>
+</div>
+
+
+
+<div class="clear"></div>
+</div>
+</div>
+
+<div id="side">
+<div class="side">
+<div id="panel_Profile" class="panel">
+    <ul class="panel_head"><span>个人资料</span></ul>
+    <ul class="panel_body profile">
+        <div id="blog_userface">
+            <a href="http://my.csdn.net/ahstusujian" target="_blank" wrc_done="true">
+            <img src="./Ubuntu_Apache_CGI_files/1_ahstusujian.jpg" title="访问我的空间" style="max-width:90%">
+            </a>&nbsp;<span class="wrc_icon wrc11" rating="{&quot;icon&quot;:&quot;green1-16.png&quot;,&quot;rating&quot;:1,&quot;weight&quot;:1,&quot;flags&quot;:{&quot;it&quot;:1}}"></span>
+            <br>
+            <span><a href="http://my.csdn.net/ahstusujian" target="_blank" wrc_done="true">ahstusujian</a>&nbsp;<span class="wrc_icon wrc11" rating="{&quot;icon&quot;:&quot;green1-16.png&quot;,&quot;rating&quot;:1,&quot;weight&quot;:1,&quot;flags&quot;:{&quot;it&quot;:1}}"></span></span>
+        </div>
+<div class="interact">
+<!--<a href="#" class="attented" title="已关注"></a>-->
+<a href="http://blog.csdn.net/ahstusujian/article/details/7646201#" class="attent" id="span_add_follow" title="[加关注]"></a>
+<a href="http://my.csdn.net/my/letter/send/ahstusujian" class="letter" title="[发私信]" wrc_done="true"></a>&nbsp;<span class="wrc_icon wrc11" rating="{&quot;icon&quot;:&quot;green1-16.png&quot;,&quot;rating&quot;:1,&quot;weight&quot;:1,&quot;flags&quot;:{&quot;it&quot;:1}}"></span>
+</div>
+        <div id="blog_medal">
+        <div id="bms_box"><a href="http://medal.blog.csdn.net/allmedal.aspx" target="_blank" wrc_done="true"><img src="./Ubuntu_Apache_CGI_files/holdon_s.gif" onmouseover="m_over_m(this,0)" onmouseout="m_out_m()" alt=""></a>&nbsp;<span class="wrc_icon wrc11" rating="{&quot;icon&quot;:&quot;green1-16.png&quot;,&quot;rating&quot;:1,&quot;weight&quot;:1,&quot;flags&quot;:{}}"></span></div></div>
+        <ul id="blog_rank">
+            <li>访问：<span>17277次</span></li>
+            <li>积分：<span>574分</span></li>
+            <li>排名：<span>第16756名</span></li>
+        </ul>
+        <ul id="blog_statistics">
+            <li>原创：<span>34篇</span></li>
+            <li>转载：<span>46篇</span></li>
+            <li>译文：<span>1篇</span></li>
+            <li>评论：<span>10条</span></li>
+        </ul>
+    </ul>
+</div>
+<script type="text/javascript">
+    var _blogger = 'ahstusujian';
+</script>
+<script type="text/javascript">
+$(document).ready(function () {
+    var un = getUN().toLowerCase();
+    if (un == _blogger.toLowerCase()) {
+        $('.interact').hide();
+    } else if(un) {
+        var url = "http://my.csdn.net/index.php/follow/check_is_followed/" + encodeURIComponent(un) + "/" + encodeURIComponent(_blogger) + "?jsonpcallback=?";
+        $.getJSON(url, {}, function (data) {
+            if (data.succ == 1 && data.info == 1) {
+                $('#span_add_follow').attr('class', 'attented');
+            } else {
+                $('#span_add_follow').click(guanzhu);
+            }
+        }, 'json');
+    }
+});
+function guanzhu() {
+    var url = "http://my.csdn.net/index.php/follow/do_follow?jsonpcallback=?";
+    $.getJSON(url, { "username": _blogger }, function (data) {
+        if (data.succ == 1) {
+            alert('关注成功！');
+            $('#span_add_follow').attr('class', 'attented').click(function () { return false; });
+        } else {
+            alert(data.msg);
+        }
+    });
+    return false;
+}
+function getUN() {
+    var m = document.cookie.match(new RegExp("(^| )UserName=([^;]*)(;|$)"));
+    if (m) return m[2];
+    else return '';
+}
+</script>
+
+<div class="panel" id="panel_Search">
+    <ul class="panel_head"><span>文章搜索</span></ul>
+    <ul class="panel_body">
+        <form id="frmSearch" action="http://so.csdn.net/search" class="form_search" target="_blank">
+        <span><input id="inputSearch" type="text" class="blogsearch" title="请输入关键字"></span>
+        <input id="btnSubmit" type="submit" value="搜索" title="search in blog">
+        <input type="hidden" name="q" id="inputQ">
+        <input type="hidden" name="t" value="blog">
+        <a id="btnSearchBlog" target="_blank"></a>
+        </form>
+    </ul>
+</div><div id="panel_Category" class="panel">
+    <ul class="panel_head"><span>文章分类</span></ul>
+    <ul class="panel_body">
+        <li>
+        <a href="http://blog.csdn.net/ahstusujian/article/category/959056">嵌入式</a><span>(45)</span>
+        </li>
+        <li>
+        <a href="http://blog.csdn.net/ahstusujian/article/category/1200857">input subsystem</a><span>(3)</span>
+        </li>
+        <li>
+        <a href="http://blog.csdn.net/ahstusujian/article/category/1160750">QT</a><span>(1)</span>
+        </li>
+        <li>
+        <a href="http://blog.csdn.net/ahstusujian/article/category/1200858">linux device model</a><span>(0)</span>
+        </li>
+        <li>
+        <a href="http://blog.csdn.net/ahstusujian/article/category/1254257">android</a><span>(0)</span>
+        </li>
+        <li>
+        <a href="http://blog.csdn.net/ahstusujian/article/category/901912">java</a><span>(9)</span>
+        </li>
+        <li>
+        <a href="http://blog.csdn.net/ahstusujian/article/category/915123">Struts</a><span>(1)</span>
+        </li>
+        <li>
+        <a href="http://blog.csdn.net/ahstusujian/article/category/915124">Jsp&amp;&amp;Servlet</a><span>(8)</span>
+        </li>
+        <li>
+        <a href="http://blog.csdn.net/ahstusujian/article/category/944506">hibernate</a><span>(2)</span>
+        </li>
+        <li>
+        <a href="http://blog.csdn.net/ahstusujian/article/category/915122">数据库</a><span>(3)</span>
+        </li>
+        <li>
+        <a href="http://blog.csdn.net/ahstusujian/article/category/901910">数据结构</a><span>(1)</span>
+        </li>
+        <li>
+        <a href="http://blog.csdn.net/ahstusujian/article/category/891484">ACM</a><span>(3)</span>
+        </li>
+        <li>
+        <a href="http://blog.csdn.net/ahstusujian/article/category/901913">c++</a><span>(6)</span>
+        </li>
+        <li>
+        <a href="http://blog.csdn.net/ahstusujian/article/category/1117719">学习方法</a><span>(1)</span>
+        </li>
+        <li>
+        <a href="http://blog.csdn.net/ahstusujian/article/category/1123694">My beautiful life</a><span>(1)</span>
+        </li>
+    </ul>
+</div><div id="panel_Archive" class="panel">
+    <ul class="panel_head"><span>文章存档</span></ul>
+    <ul class="panel_body">
+        <div id="archive_list"><li><a href="http://blog.csdn.net/ahstusujian/article/month/2012/10">2012年10月</a><span>(10)</span></li><li><a href="http://blog.csdn.net/ahstusujian/article/month/2012/09">2012年09月</a><span>(9)</span></li><li><a href="http://blog.csdn.net/ahstusujian/article/month/2012/08">2012年08月</a><span>(6)</span></li><li><a href="http://blog.csdn.net/ahstusujian/article/month/2012/07">2012年07月</a><span>(3)</span></li><li><a href="http://blog.csdn.net/ahstusujian/article/month/2012/06">2012年06月</a><span>(7)</span></li><span class="hidelist" style="display:none;"><li><a href="http://blog.csdn.net/ahstusujian/article/month/2012/05">2012年05月</a><span>(7)</span></li><li><a href="http://blog.csdn.net/ahstusujian/article/month/2012/04">2012年04月</a><span>(2)</span></li><li><a href="http://blog.csdn.net/ahstusujian/article/month/2012/03">2012年03月</a><span>(5)</span></li><li><a href="http://blog.csdn.net/ahstusujian/article/month/2012/02">2012年02月</a><span>(10)</span></li><li><a href="http://blog.csdn.net/ahstusujian/article/month/2012/01">2012年01月</a><span>(2)</span></li><li><a href="http://blog.csdn.net/ahstusujian/article/month/2011/12">2011年12月</a><span>(2)</span></li><li><a href="http://blog.csdn.net/ahstusujian/article/month/2011/11">2011年11月</a><span>(8)</span></li><li><a href="http://blog.csdn.net/ahstusujian/article/month/2011/10">2011年10月</a><span>(8)</span></li><li><a href="http://blog.csdn.net/ahstusujian/article/month/2011/09">2011年09月</a><span>(2)</span></li></span><div id="archive_list_button" class="list_closed">展开</div></div>
+    </ul>
+</div>
+<div id="hotarticls" class="panel">
+    <ul class="panel_head"><span>阅读排行</span></ul>
+    <ul class="panel_body itemlist">
+        <li>
+            <a href="http://blog.csdn.net/ahstusujian/article/details/7702256" title="vmware安装无法打开内核设备 \\.\Global\vmx86: 系统找不到指定的文件">vmware安装无法打开内核设备 \\.\Global\vmx86: 系统找不到指定的文件</a><span>(2495)</span>
+        </li>
+        <li>
+            <a href="http://blog.csdn.net/ahstusujian/article/details/8003358" title="input子系统分析">input子系统分析</a><span>(1569)</span>
+        </li>
+        <li>
+            <a href="http://blog.csdn.net/ahstusujian/article/details/6924862" title="a标签的href和onclick的区别">a标签的href和onclick的区别</a><span>(1290)</span>
+        </li>
+        <li>
+            <a href="http://blog.csdn.net/ahstusujian/article/details/7288007" title="windows 与Linux之间的文件传输">windows 与Linux之间的文件传输</a><span>(866)</span>
+        </li>
+        <li>
+            <a href="http://blog.csdn.net/ahstusujian/article/details/7907442" title="Android4.0Sd卡移植之使用vold自动挂载sd卡">Android4.0Sd卡移植之使用vold自动挂载sd卡</a><span>(832)</span>
+        </li>
+        <li>
+            <a href="http://blog.csdn.net/ahstusujian/article/details/7646285" title="vi中跳到文件头和文件尾">vi中跳到文件头和文件尾</a><span>(671)</span>
+        </li>
+        <li>
+            <a href="http://blog.csdn.net/ahstusujian/article/details/8020740" title="bootloader之U-boot">bootloader之U-boot</a><span>(651)</span>
+        </li>
+        <li>
+            <a href="http://blog.csdn.net/ahstusujian/article/details/7339298" title="linux下安装gcc交叉编译工具及其“浮点数例外”">linux下安装gcc交叉编译工具及其“浮点数例外”</a><span>(501)</span>
+        </li>
+        <li>
+            <a href="http://blog.csdn.net/ahstusujian/article/details/7039327" title="Hibernate错误Unable to instantiate default tuplizer [org.hibernate.tuple.entity.PojoEntityTuplizer]">Hibernate错误Unable to instantiate default tuplizer [org.hibernate.tuple.entity.PojoEntityTuplizer]</a><span>(500)</span>
+        </li>
+        <li>
+            <a href="http://blog.csdn.net/ahstusujian/article/details/6940584" title="Java web中，当表单含有文件上传时，提交数据的如何读取">Java web中，当表单含有文件上传时，提交数据的如何读取</a><span>(442)</span>
+        </li>
+    </ul>
+</div>
+<div id="hotarticls2" class="panel">
+    <ul class="panel_head"><span>评论排行</span></ul>
+    <ul class="panel_body itemlist">
+        <li>
+            <a href="http://blog.csdn.net/ahstusujian/article/details/6911773" title="对于 java 连接sql server 2005的警告: Failed to load the sqljdbc_auth.dll">对于 java 连接sql server 2005的警告: Failed to load the sqljdbc_auth.dll</a><span>(3)</span>
+        </li>
+        <li>
+            <a href="http://blog.csdn.net/ahstusujian/article/details/6911745" title="通过端口 1433 连接到主机 localhost 的 TCP/IP 连接失败。错误:“Connecti...">通过端口 1433 连接到主机 localhost 的 TCP/IP 连接失败。错误:“Connecti...</a><span>(2)</span>
+        </li>
+        <li>
+            <a href="http://blog.csdn.net/ahstusujian/article/details/7293493" title="Red hat Linux下ifconfig命令不能使用">Red hat Linux下ifconfig命令不能使用</a><span>(1)</span>
+        </li>
+        <li>
+            <a href="http://blog.csdn.net/ahstusujian/article/details/7039327" title="Hibernate错误Unable to instantiate default tuplizer [org.hibernate.tuple.entity.PojoEntityTuplizer]">Hibernate错误Unable to instantiate default tuplizer [org.hibernate.tuple.entity.PojoEntityTuplizer]</a><span>(1)</span>
+        </li>
+        <li>
+            <a href="http://blog.csdn.net/ahstusujian/article/details/7529062" title="那些年">那些年</a><span>(1)</span>
+        </li>
+        <li>
+            <a href="http://blog.csdn.net/ahstusujian/article/details/6794877" title="hdu 1106">hdu 1106</a><span>(1)</span>
+        </li>
+        <li>
+            <a href="http://blog.csdn.net/ahstusujian/article/details/6854928" title="随机选号算法">随机选号算法</a><span>(1)</span>
+        </li>
+        <li>
+            <a href="http://blog.csdn.net/ahstusujian/article/details/7820308" title="牛人blog链接">牛人blog链接</a><span>(0)</span>
+        </li>
+        <li>
+            <a href="http://blog.csdn.net/ahstusujian/article/details/7857350" title="写驱动时交叉编译之makefile编写模板(tiny6410)">写驱动时交叉编译之makefile编写模板(tiny6410)</a><span>(0)</span>
+        </li>
+        <li>
+            <a href="http://blog.csdn.net/ahstusujian/article/details/7857430" title="缺省配置文件配置和编译内核">缺省配置文件配置和编译内核</a><span>(0)</span>
+        </li>
+    </ul>
+</div>
+<div id="homepageArticles" class="panel">
+    <ul class="panel_head"><span>推荐文章</span></ul>
+    <ul class="panel_body" id="ad_commend">
+    <iframe id="ad_frm_2" frameborder="0" scrolling="no" style="border-width: 0px; overflow: hidden; width: 194px; height: 218px; " src="./Ubuntu_Apache_CGI_files/ad.htm"></iframe></ul>
+</div>
+<script type="text/javascript" src="./Ubuntu_Apache_CGI_files/ad.js"></script>
+<script type="text/javascript">
+    new Ad(12, 'ad_commend');
+</script><div id="newcomments" class="panel">
+<ul class="panel_head"><span>最新评论</span></ul>
+<ul class="panel_body itemlist">
+    <li>
+    <a href="http://blog.csdn.net/ahstusujian/article/details/6911745#comments">通过端口 1433 连接到主机 localhost 的 TCP/IP 连接失败。错误:“Connecti...</a>
+    <p style="margin:0px;">qianweiweisimon:
+看了这么多都是同一个回答
+    </p>
+    </li>
+    <li>
+    <a href="http://blog.csdn.net/ahstusujian/article/details/7039327#comments">Hibernate错误Unable to instantiate default tuplizer [org.hibernate.tuple.entity.PojoEntityTuplizer]</a>
+    <p style="margin:0px;">fengzhhhhh:
+Unable to instantiate default tuplizer
+    </p>
+    </li>
+    <li>
+    <a href="http://blog.csdn.net/ahstusujian/article/details/6854928#comments">随机选号算法</a>
+    <p style="margin:0px;">liangmanlin2013:
+该算法的严重弊端在于生成那个数组，当要产生1-100000000的7个不重复的数时，你会发现这是一件...
+    </p>
+    </li>
+    <li>
+    <a href="http://blog.csdn.net/ahstusujian/article/details/7529062#comments">那些年</a>
+    <p style="margin:0px;">ahstusujian:
+每个人都有过青春，无论记忆力的青春曾经是灰暗的，还是明亮的，但底子都是萌动与羞涩！！那些年，没有什么...
+    </p>
+    </li>
+    <li>
+    <a href="http://blog.csdn.net/ahstusujian/article/details/6911773#comments">对于 java 连接sql server 2005的警告: Failed to load the sqljdbc_auth.dll</a>
+    <p style="margin:0px;">ahstusujian:
+@NnnnnnnOOOOOO:那你再查查其他资料吧，我是这种方法解决的！
+    </p>
+    </li>
+    <li>
+    <a href="http://blog.csdn.net/ahstusujian/article/details/6911773#comments">对于 java 连接sql server 2005的警告: Failed to load the sqljdbc_auth.dll</a>
+    <p style="margin:0px;">NnnnnnnOOOOOO:
+我已经安装上面的方法做了，但是还是出现警告
+    </p>
+    </li>
+    <li>
+    <a href="http://blog.csdn.net/ahstusujian/article/details/7293493#comments">Red hat Linux下ifconfig命令不能使用</a>
+    <p style="margin:0px;">ahstusujian:
+希望我的博客给大家帮助！！
+    </p>
+    </li>
+    <li>
+    <a href="http://blog.csdn.net/ahstusujian/article/details/6911745#comments">通过端口 1433 连接到主机 localhost 的 TCP/IP 连接失败。错误:“Connecti...</a>
+    <p style="margin:0px;">Q438486872:
+这个哥们的东西好呀。。。
+    </p>
+    </li>
+    <li>
+    <a href="http://blog.csdn.net/ahstusujian/article/details/6911773#comments">对于 java 连接sql server 2005的警告: Failed to load the sqljdbc_auth.dll</a>
+    <p style="margin:0px;">ahstusujian:
+拒绝冷漠，传递温暖。
+    </p>
+    </li>
+    <li>
+    <a href="http://blog.csdn.net/ahstusujian/article/details/6794877#comments">hdu 1106</a>
+    <p style="margin:0px;">ahstusujian:
+希借此平台努力提高自己，穷则独善其身，达则兼济天下！
+    </p>
+    </li>
+</ul>
+</div>
+</div>
+<div class="clear"></div>
+</div>
+
+<div class="clear"></div>
+</div>
+<script type="text/javascript" src="./Ubuntu_Apache_CGI_files/shCore-src.js"></script>
+<script type="text/javascript" src="./Ubuntu_Apache_CGI_files/ZeroClipboard.js"></script>
+<script type="text/javascript" src="./Ubuntu_Apache_CGI_files/article_code.js"></script>
+
+<script type="text/javascript" src="./Ubuntu_Apache_CGI_files/show.js"></script>
+<script type="text/javascript" src="./Ubuntu_Apache_CGI_files/showblogmedal.ashx"></script>
+<script type="text/javascript">document.write("<img src=http://counter.csdn.net/pv.aspx?id=24 border=0 width=0 height=0>");</script><img src="./Ubuntu_Apache_CGI_files/pv.aspx" border="0" width="0" height="0">
+
+<script type="text/javascript" src="./Ubuntu_Apache_CGI_files/publib_footer.js"></script><link rel="stylesheet" type="text/css" href="./Ubuntu_Apache_CGI_files/pub_footer_2012.css"><div class="pub_footerall"><dl><dt></dt> <dd><a href="http://www.csdn.net/company/about.html" target="_blank" wrc_done="true">公司简介</a>&nbsp;<span class="wrc_icon wrc11" rating="{&quot;icon&quot;:&quot;green1-16.png&quot;,&quot;rating&quot;:1,&quot;weight&quot;:1,&quot;flags&quot;:{&quot;it&quot;:1}}"></span>|<a href="http://www.csdn.net/company/recruit.html" target="_blank" wrc_done="true">招贤纳士</a>&nbsp;<span class="wrc_icon wrc11" rating="{&quot;icon&quot;:&quot;green1-16.png&quot;,&quot;rating&quot;:1,&quot;weight&quot;:1,&quot;flags&quot;:{&quot;it&quot;:1}}"></span>|<a href="http://www.csdn.net/company/marketing.html" target="_blank" wrc_done="true">广告服务</a>&nbsp;<span class="wrc_icon wrc11" rating="{&quot;icon&quot;:&quot;green1-16.png&quot;,&quot;rating&quot;:1,&quot;weight&quot;:1,&quot;flags&quot;:{&quot;it&quot;:1}}"></span>|<a href="http://www.csdn.net/company/account.html" target="_blank" wrc_done="true">银行汇款帐号</a>&nbsp;<span class="wrc_icon wrc11" rating="{&quot;icon&quot;:&quot;green1-16.png&quot;,&quot;rating&quot;:1,&quot;weight&quot;:1,&quot;flags&quot;:{&quot;it&quot;:1}}"></span>|<a href="http://www.csdn.net/company/contact.html" target="_blank" wrc_done="true">联系方式</a>&nbsp;<span class="wrc_icon wrc11" rating="{&quot;icon&quot;:&quot;green1-16.png&quot;,&quot;rating&quot;:1,&quot;weight&quot;:1,&quot;flags&quot;:{&quot;it&quot;:1}}"></span>|<a href="http://www.csdn.net/company/statement.html" target="_blank" wrc_done="true">版权声明</a>&nbsp;<span class="wrc_icon wrc11" rating="{&quot;icon&quot;:&quot;green1-16.png&quot;,&quot;rating&quot;:1,&quot;weight&quot;:1,&quot;flags&quot;:{&quot;it&quot;:1}}"></span>|<a href="http://www.csdn.net/company/layer.html" target="_blank" wrc_done="true">法律顾问</a>&nbsp;<span class="wrc_icon wrc11" rating="{&quot;icon&quot;:&quot;green1-16.png&quot;,&quot;rating&quot;:1,&quot;weight&quot;:1,&quot;flags&quot;:{&quot;it&quot;:1}}"></span>|<a href="mailto:webmaster@csdn.net">问题报告</a></dd><dd>京&nbsp;ICP&nbsp;证&nbsp;070598&nbsp;号</dd><dd>北京创新乐知信息技术有限公司 版权所有</dd><dd><img src="./Ubuntu_Apache_CGI_files/ico_email.gif" alt="" title=""> 联系邮箱：webmaster(at)csdn.net</dd><dd>Copyright © 1999-2012, CSDN.NET, All Rights Reserved&nbsp;<a href="http://www.hd315.gov.cn/beian/view.asp?bianhao=010202001032100010" target="_blank" wrc_done="true"><img src="./Ubuntu_Apache_CGI_files/gongshang_logos.gif" alt="GongshangLogo" title=""></a>&nbsp;<span class="wrc_icon wrc21" rating="{&quot;icon&quot;:&quot;yellow1-16.png&quot;,&quot;rating&quot;:2,&quot;weight&quot;:1,&quot;flags&quot;:{}}"></span></dd></dl></div>
+
+<script type="text/javascript" src="./Ubuntu_Apache_CGI_files/counter.js"></script><script type="text/javascript" charset="UTF-8" src="./Ubuntu_Apache_CGI_files/msg.popup.js"></script>
+
+<!--ad.csdn.net-->
+<script type="text/javascript" src="./Ubuntu_Apache_CGI_files/ad-blog.js"></script><script type="text/javascript" src="./Ubuntu_Apache_CGI_files/ad-ibm401.js"></script>
+
+
+
+
+</div>
+
+<div id="wrchoverdiv"><div id="wrccontainer"><div id="wrcheader"><div id="wrctitle"> WebRep</div></div><div class="wrchorizontal"></div><div id="wrccurrentvote">總體評價</div><div class="wrchorizontal"></div><div id="wrcrating"></div><div id="wrcratingtext">此網站沒有任何評價資訊</div><div id="wrcweighttext">（票數不足）</div><div id="wrcflags"><div id="wrcicon_shopping" class="wrcicon"></div><div id="wrcicon_social" class="wrcicon"></div><div id="wrcicon_news" class="wrcicon"></div><div id="wrcicon_it" class="wrcicon"></div><div id="wrcicon_corporate" class="wrcicon"></div><div id="wrcicon_pornography" class="wrcicon"></div><div id="wrcicon_violence" class="wrcicon"></div><div id="wrcicon_gambling" class="wrcicon"></div><div id="wrcicon_drugs" class="wrcicon"></div><div id="wrcicon_illegal" class="wrcicon"></div></div><div class="wrchorizontal"></div></div></div><iframe style="width: 1px; height: 1px; position: absolute; visibility: hidden; " src="./Ubuntu_Apache_CGI_files/ibm-caq4-leadership-downloadhomepage-728-90-1030.htm"></iframe></body><span id="skype_highlighting_settings" display="none" autoextractnumbers="1"></span><object id="skype_plugin_object" location.href="http://blog.csdn.net/ahstusujian/article/details/7646201" location.hostname="blog.csdn.net" style="position: absolute; visibility: hidden; left: -100px; top: -100px; " width="0" height="0" type="application/x-vnd.skype.toolbars.npplugin.4.2.0"></object></html>

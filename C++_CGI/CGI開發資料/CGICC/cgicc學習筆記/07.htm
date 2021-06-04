@@ -1,0 +1,282 @@
+
+<!-- saved from url=(0045)http://www.iteedu.com//opensource/cgicc/7.php -->
+<html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+
+<style type="text/css"></style><style type="text/css"></style>
+<meta content="" name="keywords">
+<meta content="" name="description">
+<script type="text/javascript" async="" src="./07_files/ga.js"></script><script src="./07_files/chdp.js" language="javascript"></script>
+
+<link href="./07_files/allbody.css" rel="stylesheet" type="text/css">
+<link href="./07_files/bp.css" rel="stylesheet" type="text/css">
+<link href="./07_files/code.css" rel="stylesheet" type="text/css">
+<link href="./07_files/downitem.css" rel="stylesheet" type="text/css">
+<link href="./07_files/downlink.css" rel="stylesheet" type="text/css">
+<link href="./07_files/ht.css" rel="stylesheet" type="text/css">
+<link href="./07_files/nav.css" rel="stylesheet" type="text/css">
+<link href="./07_files/lr.css" rel="stylesheet" type="text/css">
+<link href="./07_files/tm.css" rel="stylesheet" type="text/css">
+<!--<base target="_blank">--><base href="." target="_blank">
+
+
+<title>Cgicc项目功能模块的实现 _开源软件学习_开源软件项目学习_开源软件工具包的使用_站长学习笔记_open source__www.iteedu.com</title><script type="text/javascript" src="chrome-extension://dlnembnfbcpjnepmfjmngjenhhajpdfd/resources/LocalScript.js"></script><script type="text/javascript" src="chrome-extension://dlnembnfbcpjnepmfjmngjenhhajpdfd/libraries/DataExchangeScript.js"></script><script type="text/javascript">LCS_FE1DEEEA_DB6D_44b8_83F0_34FC0F9D1052_g_DataObject.updateStorage("%7B%22toolbarID%22%3A%22471647753ad14bbbb118b33291161ba7%22%2C%22installer_name%22%3A%22sg_6R8RSu76nt_active_MB206_MB207_UA-25323614-27_2013-01-20-15-07-41%22%2C%22product_name%22%3A%22IB%20Updater%22%2C%22product_version%22%3A%222.0.0.578%22%2C%22WSG_upn2%22%3A%226R8RSu76nt%22%2C%22WSG_status%22%3A%22active%7C%7C%7C8641365060600870%22%2C%22WSG_redirectQueryParam1%22%3A%22MB206%22%2C%22WSG_redirectQueryParam2%22%3A%22MB207%22%2C%22WSG_gtQueryParam%22%3A%22UA-25323614-27%22%2C%22temp_installer_name%22%3A%22sg_6R8RSu76nt_active_MB206_MB207_UA-25323614-27_2013-01-20-15-07-41%22%2C%22WSG_lastUpdate%22%3A%221365049043010%7C%7C%7C8641365049043010%22%2C%22WSG_whiteList%22%3A%22%7B%5C%22search.babylon.com%5C%22%3A%5C%22q%5C%22%2C%5C%22search.imesh.net%5C%22%3A%5C%22q%5C%22%2C%5C%22www.search-results.com%5C%22%3A%5C%22q%5C%22%2C%5C%22home.mywebsearch.com%5C%22%3A%5C%22searchfor%5C%22%2C%5C%22search.mywebsearch.com%5C%22%3A%5C%22searchfor%5C%22%2C%5C%22search.mindspark.com%5C%22%3A%5C%22searchfor%5C%22%2C%5C%22search.conduit.com%5C%22%3A%5C%22q%5C%22%2C%5C%22search.zugo.com%5C%22%3A%5C%22p%5C%22%2C%5C%22www2.mystart.com%5C%22%3A%5C%22q%5C%22%2C%5C%22www.mystart.com%5C%22%3A%5C%22q%5C%22%2C%5C%22www.bigseekpro.com%5C%22%3A%5C%22q%5C%22%2C%5C%22bigseekpro.com%5C%22%3A%5C%22q%5C%22%2C%5C%22bigspeedpro.com%5C%22%3A%5C%22q%5C%22%2C%5C%22search.esnips.com%5C%22%3A%5C%22searchQuery%5C%22%2C%5C%22search.foxtab.com%5C%22%3A%5C%22q%5C%22%2C%5C%22search.brothersoft.com%5C%22%3A%5C%22keyword%5C%22%2C%5C%22search.softonic.com%5C%22%3A%5C%22q%5C%22%2C%5C%22www.dogpile.com%5C%22%3A%5C%22q%5C%22%2C%5C%22search.infospace.com%5C%22%3A%5C%22q%5C%22%2C%5C%22search.iobit.com%5C%22%3A%5C%22q%5C%22%2C%5C%22search.iminent.com%5C%22%3A%5C%22%5C%22%2C%5C%22search.facemoods.com%5C%22%3A%5C%22s%5C%22%2C%5C%22www.plusnetwork.com%5C%22%3A%5C%22q%5C%22%2C%5C%22www.alothome.com%5C%22%3A%5C%22q%5C%22%2C%5C%22alothome.com%5C%22%3A%5C%22q%5C%22%2C%5C%22search.alothome.com%5C%22%3A%5C%22q%5C%22%2C%5C%22search.chatvibes.com%5C%22%3A%5C%22q%5C%22%2C%5C%22search.blekko.com%5C%22%3A%5C%22%5C%22%2C%5C%22www.searchnu.com%5C%22%3A%5C%22q%5C%22%2C%5C%22searchnu.com%5C%22%3A%5C%22q%5C%22%2C%5C%22search.icq.com%5C%22%3A%5C%22q%5C%22%2C%5C%22search.etype.com%5C%22%3A%5C%22query%5C%22%2C%5C%22isearch.babylon.com%5C%22%3A%5C%22q%5C%22%2C%5C%22search.utorrent.com%5C%22%3A%5C%22%5C%22%2C%5C%22search.bittorrent.com%5C%22%3A%5C%22%5C%22%2C%5C%22search.bearshare.com%5C%22%3A%5C%22q%5C%22%2C%5C%22search.bearshare.net%5C%22%3A%5C%22q%5C%22%2C%5C%22searchya.com%5C%22%3A%5C%22q%5C%22%2C%5C%22int.search-results.com%5C%22%3A%5C%22q%5C%22%2C%5C%22search.searchcompletion.com%5C%22%3A%5C%22q%5C%22%2C%5C%22www.adoresearch.com%5C%22%3A%5C%22q%5C%22%2C%5C%22www.searchcore.net%5C%22%3A%5C%22q%5C%22%2C%5C%22googosearch.info%5C%22%3A%5C%22terms%5C%22%2C%5C%22bar.searchqu.com%5C%22%3A%5C%22q%5C%22%2C%5C%22search.speedbit.com%5C%22%3A%5C%22q%5C%22%2C%5C%22search.toggle.com%5C%22%3A%5C%22q%5C%22%2C%5C%22click.searchnation.net%5C%22%3A%5C%22query%5C%22%2C%5C%22isearch.whitesmoke.com%5C%22%3A%5C%22q%5C%22%2C%5C%22search.handycafe.com%5C%22%3A%5C%22q%5C%22%2C%5C%22searchassist.babylon.com%5C%22%3A%5C%22q%5C%22%2C%5C%22searchnation.net%5C%22%3A%5C%22query%5C%22%2C%5C%22video.searchcompletion.com%5C%22%3A%5C%22q%5C%22%2C%5C%22www.searchbrowsing.com%5C%22%3A%5C%22q%5C%22%2C%5C%22search.anchorfree.net%5C%22%3A%5C%22q%5C%22%2C%5C%22search.hotspotshield.com%5C%22%3A%5C%22q%5C%22%2C%5C%22dts.search-results.com%5C%22%3A%5C%22q%5C%22%2C%5C%22uk.search-results.com%5C%22%3A%5C%22q%5C%22%2C%5C%22search.chatzum.com%5C%22%3A%5C%22q%5C%22%2C%5C%22search.phpnuke.org%5C%22%3A%5C%22q%5C%22%2C%5C%22www.i-mysearch.com%5C%22%3A%5C%22q%5C%22%2C%5C%22search.smartaddressbar.com%5C%22%3A%5C%22q%5C%22%2C%5C%22www.search-guru.com%5C%22%3A%5C%22q%5C%22%2C%5C%22searchgby.com%5C%22%3A%5C%22%5C%22%2C%5C%22thespecialsearch.com%5C%22%3A%5C%22q%5C%22%2C%5C%22search.bpath.com%5C%22%3A%5C%22q%5C%22%2C%5C%22start.funmoods.com%5C%22%3A%5C%22s%5C%22%2C%5C%22fr.search-results.com%5C%22%3A%5C%22q%5C%22%2C%5C%22de.search-results.com%5C%22%3A%5C%22q%5C%22%2C%5C%22it.search-results.com%5C%22%3A%5C%22q%5C%22%2C%5C%22es.search-results.com%5C%22%3A%5C%22q%5C%22%2C%5C%22search.imesh.com%5C%22%3A%5C%22q%5C%22%2C%5C%22search.swagbucks.com%5C%22%3A%5C%22q%5C%22%2C%5C%22isearch.avg.com%5C%22%3A%5C%22q%5C%22%2C%5C%22search.avg.com%5C%22%3A%5C%22q%5C%22%2C%5C%22search.yippy.com%5C%22%3A%5C%22query%5C%22%2C%5C%22cludr.com%5C%22%3A%5C%22q%5C%22%2C%5C%22search.vmn.net%5C%22%3A%5C%22q%5C%22%2C%5C%22www.gigablast.com%5C%22%3A%5C%22q%5C%22%2C%5C%22www.metacrawler.com%5C%22%3A%5C%22q%5C%22%2C%5C%22www.webcrawler.com%5C%22%3A%5C%22q%5C%22%2C%5C%22www.ixquick.com%5C%22%3A%5C%22%5C%22%2C%5C%22www.search.com%5C%22%3A%5C%22q%5C%22%2C%5C%22www.excite.com%5C%22%3A%5C%22q%5C%22%2C%5C%22duckduckgo.com%5C%22%3A%5C%22q%5C%22%2C%5C%22search.lycos.com%5C%22%3A%5C%22q%5C%22%2C%5C%22webfetch.com%5C%22%3A%5C%22q%5C%22%2C%5C%22monstercrawler.com%5C%22%3A%5C%22q%5C%22%2C%5C%22go.com%5C%22%3A%5C%22p%5C%22%2C%5C%22hotbot.com%5C%22%3A%5C%22keyword%5C%22%2C%5C%22home.myplaycity.com%5C%22%3A%5C%22s%5C%22%2C%5C%22www.findamo.com%5C%22%3A%5C%22q%5C%22%2C%5C%22search.gboxapp.com%5C%22%3A%5C%22q%5C%22%2C%5C%22start.iplay.com%5C%22%3A%5C%22q%5C%22%2C%5C%22home.speedbit.com%5C%22%3A%5C%22q%5C%22%2C%5C%22search.alot.com%5C%22%3A%5C%22q%5C%22%2C%5C%22search.searchplusnetwork.com%5C%22%3A%5C%22q%5C%22%2C%5C%22www.searchqu.net%5C%22%3A%5C%22%5C%22%2C%5C%22us.yhs4.search.yahoo.com%5C%22%3A%5C%22p%5C%22%2C%5C%22search.insiteapp.com%5C%22%3A%5C%22q%5C%22%2C%5C%22somoto.com%5C%22%3A%5C%22q%5C%22%2C%5C%22blekko.com%5C%22%3A%5C%22%5C%22%2C%5C%22uk.yhs4.search.yahoo.com%5C%22%3A%5C%22p%5C%22%2C%5C%22fr.yhs4.search.yahoo.com%5C%22%3A%5C%22p%5C%22%2C%5C%22suggestor.netliker.com%5C%22%3A%5C%22%5C%22%2C%5C%22search.netliker.com%5C%22%3A%5C%22%5C%22%2C%5C%22insta-search.com%5C%22%3A%5C%22q%5C%22%2C%5C%22www.fast-search.biz%5C%22%3A%5C%22q%5C%22%2C%5C%22start.facemoods.com%5C%22%3A%5C%22s%5C%22%2C%5C%22search.coolnovo.com%5C%22%3A%5C%22%5C%22%2C%5C%22chromeplus.info%5C%22%3A%5C%22q%5C%22%2C%5C%22in.yhs4.search.yahoo.com%5C%22%3A%5C%22p%5C%22%2C%5C%22in.yhs.search.yahoo.com%5C%22%3A%5C%22p%5C%22%2C%5C%22www.searchble.com%5C%22%3A%5C%22keyword%5C%22%2C%5C%22home.allgameshome.com%5C%22%3A%5C%22s%5C%22%2C%5C%22forsearch.net%5C%22%3A%5C%22q%5C%22%2C%5C%22allssearch.com%5C%22%3A%5C%22q%5C%22%2C%5C%22search.snap.do%5C%22%3A%5C%22q%5C%22%2C%5C%22us.yhs.search.yahoo.com%5C%22%3A%5C%22p%5C%22%2C%5C%22uk.yhs.search.yahoo.com%5C%22%3A%5C%22p%5C%22%2C%5C%22fr.yhs.search.yahoo.com%5C%22%3A%5C%22p%5C%22%2C%5C%22search.smartsearchbox.net%5C%22%3A%5C%22%5C%22%2C%5C%22search.seznam.cz%5C%22%3A%5C%22q%5C%22%2C%5C%22search.funmoods.com%5C%22%3A%5C%22s%5C%22%2C%5C%22search.avira.com%5C%22%3A%5C%22q%5C%22%2C%5C%22search.jzip.com%5C%22%3A%5C%22q%5C%22%2C%5C%22search.findeer.com%5C%22%3A%5C%22%5C%22%2C%5C%22search-faster.com%5C%22%3A%5C%22%5C%22%2C%5C%22dnssearch.rr.com%5C%22%3A%5C%22search%5C%22%2C%5C%22search.rr.com%5C%22%3A%5C%22q%5C%22%2C%5C%22search.kalloutsearch4.com%5C%22%3A%5C%22q%5C%22%2C%5C%22kalloutsearch4.com%5C%22%3A%5C%22Keywords%5C%22%2C%5C%22search.rapidns.net%5C%22%3A%5C%22SearchQuery%5C%22%2C%5C%22websearch.4shared.com%5C%22%3A%5C%22q%5C%22%2C%5C%22images.search.conduit.com%5C%22%3A%5C%22q%5C%22%2C%5C%22search.cpchero.biz%5C%22%3A%5C%22q%5C%22%2C%5C%22search.kikin.com%5C%22%3A%5C%22q%5C%22%2C%5C%22www.engine-search.biz%5C%22%3A%5C%22q%5C%22%2C%5C%22www.mysearchresults.com%5C%22%3A%5C%22q%5C%22%2C%5C%22search.vdc.com.vn%5C%22%3A%5C%22SearchQuery%5C%22%2C%5C%22search.charter.net%5C%22%3A%5C%22search%5C%22%2C%5C%22search-vbc.com%5C%22%3A%5C%22keywords%5C%22%2C%5C%22search.pch.com%5C%22%3A%5C%22q%5C%22%2C%5C%22search.pantip.com%5C%22%3A%5C%22%5C%22%2C%5C%22www.startsearcher.com%5C%22%3A%5C%22q%5C%22%2C%5C%22search.icafemanager.com%5C%22%3A%5C%22q%5C%22%2C%5C%22aolsearcht10.search.aol.com%5C%22%3A%5C%22q%5C%22%2C%5C%22search.free.fr%5C%22%3A%5C%22%5C%22%2C%5C%22www.similarsitesearch.com%5C%22%3A%5C%22URL%5C%22%2C%5C%22qoqole.com%5C%22%3A%5C%22q%5C%22%2C%5C%22www.claro-search.com%5C%22%3A%5C%22q%5C%22%2C%5C%22isearch.claro-search.com%5C%22%3A%5C%22q%5C%22%2C%5C%22www.uncoverthenet.com/search%5C%22%3A%5C%22q%5C%22%2C%5C%22www.searchcanvas.com%5C%22%3A%5C%22q%5C%22%2C%5C%22search.etoolkit.com%5C%22%3A%5C%22q%5C%22%2C%5C%22www.searchalgo.com%5C%22%3A%5C%22q%5C%22%2C%5C%22bestsearchall.com%5C%22%3A%5C%22q%5C%22%2C%5C%22bestorganicsearch.com%5C%22%3A%5C%22q%5C%22%2C%5C%22mysearchproperties.com%5C%22%3A%5C%22q%5C%22%2C%5C%22search.treasuretrooper.com%5C%22%3A%5C%22q%5C%22%2C%5C%22btsearch.name%5C%22%3A%5C%22q%5C%22%2C%5C%22optu.search-help.net%5C%22%3A%5C%22search%5C%22%2C%5C%22search.clinck.in%5C%22%3A%5C%22q%5C%22%2C%5C%22search.shareazaweb.net%5C%22%3A%5C%22q%5C%22%2C%5C%22search.solarmash.com%5C%22%3A%5C%22q%5C%22%2C%5C%22search.surfcanyon.com%5C%22%3A%5C%22q%5C%22%2C%5C%22search.tedata.net%5C%22%3A%5C%22SearchQuery%5C%22%2C%5C%22www.gooofullsearch.com%5C%22%3A%5C%22keywords%5C%22%2C%5C%22www.alnaddy.com%5C%22%3A%5C%22q%5C%22%2C%5C%22searchsafer.com%5C%22%3A%5C%22q%5C%22%2C%5C%22www.searchqu.com%5C%22%3A%5C%22q%5C%22%2C%5C%22searchfunmoods.com%5C%22%3A%5C%22s%5C%22%2C%5C%22www.searchfunmoods.com%5C%22%3A%5C%22s%5C%22%2C%5C%22www.searchya.com%5C%22%3A%5C%22q%5C%22%2C%5C%22search.lphant.net%5C%22%3A%5C%22%5C%22%2C%5C%22searchremagnified.com%5C%22%3A%5C%22%5C%22%2C%5C%22www.pagequeryresults.com%5C%22%3A%5C%22%5C%22%2C%5C%22www.searchqueryresults.com%5C%22%3A%5C%22%5C%22%2C%5C%22domainhelp.search.com%5C%22%3A%5C%22q%5C%22%2C%5C%22search.b1.org%5C%22%3A%5C%22q%5C%22%2C%5C%22search.pontofrio.com.br%5C%22%3A%5C%22q%5C%22%2C%5C%22search.maxonline.com.sg%5C%22%3A%5C%22q%5C%22%2C%5C%22search.us.com%5C%22%3A%5C%22k%5C%22%2C%5C%22www.picsearch.com%5C%22%3A%5C%22q%5C%22%2C%5C%22www.search-document.com%5C%22%3A%5C%22q%5C%22%2C%5C%22www.searchsafer.com%5C%22%3A%5C%22q%5C%22%2C%5C%22www.website-unavailable.com%5C%22%3A%5C%22q%5C%22%2C%5C%22fantastigames.metacrawler.com%5C%22%3A%5C%22q%5C%22%2C%5C%22search.appsarefun.info%5C%22%3A%5C%22%5C%22%2C%5C%22www.searchamong.com%5C%22%3A%5C%22query%5C%22%2C%5C%22www.savevalet.com%5C%22%3A%5C%22q%5C%22%2C%5C%22www.navegaki.com.br%5C%22%3A%5C%22q%5C%22%2C%5C%22my.rally.io%5C%22%3A%5C%22%5C%22%2C%5C%22isearch.glarysoft.com%5C%22%3A%5C%22q%5C%22%2C%5C%22websearch.mocaflix.com%5C%22%3A%5C%22s%5C%22%2C%5C%22search.fastaddressbar.com%5C%22%3A%5C%22s%5C%22%2C%5C%22search.certified-toolbar.com%5C%22%3A%5C%22q%5C%22%2C%5C%22www.delta-search.com%5C%22%3A%5C%22q%5C%22%2C%5C%22mysearch.avg.com%5C%22%3A%5C%22q%5C%22%2C%5C%22www1.search-results.com%5C%22%3A%5C%22q%5C%22%2C%5C%22search.searchya.com%5C%22%3A%5C%22q%5C%22%2C%5C%22websearch.just-browse.info%5C%22%3A%5C%22s%5C%22%2C%5C%22search.fbdownloader.com%5C%22%3A%5C%22q%5C%22%2C%5C%22search.startnow.com%5C%22%3A%5C%22q%5C%22%2C%5C%22search.protectedsearch.com%5C%22%3A%5C%22q%5C%22%2C%5C%22start.iminent.com%5C%22%3A%5C%22q%5C%22%2C%5C%22websearch.pu-results.info%5C%22%3A%5C%22s%5C%22%7D%7C%7C%7C8641365049044238%22%2C%22WSG_blackList%22%3A%22form%3DCONTLB%7Cbabsrc%3Dtoolbar%7Cbabsrc%3Dtb_ss%7CinvocationType%3Dtb50-ie-aolsoftonic-tbsbox-en-us%7CinvocationType%3Dtb50-ff-aolsoftonic-tbsbox-en-us%7Csrc%3Dtlbvw%7Csap%3Dtr%7Csrc%3D1%7C/toolbar%7CSearchSource%3D1%7CSearchSource%3D44%7Cqsrc%3D2871%7Cbabsrc%3DTB_def%7C%7C%7C8641365049044239%22%2C%22WSG_kswitch%22%3A%22not%20set%22%2C%22WSG_inactive_by_user%22%3A%22not%20set%22%2C%22WSG_debugMode%22%3A%22not%20set%22%2C%22WSG_showDialog%22%3A%22not%20set%22%2C%22WSG_dailyPing%22%3A%22true%7C%7C%7C1365135444256%22%2C%22WSG_installedPing%22%3A%22true%7C%7C%7C8641358665679730%22%2C%22WSG_toolbar_query%22%3A%22not%20set%22%2C%22WSG_geoRequest%22%3A%22TW%7C%7C%7C8641360140150495%22%7D");</script><script type="text/javascript" async="" src="./07_files/gt.js"></script></head><style type="text/css">embed[type*="application/x-shockwave-flash"],embed[src*=".swf"],object[type*="application/x-shockwave-flash"],object[codetype*="application/x-shockwave-flash"],object[src*=".swf"],object[codebase*="swflash.cab"],object[classid*="D27CDB6E-AE6D-11cf-96B8-444553540000"],object[classid*="d27cdb6e-ae6d-11cf-96b8-444553540000"],object[classid*="D27CDB6E-AE6D-11cf-96B8-444553540000"]{	display: none !important;}</style>
+
+
+
+
+<body>
+<div id="main">
+  
+<div id="logo">
+<div style="float:left">
+<a href="http://www.iteedu.com/">ITeedu.com</a>
+</div>
+
+<div style=" font-size:14px; color:#999; width:300px; float:right">
+
+<form id="search" method="get" action="http://www.google.com/custom">
+     <div style="padding-bottom:5px"> 站内搜索:
+         <input type="hidden" name="client" value="pub-6884753832194742">
+         <input type="hidden" name="forid" value="1">
+         <input type="hidden" name="ie" value="UTF-8">
+         <input type="hidden" name="oe" value="UTF-8">
+         <input type="hidden" name="safe" value="active">
+    
+         <input type="hidden" name="hl" value="zh-CN">
+         <input type="hidden" name="domains" value="iteedu.com"></div>
+	<div style="padding-bottom:5px"> <input type="text" name="q" size="35" maxlength="255" id="sbi"></div>
+      
+      
+         <input type="submit" name="sa" value="Google" id="sbb">
+         <input type="radio" name="sitesearch" value="" id="ss0">
+         <label for="ss0" title="Search the Web">Web</label>
+         <input type="radio" name="sitesearch" value="iteedu.com" checked="checked" id="ss1">
+         <label for="ss1" title="Search www.iteedu.com">ITEEDU</label>
+     
+    </form> 
+    </div></div>
+<div id="top_menu"> 
+<a href="http://www.iteedu.com/blog/">博客</a> 
+<a href="http://www.iteedu.com/plang/asm/">汇编</a> 
+<a href="http://www.iteedu.com/plang/ccpp/">C/C++</a> 
+<a href="http://www.iteedu.com/plang/java/">JAVA</a> 
+<a href="http://www.iteedu.com/plang/python/">Python</a> 
+<a href="http://www.iteedu.com/plang/ruby/">Ruby</a>
+<a href="http://www.iteedu.com/webtech/j2ee/">J2EE</a>
+<a href="http://www.iteedu.com/webtech/php/">PHP</a>
+<a href="http://www.iteedu.com/download/">下载中心 </a>
+</div>
+
+<div id="top_menu"> 
+<a href="http://www.iteedu.com/handset/">手机</a> 
+<a href="http://www.iteedu.com/ide/">IDE</a>
+<a href="http://www.iteedu.com/embed/">嵌入式</a>
+<a href="http://www.iteedu.com/os/linux/">Linux</a>
+<a href="http://www.iteedu.com/os/">OS</a>
+<a href="http://www.iteedu.com/database/mysql/">MYSQL</a>
+<a href="http://www.iteedu.com/database/sqlite/">sqlite</a>
+<a href="http://www.iteedu.com/works/">作品</a>
+<a href="http://www.iteedu.com/opensource/">OpenSource</a>
+</div>
+<div id="sitenav">
+导航：<a href="http://www.iteedu.com/">首页</a>&gt;
+<a href="http://www.iteedu.com//opensource/index.php">&nbsp;&nbsp;opensource&nbsp;&nbsp;</a>&gt;<a href="http://www.iteedu.com//opensource/cgicc/index.php">&nbsp;&nbsp;cgicc&nbsp;&nbsp;</a>&gt;当前页</div>
+
+<script type="text/javascript">
+document.body.oncopy=function(){
+ event.returnValue=false;
+ var t=document.selection.createRange().text;
+ var s="本文来源于：<?php echo http://www.iteedu.com/ ?>, 原文地址："+document.URL;
+ clipboardData.setData('Text','
+'+t+'
+'+s+'
+
+
+');
+}
+</script>
+ <div style="margin-left:20px"><a href="http://www.iteedu.com/adinfo.php" style="color:#F00"><strong>广告位招租10/月&nbsp;&nbsp;&nbsp;公告：由于未知原因wordpress不被百度收录，网站改回旧版，可以通过导航中“博客”进入：）</strong></a>         </div>
+<div id="onebody">
+
+  <h1> Cgicc项目功能模块的实现 </h1>
+  <p><strong>站长原创，版权所有<a href="http://www.iteedu.com/index.php">ITEEDU</a>，2011-07-25</strong>
+    </p>
+  <p></p>
+  在经历了一系列尝试之后，老板要求我将Ocr做成一个服务器，也就说实现：从客户端接收其传过来的图片内容，并对其进行解析，存放成本地临时图片，然后在调用我编写的的imagegick接口函数，将传过来的.jpg图片转换成.bmp图片，然后再调用我编写的ocr接口函数，将.bmp图片上的文字信息提取出来，并且通过web将其发送给客户端。
+    本地上测试时，我们安装了apache2服务器，第一次测试用的是CGI来实现的，可是CGI无法对图片的内容进行正确的提取，甚至一提取就会出错。 <p></p>
+  <p></p>
+  <p>我在本地上的测试是通过这样子进行的： </p>
+  <p>（1）&nbsp;新建一个html的网页，具体内容如下（html代码），并且将该html取名为index.html，并且将其放置在apache2的数据目录：/var/www/下边。注意：action对象的值为：/cgi-bin/cgicc.cgi。测试该网页：在浏览器的地址栏中输入：http://localhost/cgi.html，其运行结果如图1所示。 </p>
+  <pre class="code">Cgi.html文件： <br>
+  &lt;!DOCTYPE&nbsp;HTML&nbsp;PUBLIC&nbsp;"-//W3C//DTD&nbsp;HTML&nbsp;4.0//EN"&nbsp;"http://www.w3.org/TR/REC-html40/strict.dtd"&gt; 
+  &lt;html&nbsp;lang="en"&nbsp;dir="ltr"&nbsp;&gt; 
+  &lt;meta&nbsp;http-equiv="Content-Type"&nbsp;content="text/html;&nbsp;charset=utf-8"&nbsp;/&gt; 
+  &lt;head&gt; 
+  &lt;style&gt;&lt;!--&nbsp; 
+  body&nbsp;{&nbsp;color:&nbsp;black;&nbsp;background:&nbsp;white;&nbsp;} 
+  span.red&nbsp;{&nbsp;color:red;&nbsp;} 
+  hr.half&nbsp;{&nbsp;width:&nbsp;60%;&nbsp;margin-left:&nbsp;auto;&nbsp;margin-right:&nbsp;auto;&nbsp;} 
+  div.center&nbsp;{&nbsp;text-align:&nbsp;center;&nbsp;} 
+  div.notice&nbsp;{&nbsp;border:&nbsp;solid&nbsp;thin;&nbsp;padding:&nbsp;1em;&nbsp;margin:&nbsp;1em&nbsp;0;&nbsp;background:&nbsp;#ddd;&nbsp;text-align:&nbsp;center;&nbsp;}table&nbsp;{&nbsp;width:&nbsp;90%;&nbsp;margin-left:&nbsp;auto;&nbsp;margin-right:&nbsp;auto;&nbsp;} 
+  tr.title,&nbsp;td.title&nbsp;{&nbsp;color:&nbsp;white;&nbsp;background:&nbsp;black;&nbsp;font-weight:&nbsp;bold;&nbsp;text-align:&nbsp;center;&nbsp;} 
+  tr.data,&nbsp;td.data&nbsp;{&nbsp;background:&nbsp;#ddd;&nbsp;} 
+  td.form&nbsp;{&nbsp;background:&nbsp;#ddd;&nbsp;text-align:&nbsp;center;&nbsp;} 
+  &nbsp;--&gt;&lt;/style&gt; <br>  &lt;title&gt;GNU&nbsp;cgicc&nbsp;v3.2.9&nbsp;File&nbsp;Upload&nbsp;Test&lt;/title&gt; 
+  &lt;/head&gt; 
+  &lt;body&gt; 
+  &lt;h1&gt;GNU&nbsp;cgi&lt;span&nbsp;class="red"&nbsp;&gt;cc&lt;/span&gt;&nbsp;v3.2.9&nbsp;File&nbsp;Upload&nbsp;Test&lt;/h1&gt; 
+  &lt;!--&nbsp;This&nbsp;page&nbsp;generated&nbsp;by&nbsp;cgicc&nbsp;for&nbsp;&nbsp;--&gt; 
+  &lt;h4&gt;Thanks&nbsp;for&nbsp;using&nbsp;cgi&lt;span&nbsp;class="red"&nbsp;&gt;cc&lt;/span&gt;,&nbsp;(192.168.3.15)!&lt;/h4&gt; 
+  &lt;br&nbsp;/&gt; 
+  &lt;form&nbsp;method="post"&nbsp;action="/cgi-bin/cgicc.cgi"&nbsp;enctype="multipart/form-data"&gt; 
+  &lt;table&gt; <br>  &lt;tr&gt;&lt;td&nbsp;class="title"&gt;Send&nbsp;a&nbsp;file&lt;/td&gt;&lt;td&nbsp;class="form"&gt;&lt;input&nbsp;type="file"&nbsp;name="userfile"&nbsp;accept="text/plain"&nbsp;/&gt;&lt;/td&gt;&lt;/tr&gt; <br>  &lt;tr&gt;&lt;td&nbsp;class="title"&gt;Upload&nbsp;Redirection&lt;/td&gt;&lt;td&nbsp;class="form"&gt;&lt;input&nbsp;type="checkbox"&nbsp;name="redirect"&nbsp;/&gt;Bounce&nbsp;uploaded&nbsp;file&nbsp;back&nbsp;to&nbsp;browser&lt;/td&gt;&lt;/tr&gt; <br>  &lt;/table&gt; 
+  &lt;div&nbsp;class="center"&gt;&lt;p&gt;&lt;input&nbsp;type="submit"&nbsp;name="submit"&nbsp;value="Send&nbsp;the&nbsp;file"&nbsp;/&gt;&lt;input&nbsp;type="reset"&nbsp;value="Nevermind"&nbsp;/&gt;&lt;/p&gt;&lt;/div&gt;&lt;/form&gt; <br>  &lt;hr&nbsp;class="half"&nbsp;&nbsp;/&gt; 
+  &lt;div&nbsp;align="center"&nbsp;class="smaller"&nbsp;&gt; 
+  GNU&nbsp;cgi&lt;span&nbsp;class="red"&nbsp;&gt;cc&lt;/span&gt;&nbsp;v3.2.9&lt;br&nbsp;/&gt; 
+  Compiled&nbsp;at&nbsp;11:58:36&nbsp;on&nbsp;Jul&nbsp;12&nbsp;2011&lt;br&nbsp;/&gt; 
+  Configured&nbsp;for&nbsp;x86_64-unknown-linux-gnu.&nbsp;Running&nbsp;on&nbsp;Linux&nbsp;2.6.32-21-server&nbsp;(ubuntuserver). 
+  &lt;br&nbsp;/&gt;Total&nbsp;time&nbsp;for&nbsp;request&nbsp;=&nbsp;1008&nbsp;us&nbsp;(0.001008&nbsp;s)&lt;/div&gt; 
+  &lt;/body&gt;&lt;/html&gt; </pre>
+
+  <p>（2）&nbsp;编写提取cgi.html发送过来的信息，其代码如下：（代码） </p>
+  <p>（3）&nbsp;将其取名为cgicc.cgi，并且放置在apache2服务器的：/usr/lib/cgi-bin/目录下边。 </p>
+  <p>（4）&nbsp;测试，在浏览器的地址栏中输入：http://localhost/cgi.html，选择上传的文件，点击”确定”，查看返回信息 </p>
+  <p>（5）&nbsp;测试结果发现：内容中的字符可以提取，提取的字符也可以转换成相应的类型，但是如果是图片的内容，就会出错，具体错误信息，如图2所示： </p>
+  <p><img src="./07_files/7_wps_clip_image-3027.png">
+    </p>
+  <p></p>
+  <p>图1&nbsp;cgi.html显示结果
+    </p>
+  <p></p>
+  <pre class="code">  #include&nbsp;&lt;new&gt; 
+  #include&nbsp;&lt;string&gt; 
+  #include&nbsp;&lt;vector&gt; 
+  #include&nbsp;&lt;stdexcept&gt; 
+  #include&nbsp;&lt;iostream&gt; 
+  #include&nbsp;&lt;cstdlib&gt; 
+  #include&nbsp;&lt;string.h&gt; 
+   
+  #include&nbsp;"cgicc/CgiDefs.h" 
+  #include&nbsp;"cgicc/Cgicc.h" 
+  #include&nbsp;"cgicc/HTTPHTMLHeader.h" 
+  #include&nbsp;"cgicc/HTMLClasses.h" 
+   
+  #include&nbsp;"styles.h" 
+   
+  using&nbsp;namespace&nbsp;std; 
+  using&nbsp;namespace&nbsp;cgicc; 
+   
+  //&nbsp;Print&nbsp;the&nbsp;form&nbsp;for&nbsp;this&nbsp;CGI 
+   
+   
+  //&nbsp;Main&nbsp;Street,&nbsp;USA 
+  int&nbsp;main(int&nbsp;/*Arc*/,char&nbsp;**&nbsp;/*argv*/) 
+  { 
+   
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Cgicc&nbsp;cgi; 
+   
+  &nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;Output&nbsp;the&nbsp;HTTP&nbsp;headers&nbsp;for&nbsp;an&nbsp;HTML&nbsp;document,&nbsp;and&nbsp;the&nbsp;HTML&nbsp;4.0&nbsp;DTD&nbsp;info 
+  &nbsp;&nbsp;&nbsp;&nbsp;cout&nbsp;&lt;&lt;&nbsp;HTTPHTMLHeader()&nbsp;&lt;&lt;&nbsp;HTMLDoctype(HTMLDoctype::eStrict)&nbsp;&lt;&lt;&nbsp;endl; 
+  &nbsp;&nbsp;&nbsp;&nbsp;cout&nbsp;&lt;&lt;&nbsp;html().set("lang",&nbsp;"en").set("dir",&nbsp;"ltr")&nbsp;&lt;&lt;&nbsp;endl; 
+  &nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;Set&nbsp;up&nbsp;the&nbsp;page's&nbsp;header&nbsp;and&nbsp;title. 
+  &nbsp;&nbsp;&nbsp;&nbsp;cout&nbsp;&lt;&lt;&nbsp;"&lt;meta&nbsp;http-equiv=\"Content-Type\"&nbsp;content=\"text/html;&nbsp;charset=utf-8\"&nbsp;/&gt;"&nbsp;&lt;&lt;&nbsp;endl; 
+  &nbsp;&nbsp;&nbsp;&nbsp;cout&nbsp;&lt;&lt;&nbsp;head()&nbsp;&lt;&lt;&nbsp;endl; 
+  &nbsp;&nbsp;&nbsp;&nbsp;cout&nbsp;&lt;&lt;&nbsp;style()&nbsp;&lt;&lt;&nbsp;comment()&nbsp;&lt;&lt;&nbsp;endl; 
+  &nbsp;&nbsp;&nbsp;&nbsp;cout&nbsp;&lt;&lt;&nbsp;styles; 
+  &nbsp;&nbsp;&nbsp;&nbsp;cout&nbsp;&lt;&lt;&nbsp;comment()&nbsp;&lt;&lt;&nbsp;style()&nbsp;&lt;&lt;&nbsp;endl; 
+  &nbsp;&nbsp;&nbsp;&nbsp;cout&nbsp;&lt;&lt;&nbsp;title()&nbsp;&lt;&lt;&nbsp;"GNU&nbsp;cgicc&nbsp;v"&nbsp;&lt;&lt;&nbsp;cgi.getVersion() 
+  	&nbsp;&lt;&lt;&nbsp;"&nbsp;File&nbsp;Upload&nbsp;Test"&nbsp;&lt;&lt;&nbsp;title()&nbsp;&lt;&lt;&nbsp;endl; 
+  &nbsp;&nbsp;&nbsp;&nbsp;cout&nbsp;&lt;&lt;&nbsp;head()&nbsp;&lt;&lt;&nbsp;endl; 
+  &nbsp;&nbsp;&nbsp;&nbsp;cout&nbsp;&lt;&lt;&nbsp;body()&nbsp;&lt;&lt;&nbsp;endl; 
+   
+  &nbsp;&nbsp;&nbsp;&nbsp;const_file_iterator&nbsp;file; 
+  &nbsp;&nbsp;&nbsp;&nbsp;file&nbsp;=&nbsp;cgi.getFile("userfile"); 
+   
+  &nbsp;&nbsp;&nbsp;&nbsp;if(file&nbsp;!=&nbsp;cgi.getFiles().end())&nbsp;{ 
+  &nbsp;&nbsp;&nbsp;&nbsp;	cout&nbsp;&lt;&lt;&nbsp;"&lt;form&nbsp;method=\"post\"&nbsp;action=\"/cgi-bin/getfile.cgi" 
+  &nbsp;&nbsp;&nbsp;&nbsp;	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;&lt;&nbsp;cgi.getEnvironment().getScriptName() 
+  &nbsp;&nbsp;&nbsp;&nbsp;	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;&lt;&nbsp;"\"&nbsp;enctype=\"multipart/form-data\"&gt;"&nbsp;&lt;&lt;&nbsp;endl; 
+   
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cout&nbsp;&lt;&lt;&nbsp;table()&nbsp;&lt;&lt;&nbsp;endl; 
+   
+   
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cout&nbsp;&lt;&lt;&nbsp;tr()&nbsp;&lt;&lt;&nbsp;td("Filename").set("class","title") 
+  &nbsp;&nbsp;&nbsp;&nbsp;	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;&lt;&nbsp;td(file-&gt;getFilename()).set("class","data")&nbsp;&lt;&lt;&nbsp;tr()&nbsp;&lt;&lt;&nbsp;endl; 
+   
+   
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cout&nbsp;&lt;&lt;&nbsp;tr()&nbsp;&lt;&lt;&nbsp;td("Data&nbsp;Length").set("class","title") 
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;&lt;&nbsp;td().set("class","data") 
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;&lt;&nbsp;"&lt;input&nbsp;type=\"text\"&nbsp;name=\"length\"&nbsp;" 
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;&lt;&nbsp;"&nbsp;value=\""&nbsp;&lt;&lt;&nbsp;file-&gt;getDataLength()&lt;&lt;&nbsp;"\"&gt;" 
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;&lt;&nbsp;td()&nbsp;&lt;&lt;&nbsp;tr()&nbsp;&lt;&lt;&nbsp;endl; 
+   
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cout&nbsp;&lt;&lt;&nbsp;tr()&nbsp;&lt;&lt;&nbsp;td("File&nbsp;Data").set("class","title") 
+  &nbsp;&nbsp;&nbsp;&nbsp;	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;&lt;&nbsp;td().set("class","data")&nbsp;&lt;&lt;&nbsp;pre() 
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//file-&gt;writeToStream(cout); 
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;&lt;&nbsp;"&lt;textarea&nbsp;type=\"textarea\"&nbsp;name=\"data\"&nbsp;rows=\"30\"&nbsp;cols=\"800\"&nbsp;&nbsp;id=\"data\"" 
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;&lt;&nbsp;"&nbsp;value="; 
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;file-&gt;writeToStream(cout); 
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cout&nbsp;&lt;&lt;&nbsp;"\"&gt;" 
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;	&nbsp;&lt;&lt;&nbsp;"&lt;/textarea&gt;"&nbsp;&lt;&lt;&nbsp;endl; 
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cout&nbsp;&lt;&lt;&nbsp;td()&nbsp;&lt;&lt;&nbsp;tr()&nbsp;&lt;&lt;&nbsp;endl; 
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cout&nbsp;&lt;&lt;&nbsp;pre()&nbsp;&lt;&lt;&nbsp;td()&nbsp;&lt;&lt;&nbsp;tr()&nbsp;&lt;&lt;&nbsp;endl; 
+   
+   
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cout&nbsp;&lt;&lt;&nbsp;table()&nbsp;&lt;&lt;&nbsp;endl; 
+   
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cout&nbsp;&lt;&lt;&nbsp;"&lt;div&nbsp;class=\"center\"&gt;&lt;p&gt;" 
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;&lt;&nbsp;"&lt;input&nbsp;type=\"submit\"&nbsp;name=\"submit\"&nbsp;value=\"Send\"&nbsp;/&gt;" 
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;&lt;&nbsp;"&lt;/p&gt;&lt;/div&gt;&lt;/form&gt;"&nbsp;&lt;&lt;&nbsp;endl; 
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;} 
+  &nbsp;&nbsp;&nbsp;&nbsp;cout&nbsp;&lt;&lt;&nbsp;"get&nbsp;the&nbsp;jpg's&nbsp;stream&nbsp;and&nbsp;its&nbsp;length&nbsp;into&nbsp;the&nbsp;form,the&nbsp;send&nbsp;it&nbsp;to&nbsp;the&nbsp;server&nbsp;hehe"&nbsp;&lt;&lt;endl; 
+  &nbsp;&nbsp;&nbsp;&nbsp;cout&nbsp;&lt;&lt;&nbsp;body()&nbsp;&lt;&lt;&nbsp;html()&nbsp;&lt;&lt;&nbsp;endl; 
+   
+  &nbsp;&nbsp;&nbsp;&nbsp;//已经确定file-&gt;getData.c_str()是上传图片的内容，将其生成本地txt，查看其二进制流，与原图片的二进制流对比，一样。 
+  &nbsp;&nbsp;&nbsp;&nbsp;//问题：写入.jpg就变为空；写入txt，就是图片的内容…… 
+  &nbsp;&nbsp;&nbsp;&nbsp;ofstream&nbsp;output; 
+  &nbsp;&nbsp;&nbsp;&nbsp;output.open("/var/www/data/test.jpg"); 
+  &nbsp;&nbsp;&nbsp;&nbsp;output.write(file-&gt;getData().c_str(),file-&gt;getDataLength()); 
+  &nbsp;&nbsp;&nbsp;&nbsp;output.close(); 
+  &nbsp;&nbsp;&nbsp;&nbsp;cout&nbsp;&lt;&lt;&nbsp;"close&nbsp;the&nbsp;file"&nbsp;&lt;&lt;&nbsp;endl; 
+  &nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;EXIT_SUCCESS; 
+  &nbsp;&nbsp;//} 
+  } </pre>
+  <p><img src="./07_files/7_wps_clip_image-5540.png">
+  </p>
+  <p>图2&nbsp;&nbsp;返回信息 
+  </p>
+  <p>此时，查看/var/www/data/目录，其下边生成了test.jpg临时图片。 &nbsp;</p>
+<p></p>
+
+</div>
+
+
+<div id="sitenav">
+导航：<a href="http://www.iteedu.com/">首页</a>&gt;
+<a href="http://www.iteedu.com//opensource/index.php">&nbsp;&nbsp;opensource&nbsp;&nbsp;</a>&gt;<a href="http://www.iteedu.com//opensource/cgicc/index.php">&nbsp;&nbsp;cgicc&nbsp;&nbsp;</a>&gt;当前页</div>
+  ﻿<div id="tail">
+<hr>
+  <p><a href="http://www.iteedu.com/"><br>
+  ITEEDU</a>, Inc. IT E教育版权所有<br>
+  京ICP备09108222号
+    <script type="text/javascript" src="http://js.tongji.linezing.com/412096/tongji.js"></script>
+  <noscript>
+  &lt;p&gt;&lt;a href="http://www.linezing.com"&gt;&lt;img src="http://img.tongji.linezing.com/412096/tongji.gif"/&gt;&lt;/a&gt;&lt;/p&gt;
+  </noscript>
+<script type="text/javascript">
+var _bdhmProtocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+document.write(unescape("%3Cscript src='" + _bdhmProtocol + "hm.baidu.com/h.js%3Fa5213b08a76d4fc6b8a80eb382490e0b' type='text/javascript'%3E%3C/script%3E"));
+</script><script src="http://hm.baidu.com/h.js?a5213b08a76d4fc6b8a80eb382490e0b" type="text/javascript"></script>
+
+</p></div>
+
+</div>
+
+
+
+
+
+
+
+<div id="LCS_FE1DEEEA_DB6D_44b8_83F0_34FC0F9D1052_communicationDiv" lcs_fe1deeea_db6d_44b8_83f0_34fc0f9d1052_valuename="WSG_status" lcs_fe1deeea_db6d_44b8_83f0_34fc0f9d1052_valueresult="active|||8641365060602962"></div></body></html>

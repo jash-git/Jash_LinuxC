@@ -1,0 +1,285 @@
+<html>
+
+<head>
+<meta http-equiv=Content-Type content="text/html; charset=us-ascii">
+<meta name=Generator content="Microsoft Word 12 (filtered)">
+<title>C++Script Manual</title>
+<style>
+<!--
+ /* Font Definitions */
+ @font-face
+	{font-family:Wingdings;
+	panose-1:5 0 0 0 0 0 0 0 0 0;}
+@font-face
+	{font-family:"Cambria Math";
+	panose-1:2 4 5 3 5 4 6 3 2 4;}
+@font-face
+	{font-family:Cambria;
+	panose-1:2 4 5 3 5 4 6 3 2 4;}
+@font-face
+	{font-family:Calibri;
+	panose-1:2 15 5 2 2 2 4 3 2 4;}
+ /* Style Definitions */
+ p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{margin:0cm;
+	margin-bottom:.0001pt;
+	font-size:12.0pt;
+	font-family:"Calibri","sans-serif";}
+h2
+	{mso-style-link:"Heading 2 Char";
+	margin-right:0cm;
+	margin-left:0cm;
+	font-size:18.0pt;
+	font-family:"Cambria","serif";}
+h3
+	{mso-style-link:"Heading 3 Char";
+	margin-right:0cm;
+	margin-left:0cm;
+	font-size:13.5pt;
+	font-family:"Calibri","sans-serif";}
+span.Heading2Char
+	{mso-style-name:"Heading 2 Char";
+	mso-style-link:"Heading 2";
+	font-family:"Cambria","serif";
+	font-weight:bold;}
+span.Heading3Char
+	{mso-style-name:"Heading 3 Char";
+	mso-style-link:"Heading 3";
+	font-family:"Cambria","serif";
+	color:#4F81BD;
+	font-weight:bold;}
+.MsoChpDefault
+	{font-size:10.0pt;}
+@page Section1
+	{size:595.3pt 841.9pt;
+	margin:72.0pt 72.0pt 72.0pt 72.0pt;}
+div.Section1
+	{page:Section1;}
+ /* List Definitions */
+ ol
+	{margin-bottom:0cm;}
+ul
+	{margin-bottom:0cm;}
+-->
+</style>
+
+</head>
+
+<body lang=EN-GB>
+
+<div class=Section1>
+
+<h2>Class dynamic::var</h2>
+
+<h3>Constructors</h3>
+
+<ul type=disc>
+ <li class=MsoNormal><i>var() -</i> create a null <i>var</i></li>
+ <li class=MsoNormal><i>var(bool) -</i> create a <i>var</i> representing a
+     boolean value</li>
+ <li class=MsoNormal><i>var(int) -</i> create a <i>var</i> representing an
+     integer</li>
+ <li class=MsoNormal><i>var(double) -</i> create a <i>var</i> representing a
+     double-precision floating point number</li>
+ <li class=MsoNormal><i>var(char) -</i> create a <i>var</i> representing a
+     narrow character</li>
+ <li class=MsoNormal><i>var(wchar_t) -</i> create a <i>var</i> representing a
+     wide character</li>
+ <li class=MsoNormal><i>var(const char*) -</i> create a <i>var</i> representing
+     a narrow string</li>
+ <li class=MsoNormal><i>var(const wchar_t*) -</i> create&nbsp;a <i>var</i>&nbsp;representing
+     a wide string</li>
+ <li class=MsoNormal><i>var(const std::string &amp;) -</i> create a <i>var</i>&nbsp;representing
+     a narrow string</li>
+ <li class=MsoNormal><i>var(const std::wstring &amp;) -</i> creates&nbsp;a <i>var</i>&nbsp;representing
+     a wide string</li>
+ <li class=MsoNormal><i>var(fn) -</i> create a <i>var</i> representing a
+     function (limited to functions of <i>var</i>)</li>
+ <li class=MsoNormal><i>template&lt;std::size_t N&gt; var(var(&amp;)[N]) -</i>
+     create a <i>var</i> representing a list</li>
+</ul>
+
+<h3>Operators</h3>
+
+<p class=MsoNormal>Note that the precise meaning of the operator depends on the
+value stored in the <i>var</i>. &nbsp;Some of these operators will throw the <i>&quot;not_supported&quot;</i>
+exception for certain types of <i>var</i>. </p>
+
+<ul type=disc>
+ <li class=MsoNormal><i>operator bool() const -</i> returns <i>as_bool()</i></li>
+ <li class=MsoNormal><i>operator int()</i> <i>const</i> - returns <i>as_int()</i></li>
+ <li class=MsoNormal><i>var &amp; operator=(const var &amp;) -</i> copies the
+     value. &nbsp;For simple types (such as ints and doubles) the value is
+     copied, whereas for complex types such as strings and containers, the
+     value is shared between all instances of the <i>var</i>.</li>
+ <li class=MsoNormal><i>template&lt;typename T&gt; var &amp; operator=(T const
+     &amp; t)</i> - assigns the <i>var</i> from a C++ type, as provided by the <i>var</i>
+     constructor.</li>
+ <li class=MsoNormal><i>implementation-defined&nbsp;operator[](const var &amp;)
+     const</i> - access a member of a <i>var</i>.</li>
+ <li class=MsoNormal><i>var&nbsp;operator+(const var &amp;) const</i> -
+     addition operator. &nbsp;The second operand is often converted to the type
+     of the first operand.</li>
+ <li class=MsoNormal><i>var&nbsp;operator-(const var &amp;) const</i> -
+     subtraction operators. &nbsp;The second operand is often converted to the
+     type of the first operand.</li>
+ <li class=MsoNormal><i>var operator*(const var&amp;) const</i> -
+     multiplication operator</li>
+ <li class=MsoNormal><i>var operator/(const var&amp;) const</i> - divsion
+     operator</li>
+ <li class=MsoNormal><i>var operator%(const var&amp;) const</i> - integer
+     modulus operator</li>
+ <li class=MsoNormal><i>var operator&lt;&lt;(const var&amp;) const</i> -
+     bitwise left shift operator</li>
+ <li class=MsoNormal><i>var operator&gt;&gt;(const var&amp;) const</i> -
+     bitwise right shift operator</li>
+ <li class=MsoNormal><i>implementation-defined operator-&gt;() const</i> -
+     access an iterator/enumerator</li>
+ <li class=MsoNormal><i>var operator&amp;(const var&amp;) const</i> - bitwise
+     and operator</li>
+ <li class=MsoNormal><i>var operator|(const var&amp;) const</i> - bitwise or
+     operator</li>
+ <li class=MsoNormal><i>var operator^(const var&amp;) const</i> - bitwise xor
+     operator</li>
+ <li class=MsoNormal><i>var operator+() const</i> - unary + (usually performs a
+     clone())</li>
+ <li class=MsoNormal><i>var operator-() const</i> - unary minus</li>
+ <li class=MsoNormal><i>var operator*() const</i> - dereference
+     iterator/enumerator</li>
+ <li class=MsoNormal><i>var operator~() const</i> - integer bitwise inverse</li>
+ <li class=MsoNormal><i>bool operator==() const</i> - equals operator</li>
+ <li class=MsoNormal><i>bool operator!=() const</i> - not equals</li>
+ <li class=MsoNormal><i>bool operator&lt;() const</i> - less-than operator</li>
+ <li class=MsoNormal><i>bool operator&gt;() const</i> - greater-than operator</li>
+ <li class=MsoNormal><i>bool operator &lt;=() const</i> - less-than or equal
+     operator</li>
+ <li class=MsoNormal><i>bool operator &gt;=() const</i> - greater-than or equal
+     operator</li>
+ <li class=MsoNormal><i>template&lt;typename T&gt; T &amp; as()</i> - attempts
+     to access the native C type wrapped by this <i>var</i>.&nbsp;</li>
+ <li class=MsoNormal><i>var &amp; operator++()</i> - preincrement operator</li>
+ <li class=MsoNormal><i>var operator++(int)</i> - postincrement operator</li>
+ <li class=MsoNormal><i>var &amp; operator--()</i> - predecrement operator</li>
+ <li class=MsoNormal><i>var operator--(int)</i> - postdecrement operator</li>
+ <li class=MsoNormal><i>var operator(...)</i> - call the <i>var</i> as a functor,
+     with up to ten arguments</li>
+ <li class=MsoNormal><i>var &amp; operator+=(const var&amp;)</i> - add to the <i>var</i></li>
+ <li class=MsoNormal><i>var &amp; operator-=(const var&amp;)</i> - subtract
+     from the <i>var</i></li>
+ <li class=MsoNormal><i>var &amp; operator*=(const var&amp;)</i> - multiply the
+     <i>var</i></li>
+ <li class=MsoNormal><i>var &amp; operator/=(const var&amp;)</i> - divide the <i>var</i></li>
+ <li class=MsoNormal><i>var &amp; operator%=(const var&amp;)</i> - modulo the <i>var</i></li>
+ <li class=MsoNormal><i>var &amp; operator&lt;&lt;=(const var&amp;)</i> - shift
+     the <i>var</i> left</li>
+ <li class=MsoNormal><i>var &amp; operator&gt;&gt;=(const var&amp;)</i> - shift
+     the <i>var</i> right</li>
+ <li class=MsoNormal><i>var &amp; operator&amp;=(const var&amp;)</i> -
+     bitwise-and the <i>var</i></li>
+ <li class=MsoNormal><i>var &amp; operator|=(const var&amp;)</i> - bitwise-or
+     the <i>var</i></li>
+ <li class=MsoNormal><i>var &amp; operator^=(const var&amp;)</i> - bitwise-xor
+     the <i>var</i></li>
+</ul>
+
+<h3>Typedefs</h3>
+
+<ul type=disc>
+ <li class=MsoNormal><i>typedef var iterator</i></li>
+ <li class=MsoNormal><i>typedef var const_iterator</i></li>
+ <li class=MsoNormal><i>typedef std::size_t size_type</i></li>
+ <li class=MsoNormal><i>typedef std::ptrdiff_t difference_type</i></li>
+ <li class=MsoNormal><i>typedef var reverse_iterator</i></li>
+ <li class=MsoNormal><i>typedef var const_reverse_iterator</i></li>
+</ul>
+
+<h3>Conversion methods</h3>
+
+<p class=MsoNormal>These methods always succeed, but can return 0 by default. </p>
+
+<ul type=disc>
+ <li class=MsoNormal><i>bool as_bool() const</i> - convert the <i>var</i> to a
+     boolean value</li>
+ <li class=MsoNormal><i>double as_double() const</i> - convert the <i>var</i>
+     to a double</li>
+ <li class=MsoNormal><i>int as_int() const</i> - convert the <i>var</i> to an
+     integer</li>
+ <li class=MsoNormal><i>void * as_ptr() const</i> - convert the <i>var</i> to a
+     pointer</li>
+ <li class=MsoNormal><i>std::string as_string() const</i> - convert the <i>var</i>
+     to a narrow string</li>
+ <li class=MsoNormal><i>std::wstring as_wstring() const</i> - convert the <i>var</i>
+     to a wide string</li>
+</ul>
+
+<h3>Container methods</h3>
+
+<p class=MsoNormal>Note that the precise meaning of the method depends on the
+value stored in the <i>var</i>. &nbsp;Some of these method will throw the <i>&quot;not_supported&quot;</i>
+exception for certain types of <i>var</i>. </p>
+
+<ul type=disc>
+ <li class=MsoNormal><i>var back()</i> - returns the last element</li>
+ <li class=MsoNormal><i>var begin()</i> - returns an iterator to the first
+     element in the container, or <i>null</i> if the <i>var</i> isn't a
+     container</li>
+ <li class=MsoNormal><i>void clear()</i> - erases all elements.</li>
+ <li class=MsoNormal><i>bool contains(const var&amp;)</i> - returns true if the
+     container contains the given key, false otherwise</li>
+ <li class=MsoNormal><i>var end()</i> - returns an end iterator, or <i>null</i>
+     if the <i>var</i> isn't a container</li>
+ <li class=MsoNormal><i>var enumerator()</i> - returns an enumerator, or <i>null</i>.
+     &nbsp;Usually the same as <i>begin()</i>.</li>
+ <li class=MsoNormal><i>void erase(const var&amp;)</i> - erases the given
+     element</li>
+ <li class=MsoNormal><i>var front()</i> - returns the first element</li>
+ <li class=MsoNormal><i>var insert(const var&amp;)</i> - inserts an element
+     into a set</li>
+ <li class=MsoNormal><i>var insert(const var &amp; key, const var &amp; value)</i>
+     - inserts an element into a map</li>
+ <li class=MsoNormal><i>void mixin(const var&amp;)</i> - inserts the elements
+     of one container into another</li>
+ <li class=MsoNormal><i>var pop_back()</i> - removes an item from the end, and
+     returns it</li>
+ <li class=MsoNormal><i>var pop_front()</i> - removes an item from the front,
+     and returns it</li>
+ <li class=MsoNormal><i>void push_back(const var&amp;)</i> - adds an item to
+     the end</li>
+ <li class=MsoNormal><i>void push_front(const var&amp;)</i> - adds an item to
+     the beginning</li>
+ <li class=MsoNormal><i>var rbegin()</i> - returns an iterator to the last
+     element in the container, iterating backwards, or <i>null</i>.</li>
+ <li class=MsoNormal><i>var rend()</i> - returns a reverse end iterator, or <i>null</i></li>
+ <li class=MsoNormal><i>void resize(std::size_t)</i> - resizes the container</li>
+ <li class=MsoNormal><i>var reverse_enumerator()</i> - returns the reverse
+     enumerator, or <i>null</i>.</li>
+ <li class=MsoNormal><i>std::size_t size() const</i> - returns the number of
+     elements in the container, or 0.</li>
+</ul>
+
+<h3>Other Methods</h3>
+
+<p class=MsoNormal>Note that the precise meaning of the method depends on the
+value stored in the <i>var</i>. &nbsp;Some of these method will throw the <i>&quot;not_supported&quot;</i>
+exception for certain types of <i>var</i>. </p>
+
+<ul type=disc>
+ <li class=MsoNormal><i>std::string class_name() const</i> - returns the class
+     name of the var</li>
+ <li class=MsoNormal><i>template&lt;typename T&gt; implementation-defined
+     extend(const char*, const T&amp;)</i> - inserts elements into an object or
+     a map</li>
+ <li class=MsoNormal><i>var keys()</i> - returns a container containing the
+     keys in the container, or <i>null</i>.</li>
+ <li class=MsoNormal><i>int max_args()</i> - returns the maximum number of
+     arguments for the functor, or -1 if the <i>var</i> is not a functor</li>
+ <li class=MsoNormal><i>var proxy()</i> - creates a threadsafe proxy for the <i>var</i></li>
+ <li class=MsoNormal><i>var values()</i> - returns a container with the values
+     of the container</li>
+</ul>
+
+</div>
+
+</body>
+
+</html>

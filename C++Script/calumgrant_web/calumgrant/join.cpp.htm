@@ -1,0 +1,17 @@
+<html>#include <cppscript>
+
+var sum_members(var data)
+{
+	var total = 0;
+	foreach( i, data ) total += i;
+	return total;
+}
+
+var script_main(var)
+{
+	var thread1 = thread(bind(sum_members, range(1,10000)));
+	var thread2 = thread(bind(sum_members, range(10001,20000)));
+	var total = thread1["join"]() + thread2["join"]();
+	writeln( "The total is " + total );
+	return 0;
+}

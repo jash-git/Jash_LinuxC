@@ -1,0 +1,40 @@
+(原創) 如何在Linux下編譯OpenCV (Image Processing) (C/C++)
+資料來源:http://www.cnblogs.com/oomusou/archive/2008/06/05/opencv_linux_install.html
+Step 1：
+	至SourceForge.net : Open Computer Vision Library下載Linux版的opencv-1.0.0.tar.gz。
+
+Step 2：
+將opencv-1.0.0.tar.gz解壓縮
+	# tar -zxvf opencv-1.0.0.tar.gz
+
+Step 3：
+進入opencv目錄
+	# cd opencv-1.0.0
+
+Step 4：
+偵測作業環境，設定OpenCV安裝在/usr/local/opencv目錄下
+	# ./configure --prefix=/usr/local/opencv
+
+Step 5：
+編譯OpenCV
+	# make
+
+Step 6：
+安裝OpenCV
+	# make install
+
+Step 7：
+更新動態連結庫
+	# vi /etc/ld.so.conf
+		加入
+
+		include ld.so.conf.d/*.conf
+		/usr/local/opencv/lib
+	存檔後執行
+		# ldconfig
+
+Step 8：
+測試OpenCV是否安裝成功
+		# cd samples/c
+		# gcc -I/usr/local/opencv/include/opencv -L/usr/local/opencv/lib -lhighgui -lstdc++ drawing.c -o drawing
+		# ./drawing

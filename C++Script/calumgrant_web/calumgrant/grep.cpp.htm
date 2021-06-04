@@ -1,0 +1,37 @@
+<html>#include <cppscript>
+
+void search_for_string_in_file(var str, var filename)
+{
+	try
+	{
+		var file = read_file(filename);
+		finally( file["close"] );
+		var line_no = 1;
+		foreach(line, lines(file))
+		{
+			if( string_find( line, str ) )
+				writeln( filename + ":" + line_no + " " + line );
+			++line_no;
+		}
+	}
+	catch( var )
+	{
+		err()["writeln"]("Error reading from file " + filename);
+	}
+}
+
+void search_for_string_in_files(var str, var files)
+{
+	foreach( file, files ) search_for_string_in_file(str, file);
+}
+
+var script_main(var input)
+{
+	if(input.size()<2) 
+	{
+		err()["writeln"]("Usage: grep search_term file1 file2 ...");
+		return 1;
+	}
+	search_for_string_in_files(input[0], tail(input));
+	return 0;
+}

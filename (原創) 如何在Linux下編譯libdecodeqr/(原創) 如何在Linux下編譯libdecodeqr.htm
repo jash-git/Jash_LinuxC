@@ -1,0 +1,414 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<!-- saved from url=(0077)http://www.cnblogs.com/oomusou/archive/2008/06/06/libdecodeqr_linux_make.html -->
+<html lang="zh-cn" class=" clickberry-extension clickberry-extension-standalone"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><script type="text/javascript" async="" src="./(原創) 如何在Linux下編譯libdecodeqr_files/ga.js"></script><script async="" type="text/javascript" src="./(原創) 如何在Linux下編譯libdecodeqr_files/gpt.js"></script><script type="text/javascript" async="" src="./(原創) 如何在Linux下編譯libdecodeqr_files/ga.js"></script>
+
+<title>(原創) 如何在Linux下編譯libdecodeqr? (OS) (Linux) (CenOS) (Image Processing) (C/C++) - 真 OO无双 - 博客园</title>
+<link type="text/css" rel="stylesheet" href="./(原創) 如何在Linux下編譯libdecodeqr_files/blog-common.css">
+<link id="MainCss" type="text/css" rel="stylesheet" href="./(原創) 如何在Linux下編譯libdecodeqr_files/style2.css">
+<link title="RSS" type="application/rss+xml" rel="alternate" href="http://www.cnblogs.com/oomusou/rss">
+<link title="RSD" type="application/rsd+xml" rel="EditURI" href="http://www.cnblogs.com/oomusou/rsd.xml">
+<link type="application/wlwmanifest+xml" rel="wlwmanifest" href="http://www.cnblogs.com/oomusou/wlwmanifest.xml">
+<script src="./(原創) 如何在Linux下編譯libdecodeqr_files/jquery.js" type="text/javascript"></script>  
+<script type="text/javascript">var currentBlogApp = 'oomusou';</script>
+<script src="./(原創) 如何在Linux下編譯libdecodeqr_files/blog-common.js" type="text/javascript"></script>
+<meta content="clickberry-extension-here"><script type="text/javascript" src="chrome-extension://dlnembnfbcpjnepmfjmngjenhhajpdfd/resources/LocalScript.js"></script><script type="text/javascript" src="chrome-extension://dlnembnfbcpjnepmfjmngjenhhajpdfd/libraries/DataExchangeScript.js"></script><script type="text/javascript">LCS_FE1DEEEA_DB6D_44b8_83F0_34FC0F9D1052_g_DataObject.updateStorage("%7B%22toolbarID%22%3A%22471647753ad14bbbb118b33291161ba7%22%2C%22installer_name%22%3A%22sg_6R8RSu76nt_active_MB206_MB207_UA-25323614-27_2013-01-20-15-07-41%22%2C%22product_name%22%3A%22IB%20Updater%22%2C%22product_version%22%3A%222.0.0.578%22%2C%22WSG_upn2%22%3A%226R8RSu76nt%22%2C%22WSG_status%22%3A%22inactive%7C%7C%7C8641386823742046%22%2C%22WSG_redirectQueryParam1%22%3A%22MB206%22%2C%22WSG_redirectQueryParam2%22%3A%22MB207%22%2C%22WSG_gtQueryParam%22%3A%22UA-25323614-27%22%2C%22temp_installer_name%22%3A%22sg_6R8RSu76nt_active_MB206_MB207_UA-25323614-27_2013-01-20-15-07-41%22%2C%22WSG_lastUpdate%22%3A%221386810229029%7C%7C%7C8641386810229029%22%2C%22WSG_whiteList%22%3A%22%7B%5C%22search.babylon.com%5C%22%3A%5C%22q%5C%22%2C%5C%22search.imesh.net%5C%22%3A%5C%22q%5C%22%2C%5C%22www.search-results.com%5C%22%3A%5C%22q%5C%22%2C%5C%22home.mywebsearch.com%5C%22%3A%5C%22searchfor%5C%22%2C%5C%22search.mywebsearch.com%5C%22%3A%5C%22searchfor%5C%22%2C%5C%22search.mindspark.com%5C%22%3A%5C%22searchfor%5C%22%2C%5C%22search.conduit.com%5C%22%3A%5C%22q%5C%22%2C%5C%22search.zugo.com%5C%22%3A%5C%22p%5C%22%2C%5C%22www2.mystart.com%5C%22%3A%5C%22q%5C%22%2C%5C%22www.mystart.com%5C%22%3A%5C%22q%5C%22%2C%5C%22www.bigseekpro.com%5C%22%3A%5C%22q%5C%22%2C%5C%22bigseekpro.com%5C%22%3A%5C%22q%5C%22%2C%5C%22bigspeedpro.com%5C%22%3A%5C%22q%5C%22%2C%5C%22search.esnips.com%5C%22%3A%5C%22searchQuery%5C%22%2C%5C%22search.foxtab.com%5C%22%3A%5C%22q%5C%22%2C%5C%22search.brothersoft.com%5C%22%3A%5C%22keyword%5C%22%2C%5C%22search.softonic.com%5C%22%3A%5C%22q%5C%22%2C%5C%22search.iobit.com%5C%22%3A%5C%22q%5C%22%2C%5C%22search.iminent.com%5C%22%3A%5C%22%5C%22%2C%5C%22search.facemoods.com%5C%22%3A%5C%22s%5C%22%2C%5C%22www.plusnetwork.com%5C%22%3A%5C%22q%5C%22%2C%5C%22www.alothome.com%5C%22%3A%5C%22q%5C%22%2C%5C%22alothome.com%5C%22%3A%5C%22q%5C%22%2C%5C%22search.alothome.com%5C%22%3A%5C%22q%5C%22%2C%5C%22search.chatvibes.com%5C%22%3A%5C%22q%5C%22%2C%5C%22search.blekko.com%5C%22%3A%5C%22%5C%22%2C%5C%22www.searchnu.com%5C%22%3A%5C%22q%5C%22%2C%5C%22searchnu.com%5C%22%3A%5C%22q%5C%22%2C%5C%22search.icq.com%5C%22%3A%5C%22q%5C%22%2C%5C%22search.etype.com%5C%22%3A%5C%22query%5C%22%2C%5C%22isearch.babylon.com%5C%22%3A%5C%22q%5C%22%2C%5C%22search.utorrent.com%5C%22%3A%5C%22%5C%22%2C%5C%22search.bittorrent.com%5C%22%3A%5C%22%5C%22%2C%5C%22search.bearshare.com%5C%22%3A%5C%22q%5C%22%2C%5C%22search.bearshare.net%5C%22%3A%5C%22q%5C%22%2C%5C%22searchya.com%5C%22%3A%5C%22q%5C%22%2C%5C%22int.search-results.com%5C%22%3A%5C%22q%5C%22%2C%5C%22search.searchcompletion.com%5C%22%3A%5C%22q%5C%22%2C%5C%22www.adoresearch.com%5C%22%3A%5C%22q%5C%22%2C%5C%22www.searchcore.net%5C%22%3A%5C%22q%5C%22%2C%5C%22googosearch.info%5C%22%3A%5C%22terms%5C%22%2C%5C%22bar.searchqu.com%5C%22%3A%5C%22q%5C%22%2C%5C%22search.speedbit.com%5C%22%3A%5C%22q%5C%22%2C%5C%22search.toggle.com%5C%22%3A%5C%22q%5C%22%2C%5C%22isearch.whitesmoke.com%5C%22%3A%5C%22q%5C%22%2C%5C%22search.handycafe.com%5C%22%3A%5C%22q%5C%22%2C%5C%22searchassist.babylon.com%5C%22%3A%5C%22q%5C%22%2C%5C%22video.searchcompletion.com%5C%22%3A%5C%22q%5C%22%2C%5C%22www.searchbrowsing.com%5C%22%3A%5C%22q%5C%22%2C%5C%22search.anchorfree.net%5C%22%3A%5C%22q%5C%22%2C%5C%22search.hotspotshield.com%5C%22%3A%5C%22q%5C%22%2C%5C%22dts.search-results.com%5C%22%3A%5C%22q%5C%22%2C%5C%22uk.search-results.com%5C%22%3A%5C%22q%5C%22%2C%5C%22search.chatzum.com%5C%22%3A%5C%22q%5C%22%2C%5C%22search.phpnuke.org%5C%22%3A%5C%22q%5C%22%2C%5C%22www.i-mysearch.com%5C%22%3A%5C%22q%5C%22%2C%5C%22search.smartaddressbar.com%5C%22%3A%5C%22q%5C%22%2C%5C%22www.search-guru.com%5C%22%3A%5C%22q%5C%22%2C%5C%22searchgby.com%5C%22%3A%5C%22%5C%22%2C%5C%22thespecialsearch.com%5C%22%3A%5C%22q%5C%22%2C%5C%22search.bpath.com%5C%22%3A%5C%22q%5C%22%2C%5C%22start.funmoods.com%5C%22%3A%5C%22s%5C%22%2C%5C%22fr.search-results.com%5C%22%3A%5C%22q%5C%22%2C%5C%22de.search-results.com%5C%22%3A%5C%22q%5C%22%2C%5C%22it.search-results.com%5C%22%3A%5C%22q%5C%22%2C%5C%22es.search-results.com%5C%22%3A%5C%22q%5C%22%2C%5C%22search.imesh.com%5C%22%3A%5C%22q%5C%22%2C%5C%22search.swagbucks.com%5C%22%3A%5C%22q%5C%22%2C%5C%22isearch.avg.com%5C%22%3A%5C%22q%5C%22%2C%5C%22search.avg.com%5C%22%3A%5C%22q%5C%22%2C%5C%22search.yippy.com%5C%22%3A%5C%22query%5C%22%2C%5C%22cludr.com%5C%22%3A%5C%22q%5C%22%2C%5C%22search.vmn.net%5C%22%3A%5C%22q%5C%22%2C%5C%22www.gigablast.com%5C%22%3A%5C%22q%5C%22%2C%5C%22www.metacrawler.com%5C%22%3A%5C%22q%5C%22%2C%5C%22www.ixquick.com%5C%22%3A%5C%22%5C%22%2C%5C%22www.search.com%5C%22%3A%5C%22q%5C%22%2C%5C%22duckduckgo.com%5C%22%3A%5C%22q%5C%22%2C%5C%22search.lycos.com%5C%22%3A%5C%22q%5C%22%2C%5C%22monstercrawler.com%5C%22%3A%5C%22q%5C%22%2C%5C%22go.com%5C%22%3A%5C%22p%5C%22%2C%5C%22hotbot.com%5C%22%3A%5C%22keyword%5C%22%2C%5C%22home.myplaycity.com%5C%22%3A%5C%22s%5C%22%2C%5C%22www.findamo.com%5C%22%3A%5C%22q%5C%22%2C%5C%22search.gboxapp.com%5C%22%3A%5C%22q%5C%22%2C%5C%22start.iplay.com%5C%22%3A%5C%22q%5C%22%2C%5C%22home.speedbit.com%5C%22%3A%5C%22q%5C%22%2C%5C%22search.alot.com%5C%22%3A%5C%22q%5C%22%2C%5C%22search.searchplusnetwork.com%5C%22%3A%5C%22q%5C%22%2C%5C%22www.searchqu.net%5C%22%3A%5C%22%5C%22%2C%5C%22search.insiteapp.com%5C%22%3A%5C%22q%5C%22%2C%5C%22somoto.com%5C%22%3A%5C%22q%5C%22%2C%5C%22blekko.com%5C%22%3A%5C%22%5C%22%2C%5C%22suggestor.netliker.com%5C%22%3A%5C%22%5C%22%2C%5C%22search.netliker.com%5C%22%3A%5C%22%5C%22%2C%5C%22insta-search.com%5C%22%3A%5C%22q%5C%22%2C%5C%22www.fast-search.biz%5C%22%3A%5C%22q%5C%22%2C%5C%22start.facemoods.com%5C%22%3A%5C%22s%5C%22%2C%5C%22search.coolnovo.com%5C%22%3A%5C%22%5C%22%2C%5C%22chromeplus.info%5C%22%3A%5C%22q%5C%22%2C%5C%22www.searchble.com%5C%22%3A%5C%22keyword%5C%22%2C%5C%22home.allgameshome.com%5C%22%3A%5C%22s%5C%22%2C%5C%22forsearch.net%5C%22%3A%5C%22q%5C%22%2C%5C%22allssearch.com%5C%22%3A%5C%22q%5C%22%2C%5C%22search.snap.do%5C%22%3A%5C%22q%5C%22%2C%5C%22search.smartsearchbox.net%5C%22%3A%5C%22%5C%22%2C%5C%22search.seznam.cz%5C%22%3A%5C%22q%5C%22%2C%5C%22search.funmoods.com%5C%22%3A%5C%22s%5C%22%2C%5C%22search.avira.com%5C%22%3A%5C%22q%5C%22%2C%5C%22search.jzip.com%5C%22%3A%5C%22q%5C%22%2C%5C%22search.findeer.com%5C%22%3A%5C%22%5C%22%2C%5C%22search-faster.com%5C%22%3A%5C%22%5C%22%2C%5C%22dnssearch.rr.com%5C%22%3A%5C%22search%5C%22%2C%5C%22search.rr.com%5C%22%3A%5C%22q%5C%22%2C%5C%22search.kalloutsearch4.com%5C%22%3A%5C%22q%5C%22%2C%5C%22kalloutsearch4.com%5C%22%3A%5C%22Keywords%5C%22%2C%5C%22search.rapidns.net%5C%22%3A%5C%22SearchQuery%5C%22%2C%5C%22websearch.4shared.com%5C%22%3A%5C%22q%5C%22%2C%5C%22images.search.conduit.com%5C%22%3A%5C%22q%5C%22%2C%5C%22search.cpchero.biz%5C%22%3A%5C%22q%5C%22%2C%5C%22search.kikin.com%5C%22%3A%5C%22q%5C%22%2C%5C%22www.engine-search.biz%5C%22%3A%5C%22q%5C%22%2C%5C%22www.mysearchresults.com%5C%22%3A%5C%22q%5C%22%2C%5C%22search.vdc.com.vn%5C%22%3A%5C%22SearchQuery%5C%22%2C%5C%22search.charter.net%5C%22%3A%5C%22search%5C%22%2C%5C%22search-vbc.com%5C%22%3A%5C%22keywords%5C%22%2C%5C%22search.pch.com%5C%22%3A%5C%22q%5C%22%2C%5C%22search.pantip.com%5C%22%3A%5C%22%5C%22%2C%5C%22www.startsearcher.com%5C%22%3A%5C%22q%5C%22%2C%5C%22search.icafemanager.com%5C%22%3A%5C%22q%5C%22%2C%5C%22aolsearcht10.search.aol.com%5C%22%3A%5C%22q%5C%22%2C%5C%22search.free.fr%5C%22%3A%5C%22%5C%22%2C%5C%22www.similarsitesearch.com%5C%22%3A%5C%22URL%5C%22%2C%5C%22qoqole.com%5C%22%3A%5C%22q%5C%22%2C%5C%22www.claro-search.com%5C%22%3A%5C%22q%5C%22%2C%5C%22isearch.claro-search.com%5C%22%3A%5C%22q%5C%22%2C%5C%22www.uncoverthenet.com/search%5C%22%3A%5C%22q%5C%22%2C%5C%22www.searchcanvas.com%5C%22%3A%5C%22q%5C%22%2C%5C%22search.etoolkit.com%5C%22%3A%5C%22q%5C%22%2C%5C%22www.searchalgo.com%5C%22%3A%5C%22q%5C%22%2C%5C%22bestsearchall.com%5C%22%3A%5C%22q%5C%22%2C%5C%22bestorganicsearch.com%5C%22%3A%5C%22q%5C%22%2C%5C%22mysearchproperties.com%5C%22%3A%5C%22q%5C%22%2C%5C%22search.treasuretrooper.com%5C%22%3A%5C%22q%5C%22%2C%5C%22btsearch.name%5C%22%3A%5C%22q%5C%22%2C%5C%22optu.search-help.net%5C%22%3A%5C%22search%5C%22%2C%5C%22search.clinck.in%5C%22%3A%5C%22q%5C%22%2C%5C%22search.shareazaweb.net%5C%22%3A%5C%22q%5C%22%2C%5C%22search.solarmash.com%5C%22%3A%5C%22q%5C%22%2C%5C%22search.surfcanyon.com%5C%22%3A%5C%22q%5C%22%2C%5C%22search.tedata.net%5C%22%3A%5C%22SearchQuery%5C%22%2C%5C%22www.gooofullsearch.com%5C%22%3A%5C%22keywords%5C%22%2C%5C%22www.alnaddy.com%5C%22%3A%5C%22q%5C%22%2C%5C%22searchsafer.com%5C%22%3A%5C%22q%5C%22%2C%5C%22www.searchqu.com%5C%22%3A%5C%22q%5C%22%2C%5C%22searchfunmoods.com%5C%22%3A%5C%22s%5C%22%2C%5C%22www.searchfunmoods.com%5C%22%3A%5C%22s%5C%22%2C%5C%22www.searchya.com%5C%22%3A%5C%22q%5C%22%2C%5C%22search.lphant.net%5C%22%3A%5C%22%5C%22%2C%5C%22searchremagnified.com%5C%22%3A%5C%22%5C%22%2C%5C%22www.pagequeryresults.com%5C%22%3A%5C%22%5C%22%2C%5C%22www.searchqueryresults.com%5C%22%3A%5C%22%5C%22%2C%5C%22domainhelp.search.com%5C%22%3A%5C%22q%5C%22%2C%5C%22search.b1.org%5C%22%3A%5C%22q%5C%22%2C%5C%22search.pontofrio.com.br%5C%22%3A%5C%22q%5C%22%2C%5C%22search.maxonline.com.sg%5C%22%3A%5C%22q%5C%22%2C%5C%22search.us.com%5C%22%3A%5C%22k%5C%22%2C%5C%22www.picsearch.com%5C%22%3A%5C%22q%5C%22%2C%5C%22www.search-document.com%5C%22%3A%5C%22q%5C%22%2C%5C%22www.searchsafer.com%5C%22%3A%5C%22q%5C%22%2C%5C%22www.website-unavailable.com%5C%22%3A%5C%22q%5C%22%2C%5C%22search.appsarefun.info%5C%22%3A%5C%22%5C%22%2C%5C%22www.searchamong.com%5C%22%3A%5C%22query%5C%22%2C%5C%22www.savevalet.com%5C%22%3A%5C%22q%5C%22%2C%5C%22www.navegaki.com.br%5C%22%3A%5C%22q%5C%22%2C%5C%22my.rally.io%5C%22%3A%5C%22%5C%22%2C%5C%22isearch.glarysoft.com%5C%22%3A%5C%22q%5C%22%2C%5C%22websearch.mocaflix.com%5C%22%3A%5C%22s%5C%22%2C%5C%22search.fastaddressbar.com%5C%22%3A%5C%22s%5C%22%2C%5C%22search.certified-toolbar.com%5C%22%3A%5C%22q%5C%22%2C%5C%22www.delta-search.com%5C%22%3A%5C%22q%5C%22%2C%5C%22mysearch.avg.com%5C%22%3A%5C%22q%5C%22%2C%5C%22www1.search-results.com%5C%22%3A%5C%22q%5C%22%2C%5C%22search.searchya.com%5C%22%3A%5C%22q%5C%22%2C%5C%22websearch.just-browse.info%5C%22%3A%5C%22s%5C%22%2C%5C%22search.fbdownloader.com%5C%22%3A%5C%22q%5C%22%2C%5C%22search.startnow.com%5C%22%3A%5C%22q%5C%22%2C%5C%22search.protectedsearch.com%5C%22%3A%5C%22q%5C%22%2C%5C%22start.iminent.com%5C%22%3A%5C%22q%5C%22%2C%5C%22websearch.pu-results.info%5C%22%3A%5C%22s%5C%22%2C%5C%2222find.com%5C%22%3A%5C%22%5C%22%2C%5C%22search.comcast.net%5C%22%3A%5C%22q%5C%22%2C%5C%22rss2search.com%5C%22%3A%5C%22q%5C%22%2C%5C%22www.searchinq.com%5C%22%3A%5C%22q%5C%22%2C%5C%22search.22find.com%5C%22%3A%5C%22%5C%22%2C%5C%22search.genieo.com%5C%22%3A%5C%22q%5C%22%2C%5C%22www.safesearch.net%5C%22%3A%5C%22q%5C%22%2C%5C%22isearch.fantastigames.com%5C%22%3A%5C%22q%5C%22%2C%5C%22nortonsafe.search.ask.com%5C%22%3A%5C%22q%5C%22%2C%5C%22www.dnsrsearch.com%5C%22%3A%5C%22search%5C%22%2C%5C%22yourstartsearch.com%5C%22%3A%5C%22q%5C%22%2C%5C%22mixidj.delta-search.com%5C%22%3A%5C%22q%5C%22%2C%5C%22searchiu.com%5C%22%3A%5C%22q%5C%22%2C%5C%22www1.dlinksearch.com%5C%22%3A%5C%22q%5C%22%2C%5C%22search.eazel.com%5C%22%3A%5C%22q%5C%22%2C%5C%22en.eazel.com%5C%22%3A%5C%22q%5C%22%2C%5C%22search.smartsuggestor.net%5C%22%3A%5C%22s%5C%22%2C%5C%22mixidj.claro-search.com%5C%22%3A%5C%22q%5C%22%2C%5C%22search.buzzdock.com%5C%22%3A%5C%22q%5C%22%2C%5C%22search.oracle.com%5C%22%3A%5C%22q%5C%22%2C%5C%22visualbee.delta-search.com%5C%22%3A%5C%22q%5C%22%2C%5C%22filesearch.setun.net%5C%22%3A%5C%22q%5C%22%2C%5C%22search.smartsuggestor.com%5C%22%3A%5C%22s%5C%22%2C%5C%22go.findrsearch.com%5C%22%3A%5C%22q%5C%22%2C%5C%22search.earthlink.net%5C%22%3A%5C%22q%5C%22%2C%5C%22search.netzero.net%5C%22%3A%5C%22query%5C%22%2C%5C%22www.holasearch.com%5C%22%3A%5C%22q%5C%22%2C%5C%22searchengines.com%5C%22%3A%5C%22query%5C%22%2C%5C%22www.31searchengines.com%5C%22%3A%5C%22query%5C%22%2C%5C%22www.99searchengines.com%5C%22%3A%5C%22query%5C%22%2C%5C%22www.28searchengines.com%5C%22%3A%5C%22query%5C%22%2C%5C%22www.29searchengines.com%5C%22%3A%5C%22query%5C%22%2C%5C%22www.38searchengines.com%5C%22%3A%5C%22query%5C%22%2C%5C%22www.39searchengines.com%5C%22%3A%5C%22query%5C%22%2C%5C%22www.50searchengines.com%5C%22%3A%5C%22query%5C%22%2C%5C%22www.100searchengines.com%5C%22%3A%5C%22query%5C%22%2C%5C%22www.20searchengines.com%5C%22%3A%5C%22query%5C%22%2C%5C%22www.24searchengines.com%5C%22%3A%5C%22query%5C%22%2C%5C%22www.45searchengines.com%5C%22%3A%5C%22query%5C%22%2C%5C%22www.55searchengines.com%5C%22%3A%5C%22query%5C%22%2C%5C%22www.60searchengines.com%5C%22%3A%5C%22query%5C%22%2C%5C%22www.70searchengines.com%5C%22%3A%5C%22query%5C%22%2C%5C%22www.88searchengines.com%5C%22%3A%5C%22query%5C%22%2C%5C%22www.47searchengines.com%5C%22%3A%5C%22query%5C%22%2C%5C%22www.32searchengines.com%5C%22%3A%5C%22query%5C%22%2C%5C%22www.48searchengines.com%5C%22%3A%5C%22query%5C%22%2C%5C%22www.53searchengines.com%5C%22%3A%5C%22query%5C%22%2C%5C%22www.40searchengines.com%5C%22%3A%5C%22query%5C%22%2C%5C%22www.66searchengines.com%5C%22%3A%5C%22query%5C%22%2C%5C%22www.34searchengines.com%5C%22%3A%5C%22query%5C%22%2C%5C%22www.49searchengines.com%5C%22%3A%5C%22query%5C%22%2C%5C%22www.30searchengines.com%5C%22%3A%5C%22query%5C%22%2C%5C%22www.41searchengines.com%5C%22%3A%5C%22query%5C%22%2C%5C%22www.36searchengines.com%5C%22%3A%5C%22query%5C%22%2C%5C%22www.52searchengines.com%5C%22%3A%5C%22query%5C%22%2C%5C%22www.25searchengines.com%5C%22%3A%5C%22query%5C%22%2C%5C%22home.maxwebsearch.com%5C%22%3A%5C%22query%5C%22%2C%5C%22polysearch.org%5C%22%3A%5C%22srch%5C%22%2C%5C%22search.bnpmedia.com%5C%22%3A%5C%22q%5C%22%2C%5C%22start.search.us.com%5C%22%3A%5C%22k%5C%22%2C%5C%22www.searchnfind.org%5C%22%3A%5C%22%5C%22%2C%5C%22searching-gambling.com%5C%22%3A%5C%22%5C%22%2C%5C%22search.easylifeapp.com%5C%22%3A%5C%22s%5C%22%2C%5C%22www.goodsearch.com%5C%22%3A%5C%22keywords%5C%22%2C%5C%22search.adlux.com%5C%22%3A%5C%22%5C%22%2C%5C%22websearch.good-results.info%5C%22%3A%5C%22s%5C%22%2C%5C%22search.beesq.net%5C%22%3A%5C%22k%5C%22%2C%5C%22www1.delta-search.com%5C%22%3A%5C%22q%5C%22%2C%5C%22www.search.delta-search.com%5C%22%3A%5C%22q%5C%22%2C%5C%22www.yhs.delta-search.com%5C%22%3A%5C%22q%5C%22%2C%5C%22info.delta-search.com%5C%22%3A%5C%22q%5C%22%2C%5C%22www.yd.delta-search.com%5C%22%3A%5C%22q%5C%22%2C%5C%22www2.delta-search.com%5C%22%3A%5C%22q%5C%22%2C%5C%22www3.delta-search.com%5C%22%3A%5C%22q%5C%22%2C%5C%22websearch.helpmefindyour.info%5C%22%3A%5C%22s%5C%22%2C%5C%22tuvaro.com%5C%22%3A%5C%22q%5C%22%2C%5C%22amazon.smart-search.com%5C%22%3A%5C%22query%5C%22%2C%5C%22butterflysearch.net%5C%22%3A%5C%22search%5C%22%2C%5C%22g9search.com%5C%22%3A%5C%22q%5C%22%2C%5C%22images.searchcompletion.com%5C%22%3A%5C%22q%5C%22%2C%5C%22lab.search.conduit.com%5C%22%3A%5C%22q%5C%22%2C%5C%22search.autocompletepro.com%5C%22%3A%5C%22q%5C%22%2C%5C%22search.creativetoolbars.com%5C%22%3A%5C%22q%5C%22%2C%5C%22search.dudu.com%5C%22%3A%5C%22q%5C%22%2C%5C%22search.filebulldog.com%5C%22%3A%5C%22p%5C%22%2C%5C%22search.findwide.com%5C%22%3A%5C%22k%5C%22%2C%5C%22search.focalprice.com%5C%22%3A%5C%22%5C%22%2C%5C%22search.juno.com%5C%22%3A%5C%22query%5C%22%2C%5C%22search.peoplepc.com%5C%22%3A%5C%22q%5C%22%2C%5C%22search.piccshare.com%5C%22%3A%5C%22q%5C%22%2C%5C%22search.starburnsoftware.com%5C%22%3A%5C%22q%5C%22%2C%5C%22search.zonealarm.com%5C%22%3A%5C%22q%5C%22%2C%5C%22search27.info.com%5C%22%3A%5C%22qkw%5C%22%2C%5C%22search42.info.com%5C%22%3A%5C%22qkw%5C%22%2C%5C%22search45.info.com%5C%22%3A%5C%22qkw%5C%22%2C%5C%22search49.info.com%5C%22%3A%5C%22qkw%5C%22%2C%5C%22securesearch.lavasoft.com%5C%22%3A%5C%22q%5C%22%2C%5C%22shieldedsearch.com%5C%22%3A%5C%22q%5C%22%2C%5C%22us.aolsearch.com%5C%22%3A%5C%22q%5C%22%2C%5C%22websearch.brandthunder.com%5C%22%3A%5C%22q%5C%22%2C%5C%22websearch.youwillfind.info%5C%22%3A%5C%22s%5C%22%2C%5C%22websearchsimple.com%5C%22%3A%5C%22q%5C%22%2C%5C%22wind.search-help.net%5C%22%3A%5C%22search%5C%22%2C%5C%22www.21searchengines.com%5C%22%3A%5C%22%5C%22%2C%5C%22www.22searchengines.com%5C%22%3A%5C%22%5C%22%2C%5C%22www.42searchengines.com%5C%22%3A%5C%22%5C%22%2C%5C%22www.46searchengines.com%5C%22%3A%5C%22%5C%22%2C%5C%22www.85searchengines.com%5C%22%3A%5C%22%5C%22%2C%5C%22www.goonsearch.com%5C%22%3A%5C%22q%5C%22%2C%5C%22www.isearch-123.com%5C%22%3A%5C%22q%5C%22%2C%5C%22www.maxwebsearch.com%5C%22%3A%5C%22query%5C%22%2C%5C%22www.searchgby.com%5C%22%3A%5C%22%5C%22%2C%5C%22www.tlbsearch.com%5C%22%3A%5C%22q%5C%22%2C%5C%22avira.search.ask.com%5C%22%3A%5C%22q%5C%22%2C%5C%22search.coupons.com%5C%22%3A%5C%22%5C%22%2C%5C%22smartsearchfacts.com%5C%22%3A%5C%22search%5C%22%2C%5C%22www.27searchengines.com%5C%22%3A%5C%22%5C%22%2C%5C%22www.90searchengines.com%5C%22%3A%5C%22%5C%22%2C%5C%22www.searchgol.com%5C%22%3A%5C%22q%5C%22%2C%5C%22www.searchpage.com%5C%22%3A%5C%22%5C%22%2C%5C%22www.toastsearch.com%5C%22%3A%5C%22q%5C%22%2C%5C%22search.zum.com%5C%22%3A%5C%22query%5C%22%2C%5C%22searchzone.com%5C%22%3A%5C%22query%5C%22%2C%5C%22contenko.com%5C%22%3A%5C%22q%5C%22%2C%5C%22www.mysearch.com%5C%22%3A%5C%22searchfor%5C%22%2C%5C%22home.tb.ask.com%5C%22%3A%5C%22searchfor%5C%22%2C%5C%22isearch.shopathome.com%5C%22%3A%5C%22%5C%22%2C%5C%22searchy.easylifeapp.com%5C%22%3A%5C%22p%5C%22%2C%5C%22www.search.smartshopping.com%5C%22%3A%5C%22keywords%5C%22%2C%5C%22search.bitcomet.com%5C%22%3A%5C%22q%5C%22%2C%5C%22trusearch.com%5C%22%3A%5C%22squery%5C%22%2C%5C%22www.photoshopsearch.com%5C%22%3A%5C%22q%5C%22%2C%5C%22search.snapdo.com%5C%22%3A%5C%22q%5C%22%2C%5C%22search.globososo.com%5C%22%3A%5C%22q%5C%22%2C%5C%22search34.info.com%5C%22%3A%5C%22KW%5C%22%2C%5C%22start.mysearchdial.com%5C%22%3A%5C%22q%5C%22%2C%5C%22search.v9.com%5C%22%3A%5C%22p%5C%22%2C%5C%22maxwebsearch.com%5C%22%3A%5C%22query%5C%22%2C%5C%22search.twcc.com%5C%22%3A%5C%22%5C%22%2C%5C%22websearch.simplespeedy.info%5C%22%3A%5C%22q%5C%22%2C%5C%22search.ividi.org%5C%22%3A%5C%22q%5C%22%2C%5C%22securedsearch2.lavasoft.com%5C%22%3A%5C%22p%5C%22%2C%5C%22yumyumsearch.com%5C%22%3A%5C%22q%5C%22%2C%5C%22wisersearch.com%5C%22%3A%5C%22q%5C%22%2C%5C%22www.morefastsearch.com%5C%22%3A%5C%22q%5C%22%2C%5C%22search.minituner.org%5C%22%3A%5C%22q%5C%22%2C%5C%22websearch.searchrocket.info%5C%22%3A%5C%22q%5C%22%2C%5C%22www.firstsearchhere.com%5C%22%3A%5C%22q%5C%22%2C%5C%22infosearchresults.com%5C%22%3A%5C%22q%5C%22%2C%5C%22mp3tubetoolbarsearch.com%5C%22%3A%5C%22p%5C%22%2C%5C%22sr.searchfunmoods.com%5C%22%3A%5C%22q%5C%22%2C%5C%22websearch.searchdwebs.info%5C%22%3A%5C%22q%5C%22%2C%5C%22www.buenosearch.com%5C%22%3A%5C%22q%5C%22%2C%5C%22www.isearch-for.com%5C%22%3A%5C%22q%5C%22%2C%5C%22www.triple-search.com%5C%22%3A%5C%22q%5C%22%2C%5C%22onlinelivesearch.com%5C%22%3A%5C%22q%5C%22%2C%5C%22search.freecause.com%5C%22%3A%5C%22p%5C%22%2C%5C%22search.url.com%5C%22%3A%5C%22query%5C%22%2C%5C%22search.viewpoint.com%5C%22%3A%5C%22k%5C%22%2C%5C%22search2.virginmedia.com%5C%22%3A%5C%22q%5C%22%2C%5C%22twww1.delta-search.com%5C%22%3A%5C%22q%5C%22%2C%5C%22websearch.pu-result.info%5C%22%3A%5C%22s%5C%22%2C%5C%22websearch.searchannel.info%5C%22%3A%5C%22q%5C%22%2C%5C%22websearch.simplesearches.info%5C%22%3A%5C%22s%5C%22%2C%5C%22www.aolsearch.com%5C%22%3A%5C%22q%5C%22%2C%5C%22www.dalesearch.com%5C%22%3A%5C%22q%5C%22%2C%5C%22www.greenpoweredsearch.com%5C%22%3A%5C%22q%5C%22%2C%5C%22www.search.us.com%5C%22%3A%5C%22k%5C%22%2C%5C%22www.search30.com%5C%22%3A%5C%22q%5C%22%2C%5C%22www.searchfog.com%5C%22%3A%5C%22q%5C%22%2C%5C%22www.thedreamsearch.com%5C%22%3A%5C%22q%5C%22%2C%5C%22www1.delta-seawww1.delta-search.com%5C%22%3A%5C%22q%5C%22%2C%5C%22Searchamong.com%5C%22%3A%5C%22q%5C%22%2C%5C%22www.searchstarburnsoftware.com%5C%22%3A%5C%22q%5C%22%2C%5C%22qvo6.com%5C%22%3A%5C%22p%5C%22%2C%5C%22start.qone8.com%5C%22%3A%5C%22q%5C%22%2C%5C%22delta-homes.com%5C%22%3A%5C%22p%5C%22%2C%5C%22search.localstrike.net%5C%22%3A%5C%22q%5C%22%2C%5C%22websearch.pur-esult.info%5C%22%3A%5C%22%5C%22%2C%5C%22www.searchfusion.com%5C%22%3A%5C%22%5C%22%2C%5C%22search.rpidity.com%5C%22%3A%5C%22%5C%22%2C%5C%22www.isearchspace.com%5C%22%3A%5C%22%5C%22%2C%5C%22www.tika-search.com%5C%22%3A%5C%22%5C%22%2C%5C%22www.doko-search.com%5C%22%3A%5C%22%5C%22%2C%5C%22www.only-search.com%5C%22%3A%5C%22%5C%22%2C%5C%22mixidj.buenosearch.com%5C%22%3A%5C%22%5C%22%2C%5C%22www.golsearch.com%5C%22%3A%5C%22%5C%22%2C%5C%22search.splashtop.com%5C%22%3A%5C%22%5C%22%2C%5C%22www.dosearches.com%5C%22%3A%5C%22%5C%22%2C%5C%22search.all.biz%5C%22%3A%5C%22q%5C%22%2C%5C%22websearch.soft-quick.info%5C%22%3A%5C%22s%5C%22%2C%5C%22search.centrum.cz%5C%22%3A%5C%22q%5C%22%2C%5C%22searchfog.com%5C%22%3A%5C%22q%5C%22%2C%5C%22search.whitesmoke.com%5C%22%3A%5C%22q%5C%22%2C%5C%22search.domainnotfound.optimum.net%5C%22%3A%5C%22q%5C%22%2C%5C%22search.hao123.co.th%5C%22%3A%5C%22wd%5C%22%2C%5C%22searchiy.gboxapp.com%5C%22%3A%5C%22q%5C%22%2C%5C%22www.funnysearch.org%5C%22%3A%5C%22q%5C%22%2C%5C%22native-search.com%5C%22%3A%5C%22q%5C%22%2C%5C%22www2.search-results.com%5C%22%3A%5C%22q%5C%22%2C%5C%22www.webssearches.com%5C%22%3A%5C%22q%5C%22%2C%5C%22www.globasearch.com%5C%22%3A%5C%22q%5C%22%2C%5C%22search.hao123.com.eg%5C%22%3A%5C%22wd%5C%22%2C%5C%22search2.mayoclinic.com%5C%22%3A%5C%22q%5C%22%2C%5C%22www.onlinelivesearch.com%5C%22%3A%5C%22q%5C%22%2C%5C%22www.searchsheet.com%5C%22%3A%5C%22q%5C%22%2C%5C%22search.bigpond.net.au%5C%22%3A%5C%22SearchQuery%5C%22%2C%5C%22searchsearchsearch.org%5C%22%3A%5C%22Keywords%5C%22%2C%5C%22bar.maxwebsearch.com%5C%22%3A%5C%22query%5C%22%2C%5C%22search30.com%5C%22%3A%5C%22q%5C%22%2C%5C%22search.quebles.com%5C%22%3A%5C%22q%5C%22%2C%5C%22isearch.omiga-plus.com%5C%22%3A%5C%22q%5C%22%2C%5C%22websearch.searchpages.info%5C%22%3A%5C%22q%5C%22%2C%5C%22www.oursearching.com%5C%22%3A%5C%22%5C%22%2C%5C%22do-search.com%5C%22%3A%5C%22q%5C%22%2C%5C%22websearch.search-guide.info%5C%22%3A%5C%22%5C%22%2C%5C%22websearch.wisesearch.info%5C%22%3A%5C%22%5C%22%2C%5C%22www.looksafesearch.com%5C%22%3A%5C%22%5C%22%2C%5C%22search14.accoona.com%5C%22%3A%5C%22search%5C%22%2C%5C%22search.gifthulk.com%5C%22%3A%5C%22%5C%22%2C%5C%22folksearcher.com%5C%22%3A%5C%22%5C%22%2C%5C%22searchitallonline.com%5C%22%3A%5C%22query%5C%22%2C%5C%22searchresultsonline.com%5C%22%3A%5C%22query%5C%22%2C%5C%22websearch.homesearch-hub.info%5C%22%3A%5C%22s%5C%22%2C%5C%22www.searchnet.com%5C%22%3A%5C%22utm_term%5C%22%2C%5C%22www.safesearchkids.com%5C%22%3A%5C%22%5C%22%2C%5C%22bittorrent.inspsearch.com%5C%22%3A%5C%22q%5C%22%2C%5C%22dnssearch2.ono.es%5C%22%3A%5C%22SearchQuery%5C%22%2C%5C%22firstsearchnow.com%5C%22%3A%5C%22q%5C%22%2C%5C%22morefastsearch.com%5C%22%3A%5C%22q%5C%22%2C%5C%22r.search.adlux.com%5C%22%3A%5C%22%5C%22%2C%5C%22search.atajitos.com%5C%22%3A%5C%22q%5C%22%2C%5C%22search.bt.com%5C%22%3A%5C%22p%5C%22%2C%5C%22search.ominent.com%5C%22%3A%5C%22q%5C%22%2C%5C%22search.qone8.com%5C%22%3A%5C%22q%5C%22%2C%5C%22search.ueep.com%5C%22%3A%5C%22q%5C%22%2C%5C%22searchstarburnsoftware.com%5C%22%3A%5C%22q%5C%22%2C%5C%22searchstats.iminent.com%5C%22%3A%5C%22%5C%22%2C%5C%22ultimate-search.net%5C%22%3A%5C%22q%5C%22%2C%5C%22utorrent.inspsearch.com%5C%22%3A%5C%22q%5C%22%2C%5C%22websearch.oversearch.info%5C%22%3A%5C%22q%5C%22%2C%5C%22websearch.relevantsearch.info%5C%22%3A%5C%22q%5C%22%2C%5C%22websearch.searchboxes.info%5C%22%3A%5C%22q%5C%22%2C%5C%22websearch.searchere.info%5C%22%3A%5C%22q%5C%22%2C%5C%22websearch.searchesplace.info%5C%22%3A%5C%22q%5C%22%2C%5C%22websearch.the-searcheng.info%5C%22%3A%5C%22q%5C%22%2C%5C%22www.firstsearchnow.com%5C%22%3A%5C%22q%5C%22%2C%5C%22www.fullsearch.com.ar%5C%22%3A%5C%22q%5C%22%2C%5C%22www.infosearchresults.com%5C%22%3A%5C%22q%5C%22%2C%5C%22www.searcheo.fr%5C%22%3A%5C%22q%5C%22%2C%5C%22www.searchresultsonline.com%5C%22%3A%5C%22%5C%22%2C%5C%22www.superquicksearch.com%5C%22%3A%5C%22%5C%22%7D%7C%7C%7C8641386810229107%22%2C%22WSG_blackList%22%3A%22form%3DCONTLB%7Cbabsrc%3Dtoolbar%7Cbabsrc%3Dtb_ss%7CinvocationType%3Dtb50-ie-aolsoftonic-tbsbox-en-us%7CinvocationType%3Dtb50-ff-aolsoftonic-tbsbox-en-us%7Csrc%3Dtlbvw%7Csap%3Dtr%7Csrc%3D1%7C/toolbar%7CSearchSource%3D1%7CSearchSource%3D44%7Cqsrc%3D2871%7Cbabsrc%3DTB_def%7C%7C%7C8641386810229107%22%2C%22WSG_kswitch%22%3A%22active%7C%7C%7C8641386823742046%22%2C%22WSG_inactive_by_user%22%3A%22not%20set%22%2C%22WSG_debugMode%22%3A%22not%20set%22%2C%22WSG_showDialog%22%3A%22not%20set%22%2C%22WSG_dailyPing%22%3A%22true%7C%7C%7C1386896629123%22%2C%22WSG_installedPing%22%3A%22true%7C%7C%7C8641358665679730%22%2C%22WSG_toolbar_query%22%3A%22not%20set%22%2C%22WSG_geoRequest%22%3A%22TW%7C%7C%7C8641360140150495%22%2C%22WSG_ssl%22%3A%22%7C%7C%7C8641372924807159%22%2C%22pxl_wsg_dailyPing%22%3A%22dailyPing%7C%7C%7C1386896629138%22%7D");</script><script id="clickberry-standalone-script" src="chrome-extension://lfmhcpmkbdkbgbmkjoiopeeegenkdikp/modules/clickberry/ChromeStdInjector.js?v=prod&addonType=fvd"></script><script async="" type="text/javascript" src="./(原創) 如何在Linux下編譯libdecodeqr_files/pubads_impl_32.js"></script><script type="text/javascript" async="" src="./(原創) 如何在Linux下編譯libdecodeqr_files/gt.js"></script><script type="text/javascript" src="./(原創) 如何在Linux下編譯libdecodeqr_files/osd.js"></script></head>
+<body>
+<a name="top"></a>
+
+<script type="text/javascript">
+	try {
+		if (screen.availWidth > 1200) {
+			document.getElementById("MainCss").href = '/Skins/BOOK/style2.css';
+		}
+	} catch (e) { }
+</script>
+
+<div id="header">
+<div id="HeaderTitle">
+<div id="Title">
+<a id="Header1_HeaderTitle" class="headermaintitle" href="http://www.cnblogs.com/oomusou/">真 OO无双 之 真乱舞书</a>
+</div>
+<div id="subTitle">寫程式是很快樂的一件事 Since Sep.15,2006</div>
+</div>
+</div>
+
+<div id="main">
+	
+
+	<div class="post">
+		<h2>
+			<a id="cb_post_title_url" href="./(原創) 如何在Linux下編譯libdecodeqr_files/(原創) 如何在Linux下編譯libdecodeqr.htm">(原創) 如何在Linux下編譯libdecodeqr? (OS) (Linux) (CenOS) (Image Processing) (C/C++)</a>
+		</h2>
+		<div id="cnblogs_post_body"><p><strong>Abstract</strong><br>libdecodeqr是一個open source的C/C++ QR code library，本文討論如何使在Linux (CentOS 5.1)下編譯。<br><br><strong>Introduction<br></strong>QR code是最近很熱門的二維條碼，常可以在網站上看到，主要用來對url、文字、電話號碼或簡訊作編碼，然後透過手機上的CMOS相機作辨識。libdecodeqr是一個open source的C/C++ QR code library，可以在<a title="http://trac.koka-in.org/libdecodeqr" href="http://trac.koka-in.org/libdecodeqr">http://trac.koka-in.org/libdecodeqr</a>下載<strong>libdecodeqr-0.9.3.tar.bz2</strong>，由於libdecodeqr使用了OpenCV，所以在Linux上必須先搞定OpenCV，之後才能使用libdecodeqr。關於OpenCV在Linux的編譯方法，請參考<a href="http://www.cnblogs.com/oomusou/archive/2008/06/05/opencv_linux_install.html" target="_blank">(原創) 如何在Linux下編譯OpenCV? (OS) (Linux) (CentOS) (Image Processing) (C/C++)</a> 。<br><br><strong>編譯libdecoreqr<br>Step 1：</strong><br>至<a title="http://trac.koka-in.org/libdecodeqr" href="http://trac.koka-in.org/libdecodeqr">http://trac.koka-in.org/libdecodeqr</a>下載Linux版的<strong>libdecodeqr-0.9.3.tar.bz2</strong>。<br><br><strong>Step 2：<br></strong>將libdecodeqr-0.9.3.tar.bz2解壓縮。<br></p>
+<div style="BORDER-RIGHT: #cccccc 1px solid; PADDING-RIGHT: 5px; BORDER-TOP: #cccccc 1px solid; PADDING-LEFT: 4px; FONT-SIZE: 13px; PADDING-BOTTOM: 4px; BORDER-LEFT: #cccccc 1px solid; WIDTH: 98%; WORD-BREAK: break-all; PADDING-TOP: 4px; BORDER-BOTTOM: #cccccc 1px solid; BACKGROUND-COLOR: #eeeeee"><span style="FONT-WEIGHT: bold; COLOR: #800000">[</span><span style="COLOR: #800000">root@localhost&nbsp;~</span><span style="FONT-WEIGHT: bold; COLOR: #800000">]</span><span style="COLOR: #000000">#&nbsp;tar&nbsp;jvxf&nbsp;libdecodeqr-</span><span style="COLOR: #000000">0.9.3</span><span style="COLOR: #000000">.tar.bz2</span></div>
+<p><br><strong>Step 3：</strong><br>設定LDFLAGS環境變數，指定OpenCV lib的路徑。<br></p>
+<div style="BORDER-RIGHT: #cccccc 1px solid; PADDING-RIGHT: 5px; BORDER-TOP: #cccccc 1px solid; PADDING-LEFT: 4px; FONT-SIZE: 13px; PADDING-BOTTOM: 4px; BORDER-LEFT: #cccccc 1px solid; WIDTH: 98%; WORD-BREAK: break-all; PADDING-TOP: 4px; BORDER-BOTTOM: #cccccc 1px solid; BACKGROUND-COLOR: #eeeeee"><span style="FONT-WEIGHT: bold; COLOR: #800000">[</span><span style="COLOR: #800000">root@localhost&nbsp;~</span><span style="FONT-WEIGHT: bold; COLOR: #800000">]</span><span style="COLOR: #000000">#&nbsp;export&nbsp;LDFLAGS</span><span style="COLOR: #000000">=</span><span style="COLOR: #000000">"</span><span style="COLOR: #000000">$LDFLAGS&nbsp;-L/usr/local/opencv/lib</span><span style="COLOR: #000000">"</span></div>
+<p><br><strong>Step 4：<br></strong>設定CPPFLAGS環境變數，指定OpenCV header檔的路徑。<br></p>
+<div style="BORDER-RIGHT: #cccccc 1px solid; PADDING-RIGHT: 5px; BORDER-TOP: #cccccc 1px solid; PADDING-LEFT: 4px; FONT-SIZE: 13px; PADDING-BOTTOM: 4px; BORDER-LEFT: #cccccc 1px solid; WIDTH: 98%; WORD-BREAK: break-all; PADDING-TOP: 4px; BORDER-BOTTOM: #cccccc 1px solid; BACKGROUND-COLOR: #eeeeee"><span style="FONT-WEIGHT: bold; COLOR: #800000">[</span><span style="COLOR: #800000">root@localhost&nbsp;~</span><span style="FONT-WEIGHT: bold; COLOR: #800000">]</span><span style="COLOR: #000000">#&nbsp;export&nbsp;CPPFLAGS</span><span style="COLOR: #000000">=</span><span style="COLOR: #000000">"</span><span style="COLOR: #000000">$CPPFLAGS&nbsp;-I/usr/local/opencv/include/opencv</span><span style="COLOR: #000000">"</span></div>
+<p><br><strong>Step 5：<br></strong>移到目錄到libdecodeqr-0.9.3/src/下<br></p>
+<div style="BORDER-RIGHT: #cccccc 1px solid; PADDING-RIGHT: 5px; BORDER-TOP: #cccccc 1px solid; PADDING-LEFT: 4px; FONT-SIZE: 13px; PADDING-BOTTOM: 4px; BORDER-LEFT: #cccccc 1px solid; WIDTH: 98%; WORD-BREAK: break-all; PADDING-TOP: 4px; BORDER-BOTTOM: #cccccc 1px solid; BACKGROUND-COLOR: #eeeeee"><span style="FONT-WEIGHT: bold; COLOR: #800000">[</span><span style="COLOR: #800000">root@localhost&nbsp;~</span><span style="FONT-WEIGHT: bold; COLOR: #800000">]</span><span style="COLOR: #000000">#&nbsp;cd&nbsp;libdecodeqr-</span><span style="COLOR: #000000">0.9.3</span><span style="COLOR: #000000">/src/</span></div>
+<p><br><strong>Step 6：<br></strong>偵測作業環境<br></p>
+<div style="BORDER-RIGHT: #cccccc 1px solid; PADDING-RIGHT: 5px; BORDER-TOP: #cccccc 1px solid; PADDING-LEFT: 4px; FONT-SIZE: 13px; PADDING-BOTTOM: 4px; BORDER-LEFT: #cccccc 1px solid; WIDTH: 98%; WORD-BREAK: break-all; PADDING-TOP: 4px; BORDER-BOTTOM: #cccccc 1px solid; BACKGROUND-COLOR: #eeeeee"><span style="FONT-WEIGHT: bold; COLOR: #800000">[</span><span style="COLOR: #800000">root@localhost&nbsp;src</span><span style="FONT-WEIGHT: bold; COLOR: #800000">]</span><span style="COLOR: #000000">#&nbsp;./configure</span></div>
+<p><br><strong>Step 7：<br></strong>編譯libdecodeqr<br></p>
+<div style="BORDER-RIGHT: #cccccc 1px solid; PADDING-RIGHT: 5px; BORDER-TOP: #cccccc 1px solid; PADDING-LEFT: 4px; FONT-SIZE: 13px; PADDING-BOTTOM: 4px; BORDER-LEFT: #cccccc 1px solid; WIDTH: 98%; WORD-BREAK: break-all; PADDING-TOP: 4px; BORDER-BOTTOM: #cccccc 1px solid; BACKGROUND-COLOR: #eeeeee"><span style="FONT-WEIGHT: bold; COLOR: #800000">[</span><span style="COLOR: #800000">root@localhost&nbsp;src</span><span style="FONT-WEIGHT: bold; COLOR: #800000">]</span><span style="COLOR: #000000">#&nbsp;make</span></div>
+<p><br><strong>Step 8：<br></strong>安裝libdecodeqr<br></p>
+<div style="BORDER-RIGHT: #cccccc 1px solid; PADDING-RIGHT: 5px; BORDER-TOP: #cccccc 1px solid; PADDING-LEFT: 4px; FONT-SIZE: 13px; PADDING-BOTTOM: 4px; BORDER-LEFT: #cccccc 1px solid; WIDTH: 98%; WORD-BREAK: break-all; PADDING-TOP: 4px; BORDER-BOTTOM: #cccccc 1px solid; BACKGROUND-COLOR: #eeeeee"><span style="FONT-WEIGHT: bold; COLOR: #800000">[</span><span style="COLOR: #800000">root@localhost&nbsp;src</span><span style="FONT-WEIGHT: bold; COLOR: #800000">]</span><span style="COLOR: #000000">#&nbsp;make&nbsp;install</span></div>
+<p><br><strong>Step 9：<br></strong>測試libdecodeqr是否安裝成功<br></p>
+<div style="BORDER-RIGHT: #cccccc 1px solid; PADDING-RIGHT: 5px; BORDER-TOP: #cccccc 1px solid; PADDING-LEFT: 4px; FONT-SIZE: 13px; PADDING-BOTTOM: 4px; BORDER-LEFT: #cccccc 1px solid; WIDTH: 98%; WORD-BREAK: break-all; PADDING-TOP: 4px; BORDER-BOTTOM: #cccccc 1px solid; BACKGROUND-COLOR: #eeeeee"><span style="FONT-WEIGHT: bold; COLOR: #800000">[</span><span style="COLOR: #800000">root@localhost&nbsp;src</span><span style="FONT-WEIGHT: bold; COLOR: #800000">]</span><span style="COLOR: #000000">#&nbsp;cd&nbsp;sample/simple</span></div><br>
+<div style="BORDER-RIGHT: #cccccc 1px solid; PADDING-RIGHT: 5px; BORDER-TOP: #cccccc 1px solid; PADDING-LEFT: 4px; FONT-SIZE: 13px; PADDING-BOTTOM: 4px; BORDER-LEFT: #cccccc 1px solid; WIDTH: 98%; WORD-BREAK: break-all; PADDING-TOP: 4px; BORDER-BOTTOM: #cccccc 1px solid; BACKGROUND-COLOR: #eeeeee"><span style="FONT-WEIGHT: bold; COLOR: #800000">[</span><span style="COLOR: #800000">root@localhost&nbsp;simple</span><span style="FONT-WEIGHT: bold; COLOR: #800000">]</span><span style="COLOR: #000000">#&nbsp;./simpletest&nbsp;/root/libdecodeqr-</span><span style="COLOR: #000000">0.9.3</span><span style="COLOR: #000000">/img/</span><span style="COLOR: #000000">01</span><span style="COLOR: #000000">-</span><span style="COLOR: #000000">1</span><span style="COLOR: #000000">.jpg</span></div>
+<p><br><strong>執行結果</strong><br></p>
+<div style="BORDER-RIGHT: #cccccc 1px solid; PADDING-RIGHT: 5px; BORDER-TOP: #cccccc 1px solid; PADDING-LEFT: 4px; FONT-SIZE: 13px; PADDING-BOTTOM: 4px; BORDER-LEFT: #cccccc 1px solid; WIDTH: 98%; WORD-BREAK: break-all; PADDING-TOP: 4px; BORDER-BOTTOM: #cccccc 1px solid; BACKGROUND-COLOR: #eeeeee"><span style="COLOR: #000000">libdecodeqr&nbsp;version&nbsp;</span><span style="COLOR: #000000">0.9.3</span><span style="COLOR: #000000">&nbsp;($Rev:&nbsp;</span><span style="COLOR: #000000">42</span><span style="COLOR: #000000">&nbsp;$)<br>STATUS</span><span style="COLOR: #000000">=</span><span style="COLOR: #000000">2080</span><span style="COLOR: #000000"><br>http://www.amazon.co.jp/gp/aw/rd.html?uid</span><span style="COLOR: #000000">=</span><span style="COLOR: #000000">NULLGWDOCOMO&amp;url</span><span style="COLOR: #000000">=</span><span style="COLOR: #000000">/gp/aw/h.html&amp;at</span><span style="COLOR: #000000">=</span><span style="COLOR: #000000">aw_intl6-</span><span style="COLOR: #000000">22</span><span style="COLOR: #000000"><br><br>Hit&nbsp;any&nbsp;key&nbsp;to&nbsp;end.</span></div>
+<p><br></p><img height="381" alt="libdecodeqr_linux.png" src="./(原創) 如何在Linux下編譯libdecodeqr_files/libdecodeqr_linux.png" width="296" border="0"> 
+<p><br><strong>See Also</strong><br><a href="http://www.cnblogs.com/oomusou/archive/2008/06/05/opencv_linux_install.html" target="_blank">(原創) 如何在Linux下編譯OpenCV? (OS) (Linux) (CentOS) (Image Processing) (C/C++)</a><br><a href="http://www.cnblogs.com/oomusou/archive/2008/02/13/1068164.html" target="_blank">(原創) 如何在VC8編譯libdecodeqr? (C/C++) (VC++) (Image Processing)</a> <br><br><strong>Reference</strong><br><a title="http://trac.koka-in.org/libdecodeqr" href="http://trac.koka-in.org/libdecodeqr">http://trac.koka-in.org/libdecodeqr</a></p></div><div id="MySignature"></div>
+<div class="clear"></div>
+<div id="blog_post_info_block">
+<div id="blog_post_info"><div id="BlogPostCategory">分类: <a href="http://www.cnblogs.com/oomusou/category/107021.html">OS</a>, <a href="http://www.cnblogs.com/oomusou/category/84453.html">Linux</a>, <a href="http://www.cnblogs.com/oomusou/category/72129.html">Image Processing</a>, <a href="http://www.cnblogs.com/oomusou/category/139072.html">CentOS</a>, <a href="http://www.cnblogs.com/oomusou/category/70647.html">C/C++</a></div>
+<div id="EntryTag"></div>
+<div id="green_channel">
+绿色通道：
+<a href="javascript:void(0);" id="green_channel_digg" onclick="DiggIt(cb_entryId,cb_blogId,1);green_channel_success(this,&#39;谢谢推荐！&#39;);">好文要顶</a>
+<a id="green_channel_follow" onclick="c_follow();" href="javascript:void(0);">关注我</a>
+<a id="green_channel_favorite" onclick="AddToWz(cb_entryId);return false;" href="javascript:void(0);">收藏该文</a><a id="green_channel_contact" href="http://space.cnblogs.com/msg/send/%e7%9c%9f+OO%e6%97%a0%e5%8f%8c" target="_blank">与我联系</a>
+<a id="green_channel_weibo" href="javascript:void(0);" title="分享至新浪微博" onclick="ShareToTsina()"><img src="./(原創) 如何在Linux下編譯libdecodeqr_files/icon_weibo_24.png" alt=""></a>
+</div>
+<div id="digg_block">
+<div id="author_profile">
+<div id="author_profile_info" class="author_profile_info">
+<a href="http://home.cnblogs.com/u/oomusou/" target="_blank"><img src="./(原創) 如何在Linux下編譯libdecodeqr_files/u17820.gif" class="author_avatar" alt=""></a>
+<div id="author_profile_detail" class="author_profile_info">
+<a href="http://home.cnblogs.com/u/oomusou/">真 OO无双</a><br>
+<a href="http://home.cnblogs.com/u/oomusou/followees">关注 - 0</a><br>
+<a href="http://home.cnblogs.com/u/oomusou/followers">粉丝 - 618</a>
+</div>
+</div>
+<div class="clear"></div>
+<div id="author_profile_honor"></div>
+<div id="author_profile_follow">
+<a href="javascript:void(0);" onclick="c_follow();return false;">+加关注</a>
+</div>
+</div>
+<div id="div_digg">										
+	<div class="diggit" onclick="votePost(cb_entryId,&#39;Digg&#39;)"> 
+		<span class="diggnum" id="digg_count">0</span>
+	</div>
+	<div class="buryit" onclick="votePost(cb_entryId,&#39;Bury&#39;)"> 
+		<span class="burynum" id="bury_count">0</span>
+	</div>
+	<div class="clear"></div>	
+	<div class="diggword" id="digg_tips">
+    (请您对文章做出评价)
+    </div>	
+</div>
+</div></div>
+<div class="clear"></div>
+<div id="post_next_prev"><a href="http://www.cnblogs.com/oomusou/archive/2008/06/05/1214018.html" class="p_n_p_prefix">« </a> 上一篇：<a href="http://www.cnblogs.com/oomusou/archive/2008/06/05/1214018.html" title="发布于2008-06-05 01:55">(原創) 如何在Linux下編譯OpenCV? (OS) (Linux) (CentOS) (Image Processing) (C/C++)</a><br><a href="http://www.cnblogs.com/oomusou/archive/2008/06/06/1215308.html" class="p_n_p_prefix">» </a> 下一篇：<a href="http://www.cnblogs.com/oomusou/archive/2008/06/06/1215308.html" title="发布于2008-06-06 18:22">(原創) 如何在CentOS安裝VMWare Tools? (OS) (Linux) (CentOS) (VMWare)</a><br></div>
+</div>
+
+
+		<p class="postfoot">
+			posted on <span id="post-date">2008-06-06 00:36</span> <a href="http://www.cnblogs.com/oomusou/">真 OO无双</a> 阅读(<span id="post_view_count">1665</span>) 评论(<span id="post_comment_count">0</span>)  <a href="http://www.cnblogs.com/oomusou/admin/EditPosts.aspx?postid=1214808" rel="nofollow">编辑</a> <a href="http://www.cnblogs.com/oomusou/archive/2008/06/06/libdecodeqr_linux_make.html#" onclick="AddToWz(1214808);return false;">收藏</a>
+		</p>
+	</div>
+	<script type="text/javascript">var allowComments=true,isLogined=false,cb_blogId=21379,cb_entryId=1214808,cb_blogApp=currentBlogApp,cb_blogUserGuid='c55f360b-63cf-dd11-9e4d-001cf0cd104b',cb_entryCreatedDate='2008/6/6 0:36:00';loadViewCount(cb_entryId);</script>
+	
+	<a name="!comments"></a><div id="blog-comments-placeholder"></div><script type="text/javascript">var commentManager = new blogCommentManager();commentManager.renderComments(0);</script>
+<div id="comment_form" class="commentform">
+<a name="commentform"></a>
+<div id="divCommentShow"></div>
+<div id="comment_nav"><span id="span_refresh_tips"></span><a href="javascript:void(0);" id="lnk_RefreshComments" onclick="return RefreshCommentList();">刷新评论</a><a href="http://www.cnblogs.com/oomusou/archive/2008/06/06/libdecodeqr_linux_make.html#" onclick="return RefreshPage();">刷新页面</a><a href="http://www.cnblogs.com/oomusou/archive/2008/06/06/libdecodeqr_linux_make.html#top">返回顶部</a></div>
+<div id="comment_form_container"><div class="login_tips">注册用户登录后才能发表评论，请 <a rel="nofollow" href="javascript:void(0);" class="underline" onclick="return login(&#39;commentform&#39;);">登录</a> 或 <a rel="nofollow" href="javascript:void(0);" class="underline" onclick="return register();">注册</a>，<a href="http://www.cnblogs.com/">访问</a>网站首页。</div></div>
+<div class="ad_text_commentbox" id="ad_text_under_commentbox"></div>
+<div id="site_nav_under"><a href="http://www.cnblogs.com/" target="_blank" title="程序员的网上家园">博客园首页</a><a href="http://q.cnblogs.com/" target="_blank" title="程序员问答社区">博问</a><a href="http://news.cnblogs.com/" target="_blank" title="IT新闻">新闻</a><a href="http://home.cnblogs.com/ing/" target="_blank">闪存</a><a href="http://job.cnblogs.com/" target="_blank">程序员招聘</a><a href="http://kb.cnblogs.com/" target="_blank">知识库</a></div>
+<div id="ad_under_post_holder">
+
+<div id="google_ad_c1" class="c_ad_block">
+    <!-- cnblogs_blogpost_C1_sitehome -->
+    <div id="div-gpt-ad-1346480159711-0" style="width:300px; height:250px;">
+    
+    <div id="google_ads_iframe_/1090369/cnblogs_blogpost_C1_sitehome_0__container__" style="border: 0pt none;"><iframe id="google_ads_iframe_/1090369/cnblogs_blogpost_C1_sitehome_0" name="google_ads_iframe_/1090369/cnblogs_blogpost_C1_sitehome_0" width="300" height="250" scrolling="no" marginwidth="0" marginheight="0" frameborder="0" src="javascript:"<html><body style='background:transparent'></body></html>"" style="border: 0px; vertical-align: bottom;"></iframe></div><iframe id="google_ads_iframe_/1090369/cnblogs_blogpost_C1_sitehome_0__hidden__" name="google_ads_iframe_/1090369/cnblogs_blogpost_C1_sitehome_0__hidden__" width="0" height="0" scrolling="no" marginwidth="0" marginheight="0" frameborder="0" src="javascript:"<html><body style='background:transparent'></body></html>"" style="border: 0px; vertical-align: bottom; visibility: hidden; display: none;"></iframe></div>
+</div>
+<div id="blog_news_kb"><div class="itnews c_ad_block"><b>最新IT新闻</b>:<br> ·  <a href="http://news.cnblogs.com/n/195594/" target="_blank">雅虎电子邮箱服务因硬件故障连续两天大面积宕机</a><br> ·  <a href="http://news.cnblogs.com/n/195593/" target="_blank">刷版本 锤子ROM新版又来了</a><br> ·  <a href="http://news.cnblogs.com/n/195592/" target="_blank">腾讯注册6家电商、金融公司 总资金16亿</a><br> ·  <a href="http://news.cnblogs.com/n/195584/" target="_blank">盛大文学宣布侯小强离职 董事长邱文友兼任CEO</a><br> ·  <a href="http://news.cnblogs.com/n/195591/" target="_blank">40年争论尘埃落定：水星“缩水”11千米</a><br>» <a href="http://news.cnblogs.com/" title="IT新闻" target="_blank">更多新闻...</a></div><div class="itnews c_ad_block" id="kb_block"><b>最新知识库文章</b>:<br><div id="kb_recent"> ·  <a href="http://kb.cnblogs.com/page/195573/" target="_blank">做正确的事情，等着被开除</a><br> ·  <a href="http://kb.cnblogs.com/page/194507/" target="_blank">Stack的三种含义</a><br> ·  <a href="http://kb.cnblogs.com/page/194899/" target="_blank">如何写一篇好的技术博客</a><br> ·  <a href="http://kb.cnblogs.com/page/194742/" target="_blank">数字证书及CA的扫盲介绍</a><br> ·  <a href="http://kb.cnblogs.com/page/112298/" target="_blank">领域驱动设计和实践</a><br></div>» <a href="http://kb.cnblogs.com/" target="_blank">更多知识库文章...</a></div></div></div>
+<script type="text/javascript">
+var enableGoogleAd = true;
+var googletag = googletag || {};
+googletag.cmd = googletag.cmd || [];
+fixPostBodyFormat();
+loadAdUnderPost();
+</script>
+<div id="HistoryToday" class="c_ad_block"></div>
+<script type="text/javascript">
+loadBlogSignature();
+LoadPostInfoBlock(cb_blogId, cb_entryId, cb_blogApp, cb_blogUserGuid);
+GetPrevNextPost(cb_entryId, cb_blogId, cb_entryCreatedDate);
+GetHistoryToday(cb_blogId, cb_blogApp, cb_entryCreatedDate);
+</script>
+<script type="text/javascript">
+    $.ajax({ url: 'http://counter.cnblogs.com/blog/post/' + cb_entryId, type: 'get', dataType: 'script', cache: true });
+</script>
+</div>
+
+	
+<p id="footer">
+	Powered by: 
+	<br>
+	
+	<a id="Footer1_Hyperlink3" name="Hyperlink1" href="http://www.cnblogs.com/" style="font-family:Verdana;font-size:12px;">博客园</a>
+	<br>
+	Copyright © 真 OO无双
+</p>
+</div>
+<div id="rightmenu">
+	
+		<div id="blog-calendar-block" style="display:none"><div id="blog-calendar"></div>
+</div>
+		
+<h3>导航</h3>
+<ul>
+			<li><a id="MyLinks1_HomeLink" href="http://www.cnblogs.com/">博客园</a></li>
+			<li><a id="MyLinks1_MyHomeLink" href="http://www.cnblogs.com/oomusou/">首页</a></li>
+			<li><a id="MyLinks1_NewPostLink" rel="nofollow" href="http://www.cnblogs.com/oomusou/admin/EditPosts.aspx?opt=1">新随笔</a></li>
+			<li><a id="MyLinks1_ContactLink" accesskey="9" rel="nofollow" href="http://space.cnblogs.com/msg/send/%e7%9c%9f+OO%e6%97%a0%e5%8f%8c">联系</a></li>
+			<li><a id="MyLinks1_Syndication" href="http://www.cnblogs.com/oomusou/rss">订阅</a><a id="MyLinks1_XMLLink" href="http://www.cnblogs.com/oomusou/rss"><img src="./(原創) 如何在Linux下編譯libdecodeqr_files/xml.gif" alt="订阅"></a>
+			</li><li><a id="MyLinks1_Admin" rel="nofollow" href="http://www.cnblogs.com/oomusou/admin/EditPosts.aspx">管理</a></li>
+</ul>
+		
+		
+<h3>公告</h3>
+	<div id="blog-news"><p>
+<a target="_blank" href="http://blog.chinatimes.com/" title="中時部落格2010嚴選優格"><img height="31" width="88" src="./(原創) 如何在Linux下編譯libdecodeqr_files/emblem-2010_e774afe4-5ef7-49ae-990c-daf06b3bb1ba.gif" alt="emblem-2010" border="0" title="emblem-2010" style="display: inline; border-width: 0px;"></a>
+</p><p>
+<a href="http://blogaward.chinatimes.com/" target="_blank">
+<img height="135" width="135" src="./(原創) 如何在Linux下編譯libdecodeqr_files/first2009-011_f4c751b5-187e-46c6-b7ae-27131b0010de.jpg" alt="first2009-011" border="0" title="first2009-011" style="display: inline; border: 0px;"></a></p>
+<p>
+</p><p>我是一個小小的數位IC工程師，從事SOC IP開發，業餘則喜歡研究FPGA、Embedded System、OS、MFC、NET與OOP相關技術。我並不是靠寫Blog或寫書維生，<b>只是記下來怕自己忘記</b>，所以不加任何廣告。所有文章與程式碼歡迎轉載使用。</p><div id="profile_block">昵称：<a href="http://home.cnblogs.com/u/oomusou/">真 OO无双</a><br>园龄：<a href="http://home.cnblogs.com/u/oomusou/" title="入园时间：2006-09-15">7年2个月</a><br>粉丝：<a href="http://home.cnblogs.com/u/oomusou/followers/">618</a><br>关注：<a href="http://home.cnblogs.com/u/oomusou/followees/">0</a><div id="p_b_follow"><a href="javascript:void(0);" onclick="cnblogs.UserManager.FollowBlogger(&#39;c55f360b-63cf-dd11-9e4d-001cf0cd104b&#39;)">+加关注</a></div></div></div><script type="text/javascript">loadBlogNews();</script>
+
+		<div id="blog-sidecolumn">
+		<h3>随笔分类<span style="font-size:11px;font-weight:normal">(2095)</span></h3>
+		
+				<ul>
+			
+				<li><a id="ctl01_CatList_LinkList_0_Link_0" href="http://www.cnblogs.com/oomusou/category/107216.html">μC/OS-II(9)</a> </li>
+			
+				<li><a id="ctl01_CatList_LinkList_0_Link_1" href="http://www.cnblogs.com/oomusou/category/84450.html">.NET(112)</a> </li>
+			
+				<li><a id="ctl01_CatList_LinkList_0_Link_2" href="http://www.cnblogs.com/oomusou/category/306831.html">ARM(1)</a> </li>
+			
+				<li><a id="ctl01_CatList_LinkList_0_Link_3" href="http://www.cnblogs.com/oomusou/category/104123.html">ASP.NET(9)</a> </li>
+			
+				<li><a id="ctl01_CatList_LinkList_0_Link_4" href="http://www.cnblogs.com/oomusou/category/104086.html">boost(7)</a> </li>
+			
+				<li><a id="ctl01_CatList_LinkList_0_Link_5" href="http://www.cnblogs.com/oomusou/category/104081.html">C(81)</a> </li>
+			
+				<li><a id="ctl01_CatList_LinkList_0_Link_6" href="http://www.cnblogs.com/oomusou/category/72218.html">C#(46)</a> </li>
+			
+				<li><a id="ctl01_CatList_LinkList_0_Link_7" href="http://www.cnblogs.com/oomusou/category/70647.html">C/C++(287)</a> </li>
+			
+				<li><a id="ctl01_CatList_LinkList_0_Link_8" href="http://www.cnblogs.com/oomusou/category/73539.html">C++/CLI(33)</a> </li>
+			
+				<li><a id="ctl01_CatList_LinkList_0_Link_9" href="http://www.cnblogs.com/oomusou/category/134249.html">C2H(3)</a> </li>
+			
+				<li><a id="ctl01_CatList_LinkList_0_Link_10" href="http://www.cnblogs.com/oomusou/category/139072.html">CentOS(12)</a> </li>
+			
+				<li><a id="ctl01_CatList_LinkList_0_Link_11" href="http://www.cnblogs.com/oomusou/category/106941.html">CSS(7)</a> </li>
+			
+				<li><a id="ctl01_CatList_LinkList_0_Link_12" href="http://www.cnblogs.com/oomusou/category/127748.html">Data Structure(1)</a> </li>
+			
+				<li><a id="ctl01_CatList_LinkList_0_Link_13" href="http://www.cnblogs.com/oomusou/category/134303.html">Database(12)</a> </li>
+			
+				<li><a id="ctl01_CatList_LinkList_0_Link_14" href="http://www.cnblogs.com/oomusou/category/110932.html">DE2(56)</a> </li>
+			
+				<li><a id="ctl01_CatList_LinkList_0_Link_15" href="http://www.cnblogs.com/oomusou/category/149442.html">DE2-70(42)</a> </li>
+			
+				<li><a id="ctl01_CatList_LinkList_0_Link_16" href="http://www.cnblogs.com/oomusou/category/181211.html">Debussy(6)</a> </li>
+			
+				<li><a id="ctl01_CatList_LinkList_0_Link_17" href="http://www.cnblogs.com/oomusou/category/82066.html">Design Pattern(22)</a> </li>
+			
+				<li><a id="ctl01_CatList_LinkList_0_Link_18" href="http://www.cnblogs.com/oomusou/category/99885.html">DirectX(6)</a> </li>
+			
+				<li><a id="ctl01_CatList_LinkList_0_Link_19" href="http://www.cnblogs.com/oomusou/category/142975.html">DSP Builder(4)</a> </li>
+			
+				<li><a id="ctl01_CatList_LinkList_0_Link_20" href="http://www.cnblogs.com/oomusou/category/144571.html">English(4)</a> </li>
+			
+				<li><a id="ctl01_CatList_LinkList_0_Link_21" href="http://www.cnblogs.com/oomusou/category/212549.html">Excel(1)</a> </li>
+			
+				<li><a id="ctl01_CatList_LinkList_0_Link_22" href="http://www.cnblogs.com/oomusou/category/110059.html">FireFox(1)</a> </li>
+			
+				<li><a id="ctl01_CatList_LinkList_0_Link_23" href="http://www.cnblogs.com/oomusou/category/109896.html">g++(3)</a> </li>
+			
+				<li><a id="ctl01_CatList_LinkList_0_Link_24" href="http://www.cnblogs.com/oomusou/category/109895.html">gcc(4)</a> </li>
+			
+				<li><a id="ctl01_CatList_LinkList_0_Link_25" href="http://www.cnblogs.com/oomusou/category/134752.html">GDI+(15)</a> </li>
+			
+				<li><a id="ctl01_CatList_LinkList_0_Link_26" href="http://www.cnblogs.com/oomusou/category/106940.html">HTML(3)</a> </li>
+			
+				<li><a id="ctl01_CatList_LinkList_0_Link_27" href="http://www.cnblogs.com/oomusou/category/112218.html">IE(3)</a> </li>
+			
+				<li><a id="ctl01_CatList_LinkList_0_Link_28" href="http://www.cnblogs.com/oomusou/category/72129.html">Image Processing(35)</a> </li>
+			
+				<li><a id="ctl01_CatList_LinkList_0_Link_29" href="http://www.cnblogs.com/oomusou/category/291594.html">iOS(2)</a> </li>
+			
+				<li><a id="ctl01_CatList_LinkList_0_Link_30" href="http://www.cnblogs.com/oomusou/category/291593.html">iPad(2)</a> </li>
+			
+				<li><a id="ctl01_CatList_LinkList_0_Link_31" href="http://www.cnblogs.com/oomusou/category/216779.html">iPhone(7)</a> </li>
+			
+				<li><a id="ctl01_CatList_LinkList_0_Link_32" href="http://www.cnblogs.com/oomusou/category/282922.html">ISE(1)</a> </li>
+			
+				<li><a id="ctl01_CatList_LinkList_0_Link_33" href="http://www.cnblogs.com/oomusou/category/302746.html">iTunes(1)</a> </li>
+			
+				<li><a id="ctl01_CatList_LinkList_0_Link_34" href="http://www.cnblogs.com/oomusou/category/144860.html">Japanese(3)</a> </li>
+			
+				<li><a id="ctl01_CatList_LinkList_0_Link_35" href="http://www.cnblogs.com/oomusou/category/84452.html">Java(15)</a> </li>
+			
+				<li><a id="ctl01_CatList_LinkList_0_Link_36" href="http://www.cnblogs.com/oomusou/category/77243.html">JavaScript(9)</a> </li>
+			
+				<li><a id="ctl01_CatList_LinkList_0_Link_37" href="http://www.cnblogs.com/oomusou/category/84453.html">Linux(42)</a> </li>
+			
+				<li><a id="ctl01_CatList_LinkList_0_Link_38" href="http://www.cnblogs.com/oomusou/category/142976.html">Matlab(4)</a> </li>
+			
+				<li><a id="ctl01_CatList_LinkList_0_Link_39" href="http://www.cnblogs.com/oomusou/category/111133.html">MegaCore (10)</a> </li>
+			
+				<li><a id="ctl01_CatList_LinkList_0_Link_40" href="http://www.cnblogs.com/oomusou/category/75852.html">Misc(20)</a> </li>
+			
+				<li><a id="ctl01_CatList_LinkList_0_Link_41" href="http://www.cnblogs.com/oomusou/category/109368.html">ModelSim(13)</a> </li>
+			
+				<li><a id="ctl01_CatList_LinkList_0_Link_42" href="http://www.cnblogs.com/oomusou/category/141500.html">NB(34)</a> </li>
+			
+				<li><a id="ctl01_CatList_LinkList_0_Link_43" href="http://www.cnblogs.com/oomusou/category/181209.html">NC-Verilog(4)</a> </li>
+			
+				<li><a id="ctl01_CatList_LinkList_0_Link_44" href="http://www.cnblogs.com/oomusou/category/349792.html">NEEK</a> </li>
+			
+				<li><a id="ctl01_CatList_LinkList_0_Link_45" href="http://www.cnblogs.com/oomusou/category/71400.html">News(77)</a> </li>
+			
+				<li><a id="ctl01_CatList_LinkList_0_Link_46" href="http://www.cnblogs.com/oomusou/category/106931.html">Nios II(76)</a> </li>
+			
+				<li><a id="ctl01_CatList_LinkList_0_Link_47" href="http://www.cnblogs.com/oomusou/category/283518.html">nLint(1)</a> </li>
+			
+				<li><a id="ctl01_CatList_LinkList_0_Link_48" href="http://www.cnblogs.com/oomusou/category/70268.html">N-Tier(7)</a> </li>
+			
+				<li><a id="ctl01_CatList_LinkList_0_Link_49" href="http://www.cnblogs.com/oomusou/category/85735.html">OO(47)</a> </li>
+			
+				<li><a id="ctl01_CatList_LinkList_0_Link_50" href="http://www.cnblogs.com/oomusou/category/125127.html">OpenMP(2)</a> </li>
+			
+				<li><a id="ctl01_CatList_LinkList_0_Link_51" href="http://www.cnblogs.com/oomusou/category/107021.html">OS(59)</a> </li>
+			
+				<li><a id="ctl01_CatList_LinkList_0_Link_52" href="http://www.cnblogs.com/oomusou/category/141501.html">P7010(4)</a> </li>
+			
+				<li><a id="ctl01_CatList_LinkList_0_Link_53" href="http://www.cnblogs.com/oomusou/category/70223.html">PetShop(6)</a> </li>
+			
+				<li><a id="ctl01_CatList_LinkList_0_Link_54" href="http://www.cnblogs.com/oomusou/category/328571.html">Qsys(6)</a> </li>
+			
+				<li><a id="ctl01_CatList_LinkList_0_Link_55" href="http://www.cnblogs.com/oomusou/category/106930.html">Quartus II(67)</a> </li>
+			
+				<li><a id="ctl01_CatList_LinkList_0_Link_56" href="http://www.cnblogs.com/oomusou/category/326086.html">RedHat(3)</a> </li>
+			
+				<li><a id="ctl01_CatList_LinkList_0_Link_57" href="http://www.cnblogs.com/oomusou/category/306824.html">RVDS(1)</a> </li>
+			
+				<li><a id="ctl01_CatList_LinkList_0_Link_58" href="http://www.cnblogs.com/oomusou/category/126575.html">SignalTap II(6)</a> </li>
+			
+				<li><a id="ctl01_CatList_LinkList_0_Link_59" href="http://www.cnblogs.com/oomusou/category/104714.html">SOC(257)</a> </li>
+			
+				<li><a id="ctl01_CatList_LinkList_0_Link_60" href="http://www.cnblogs.com/oomusou/category/114505.html">SOPC Builder(39)</a> </li>
+			
+				<li><a id="ctl01_CatList_LinkList_0_Link_61" href="http://www.cnblogs.com/oomusou/category/84451.html">SQL Server(5)</a> </li>
+			
+				<li><a id="ctl01_CatList_LinkList_0_Link_62" href="http://www.cnblogs.com/oomusou/category/104083.html">STL(41)</a> </li>
+			
+				<li><a id="ctl01_CatList_LinkList_0_Link_63" href="http://www.cnblogs.com/oomusou/category/174975.html">Synplify(1)</a> </li>
+			
+				<li><a id="ctl01_CatList_LinkList_0_Link_64" href="http://www.cnblogs.com/oomusou/category/73112.html">SystemC(8)</a> </li>
+			
+				<li><a id="ctl01_CatList_LinkList_0_Link_65" href="http://www.cnblogs.com/oomusou/category/285481.html">Tcl(1)</a> </li>
+			
+				<li><a id="ctl01_CatList_LinkList_0_Link_66" href="http://www.cnblogs.com/oomusou/category/104085.html">template(27)</a> </li>
+			
+				<li><a id="ctl01_CatList_LinkList_0_Link_67" href="http://www.cnblogs.com/oomusou/category/112889.html">ThinkPad(30)</a> </li>
+			
+				<li><a id="ctl01_CatList_LinkList_0_Link_68" href="http://www.cnblogs.com/oomusou/category/104087.html">TMP(2)</a> </li>
+			
+				<li><a id="ctl01_CatList_LinkList_0_Link_69" href="http://www.cnblogs.com/oomusou/category/151132.html">TRDB-D5M(8)</a> </li>
+			
+				<li><a id="ctl01_CatList_LinkList_0_Link_70" href="http://www.cnblogs.com/oomusou/category/151916.html">TRDB-DC2(5)</a> </li>
+			
+				<li><a id="ctl01_CatList_LinkList_0_Link_71" href="http://www.cnblogs.com/oomusou/category/156771.html">TRDB-LCM(4)</a> </li>
+			
+				<li><a id="ctl01_CatList_LinkList_0_Link_72" href="http://www.cnblogs.com/oomusou/category/156772.html">TRDB-LTM(7)</a> </li>
+			
+				<li><a id="ctl01_CatList_LinkList_0_Link_73" href="http://www.cnblogs.com/oomusou/category/107024.html">T-SQL(4)</a> </li>
+			
+				<li><a id="ctl01_CatList_LinkList_0_Link_74" href="http://www.cnblogs.com/oomusou/category/109893.html">Ubuntu(8)</a> </li>
+			
+				<li><a id="ctl01_CatList_LinkList_0_Link_75" href="http://www.cnblogs.com/oomusou/category/305159.html">UltraEdit(4)</a> </li>
+			
+				<li><a id="ctl01_CatList_LinkList_0_Link_76" href="http://www.cnblogs.com/oomusou/category/75678.html">UML(5)</a> </li>
+			
+				<li><a id="ctl01_CatList_LinkList_0_Link_77" href="http://www.cnblogs.com/oomusou/category/106261.html">VC++(10)</a> </li>
+			
+				<li><a id="ctl01_CatList_LinkList_0_Link_78" href="http://www.cnblogs.com/oomusou/category/305158.html">VCS(1)</a> </li>
+			
+				<li><a id="ctl01_CatList_LinkList_0_Link_79" href="http://www.cnblogs.com/oomusou/category/303211.html">Verdi(3)</a> </li>
+			
+				<li><a id="ctl01_CatList_LinkList_0_Link_80" href="http://www.cnblogs.com/oomusou/category/84456.html">Verilog(74)</a> </li>
+			
+				<li><a id="ctl01_CatList_LinkList_0_Link_81" href="http://www.cnblogs.com/oomusou/category/182632.html">Verilog PLI(7)</a> </li>
+			
+				<li><a id="ctl01_CatList_LinkList_0_Link_82" href="http://www.cnblogs.com/oomusou/category/143105.html">VHDL(4)</a> </li>
+			
+				<li><a id="ctl01_CatList_LinkList_0_Link_83" href="http://www.cnblogs.com/oomusou/category/317412.html">VirtualBox(4)</a> </li>
+			
+				<li><a id="ctl01_CatList_LinkList_0_Link_84" href="http://www.cnblogs.com/oomusou/category/212548.html">Visual BASIC(1)</a> </li>
+			
+				<li><a id="ctl01_CatList_LinkList_0_Link_85" href="http://www.cnblogs.com/oomusou/category/82572.html">Visual FoxPro(8)</a> </li>
+			
+				<li><a id="ctl01_CatList_LinkList_0_Link_86" href="http://www.cnblogs.com/oomusou/category/105928.html">Visual Studio(9)</a> </li>
+			
+				<li><a id="ctl01_CatList_LinkList_0_Link_87" href="http://www.cnblogs.com/oomusou/category/139471.html">VMWare(4)</a> </li>
+			
+				<li><a id="ctl01_CatList_LinkList_0_Link_88" href="http://www.cnblogs.com/oomusou/category/84586.html">Web(26)</a> </li>
+			
+				<li><a id="ctl01_CatList_LinkList_0_Link_89" href="http://www.cnblogs.com/oomusou/category/331219.html">Win32 API</a> </li>
+			
+				<li><a id="ctl01_CatList_LinkList_0_Link_90" href="http://www.cnblogs.com/oomusou/category/85381.html">Windows(21)</a> </li>
+			
+				<li><a id="ctl01_CatList_LinkList_0_Link_91" href="http://www.cnblogs.com/oomusou/category/85205.html">Windows CE(2)</a> </li>
+			
+				<li><a id="ctl01_CatList_LinkList_0_Link_92" href="http://www.cnblogs.com/oomusou/category/107725.html">Windows Form(2)</a> </li>
+			
+				<li><a id="ctl01_CatList_LinkList_0_Link_93" href="http://www.cnblogs.com/oomusou/category/142686.html">Windows Live Writer(5)</a> </li>
+			
+				<li><a id="ctl01_CatList_LinkList_0_Link_94" href="http://www.cnblogs.com/oomusou/category/172992.html">Word</a> </li>
+			
+				<li><a id="ctl01_CatList_LinkList_0_Link_95" href="http://www.cnblogs.com/oomusou/category/141503.html">X300(5)</a> </li>
+			
+				<li><a id="ctl01_CatList_LinkList_0_Link_96" href="http://www.cnblogs.com/oomusou/category/141502.html">X61(5)</a> </li>
+			
+				<li><a id="ctl01_CatList_LinkList_0_Link_97" href="http://www.cnblogs.com/oomusou/category/121800.html">XML(1)</a> </li>
+			
+				<li><a id="ctl01_CatList_LinkList_0_Link_98" href="http://www.cnblogs.com/oomusou/category/139601.html">μClinux(3)</a> </li>
+			
+				<li><a id="ctl01_CatList_LinkList_0_Link_99" href="http://www.cnblogs.com/oomusou/category/133438.html">翻譯(3)</a> </li>
+			
+				<li><a id="ctl01_CatList_LinkList_0_Link_100" href="http://www.cnblogs.com/oomusou/category/85351.html">美食(3)</a> </li>
+			
+				<li><a id="ctl01_CatList_LinkList_0_Link_101" href="http://www.cnblogs.com/oomusou/category/70221.html">日記(68)</a> </li>
+			
+				<li><a id="ctl01_CatList_LinkList_0_Link_102" href="http://www.cnblogs.com/oomusou/category/85262.html">推薦軟體(5)</a> </li>
+			
+				<li><a id="ctl01_CatList_LinkList_0_Link_103" href="http://www.cnblogs.com/oomusou/category/84183.html">中森明菜(11)</a> </li>
+			
+				</ul>
+			
+	</div><script type="text/javascript">loadBlogSideColumn();</script>
+	
+</div>
+			
+			
+			
+			
+			 
+
+	
+
+<script type="text/javascript" src="./(原創) 如何在Linux下編譯libdecodeqr_files/google-analytics.js"></script>
+
+
+<div id="LCS_FE1DEEEA_DB6D_44b8_83F0_34FC0F9D1052_communicationDiv" lcs_fe1deeea_db6d_44b8_83f0_34fc0f9d1052_valuename="WSG_status" lcs_fe1deeea_db6d_44b8_83f0_34fc0f9d1052_valueresult="inactive|||8641386823771910"></div><iframe id="google_osd_static_frame_3740923937875" name="google_osd_static_frame" style="display: none; width: 0px; height: 0px;"></iframe></body></html>

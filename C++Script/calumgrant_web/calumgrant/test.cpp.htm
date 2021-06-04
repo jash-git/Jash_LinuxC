@@ -1,0 +1,31 @@
+<html>#include <cppscript>
+
+void test_int_int_addition()
+{
+	assertx( var(1) + 2 == 3 );
+}
+
+void test_string_string_addition()
+{
+	assertx( var("abc") + "def" == "abcdef" );
+}
+
+void test_string_int_addition()
+{
+	assertx( var("abc") + 2 == "abc2" );
+}
+
+void test_int_string_addition()
+{
+	assertx( var(1) + "2" == 3 );
+}
+
+var script_main(var)
+{
+	var tests = map
+		("int int addition", test_int_int_addition)
+		("int string addition", test_int_string_addition)
+		("string int addition", test_string_int_addition)
+		("string string addition", test_string_string_addition);
+	return run_tests( tests );
+}

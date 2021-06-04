@@ -1,0 +1,23 @@
+<html>#include <cppscript> 
+
+var compute() 
+{ 
+    throw exception("compute_failure", "Not implemented");
+}
+
+var script_main(var) 
+{ 
+    try 
+    { 
+        compute(); 
+    } 
+    catch(var ex) 
+    { 
+        if( ex.class_name() == "compute_failure" )
+            writeln("The computation failed because " + ex["text"]);
+        else 
+            throw;    // Re-throws the exception - caught in main()
+    }
+    return 0;
+}
+

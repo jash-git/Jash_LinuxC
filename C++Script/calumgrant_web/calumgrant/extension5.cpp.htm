@@ -1,0 +1,43 @@
+<html>#include <cppscript>
+#include <dynamic/extensions.hpp>
+
+class Counter : public shared_var_impl
+{
+	int value;
+public:
+	Counter( var initial_value ) : value(initial_value)
+	{
+	}
+
+	int as_int() 
+	{ 
+		return value++; 
+	}
+
+	void clear() 
+	{ 
+		value=0; 
+	}
+
+	std::string class_name() 
+	{ 
+		return "Counter"; 
+	}
+
+	void mark_children(gc::garbage_collector&)
+	{
+	}
+};
+
+var counter5(var initial_value)
+{
+	return new Counter(initial_value);
+}
+
+var script_main(var)
+{
+	var counter = counter5(1);
+	writeln( counter.as_int() );
+	writeln( counter.as_int() );
+	return 0;
+}

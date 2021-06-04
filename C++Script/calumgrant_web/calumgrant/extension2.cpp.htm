@@ -1,0 +1,29 @@
+<html>#include <cppscript>
+
+var counter2_as_int(var counter2)
+{
+	return counter2["value"]++;
+}
+
+void counter2_clear(var counter2)
+{
+	counter2["value"] = 0;
+}
+
+var counter2(var initial_value)
+{
+	return dispatcher( 
+		object("counter2").extend
+			("value", initial_value)
+			("as_int", counter2_as_int)
+			("clear", counter2_clear)
+		);
+}
+
+var script_main(var)
+{
+	var counter = counter2(1);
+	writeln( counter.as_int() );
+	writeln( counter.as_int() );
+	return 0;
+}

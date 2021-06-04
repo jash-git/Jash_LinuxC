@@ -1,0 +1,28 @@
+####1-查询语句归一化演示#####
+NO 0: select name, mddz, dxnr from bf_dxx where contains(dxnr, '丘处机')>0  and ydz='138123443' and contains(dxnr, '阿牛')>0
+--- SELECT DXNR, MDDZ, NAME  FROM BF_DXX  WHERE  CONTAINS( DXNR,' 阿牛 AND 丘处机' ) > 0  AND YDZ = '138123443' 
+
+NO 1: select mddz, name, dxnr from bf_dxx where contains(dxnr, '丘处机')>0 and contains(dxnr, '阿牛')>0  and ydz='138123443'
+--- SELECT DXNR, MDDZ, NAME  FROM BF_DXX  WHERE  CONTAINS( DXNR,' 阿牛 AND 丘处机' ) > 0  AND YDZ = '138123443' 
+
+NO 2: select mddz, name, dxnr from bf_dxx where contains(dxnr, '丘处机 and 阿牛')>0  and ydz='138123443'
+--- SELECT DXNR, MDDZ, NAME  FROM BF_DXX  WHERE  CONTAINS( DXNR,' 阿牛 AND 丘处机' ) > 0  AND YDZ = '138123443' 
+
+NO 3: select name, mddz, dxnr from bf_dxx where ydz='138123443' and contains(dxnr, '阿牛 and 丘处机')>0
+--- SELECT DXNR, MDDZ, NAME  FROM BF_DXX  WHERE  CONTAINS( DXNR,' 阿牛 AND 丘处机' ) > 0  AND YDZ = '138123443' 
+
+##### END #####
+
+####2-查询语句的查询字段替换为ROWID，COUNT(*)#####
+原始：select * from bf_dxx where fssj >= to_date ('2005-12-21 09:29:44', 'YYYY-MM-DD HH24:MI:SS') and fssj <= to_date ('2005-12-22 11:48:44', 'YYYY-MM-DD HH24:MI:SS') and ydz = '13665190518' and contains (dxnr, '慢慢烫了两壶 and 后来康王 and 可是弓腰曲背') > 0
+归一化：SELECT *  FROM BF_DXX  WHERE  CONTAINS( DXNR,' 后来康王 AND 可是弓腰曲背 AND 慢慢烫了两壶' ) > 0  AND FSSJ <= to_date( '2005-12-22 11:48:44', 'YYYY-MM-DD HH24:MI:SS' )  AND FSSJ >= to_date( '2005-12-21 09:29:44', 'YYYY-MM-DD HH24:MI:SS' )  AND YDZ = '13665190518' 
+替换ROWID：SELECT ROWID FROM BF_DXX  WHERE  CONTAINS( DXNR,' 后来康王 AND 可是弓腰曲背 AND 慢慢烫了两壶' ) > 0  AND FSSJ <= to_date( '2005-12-22 11:48:44', 'YYYY-MM-DD HH24:MI:SS' )  AND FSSJ >= to_date( '2005-12-21 09:29:44', 'YYYY-MM-DD HH24:MI:SS' )  AND YDZ = '13665190518' 
+替换COUNT(*)：SELECT COUNT(*) FROM BF_DXX  WHERE  CONTAINS( DXNR,' 后来康王 AND 可是弓腰曲背 AND 慢慢烫了两壶' ) > 0  AND FSSJ <= to_date( '2005-12-22 11:48:44', 'YYYY-MM-DD HH24:MI:SS' )  AND FSSJ >= to_date( '2005-12-21 09:29:44', 'YYYY-MM-DD HH24:MI:SS' )  AND YDZ = '13665190518' 
+##### END #####
+
+####3-为查询语句定制时间条件#######
+原始：select * from bf_dxx where fssj >= to_date('2006-02-27 13:46:40', 'YYYY-MM-DD HH24:MI:SS') and fssj <= to_date('2006-02-27 14:19:40', 'YYYY-MM-DD HH24:MI:SS') and ydz = '13665190509' and contains( dxnr, '搬到最后一具时')>0 or contains( dxnr, '书画琴棋aaa')>0 and contains( dxnr, '我跟你回家便了')>0 group by fssj having count( * ) < 100
+抽取时间后：SELECT *  FROM BF_DXX  WHERE  CONTAINS( DXNR,' 书画琴棋aaa AND 我跟你回家便了' ) > 0  OR  CONTAINS( DXNR,' 搬到最后一具时' ) > 0  AND YDZ = '13665190509' GROUP BY FSSJ HAVING COUNT( * ) < 100 
+定制时间：SELECT *  FROM BF_DXX  WHERE (  CONTAINS( DXNR,' 书画琴棋aaa AND 我跟你回家便了' ) > 0  OR  CONTAINS( DXNR,' 搬到最后一具时' ) > 0  AND YDZ = '13665190509'  ) AND FSSJ>=TO_DATE('2006-04-01 12:22:00', 'YYYY-MM-DD hh24:mi:ss') AND FSSJ<TO_DATE('2006-07-10 23:12:24', 'YYYY-MM-DD hh24:mi:ss') GROUP BY FSSJ HAVING COUNT( * ) < 100 
+##### END #####
+

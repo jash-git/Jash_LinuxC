@@ -1,0 +1,530 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!-- saved from url=(0042)http://www.linuxany.com/archives/1282.html -->
+<html xmlns="http://www.w3.org/1999/xhtml" dir="ltr" lang="zh-CN"><head profile="http://gmpg.org/xfn/11"><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	
+	<title>apache CGI程序的简单配置与使用 - ubuntu,debian,mint,redhat -linuxany.com</title>
+	<meta name="author" content="prower">
+	<meta name="copyright" content="design by prower">
+	
+
+	<link rel="stylesheet" href="./apache_CGI_files/style.css" type="text/css" media="screen">
+	<link rel="alternate" type="application/rss+xml" title="ubuntu,debian,mint,redhat -linuxany.com RSS Feed" href="http://www.linuxany.com/feed">
+	<link rel="pingback" href="http://www.linuxany.com/xmlrpc.php">
+		<link rel="archives" title="2012 年十月" href="http://www.linuxany.com/archives/date/2012/10">
+	<link rel="archives" title="2012 年七月" href="http://www.linuxany.com/archives/date/2012/07">
+	<link rel="archives" title="2012 年五月" href="http://www.linuxany.com/archives/date/2012/05">
+	<link rel="archives" title="2012 年四月" href="http://www.linuxany.com/archives/date/2012/04">
+	<link rel="archives" title="2012 年三月" href="http://www.linuxany.com/archives/date/2012/03">
+	<link rel="archives" title="2012 年二月" href="http://www.linuxany.com/archives/date/2012/02">
+	<link rel="archives" title="2012 年一月" href="http://www.linuxany.com/archives/date/2012/01">
+	<link rel="archives" title="2011 年十二月" href="http://www.linuxany.com/archives/date/2011/12">
+	<link rel="archives" title="2011 年十一月" href="http://www.linuxany.com/archives/date/2011/11">
+	<link rel="archives" title="2011 年十月" href="http://www.linuxany.com/archives/date/2011/10">
+	<link rel="archives" title="2011 年九月" href="http://www.linuxany.com/archives/date/2011/09">
+	<link rel="archives" title="2011 年八月" href="http://www.linuxany.com/archives/date/2011/08">
+	<link rel="archives" title="2011 年七月" href="http://www.linuxany.com/archives/date/2011/07">
+	<link rel="archives" title="2011 年六月" href="http://www.linuxany.com/archives/date/2011/06">
+	<link rel="archives" title="2011 年五月" href="http://www.linuxany.com/archives/date/2011/05">
+	<link rel="archives" title="2011 年四月" href="http://www.linuxany.com/archives/date/2011/04">
+	<link rel="archives" title="2011 年三月" href="http://www.linuxany.com/archives/date/2011/03">
+	<link rel="archives" title="2011 年二月" href="http://www.linuxany.com/archives/date/2011/02">
+	<link rel="archives" title="2011 年一月" href="http://www.linuxany.com/archives/date/2011/01">
+	<link rel="archives" title="2010 年十二月" href="http://www.linuxany.com/archives/date/2010/12">
+	<link rel="archives" title="2010 年十月" href="http://www.linuxany.com/archives/date/2010/10">
+	<link rel="archives" title="2010 年八月" href="http://www.linuxany.com/archives/date/2010/08">
+	<link rel="archives" title="2010 年七月" href="http://www.linuxany.com/archives/date/2010/07">
+	<link rel="archives" title="2010 年六月" href="http://www.linuxany.com/archives/date/2010/06">
+	<link rel="archives" title="2010 年五月" href="http://www.linuxany.com/archives/date/2010/05">
+	<link rel="archives" title="2010 年四月" href="http://www.linuxany.com/archives/date/2010/04">
+	<link rel="archives" title="2010 年二月" href="http://www.linuxany.com/archives/date/2010/02">
+	<link rel="archives" title="2010 年一月" href="http://www.linuxany.com/archives/date/2010/01">
+	<link rel="archives" title="2009 年十二月" href="http://www.linuxany.com/archives/date/2009/12">
+	<link rel="archives" title="2009 年十一月" href="http://www.linuxany.com/archives/date/2009/11">
+	<link rel="archives" title="2009 年十月" href="http://www.linuxany.com/archives/date/2009/10">
+	<link rel="archives" title="2009 年九月" href="http://www.linuxany.com/archives/date/2009/09">
+	<link rel="archives" title="2009 年八月" href="http://www.linuxany.com/archives/date/2009/08">
+	<link rel="archives" title="2009 年六月" href="http://www.linuxany.com/archives/date/2009/06">
+	<link rel="archives" title="2009 年四月" href="http://www.linuxany.com/archives/date/2009/04">
+	<link rel="archives" title="2009 年二月" href="http://www.linuxany.com/archives/date/2009/02">
+	<link rel="archives" title="2009 年一月" href="http://www.linuxany.com/archives/date/2009/01">
+	<link rel="archives" title="2008 年十二月" href="http://www.linuxany.com/archives/date/2008/12">
+	<link rel="archives" title="2008 年十一月" href="http://www.linuxany.com/archives/date/2008/11">
+	<link rel="archives" title="2008 年十月" href="http://www.linuxany.com/archives/date/2008/10">
+	<link rel="archives" title="2008 年九月" href="http://www.linuxany.com/archives/date/2008/09">
+	<link rel="archives" title="2008 年八月" href="http://www.linuxany.com/archives/date/2008/08">
+	<link rel="archives" title="2008 年六月" href="http://www.linuxany.com/archives/date/2008/06">
+	<link rel="archives" title="2008 年五月" href="http://www.linuxany.com/archives/date/2008/05">
+	<link rel="archives" title="2008 年四月" href="http://www.linuxany.com/archives/date/2008/04">
+	<link rel="archives" title="2008 年三月" href="http://www.linuxany.com/archives/date/2008/03">
+	<link rel="archives" title="2008 年二月" href="http://www.linuxany.com/archives/date/2008/02">
+	<link rel="archives" title="2008 年一月" href="http://www.linuxany.com/archives/date/2008/01">
+	<link rel="archives" title="2007 年十二月" href="http://www.linuxany.com/archives/date/2007/12">
+	<link rel="archives" title="2007 年十一月" href="http://www.linuxany.com/archives/date/2007/11">
+		<link rel="alternate" type="application/rss+xml" title="ubuntu,debian,mint,redhat -linuxany.com » apache CGI程序的简单配置与使用 评论 Feed" href="http://www.linuxany.com/archives/1282.html/feed">
+<script type="text/javascript" src="./apache_CGI_files/comment-reply.js"></script>
+<link rel="EditURI" type="application/rsd+xml" title="RSD" href="http://www.linuxany.com/xmlrpc.php?rsd">
+<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="http://www.linuxany.com/wp-includes/wlwmanifest.xml"> 
+<link rel="prev" title="在vim/vi中快速执行php或c/c++的方法" href="http://www.linuxany.com/archives/1277.html">
+<link rel="next" title="vim中设置文件编码" href="http://www.linuxany.com/archives/1288.html">
+<meta name="generator" content="WordPress 3.4">
+<link rel="canonical" href="./apache_CGI_files/apache_CGI.htm">
+<link rel="shortlink" href="http://www.linuxany.com/?p=1282">
+<link rel="stylesheet" href="http://www.linuxany.com/wp-content/plugins/coolcode/coolcode.css">
+<script type="text/javascript" src="./apache_CGI_files/coolcode.js"></script>
+
+<!-- Start Of Script Generated By WP-PostViews -->
+<script type="text/javascript" src="./apache_CGI_files/jquery.js"></script>
+<script type="text/javascript">
+/* <![CDATA[ */
+jQuery.ajax({type:'GET',url:'http://www.linuxany.com/wp-admin/admin-ajax.php',data:'postviews_id=1282&action=postviews',cache:false});/* ]]> */
+</script>
+<!-- End Of Script Generated By WP-PostViews -->
+	
+	
+
+
+<script src="chrome-extension://lifbcibllhkdhoafpjfnlhfpfgnpldfl/document_iterator.js"></script><script src="chrome-extension://lifbcibllhkdhoafpjfnlhfpfgnpldfl/find_proxy.js"></script><script src="chrome-extension://lifbcibllhkdhoafpjfnlhfpfgnpldfl/get_html_text.js"></script><script src="chrome-extension://lifbcibllhkdhoafpjfnlhfpfgnpldfl/global_constants.js"></script><script src="chrome-extension://lifbcibllhkdhoafpjfnlhfpfgnpldfl/name_injection_builder.js"></script><script src="chrome-extension://lifbcibllhkdhoafpjfnlhfpfgnpldfl/number_injection_builder.js"></script><script src="chrome-extension://lifbcibllhkdhoafpjfnlhfpfgnpldfl/string_finder.js"></script><script src="chrome-extension://lifbcibllhkdhoafpjfnlhfpfgnpldfl/change_sink.js"></script><meta name="document_iterator.js"><meta name="find_proxy.js"><meta name="get_html_text.js"><meta name="global_constants.js"><meta name="name_injection_builder.js"><meta name="number_injection_builder.js"><meta name="string_finder.js"><meta name="change_sink.js"><style id="wrc-middle-css" type="text/css">.wrc_whole_window{	display: none;	position: fixed; 	z-index: 2147483647;	background-color: rgba(40, 40, 40, 0.9);	word-spacing: normal !important;	margin: 0px !important;	padding: 0px !important;	border: 0px !important;	left: 0px;	top: 0px;	width: 100%;	height: 100%;	line-height: normal !important;	letter-spacing: normal !important;	overflow: hidden;}.wrc_bar_window{	display: none;	position: fixed; 	z-index: 2147483647;	background-color: rgba(60, 60, 60, 1.0);	word-spacing: normal !important;	font-family: Segoe UI, Arial Unicode MS, Arial, Sans-Serif;	margin: 0px !important;	padding: 0px !important;	border: 0px !important;	left: 0px;	top: 0px;	width: 100%;	height: 40px;	line-height: normal !important;	letter-spacing: normal !important;	color: white !important;	font-size: 13px !important;}.wrc_middle {	display: table-cell;	vertical-align: middle;	width: 100%;}.wrc_middle_main {	font-family: Segoe UI, Arial Unicode MS, Arial, Sans-Serif;	font-size: 14px;	width: 600px;	height: auto;    background: url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/background-body.jpg) repeat-x left top;	background-color: rgb(39, 53, 62);	position: relative;	margin-left: auto;	margin-right: auto;	text-align: left;}.wrc_middle_tq_main {	font-family: Segoe UI, Arial Unicode MS, Arial, Sans-Serif;	font-size: 16px;	width: 615px;	height: 460px;    background: url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/background-sitecorrect.png) no-repeat;	background-color: white;	color: black !important;	position: relative;	margin-left: auto;	margin-right: auto;	text-align: center;}.wrc_middle_logo {    background: url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/logo.jpg) no-repeat left bottom;    width: 140px;    height: 42px;    color: orange;    display: table-cell;    text-align: right;    vertical-align: middle;}.wrc_icon_warning {	margin: 20px 10px 20px 15px;	float: left;	background-color: transparent;}.wrc_middle_title {    color: #b6bec7;	height: auto;    margin: 0px auto;	font-size: 2.2em;	white-space: nowrap;	text-align: center;}.wrc_middle_hline {    height: 2px;	width: 100%;    display: block;}.wrc_middle_description {	text-align: center;	margin: 15px;	font-size: 1.4em;	padding: 20px;	height: auto;	color: white;	min-height: 3.5em;}.wrc_middle_actions_main_div {	margin-bottom: 15px;	text-align: center;}.wrc_middle_actions_blue_button div {	display: inline-block;	width: auto;	cursor: Pointer;	margin: 3px 10px 3px 10px;	color: white;	font-size: 1.2em;	font-weight: bold;}.wrc_middle_actions_blue_button {	-moz-appearance: none;	border-radius: 7px;	-moz-border-radius: 7px/7px;	border-radius: 7px/7px;	background-color: rgb(0, 173, 223) !important;	display: inline-block;	width: auto;	cursor: Pointer;	border: 2px solid #00dddd;	padding: 0px 20px 0px 20px;}.wrc_middle_actions_blue_button:hover {	background-color: rgb(0, 159, 212) !important;}.wrc_middle_actions_blue_button:active {	background-color: rgb(0, 146, 200) !important;	border: 2px solid #00aaaa;}.wrc_middle_actions_grey_button div {	display: inline-block;	width: auto;	cursor: Pointer;	margin: 3px 10px 3px 10px;	color: white !important;	font-size: 15px;	font-weight: bold;}.wrc_middle_actions_grey_button {	-moz-appearance: none;	border-radius: 7px;	-moz-border-radius: 7px/7px;	border-radius: 7px/7px;	background-color: rgb(100, 100, 100) !important;	display: inline-block;	width: auto;	cursor: Pointer;	border: 2px solid #aaaaaa;	text-decoration: none;	padding: 0px 20px 0px 20px;}.wrc_middle_actions_grey_button:hover {	background-color: rgb(120, 120, 120) !important;}.wrc_middle_actions_grey_button:active {	background-color: rgb(130, 130, 130) !important;	border: 2px solid #00aaaa;}.wrc_middle_action_low {	font-size: 0.9em;	white-space: nowrap;	cursor: Pointer;	color: grey !important;	margin: 10px 10px 0px 10px;	text-decoration: none;}.wrc_middle_action_low:hover {	color: #aa4400 !important;}.wrc_middle_actions_rest_div {	padding-top: 5px;	white-space: nowrap;	text-align: center;}.wrc_middle_action {	white-space: nowrap;	cursor: Pointer;	color: red !important;	font-size: 1.2em;	margin: 10px 10px 0px 10px;	text-decoration: none;}.wrc_middle_action:hover {	color: #aa4400 !important;}</style><script id="wrc-script-middle_window" type="text/javascript" language="JavaScript">var g_inputsCnt = 0;var g_InputThis = new Array(null, null, null, null);var g_alerted = false;/* we test the input if it includes 4 digits   (input is a part of 4 inputs for filling the credit-card number)*/function is4DigitsCardNumber(val){	var regExp = new RegExp('[0-9]{4}');	return (val.length == 4 && val.search(regExp) == 0);}/* testing the whole credit-card number 19 digits devided by three '-' symbols or   exactly 16 digits without any dividers*/function isCreditCardNumber(val){	if(val.length == 19)	{		var regExp = new RegExp('[0-9]{4}-[0-9]{4}-[0-9]{4}-[0-9]{4}');		return (val.search(regExp) == 0);	}	else if(val.length == 16)	{		var regExp = new RegExp('[0-9]{4}[0-9]{4}[0-9]{4}[0-9]{4}');		return (val.search(regExp) == 0);	}	return false;}function CheckInputOnCreditNumber(self){	if(g_alerted)		return false;	var value = self.value;	if(self.type == 'text')	{		if(is4DigitsCardNumber(value))		{			var cont = true;			for(i = 0; i < g_inputsCnt; i++)				if(g_InputThis[i] == self)					cont = false;			if(cont && g_inputsCnt < 4)			{				g_InputThis[g_inputsCnt] = self;				g_inputsCnt++;			}		}		g_alerted = (g_inputsCnt == 4);		if(g_alerted)			g_inputsCnt = 0;		else			g_alerted = isCreditCardNumber(value);	}	return g_alerted;}function CheckInputOnPassword(self){	if(g_alerted)		return false;	var value = self.value;	if(self.type == 'password')	{		g_alerted = (value.length > 0);	}	return g_alerted;}function onInputBlur(self, bRatingOk, bFishingSite){	var bCreditNumber = CheckInputOnCreditNumber(self);	var bPassword = CheckInputOnPassword(self);	if((!bRatingOk || bFishingSite == 1) && (bCreditNumber || bPassword) )	{		var warnDiv = document.getElementById("wrcinputdiv");		if(warnDiv)		{			/* show the warning div in the middle of the screen */			warnDiv.style.left = "0px";			warnDiv.style.top = "0px";			warnDiv.style.width = "100%";			warnDiv.style.height = "100%";			document.getElementById("wrc_warn_fs").style.display = 'none';			document.getElementById("wrc_warn_cn").style.display = 'none';			if(bFishingSite)				document.getElementById("wrc_warn_fs").style.display = 'block';			else				document.getElementById("wrc_warn_cn").style.display = 'block';			warnDiv.style.display = 'table';		}	}}</script><style id="wrc-css" type="text/css">.wrcx {display:none} .r .wrcx, .osl .wrcx, .bc .wrcx, .fc .wrcx, #rhsline ol .wrcx {display:inline; background: url("chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/grey0-16.png") right no-repeat}
+.wrc0 {display:none} .r .wrc0, .osl .wrc0, .bc .wrc0, .fc .wrc0, #rhsline ol .wrc0 {display:inline; background: url("chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/grey0-16.png") right no-repeat}
+.wrc11 {display:none} .r .wrc11, .osl .wrc11, .bc .wrc11, .fc .wrc11, #rhsline ol .wrc11 {display:inline; background: url("chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/green1-16.png") right no-repeat}
+.wrc12 {display:none} .r .wrc12, .osl .wrc12, .bc .wrc12, .fc .wrc12, #rhsline ol .wrc12 {display:inline; background: url("chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/green2-16.png") right no-repeat}
+.wrc13 {display:none} .r .wrc13, .osl .wrc13, .bc .wrc13, .fc .wrc13, #rhsline ol .wrc13 {display:inline; background: url("chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/green3-16.png") right no-repeat}
+.wrc21 {display:none} .r .wrc21, .osl .wrc21, .bc .wrc21, .fc .wrc21, #rhsline ol .wrc21 {display:inline; background: url("chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/yellow1-16.png") right no-repeat}
+.wrc22 {display:none} .r .wrc22, .osl .wrc22, .bc .wrc22, .fc .wrc22, #rhsline ol .wrc22 {display:inline; background: url("chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/yellow2-16.png") right no-repeat}
+.wrc23 {display:none} .r .wrc23, .osl .wrc23, .bc .wrc23, .fc .wrc23, #rhsline ol .wrc23 {display:inline; background: url("chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/yellow3-16.png") right no-repeat}
+.wrc31 {display:none} .r .wrc31, .osl .wrc31, .bc .wrc31, .fc .wrc31, #rhsline ol .wrc31 {display:inline; background: url("chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/red1-16.png") right no-repeat}
+.wrc32 {display:none} .r .wrc32, .osl .wrc32, .bc .wrc32, .fc .wrc32, #rhsline ol .wrc32 {display:inline; background: url("chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/red2-16.png") right no-repeat}
+.wrc33 {display:none} .r .wrc33, .osl .wrc33, .bc .wrc33, .fc .wrc33, #rhsline ol .wrc33 {display:inline; background: url("chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/red3-16.png") right no-repeat}
+.wrc_icon{margin:0;padding:0;padding-left:15px !important;width:16px !important; height:16px !important;line-height:16px !important;}
+#wrchoverdiv{padding-bottom:20px; position:absolute; width:180px; background:transparent url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/background-body.jpg) top left repeat-x; display:none; font-family: Segoe UI, Arial Unicode MS, Arial, Sans-Serif; font-size: 14px; z-index:9999999;}
+#wrchoverdiv{cursor:default;}
+#wrchoverdiv #wrccontainer{width:180px;}
+#wrchoverdiv #wrcheader{width:140px; height:42px; background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/logo.jpg) bottom left no-repeat; text-align:right; line-height:42px; color:orange; margin:0 auto;}
+#wrchoverdiv .wrchorizontal{width:180px; height:2px; background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/horizontal-line.jpg) bottom left no-repeat;}
+#wrchoverdiv #wrccurrentvote{height:25px; line-height:25px; color:#FFF; text-align:center; text-transform:uppercase;}
+#wrchoverdiv #wrcrating{margin:5px auto; width:69px; height:55px; background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/grey-0.png) bottom left no-repeat;}
+#wrchoverdiv #wrcrating.wrcbx{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/grey-0.png);}
+#wrchoverdiv #wrcrating.wrcb0{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/grey-0.png);}
+#wrchoverdiv #wrcrating.wrcb11{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/green-1.png);}
+#wrchoverdiv #wrcrating.wrcb12{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/green-2.png);}
+#wrchoverdiv #wrcrating.wrcb13{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/green-3.png);}
+#wrchoverdiv #wrcrating.wrcb21{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/yellow-1.png);}
+#wrchoverdiv #wrcrating.wrcb22{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/yellow-2.png);}
+#wrchoverdiv #wrcrating.wrcb23{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/yellow-3.png);}
+#wrchoverdiv #wrcrating.wrcb31{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/red-1.png);}
+#wrchoverdiv #wrcrating.wrcb32{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/red-2.png);}
+#wrchoverdiv #wrcrating.wrcb33{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/red-3.png);}
+#wrchoverdiv #wrcratingtext{margin:3px 5px; color:#FFF; text-align:center; padding:0; font-size:12px;}
+#wrchoverdiv #wrcweighttext{margin:3px 5px; color:#FFF; text-align:center; padding:0; font-size:12px;}
+#wrchoverdiv #wrcflags{width:150px; height:70px; margin:0 auto;}
+#wrchoverdiv .wrcicon{width:30px; height:30px; float:left;}
+#wrchoverdiv #wrcicon_shopping{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/shopping-small-disable.png) top left no-repeat;}
+#wrchoverdiv #wrcicon_shopping.selected{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/shopping-small-selected.png) top left no-repeat;}
+#wrchoverdiv #wrcicon_social{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/social-small-disable.png) top left no-repeat;}
+#wrchoverdiv #wrcicon_social.selected{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/social-small-selected.png) top left no-repeat;}
+#wrchoverdiv #wrcicon_news{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/news-small-disable.png) top left no-repeat;}
+#wrchoverdiv #wrcicon_news.selected{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/news-small-selected.png) top left no-repeat;}
+#wrchoverdiv #wrcicon_it{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/it-small-disable.png) top left no-repeat;}
+#wrchoverdiv #wrcicon_it.selected{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/it-small-selected.png) top left no-repeat;}
+#wrchoverdiv #wrcicon_corporate{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/corporate-small-disable.png) top left no-repeat;}
+#wrchoverdiv #wrcicon_corporate.selected{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/corporate-small-selected.png) top left no-repeat;}
+#wrchoverdiv #wrcicon_pornography{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/pornography-small-disable.png) top left no-repeat;}
+#wrchoverdiv #wrcicon_pornography.selected{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/pornography-small-selected.png) top left no-repeat;}
+#wrchoverdiv #wrcicon_violence{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/violence-small-disable.png) top left no-repeat;}
+#wrchoverdiv #wrcicon_violence.selected{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/violence-small-selected.png) top left no-repeat;}
+#wrchoverdiv #wrcicon_gambling{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/gambling-small-disable.png) top left no-repeat;}
+#wrchoverdiv #wrcicon_gambling.selected{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/gambling-small-selected.png) top left no-repeat;}
+#wrchoverdiv #wrcicon_drugs{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/drugs-small-disable.png) top left no-repeat;}
+#wrchoverdiv #wrcicon_drugs.selected{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/drugs-small-selected.png) top left no-repeat;}
+#wrchoverdiv #wrcicon_illegal{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/illegal-small-disable.png) top left no-repeat;}
+#wrchoverdiv #wrcicon_illegal.selected{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/illegal-small-selected.png) top left no-repeat;}
+</style></head><style type="text/css">embed[type*="application/x-shockwave-flash"],embed[src*=".swf"],object[type*="application/x-shockwave-flash"],object[codetype*="application/x-shockwave-flash"],object[src*=".swf"],object[codebase*="swflash.cab"],object[classid*="D27CDB6E-AE6D-11cf-96B8-444553540000"],object[classid*="d27cdb6e-ae6d-11cf-96b8-444553540000"],object[classid*="D27CDB6E-AE6D-11cf-96B8-444553540000"]{	display: none !important;}</style>
+
+<body>
+<div id="top">
+	<div class="w970">
+		<ul>
+			<li class="page_item page-item-831"><a href="http://www.linuxany.com/archives/category/application">应用服务</a></li>
+<li class="page_item page-item-828"><a href="http://www.linuxany.com/archives/category/linuxos">操作系统</a></li>
+<li class="page_item page-item-836"><a href="http://www.linuxany.com/archives/category/programming">编程开发</a></li>
+<li class="page_item page-item-1731"><a href="http://www.linuxany.com/archives/category/virtualization">虚拟化</a></li>
+<li class="page_item page-item-1733"><a href="http://www.linuxany.com/archives/category/embedded">嵌入式</a></li>
+<li class="page_item page-item-1735"><a href="http://www.linuxany.com/archives/category/schema">架构设计</a></li>
+<li class="page_item page-item-833"><a href="http://www.linuxany.com/archives/category/database">数据库</a></li>
+<li class="page_item page-item-618"><a href="http://www.linuxany.com/colors">颜色代码</a></li>
+<li class="page_item page-item-1864"><a href="http://www.linuxany.com/guestbook">留言板</a></li>
+			<script language="javascript" type="text/javascript" src="./apache_CGI_files/4297942.js"></script><a href="http://www.51.la/?4297942" target="_blank" title="51.la 专业、免费、强健的访问统计" wrc_done="true">网站统计</a>&nbsp;<span class="wrc_icon wrc0" rating="{&quot;icon&quot;:&quot;grey0-16.png&quot;,&quot;rating&quot;:0,&quot;weight&quot;:0,&quot;flags&quot;:{}}"></span>
+<img style="width:0px;height:0px" src="./apache_CGI_files/go.asp">
+		</ul>
+			</div>
+</div>
+<div id="header">
+	<div class="w970">
+		<h1><a href="http://www.linuxany.com/">ubuntu,debian,mint,redhat -linuxany.com</a></h1>
+		<div id="search">
+			<form id="searchform" method="get" action="http://www.linuxany.com/">
+				<input type="text" value="" name="s" id="s" size="20">
+				<input type="submit" value="搜索">
+			</form>
+		</div>
+	</div>
+</div>
+<div id="nav">
+	<div class="w970">
+		<ul>
+			<li><a title="Home" href="http://www.linuxany.com/">首 页</a></li>
+							<li class="cat-item cat-item-305 current-cat-parent"><a href="http://www.linuxany.com/archives/category/application" title="查看 1.Application 下的所有文章">1.Application</a>
+<ul class="children">
+	<li class="cat-item cat-item-8 current-cat"><a href="http://www.linuxany.com/archives/category/application/apache" title="查看 Apache 下的所有文章">Apache</a>
+</li>
+	<li class="cat-item cat-item-12"><a href="http://www.linuxany.com/archives/category/application/lighttpd" title="查看 Lighttpd 下的所有文章">Lighttpd</a>
+</li>
+	<li class="cat-item cat-item-13"><a href="http://www.linuxany.com/archives/category/application/lvs-ha" title="查看 Lvs/Ha 下的所有文章">Lvs/Ha</a>
+</li>
+	<li class="cat-item cat-item-185"><a href="http://www.linuxany.com/archives/category/application/nginx" title="查看 Nginx 下的所有文章">Nginx</a>
+</li>
+	<li class="cat-item cat-item-17"><a href="http://www.linuxany.com/archives/category/application/postfix-mail" title="查看 PostFix 下的所有文章">PostFix</a>
+</li>
+	<li class="cat-item cat-item-351"><a href="http://www.linuxany.com/archives/category/application/squid-cache" title="查看 Squid 下的所有文章">Squid</a>
+</li>
+	<li class="cat-item cat-item-22"><a href="http://www.linuxany.com/archives/category/application/tomcat-resin" title="查看 Tomcat/Weblogic 下的所有文章">Tomcat/Weblogic</a>
+</li>
+</ul>
+</li>
+	<li class="cat-item cat-item-314"><a href="http://www.linuxany.com/archives/category/os" title="查看 2. OS 下的所有文章">2. OS</a>
+<ul class="children">
+	<li class="cat-item cat-item-9"><a href="http://www.linuxany.com/archives/category/os/debian-ubuntu" title="查看 Debian/Ubuntu 下的所有文章">Debian/Ubuntu</a>
+</li>
+	<li class="cat-item cat-item-763"><a href="http://www.linuxany.com/archives/category/os/macosx" title="查看 MacOSX/BSD 下的所有文章">MacOSX/BSD</a>
+</li>
+	<li class="cat-item cat-item-19"><a href="http://www.linuxany.com/archives/category/os/redhat-rhel" title="查看 RedHat/RHEL 下的所有文章">RedHat/RHEL</a>
+</li>
+</ul>
+</li>
+	<li class="cat-item cat-item-315"><a href="http://www.linuxany.com/archives/category/programming" title="查看 4. Programming 下的所有文章">4. Programming</a>
+<ul class="children">
+	<li class="cat-item cat-item-417"><a href="http://www.linuxany.com/archives/category/programming/c-plus-plus" title="查看 C/C++ 下的所有文章">C/C++</a>
+</li>
+	<li class="cat-item cat-item-408"><a href="http://www.linuxany.com/archives/category/programming/html5-javascript-css" title="查看 Html5/JS/CSS 下的所有文章">Html5/JS/CSS</a>
+</li>
+	<li class="cat-item cat-item-10"><a href="http://www.linuxany.com/archives/category/programming/java-jsp" title="查看 Java/jsp 下的所有文章">Java/jsp</a>
+</li>
+	<li class="cat-item cat-item-16"><a href="http://www.linuxany.com/archives/category/programming/phper" title="查看 PHP 下的所有文章">PHP</a>
+</li>
+	<li class="cat-item cat-item-18"><a href="http://www.linuxany.com/archives/category/programming/pythoner" title="查看 Python 下的所有文章">Python</a>
+</li>
+	<li class="cat-item cat-item-21"><a href="http://www.linuxany.com/archives/category/programming/shell" title="查看 Shell 下的所有文章">Shell</a>
+</li>
+</ul>
+</li>
+	<li class="cat-item cat-item-441"><a href="http://www.linuxany.com/archives/category/virtualization" title="查看 5.Virtualization 下的所有文章">5.Virtualization</a>
+<ul class="children">
+	<li class="cat-item cat-item-442"><a href="http://www.linuxany.com/archives/category/virtualization/vm-vmware" title="查看 VMware/vSphere 下的所有文章">VMware/vSphere</a>
+</li>
+</ul>
+</li>
+	<li class="cat-item cat-item-480"><a href="http://www.linuxany.com/archives/category/embedded" title="查看 6. Embedded 下的所有文章">6. Embedded</a>
+<ul class="children">
+	<li class="cat-item cat-item-484"><a href="http://www.linuxany.com/archives/category/embedded/arm-mips" title="查看 ARM/MIPS 下的所有文章">ARM/MIPS</a>
+</li>
+</ul>
+</li>
+	<li class="cat-item cat-item-553"><a href="http://www.linuxany.com/archives/category/schema" title="查看 7.Schema 下的所有文章">7.Schema</a>
+<ul class="children">
+	<li class="cat-item cat-item-691"><a href="http://www.linuxany.com/archives/category/schema/distributed" title="查看 Distributed 下的所有文章">Distributed</a>
+</li>
+	<li class="cat-item cat-item-11"><a href="http://www.linuxany.com/archives/category/schema/kernel" title="查看 Kernel 下的所有文章">Kernel</a>
+</li>
+	<li class="cat-item cat-item-685"><a href="http://www.linuxany.com/archives/category/schema/manage" title="查看 Managment 下的所有文章">Managment</a>
+</li>
+	<li class="cat-item cat-item-716"><a href="http://www.linuxany.com/archives/category/schema/productdesign-userexperience" title="查看 PD/UE 下的所有文章">PD/UE</a>
+</li>
+	<li class="cat-item cat-item-723"><a href="http://www.linuxany.com/archives/category/schema/performent" title="查看 Performents 下的所有文章">Performents</a>
+</li>
+</ul>
+</li>
+	<li class="cat-item cat-item-66"><a href="http://www.linuxany.com/archives/category/database" title="查看 8.Database 下的所有文章">8.Database</a>
+<ul class="children">
+	<li class="cat-item cat-item-14"><a href="http://www.linuxany.com/archives/category/database/mysql" title="查看 MySQL 下的所有文章">MySQL</a>
+</li>
+	<li class="cat-item cat-item-15"><a href="http://www.linuxany.com/archives/category/database/oracledb" title="查看 Oracle 下的所有文章">Oracle</a>
+</li>
+	<li class="cat-item cat-item-319"><a href="http://www.linuxany.com/archives/category/database/sqlite" title="查看 SQLite 下的所有文章">SQLite</a>
+</li>
+</ul>
+</li>
+	<li class="cat-item cat-item-1"><a href="http://www.linuxany.com/archives/category/others" title="查看 9.Others 下的所有文章">9.Others</a>
+</li>
+		</ul>
+
+		<div id="rss">
+			<a id="rss_icon" title="RSS订阅" href="http://www.linuxany.com/feed"></a>
+		</div>
+	</div>
+</div><div class="w970">
+	<div id="main">
+	<div class="post_nav">
+		<span class="alignleft">« <a href="http://www.linuxany.com/archives/1277.html" rel="prev">在vim/vi中快速执行php或c/c++的方法</a></span>
+		<span class="alignright"><a href="http://www.linuxany.com/archives/1288.html" rel="next">vim中设置文件编码</a> »</span>
+	</div>
+	<div class="post-1282 post type-post status-publish format-standard hentry category-apache tag-apache tag-cgi tag-scriptalias" id="post-1282">
+		<div class="meta"><span class="time">2010-05-26</span><a href="http://www.linuxany.com/archives/category/application/apache" title="查看 Apache 中的全部文章" rel="category tag">Apache</a><br> <a href="http://www.linuxany.com/archives/tag/apache" rel="tag">Apache</a> <a href="http://www.linuxany.com/archives/tag/cgi" rel="tag">cgi</a> <a href="http://www.linuxany.com/archives/tag/scriptalias" rel="tag">scriptalias</a><br><span class="time">644</span></div>
+		<div class="content">
+			<h2>apache CGI程序的简单配置与使用</h2>
+			<p>添加虚拟主机</p>
+<div class="hl-surround"><div class="hl-main">&lt;virtualhost 127.0.0.1:50001&gt;<br>&lt;/virtualhost&gt;</div></div>
+<p>这里新添加了50001端口来进行监听，所以还需要添加监听端口号</p>
+<p>Listen 50001要让程序能正常运行，还得通过配置ScriptAlias来允许服务器在指定的情况下，以CGI方式运行。</p>
+<div class="hl-surround"><div class="hl-main">&lt;virtualhost 127.0.0.1:50001&gt;<br>ScriptAlias /cgi-bin/ /usr/local/apache/cgi-bin/<br>&lt;/virtualhost&gt;</div></div>
+<p>所以上述的配置会告诉apache，所以以/cgi-bin/开头的资源都会被映射到/usr/local/apache/cgi-bin/目录下，并被认为是cgi程序。然后重启服务器</p>
+<p><span id="more-1282"></span></p>
+<p>在apache/cgi-bin/目录里有一些测试例子，我们可能用它来测试下，看看配置是否能正常运行。<br>
+比如说apache/cgi-bin/目录下有个test-cgi程序，源码如下：</p>
+<div class="hl-surround"><div class="hl-main">#!/bin/sh<br>&nbsp;<br># This article come from linxuany.com<br>set -f<br>&nbsp;<br>echo "Content-type: text/plain; charset=iso-8859-1"<br>echo<br>&nbsp;<br>echo CGI/1.0 test script report:<br>echo<br>&nbsp;<br>echo argc is $#. argv is "$*".<br>echo<br>&nbsp;<br>echo SERVER_SOFTWARE = $SERVER_SOFTWARE<br>echo SERVER_NAME = $SERVER_NAME<br>echo GATEWAY_INTERFACE = $GATEWAY_INTERFACE<br>echo SERVER_PROTOCOL = $SERVER_PROTOCOL<br>echo SERVER_PORT = $SERVER_PORT<br>echo REQUEST_METHOD = $REQUEST_METHOD<br>echo HTTP_ACCEPT = "$HTTP_ACCEPT"<br>echo PATH_INFO = "$PATH_INFO"<br>echo PATH_TRANSLATED = "$PATH_TRANSLATED"<br>echo SCRIPT_NAME = "$SCRIPT_NAME"<br>echo QUERY_STRING = "$QUERY_STRING"<br>echo REMOTE_HOST = $REMOTE_HOST<br>echo REMOTE_ADDR = $REMOTE_ADDR<br>echo REMOTE_USER = $REMOTE_USER<br>echo AUTH_TYPE = $AUTH_TYPE<br>echo CONTENT_TYPE = $CONTENT_TYPE<br>echo CONTENT_LENGTH = $CONTENT_LENGTH</div></div>
+<p>然后在浏览器里输入
+</p><div class="hl-surround"><div class="hl-main">http://127.0.0.1/cgi-bin/test-cgi</div></div>
+<p>如果设置正确就能显示如下信息</p>
+<div class="hl-surround"><div class="hl-main">CGI/1.0 test script report:<br>&nbsp;<br>argc is 0. argv is .<br>&nbsp;<br>SERVER_SOFTWARE = Apache/2.2.10 (Unix) PHP/5.2.8<br>SERVER_NAME = 127.0.0.1<br>GATEWAY_INTERFACE = CGI/1.1<br>SERVER_PROTOCOL = HTTP/1.1<br>SERVER_PORT = 50001<br>REQUEST_METHOD = GET<br>HTTP_ACCEPT = text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8<br>PATH_INFO = <br>PATH_TRANSLATED = <br>SCRIPT_NAME = /cgi-bin/test-cgi<br>QUERY_STRING = <br>REMOTE_HOST =<br>REMOTE_ADDR = 127.0.0.1<br>REMOTE_USER =<br>AUTH_TYPE =<br>CONTENT_TYPE =<br>CONTENT_LENGTH =</div></div>
+<p>当然你也可以选择用其它语言来写一个cgi程序。</p>
+<p>现在我们用C语言写一个简单的例子。</p>
+<div class="hl-surround"><ol class="hl-main ln-show" title="Double click to hide line number." ondblclick="linenumber(this)"><li class="hl-firstline"><span class="hl-prepro">#include </span><span style="color: #8b0000;">&lt;</span><span style="color: Red;">stdlib.h</span><span style="color: #8b0000;">&gt;</span><span class="hl-prepro"></span></li>
+<li><span class="hl-prepro">#include </span><span style="color: #8b0000;">&lt;</span><span style="color: Red;">stdio.h</span><span style="color: #8b0000;">&gt;</span><span class="hl-prepro"></span></li>
+<li><span class="hl-types">int</span><span style="color: Gray;"> </span><span style="color: Blue;">main</span><span style="color: Gray;"> </span><span style="color: Olive;">(</span><span class="hl-types">int</span><span style="color: Gray;"> </span><span style="color: Blue;">argc</span><span style="color: Gray;">, </span><span class="hl-types">char</span><span style="color: Gray;">** </span><span style="color: Blue;">argv</span><span style="color: Olive;">)</span><span style="color: Gray;"> </span><span style="color: Olive;">{</span></li>
+<li><span style="color: Gray;">&nbsp; &nbsp; </span><span class="hl-types">char</span><span style="color: Gray;">&nbsp;</span><span style="color: Blue;">a</span><span style="color: Olive;">[]</span><span style="color: Gray;"> = </span><span style="color: #8b0000;">"</span><span style="color: Red;">-100</span><span style="color: #8b0000;">"</span><span style="color: Gray;">;</span></li>
+<li><span style="color: Gray;">&nbsp; &nbsp; </span><span class="hl-types">char</span><span style="color: Gray;">&nbsp;</span><span style="color: Blue;">b</span><span style="color: Olive;">[]</span><span style="color: Gray;"> = </span><span style="color: #8b0000;">"</span><span style="color: Red;">456</span><span style="color: #8b0000;">"</span><span style="color: Gray;">;</span></li>
+<li><span style="color: Gray;">&nbsp; &nbsp; </span><span class="hl-types">int</span><span style="color: Gray;">&nbsp;</span><span style="color: Blue;">c</span><span style="color: Gray;">;</span></li>
+<li><span style="color: Gray;">&nbsp; &nbsp; </span><span style="color: Blue;">c</span><span style="color: Gray;"> = </span><span style="color: Blue;">atoi</span><span style="color: Olive;">(</span><span style="color: Blue;">a</span><span style="color: Olive;">)</span><span style="color: Gray;"> + </span><span style="color: Blue;">atoi</span><span style="color: Olive;">(</span><span style="color: Blue;">b</span><span style="color: Olive;">)</span><span style="color: Gray;">;</span></li>
+<li><span style="color: Gray;">&nbsp; &nbsp; </span><span class="hl-types">char</span><span style="color: Gray;"> *</span><span style="color: Blue;">p</span><span style="color: Gray;">;</span></li>
+<li><span style="color: Gray;">&nbsp; &nbsp; </span><span style="color: Blue;">p</span><span style="color: Gray;"> = </span><span style="color: Blue;">getenv</span><span style="color: Olive;">(</span><span style="color: #8b0000;">"</span><span style="color: Red;">QUERY_STRING</span><span style="color: #8b0000;">"</span><span style="color: Olive;">)</span><span style="color: Gray;">;</span></li>
+<li><span style="color: Gray;">&nbsp; &nbsp; </span><span style="color: Blue;">printf</span><span style="color: Olive;">(</span><span style="color: #8b0000;">"</span><span style="color: Red;">Content-type: text/html</span><span style="color: Navy;">\</span><span style="color: Red;">n</span><span style="color: Navy;">\</span><span style="color: Red;">n</span><span style="color: #8b0000;">"</span><span style="color: Olive;">)</span><span style="color: Gray;">;</span></li>
+<li><span style="color: Gray;">&nbsp; &nbsp; </span><span style="color: Blue;">printf</span><span style="color: Olive;">(</span><span style="color: #8b0000;">"</span><span style="color: Red;">c=%d</span><span style="color: #8b0000;">"</span><span style="color: Gray;">,</span><span style="color: Blue;">c</span><span style="color: Olive;">)</span><span style="color: Gray;">;</span></li>
+<li><span style="color: Gray;">&nbsp; &nbsp; </span><span style="color: Blue;">printf</span><span style="color: Olive;">(</span><span style="color: #8b0000;">"</span><span style="color: Red;">%s</span><span style="color: #8b0000;">"</span><span style="color: Gray;">,</span><span style="color: Blue;">p</span><span style="color: Olive;">)</span><span style="color: Gray;">;</span></li>
+<li><span style="color: Gray;">&nbsp; &nbsp; </span><span style="color: Green;">return</span><span style="color: Gray;">&nbsp;</span><span style="color: Maroon;">0</span><span style="color: Gray;">;</span></li>
+<li><span style="color: Olive;">}</span></li></ol></div>
+<p>实现功能为：打印打印a+b的值，如果有get参数，同时打印get参数<br>
+编译</p>
+<p>www@linuxany.com:/usr/local/apache/cgi-bin$ gcc test.c -o test<br>
+这时我们可以通过
+</p><div class="hl-surround"><div class="hl-main">http://127.0.0.1:50001/test</div></div>
+<p>如果通过
+</p><div class="hl-surround"><div class="hl-main">http://127.0.0.1:50001/test?name=linuxany</div></div>
+<p>我们的程序就会打印name=linuxany这个查询参数。</p>
+<h4 class="related_post_title">您还可能感兴趣的内容</h4><ul class="related_post"><li><a href="http://www.linuxany.com/archives/1613.html" title="Apache 记录代理后的用户来源ip">Apache 记录代理后的用户来源ip</a></li><li><a href="http://www.linuxany.com/archives/1478.html" title="Apache 在代理后显示正确的用户IP">Apache 在代理后显示正确的用户IP</a></li><li><a href="http://www.linuxany.com/archives/1449.html" title="Python CGI调试的2两种方法">Python CGI调试的2两种方法</a></li><li><a href="http://www.linuxany.com/archives/1448.html" title="Python cgi调试的2种方法">Python cgi调试的2种方法</a></li><li><a href="http://www.linuxany.com/archives/1446.html" title="Python CGI中两种风格的字符串格式化">Python CGI中两种风格的字符串格式化</a></li></ul>		</div>
+	</div>
+	<div id="post_metadata">
+		<h3>日志信息 »</h3>
+		<div class="content">
+			该日志于2010-05-26 20:19由 admin 发表在<a href="http://www.linuxany.com/archives/category/application/apache" title="查看 Apache 中的全部文章" rel="category tag">Apache</a>分类下，
+						你可以<a href="http://www.linuxany.com/archives/1282.html#respond">发表评论</a>。除了可以将这个日志以保留<a href="./apache_CGI_files/apache_CGI.htm" rel="bookmark">源地址</a>及作者的情况下<a href="http://www.linuxany.com/archives/1282.html/trackback" rel="trackback">引用</a>到你的网站或博客，还可以通过<a href="http://www.linuxany.com/archives/1282.html/feed">RSS 2.0</a>订阅这个日志的所有评论。
+					</div>
+	</div>
+	<!--
+	<div class="post_class">
+		<h3>相关日志 &raquo;</h3>
+	-->
+			<!--</div>-->
+	
+	<div id="comments">
+	<h3>没有评论<small><a href="http://www.linuxany.com/archives/1282.html#postcomment" title="发表评论">▼</a></small></h3>
+</div>
+	<div id="respond">
+		<h3 id="post_comment">发表评论 »</h3>
+		<div id="cancel_comment_reply"><a rel="nofollow" id="cancel-comment-reply-link" href="http://www.linuxany.com/archives/1282.html#respond" style="display:none;">点击这里取消回复。</a></div>
+				<form action="http://www.linuxany.com/wp-comments-post.php" method="post" id="commentform" name="commentform">
+			<p><textarea name="comment" id="comment" rows="5" tabindex="4"></textarea></p>
+						<p><input type="text" name="author" id="author" value="" size="22" tabindex="1">
+			<label for="author">姓名 (必填)</label></p>
+			<p><input type="text" name="email" id="email" value="" size="22" tabindex="2">
+			<label for="email">电子邮件 (不会被公开) (必填)</label></p>
+			<p><input type="text" name="url" id="url" value="" size="22" tabindex="3">
+			<label for="url">站点</label></p>
+						<p><input type="submit" id="submit" tabindex="5" value="发表评论(Ctrl+Enter)"></p>
+			<input type="hidden" name="comment_post_ID" value="1282" id="comment_post_ID">
+<input type="hidden" name="comment_parent" id="comment_parent" value="0">
+			<p style="display: none;"><input type="hidden" id="akismet_comment_nonce" name="akismet_comment_nonce" value="82e1e7b617"></p>		</form>
+				<script type="text/javascript">
+			<!--//--><![CDATA[//><!--
+			var commenttextarea = document.getElementById('comment');
+			commenttextarea.onkeydown = function quickSubmit(e) {
+			if (!e) var e = window.event;
+			if (e.ctrlKey && e.keyCode == 13){
+			document.getElementById('submit').click();
+			}
+			};
+			//--><!]]>
+		</script>
+	</div>
+			</div>
+	<div id="sidebar">
+	<ul>
+		<li id="text-2" class="widget widget_text"><h2>一寸光阴一寸金</h2>			<div class="textwidget"><div style="height:70px;width:250px;background-color:#fafafa;"><div style="position:absolute;top:220px;height:17px; z-index:1;width:249px;background-color:#fafafa;"></div>
+<div style="padding-left:50px"><script charset="Shift_JIS" src="./apache_CGI_files/honehone_clock_tr.js"></script><div style="display: block; cursor: pointer; text-align: center; width: 160px; height: 70px; top: auto; left: auto; position: static; "><div style="-webkit-transition: opacity 150ms ease-out; background-image: url(chrome-extension://gofhjkjmkpinhpoiabjplobcaignabnl/icon_play.png); text-align: left; opacity: 0.25; border: 1px solid rgb(0, 0, 0); width: 100%; height: 100%; background-color: rgba(193, 217, 244, 0.498039); background-repeat: no-repeat no-repeat; "></div></div><object classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000" codebase="http://fpdownload.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=8,0,0,0" width="160" height="70" id="honehoneclock" align="middle" style="display: none !important; "><param name="allowScriptAccess" value="always"><param name="movie" value="http://chabudai.sakura.ne.jp/blogparts/honehoneclock/honehone_clock_tr.swf"><param name="quality" value="high"><param name="bgcolor" value="#ffffff"><param name="wmode" value="transparent"><div style="display: block; cursor: pointer; text-align: center; width: 160px; height: 70px; top: auto; left: auto; position: static; "><div style="-webkit-transition: opacity 150ms ease-out; background-image: url(chrome-extension://gofhjkjmkpinhpoiabjplobcaignabnl/icon_play.png); text-align: left; opacity: 0.25; border: 1px solid rgb(0, 0, 0); width: 100%; height: 100%; background-color: rgba(193, 217, 244, 0.498039); background-repeat: no-repeat no-repeat; "></div></div><embed wmode="transparent" src="http://chabudai.sakura.ne.jp/blogparts/honehoneclock/honehone_clock_tr.swf" quality="high" bgcolor="#ffffff" width="160" height="70" name="honehoneclock" align="middle" allowscriptaccess="always" type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/go/getflashplayer" style="display: none !important; "></object></div></div></div>
+		</li><li id="categories-2" class="widget widget_categories"><h2>分类目录</h2>		<ul>
+	<li class="cat-item cat-item-305"><a href="http://www.linuxany.com/archives/category/application" title="查看 1.Application 下的所有文章">1.Application</a> (231)
+<ul class="children">
+	<li class="cat-item cat-item-8"><a href="http://www.linuxany.com/archives/category/application/apache" title="查看 Apache 下的所有文章">Apache</a> (50)
+</li>
+	<li class="cat-item cat-item-12"><a href="http://www.linuxany.com/archives/category/application/lighttpd" title="查看 Lighttpd 下的所有文章">Lighttpd</a> (10)
+</li>
+	<li class="cat-item cat-item-13"><a href="http://www.linuxany.com/archives/category/application/lvs-ha" title="查看 Lvs/Ha 下的所有文章">Lvs/Ha</a> (10)
+</li>
+	<li class="cat-item cat-item-185"><a href="http://www.linuxany.com/archives/category/application/nginx" title="查看 Nginx 下的所有文章">Nginx</a> (14)
+</li>
+	<li class="cat-item cat-item-17"><a href="http://www.linuxany.com/archives/category/application/postfix-mail" title="查看 PostFix 下的所有文章">PostFix</a> (13)
+</li>
+	<li class="cat-item cat-item-351"><a href="http://www.linuxany.com/archives/category/application/squid-cache" title="查看 Squid 下的所有文章">Squid</a> (4)
+</li>
+	<li class="cat-item cat-item-22"><a href="http://www.linuxany.com/archives/category/application/tomcat-resin" title="查看 Tomcat/Weblogic 下的所有文章">Tomcat/Weblogic</a> (8)
+</li>
+</ul>
+</li>
+	<li class="cat-item cat-item-314"><a href="http://www.linuxany.com/archives/category/os" title="查看 2. OS 下的所有文章">2. OS</a> (137)
+<ul class="children">
+	<li class="cat-item cat-item-9"><a href="http://www.linuxany.com/archives/category/os/debian-ubuntu" title="查看 Debian/Ubuntu 下的所有文章">Debian/Ubuntu</a> (102)
+</li>
+	<li class="cat-item cat-item-763"><a href="http://www.linuxany.com/archives/category/os/macosx" title="查看 MacOSX/BSD 下的所有文章">MacOSX/BSD</a> (6)
+</li>
+	<li class="cat-item cat-item-19"><a href="http://www.linuxany.com/archives/category/os/redhat-rhel" title="查看 RedHat/RHEL 下的所有文章">RedHat/RHEL</a> (29)
+</li>
+</ul>
+</li>
+	<li class="cat-item cat-item-315"><a href="http://www.linuxany.com/archives/category/programming" title="查看 4. Programming 下的所有文章">4. Programming</a> (195)
+<ul class="children">
+	<li class="cat-item cat-item-417"><a href="http://www.linuxany.com/archives/category/programming/c-plus-plus" title="查看 C/C++ 下的所有文章">C/C++</a> (27)
+</li>
+	<li class="cat-item cat-item-408"><a href="http://www.linuxany.com/archives/category/programming/html5-javascript-css" title="查看 Html5/JS/CSS 下的所有文章">Html5/JS/CSS</a> (7)
+</li>
+	<li class="cat-item cat-item-10"><a href="http://www.linuxany.com/archives/category/programming/java-jsp" title="查看 Java/jsp 下的所有文章">Java/jsp</a> (8)
+</li>
+	<li class="cat-item cat-item-16"><a href="http://www.linuxany.com/archives/category/programming/phper" title="查看 PHP 下的所有文章">PHP</a> (23)
+</li>
+	<li class="cat-item cat-item-18"><a href="http://www.linuxany.com/archives/category/programming/pythoner" title="查看 Python 下的所有文章">Python</a> (94)
+</li>
+	<li class="cat-item cat-item-21"><a href="http://www.linuxany.com/archives/category/programming/shell" title="查看 Shell 下的所有文章">Shell</a> (34)
+</li>
+</ul>
+</li>
+	<li class="cat-item cat-item-441"><a href="http://www.linuxany.com/archives/category/virtualization" title="查看 5.Virtualization 下的所有文章">5.Virtualization</a> (6)
+<ul class="children">
+	<li class="cat-item cat-item-442"><a href="http://www.linuxany.com/archives/category/virtualization/vm-vmware" title="查看 VMware/vSphere 下的所有文章">VMware/vSphere</a> (6)
+</li>
+</ul>
+</li>
+	<li class="cat-item cat-item-480"><a href="http://www.linuxany.com/archives/category/embedded" title="查看 6. Embedded 下的所有文章">6. Embedded</a> (4)
+<ul class="children">
+	<li class="cat-item cat-item-484"><a href="http://www.linuxany.com/archives/category/embedded/arm-mips" title="查看 ARM/MIPS 下的所有文章">ARM/MIPS</a> (4)
+</li>
+</ul>
+</li>
+	<li class="cat-item cat-item-553"><a href="http://www.linuxany.com/archives/category/schema" title="查看 7.Schema 下的所有文章">7.Schema</a> (52)
+<ul class="children">
+	<li class="cat-item cat-item-691"><a href="http://www.linuxany.com/archives/category/schema/distributed" title="查看 Distributed 下的所有文章">Distributed</a> (1)
+</li>
+	<li class="cat-item cat-item-11"><a href="http://www.linuxany.com/archives/category/schema/kernel" title="查看 Kernel 下的所有文章">Kernel</a> (15)
+</li>
+	<li class="cat-item cat-item-685"><a href="http://www.linuxany.com/archives/category/schema/manage" title="查看 Managment 下的所有文章">Managment</a> (9)
+</li>
+	<li class="cat-item cat-item-716"><a href="http://www.linuxany.com/archives/category/schema/productdesign-userexperience" title="查看 PD/UE 下的所有文章">PD/UE</a> (5)
+</li>
+	<li class="cat-item cat-item-723"><a href="http://www.linuxany.com/archives/category/schema/performent" title="查看 Performents 下的所有文章">Performents</a> (8)
+</li>
+</ul>
+</li>
+	<li class="cat-item cat-item-66"><a href="http://www.linuxany.com/archives/category/database" title="查看 8.Database 下的所有文章">8.Database</a> (44)
+<ul class="children">
+	<li class="cat-item cat-item-14"><a href="http://www.linuxany.com/archives/category/database/mysql" title="查看 MySQL 下的所有文章">MySQL</a> (31)
+</li>
+	<li class="cat-item cat-item-15"><a href="http://www.linuxany.com/archives/category/database/oracledb" title="查看 Oracle 下的所有文章">Oracle</a> (12)
+</li>
+	<li class="cat-item cat-item-319"><a href="http://www.linuxany.com/archives/category/database/sqlite" title="查看 SQLite 下的所有文章">SQLite</a> (1)
+</li>
+</ul>
+</li>
+	<li class="cat-item cat-item-1"><a href="http://www.linuxany.com/archives/category/others" title="查看 9.Others 下的所有文章">9.Others</a> (5)
+</li>
+		</ul>
+</li><li id="tag_cloud-2" class="widget widget_tag_cloud"><h2>标签云</h2><div class="tagcloud"><a href="http://www.linuxany.com/archives/tag/apache" class="tag-link-8" title="39 个话题" style="font-size: 22pt;">Apache</a>
+<a href="http://www.linuxany.com/archives/tag/apt-get" class="tag-link-34" title="5 个话题" style="font-size: 9.2444444444444pt;">apt-get</a>
+<a href="http://www.linuxany.com/archives/tag/awstats" class="tag-link-40" title="5 个话题" style="font-size: 9.2444444444444pt;">awstats</a>
+<a href="http://www.linuxany.com/archives/tag/c" class="tag-link-419" title="9 个话题" style="font-size: 12.666666666667pt;">c</a>
+<a href="http://www.linuxany.com/archives/tag/cache" class="tag-link-50" title="7 个话题" style="font-size: 11.111111111111pt;">Cache</a>
+<a href="http://www.linuxany.com/archives/tag/cacti" class="tag-link-51" title="6 个话题" style="font-size: 10.333333333333pt;">cacti</a>
+<a href="http://www.linuxany.com/archives/tag/cgi" class="tag-link-535" title="4 个话题" style="font-size: 8pt;">cgi</a>
+<a href="http://www.linuxany.com/archives/tag/command" class="tag-link-61" title="4 个话题" style="font-size: 8pt;">command</a>
+<a href="http://www.linuxany.com/archives/tag/deb" class="tag-link-69" title="4 个话题" style="font-size: 8pt;">deb</a>
+<a href="http://www.linuxany.com/archives/tag/2-debian" class="tag-link-73" title="30 个话题" style="font-size: 20.288888888889pt;">Debian</a>
+<a href="http://www.linuxany.com/archives/tag/debian-ubuntu" class="tag-link-9" title="27 个话题" style="font-size: 19.666666666667pt;">Debian/Ubuntu</a>
+<a href="http://www.linuxany.com/archives/tag/dns" class="tag-link-85" title="5 个话题" style="font-size: 9.2444444444444pt;">DNS</a>
+<a href="http://www.linuxany.com/archives/tag/dpkg" class="tag-link-87" title="5 个话题" style="font-size: 9.2444444444444pt;">dpkg</a>
+<a href="http://www.linuxany.com/archives/tag/gcc" class="tag-link-421" title="7 个话题" style="font-size: 11.111111111111pt;">gcc</a>
+<a href="http://www.linuxany.com/archives/tag/http" class="tag-link-128" title="12 个话题" style="font-size: 14.377777777778pt;">http</a>
+<a href="http://www.linuxany.com/archives/tag/ip" class="tag-link-339" title="6 个话题" style="font-size: 10.333333333333pt;">ip</a>
+<a href="http://www.linuxany.com/archives/tag/kernel" class="tag-link-11" title="10 个话题" style="font-size: 13.288888888889pt;">Kernel</a>
+<a href="http://www.linuxany.com/archives/tag/lighttpd" class="tag-link-12" title="11 个话题" style="font-size: 13.911111111111pt;">Lighttpd</a>
+<a href="http://www.linuxany.com/archives/tag/lvs" class="tag-link-163" title="6 个话题" style="font-size: 10.333333333333pt;">lvs</a>
+<a href="http://www.linuxany.com/archives/tag/memcached" class="tag-link-165" title="5 个话题" style="font-size: 9.2444444444444pt;">memcached</a>
+<a href="http://www.linuxany.com/archives/tag/mysql" class="tag-link-14" title="26 个话题" style="font-size: 19.355555555556pt;">MySQL</a>
+<a href="http://www.linuxany.com/archives/tag/nginx" class="tag-link-185" title="14 个话题" style="font-size: 15.466666666667pt;">Nginx</a>
+<a href="http://www.linuxany.com/archives/tag/oracledb" class="tag-link-15" title="10 个话题" style="font-size: 13.288888888889pt;">Oracle</a>
+<a href="http://www.linuxany.com/archives/tag/password" class="tag-link-196" title="5 个话题" style="font-size: 9.2444444444444pt;">password</a>
+<a href="http://www.linuxany.com/archives/tag/php" class="tag-link-311" title="5 个话题" style="font-size: 9.2444444444444pt;">php</a>
+<a href="http://www.linuxany.com/archives/tag/phper" class="tag-link-16" title="19 个话题" style="font-size: 17.333333333333pt;">PHP</a>
+<a href="http://www.linuxany.com/archives/tag/postfix-mail" class="tag-link-17" title="12 个话题" style="font-size: 14.377777777778pt;">PostFix</a>
+<a href="http://www.linuxany.com/archives/tag/python" class="tag-link-310" title="36 个话题" style="font-size: 21.533333333333pt;">Python</a>
+<a href="http://www.linuxany.com/archives/tag/pythoner" class="tag-link-18" title="30 个话题" style="font-size: 20.288888888889pt;">Python</a>
+<a href="http://www.linuxany.com/archives/tag/regular" class="tag-link-366" title="6 个话题" style="font-size: 10.333333333333pt;">regular</a>
+<a href="http://www.linuxany.com/archives/tag/shell" class="tag-link-21" title="13 个话题" style="font-size: 15pt;">Shell</a>
+<a href="http://www.linuxany.com/archives/tag/socket" class="tag-link-234" title="5 个话题" style="font-size: 9.2444444444444pt;">socket</a>
+<a href="http://www.linuxany.com/archives/tag/squid" class="tag-link-238" title="17 个话题" style="font-size: 16.711111111111pt;">Squid</a>
+<a href="http://www.linuxany.com/archives/tag/ssh" class="tag-link-239" title="23 个话题" style="font-size: 18.577777777778pt;">SSH</a>
+<a href="http://www.linuxany.com/archives/tag/syslog" class="tag-link-246" title="7 个话题" style="font-size: 11.111111111111pt;">syslog</a>
+<a href="http://www.linuxany.com/archives/tag/tcp" class="tag-link-248" title="4 个话题" style="font-size: 8pt;">tcp</a>
+<a href="http://www.linuxany.com/archives/tag/telnet" class="tag-link-250" title="4 个话题" style="font-size: 8pt;">telnet</a>
+<a href="http://www.linuxany.com/archives/tag/time" class="tag-link-252" title="4 个话题" style="font-size: 8pt;">time</a>
+<a href="http://www.linuxany.com/archives/tag/tomcat-resin" class="tag-link-22" title="7 个话题" style="font-size: 11.111111111111pt;">Tomcat/Weblogic</a>
+<a href="http://www.linuxany.com/archives/tag/top" class="tag-link-254" title="6 个话题" style="font-size: 10.333333333333pt;">top</a>
+<a href="http://www.linuxany.com/archives/tag/udp" class="tag-link-262" title="4 个话题" style="font-size: 8pt;">udp</a>
+<a href="http://www.linuxany.com/archives/tag/vim" class="tag-link-272" title="6 个话题" style="font-size: 10.333333333333pt;">vim</a>
+<a href="http://www.linuxany.com/archives/tag/vmstat" class="tag-link-358" title="5 个话题" style="font-size: 9.2444444444444pt;">vmstat</a>
+<a href="http://www.linuxany.com/archives/tag/vmware" class="tag-link-276" title="4 个话题" style="font-size: 8pt;">vmware</a>
+<a href="http://www.linuxany.com/archives/tag/vpn" class="tag-link-278" title="6 个话题" style="font-size: 10.333333333333pt;">VPN</a></div>
+</li><li id="linkcat-2" class="widget widget_links"><h2>友情链接</h2>
+	<ul class="xoxo blogroll">
+<li><a href="http://www.linuxany.com/guestbook" rel="me" title="申请与本站链接">&lt;[ 申请链接 ]&gt;</a></li>
+<li><a href="http://www.darkmi.com/blog" rel="colleague" wrc_done="true">darkmi'blog</a>&nbsp;<span class="wrc_icon wrc0" rating="{&quot;icon&quot;:&quot;grey0-16.png&quot;,&quot;rating&quot;:0,&quot;weight&quot;:0,&quot;flags&quot;:{}}"></span></li>
+<li><a href="http://fuckxp.com/" rel="colleague" wrc_done="true">FuckXP</a>&nbsp;<span class="wrc_icon wrc0" rating="{&quot;icon&quot;:&quot;grey0-16.png&quot;,&quot;rating&quot;:0,&quot;weight&quot;:0,&quot;flags&quot;:{}}"></span></li>
+<li><a href="http://www.guangyao.org/" target="_blank" wrc_done="true">guangyao.org</a>&nbsp;<span class="wrc_icon wrc0" rating="{&quot;icon&quot;:&quot;grey0-16.png&quot;,&quot;rating&quot;:0,&quot;weight&quot;:0,&quot;flags&quot;:{}}"></span></li>
+<li><a href="http://isky000.com/" rel="colleague" target="_blank" wrc_done="true">isky000</a>&nbsp;<span class="wrc_icon wrc0" rating="{&quot;icon&quot;:&quot;grey0-16.png&quot;,&quot;rating&quot;:0,&quot;weight&quot;:0,&quot;flags&quot;:{}}"></span></li>
+<li><a href="http://openitlab.org/" wrc_done="true">IT实验室-支持中心</a>&nbsp;<span class="wrc_icon wrc0" rating="{&quot;icon&quot;:&quot;grey0-16.png&quot;,&quot;rating&quot;:0,&quot;weight&quot;:0,&quot;flags&quot;:{}}"></span></li>
+<li><a href="http://www.china-lg.com/" target="_blank" wrc_done="true">LG'Blog</a>&nbsp;<span class="wrc_icon wrc0" rating="{&quot;icon&quot;:&quot;grey0-16.png&quot;,&quot;rating&quot;:0,&quot;weight&quot;:0,&quot;flags&quot;:{}}"></span></li>
+<li><a href="http://linuxunix.org/" wrc_done="true">Linux/Unix社区</a>&nbsp;<span class="wrc_icon wrc0" rating="{&quot;icon&quot;:&quot;grey0-16.png&quot;,&quot;rating&quot;:0,&quot;weight&quot;:0,&quot;flags&quot;:{}}"></span></li>
+<li><a href="http://linuxany.com/" rel="me" title="linuxany">linuxany.com</a></li>
+<li><a href="http://www.linuxsee.com/" wrc_done="true">linuxSEE</a>&nbsp;<span class="wrc_icon wrc0" rating="{&quot;icon&quot;:&quot;grey0-16.png&quot;,&quot;rating&quot;:0,&quot;weight&quot;:0,&quot;flags&quot;:{}}"></span></li>
+<li><a href="http://www.suderen.com/" title="Tiger’s BLOG" wrc_done="true">Tiger's BLOG</a>&nbsp;<span class="wrc_icon wrc0" rating="{&quot;icon&quot;:&quot;grey0-16.png&quot;,&quot;rating&quot;:0,&quot;weight&quot;:0,&quot;flags&quot;:{}}"></span></li>
+<li><a href="http://www.chinaoug.net/" rel="friend met co-worker neighbor" target="_blank" wrc_done="true">中国ORACLE用户组</a>&nbsp;<span class="wrc_icon wrc0" rating="{&quot;icon&quot;:&quot;grey0-16.png&quot;,&quot;rating&quot;:0,&quot;weight&quot;:0,&quot;flags&quot;:{}}"></span></li>
+<li><a href="http://www.ha97.com/" rel="colleague" wrc_done="true">互联网研究</a>&nbsp;<span class="wrc_icon wrc0" rating="{&quot;icon&quot;:&quot;grey0-16.png&quot;,&quot;rating&quot;:0,&quot;weight&quot;:0,&quot;flags&quot;:{}}"></span></li>
+<li><a href="http://yemaosheng.com/" rel="colleague" title="YeMaosheng’s Blog" target="_blank" wrc_done="true">叶茂盛</a>&nbsp;<span class="wrc_icon wrc0" rating="{&quot;icon&quot;:&quot;grey0-16.png&quot;,&quot;rating&quot;:0,&quot;weight&quot;:0,&quot;flags&quot;:{}}"></span></li>
+<li><a href="http://www.imdouz.com/" target="_blank" wrc_done="true">大Dの豆腐坊</a>&nbsp;<span class="wrc_icon wrc0" rating="{&quot;icon&quot;:&quot;grey0-16.png&quot;,&quot;rating&quot;:0,&quot;weight&quot;:0,&quot;flags&quot;:{}}"></span></li>
+<li><a href="http://www.weilife.org/" wrc_done="true">微生活</a>&nbsp;<span class="wrc_icon wrc0" rating="{&quot;icon&quot;:&quot;grey0-16.png&quot;,&quot;rating&quot;:0,&quot;weight&quot;:0,&quot;flags&quot;:{}}"></span></li>
+<li><a href="http://www.taobaodba.com/" rel="colleague" target="_blank" wrc_done="true">淘宝DBA</a>&nbsp;<span class="wrc_icon wrc0" rating="{&quot;icon&quot;:&quot;grey0-16.png&quot;,&quot;rating&quot;:0,&quot;weight&quot;:0,&quot;flags&quot;:{}}"></span></li>
+<li><a href="http://www.sztime.com/" title="港澳酒店预订" target="_blank" wrc_done="true">港澳酒店预订</a>&nbsp;<span class="wrc_icon wrc0" rating="{&quot;icon&quot;:&quot;grey0-16.png&quot;,&quot;rating&quot;:0,&quot;weight&quot;:0,&quot;flags&quot;:{}}"></span></li>
+<li><a href="http://baoz.net/" rel="colleague" wrc_done="true">素包子</a>&nbsp;<span class="wrc_icon wrc0" rating="{&quot;icon&quot;:&quot;grey0-16.png&quot;,&quot;rating&quot;:0,&quot;weight&quot;:0,&quot;flags&quot;:{}}"></span></li>
+<li><a href="http://opkeep.com/" rel="colleague" target="_blank" wrc_done="true">运维人生</a>&nbsp;<span class="wrc_icon wrc0" rating="{&quot;icon&quot;:&quot;grey0-16.png&quot;,&quot;rating&quot;:0,&quot;weight&quot;:0,&quot;flags&quot;:{}}"></span></li>
+<li><a href="http://coolshell.cn/" target="_blank" wrc_done="true">酷壳</a>&nbsp;<span class="wrc_icon wrc0" rating="{&quot;icon&quot;:&quot;grey0-16.png&quot;,&quot;rating&quot;:0,&quot;weight&quot;:0,&quot;flags&quot;:{}}"></span></li>
+<li><a href="http://m114.org/" rel="colleague" target="_blank" wrc_done="true">飛飛's Blog</a>&nbsp;<span class="wrc_icon wrc0" rating="{&quot;icon&quot;:&quot;grey0-16.png&quot;,&quot;rating&quot;:0,&quot;weight&quot;:0,&quot;flags&quot;:{}}"></span></li>
+<li><a href="http://www.gaojinbo.com/" target="_blank" wrc_done="true">高进波博客</a>&nbsp;<span class="wrc_icon wrc0" rating="{&quot;icon&quot;:&quot;grey0-16.png&quot;,&quot;rating&quot;:0,&quot;weight&quot;:0,&quot;flags&quot;:{}}"></span></li>
+
+	</ul>
+</li>
+	</ul>
+</div>
+</div>
+﻿<div id="footer">
+	<div class="w970">
+	©2008-2011 ubuntu,debian,mint,redhat -linuxany.com All Rights Reservied<br>
+	Powered by <a href="http://linuxany.com/" target="_blank">Linuxany</a>, 
+	Contact us by <a href="http://www.linuxany.com/guestbook">GuestBook</a>.
+	</div>
+</div>
+<div id="go_top"><em></em><a href="http://www.linuxany.com/archives/1282.html#">返回顶部</a></div>
+
+<div id="wrchoverdiv"><div id="wrccontainer"><div id="wrcheader"><div id="wrctitle"> WebRep</div></div><div class="wrchorizontal"></div><div id="wrccurrentvote">總體評價</div><div class="wrchorizontal"></div><div id="wrcrating"></div><div id="wrcratingtext">此網站沒有任何評價資訊</div><div id="wrcweighttext">（票數不足）</div><div id="wrcflags"><div id="wrcicon_shopping" class="wrcicon"></div><div id="wrcicon_social" class="wrcicon"></div><div id="wrcicon_news" class="wrcicon"></div><div id="wrcicon_it" class="wrcicon"></div><div id="wrcicon_corporate" class="wrcicon"></div><div id="wrcicon_pornography" class="wrcicon"></div><div id="wrcicon_violence" class="wrcicon"></div><div id="wrcicon_gambling" class="wrcicon"></div><div id="wrcicon_drugs" class="wrcicon"></div><div id="wrcicon_illegal" class="wrcicon"></div></div><div class="wrchorizontal"></div></div></div></body><span id="skype_highlighting_settings" display="none" autoextractnumbers="1"></span><object id="skype_plugin_object" location.href="http://www.linuxany.com/archives/1282.html" location.hostname="www.linuxany.com" style="position: absolute; visibility: hidden; left: -100px; top: -100px; " width="0" height="0" type="application/x-vnd.skype.toolbars.npplugin.4.2.0"></object></html>

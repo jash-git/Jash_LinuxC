@@ -1,0 +1,47 @@
+<html>#include <cppscript>
+#include <dynamic/extensions.hpp>
+
+class Counter
+{
+	int value;
+public:
+	Counter(int initial_value) : value(initial_value)
+	{
+	}
+
+	void reset()
+	{
+		value=0;
+	}
+
+	int get()
+	{
+		return value++;
+	}
+};
+
+var counter3_get(var counter3)
+{
+	return counter3["value"].as<Counter>().get();
+}
+
+void counter3_reset(var counter3)
+{
+	counter3["value"].as<Counter>().reset();
+}
+
+var counter3(var initial_value)
+{
+	return object("counter3").extend
+		("value", create(Counter(initial_value)))
+		("get", counter3_get)
+		("reset", counter3_reset);
+}
+
+var script_main(var)
+{
+	var counter = counter3(1);
+	writeln( counter["get"]() );
+	writeln( counter["get"]() );
+	return 0;
+}

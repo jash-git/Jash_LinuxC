@@ -1,0 +1,451 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!-- saved from url=(0047)http://www.linuxidc.com/Linux/2010-11/29790.htm -->
+<html xmlns="http://www.w3.org/1999/xhtml" lang="zh"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Ubuntu + Apache2 环境下用C编写 一个简单的cgi脚本_服务器应用_Linux公社-Linux系统门户网站</title>
+
+<link rel="icon" href="http://www.linuxidc.com/favicon.ico" type="image/x-icon">
+<link rel="shortcut icon" href="http://www.linuxidc.com/favicon.ico" type="image/x-icon">
+<meta name="description" content="我只学习过c语言，没有学习过prel，网上很多教程都是针对prel的，很少有针对c的。自己在Ubuntu下鼓捣了一下午，也总算是用c成功编写了一个helloworld的cgi，算是cgi入门的第一步。一、安装及配置apache服务器安装apache2服务器#sudo apt-get install apache2配置apache2服务器配置文件位于 /etc/apache2/sites-enabl">
+<meta name="keywords" content="Apache,apache2,Ubuntu + Apache2 环境下用C编写 一个简单的cgi脚本,服务器,Linux服务器,Apache,Hadoop,集群,分布式,Nginx,Tomcat,分布式系统">
+<meta name="generator" content="Linux公社">
+<meta name="generator" content="Linux">
+<link rel="stylesheet" href="./Ubuntu_Apache2G_C_Linux_files/style.css" type="text/css">
+<meta name="generator" content="专业的Linux网站">
+<script type="text/javascript" src="./Ubuntu_Apache2G_C_Linux_files/jquery.min.js"></script>
+<script type="text/javascript" src="./Ubuntu_Apache2G_C_Linux_files/iwms.js"></script>
+<script type="text/javascript">iwms.urlPrefix="../../";</script>
+
+<script type="text/javascript" src="./Ubuntu_Apache2G_C_Linux_files/show.js"></script>
+<link href="./Ubuntu_Apache2G_C_Linux_files/bdsstyle.css" rel="stylesheet" type="text/css"><script src="./Ubuntu_Apache2G_C_Linux_files/logger.js"></script><script src="chrome-extension://lifbcibllhkdhoafpjfnlhfpfgnpldfl/document_iterator.js"></script><script src="chrome-extension://lifbcibllhkdhoafpjfnlhfpfgnpldfl/find_proxy.js"></script><script src="chrome-extension://lifbcibllhkdhoafpjfnlhfpfgnpldfl/get_html_text.js"></script><script src="chrome-extension://lifbcibllhkdhoafpjfnlhfpfgnpldfl/global_constants.js"></script><script src="chrome-extension://lifbcibllhkdhoafpjfnlhfpfgnpldfl/name_injection_builder.js"></script><script src="chrome-extension://lifbcibllhkdhoafpjfnlhfpfgnpldfl/number_injection_builder.js"></script><script src="chrome-extension://lifbcibllhkdhoafpjfnlhfpfgnpldfl/string_finder.js"></script><script src="chrome-extension://lifbcibllhkdhoafpjfnlhfpfgnpldfl/change_sink.js"></script><meta name="document_iterator.js"><meta name="find_proxy.js"><meta name="get_html_text.js"><meta name="global_constants.js"><meta name="name_injection_builder.js"><meta name="number_injection_builder.js"><meta name="string_finder.js"><meta name="change_sink.js"><style id="wrc-middle-css" type="text/css">.wrc_whole_window{	display: none;	position: fixed; 	z-index: 2147483647;	background-color: rgba(40, 40, 40, 0.9);	word-spacing: normal !important;	margin: 0px !important;	padding: 0px !important;	border: 0px !important;	left: 0px;	top: 0px;	width: 100%;	height: 100%;	line-height: normal !important;	letter-spacing: normal !important;	overflow: hidden;}.wrc_bar_window{	display: none;	position: fixed; 	z-index: 2147483647;	background-color: rgba(60, 60, 60, 1.0);	word-spacing: normal !important;	font-family: Segoe UI, Arial Unicode MS, Arial, Sans-Serif;	margin: 0px !important;	padding: 0px !important;	border: 0px !important;	left: 0px;	top: 0px;	width: 100%;	height: 40px;	line-height: normal !important;	letter-spacing: normal !important;	color: white !important;	font-size: 13px !important;}.wrc_middle {	display: table-cell;	vertical-align: middle;	width: 100%;}.wrc_middle_main {	font-family: Segoe UI, Arial Unicode MS, Arial, Sans-Serif;	font-size: 14px;	width: 600px;	height: auto;    background: url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/background-body.jpg) repeat-x left top;	background-color: rgb(39, 53, 62);	position: relative;	margin-left: auto;	margin-right: auto;	text-align: left;}.wrc_middle_tq_main {	font-family: Segoe UI, Arial Unicode MS, Arial, Sans-Serif;	font-size: 16px;	width: 615px;	height: 460px;    background: url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/background-sitecorrect.png) no-repeat;	background-color: white;	color: black !important;	position: relative;	margin-left: auto;	margin-right: auto;	text-align: center;}.wrc_middle_logo {    background: url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/logo.jpg) no-repeat left bottom;    width: 140px;    height: 42px;    color: orange;    display: table-cell;    text-align: right;    vertical-align: middle;}.wrc_icon_warning {	margin: 20px 10px 20px 15px;	float: left;	background-color: transparent;}.wrc_middle_title {    color: #b6bec7;	height: auto;    margin: 0px auto;	font-size: 2.2em;	white-space: nowrap;	text-align: center;}.wrc_middle_hline {    height: 2px;	width: 100%;    display: block;}.wrc_middle_description {	text-align: center;	margin: 15px;	font-size: 1.4em;	padding: 20px;	height: auto;	color: white;	min-height: 3.5em;}.wrc_middle_actions_main_div {	margin-bottom: 15px;	text-align: center;}.wrc_middle_actions_blue_button div {	display: inline-block;	width: auto;	cursor: Pointer;	margin: 3px 10px 3px 10px;	color: white;	font-size: 1.2em;	font-weight: bold;}.wrc_middle_actions_blue_button {	-moz-appearance: none;	border-radius: 7px;	-moz-border-radius: 7px/7px;	border-radius: 7px/7px;	background-color: rgb(0, 173, 223) !important;	display: inline-block;	width: auto;	cursor: Pointer;	border: 2px solid #00dddd;	padding: 0px 20px 0px 20px;}.wrc_middle_actions_blue_button:hover {	background-color: rgb(0, 159, 212) !important;}.wrc_middle_actions_blue_button:active {	background-color: rgb(0, 146, 200) !important;	border: 2px solid #00aaaa;}.wrc_middle_actions_grey_button div {	display: inline-block;	width: auto;	cursor: Pointer;	margin: 3px 10px 3px 10px;	color: white !important;	font-size: 15px;	font-weight: bold;}.wrc_middle_actions_grey_button {	-moz-appearance: none;	border-radius: 7px;	-moz-border-radius: 7px/7px;	border-radius: 7px/7px;	background-color: rgb(100, 100, 100) !important;	display: inline-block;	width: auto;	cursor: Pointer;	border: 2px solid #aaaaaa;	text-decoration: none;	padding: 0px 20px 0px 20px;}.wrc_middle_actions_grey_button:hover {	background-color: rgb(120, 120, 120) !important;}.wrc_middle_actions_grey_button:active {	background-color: rgb(130, 130, 130) !important;	border: 2px solid #00aaaa;}.wrc_middle_action_low {	font-size: 0.9em;	white-space: nowrap;	cursor: Pointer;	color: grey !important;	margin: 10px 10px 0px 10px;	text-decoration: none;}.wrc_middle_action_low:hover {	color: #aa4400 !important;}.wrc_middle_actions_rest_div {	padding-top: 5px;	white-space: nowrap;	text-align: center;}.wrc_middle_action {	white-space: nowrap;	cursor: Pointer;	color: red !important;	font-size: 1.2em;	margin: 10px 10px 0px 10px;	text-decoration: none;}.wrc_middle_action:hover {	color: #aa4400 !important;}</style><script id="wrc-script-middle_window" type="text/javascript" language="JavaScript">var g_inputsCnt = 0;var g_InputThis = new Array(null, null, null, null);var g_alerted = false;/* we test the input if it includes 4 digits   (input is a part of 4 inputs for filling the credit-card number)*/function is4DigitsCardNumber(val){	var regExp = new RegExp('[0-9]{4}');	return (val.length == 4 && val.search(regExp) == 0);}/* testing the whole credit-card number 19 digits devided by three '-' symbols or   exactly 16 digits without any dividers*/function isCreditCardNumber(val){	if(val.length == 19)	{		var regExp = new RegExp('[0-9]{4}-[0-9]{4}-[0-9]{4}-[0-9]{4}');		return (val.search(regExp) == 0);	}	else if(val.length == 16)	{		var regExp = new RegExp('[0-9]{4}[0-9]{4}[0-9]{4}[0-9]{4}');		return (val.search(regExp) == 0);	}	return false;}function CheckInputOnCreditNumber(self){	if(g_alerted)		return false;	var value = self.value;	if(self.type == 'text')	{		if(is4DigitsCardNumber(value))		{			var cont = true;			for(i = 0; i < g_inputsCnt; i++)				if(g_InputThis[i] == self)					cont = false;			if(cont && g_inputsCnt < 4)			{				g_InputThis[g_inputsCnt] = self;				g_inputsCnt++;			}		}		g_alerted = (g_inputsCnt == 4);		if(g_alerted)			g_inputsCnt = 0;		else			g_alerted = isCreditCardNumber(value);	}	return g_alerted;}function CheckInputOnPassword(self){	if(g_alerted)		return false;	var value = self.value;	if(self.type == 'password')	{		g_alerted = (value.length > 0);	}	return g_alerted;}function onInputBlur(self, bRatingOk, bFishingSite){	var bCreditNumber = CheckInputOnCreditNumber(self);	var bPassword = CheckInputOnPassword(self);	if((!bRatingOk || bFishingSite == 1) && (bCreditNumber || bPassword) )	{		var warnDiv = document.getElementById("wrcinputdiv");		if(warnDiv)		{			/* show the warning div in the middle of the screen */			warnDiv.style.left = "0px";			warnDiv.style.top = "0px";			warnDiv.style.width = "100%";			warnDiv.style.height = "100%";			document.getElementById("wrc_warn_fs").style.display = 'none';			document.getElementById("wrc_warn_cn").style.display = 'none';			if(bFishingSite)				document.getElementById("wrc_warn_fs").style.display = 'block';			else				document.getElementById("wrc_warn_cn").style.display = 'block';			warnDiv.style.display = 'table';		}	}}</script><style id="wrc-css" type="text/css">.wrcx {display:none} .r .wrcx, .osl .wrcx, .bc .wrcx, .fc .wrcx, #rhsline ol .wrcx {display:inline; background: url("chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/grey0-16.png") right no-repeat}
+.wrc0 {display:none} .r .wrc0, .osl .wrc0, .bc .wrc0, .fc .wrc0, #rhsline ol .wrc0 {display:inline; background: url("chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/grey0-16.png") right no-repeat}
+.wrc11 {display:none} .r .wrc11, .osl .wrc11, .bc .wrc11, .fc .wrc11, #rhsline ol .wrc11 {display:inline; background: url("chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/green1-16.png") right no-repeat}
+.wrc12 {display:none} .r .wrc12, .osl .wrc12, .bc .wrc12, .fc .wrc12, #rhsline ol .wrc12 {display:inline; background: url("chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/green2-16.png") right no-repeat}
+.wrc13 {display:none} .r .wrc13, .osl .wrc13, .bc .wrc13, .fc .wrc13, #rhsline ol .wrc13 {display:inline; background: url("chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/green3-16.png") right no-repeat}
+.wrc21 {display:none} .r .wrc21, .osl .wrc21, .bc .wrc21, .fc .wrc21, #rhsline ol .wrc21 {display:inline; background: url("chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/yellow1-16.png") right no-repeat}
+.wrc22 {display:none} .r .wrc22, .osl .wrc22, .bc .wrc22, .fc .wrc22, #rhsline ol .wrc22 {display:inline; background: url("chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/yellow2-16.png") right no-repeat}
+.wrc23 {display:none} .r .wrc23, .osl .wrc23, .bc .wrc23, .fc .wrc23, #rhsline ol .wrc23 {display:inline; background: url("chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/yellow3-16.png") right no-repeat}
+.wrc31 {display:none} .r .wrc31, .osl .wrc31, .bc .wrc31, .fc .wrc31, #rhsline ol .wrc31 {display:inline; background: url("chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/red1-16.png") right no-repeat}
+.wrc32 {display:none} .r .wrc32, .osl .wrc32, .bc .wrc32, .fc .wrc32, #rhsline ol .wrc32 {display:inline; background: url("chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/red2-16.png") right no-repeat}
+.wrc33 {display:none} .r .wrc33, .osl .wrc33, .bc .wrc33, .fc .wrc33, #rhsline ol .wrc33 {display:inline; background: url("chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/red3-16.png") right no-repeat}
+.wrc_icon{margin:0;padding:0;padding-left:15px !important;width:16px !important; height:16px !important;line-height:16px !important;}
+#wrchoverdiv{padding-bottom:20px; position:absolute; width:180px; background:transparent url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/background-body.jpg) top left repeat-x; display:none; font-family: Segoe UI, Arial Unicode MS, Arial, Sans-Serif; font-size: 14px; z-index:9999999;}
+#wrchoverdiv{cursor:default;}
+#wrchoverdiv #wrccontainer{width:180px;}
+#wrchoverdiv #wrcheader{width:140px; height:42px; background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/logo.jpg) bottom left no-repeat; text-align:right; line-height:42px; color:orange; margin:0 auto;}
+#wrchoverdiv .wrchorizontal{width:180px; height:2px; background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/horizontal-line.jpg) bottom left no-repeat;}
+#wrchoverdiv #wrccurrentvote{height:25px; line-height:25px; color:#FFF; text-align:center; text-transform:uppercase;}
+#wrchoverdiv #wrcrating{margin:5px auto; width:69px; height:55px; background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/grey-0.png) bottom left no-repeat;}
+#wrchoverdiv #wrcrating.wrcbx{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/grey-0.png);}
+#wrchoverdiv #wrcrating.wrcb0{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/grey-0.png);}
+#wrchoverdiv #wrcrating.wrcb11{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/green-1.png);}
+#wrchoverdiv #wrcrating.wrcb12{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/green-2.png);}
+#wrchoverdiv #wrcrating.wrcb13{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/green-3.png);}
+#wrchoverdiv #wrcrating.wrcb21{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/yellow-1.png);}
+#wrchoverdiv #wrcrating.wrcb22{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/yellow-2.png);}
+#wrchoverdiv #wrcrating.wrcb23{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/yellow-3.png);}
+#wrchoverdiv #wrcrating.wrcb31{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/red-1.png);}
+#wrchoverdiv #wrcrating.wrcb32{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/red-2.png);}
+#wrchoverdiv #wrcrating.wrcb33{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/red-3.png);}
+#wrchoverdiv #wrcratingtext{margin:3px 5px; color:#FFF; text-align:center; padding:0; font-size:12px;}
+#wrchoverdiv #wrcweighttext{margin:3px 5px; color:#FFF; text-align:center; padding:0; font-size:12px;}
+#wrchoverdiv #wrcflags{width:150px; height:70px; margin:0 auto;}
+#wrchoverdiv .wrcicon{width:30px; height:30px; float:left;}
+#wrchoverdiv #wrcicon_shopping{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/shopping-small-disable.png) top left no-repeat;}
+#wrchoverdiv #wrcicon_shopping.selected{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/shopping-small-selected.png) top left no-repeat;}
+#wrchoverdiv #wrcicon_social{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/social-small-disable.png) top left no-repeat;}
+#wrchoverdiv #wrcicon_social.selected{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/social-small-selected.png) top left no-repeat;}
+#wrchoverdiv #wrcicon_news{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/news-small-disable.png) top left no-repeat;}
+#wrchoverdiv #wrcicon_news.selected{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/news-small-selected.png) top left no-repeat;}
+#wrchoverdiv #wrcicon_it{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/it-small-disable.png) top left no-repeat;}
+#wrchoverdiv #wrcicon_it.selected{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/it-small-selected.png) top left no-repeat;}
+#wrchoverdiv #wrcicon_corporate{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/corporate-small-disable.png) top left no-repeat;}
+#wrchoverdiv #wrcicon_corporate.selected{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/corporate-small-selected.png) top left no-repeat;}
+#wrchoverdiv #wrcicon_pornography{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/pornography-small-disable.png) top left no-repeat;}
+#wrchoverdiv #wrcicon_pornography.selected{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/pornography-small-selected.png) top left no-repeat;}
+#wrchoverdiv #wrcicon_violence{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/violence-small-disable.png) top left no-repeat;}
+#wrchoverdiv #wrcicon_violence.selected{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/violence-small-selected.png) top left no-repeat;}
+#wrchoverdiv #wrcicon_gambling{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/gambling-small-disable.png) top left no-repeat;}
+#wrchoverdiv #wrcicon_gambling.selected{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/gambling-small-selected.png) top left no-repeat;}
+#wrchoverdiv #wrcicon_drugs{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/drugs-small-disable.png) top left no-repeat;}
+#wrchoverdiv #wrcicon_drugs.selected{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/drugs-small-selected.png) top left no-repeat;}
+#wrchoverdiv #wrcicon_illegal{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/illegal-small-disable.png) top left no-repeat;}
+#wrchoverdiv #wrcicon_illegal.selected{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/illegal-small-selected.png) top left no-repeat;}
+</style></head><style type="text/css">embed[type*="application/x-shockwave-flash"],embed[src*=".swf"],object[type*="application/x-shockwave-flash"],object[codetype*="application/x-shockwave-flash"],object[src*=".swf"],object[codebase*="swflash.cab"],object[classid*="D27CDB6E-AE6D-11cf-96B8-444553540000"],object[classid*="d27cdb6e-ae6d-11cf-96b8-444553540000"],object[classid*="D27CDB6E-AE6D-11cf-96B8-444553540000"]{	display: none !important;}</style>
+<body><iframe style="display: none; " frameborder="0"></iframe><div id="bdshare_s"><iframe id="bdsIfr" style="position:absolute;display:none;z-index:9999;" frameborder="0"></iframe><div id="bdshare_l" style="display: none; "><div id="bdshare_l_c"><h6>分享到</h6><ul><li><a href="http://www.linuxidc.com/Linux/2010-11/29790.htm#" class="bds_mshare mshare">一键分享</a></li><li><a href="http://www.linuxidc.com/Linux/2010-11/29790.htm#" class="bds_qzone qqkj">QQ空间</a></li><li><a href="http://www.linuxidc.com/Linux/2010-11/29790.htm#" class="bds_tsina xlwb">新浪微博</a></li><li><a href="http://www.linuxidc.com/Linux/2010-11/29790.htm#" class="bds_baidu bdsc">百度搜藏</a></li><li><a href="http://www.linuxidc.com/Linux/2010-11/29790.htm#" class="bds_renren rrw">人人网</a></li><li><a href="http://www.linuxidc.com/Linux/2010-11/29790.htm#" class="bds_tqq txwb">腾讯微博</a></li><li><a href="http://www.linuxidc.com/Linux/2010-11/29790.htm#" class="bds_bdxc bdxc">百度相册</a></li><li><a href="http://www.linuxidc.com/Linux/2010-11/29790.htm#" class="bds_kaixin001 kxw">开心网</a></li><li><a href="http://www.linuxidc.com/Linux/2010-11/29790.htm#" class="bds_tqf txpy">腾讯朋友</a></li><li><a href="http://www.linuxidc.com/Linux/2010-11/29790.htm#" class="bds_hi bdkj">百度空间</a></li><li><a href="http://www.linuxidc.com/Linux/2010-11/29790.htm#" class="bds_douban db">豆瓣网</a></li><li><a href="http://www.linuxidc.com/Linux/2010-11/29790.htm#" class="bds_tsohu shwb">搜狐微博</a></li><li><a href="http://www.linuxidc.com/Linux/2010-11/29790.htm#" class="bds_bdhome bdhome">百度新首页</a></li><li><a href="http://www.linuxidc.com/Linux/2010-11/29790.htm#" class="bds_qq qqsc">QQ收藏</a></li><li><a href="http://www.linuxidc.com/Linux/2010-11/29790.htm#" class="bds_thx thx">和讯微博</a></li><li><a href="http://www.linuxidc.com/Linux/2010-11/29790.htm#" class="bds_more">更多...</a></li></ul><p><a href="http://www.linuxidc.com/Linux/2010-11/29790.htm#" class="goWebsite">百度分享</a></p></div></div></div>
+<div class="topBar">
+	<div class="twidth">
+	
+	<div style="float:right">
+		<script type="text/javascript" src="./Ubuntu_Apache2G_C_Linux_files/language.js"></script> <a id="StranLink" href="javascript:StranBody()" title="點擊以繁體中文方式浏覽">繁體</a>
+	</div>
+	
+	<div id="topUser">你好，游客 <a href="http://www.linuxidc.com/Linux/2010-11/29790.htm#" onclick="iwms.logPop()">登录</a>
+	<a href="http://www.linuxidc.com/memberreg.aspx">注册</a>
+	<a href="http://www.linuxidc.com/membernewsadd.aspx" target="_blank">发布</a><a href="http://www.linuxidc.com/search.aspx">搜索</a>
+	</div>
+	</div>
+</div>
+<div class="twidth">
+<div id="sitehead">
+<div class="l"></div>
+<div class="r"></div>
+<div class="m">
+	<table width="100%">
+	<tbody><tr align="center"><td width="160">
+	<a href="http://www.linuxidc.com/"><img style="filter: chroma(color=#FFFFFF);" src="./Ubuntu_Apache2G_C_Linux_files/logo.jpg" alt="Linux公社" width="155" height="53" border="0"></a>
+	</td><td>
+	<script type="text/javascript" language="javaScript" src="./Ubuntu_Apache2G_C_Linux_files/linux.js"></script><p align="center"><a title="Android专题" href="http://www.linuxidc.com/topicnews.aspx?tid=11" target="_self"><img alt="Android专题" src="./Ubuntu_Apache2G_C_Linux_files/Android.png" border="0"></a></p>
+
+	</td>
+	</tr></tbody></table>
+</div>
+</div>
+<div id="navbar">
+<div class="l"></div>
+<div class="r"></div>
+<div class="m">
+	<a href="http://www.linuxidc.com/index.htm" class="first">首页</a><a href="http://www.linuxidc.com/it/">Linux新闻</a><a href="http://www.linuxidc.com/Linuxit/">Linux教程</a><a href="http://www.linuxidc.com/MySql/">数据库技术</a><a href="http://www.linuxidc.com/RedLinux/">Linux编程</a><a href="http://www.linuxidc.com/Apache/" class="thisclass">服务器应用</a><a href="http://www.linuxidc.com/Unix/">Linux安全</a><a href="http://www.linuxidc.com/download/">Linux下载</a><a href="http://www.linuxidc.com/Linuxrz/">Linux认证</a><a href="http://www.linuxidc.com/theme/">Linux主题</a><a href="http://www.linuxidc.com/Linuxwallpaper/">Linux壁纸</a><a href="http://www.linuxidc.com/linuxsoft/">Linux软件</a><a href="http://www.linuxidc.com/digi/">数码</a><a href="http://www.linuxidc.com/mobile/">手机</a><a href="http://www.linuxidc.com/diannao/">电脑</a>
+
+</div>
+</div>
+
+<div id="navsub">
+<div class="l"></div>
+<div class="r"></div>
+<div class="m">
+	<a href="http://www.linuxidc.com/index.htm">首页</a> → <a href="http://www.linuxidc.com/Apache/">服务器应用</a>
+</div>
+</div>
+<div class="linus"><script type="text/javascript" language="javaScript" src="./Ubuntu_Apache2G_C_Linux_files/linuxe1.js"></script></div>
+<div class="linus"><script type="text/javascript" language="javaScript" src="./Ubuntu_Apache2G_C_Linux_files/linux1.js"></script><a title="" href="http://www.yutianedu.com/list.asp?Unid=22136" target="_blank" wrc_done="true"><img height="70" src="./Ubuntu_Apache2G_C_Linux_files/linux95070.gif" width="969"></a>&nbsp;<span class="wrc_icon wrc0" rating="{&quot;icon&quot;:&quot;grey0-16.png&quot;,&quot;rating&quot;:0,&quot;weight&quot;:0,&quot;flags&quot;:{}}"></span>
+<a title="" href="http://www.boxue.com.cn/" target="_blank" wrc_done="true"><img border="0" src="./Ubuntu_Apache2G_C_Linux_files/20128242252923350.gif"></a>&nbsp;<span class="wrc_icon wrc0" rating="{&quot;icon&quot;:&quot;grey0-16.png&quot;,&quot;rating&quot;:0,&quot;weight&quot;:0,&quot;flags&quot;:{}}"></span>
+</div>
+<div class="linus"><script type="text/javascript" language="javaScript" src="./Ubuntu_Apache2G_C_Linux_files/linuxa.js"></script><script type="text/javascript">/*Linux公社通栏*/ var cpro_id = 'u533706';</script><script src="./Ubuntu_Apache2G_C_Linux_files/c.js" type="text/javascript"></script><script type="text/javascript" charset="utf-8" src="./Ubuntu_Apache2G_C_Linux_files/ecom"></script><div style="display:none">-</div> <iframe id="cproIframe1" src="./Ubuntu_Apache2G_C_Linux_files/uijs(3).htm" width="960" height="90" align="center,center" marginwidth="0" marginheight="0" scrolling="no" frameborder="0" allowtransparency="true"></iframe>
+</div>
+<table id="middle" width="100%" cellspacing="0" cellpadding="0" style="table-layout:fixed">
+<tbody><tr valign="top"><td>
+
+	<div class="mframe mR">
+	<div class="tl"></div>
+	<div class="tr"></div>
+	<div class="tm">
+		<div class="moreR">
+			背景：<script type="text/javascript">WriteBg()</script><img src="./Ubuntu_Apache2G_C_Linux_files/b.gif" style="cursor:pointer;width:7px;height:6px;border:1px solid #999;background:#EDF0F5" alt="#EDF0F5" onclick="ContentBg(&quot;#EDF0F5&quot;)"> <img src="./Ubuntu_Apache2G_C_Linux_files/b.gif" style="cursor:pointer;width:7px;height:6px;border:1px solid #999;background:#FAFBE6" alt="#FAFBE6" onclick="ContentBg(&quot;#FAFBE6&quot;)"> <img src="./Ubuntu_Apache2G_C_Linux_files/b.gif" style="cursor:pointer;width:7px;height:6px;border:1px solid #999;background:#FFF2E2" alt="#FFF2E2" onclick="ContentBg(&quot;#FFF2E2&quot;)"> <img src="./Ubuntu_Apache2G_C_Linux_files/b.gif" style="cursor:pointer;width:7px;height:6px;border:1px solid #999;background:#FDE6E0" alt="#FDE6E0" onclick="ContentBg(&quot;#FDE6E0&quot;)"> <img src="./Ubuntu_Apache2G_C_Linux_files/b.gif" style="cursor:pointer;width:7px;height:6px;border:1px solid #999;background:#F3FFE1" alt="#F3FFE1" onclick="ContentBg(&quot;#F3FFE1&quot;)"> <img src="./Ubuntu_Apache2G_C_Linux_files/b.gif" style="cursor:pointer;width:7px;height:6px;border:1px solid #999;background:#DAFAF3" alt="#DAFAF3" onclick="ContentBg(&quot;#DAFAF3&quot;)"> <img src="./Ubuntu_Apache2G_C_Linux_files/b.gif" style="cursor:pointer;width:7px;height:6px;border:1px solid #999;background:#EAEAEF" alt="#EAEAEF" onclick="ContentBg(&quot;#EAEAEF&quot;)"> <img src="./Ubuntu_Apache2G_C_Linux_files/b.gif" style="cursor:pointer;width:7px;height:6px;border:1px solid #999;background:#FFF" alt="默认" onclick="ContentBg(&quot;&quot;)"> 
+		</div>
+		<span class="tt">阅读新闻</span>
+	</div>
+	<div class="wrapper">
+	<div class="ml"></div>
+	<div class="mr"></div>
+	<div class="mm" id="bodyTd">
+		<div id="printBody" style="word-break:break-all;">
+			<div style="text-align:center"><h1 class="aTitle">Ubuntu + Apache2 环境下用C编写 一个简单的cgi脚本</h1></div>
+			
+			<table width="97%" align="center">
+				<tbody><tr>
+				<td width="140">[日期：2010-11-13]</td>
+				<td align="center">来源：Ubuntu社区&nbsp;
+				作者：octozi</td>
+				<td width="160" align="right">[字体：<a href="javascript:ContentSize(16)">大</a> <a href="javascript:ContentSize(0)">中</a> <a href="javascript:ContentSize(12)">小</a>]
+				</td></tr>
+			</tbody></table>
+<div class="linua"><script type="text/javascript" language="javaScript" src="./Ubuntu_Apache2G_C_Linux_files/linux2.js"></script><a title="尚观Linux" href="http://www.upemb.com/page/uealinuxidc12531.php" target="_blank" wrc_done="true"><img src="./Ubuntu_Apache2G_C_Linux_files/201253120192839760.gif" border="1"></a>&nbsp;<span class="wrc_icon wrc0" rating="{&quot;icon&quot;:&quot;grey0-16.png&quot;,&quot;rating&quot;:0,&quot;weight&quot;:0,&quot;flags&quot;:{}}"></span>
+</div>	
+			<div id="content" style="overflow-x: hidden; word-break: break-all; "><div class="linub"><script type="text/javascript" language="javaScript" src="./Ubuntu_Apache2G_C_Linux_files/linux19.js"></script><script type="text/javascript"><!--
+google_ad_client = "pub-5195587195407606";
+/* 300x250, 创建于 09-12-6 */
+google_ad_slot = "6879159141";
+google_ad_width = 300;
+google_ad_height = 250;
+//-->
+</script>
+<script type="text/javascript" src="./Ubuntu_Apache2G_C_Linux_files/show_ads.js">
+</script><ins style="display:inline-table;border:none;height:250px;margin:0;padding:0;position:relative;visibility:visible;width:300px"><ins id="aswift_0_anchor" style="display:block;border:none;height:250px;margin:0;padding:0;position:relative;visibility:visible;width:300px"><iframe allowtransparency="true" frameborder="0" height="250" hspace="0" marginwidth="0" marginheight="0" onload="var i=this.id,s=window.google_iframe_oncopy,H=s&amp;&amp;s.handlers,h=H&amp;&amp;H[i],w=this.contentWindow,d;try{d=w.document}catch(e){}if(h&amp;&amp;d&amp;&amp;(!d.body||!d.body.firstChild)){if(h.call){i+=&#39;.call&#39;;setTimeout(h,0)}else if(h.match){i+=&#39;.nav&#39;;w.location.replace(h)}s.log&amp;&amp;s.log.push(i)}" scrolling="no" vspace="0" width="300" id="aswift_0" name="aswift_0" style="left:0;position:absolute;top:0;"></iframe></ins></ins>
+</div>	<p>我只学习过c语言，没有学习过prel，网上很多教程都是针对prel的，很少有针对c的。自己在<a href="http://www.linuxidc.com/topicnews.aspx?tid=2" target="_blank" title="Ubuntu">Ubuntu</a>下鼓捣了一下午，也总算是用c成功编写了一个helloworld的cgi，算是cgi入门的第一步。</p>
+<p>一、安装及配置apache服务器</p>
+<p>安装apache2服务器<br>#sudo apt-get install apache2</p>
+<p>配置apache2服务器<br>配置文件位于 /etc/apache2/sites-enabled/000-default<br>用vi打开配置文件：<br>#sudo vi /etc/apache2/sites-enabled/000-default<br>修改其中两句为：<br>DocumentRoot /var/www/html<br>ScriptAlias /cgi-bin/ /var/www/html/cgi-bin/<br>注意其中空格的问题。</p>
+<p>这两个目录你可以自己设定，并且设定的目录要真实存在，如果不存在就 mkdir 出一个。<br>DocumentRoot后面是放HTML文件的目录。<br>ScriptAlias后面是指定/cgi-bin/连接到/var/www/html/cgi-bin/ ，也就是在这个目录中的文件均被认作是cgi程序。<br>例如如果浏览器中访问 http://127.0.0.1/cgi-bin/hello.cgi 就可以执行cgi-bin下的hello.cgi<br>配置完保存。</p>
+<p>重启apache2：<br>#sudo /etc/init.d/apache2 restart</p>
+<p><br>二、编写hello.cgi程序</p>
+<p>在cgi-bin/下新建一个hello.c文件：<br>#sudo vi hello.c<br>在其中写入以下内容：<br>#include &lt;stdio.h&gt;</p>
+<p>int main()</p>
+<p>{<br>printf("Content-Type: text/html\n\n");</p>
+<p>printf("Hello, world\n");</p>
+<p>return 0;<br>}<br>保存退出。</p>
+<p>编译：<br>#sudo gcc hello.c -o hello.cgi<br>这里可以先运行一下<br>#sudo ./hello.cgi<br>看看是不是输出helloworld。</p>
+<p>然后可以在浏览器中键入http://127.0.0.1/cgi-bin/hello.cgi<br>浏览器就可以显示出helloworld了。</p>
+<p>三、权限问题</p>
+<p>我的方法比较野蛮就是把所有相关的文件和目录的权限均设置为777<br>#sudo chmod 777 [文件名或目录]<br>在这里主要是先入个门，以后有时间在慢慢研究权限的问题。</p></div>
+<div class="linu3"><script type="text/javascript" language="javaScript" src="./Ubuntu_Apache2G_C_Linux_files/linux3.js"></script><script type="text/javascript"><!--
+google_ad_client = "ca-pub-5195587195407606";
+/* LinuxIDC.com正文内容下广告位 */
+google_ad_slot = "0155470610";
+google_ad_width = 336;
+google_ad_height = 280;
+//-->
+</script>
+<script type="text/javascript" src="./Ubuntu_Apache2G_C_Linux_files/show_ads.js">
+</script><ins style="display:inline-table;border:none;height:280px;margin:0;padding:0;position:relative;visibility:visible;width:336px"><ins id="aswift_1_anchor" style="display:block;border:none;height:280px;margin:0;padding:0;position:relative;visibility:visible;width:336px"><iframe allowtransparency="true" frameborder="0" height="280" hspace="0" marginwidth="0" marginheight="0" onload="var i=this.id,s=window.google_iframe_oncopy,H=s&amp;&amp;s.handlers,h=H&amp;&amp;H[i],w=this.contentWindow,d;try{d=w.document}catch(e){}if(h&amp;&amp;d&amp;&amp;(!d.body||!d.body.firstChild)){if(h.call){i+=&#39;.call&#39;;setTimeout(h,0)}else if(h.match){i+=&#39;.nav&#39;;w.location.replace(h)}s.log&amp;&amp;s.log.push(i)}" scrolling="no" vspace="0" width="336" id="aswift_1" name="aswift_1" style="left:0;position:absolute;top:0;"></iframe></ins></ins>
+</div>			
+			
+			
+		</div>
+	
+		<div style="padding:0 15px">
+			<ul id="digg" class="digg">
+				<li class="digg1">0</li>
+				<li class="digg2"><a href="http://www.linuxidc.com/Linux/2010-11/29790.htm###" onclick="iwms.diggIt(this,iwms.aId)">顶一下</a></li>
+			</ul>
+	
+<div align="center"><script type="text/javascript" language="javaScript" src="./Ubuntu_Apache2G_C_Linux_files/fx.js"></script><!-- Baidu Button BEGIN -->
+    <div id="bdshare" class="bdshare_t bds_tools_32 get-codes-bdshare">
+        <a class="bds_qzone" title="分享到QQ空间" href="http://www.linuxidc.com/Linux/2010-11/29790.htm#"></a>
+        <a class="bds_tsina" title="分享到新浪微博" href="http://www.linuxidc.com/Linux/2010-11/29790.htm#"></a>
+        <a class="bds_baidu" title="分享到百度搜藏" href="http://www.linuxidc.com/Linux/2010-11/29790.htm#"></a>
+        <a class="bds_tqq" title="分享到腾讯微博" href="http://www.linuxidc.com/Linux/2010-11/29790.htm#"></a>
+        <a class="bds_renren" title="分享到人人网" href="http://www.linuxidc.com/Linux/2010-11/29790.htm#"></a>
+        <span class="bds_more">更多</span>
+		<a class="shareCount" href="http://www.linuxidc.com/Linux/2010-11/29790.htm#" title="累计分享0次">0</a>
+    </div>
+<script type="text/javascript" id="bdshare_js" data="type=tools" src="./Ubuntu_Apache2G_C_Linux_files/bds_s_v2.js"></script>
+<script type="text/javascript" id="bdshell_js" src="./Ubuntu_Apache2G_C_Linux_files/shell_v2.js"></script>
+<script type="text/javascript">
+	document.getElementById("bdshell_js").src = "http://bdimg.share.baidu.com/static/js/shell_v2.js?t=" + new Date().getHours();
+</script>
+<!-- Baidu Button END -->
+<p>&nbsp;</p>
+</div>
+		</div>
+<div class="linu8"><script type="text/javascript" language="javaScript" src="./Ubuntu_Apache2G_C_Linux_files/linux8.js"></script></div>		
+		<div class="nearNews">
+			<div class="prevNews"><a href="http://www.linuxidc.com/Linux/2010-11/29770.htm">Ubuntu Apache 伪静态配置 url重写</a></div>
+			<div class="nextNews"><a href="http://www.linuxidc.com/Linux/2010-11/29800.htm">Ubuntu下配置phpMyAdmin提示无法载入mcrypt扩展，请检查PHP配置</a></div>
+		</div>
+	</div>
+	</div>
+	<div class="bl"></div>
+	<div class="br"></div>
+	<div class="bm"></div>
+	</div>
+	
+	<div class="mframe mR">
+	<div class="tl"></div>
+	<div class="tr"></div>
+	<div class="tm">
+		<span class="tt">相关资讯</span> &nbsp; &nbsp; &nbsp;
+		<a href="http://www.linuxidc.com/search.aspx?where=nkey&keyword=114" target="_blank">Apache</a>&nbsp; <a href="http://www.linuxidc.com/search.aspx?where=nkey&keyword=2699" target="_blank">apache2</a>&nbsp; 
+	</div>
+	<div class="wrapper">
+	<div class="ml"></div>
+	<div class="mr"></div>
+	<div class="mm">
+		<table width="100%"><tbody><tr><td width="50%" valign="top"><ul class="nl"><li><a href="http://www.linuxidc.com/Linux/2012-10/72201.htm" target="_blank">Apache MINA 2.0.7 发布</a>&nbsp; <span class="gray">(10月13日)</span></li>
+<li><a href="http://www.linuxidc.com/Linux/2012-10/72055.htm" target="_blank">Apache Camel 2.10 发布</a>&nbsp; <span class="gray">(10月10日)</span></li>
+<li><a href="http://www.linuxidc.com/Linux/2012-10/71862.htm" target="_blank" title="Apache JMeter 2.8 发布，压力测试工具">Apache JMeter 2.8 发布，压力测试</a>&nbsp; <span class="gray">(10月07日)</span></li>
+</ul></td><td width="50%" valign="top"><ul class="nl"><li><a href="http://www.linuxidc.com/Linux/2012-10/72056.htm" target="_blank" title="Apache TomEE 1.5 发布，企业版 Tomcat">Apache TomEE 1.5 发布，企业版 </a>&nbsp; <span class="gray">(10月10日)</span></li>
+<li><a href="http://www.linuxidc.com/Linux/2012-10/71909.htm" target="_blank" title="Apache Archiva 1.4-M3 发布，远程存储管理">Apache Archiva 1.4-M3 发布，远程</a>&nbsp; <span class="gray">(10月08日)</span></li>
+<li><a href="http://www.linuxidc.com/Linux/2012-10/71861.htm" target="_blank" title="Apache Rave 0.16 发布，社交混搭引擎">Apache Rave 0.16 发布，社交混搭</a>&nbsp; <span class="gray">(10月07日)</span></li>
+</ul></td></tr></tbody></table>
+	</div>
+	</div>
+	<div class="bl"></div>
+	<div class="br"></div>
+	<div class="bm"></div>
+	</div>
+
+	<div class="mframe mR">
+	<div class="tl"></div>
+	<div class="tr"></div>
+	<div class="tm">
+		<span class="tt">图片资讯</span> &nbsp; &nbsp; &nbsp;
+	</div>
+	<div class="wrapper">
+	<div class="ml"></div>
+	<div class="mr"></div>
+	<div class="mm">
+<div class="imgList"><ul><li style="width:25%"><a href="http://www.linuxidc.com/Linux/2012-10/71862.htm" target="_blank" title="Apache JMeter 2.8 发布，压力测试工具"><img src="./Ubuntu_Apache2G_C_Linux_files/121007091278891t.jpg" alt="Apache JMeter 2.8 发布，压力测试工具" width="120" height="90">Apache JMeter 2.8 发</a></li><li style="width:25%"><a href="http://www.linuxidc.com/Linux/2012-07/66758.htm" target="_blank" title="Activiti - 新一代的开源 BPM 引擎"><img src="./Ubuntu_Apache2G_C_Linux_files/120730102146191t.jpg" alt="Activiti - 新一代的开源 BPM 引擎" width="120" height="90">Activiti - 新一代的</a></li><li style="width:25%"><a href="http://www.linuxidc.com/Linux/2012-04/59001.htm" target="_blank"><img src="./Ubuntu_Apache2G_C_Linux_files/120421104118311t.jpg" alt="Apache Shiro 介绍" width="120" height="90">Apache Shiro 介绍</a></li><li style="width:25%"><a href="http://www.linuxidc.com/Linux/2012-04/59000.htm" target="_blank"><img src="./Ubuntu_Apache2G_C_Linux_files/120421103965351t.jpg" alt="Apache Shiro 授权" width="120" height="90">Apache Shiro 授权</a></li><li style="width:25%"><a href="http://www.linuxidc.com/Linux/2012-02/55208.htm" target="_blank" title="Apache Ofbiz10.04 改用MySQL数据库配置"><img src="./Ubuntu_Apache2G_C_Linux_files/120225161952001t.jpg" alt="Apache Ofbiz10.04 改用MySQL数据库配置" width="120" height="90">Apache Ofbiz10.04 改</a></li><li style="width:25%"><a href="http://www.linuxidc.com/Linux/2012-02/54779.htm" target="_blank" title="PHP的安装以及验证Apache"><img src="./Ubuntu_Apache2G_C_Linux_files/120220132862321t.jpg" alt="PHP的安装以及验证Apache" width="120" height="90">PHP的安装以及验证</a></li><li style="width:25%"><a href="http://www.linuxidc.com/Linux/2012-02/54389.htm" target="_blank" title="Apache多站点配置及Piwik的部署"><img src="./Ubuntu_Apache2G_C_Linux_files/120216092318551t.jpg" alt="Apache多站点配置及Piwik的部署" width="120" height="90">Apache多站点配置及</a></li><li style="width:25%"><a href="http://www.linuxidc.com/Linux/2012-02/54328.htm" target="_blank" title="用Apache James搭建本地邮件服务器"><img src="./Ubuntu_Apache2G_C_Linux_files/120215162321093t.jpg" alt="用Apache James搭建本地邮件服务器" width="120" height="90">用Apache James搭建本</a></li></ul></div>
+	</div>
+	</div>
+	<div class="bl"></div>
+	<div class="br"></div>
+	<div class="bm"></div>
+	</div>
+	
+	
+	<div class="mframe mR">
+	<div class="tl"></div>
+	<div class="tr"></div>
+	<div class="tm">
+		<span class="tt">本文评论</span>
+		 	　　<a href="http://www.linuxidc.com/remark.aspx?id=29790" target="_blank">查看全部评论</a> <span class="gray">(0)</span>
+	</div>
+	<div class="wrapper">
+	<div class="ml"></div>
+	<div class="mr"></div>
+	<div class="mm">
+		<table width="100%" style="margin:6px">
+		<tbody><tr><td width="300">
+			<form action="" name="fmRemarkSt" onsubmit="return remark.post(this);">
+			<input type="hidden" value="1" name="face">
+			表情： <img src="./Ubuntu_Apache2G_C_Linux_files/b.gif" alt="表情" class="face1" style="cursor:pointer;vertical-align:middle" onclick="remark.dispFace(this)" onmouseout="remark.hideFace()">
+			姓名： <input type="text" name="username" value="" maxlength="15" style="width:60px" class="inputbg" disabled="disabled">
+			<input type="checkbox" id="rmAnonymitySt" onclick="remark.anony(this)"><label for="rmAnonymitySt">匿名</label>
+			字数 <input type="text" id="bodyLen" size="3" readonly="readonly" style="border-width:0;background:transparent;vertical-align:middle" value="0">
+			<br>
+			点评：
+				<textarea name="body" cols="40" rows="4" onkeydown="remark.dispLen(this)" onkeyup="remark.handle(event,this);remark.dispLen(this)" style="width:20em;height:60px;margin:3px 0;overflow-y:auto"></textarea>
+				<br>
+		　　　<input type="checkbox" checked="checked" id="rmAgreeSt"><label for="rmAgreeSt">同意评论声明</label>
+		　　　<button type="submit" style="width:50px">发表</button>
+			</form>
+		</td><td>
+			评论声明
+			<ul style="list-style-type:square;margin:5px 0 0 1em;padding:0">
+			<li>尊重网上道德，遵守中华人民共和国的各项有关法律法规</li>
+			<li>承担一切因您的行为而直接或间接导致的民事或刑事法律责任</li>
+			<li>本站管理人员有权保留或删除其管辖留言中的任意内容</li>
+			<li>本站有权在网站内转载或引用您的评论</li>
+			<li>参与本评论即表明您已经阅读并接受上述条款</li>
+			</ul>
+		</td></tr>
+		</tbody></table>
+		<script type="text/javascript" src="./Ubuntu_Apache2G_C_Linux_files/remark.js"></script>
+		<script type="text/javascript">
+			remark.maxSize=1000;
+			remark.minSize=2;
+			remark.sourceEle=$(document.fmRemarkSt).find("button").get(0);
+			iwms.vCode="31E1F88C";
+			iwms.user.name.length==0 ? $i("rmAnonymitySt").click() : $i("rmAnonymitySt").form.username.value=iwms.user.name;
+		</script>
+		
+		<div class="reCont" id="reContainer"></div>
+	</div>
+	</div>
+	<div class="bl"></div>
+	<div class="br"></div>
+	<div class="bm"></div>
+	</div>
+	
+</td><td width="300" valign="top">
+<div class="linuzs"><script type="text/javascript" language="javaScript" src="./Ubuntu_Apache2G_C_Linux_files/jquery.js"></script></div>
+<div class="linuzs"><script type="text/javascript" language="javaScript" src="./Ubuntu_Apache2G_C_Linux_files/linuxgif.js"></script><script type="text/javascript">/*300*250，创建于2011-6-22*/ var cpro_id = 'u516543';</script><script src="./Ubuntu_Apache2G_C_Linux_files/c.js" type="text/javascript"></script><script type="text/javascript" charset="utf-8" src="./Ubuntu_Apache2G_C_Linux_files/ecom(1)"></script><div style="display:none">-</div> <iframe id="cproIframe2" src="./Ubuntu_Apache2G_C_Linux_files/uijs(2).htm" width="300" height="250" align="center,center" marginwidth="0" marginheight="0" scrolling="no" frameborder="0" allowtransparency="true"></iframe>
+</div>	
+	<div class="lframe">
+	<div class="tl"></div>
+	<div class="tr"></div>
+	<div class="tm">
+		<span class="tt">Digg排行</span>
+	</div>
+	<div class="wrapper">
+	<div class="ml"></div>
+	<div class="mr"></div>
+	<div class="mm">
+		<ul class="dnl">
+<li><a href="http://www.linuxidc.com/Linux/2012-10/72749.htm" target="_blank"><span class="diggN">1</span>CentOS6.3网卡配置</a></li>
+<li><a href="http://www.linuxidc.com/Linux/2012-10/72661.htm" target="_blank" title="mod_pagespeed：让你的网站跑到更快"><span class="diggN">1</span>mod_pagespeed：让你的网站跑到</a></li>
+<li><a href="http://www.linuxidc.com/Linux/2012-10/72327.htm" target="_blank"><span class="diggN">1</span>Ubuntu KVM Client OS创建</a></li>
+<li><a href="http://www.linuxidc.com/Linux/2012-10/72257.htm" target="_blank" title="HA 高可用性群集--(heartbeat,LVA-DR,ldirectord)"><span class="diggN">1</span>HA 高可用性群集--(heartbeat,</a></li>
+<li><a href="http://www.linuxidc.com/Linux/2012-09/71470.htm" target="_blank"><span class="diggN">1</span>创建CA颁发证书</a></li>
+<li><a href="http://www.linuxidc.com/Linux/2012-09/71380.htm" target="_blank"><span class="diggN">1</span>LAMP--源码MySQL集群版搭建</a></li>
+<li><a href="http://www.linuxidc.com/Linux/2012-09/71287.htm" target="_blank"><span class="diggN">1</span>Nagios之安装篇</a></li>
+<li><a href="http://www.linuxidc.com/Linux/2012-09/71215.htm" target="_blank"><span class="diggN">1</span>Hive安装配置</a></li>
+<li><a href="http://www.linuxidc.com/Linux/2012-09/70646.htm" target="_blank" title="Nginx+Keepalived主主负载均衡服务器"><span class="diggN">1</span>Nginx+Keepalived主主负载均衡服</a></li>
+<li><a href="http://www.linuxidc.com/Linux/2012-09/70641.htm" target="_blank"><span class="diggN">1</span>Linux下的Pure-FTPd搭建</a></li>
+</ul>
+	</div>
+	</div>
+	<div class="bl"></div>
+	<div class="br"></div>
+	<div class="bm"></div>
+	</div>
+<div class="linuzb"><script type="text/javascript" language="javaScript" src="./Ubuntu_Apache2G_C_Linux_files/linux16.js"></script></div>
+<div class="linuzb"><script type="text/javascript" language="javaScript" src="./Ubuntu_Apache2G_C_Linux_files/linux18.js"></script><a title="Oracle" href="http://www.linuxidc.com/Linux/2012-07/66157.htm" target="_blank"><img src="./Ubuntu_Apache2G_C_Linux_files/20127232058790938.jpg" border="0"></a>
+<a href="http://www.linuxidc.net/" target="_blank" wrc_done="true"><img height="90" alt="LinuxIDC" src="./Ubuntu_Apache2G_C_Linux_files/linuxidcnet.png" width="300"></a>&nbsp;<span class="wrc_icon wrc0" rating="{&quot;icon&quot;:&quot;grey0-16.png&quot;,&quot;rating&quot;:0,&quot;weight&quot;:0,&quot;flags&quot;:{}}"></span>
+<a href="http://www.linuxidc.com/search.aspx?Where=Nkey&Keyword=Ubuntu+11.10" target="_blank"><img height="90" alt="Ubuntu" src="./Ubuntu_Apache2G_C_Linux_files/ubuntu910.jpg" width="300"></a>
+<a href="http://www.linuxidc.com/topicnews.aspx?tid=2" target="_blank"><img height="139" src="./Ubuntu_Apache2G_C_Linux_files/ubuntuone.gif" width="300"></a>
+</div>
+	
+	<div class="lframe">
+	<div class="tl"></div>
+	<div class="tr"></div>
+	<div class="tm">
+		<span class="tt">最新资讯</span>
+	</div>
+	<div class="wrapper">
+	<div class="ml"></div>
+	<div class="mr"></div>
+	<div class="mm">
+		<ul class="nl">
+<li><a href="http://www.linuxidc.com/Linux/2012-10/73006.htm" target="_blank">Node.js 0.8.14 发布（稳定版）</a></li>
+<li><a href="http://www.linuxidc.com/Linux/2012-10/73005.htm" target="_blank">HttpComponents HttpClient 4.2.2 GA 发布</a></li>
+<li><a href="http://www.linuxidc.com/Linux/2012-10/73004.htm" target="_blank">Java的HTTP协议库 HttpComponents</a></li>
+<li><a href="http://www.linuxidc.com/Linux/2012-10/73003.htm" target="_blank">C语言中extern关键字的使用</a></li>
+<li><a href="http://www.linuxidc.com/Linux/2012-10/73002.htm" target="_blank">Ubuntu下面C语言数组的动态分配</a></li>
+<li><a href="http://www.linuxidc.com/Linux/2012-10/73001.htm" target="_blank">Smuxi 0.8.10 发布 - IRC 客户端软件</a></li>
+<li><a href="http://www.linuxidc.com/Linux/2012-10/73000.htm" target="_blank" title="SVN Access Manager 0.5.5.14 发布 - SVN 管理工具">SVN Access Manager 0.5.5.14 发布 - SVN 管理</a></li>
+<li><a href="http://www.linuxidc.com/Linux/2012-10/72999.htm" target="_blank">Code Browser 4.4 发布 - 代码编辑器</a></li>
+<li><a href="http://www.linuxidc.com/Linux/2012-10/72998.htm" target="_blank">ViewVC 1.1.17 发布 - SVN Web 界面</a></li>
+<li><a href="http://www.linuxidc.com/Linux/2012-10/72997.htm" target="_blank">TCPDF 5.9.195 发布 - PHP PDF 生成工具</a></li>
+<li><a href="http://www.linuxidc.com/Linux/2012-10/72996.htm" target="_blank">DynamicReports 3.0.3 发布 - Java 报表工具</a></li>
+<li><a href="http://www.linuxidc.com/Linux/2012-10/72995.htm" target="_blank">MediaWiki 1.19.2 发布 - 开源 Wiki 系统</a></li>
+</ul>
+	</div>
+	</div>
+	<div class="bl"></div>
+	<div class="br"></div>
+	<div class="bm"></div>
+	</div>
+
+	<div class="lframe">
+	<div class="tl"></div>
+	<div class="tr"></div>
+	<div class="tm">
+		<span class="tt">本周热门</span>
+	</div>
+	<div class="wrapper">
+	<div class="ml"></div>
+	<div class="mr"></div>
+	<div class="mm">
+		<ul class="nl">
+<li><a href="http://www.linuxidc.com/Linux/2010-08/27874.htm" target="_blank">解决Nginx 504 Gateway Time-out的一些方法</a></li>
+<li><a href="http://www.linuxidc.com/Linux/2010-05/26203.htm" target="_blank" title="Apache无法启动解决 the requested operation has failed">Apache无法启动解决 the requested operation </a></li>
+<li><a href="http://www.linuxidc.com/Linux/2012-02/53927.htm" target="_blank">单机版搭建Hadoop环境图文教程详解</a></li>
+<li><a href="http://www.linuxidc.com/Linux/2010-02/24349.htm" target="_blank">Ubuntu开启ssh服务</a></li>
+<li><a href="http://www.linuxidc.com/Linux/2012-05/61079.htm" target="_blank">Ubuntu 12.04下LAMP安装配置</a></li>
+<li><a href="http://www.linuxidc.com/Linux/2010-07/27230.htm" target="_blank">Ubuntu 10.04配置Apache+PHP+MySQL</a></li>
+<li><a href="http://www.linuxidc.com/Linux/2012-02/55507.htm" target="_blank" title="最新版的SSH框整合（Spring 3.1.1 + Struts 2.3.1.2 + Hibernate 4.1）">最新版的SSH框整合（Spring 3.1.1 + Struts 2.3</a></li>
+<li><a href="http://www.linuxidc.com/Linux/2009-05/20246.htm" target="_blank">Ubuntu下SVN+Apache版本管理服务器配置[图文]</a></li>
+<li><a href="http://www.linuxidc.com/Linux/2012-10/72095.htm" target="_blank">自己搭建家庭“云”</a></li>
+<li><a href="http://www.linuxidc.com/Linux/2010-03/24820.htm" target="_blank">Ubuntu网络设置详解</a></li>
+<li><a href="http://www.linuxidc.com/Linux/2007-09/7738.htm" target="_blank">sendmail配置</a></li>
+<li><a href="http://www.linuxidc.com/Linux/2012-05/60035.htm" target="_blank" title="LNAMP第二版（Nginx 1.2.0+Apache 2.4.2+PHP 5.4）">LNAMP第二版（Nginx 1.2.0+Apache 2.4.2+PHP 5.</a></li>
+</ul>
+	</div>
+	</div>
+	<div class="bl"></div>
+	<div class="br"></div>
+	<div class="bm"></div>
+	</div>
+	
+</td></tr>
+</tbody></table>
+<div id="footer">
+<palign="center">
+<a href="http://www.linuxidc.com/aboutus.htm">Linux公社简介</a> - <a href="http://www.linuxidc.com/adsense.htm">广告服务</a> - <a href="http://www.linuxidc.com/sitemap.aspx">网站地图</a> - <a href="http://www.linuxidc.com/help.htm">帮助信息</a> - <a href="http://www.linuxidc.com/contactus.htm">联系我们</a><br>本站（LinuxIDC）所刊载文章不代表同意其说法或描述，仅为提供更多信息，也不构成任何建议。<br><script type="text/javascript" language="javaScript" src="./Ubuntu_Apache2G_C_Linux_files/qq.js"></script>主编：漏网的鱼 (QQ:3165270) 联系邮箱:<img src="./Ubuntu_Apache2G_C_Linux_files/email.png">   (如有版权及广告合作请联系)
+<br>
+<script type="text/javascript" language="javaScript" src="./Ubuntu_Apache2G_C_Linux_files/foot.js"></script>本站带宽由[<a href="http://www.6688.cc/" wrc_done="true"><font color="red">6688.CC</font></a>&nbsp;<span class="wrc_icon wrc0" rating="{&quot;icon&quot;:&quot;grey0-16.png&quot;,&quot;rating&quot;:0,&quot;weight&quot;:0,&quot;flags&quot;:{}}"></span>]友情提供<br>关注Linux，关注LinuxIDC.com，<font color="red">请向您的QQ好友宣传LinuxIDC.com</font>，多谢支持！
+<br>Copyright © 2006-2011　<a href="http://www.linuxidc.com/">Linux公社</a>　All rights reserved 浙ICP备06018118号<p></p>
+	   <script type="text/javascript">iwms.aId=29790;$(function(){iwms.imgCont=$i('content');iwms.imgResize();InitContStyle();iwms.getVars();})</script>
+	
+</palign="center"></div>
+</div>
+<script type="text/javascript" language="javaScript" src="./Ubuntu_Apache2G_C_Linux_files/linuxren1.js"></script><script type="text/javascript">
+document.body.oncopy = function () { setTimeout( function () { var text = clipboardData.getData("text"); if (text) { text = text + "\r\n本篇文章来源于 Linux公社网站(www.linuxidc.com)  原文链接："+location.href; clipboardData.setData("text", text); } }, 100 ) }
+</script>
+
+<script type="text/javascript" language="javaScript" src="./Ubuntu_Apache2G_C_Linux_files/linuxren2.js"></script><script type="text/javascript">/*Linux������������120*270��������2012-7-31*/ var cpro_id = 'u1004368';</script><script src="./Ubuntu_Apache2G_C_Linux_files/f.js" type="text/javascript"></script><script type="text/javascript" charset="utf-8" src="./Ubuntu_Apache2G_C_Linux_files/ecom(2)"></script>
+
+<script type="text/javascript" language="javaScript" src="./Ubuntu_Apache2G_C_Linux_files/linuxren3.js"></script><script src="./Ubuntu_Apache2G_C_Linux_files/h.js" type="text/javascript"></script>
+
+<div id="pop_ajax" class="aj_msg aj_msgTop" style="top: 0px; left: 633px; display: none; z-index: 100; ">成功接收数据</div><div style="padding: 0px; display: block; visibility: visible; border: none; background-image: none; float: none; overflow: hidden; position: fixed; z-index: 2147483647; width: 124px; height: 299px; line-height: 299px; right: 65px; top: 150px; background-position: initial initial; background-repeat: initial initial; " id="cproIframe3holder"><div style="padding: 0px; display: block; visibility: visible; border: none; background-image: none; float: none; overflow: hidden; width: 100%; height: 100%; background-position: initial initial; background-repeat: initial initial; "><div style="display:none">-</div> <iframe id="cproIframe3" src="./Ubuntu_Apache2G_C_Linux_files/uijs(1).htm" width="124" height="299" align="center,center" marginwidth="0" marginheight="0" scrolling="no" frameborder="0" allowtransparency="true"></iframe></div><div style="padding: 0px; display: block; visibility: visible; border: none; background-color: rgb(255, 255, 255); float: none; overflow: hidden; height: 20px; line-height: 20px; position: absolute; text-decoration: none; color: rgb(51, 51, 51); text-align: left; font-size: 14px; font-family: simsun, arial; cursor: pointer; opacity: 0; width: 50px; right: 0px; bottom: 0px; background-position: initial initial; background-repeat: initial initial; ">&nbsp;</div></div><div style="padding: 0px; display: block; visibility: visible; border: none; background-image: none; float: none; overflow: hidden; position: fixed; z-index: 2147483647; width: 124px; height: 299px; line-height: 299px; left: 65px; top: 150px; background-position: initial initial; background-repeat: initial initial; " id="cproIframe4holder"><div style="padding: 0px; display: block; visibility: visible; border: none; background-image: none; float: none; overflow: hidden; width: 100%; height: 100%; background-position: initial initial; background-repeat: initial initial; "><div style="display:none">-</div> <iframe id="cproIframe4" src="./Ubuntu_Apache2G_C_Linux_files/uijs.htm" width="124" height="299" align="center,center" marginwidth="0" marginheight="0" scrolling="no" frameborder="0" allowtransparency="true"></iframe></div><div style="padding: 0px; display: block; visibility: visible; border: none; background-color: rgb(255, 255, 255); float: none; overflow: hidden; height: 20px; line-height: 20px; position: absolute; text-decoration: none; color: rgb(51, 51, 51); text-align: left; font-size: 14px; font-family: simsun, arial; cursor: pointer; opacity: 0; width: 50px; right: 0px; bottom: 0px; background-position: initial initial; background-repeat: initial initial; ">&nbsp;</div></div><div id="wrchoverdiv"><div id="wrccontainer"><div id="wrcheader"><div id="wrctitle"> WebRep</div></div><div class="wrchorizontal"></div><div id="wrccurrentvote">總體評價</div><div class="wrchorizontal"></div><div id="wrcrating"></div><div id="wrcratingtext">此網站沒有任何評價資訊</div><div id="wrcweighttext">（票數不足）</div><div id="wrcflags"><div id="wrcicon_shopping" class="wrcicon"></div><div id="wrcicon_social" class="wrcicon"></div><div id="wrcicon_news" class="wrcicon"></div><div id="wrcicon_it" class="wrcicon"></div><div id="wrcicon_corporate" class="wrcicon"></div><div id="wrcicon_pornography" class="wrcicon"></div><div id="wrcicon_violence" class="wrcicon"></div><div id="wrcicon_gambling" class="wrcicon"></div><div id="wrcicon_drugs" class="wrcicon"></div><div id="wrcicon_illegal" class="wrcicon"></div></div><div class="wrchorizontal"></div></div></div><iframe style="position: absolute; width: 100px; height: 1px; z-index: -10240; visibility: hidden; " src="./Ubuntu_Apache2G_C_Linux_files/e.htm"></iframe></body><span id="skype_highlighting_settings" display="none" autoextractnumbers="1"></span><object id="skype_plugin_object" location.href="http://www.linuxidc.com/Linux/2010-11/29790.htm" location.hostname="www.linuxidc.com" style="position: absolute; visibility: hidden; left: -100px; top: -100px; " width="0" height="0" type="application/x-vnd.skype.toolbars.npplugin.4.2.0"></object></html>

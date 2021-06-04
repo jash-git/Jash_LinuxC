@@ -1,0 +1,27 @@
+<html>#include <cppscript>
+
+var counter1_reset(var counter1)
+{
+	counter1["value"]=0;
+}
+
+var counter1_get(var counter1)
+{
+	return counter1["value"]++;
+}
+
+var counter1(var initial_value)
+{
+	return object("counter1").extend
+		("reset", counter1_reset)
+		("get", counter1_get)
+		("value", initial_value);
+}
+
+var script_main(var)
+{
+	var counter = counter1(1);
+	writeln( counter["get"]() );
+	writeln( counter["get"]() );
+	return 0;
+}

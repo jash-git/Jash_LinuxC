@@ -1,0 +1,11 @@
+float bessi0(float );
+float bessi1(float );
+float bessj(int ,float );
+float bessj0(float );
+float bessj1(float x);
+float bessk(int ,float );
+float bessk0(float );
+float bessk1(float );
+float beta(float ,float );
+float gammln(float );
+long julday(int ,int ,int );

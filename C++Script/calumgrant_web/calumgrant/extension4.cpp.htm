@@ -1,0 +1,44 @@
+<html>#include <cppscript>
+#include <dynamic/extensions.hpp>
+
+class Counter : public var_impl
+{
+	int value;
+public:
+	Counter( var initial_value ) : value(initial_value)
+	{
+	}
+
+	int as_int() 
+	{ 
+		return value++; 
+	}
+
+	void clear() 
+	{ 
+		value=0; 
+	}
+
+	void copy_to(void*p) const
+	{
+		new(p) Counter(*this);
+	}
+
+	std::string class_name()
+	{
+		return "Counter";
+	}
+};
+
+var counter4(var initial_value)
+{
+	return create_impl( Counter(initial_value) );
+}
+
+var script_main(var)
+{
+	var counter = counter4(1);
+	writeln( counter.as_int() );
+	writeln( counter.as_int() );
+	return 0;
+}

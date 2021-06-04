@@ -1,0 +1,48 @@
+<html>#include <cppscript>
+
+void clear_history(var history) { history["list"].clear(); }
+enable_pickle(clear_history);
+
+void add_history(var history, var line) { history["list"].push_back(line); }
+enable_pickle(add_history);
+
+void print_history(var history)
+{
+	if(history["list"])
+		foreach( line, history["list"] ) writeln(line);
+	else
+		writeln("(history is empty)");
+}
+enable_pickle(print_history);
+
+var command_history()
+{
+	return object("command_history").extend
+		("clear", clear_history)
+		("add", add_history)
+		("print", print_history)
+		("list", array());
+}
+
+var script_main(var lines)
+{
+	var history;
+
+	try 
+	{ 
+		history=unpickle_file("history.dat"); 
+	}
+	catch(var) 
+	{ 
+		history = command_history(); 
+	} 
+
+	if(lines[0] == "clear") 
+		history["clear"]();
+	else 
+		foreach(line, lines) history["add"](line);
+
+	history["print"]();
+	pickle_file("history.dat", history);
+	return 0;
+}

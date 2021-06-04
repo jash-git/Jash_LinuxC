@@ -1,0 +1,33 @@
+<html>#include <cppscript>
+
+void counter_add(var counter, var value)
+{
+	counter["total"] += value;
+}
+
+var counter()
+{
+	return object("counter").extend
+		("total", 0)
+		("add", counter_add);
+}
+
+var script_main(var)
+{
+	// Set up
+	var counter1 = counter();
+	var queue1 = message_queue(counter1["add"]);
+	finally(queue1["close"]);	// Join the thread
+	counter1["queued_add"] = queue1["post"];
+
+	// Queue the data
+	foreach(i, range(1,1000)) counter1["queued_add"](i);
+
+	// Wait for the queue to process all items
+	queue1["wait"]();
+
+	// Finish
+	writeln( "The total is " + counter1["total"] );
+	return 0;
+}
+

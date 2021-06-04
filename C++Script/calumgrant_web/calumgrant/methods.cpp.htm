@@ -1,0 +1,25 @@
+<html>#include <cppscript>
+
+var growth_rate(var tree) { return tree["height"]/tree["age"]; }
+
+void grow(var tree, var height) { tree["height"] += height; }
+
+var tree(var species, var height, var age)
+{
+	var tree = object();
+	tree["species"] = species;
+	tree["height"] = height;
+	tree["age"] = age;
+	tree["growth_rate"] = growth_rate; // Equivalent to bind(growth_rate, tree);
+	tree["grow"] = grow; // Equivalent to bind(grow, tree)
+	return tree;
+}
+
+var script_main(var args)
+{
+	var oak = tree("oak", 10, 2);
+	writeln( oak["growth_rate"]() ); // 5
+	oak["grow"](2);
+	writeln( oak["growth_rate"]() ); // 6
+	return 0;
+}

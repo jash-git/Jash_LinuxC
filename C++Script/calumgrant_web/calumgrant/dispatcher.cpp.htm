@@ -1,0 +1,42 @@
+<html>#include <cppscript>
+
+var counter_get(var c) { return c["value"]++; }
+
+var counter(var value) 
+{
+	return object("counter").extend
+		("value", value)
+		("get", counter_get);
+}
+
+var multicounter_get(var multicounter, var counter_name)
+{
+	return multicounter["counters"][counter_name]["get"]();
+}
+
+void multicounter_set(var multicounter, var counter_name, var value)
+{
+	multicounter["counters"][counter_name] = counter(value);
+}
+
+var multicounter()
+{
+	return dispatcher( 
+		object("multicounter").extend
+			("counters", map())
+			("get_member", multicounter_get)
+			("set_member", multicounter_set)
+		);
+}
+
+var script_main(var)
+{
+	var counters = multicounter();
+	counters["c1"] = 0;
+	counters["c2"] = 10;
+	writeln( counters["c1"] );  // 0
+	writeln( counters["c2"] );  // 10
+	writeln( counters["c1"] );  // 1
+	writeln( counters["c2"] );  // 11
+	return 0;
+}
