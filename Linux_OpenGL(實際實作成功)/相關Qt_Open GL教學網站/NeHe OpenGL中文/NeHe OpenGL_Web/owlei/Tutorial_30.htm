@@ -1,0 +1,615 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<!-- 这篇文章由Dancingwind翻译，作者的联系方式zhouwei02@mails.tsinghua.edu.cn -->
+
+<html>
+<head>
+<title>NeHe OpenGL教程第三十课，DancingWind翻译</title>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<style type=text/css>
+A:link {COLOR: #ccaaff; TEXT-DECORATION: none}
+A:visited {COLOR: #ccaaff; TEXT-DECORATION: none}
+A:active {COLOR: #ccaaff; TEXT-DECORATION: none}
+A:hover {COLOR: #ffccaa; TEXT-DECORATION: none}
+</style>
+</head>
+
+<br><br>
+
+<body bgcolor=#000000 text=#ffffff><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td width=326 height=130><img src="logo.png" tppabs="http://www.owlei.com/DancingWind/Pic/logo.png" width=326 height=130></td>
+    <td valign=middle align=center width="75%"><font color=#ffccaa size=+3><b><i>第30课</i></b></font></td>
+  </tr></table>
+  <!-- 上边框-->
+<table border="0" cellPadding="0" cellSpacing="0" width="100%">
+<TBODY>
+  <tr>
+    <td><img height="28" src="tl.jpg" tppabs="http://www.owlei.com/DancingWind/Pic/tl.jpg" width="28"></td>
+    <td width="100%"><img height="28" src="tc.gif" tppabs="http://www.owlei.com/DancingWind/Pic/tc.gif" width="100%"></td>
+    <td><img height="28" src="tr.gif" tppabs="http://www.owlei.com/DancingWind/Pic/tr.gif" width="28"></td>
+  </tr>
+</TBODY>
+</table>
+
+<!-- 中部-->
+<table border="0" cellPadding="0" cellSpacing="0" width="100%">
+<TBODY>
+  <tr>
+  	<!-- 中部左边框-->
+    <td  background="l.gif" tppabs="http://www.owlei.com/DancingWind/Pic/l.gif"><img src="l.gif" tppabs="http://www.owlei.com/DancingWind/Pic/l.gif" width="28" height="28"></td>
+	<!-- 中部文字部分-->
+    <td vAlign="top" width="100%">
+	<table width="100%" border="0">
+          <tr>
+            <td width="28%"><img src="lesson30.jpg" tppabs="http://www.owlei.com/DancingWind/Pic/lesson30.jpg" width="240" height="180"></td>
+            <td width="72%"><p><FONT class=head>碰撞检测:</FONT></p>
+              <p><font size="3">这是一课激动的教程，你也许等待它多时了。你将学会碰撞剪裁，物理模拟太多的东西，慢慢期待吧。</FONT></p></td>
+          </tr>
+     </table>
+      </td>
+	<!-- 中部右边框-->
+    <td background="r.gif" tppabs="http://www.owlei.com/DancingWind/Pic/r.gif"><img src="r.gif" tppabs="http://www.owlei.com/DancingWind/Pic/r.gif" width="28" height="28"></td>
+  </tr>
+</TBODY>
+</table>
+
+<!-- 下边框-->
+<table border="0" cellPadding="0" cellSpacing="0" width="100%">
+<TBODY>
+  <tr>
+    <td><img height="28" src="bl.gif" tppabs="http://www.owlei.com/DancingWind/Pic/bl.gif" width="28"></td>
+    <td width="100%"><img height="28" src="bc.gif" tppabs="http://www.owlei.com/DancingWind/Pic/bc.gif" width="100%"></td>
+    <td><img height="28" src="br.gif" tppabs="http://www.owlei.com/DancingWind/Pic/br.gif" width="28"></td>
+  </tr>
+</TBODY>
+</table>
+  <table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>碰撞检测和物理模拟(作者:Dimitrios Christopoulos (christop@fhw.gr))<br> 
+      <br> <b><u>碰撞检测</u></b> <br> <br>
+      这是一个我遇到的最困难的题目,因为它没有一个简单的解决办法.对于每一个程序都有一种检测碰撞的方法.当然这里有一种蛮力,它适用于各种不同的应用,当它非常的费时.<br>
+      我们将讲述一种算法,它非常的快,简单并易于扩展.下面我们来看看这个算法包含的内容:<br> <br>
+      1) 碰撞检测 
+      <ul>
+        <li>移动的球-平面</li>
+        <li>移动的球-圆柱</li>
+        <li>移动的球-移动的球</li>
+      </ul>
+      2) 基于物理的建模 
+      <ul>
+        <li>碰撞表示</li>
+        <li>应用重力加速度</li>
+      </ul>
+      3) 特殊效果 
+      <ul>
+        <li>爆炸的表示，利用互交叉的公告板形式</li>
+        <li>声音使用Windows声音库</li>
+      </ul>
+      4) 关于代码 
+      <ul>
+        <li>代码被分为以下5个部分</li>
+      </ul>
+      <table border="0">
+        <tr> 
+          <td>Lesson30.cpp</td>
+          <td>&nbsp;</td>
+          <td>: 主程序代码l</td>
+        </tr>
+        <tr> 
+          <td>Image.cpp,</td>
+          <td>Image.h</td>
+          <td>: 加载图像</td>
+        </tr>
+        <tr> 
+          <td>Tmatrix.cpp,</td>
+          <td>Tmatrix.h</td>
+          <td>: 矩阵</td>
+        </tr>
+        <tr> 
+          <td>Tray.cpp,</td>
+          <td>Tray.h</td>
+          <td>: 射线</td>
+        </tr>
+        <tr> 
+          <td>Tvector.cpp,</td>
+          <td>Tvector.h</td>
+          <td>: 向量</td>
+        </tr>
+      </table>
+      <p><br>
+        <br>
+        1) 碰撞检测 <br>
+        <br>
+        我们使用射线来完成相关的算法，它的定义为: <br>
+        <br>
+        <i>射线上的点 = 射线的原点+ t * 射线的方向</i> <br>
+        <br>
+        t 用来描述它距离原点的位置，它的范围是[0, 无限远). <br>
+        <br>
+        现在我们可以使用射线来计算它和平面以及圆柱的交点了。<br>
+        <br>
+        射线和平面的碰撞检测： <br>
+        <br>
+        平面被描述为：<br>
+        <br>
+        <i>Xn dot X = d</i> <br>
+        <br>
+        Xn 是平面的法线.<br>
+        X 是平面上的一个点.<br>
+        d 是平面到原点的距离. <br>
+        <br>
+        现在我们得到射线和平面的两个方程: <br>
+        <br>
+        <i>PointOnRay = Raystart + t * Raydirection<br>
+        Xn dot X = d</i> <br>
+        <br>
+        如果他们相交，则上诉方程组有解，如下所示：<br>
+        <br>
+        <i>Xn dot PointOnRay = d</i> </p>
+      <p><i>(Xn dot Raystart) + t * (Xn dot Raydirection) = d</i> <br>
+        <br>
+        解得 t: <br>
+        <br>
+        <i>t = (d - Xn dot Raystart) / (Xn dot Raydirection)</i> <br>
+        <br>
+        t代表原点到与平面相交点的参数,把t带回原方程我们会得到与平面的碰撞点.如果Xn*Raydirection=0。则说明它与平面平行，则将不产生碰撞。如果t为负值，则说明交点在射线的相反方向，也不会产生碰撞<FONT face=Tahoma,Verdana,sans-serif size=-1>。</font></p></td>
+    <td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table>
+<font color=#aaffaa size=3>
+<pre><font color=#ffffaa size=3>//判断是否和平面相交，是则返回1，否则返回0</font><br>int TestIntersionPlane(const Plane&amp; plane,const TVector&amp; position,const TVector&amp; direction, double&amp; lamda, TVector&amp; pNormal)<br>{</pre>
+
+<p> double DotProduct=direction.dot(plane._Normal);<br>
+  double l2;</p>
+<p> <font color=#ffffaa size=3>//判断是否平行于平面</font><br>
+  if ((DotProduct&lt;ZERO)&amp;&amp;(DotProduct&gt;-ZERO)) <br>
+  return 0;</p>
+<p> l2=(plane._Normal.dot(plane._Position-position))/DotProduct;</p>
+<p> if (l2&lt;-ZERO) <br>
+  return 0;</p>
+<p> pNormal=plane._Normal;<br>
+  lamda=l2;<br>
+  return 1;<br>
+  }</p>
+  </font>
+<table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top><FONT face=Tahoma,Verdana,sans-serif size=-1> <font size="+1"><u>射线-圆柱的碰撞检测</u></font> 
+      <br>
+      <br>
+      </font>计算射线和圆柱方程组得解。</td>
+    <td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table><font color=#aaffaa size=3><pre>
+int TestIntersionCylinder(const Cylinder&amp; cylinder,const TVector&amp; position,const TVector&amp; direction, double&amp; lamda, TVector&amp; pNormal,TVector&amp; newposition)
+</pre></font><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>球-球之间的碰撞检测<br> <br>
+      球被表示为中心和它的半径，决定两个球是否相交就是求出它们之间的距离是否小于它们的直径。<br> <br>
+      在处理两个移动的球是否相交时，有一个bug就是，当它们的移动速度太快，回出现它们相交，但在相邻的两步检测不出它们是否相交的情况，如下图所示：<br> 
+      <br> <center>
+        <img src="figure1.jpg" tppabs="http://www.owlei.com/DancingWind/Pic/figure1.jpg"><br>
+        图 1 
+      </center>
+      <br> <br>
+      有一个替代的办法就是细分相邻的时间片断，如果在这之间发生了碰撞，则确定有效。我们把这个细分时间段设置为3，代码如下：<font face="Tahoma,Verdana,sans-serif"> 
+      <center>
+      </center>
+      </font></td>
+    <td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table>
+<font color=#aaffaa size=3>
+<pre><font color=#ffffaa>//判断球和球是否相交，是则返回1，否则返回0</font><br>int FindBallCol(TVector&amp; point, double&amp; TimePoint, double Time2, int&amp; BallNr1, int&amp; BallNr2)<br>{<br>	TVector RelativeV;<br>	TRay rays;<br>	double MyTime=0.0, Add=Time2/150.0, Timedummy=10000, Timedummy2=-1;<br>	TVector posi;<br>	<br>	<font color=#ffffaa>//判断球和球是否相交</font><br>	for (int i=0;i&lt;NrOfBalls-1;i++)<br>	{<br>	 for (int j=i+1;j&lt;NrOfBalls;j++)<br>	 {	<br>		    RelativeV=ArrayVel[i]-ArrayVel[j];<br>			rays=TRay(OldPos[i],TVector::unit(RelativeV));<br>			MyTime=0.0;</pre>
+
+<p> if ( (rays.dist(OldPos[j])) &gt; 40) continue; </p>
+<p> while (MyTime&lt;Time2)<br>
+  {<br>
+  MyTime+=Add;<br>
+  posi=OldPos[i]+RelativeV*MyTime;<br>
+  if (posi.dist(OldPos[j])&lt;=40) {<br>
+  point=posi;<br>
+  if (Timedummy&gt;(MyTime-Add)) Timedummy=MyTime-Add;<br>
+  BallNr1=i;<br>
+  BallNr2=j;<br>
+  break;<br>
+  }<br>
+  <br>
+  }<br>
+  }</p>
+<p> }</p>
+<p> if (Timedummy!=10000) { TimePoint=Timedummy;<br>
+  return 1;<br>
+  }</p>
+<p> return 0;<br>
+  }</p></font>
+<table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top><u>怎样应用我们的知识</u><br> <br>
+      现在我们已经可以决定射线和平面/圆柱的交点了,如下图所示:<br> <br> <center>
+        <img src="figure2.jpg" tppabs="http://www.owlei.com/DancingWind/Pic/figure2.jpg"><br>
+        图 2a &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+        图 2b 
+      </center>
+      <br>
+      当我们找到了碰撞位置后,下一步我们需要知道它是否发生在当前这一步中.如果距离碰撞点的位置小于这一步球体运动的间隔,则碰撞发生.我们使用如下的方程计算运动到碰撞时所需的时间:<br>
+      Tc= Dsc*T / Dst <br>
+      接着我们知道碰撞点位置,如下面公式所示:<br>
+      Collision point= Start + Velocity*Tc <br> <br>
+      2) 基于物理的模拟 <center>
+      </center> <br> <br> <u>碰撞反应</u> <br> <br>
+      为了计算对于一个静止物体的碰撞,我们需要知道以下信息:碰撞点,碰撞法线,碰撞时间.<br> <br>
+      它是基于以下物理规律的,碰撞的入射角等于反射角.如下图所示:<br> <br> <center>
+        <img src="figure3.jpg" tppabs="http://www.owlei.com/DancingWind/Pic/figure3.jpg"><br>
+        图 3 
+      </center>
+      <br> <br>
+      R 为反射方向<br>
+      I 为入射方向<br>
+      N 为法线方向<br> <br>
+      反射方向有以下公式计算 : <br> <br>
+      R= 2*(-I dot N)*N + I <br>
+      <font face="Tahoma,Verdana,sans-serif">
+      <center>
+      </center>
+      </font></td>
+    <td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table><font color=#aaffaa size=3>
+<pre>
+rt2=ArrayVel[BallNr].mag();						<font color=#ffffaa>// 返回速度向量的模</font>
+ArrayVel[BallNr].unit();						<font color=#ffffaa>// 归一化速度向量</font>
+
+<font color=#ffffaa>// 计算反射向量</font>
+ArrayVel[BallNr]=TVector::unit( (normal*(2*normal.dot(-ArrayVel[BallNr]))) + ArrayVel[BallNr] );
+ArrayVel[BallNr]=ArrayVel[BallNr]*rt2;					
+</pre>
+</font><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top><u>球体之间的碰撞</u><br> <br>
+      由于它很复杂，我们用下图来说明这个原理. <br> <br> <center>
+        <img src="figure4.jpg" tppabs="http://www.owlei.com/DancingWind/Pic/figure4.jpg"><br>
+        图 4 </center> <center>
+      </center> <p><br>
+        <br>
+        U1和U2为速度向量，我们用X_Axis表示两个球中心连线的轴，U1X和U2X为U1和U2在这个轴上的分量。U1y和U2y为垂直于X_Axis轴的分量。M1和M2为两个球体的分量。V1和V2为碰撞后的速度，V1x,V1y,V2x,V2y为他们的分量。</p>
+      <p>在我们的例子里，所有球的质量都相等，解得方程为，在垂直轴上的速度不变，在X_Axis轴上互相交换速度。代码如下：</p>
+      </td><td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table><font color=#aaffaa size=3>
+<pre>
+TVector pb1,pb2,xaxis,U1x,U1y,U2x,U2y,V1x,V1y,V2x,V2y;
+double a,b;
+pb1=OldPos[BallColNr1]+ArrayVel[BallColNr1]*BallTime;			<font color=#ffffaa>// 球1的位置</font>
+pb2=OldPos[BallColNr2]+ArrayVel[BallColNr2]*BallTime;			<font color=#ffffaa>// 球2的位置</font>
+xaxis=(pb2-pb1).unit();							<font color=#ffffaa>// X-Axis轴</font>
+a=xaxis.dot(ArrayVel[BallColNr1]);					<font color=#ffffaa>// X_Axis投影系数</font>
+U1x=xaxis*a;								<font color=#ffffaa>// 计算在X_Axis轴上的速度</font>
+U1y=ArrayVel[BallColNr1]-U1x; <font color=#aaffaa size=3><font color=#ffffaa>// 计算在垂直轴上的速度</font></font>
+xaxis=(pb1-pb2).unit();							
+b=xaxis.dot(ArrayVel[BallColNr2]);					
+U2x=xaxis*b;								
+U2y=ArrayVel[BallColNr2]-U2x;
+V1x=(U1x+U2x-(U1x-U2x))*0.5;						<font color=#ffffaa>// 计算新的速度</font>
+V2x=(U1x+U2x-(U2x-U1x))*0.5;
+V1y=U1y;
+V2y=U2y;
+for (j=0;j&lt;NrOfBalls;j++)						<font color=#ffffaa>// 更新所有球的位置</font>
+ArrayPos[j]=OldPos[j]+ArrayVel[j]*BallTime;
+ArrayVel[BallColNr1]=V1x+V1y;						<font color=#ffffaa>// 设置新的速度</font>
+ArrayVel[BallColNr2]=V2x+V2y;						</pre>
+</font><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top><u>万有引力的模拟</u> <br> <br>
+      我们使用欧拉方程来模拟万有引力，如下所示： <br>
+      Velocity_New = Velovity_Old + Acceleration*TimeStep<br>
+      Position_New = Position_Old + Velocity_New*TimeStep <br> <br>
+      在每次模拟中，我们用上面公式计算的速度取代旧的速度<br> <br>
+      3) 特殊效果 <br> <br> <u>爆炸</u><br> <br>
+      最好的表示爆炸效果的就是使用两个互相垂直的平面，并使用alpha混合在窗口中显示它们。接着让alpha变为0，设定爆炸效果不可见。代码如下所示：</td>
+    <td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table><font color=#aaffaa size=3>
+<pre>
+<font color=#ffffaa>// 渲染/混合爆炸效果</font>
+glEnable(GL_BLEND);							<font color=#ffffaa>// 使用混合</font>
+glDepthMask(GL_FALSE);							<font color=#ffffaa>// 禁用深度缓存</font>
+glBindTexture(GL_TEXTURE_2D, texture[1]);				<font color=#ffffaa>// 设置纹理</font>
+for(i=0; i&lt;20; i++)							<font color=#ffffaa>// 渲染20个爆炸效果</font>
+{
+	if(ExplosionArray[i]._Alpha>=0)
+	{
+		glPushMatrix();
+		ExplosionArray[i]._Alpha-=0.01f;			<font color=#ffffaa>// 设置alpha</font>
+		ExplosionArray[i]._Scale+=0.03f;			<font color=#ffffaa>// 设置缩放</font>
+		<font color=#ffffaa>// 设置颜色</font>
+		glColor4f(1,1,0,ExplosionArray[i]._Alpha);		
+		glScalef(ExplosionArray[i]._Scale,ExplosionArray[i]._Scale,ExplosionArray[i]._Scale);
+		<font color=#ffffaa>// 设置位置</font>
+		glTranslatef((float)ExplosionArray[i]._Position.X()/ExplosionArray[i]._Scale,
+			(float)ExplosionArray[i]._Position.Y()/ExplosionArray[i]._Scale,
+			(float)ExplosionArray[i]._Position.Z()/ExplosionArray[i]._Scale);
+		glCallList(dlist);					<font color=#ffffaa>// 调用显示列表绘制爆炸效果</font>
+		glPopMatrix();
+	}
+}
+</pre>
+</font><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top><u>声音</u> <br> <br>
+      在Windows下我们简单的调用PlaySound()函数播放声音。<br> <br>
+      4) 代码的流程 <br> <br>
+      如果你成功的读完了理论部分，在你开始运行程序并播放声音以前。我们将用伪代码向你介绍一些整个流程，以便你能成功的看懂代码。</td>
+    <td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table><font color=#aaffaa size=3>
+<pre>
+While (Timestep!=0)
+{
+	对每一个球
+	{
+		计算最近的与平面碰撞的位置;
+		计算最近的与圆柱碰撞的位置;
+		如果碰撞发生，则保存并替换最近的碰撞点;
+	}
+	检测各个球之间的碰撞;
+	如果碰撞发生，则保存并替换最近的碰撞点;
+
+	If (碰撞发生)
+	{
+		移动所有的球道碰撞点的时间;
+		(We already have computed the point, normal and collision time.)
+		计算碰撞后的效果;
+		Timestep-=CollisonTime;
+	}
+	else
+		移动所有的球体一步
+}
+</pre>
+</font><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td><td width=100% valign=top><p>下面是对上面伪代码的实现：</p>
+      </td><td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table>
+<font color=#aaffaa size=3> 
+<pre><font color=#ffffaa>//模拟函数，计算碰撞检测和物理模拟</font><br>void idle()<br>{<br>  double rt,rt2,rt4,lamda=10000;<br>  TVector norm,uveloc;<br>  TVector normal,point,time;<br>  double RestTime,BallTime;<br>  TVector Pos2;<br>  int BallNr=0,dummy=0,BallColNr1,BallColNr2;<br>  TVector Nc;</pre>
+
+<p> <font color=#ffffaa>//如果没有锁定到球上，旋转摄像机</font><br>
+  if (!hook_toball1)<br>
+  {<br>
+  camera_rotation+=0.1f;<br>
+  if (camera_rotation&gt;360)<br>
+  camera_rotation=0;<br>
+  }<br>
+  <br>
+  RestTime=Time;<br>
+  lamda=1000;</p>
+<p> <font color=#ffffaa>//计算重力加速度</font><br>
+  for (int j=0;j&lt;NrOfBalls;j++)<br>
+  ArrayVel[j]+=accel*RestTime;</p>
+<p><font color=#ffffaa> //如果在一步的模拟时间内(如果来不及计算，则跳过几步)</font><br>
+  while (RestTime&gt;ZERO)<br>
+  {<br>
+  lamda=10000; <br>
+  <br>
+ <font color=#ffffaa> //对于每个球，找到它们最近的碰撞点</font><br>
+  for (int i=0;i&lt;NrOfBalls;i++)<br>
+  {<br>
+  <font color=#ffffaa>//计算新的位置和移动的距离</font><br>
+  OldPos[i]=ArrayPos[i];<br>
+  TVector::unit(ArrayVel[i],uveloc);<br>
+  ArrayPos[i]=ArrayPos[i]+ArrayVel[i]*RestTime;<br>
+  rt2=OldPos[i].dist(ArrayPos[i]);</p>
+<p> <font color=#ffffaa>//测试是否和墙面碰撞</font><br>
+  if (TestIntersionPlane(pl1,OldPos[i],uveloc,rt,norm))<br>
+  { <br>
+  <font color=#ffffaa>//计算碰撞的时间</font><br>
+  rt4=rt*RestTime/rt2;</p>
+<p> <font color=#ffffaa>//如果小于当前保存的碰撞时间，则更新它</font><br>
+  if (rt4&lt;=lamda)<br>
+  { <br>
+  if (rt4&lt;=RestTime+ZERO)<br>
+  if (! ((rt&lt;=ZERO)&amp;&amp;(uveloc.dot(norm)&gt;ZERO)) )<br>
+  {<br>
+  normal=norm;<br>
+  point=OldPos[i]+uveloc*rt;<br>
+  lamda=rt4;<br>
+  BallNr=i;<br>
+  }<br>
+  }<br>
+  }<br>
+  <br>
+  if (TestIntersionPlane(pl2,OldPos[i],uveloc,rt,norm))<br>
+  {<br>
+  rt4=rt*RestTime/rt2;</p>
+<p> if (rt4&lt;=lamda)<br>
+  { <br>
+  if (rt4&lt;=RestTime+ZERO)<br>
+  if (! ((rt&lt;=ZERO)&amp;&amp;(uveloc.dot(norm)&gt;ZERO)) )<br>
+  {<br>
+  normal=norm;<br>
+  point=OldPos[i]+uveloc*rt;<br>
+  lamda=rt4;<br>
+  BallNr=i;<br>
+  dummy=1;<br>
+  }<br>
+  }<br>
+  <br>
+  }</p>
+<p> if (TestIntersionPlane(pl3,OldPos[i],uveloc,rt,norm))<br>
+  {<br>
+  rt4=rt*RestTime/rt2;</p>
+<p> if (rt4&lt;=lamda)<br>
+  { <br>
+  if (rt4&lt;=RestTime+ZERO)<br>
+  if (! ((rt&lt;=ZERO)&amp;&amp;(uveloc.dot(norm)&gt;ZERO)) )<br>
+  {<br>
+  normal=norm;<br>
+  point=OldPos[i]+uveloc*rt;<br>
+  lamda=rt4;<br>
+  BallNr=i;<br>
+  }<br>
+  }<br>
+  }</p>
+<p> if (TestIntersionPlane(pl4,OldPos[i],uveloc,rt,norm))<br>
+  {<br>
+  rt4=rt*RestTime/rt2;</p>
+<p> if (rt4&lt;=lamda)<br>
+  { <br>
+  if (rt4&lt;=RestTime+ZERO)<br>
+  if (! ((rt&lt;=ZERO)&amp;&amp;(uveloc.dot(norm)&gt;ZERO)) )<br>
+  {<br>
+  normal=norm;<br>
+  point=OldPos[i]+uveloc*rt;<br>
+  lamda=rt4;<br>
+  BallNr=i;<br>
+  }<br>
+  }<br>
+  }</p>
+<p> if (TestIntersionPlane(pl5,OldPos[i],uveloc,rt,norm))<br>
+  {<br>
+  rt4=rt*RestTime/rt2;</p>
+<p> if (rt4&lt;=lamda)<br>
+  { <br>
+  if (rt4&lt;=RestTime+ZERO)<br>
+  if (! ((rt&lt;=ZERO)&amp;&amp;(uveloc.dot(norm)&gt;ZERO)) )<br>
+  {<br>
+  normal=norm;<br>
+  point=OldPos[i]+uveloc*rt;<br>
+  lamda=rt4;<br>
+  BallNr=i;<br>
+  }<br>
+  }<br>
+  }</p>
+<p> <font color=#ffffaa>//测试是否与三个圆柱相碰</font><br>
+  if (TestIntersionCylinder(cyl1,OldPos[i],uveloc,rt,norm,Nc))<br>
+  {<br>
+  rt4=rt*RestTime/rt2;</p>
+<p> if (rt4&lt;=lamda)<br>
+  { <br>
+  if (rt4&lt;=RestTime+ZERO)<br>
+  if (! ((rt&lt;=ZERO)&amp;&amp;(uveloc.dot(norm)&gt;ZERO)) )<br>
+  {<br>
+  normal=norm;<br>
+  point=Nc;<br>
+  lamda=rt4;<br>
+  BallNr=i;<br>
+  }<br>
+  }<br>
+  <br>
+  }<br>
+  if (TestIntersionCylinder(cyl2,OldPos[i],uveloc,rt,norm,Nc))<br>
+  {<br>
+  rt4=rt*RestTime/rt2;</p>
+<p> if (rt4&lt;=lamda)<br>
+  { <br>
+  if (rt4&lt;=RestTime+ZERO)<br>
+  if (! ((rt&lt;=ZERO)&amp;&amp;(uveloc.dot(norm)&gt;ZERO)) )<br>
+  {<br>
+  normal=norm;<br>
+  point=Nc;<br>
+  lamda=rt4;<br>
+  BallNr=i;<br>
+  }<br>
+  }<br>
+  <br>
+  }<br>
+  if (TestIntersionCylinder(cyl3,OldPos[i],uveloc,rt,norm,Nc))<br>
+  {<br>
+  rt4=rt*RestTime/rt2;</p>
+<p> if (rt4&lt;=lamda)<br>
+  { <br>
+  if (rt4&lt;=RestTime+ZERO)<br>
+  if (! ((rt&lt;=ZERO)&amp;&amp;(uveloc.dot(norm)&gt;ZERO)) )<br>
+  {<br>
+  normal=norm;<br>
+  point=Nc;<br>
+  lamda=rt4;<br>
+  BallNr=i;<br>
+  }<br>
+  }<br>
+  <br>
+  }<br>
+  }</p>
+<p><br>
+  <font color=#ffffaa>//计算每个球之间的碰撞，如果碰撞时间小于与上面的碰撞，则替换它们</font><br>
+  if (FindBallCol(Pos2,BallTime,RestTime,BallColNr1,BallColNr2))<br>
+  {<br>
+  if (sounds)<br>
+  PlaySound(&quot;Data/Explode.wav&quot;,NULL,SND_FILENAME|SND_ASYNC);<br>
+  <br>
+  if ( (lamda==10000) || (lamda&gt;BallTime) )<br>
+  {<br>
+  RestTime=RestTime-BallTime;</p>
+<p> TVector pb1,pb2,xaxis,U1x,U1y,U2x,U2y,V1x,V1y,V2x,V2y;<br>
+  double a,b;</p>
+<p> pb1=OldPos[BallColNr1]+ArrayVel[BallColNr1]*BallTime;<br>
+  pb2=OldPos[BallColNr2]+ArrayVel[BallColNr2]*BallTime;<br>
+  xaxis=(pb2-pb1).unit();</p>
+<p> a=xaxis.dot(ArrayVel[BallColNr1]);<br>
+  U1x=xaxis*a;<br>
+  U1y=ArrayVel[BallColNr1]-U1x;</p>
+<p> xaxis=(pb1-pb2).unit();<br>
+  b=xaxis.dot(ArrayVel[BallColNr2]);<br>
+  U2x=xaxis*b;<br>
+  U2y=ArrayVel[BallColNr2]-U2x;</p>
+<p> V1x=(U1x+U2x-(U1x-U2x))*0.5;<br>
+  V2x=(U1x+U2x-(U2x-U1x))*0.5;<br>
+  V1y=U1y;<br>
+  V2y=U2y;</p>
+<p> for (j=0;j&lt;NrOfBalls;j++)<br>
+  ArrayPos[j]=OldPos[j]+ArrayVel[j]*BallTime;</p>
+<p> ArrayVel[BallColNr1]=V1x+V1y;<br>
+  ArrayVel[BallColNr2]=V2x+V2y;</p>
+<p> //Update explosion array<br>
+  for(j=0;j&lt;20;j++)<br>
+  {<br>
+  if (ExplosionArray[j]._Alpha&lt;=0)<br>
+  {<br>
+  ExplosionArray[j]._Alpha=1;<br>
+  ExplosionArray[j]._Position=ArrayPos[BallColNr1];<br>
+  ExplosionArray[j]._Scale=1;<br>
+  break;<br>
+  }<br>
+  }</p>
+<p> continue;<br>
+  }<br>
+  }<br>
+  <br>
+  <font color=#ffffaa>//最后的测试，替换下次碰撞的时间，并更新爆炸效果的数组</font><br>
+  if (lamda!=10000)<br>
+  { <br>
+  RestTime-=lamda;</p>
+<p> for (j=0;j&lt;NrOfBalls;j++)<br>
+  ArrayPos[j]=OldPos[j]+ArrayVel[j]*lamda;</p>
+<p> rt2=ArrayVel[BallNr].mag();<br>
+  ArrayVel[BallNr].unit();<br>
+  ArrayVel[BallNr]=TVector::unit( (normal*(2*normal.dot(-ArrayVel[BallNr]))) + 
+  ArrayVel[BallNr] );<br>
+  ArrayVel[BallNr]=ArrayVel[BallNr]*rt2;<br>
+  <br>
+  for(j=0;j&lt;20;j++)<br>
+  {<br>
+  if (ExplosionArray[j]._Alpha&lt;=0)<br>
+  {<br>
+  ExplosionArray[j]._Alpha=1;<br>
+  ExplosionArray[j]._Position=point;<br>
+  ExplosionArray[j]._Scale=1;<br>
+  break;<br>
+  }<br>
+  }<br>
+  }<br>
+  else<br>
+  RestTime=0;</p>
+<p> }</p>
+<p>}</p>
+</font>
+<pre>
+
+</pre>
+
+<table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top><p>你可以从源代码得到全部的信息,我尽了最大的努力来解释每一行代码,一旦碰撞的原理知道了,代码是非常简单的.</p>
+      <p>就像我开头所说的,碰撞检测这个题目是非常难得,你已经学会了很多新的知识,并能够用它创建出非常棒的演示.但在这个课题,你认友很多需要学习,既然你已经开始了,其它的原理和模型就非常容易了.</p>
+<table width="100%" border="1">
+  <tr>
+    <td width="27%"><img src="logo 3.jpg" tppabs="http://www.owlei.com/DancingWind/images/logo%203.jpg" width="209" height="200" align="middle"></td>
+    <td width="73%">版权与使用声明:<br>
+      我是个对学习和生活充满激情的普通男孩,在网络上我以DancingWind为昵称，我的联系方式是zhouwei02@mails.tsinghua.edu.cn，如果你有任何问题，都可以联系我。
+      <p>引子<br>
+        网络是一个共享的资源，但我在自己的学习生涯中浪费大量的时间去搜索可用的资料，在现实生活中花费了大量的金钱和时间在书店中寻找资料，于是我给自己起了个昵称DancingWind，其意义是想风一样从各个知识的站点中吸取成长的养料。在飘荡了多年之后，我决定把自己收集的资料整理为一个统一的资源库。</p>
+      <p>版权声明<br>
+        所有DancingWind发表的内容，大多都来自共享的资源，所以我没有资格把它们据为己有，或声称自己为这些资源作出了一点贡献。故任何人都可以复制，修改，重新发表，甚至以自己的名义发表，我都不会追究，但你在做以上事情的时候必须保证内容的完整性，给后来的人一个完整的教程。最后，任何人不能以这些资料的任何部分，谋取任何形式的报酬。</p>
+      <p>发展计划<br>
+        在国外，很多资料都是很多人花费几年的时间慢慢积累起来的。如果任何人有兴趣与别人共享你的知识，我很欢迎你与我联系，但你必须同意我上面的声明。</p>
+            <p>感谢<br>
+              感谢我的母亲一直以来对我的支持和在生活上的照顾。<br>
+              感谢我深爱的女友田芹，一直以来默默的在精神上和生活中对我的支持，她甚至把买衣服的钱都用来给我买书了，她真的是我见过的最好的女孩，希望我能带给她幸福。</p>
+            <p>资源下载: <br>
+              文档 <a href="javascript:if(confirm('http://www.owlei.com/DancingWind/Res/mht/NeHe%20OpenGL%20Chinese%20Course%2030.mht  \n\nThis file was not retrieved by Teleport Pro, because the server reports that this file cannot be found.  \n\nDo you want to open it from the server?'))window.location='http://www.owlei.com/DancingWind/Res/mht/NeHe%20OpenGL%20Chinese%20Course%2030.mht'" tppabs="http://www.owlei.com/DancingWind/Res/mht/NeHe%20OpenGL%20Chinese%20Course%2030.mht">网页格式</a> 
+              <a href="javascript:if(confirm('http://www.owlei.com/DancingWind/Res/pdf/OpenGL_Nehe_Course_Tutorial_30.pdf  \n\nThis file was not retrieved by Teleport Pro, because the server reports that this file cannot be found.  \n\nDo you want to open it from the server?'))window.location='http://www.owlei.com/DancingWind/Res/pdf/OpenGL_Nehe_Course_Tutorial_30.pdf'" tppabs="http://www.owlei.com/DancingWind/Res/pdf/OpenGL_Nehe_Course_Tutorial_30.pdf">PDF格式</a><br>
+              源码 <a href="javascript:if(confirm('http://www.owlei.com/DancingWind/Res/Src/30_Collide.rar  \n\nThis file was not retrieved by Teleport Pro, because the server reports that this file cannot be found.  \n\nDo you want to open it from the server?'))window.location='http://www.owlei.com/DancingWind/Res/Src/30_Collide.rar'" tppabs="http://www.owlei.com/DancingWind/Res/Src/30_Collide.rar">RAR格式</a></p></td>
+  </tr>
+</table>
+      <table border="0" width="100%">
+        <td width="50%" align="left"><b><a href="Tutorial_29.htm" tppabs="http://www.owlei.com/DancingWind/Course/Tutorial_29.htm">< 第29课</a></b></td>
+        <td width="50%" align="right"><b><a href="Tutorial_31.htm" tppabs="http://www.owlei.com/DancingWind/Course/Tutorial_31.htm">第31课 ></a></b></td>
+      </table>
+</td><td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table>
+
+</body>
+</html>

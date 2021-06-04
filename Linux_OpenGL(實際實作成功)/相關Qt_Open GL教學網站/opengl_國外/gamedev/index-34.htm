@@ -1,0 +1,277 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+    dir="ltr"
+    xml:lang="en"
+    lang="en">
+  <head>
+    <title>NeHe Productions: Rotation</title>
+
+    <link rel="stylesheet" type="text/css" href="public_base.css" tppabs="http://nehe.gamedev.net/static/css/public_base.css" />
+    <link type="text/css" rel="stylesheet" href="shThemeMidnight.css" tppabs="http://nehe.gamedev.net/static/css/syntax_highlighter/shThemeMidnight.css"/>
+    
+    <link rel="alternate" type="application/atom+xml" title="Atom feed" href="index-1.htm" tppabs="http://nehe.gamedev.net/atom/" />
+    <link rel="alternate" type="application/rss+xml" title="RSS feed" href="index-2.htm" tppabs="http://nehe.gamedev.net/rss/" />
+    
+    <meta name="author" content="Luke Benstead + Carsten Haubold" />
+    <meta name="description" content="OpenGL Tutorials, Demos, Games and More..." />
+    <meta name="keywords" content="opengl, tutorial, article, demo, game, blend, texturemap, lighting, contest, 3D" />
+
+    
+    
+
+    
+
+</script>
+
+
+    
+    
+    
+    
+        
+        <script type='text/javascript'>
+        var googletag = googletag || {};
+        googletag.cmd = googletag.cmd || [];
+        (function() {
+        var gads = document.createElement('script');
+        gads.async = true;
+        gads.type = 'text/javascript';
+        var useSSL = 'https:' == document.location.protocol;
+        gads.src = (useSSL ? 'https:' : 'http:') + 
+        '//www.googletagservices.com/tag/js/gpt.js';
+        var node = document.getElementsByTagName('script')[0];
+        node.parentNode.insertBefore(gads, node);
+        })();
+        </script>
+
+        <script type='text/javascript'>
+        googletag.cmd.push(function() {
+        googletag.defineSlot('/1004699/Leaderboard_NeHe', [728, 90], 'div-gpt-ad-1327940144417-0').addService(googletag.pubads());
+        googletag.defineSlot('/1004699/Skyscraper_NeHe', [160, 600], 'div-gpt-ad-1327940144417-1').addService(googletag.pubads());
+        googletag.pubads().enableSingleRequest();
+        googletag.enableServices();
+        });
+        </script>
+    
+    
+
+    
+  </head>
+
+  <body>
+    
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "all.js#xfbml=1"/*tpa=http://connect.facebook.net/en_GB/all.js#xfbml=1*/;
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+
+
+    <table cellpadding="0" cellspacing="0" border="0" id="layout_table">
+    <tr><td>
+        <div id="header">
+                <a href="index.htm" tppabs="http://nehe.gamedev.net/"><img class="logo" class="logo" src="nehe.png" tppabs="http://nehe.gamedev.net/static/images/nehe.png" border="0" alt="Nehe" /></a>
+        </div>            
+    </td></tr>
+    <tr><td colspan="2">
+            
+<div class="navbar">
+    <a href="index.htm" tppabs="http://nehe.gamedev.net/">HOME</a>
+    <a href="javascript:if(confirm('http://twitter.com/  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://twitter.com/#!/nehegl'" tppabs="http://twitter.com/#!/nehegl">TWITTER</a>  
+    <a href="javascript:if(confirm('http://www.facebook.com/pages/NeHe/300582493323181  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://www.facebook.com/pages/NeHe/300582493323181'" tppabs="http://www.facebook.com/pages/NeHe/300582493323181">FACEBOOK</a>     
+    <a href="index-2.htm" tppabs="http://nehe.gamedev.net/rss/">RSS</a>    
+    <a href="index-1.htm" tppabs="http://nehe.gamedev.net/atom/">ATOM</a>    
+    <a href="javascript:if(confirm('http://www.gamedev.net/forum/27-nehe-productions/page__forum_title__NeHe+Productions  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://www.gamedev.net/forum/27-nehe-productions/page__forum_title__NeHe+Productions'" tppabs="http://www.gamedev.net/forum/27-nehe-productions/page__forum_title__NeHe+Productions">FORUM</a>    
+</div>
+    
+    </td></tr>
+    <tr>
+        <td class="col1">
+
+            
+<div id="article_container">
+
+
+<h1 class="article-header">Rotation</h1>
+<div class="social-media">
+<!-- Place this tag where you want the +1 button to render -->
+<div class="g-plusone" data-size="medium" data-width="120" data-annotation="inline"></div>
+<div class="fb-like" data-send="false" data-layout="button_count" data-width="60" data-show-faces="false" data-colorscheme="dark" data-font="arial"></div>
+</div>
+<div style="clear:both;"></div>
+<p>In the last tutorial I taught you how to add color to triangles and quads. In this tutorial I will teach you how to rotate these colored objects around an axis.</p>
+<p>Using the code from the last tutorial, we will be adding to a few places in the code. I will rewrite the entire section of code below so it's easy for you to figure out what's been added, and what needs to be replaced.</p>
+<p>We'll start off by adding the two variables to keep track of the rotation for each object. We do this at the top of our program, underneath the other variables. You will notice two new lines after 'bool fullscreen=TRUE;'. These lines set up two floating point variables that we can use to spin the objects with very fine accuracy. Floating point allows decimal numbers. Meaning we're not stuck using 1, 2, 3 for the angle, we can use 1.1, 1.7, 2.3, or even 1.015 for fine accuracy. You will find that floating point numbers are essential to OpenGL programming. The new variables are called rtri which will rotate the triangle and rquad which will rotate the quad.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">#include	&lt;windows.h&gt;					// Header File For Windows
+#include	&lt;gl\gl.h&gt;					// Header File For The OpenGL32 Library
+#include	&lt;gl\glu.h&gt;					// Header File For The GLu32 Library
+#include	&lt;gl\glaux.h&gt;					// Header File For The GLaux Library
+
+HDC		hDC=NULL;					// Private GDI Device Context
+HGLRC		hRC=NULL;					// Permanent Rendering Context
+HWND		hWnd=NULL;					// Holds Our Window Handle
+HINSTANCE	hInstance;					// Holds The Instance Of The Application
+
+bool		keys[256];					// Array Used For The Keyboard Routine
+bool		active=TRUE;					// Window Active Flag
+bool		fullscreen=TRUE;				// Fullscreen Flag Set To TRUE By Default
+
+GLfloat		rtri;						// Angle For The Triangle ( NEW )
+GLfloat		rquad;						// Angle For The Quad     ( NEW )
+</pre>
+<p>Now we need to modify the DrawGLScene() code. I will rewrite the entire procedure. This should make it easier for you to see what changes I have made to the original code. I'll explain why lines have been modified, and what exactly it is that the new lines do. The next section of code is exactly the same as in the last tutorial.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">int DrawGLScene(GLvoid)						// Here's Where We Do All The Drawing
+{
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);	// Clear The Screen And The Depth Buffer
+	glLoadIdentity();					// Reset The View
+	glTranslatef(-1.5f,0.0f,-6.0f);				// Move Into The Screen And Left
+</pre>
+<p>The next line of code is new. glRotatef(Angle,Xvector,Yvector,Zvector) is responsible for rotating the object around an axis. You will get alot of use out of this command. Angle is some number (usually stored in a variable) that represents how much you would like to spin the object. Xvector, Yvector and Zvector parameters together represent the vector about which the rotation will occur. If you use values (1,0,0), you are describing a vector which travels in a direction of 1 unit along the x axis towards the right. Values (-1,0,0) describes a vector that travels in a direction of 1 unit along the x axis, but this time towards the left.</p>
+<p>D. Michael Traub: has supplied the above explanation of the Xvector, Yvector and Zvector parameters.</p>
+<p>To better understand X, Y and Z rotation I'll explain using examples...</p>
+<p>X Axis - You're working on a table saw. The bar going through the center of the blade runs left to right (just like the x axis in OpenGL). The sharp teeth spin around the x axis (bar running through the center of the blade), and appear to be cutting towards or away from you depending on which way the blade is being spun. When we spin something on the x axis in OpenGL it will spin the same way.</p>
+<p>Y Axis - Imagine that you are standing in the middle of a field. There is a huge tornado coming straight at you. The center of a tornado runs from the sky to the ground (up and down, just like the y axis in OpenGL). The dirt and debris in the tornado spins around the y axis (center of the tornado) from left to right or right to left. When you spin something on the y axis in OpenGL it will spin the same way.</p>
+<p>Z Axis - You are looking at the front of a fan. The center of the fan points towards you and away from you (just like the z axis in OpenGL). The blades of the fan spin around the z axis (center of the fan) in a clockwise or counterclockwise direction. When You spin something on the z axis in OpenGL it will spin the same way.</p>
+<p>So in the following line of code, if rtri was equal to 7, we would spin 7 on the Y axis (left to right). You can try experimenting with the code. Change the 0.0f's to 1.0f's, and the 1.0f to a 0.0f to spin the triangle on the X and Y axes at the same time.</p>
+<p>It's important to note that rotations are done in degrees. If rtri had a value of 10, we would be rotating 10 degrees on the y-axis.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	glRotatef(rtri,0.0f,1.0f,0.0f);				// Rotate The Triangle On The Y axis ( NEW )
+</pre>
+<p>The next section of code has not changed. It draws a colorful smooth blended triangle. The triangle will be drawn on the left side of the screen, and will be rotated on it's Y axis causing it to spin left to right.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	glBegin(GL_TRIANGLES);					// Start Drawing A Triangle
+		glColor3f(1.0f,0.0f,0.0f);			// Set Top Point Of Triangle To Red
+		glVertex3f( 0.0f, 1.0f, 0.0f);			// First Point Of The Triangle
+		glColor3f(0.0f,1.0f,0.0f);			// Set Left Point Of Triangle To Green
+		glVertex3f(-1.0f,-1.0f, 0.0f);			// Second Point Of The Triangle
+		glColor3f(0.0f,0.0f,1.0f);			// Set Right Point Of Triangle To Blue
+		glVertex3f( 1.0f,-1.0f, 0.0f);			// Third Point Of The Triangle
+	glEnd();						// Done Drawing The Triangle
+</pre>
+<p>You'll notice in the code below, that we've added another glLoadIdentity(). We do this to reset the view. If we didn't reset the view. If we translated after the object had been rotated, you would get very unexpected results. Because the axis has been rotated, it may not be pointing in the direction you think. So if we translate left on the X axis, we may end up moving up or down instead, depending on how much we've rotated on each axis. Try taking the glLoadIdentity() line out to see what I mean.</p>
+<p>Once the scene has been reset, so X is running left to right, Y up and down, and Z in and out, we translate. You'll notice we're only moving 1.5 to the right instead of 3.0 like we did in the last lesson. When we reset the screen, our focus moves to the center of the screen. meaning we're no longer 1.5 units to the left, we're back at 0.0. So to get to 1.5 on the right side of zero we dont have to move 1.5 from left to center then 1.5 to the right (total of 3.0) we only have to move from center to the right which is just 1.5 units.</p>
+<p>After we have moved to our new location on the right side of the screen, we rotate the quad, on the X axis. This will cause the square to spin up and down.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	glLoadIdentity();					// Reset The Current Modelview Matrix
+	glTranslatef(1.5f,0.0f,-6.0f);				// Move Right 1.5 Units And Into The Screen 6.0
+	glRotatef(rquad,1.0f,0.0f,0.0f);			// Rotate The Quad On The X axis ( NEW )
+</pre>
+<p>This section of code remains the same. It draws a blue square made from one quad. It will draw the square on the right side of the screen in it's rotated position.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	glColor3f(0.5f,0.5f,1.0f);				// Set The Color To A Nice Blue Shade
+	glBegin(GL_QUADS);					// Start Drawing A Quad
+		glVertex3f(-1.0f, 1.0f, 0.0f);			// Top Left Of The Quad
+		glVertex3f( 1.0f, 1.0f, 0.0f);			// Top Right Of The Quad
+		glVertex3f( 1.0f,-1.0f, 0.0f);			// Bottom Right Of The Quad
+		glVertex3f(-1.0f,-1.0f, 0.0f);			// Bottom Left Of The Quad
+	glEnd();						// Done Drawing The Quad
+</pre>
+<p>The next two lines are new. Think of rtri, and rquad as containers. At the top of our program we made the containers (GLfloat rtri, and GLfloat rquad). When we built the containers they had nothing in them. The first line below ADDS 0.2 to that container. So each time we check the value in the rtri container after this section of code, it will have gone up by 0.2. The rquad container decreases by 0.15. So every time we check the rquad container, it will have gone down by 0.15. Going down will cause the object to spin the opposite direction it would spin if you were going up.</p>
+<p>Try chaning the + to a - in the line below see how the object spins the other direction. Try changing the values from 0.2 to 1.0. The higher the number, the faster the object will spin. The lower the number, the slower it will spin.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	rtri+=0.2f;						// Increase The Rotation Variable For The Triangle ( NEW )
+	rquad-=0.15f;						// Decrease The Rotation Variable For The Quad     ( NEW )
+	return TRUE;						// Keep Going
+}
+</pre>
+<p>Finally change the code to toggle window / fullscreen mode so that the title at the top of the window is proper.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">			if (keys[VK_F1])			// Is F1 Being Pressed?
+			{
+				keys[VK_F1]=FALSE;		// If So Make Key FALSE
+				KillGLWindow();			// Kill Our Current Window
+				fullscreen=!fullscreen;		// Toggle Fullscreen / Windowed Mode
+				// Recreate Our OpenGL Window ( Modified )
+				if (!CreateGLWindow("NeHe's Rotation Tutorial",640,480,16,fullscreen))
+				{
+					return 0;		// Quit If Window Was Not Created
+				}
+			}
+</pre>
+<p>In this tutorial I have tried to explain in as much detail as possible, how to rotate objects around an axis. Play around with the code, try spinning the objects, on the Z axis, the X &amp; Y, or all three :) If you have comments or questions please email me. If you feel I have incorrectly commented something or that the code could be done better in some sections, please let me know. I want to make the best OpenGL tutorials I can. I'm interested in hearing your feedback.</p>
+<p><strong>Jeff Molofee</strong> (<strong>NeHe</strong>)</p>
+<p>* DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/vc/lesson04.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/vc/lesson04.zip'" tppabs="http://nehe.gamedev.net/data/lessons/vc/lesson04.zip">Visual C++</a> Code For This Lesson.</p>
+<p>* DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/asm/lesson04.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/asm/lesson04.zip'" tppabs="http://nehe.gamedev.net/data/lessons/asm/lesson04.zip">ASM</a> Code For This Lesson. ( Conversion by Foolman )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/bcb6/lesson04_bcb6.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/bcb6/lesson04_bcb6.zip'" tppabs="http://nehe.gamedev.net/data/lessons/bcb6/lesson04_bcb6.zip">Borland C++ Builder 6</a> Code For This Lesson. ( Conversion by Christian Kindahl )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/beos/lesson04.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/beos/lesson04.zip'" tppabs="http://nehe.gamedev.net/data/lessons/beos/lesson04.zip">BeOS</a> Code For This Lesson. ( Conversion by Rene Manqueros )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/c_sharp/lesson04.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/c_sharp/lesson04.zip'" tppabs="http://nehe.gamedev.net/data/lessons/c_sharp/lesson04.zip">C#</a> Code For This Lesson. ( Conversion by Sabine Felsinger )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/csgl/lesson04.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/csgl/lesson04.zip'" tppabs="http://nehe.gamedev.net/data/lessons/csgl/lesson04.zip">VB.Net CsGL</a> Code For This Lesson. ( Conversion by X )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/cwarrior/lesson04.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/cwarrior/lesson04.zip'" tppabs="http://nehe.gamedev.net/data/lessons/cwarrior/lesson04.zip">Code Warrior 5.3</a> Code For This Lesson. ( Conversion by Scott Lupton )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/cygwin/lesson04.tar.gz  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/cygwin/lesson04.tar.gz'" tppabs="http://nehe.gamedev.net/data/lessons/cygwin/lesson04.tar.gz">Cygwin</a> Code For This Lesson. ( Conversion by Stephan Ferraro )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/d/lesson04.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/d/lesson04.zip'" tppabs="http://nehe.gamedev.net/data/lessons/d/lesson04.zip">D Language</a> Code For This Lesson. ( Conversion by Familia Pineda Garcia )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/delphi/lesson04.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/delphi/lesson04.zip'" tppabs="http://nehe.gamedev.net/data/lessons/delphi/lesson04.zip">Delphi</a> Code For This Lesson. ( Conversion by Michal Tucek )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/devc/lesson04.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/devc/lesson04.zip'" tppabs="http://nehe.gamedev.net/data/lessons/devc/lesson04.zip">Dev C++</a> Code For This Lesson. ( Conversion by Dan )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/euphoria/lesson04.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/euphoria/lesson04.zip'" tppabs="http://nehe.gamedev.net/data/lessons/euphoria/lesson04.zip">Euphoria</a> Code For This Lesson. ( Conversion by Evan Marshall )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/game/data/lessons/glut/lesson04.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/game/data/lessons/glut/lesson04.zip'" tppabs="http://nehe.gamedev.net/data/lessons/game/data/lessons/glut/lesson04.zip">Game GLUT</a> Code For This Lesson. ( Conversion by Milikas Anastasios )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/genu/lesson04.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/genu/lesson04.zip'" tppabs="http://nehe.gamedev.net/data/lessons/genu/lesson04.zip">Genu</a> Code For This Lesson. ( Conversion by Louis-Charles Dumais )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/glut/lesson04.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/glut/lesson04.zip'" tppabs="http://nehe.gamedev.net/data/lessons/glut/lesson04.zip">GLUT</a> Code For This Lesson. ( Conversion by Andy Restad )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/irix/lesson04.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/irix/lesson04.zip'" tppabs="http://nehe.gamedev.net/data/lessons/irix/lesson04.zip">Irix</a> Code For This Lesson. ( Conversion by Lakmal Gunasekara )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/java/lesson04.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/java/lesson04.zip'" tppabs="http://nehe.gamedev.net/data/lessons/java/lesson04.zip">Java</a> Code For This Lesson. ( Conversion by Jeff Kirby )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/java_swt/lesson04.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/java_swt/lesson04.zip'" tppabs="http://nehe.gamedev.net/data/lessons/java_swt/lesson04.zip">Java/SWT</a> Code For This Lesson. ( Conversion by Victor Gonzalez )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/jedisdl/lesson04.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/jedisdl/lesson04.zip'" tppabs="http://nehe.gamedev.net/data/lessons/jedisdl/lesson04.zip">Jedi-SDL</a> Code For This Lesson. ( Conversion by Dominique Louis )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/jogl/lesson04.jar  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/jogl/lesson04.jar'" tppabs="http://nehe.gamedev.net/data/lessons/jogl/lesson04.jar">JoGL</a> Code For This Lesson. ( Conversion by Kevin J. Duling )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/lccwin32/lccwin32_lesson04.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/lccwin32/lccwin32_lesson04.zip'" tppabs="http://nehe.gamedev.net/data/lessons/lccwin32/lccwin32_lesson04.zip">LCC Win32</a> Code For This Lesson. ( Conversion by Robert Wishlaw )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/linux/lesson04.tar.gz  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/linux/lesson04.tar.gz'" tppabs="http://nehe.gamedev.net/data/lessons/linux/lesson04.tar.gz">Linux</a> Code For This Lesson. ( Conversion by Richard Campbell )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/linuxglx/lesson04.tar.gz  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/linuxglx/lesson04.tar.gz'" tppabs="http://nehe.gamedev.net/data/lessons/linuxglx/lesson04.tar.gz">Linux/GLX</a> Code For This Lesson. ( Conversion by Mihael Vrbanec )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/linuxsdl/lesson04.tar.gz  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/linuxsdl/lesson04.tar.gz'" tppabs="http://nehe.gamedev.net/data/lessons/linuxsdl/lesson04.tar.gz">Linux/SDL</a> Code For This Lesson. ( Conversion by Ti Leggett )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/lwjgl/lesson04.jar  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/lwjgl/lesson04.jar'" tppabs="http://nehe.gamedev.net/data/lessons/lwjgl/lesson04.jar">LWJGL</a> Code For This Lesson. ( Conversion by Mark Bernard )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev.net/data/lessons/mac/lesson04.sit  \n\nThis file was not retrieved by Teleport Pro, because the server reports that this file cannot be found.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev.net/data/lessons/mac/lesson04.sit'" tppabs="http://nehe.gamedev.net/data/lessons/mac/lesson04.sit">Mac OS</a> Code For This Lesson. ( Conversion by Anthony Parker )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/macosxcocoa/lesson04.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/macosxcocoa/lesson04.zip'" tppabs="http://nehe.gamedev.net/data/lessons/macosxcocoa/lesson04.zip">Mac OS X/Cocoa</a> Code For This Lesson. ( Conversion by Bryan Blackburn )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/m/data/lessons/asm/lesson04.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/m/data/lessons/asm/lesson04.zip'" tppabs="http://nehe.gamedev.net/data/lessons/m/data/lessons/asm/lesson04.zip">MASM</a> Code For This Lesson. ( Conversion by Nico (Scalp) )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/pbasic/lesson04.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/pbasic/lesson04.zip'" tppabs="http://nehe.gamedev.net/data/lessons/pbasic/lesson04.zip">Power Basic</a> Code For This Lesson. ( Conversion by Angus Law )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/pelles_c/lesson04.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/pelles_c/lesson04.zip'" tppabs="http://nehe.gamedev.net/data/lessons/pelles_c/lesson04.zip">Pelles C</a> Code For This Lesson. ( Conversion by Pelle Orinius )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/perl/lesson04.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/perl/lesson04.zip'" tppabs="http://nehe.gamedev.net/data/lessons/perl/lesson04.zip">Perl</a> Code For This Lesson. ( Conversion by Cora Hussey )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/python/lesson04.tar.gz  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/python/lesson04.tar.gz'" tppabs="http://nehe.gamedev.net/data/lessons/python/lesson04.tar.gz">Python</a> Code For This Lesson. ( Conversion by John Ferguson )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/realbasic/RBlesson04.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/realbasic/RBlesson04.zip'" tppabs="http://nehe.gamedev.net/data/lessons/realbasic/RBlesson04.zip">REALbasic</a> Code For This Lesson. ( Conversion by Thomas J. Cunningham )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/ruby/lesson04.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/ruby/lesson04.zip'" tppabs="http://nehe.gamedev.net/data/lessons/ruby/lesson04.zip">Ruby</a> Code For This Lesson. ( Conversion by Manolo Padron Martinez )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/scheme/lesson04.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/scheme/lesson04.zip'" tppabs="http://nehe.gamedev.net/data/lessons/scheme/lesson04.zip">Scheme</a> Code For This Lesson. ( Conversion by Jon DuBois )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/solaris/lesson04.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/solaris/lesson04.zip'" tppabs="http://nehe.gamedev.net/data/lessons/solaris/lesson04.zip">Solaris</a> Code For This Lesson. ( Conversion by Lakmal Gunasekara )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/vb/lesson04.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/vb/lesson04.zip'" tppabs="http://nehe.gamedev.net/data/lessons/vb/lesson04.zip">Visual Basic</a> Code For This Lesson. ( Conversion by Ross Dawson )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/vfortran/lesson04.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/vfortran/lesson04.zip'" tppabs="http://nehe.gamedev.net/data/lessons/vfortran/lesson04.zip">Visual Fortran</a> Code For This Lesson. ( Conversion by Jean-Philippe Perois )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/vs_net/lesson04.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/vs_net/lesson04.zip'" tppabs="http://nehe.gamedev.net/data/lessons/vs_net/lesson04.zip">Visual Studio .NET</a> Code For This Lesson. ( Conversion by Grant James )</p>
+<p>&nbsp;</p>
+<p><strong><span><a href="index-33.htm" tppabs="http://nehe.gamedev.net/data/lessons/lesson.asp?lesson=03">&lt; Lesson 03</a></span></strong><strong><span><a href="index-35.htm" tppabs="http://nehe.gamedev.net/data/lessons/lesson.asp?lesson=05">Lesson 05 &gt;</a></span></strong></p>
+
+
+</div>
+</div>
+
+
+
+            <div style="width:728px;padding:0px;margin:auto; margin-top: 10px;">
+            
+
+    
+                <!-- Leaderboard_NeHe -->
+                <div id='div-gpt-ad-1327940144417-0' style='width:728px; height:90px;'>
+                <script type='text/javascript'>
+                googletag.cmd.push(function() { googletag.display('div-gpt-ad-1327940144417-0'); });
+                </script>
+                </div>
+            
+
+                           
+            </div>   
+        </td>
+        <td class="col2">
+            
+
+
+
+
+<div style="text-align: center; padding:10px;">
+
+<script type='text/javascript'>
+    GA_googleFillSlot("Skyscraper_NeHe");
+</script>
+
+</div>
+            
+        </td>
+    </table>
+    <div id="footer">
+        <p>
+            
+    
+    © 1997-2012 Gamedev . All rights reserved.<br/>
+
+			NeHe™ and NeHe Productions™ are trademarks of GameDev.net, LLC<br/>
+			OpenGL® is a registered trademark of Silicon Graphics Inc.<br/>
+		</p>        
+		<br/>
+    </div>
+
+    
+    
+	    <script type="text/javascript" src="shCore.js" tppabs="http://nehe.gamedev.net/static/js/syntax_highlighter/shCore.js"></script>
+        <script type="text/javascript" src="shBrushCpp.js" tppabs="http://nehe.gamedev.net/static/js/syntax_highlighter/shBrushCpp.js"></script>
+	    <script type="text/javascript" src="shBrushJScript.js" tppabs="http://nehe.gamedev.net/static/js/syntax_highlighter/shBrushJScript.js"></script>
+	    <script type="text/javascript">SyntaxHighlighter.all();</script>
+    
+
+    <!-- Place this render call where appropriate -->
+    <script type="text/javascript">
+      (function() {
+        var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+        po.src = 'plusone.js'/*tpa=https://apis.google.com/js/plusone.js*/;
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+      })();
+    </script>    
+
+    
+<!-- GoogleAnalytics code -->
+<script src="urchin.js" tppabs="http://www.google-analytics.com/urchin.js" type="text/javascript">
+</script>
+<script type="text/javascript">
+_uacct = "UA-279474-2"; // Gamedev
+urchinTracker();
+_uff = 0; // Reset for second account
+_uacct = "UA-24180731-1"; // Non-GD
+urchinTracker();
+</script> 
+  </body>
+</html>

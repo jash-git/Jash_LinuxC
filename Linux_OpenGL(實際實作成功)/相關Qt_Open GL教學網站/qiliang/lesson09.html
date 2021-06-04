@@ -1,0 +1,304 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<meta name="Author" content="Qi Liang">
+<meta name="Qt OpenGL Tutorial" content="http://www.qiliang.net/nehe_qt">
+<title>在三维空间中移动位图</title>
+<style type="text/css"><!--
+h3.fn,span.fn { margin-left: 1cm; text-indent: -1cm; }
+a:link { color: #004faf; text-decoration: none }
+a:visited { color: #672967; text-decoration: none }
+body { background: #ffffff; color: black; font-family: "Times New Roman" }
+--></style>
+</head>
+<body>
+<p align="right">[<a href="lesson08.html" tppabs="http://www.qiliang.net/nehe_qt/lesson08.html">上一课：融合</a>] [<a href="index.html" tppabs="http://www.qiliang.net/nehe_qt/index.html">Qt OpenGL教程主页</a>]</p>
+
+<h2 align=center>在三维空间中移动位图</h2>
+
+<p> <center><img src="lesson09.png" tppabs="http://www.qiliang.net/nehe_qt/lesson09.png"></center> 
+<p> 欢迎进入第九课。到现在为止，您应该很好的理解OpenGL了。您已经学会了设置一个OpenGL窗口的每个细节。学会在旋转的物体上贴图并打上光线以及融合（透明）处理。这一课应该算是第一课中级教程。您将学到如下的知识：在三维场景中移动位图，并去除位图上的黑色象素（使用融合）。接着为黑白纹理上色，最后您将学会创建丰富的色彩，并把上过不同色彩的纹理相互融合，得到简单的动画效果。
+<p> 我们要在上一课的代码上进行改动就可以了。
+<p> 我们将增加一些变量，稍后我们对这些变量进行解释。
+
+<h3><a name="1"></a>NeHeWidget类</h3>
+<p> （由<tt>nehewidget.h</tt>展开。）
+<pre>
+const GLuint num = 50;
+</pre>
+<p> 这个常量num存储的是我们绘制的星星的总数。
+<pre>
+typedef struct
+{
+  int r, g, b;
+  GLfloat dist;
+  GLfloat angle;
+}stars;
+</pre>
+<p> 这个结构是用来存储星星的数据的，r、g、b存储的是星星的颜色，dist是星星距离中心的距离，angle是星星现在所在的角度。
+<pre>
+protected:
+
+  void initializeGL();
+  void paintGL();
+  void resizeGL( int width, int height );
+
+  void keyPressEvent( QKeyEvent *e );
+  void loadGLTextures();
+  void timerEvent( QTimerEvent * );
+</pre>
+<p> 增加了一个timeEvent( QTimerEvent * )函数，这个函数可以实现整个窗口部件的一些定时操作。
+<pre>
+protected:
+
+  bool fullscreen;
+
+  GLfloat xRot, yRot, zRot;
+  GLfloat zoom;
+  GLfloat tilt;
+  GLfloat spin;
+  GLuint loop;
+  GLuint texture[1];
+
+  bool twinkle;
+
+  stars star[num]; 
+};
+</pre>
+<p> zoom是星星距离观察者的距离，tilt是星星的倾角，spin是闪烁星星的自转，loop是用来绘制所有50个星星的全局变量，texture[1]是用来存储纹理的，twinkle是用来表示星星是否闪烁，star[num]是用来存储50个星星的数据。
+<p> 
+<p> （由<tt>nehewidget.cpp</tt>展开。）
+<pre>
+NeHeWidget::NeHeWidget( QWidget* parent, const char* name, bool fs )
+    : QGLWidget( parent, name )
+{
+  xRot = yRot = zRot = 0.0;
+  zoom = -15.0;
+  tilt = 90.0;
+  spin = 0.0;
+  loop = 0;
+
+  twinkle = false;
+
+  fullscreen = fs;
+  setGeometry( 0, 0, 640, 480 );
+  setCaption( "NeHe's Animated Blended Textures Tutorial" );
+
+  if ( fullscreen )
+    showFullScreen();
+
+  startTimer( 5 );
+</pre>
+<p> startTimer( 5 )就是每5毫秒执行一次timerEvent()函数做定时操作。
+<pre>
+}
+</pre>
+<p> 我们需要在构造函数中给各个变量赋初值。
+<pre>
+void NeHeWidget::loadGLTextures()
+{
+  QImage tex, buf;
+  if ( !buf.load( "./data/Star.bmp" ) )
+  {
+    qWarning( "Could not read image file, using single-color instead." );
+    QImage dummy( 128, 128, 32 );
+    dummy.fill( Qt::green.rgb() );
+    buf = dummy;
+  }
+  tex = QGLWidget::convertToGLFormat( buf );
+  
+  glGenTextures( 1, &texture[0] );
+
+  glBindTexture( GL_TEXTURE_2D, texture[0] );
+  glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST );
+  glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST );
+  glTexImage2D( GL_TEXTURE_2D, 0, 3, tex.width(), tex.height(), 0,
+      GL_RGBA, GL_UNSIGNED_BYTE, tex.bits() );
+}
+</pre>
+<p> loadGLTextures()函数就是用来载入纹理的。
+<pre>
+void NeHeWidget::initializeGL()
+{
+  loadGLTextures();
+  glEnable( GL_TEXTURE_2D );
+  glShadeModel( GL_SMOOTH );
+  glClearColor( 0.0, 0.0, 0.0, 0.5 );
+  glClearDepth( 1.0 );
+  glEnable( GL_DEPTH_TEST );
+  glDepthFunc( GL_LEQUAL );
+  glHint( GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST );
+  glBlendFunc( GL_SRC_ALPHA, GL_ONE );
+  glEnable( GL_BLEND );
+</pre>
+<p> 上述设置前面的各章都提到过了，就不再讲了。
+<pre>
+  for ( loop = 0; loop < num; loop++ )
+  {
+    star[loop].angle = 0.0;
+    star[loop].dist = ( float(loop)/num ) * 5.0;
+    star[loop].r = rand() % 256;
+    star[loop].g = rand() % 256;
+    star[loop].b = rand() % 256;
+  }
+</pre>
+<p> 设置了每颗星星的起始角度、距离和颜色。您会注意到修改结构的属性有多容易。全部50颗星星都会被循环设置。要改变star[1]的角度我们所要做的只是star[1].angle={某个数值}；就这么简单！  
+<p> 第loop颗星星离中心的距离是将loop的值除以星星的总颗数，然后乘上5.0。基本上这样使得后一颗星星比前一颗星星离中心更远一点。这样当loop为50时（最后一颗星星），loop除以num正好是1.0。之所以要乘以5.0是因为1.0*5.0就是5.0。5.0已经很接近屏幕边缘。我不想星星飞出屏幕，5.0是最好的选择了。当然如果如果您将场景设置的更深入屏幕里面的话，也许可以使用大于5.0的数值，但星星看起来就更小一些（都是透视的缘故）。
+<p> 您还会注意到每颗星星的颜色都是从0～255之间的一个随机数。也许您会奇怪为何这里的颜色得取值范围不是OpenGL通常的0.0～1.0之间。这里我们使用的颜色设置函数是glColor4ub，而不是以前的glColor4f。ub意味着参数是unsigned byte型的。一个byte的取值范围是0～255。这里使用byte值取随机整数似乎要比取一个浮点的随机数更容易一些。
+<pre>
+}
+</pre>
+<pre>
+void NeHeWidget::paintGL()
+{
+  glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
+</pre>
+<p> 清楚屏幕及深度缓存。
+<pre>
+  glBindTexture( GL_TEXTURE_2D, texture[0] );
+</pre>
+<p> 选择纹理。
+<pre>
+  for ( loop = 0; loop < num; loop++ )
+  {
+</pre>
+<p> 这段程序我们来循环绘制所有的星星。
+<pre>
+    glLoadIdentity();
+</pre>
+<p> 绘制每颗星星之前，重置模型观察矩阵。
+<pre>
+    glTranslatef( 0.0, 0.0, zoom );
+</pre>
+<p> 深入屏幕里面（使用“zoom”的值）。
+<pre>
+    glRotatef( tilt, 1.0, 0.0, 0.0 );
+</pre>
+<p> 倾斜视角（使用“tilt”的值）。
+<pre>
+    glRotatef( star[loop].angle, 0.0, 1.0, 0.0 );
+</pre>
+<p> 接下来的代码，我们来移动星星。星星开始时位于屏幕的中心。我们要做的第一件事是把场景沿Y轴旋转。如果我们旋转90度的话，X轴不再是自左至右的了，他将由里向外穿出屏幕。为了让大家更清楚些，举个例子。假想您站在房子中间。再设想您左侧的墙上写着-x，前面的墙上写着-z，右面墙上就是+x咯，您身后的墙上则是+z。加入整个房子向右转90度，但您没有动，那么前面的墙上将是-x而不再是-z了。所有其他的墙也都跟着移动。-z出现在右侧，+z出现在左侧，+x出现在您背后。神经错乱了吧？通过旋转场景，我们改变了x和z平面的方向。
+<pre>
+    glTranslatef( star[loop].dist, 0.0, 0.0 );
+</pre>
+<p> 这代码沿x轴移动一个正值。通常x轴上的正值代表移向了屏幕的右侧（也就是通常的x轴的正向），但这里由于我们绕y轴旋转了坐标系，x轴的正向可以是任意方向。如果我们转180度的话，屏幕的左右侧就镜像反向了。因此，当我们沿x轴正向移动时，可能向左，向右，向前或向后。 
+<pre>
+    glRotatef( -star[loop].angle, 0.0, 1.0, 0.0 );
+    glRotatef( -tilt, 1.0, 0.0, 0.0 );
+</pre>
+<p> 星星实际上是一个平面的纹理。现在您在屏幕中心画了个平面的四边形然后贴上纹理，这看起来很不错。一切都如您所想的那样。但是当您当您沿着y轴转上个90度的话，纹理在屏幕上就只剩右侧和左侧的两条边朝着您。看起来就是一条细线。这不是我们所想要的。我们希望星星永远正面朝着我们，而不管屏幕如何旋转或倾斜。
+<p> 我们通过在绘制星星之前，抵消对星星所作的任何旋转来实现这个愿望。您可以采用逆序来抵消旋转。当我们倾斜屏幕时，我们实际上以当前角度旋转了星星。通过逆序，我们又以当前角度“反旋转”星星。也就是以当前角度的负值来旋转星星。就是说，如果我们将星星旋转了10度的话，又将其旋转-10度来使星星在那个轴上重新面对屏幕。上面的第一行抵消了沿y轴的旋转。然后，我们还需要抵消掉沿x轴的屏幕倾斜。要做到这一点，我们只需要将屏幕再旋转-tilt倾角。在抵消掉x和y轴的旋转后，星星又完全面对着我们了。 
+<pre>
+    if ( twinkle )
+    {
+      glColor4ub( star[(num-loop)-1].r,
+         star[(num-loop)-1].g, 
+         star[(num-loop)-1].b, 255 );
+      glBegin( GL_QUADS );
+        glTexCoord2f( 0.0, 0.0 ); glVertex3f( -1.0, -1.0, 0.0 );
+        glTexCoord2f( 1.0, 0.0 ); glVertex3f( 1.0, -1.0, 0.0 );
+        glTexCoord2f( 1.0, 1.0 ); glVertex3f( 1.0, 1.0, 0.0 );
+        glTexCoord2f( 0.0, 1.0 ); glVertex3f( -1.0, 1.0, 0.0 );
+      glEnd();
+    }
+</pre>
+<p> 如果twinkle为真，我们在屏幕上先画一次不旋转的星星：将星星总数（num）减去当前的星星数（loop）再减去1，来提取每颗星星的不同颜色（这么做是因为循环范围从0到num-1）。举例来说，结果为10的时候，我们就使用10号星星的颜色。这样相邻星星的颜色总是不同的。这不是个好法子，但很有效。最后一个值是alpha通道分量。这个值越小，这颗星星就越暗。
+<p> 由于启用了twinkle，每颗星星最后会被绘制两遍。程序运行起来会慢一些，这要看您的机器性能如何了。但两遍绘制的星星颜色相互融合，会产生很棒的效果。同时由于第一遍的星星没有旋转，启用twinkle后的星星看起来有一种动画效果。（如果您这里看不懂得话，就自己去看程序的运行效果吧。）
+<p> 值得注意的是给纹理上色是件很容易的事。尽管纹理本身是黑白的，纹理将变成我们在绘制它之前选定的任意颜色。此外，同样值得注意的是我们在这里使用的颜色值是byte型的，而不是通常的浮点数。甚至alpha通道分量也是如此。 
+<pre>
+    glRotatef( spin, 0.0, 0.0, 1.0 );
+    glColor4ub( star[loop].r, star[loop].g, star[loop].b, 255 );
+    glBegin( GL_QUADS );
+      glTexCoord2f( 0.0, 0.0 ); glVertex3f( -1.0, -1.0, 0.0 );
+      glTexCoord2f( 1.0, 0.0 ); glVertex3f( 1.0, -1.0, 0.0 );
+      glTexCoord2f( 1.0, 1.0 ); glVertex3f( 1.0, 1.0, 0.0 );
+      glTexCoord2f( 0.0, 1.0 ); glVertex3f( -1.0, 1.0, 0.0 );
+    glEnd();
+</pre>
+<p> 上面是绘制第二遍的星星。唯一和前面的代码不同的是这一遍的星星肯定会被绘制，并且这次的星星绕着z轴旋转。
+<pre>
+    spin += 0.01;
+    star[loop].angle += float(loop)/num;
+    star[loop].dist -= 0.01;
+</pre>    
+<p> 以上的代码代表星星的运动。我们增加spin的值来旋转所有的星星（公转）。然后，将每颗星星的自转角度增加loop/num。这使离中心更远的星星转的更快。最后减少每颗星星离屏幕中心的距离。这样看起来，星星们好像被不断地吸入屏幕的中心。
+<pre>
+    if ( star[loop].dist < 0.0 )
+    {
+      star[loop].dist += 5.0;
+      star[loop].r = rand() % 256;
+      star[loop].g = rand() % 256;
+      star[loop].b = rand() % 256;
+    }
+  }
+</pre>
+<p> 检查星星是否已经碰到了屏幕中心。当星星碰到屏幕中心时，我们为它赋一个新颜色，然后往外移5个单位，这颗星星将踏上它回归屏幕中心的旅程。
+<pre>
+}
+</pre>
+<pre>
+void NeHeWidget::timerEvent(QTimerEvent*)
+{
+  updateGL();
+}
+</pre>
+<p> 这里就是定时操作函数timerEvent()，执行的操作就是updateGL()，就是刷新窗口了，其实它也会调用paintGL()，所以就实现了每5毫秒刷新一次的动画效果。
+<pre>
+void NeHeWidget::keyPressEvent( QKeyEvent *e )
+{
+  switch ( e->key() )
+  {
+  case Qt::Key_T:
+    twinkle = !twinkle;
+    updateGL();
+    break;
+</pre>
+<p> 按下了T键，就可以切换是否闪烁。
+<pre>
+  case Qt::Key_Up:
+    tilt -= 0.5;
+    updateGL();
+    break;
+  case Qt::Key_Down:
+    tilt += 0.5;
+    updateGL();
+    break;
+  case Qt::Key_Prior:
+    zoom -= 0.2;
+    updateGL();
+    break;
+  case Qt::Key_Next:
+    zoom += 0.2;
+    updateGL();
+    break;
+  case Qt::Key_F2:
+    fullscreen = !fullscreen;
+    if ( fullscreen )
+    {
+      showFullScreen();
+    }
+    else
+    {
+      showNormal();
+      setGeometry( 0, 0, 640, 480 );
+    }
+    update();
+    break;
+  case Qt::Key_Escape:
+    close();
+  }
+}
+</pre>
+<p> 这一课我尽我所能来解释如何加载一个灰阶位图纹理，（使用融合）去掉它的背景色后，再给它上色，最后让它在三维场景中移动。我已经向您展示了如何创建漂亮的颜色与动画效果。实现原理是在原始位图上再重叠一份位图拷贝。到现在为止，只要您很好的理解了我所教您的一切，您应该已经能够毫无问题的制作您自己的3D Demo了。所有的基础知识都已包括在内！
+<p> 本课程的<a href="lesson09.tar.gz" tppabs="http://www.qiliang.net/nehe_qt/source/lesson09.tar.gz">源代码</a>。
+
+<p align="right">[<a href="lesson08.html" tppabs="http://www.qiliang.net/nehe_qt/lesson08.html">上一课：融合</a>] [<a href="index.html" tppabs="http://www.qiliang.net/nehe_qt/index.html">Qt OpenGL教程主页</a>]</p>
+
+<p><address><hr><div align=center>
+<table width=100% cellspacing=0 border=0><tr>
+<td align=left><div align=left><a href="javascript:if(confirm('http://www.qiliang.net/  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://www.qiliang.net/'" tppabs="http://www.qiliang.net/">http://www.qiliang.net</a></div>
+<td><center><a href="mailto:cavendish@qiliang.net">mailto:cavendish@qiliang.net</a></center>
+<td align=right><div align=right>2003年2月27日</div>
+</table></div></address></body>
+</html>

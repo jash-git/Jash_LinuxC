@@ -1,0 +1,853 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<!-- 这篇文章由Dancingwind翻译，作者的联系方式zhouwei02@mails.tsinghua.edu.cn --><html>
+
+<head>
+<title>NeHe OpenGL教程第十五课，DancingWind翻译</title>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<style type="text/css">A:link {
+	COLOR: #ccaaff; TEXT-DECORATION: none
+}
+A:visited {
+	COLOR: #ccaaff; TEXT-DECORATION: none
+}
+A:active {
+	COLOR: #ccaaff; TEXT-DECORATION: none
+}
+A:hover {
+	COLOR: #ffccaa; TEXT-DECORATION: none
+}
+</style>
+<meta content="Microsoft FrontPage 3.0" name="GENERATOR">
+</head>
+
+<body bgColor="#000000" text="#ffffff">
+<CENTER><BR>
+  <table border="0" cellPadding="0" cellSpacing="0" width="100%">
+<TBODY>
+  <tr>
+    <td height="130" width="326"><img height="130" src="logo.png" tppabs="http://www.owlei.com/DancingWind/Pic/logo.png" width="326"></td>
+      <td align="middle" vAlign="center" width="75%"><div align="center"><font color="#ffccaa" size="+3"><b><i>第15课</i></b></font></div></td>
+  </tr>
+</TBODY>
+</table>
+<!-- 上边框-->
+<table border="0" cellPadding="0" cellSpacing="0" width="100%">
+<TBODY>
+  <tr>
+    <td><img height="28" src="tl.jpg" tppabs="http://www.owlei.com/DancingWind/Pic/tl.jpg" width="28"></td>
+    <td width="100%"><img height="28" src="tc.gif" tppabs="http://www.owlei.com/DancingWind/Pic/tc.gif" width="100%"></td>
+    <td><img height="28" src="tr.gif" tppabs="http://www.owlei.com/DancingWind/Pic/tr.gif" width="28"></td>
+  </tr>
+</TBODY>
+</table>
+
+<!-- 中部-->
+<table border="0" cellPadding="0" cellSpacing="0" width="100%">
+<TBODY>
+  <tr>
+  	<!-- 中部左边框-->
+    <td  background="l.gif" tppabs="http://www.owlei.com/DancingWind/Pic/l.gif"><img src="l.gif" tppabs="http://www.owlei.com/DancingWind/Pic/l.gif" width="28" height="28"></td>
+	<!-- 中部文字部分-->
+    <td vAlign="top" width="100%">
+	<table width="100%" border="0">
+          <tr>
+              <td width="29%"><img src="lesson15.jpg" tppabs="http://www.owlei.com/DancingWind/Pic/lesson15.jpg" width="240" height="180"></td>
+              <td width="71%"><p><FONT class=head>图形字体的纹理映射:</FONT></p>
+                <p><font size="3">这一课，我们将在上一课的基础上创建带有纹理的字体，它真的很简单。</FONT></p></td>
+          </tr>
+     </table>
+      </td>
+	<!-- 中部右边框-->
+    <td background="r.gif" tppabs="http://www.owlei.com/DancingWind/Pic/r.gif"><img src="r.gif" tppabs="http://www.owlei.com/DancingWind/Pic/r.gif" width="28" height="28"></td>
+  </tr>
+</TBODY>
+</table>
+
+<!-- 下边框-->
+<table border="0" cellPadding="0" cellSpacing="0" width="100%">
+<TBODY>
+  <tr>
+    <td><img height="28" src="bl.gif" tppabs="http://www.owlei.com/DancingWind/Pic/bl.gif" width="28"></td>
+    <td width="100%"><img height="28" src="bc.gif" tppabs="http://www.owlei.com/DancingWind/Pic/bc.gif" width="100%"></td>
+    <td><img height="28" src="br.gif" tppabs="http://www.owlei.com/DancingWind/Pic/br.gif" width="28"></td>
+  </tr>
+</TBODY>
+</table>
+<table border="0" cellPadding="0" cellSpacing="0" width="100%">
+<TBODY>
+  <tr>
+    <td><img height="28" src="tl.jpg" tppabs="http://www.owlei.com/DancingWind/Pic/tl.jpg" width="28"></td>
+    <td width="100%"><img height="28" src="tc.gif" tppabs="http://www.owlei.com/DancingWind/Pic/tc.gif" width="100%"></td>
+    <td><img height="28" src="tr.gif" tppabs="http://www.owlei.com/DancingWind/Pic/tr.gif" width="28"></td>
+  </tr>
+</TBODY>
+</table>
+
+<table border="0" cellPadding="0" cellSpacing="0" width="100%">
+<TBODY>
+  <tr>
+    <td background="l.gif" tppabs="http://www.owlei.com/DancingWind/Pic/l.gif"><img src="l.gif" tppabs="http://www.owlei.com/DancingWind/Pic/l.gif" width="28" height="28"></td>
+      <td vAlign="top" width="100%">在发布了前两篇关于位图字体和轮廓字体的教程以后，我收到很多邮件，很多读者都想知道如何才能给字体赋予纹理贴图。你可以使用自动纹理坐标生成器。它会为字体上的每一个多边形生成纹理坐标。
+        <p>一个小注释，这段代码是专门针对Windows写的，它使用了Windows的wgl函数来创建字体，显然，Apple机系统有agl，X系统有glx来支持做同样事情的，不幸的是，我不能保证这些代码也是容易使用的。如果哪位有能在屏幕上显示文字且独立于平台的代码，请告诉我，我将重写一个有关字体的教程。</p>
+        <p>我们将使用第14课的代码来创作纹理字体的演示。如果程序中哪部分的代码有变化，我会重写那部分的所有代码以便看出我做的改动。<br>
+        </p></td>
+    <td background="r.gif" tppabs="http://www.owlei.com/DancingWind/Pic/r.gif"><img src="r.gif" tppabs="http://www.owlei.com/DancingWind/Pic/r.gif" width="28" height="28"></td>
+  </tr>
+</TBODY>
+</table>
+
+<table border="0" cellPadding="0" cellSpacing="0" width="100%">
+<TBODY>
+  <tr>
+    <td><img height="28" src="bl.gif" tppabs="http://www.owlei.com/DancingWind/Pic/bl.gif" width="28"></td>
+    <td width="100%"><img height="28" src="bc.gif" tppabs="http://www.owlei.com/DancingWind/Pic/bc.gif" width="100%"></td>
+    <td><img height="28" src="br.gif" tppabs="http://www.owlei.com/DancingWind/Pic/br.gif" width="28"></td>
+  </tr>
+</TBODY>
+</table>
+<font color="#aaffaa" size="3"> </font> 
+<table border="0" cellPadding="0" cellSpacing="0" width="100%">
+<TBODY>
+  <tr>
+    <td><img height="28" src="tl.jpg" tppabs="http://www.owlei.com/DancingWind/Pic/tl.jpg" width="28"></td>
+    <td width="100%"><img height="28" src="tc.gif" tppabs="http://www.owlei.com/DancingWind/Pic/tc.gif" width="100%"></td>
+    <td><img height="28" src="tr.gif" tppabs="http://www.owlei.com/DancingWind/Pic/tr.gif" width="28"></td>
+  </tr>
+</TBODY>
+</table>
+
+<table border="0" cellPadding="0" cellSpacing="0" width="100%">
+<TBODY>
+  <tr>
+    <td background="l.gif" tppabs="http://www.owlei.com/DancingWind/Pic/l.gif"><img src="l.gif" tppabs="http://www.owlei.com/DancingWind/Pic/l.gif" width="28" height="28"></td>
+      <td vAlign="top" width="100%">我们还要添加一个叫做texture[]的整型变量。它用于保存纹理。后面3行是第14课中的代码，本课不做改动。<br></td>
+    <td background="r.gif" tppabs="http://www.owlei.com/DancingWind/Pic/r.gif"><img src="r.gif" tppabs="http://www.owlei.com/DancingWind/Pic/r.gif" width="28" height="28"></td>
+  </tr>
+</TBODY>
+</table>
+
+<table border="0" cellPadding="0" cellSpacing="0" width="100%">
+<TBODY>
+  <tr>
+    <td><img height="28" src="bl.gif" tppabs="http://www.owlei.com/DancingWind/Pic/bl.gif" width="28"></td>
+    <td width="100%"><img height="28" src="bc.gif" tppabs="http://www.owlei.com/DancingWind/Pic/bc.gif" width="100%"></td>
+    <td><img height="28" src="br.gif" tppabs="http://www.owlei.com/DancingWind/Pic/br.gif" width="28"></td>
+  </tr>
+</TBODY>
+</table>
+<font color="#aaffaa" size="3"> </font> 
+<table border="0" cellPadding="0" cellSpacing="0" width="100%">
+<TBODY>
+  <tr>
+    <td><img height="28" src="tl.jpg" tppabs="http://www.owlei.com/DancingWind/Pic/tl.jpg" width="28"></td>
+    <td width="100%"><img height="28" src="tc.gif" tppabs="http://www.owlei.com/DancingWind/Pic/tc.gif" width="100%"></td>
+    <td><img height="28" src="tr.gif" tppabs="http://www.owlei.com/DancingWind/Pic/tr.gif" width="28"></td>
+  </tr>
+</TBODY>
+</table>
+
+<table border="0" cellPadding="0" cellSpacing="0" width="100%">
+<TBODY>
+  <tr>
+    <td background="l.gif" tppabs="http://www.owlei.com/DancingWind/Pic/l.gif"><img src="l.gif" tppabs="http://www.owlei.com/DancingWind/Pic/l.gif" width="28" height="28"></td>
+      <td vAlign="top" width="100%">下面的部分做了一些小改动。我打算在这课使用wingdings字体来显示一个海盗旗（骷髅头和十字骨头）的标志。如果你想显示文字的话，就不用改动第14课中的代码了，也可以选择另一种字体。
+        <p>有些人想知道如何使用wingdings字体，这也是我不用标准字体的一个原因。wingdings是一种符号字体，使用它时需要做一些改动。告诉Windows使用wingdings字体并不太简单。如果你把字体的名字改为wingdings，你会注意到字体其实并没有选到。你必须告诉Windows这种字体是一种符号字体而不是一种标准字符字体。后面会继续解释。<br>
+        </p></td>
+    <td background="r.gif" tppabs="http://www.owlei.com/DancingWind/Pic/r.gif"><img src="r.gif" tppabs="http://www.owlei.com/DancingWind/Pic/r.gif" width="28" height="28"></td>
+  </tr>
+</TBODY>
+</table>
+
+<table border="0" cellPadding="0" cellSpacing="0" width="100%">
+<TBODY>
+  <tr>
+    <td><img height="28" src="bl.gif" tppabs="http://www.owlei.com/DancingWind/Pic/bl.gif" width="28"></td>
+    <td width="100%"><img height="28" src="bc.gif" tppabs="http://www.owlei.com/DancingWind/Pic/bc.gif" width="100%"></td>
+    <td><img height="28" src="br.gif" tppabs="http://www.owlei.com/DancingWind/Pic/br.gif" width="28"></td>
+  </tr>
+</TBODY>
+</table>
+<font color="#aaffaa" size="3"> 
+<pre>GLvoid BuildFont(GLvoid)					<font color="#ffffaa">	// 创建位图字体</font>
+{
+	GLYPHMETRICSFLOAT	gmf[256];					<font
+color="#ffffaa">// 记录256个字符的信息</font>
+	HFONT	font;						<font
+color="#ffffaa">// 字体句柄</font>
+
+	base = glGenLists(256);					<font
+color="#ffffaa">// 创建256个显示列表</font>
+	font = CreateFont(	-12,				<font
+color="#ffffaa">	// 字体高度</font>
+				0,				<font color="#ffffaa">// 字体宽度</font>
+				0,				<font
+color="#ffffaa">// 字体的旋转角度 Angle Of Escapement</font>
+				0,				<font color="#ffffaa">// 字体底线的旋转角度Orientation Angle</font>
+				FW_BOLD,				<font
+color="#ffffaa">// 字体的重量</font>
+				FALSE,				<font color="#ffffaa">// 是否使用斜体</font>
+				FALSE,				<font
+color="#ffffaa">// 是否使用下划线</font>
+				FALSE,				<font color="#ffffaa">// 是否使用删除线</font>
+</pre>
+</font> 
+<table border="0" cellPadding="0" cellSpacing="0" width="100%">
+<TBODY>
+  <tr>
+    <td><img height="28" src="tl.jpg" tppabs="http://www.owlei.com/DancingWind/Pic/tl.jpg" width="28"></td>
+    <td width="100%"><img height="28" src="tc.gif" tppabs="http://www.owlei.com/DancingWind/Pic/tc.gif" width="100%"></td>
+    <td><img height="28" src="tr.gif" tppabs="http://www.owlei.com/DancingWind/Pic/tr.gif" width="28"></td>
+  </tr>
+</TBODY>
+</table>
+
+<table border="0" cellPadding="0" cellSpacing="0" width="100%">
+<TBODY>
+  <tr>
+    <td background="l.gif" tppabs="http://www.owlei.com/DancingWind/Pic/l.gif"><img src="l.gif" tppabs="http://www.owlei.com/DancingWind/Pic/l.gif" width="28" height="28"></td>
+      <td vAlign="top" width="100%">这就是有魔力的那一行！不使用第14课中的ANSI_CHARSET，我们将使用SYMBOL_CHARSET。这会告诉Windows我们创建的字体并不是由标准字符组成的典型字体。所谓符号字体通常是由一些小图片（符号）组成的。如果你忘了改变这行，wingdings,webdings以及你想用的其它符号字体就不会工作。<br></td>
+    <td background="r.gif" tppabs="http://www.owlei.com/DancingWind/Pic/r.gif"><img src="r.gif" tppabs="http://www.owlei.com/DancingWind/Pic/r.gif" width="28" height="28"></td>
+  </tr>
+</TBODY>
+</table>
+
+<table border="0" cellPadding="0" cellSpacing="0" width="100%">
+<TBODY>
+  <tr>
+    <td><img height="28" src="bl.gif" tppabs="http://www.owlei.com/DancingWind/Pic/bl.gif" width="28"></td>
+    <td width="100%"><img height="28" src="bc.gif" tppabs="http://www.owlei.com/DancingWind/Pic/bc.gif" width="100%"></td>
+    <td><img height="28" src="br.gif" tppabs="http://www.owlei.com/DancingWind/Pic/br.gif" width="28"></td>
+  </tr>
+</TBODY>
+</table>
+<font color="#aaffaa" size="3"> 
+<pre>				SYMBOL_CHARSET,			<font color="#ffffaa">// 设置字符集</font>
+</pre>
+</font> 
+<table border="0" cellPadding="0" cellSpacing="0" width="100%">
+<TBODY>
+  <tr>
+    <td><img height="28" src="tl.jpg" tppabs="http://www.owlei.com/DancingWind/Pic/tl.jpg" width="28"></td>
+    <td width="100%"><img height="28" src="tc.gif" tppabs="http://www.owlei.com/DancingWind/Pic/tc.gif" width="100%"></td>
+    <td><img height="28" src="tr.gif" tppabs="http://www.owlei.com/DancingWind/Pic/tr.gif" width="28"></td>
+  </tr>
+</TBODY>
+</table>
+
+<table border="0" cellPadding="0" cellSpacing="0" width="100%">
+<TBODY>
+  <tr>
+    <td background="l.gif" tppabs="http://www.owlei.com/DancingWind/Pic/l.gif"><img src="l.gif" tppabs="http://www.owlei.com/DancingWind/Pic/l.gif" width="28" height="28"></td>
+      <td vAlign="top" width="100%">下面几行没有变化。<br></td>
+    <td background="r.gif" tppabs="http://www.owlei.com/DancingWind/Pic/r.gif"><img src="r.gif" tppabs="http://www.owlei.com/DancingWind/Pic/r.gif" width="28" height="28"></td>
+  </tr>
+</TBODY>
+</table>
+
+<table border="0" cellPadding="0" cellSpacing="0" width="100%">
+<TBODY>
+  <tr>
+    <td><img height="28" src="bl.gif" tppabs="http://www.owlei.com/DancingWind/Pic/bl.gif" width="28"></td>
+    <td width="100%"><img height="28" src="bc.gif" tppabs="http://www.owlei.com/DancingWind/Pic/bc.gif" width="100%"></td>
+    <td><img height="28" src="br.gif" tppabs="http://www.owlei.com/DancingWind/Pic/br.gif" width="28"></td>
+  </tr>
+</TBODY>
+</table>
+<font color="#aaffaa" size="3"> 
+<pre>				OUT_TT_PRECIS,			<font color="#ffffaa">// 输出精度</font>
+				CLIP_DEFAULT_PRECIS,		<font
+color="#ffffaa">// 裁剪精度</font>
+				ANTIALIASED_QUALITY,		<font
+color="#ffffaa">// 输出质量</font>
+				FF_DONTCARE|DEFAULT_PITCH,	<font
+color="#ffffaa">	// Family And Pitch</font>
+</pre>
+</font> 
+<table border="0" cellPadding="0" cellSpacing="0" width="100%">
+<TBODY>
+  <tr>
+    <td><img height="28" src="tl.jpg" tppabs="http://www.owlei.com/DancingWind/Pic/tl.jpg" width="28"></td>
+    <td width="100%"><img height="28" src="tc.gif" tppabs="http://www.owlei.com/DancingWind/Pic/tc.gif" width="100%"></td>
+    <td><img height="28" src="tr.gif" tppabs="http://www.owlei.com/DancingWind/Pic/tr.gif" width="28"></td>
+  </tr>
+</TBODY>
+</table>
+
+<table border="0" cellPadding="0" cellSpacing="0" width="100%">
+<TBODY>
+  <tr>
+    <td background="l.gif" tppabs="http://www.owlei.com/DancingWind/Pic/l.gif"><img src="l.gif" tppabs="http://www.owlei.com/DancingWind/Pic/l.gif" width="28" height="28"></td>
+      <td vAlign="top" width="100%">既然我们已经选择了符号字符集标识符，我们就可以选择wingdings字体了</td>
+    <td background="r.gif" tppabs="http://www.owlei.com/DancingWind/Pic/r.gif"><img src="r.gif" tppabs="http://www.owlei.com/DancingWind/Pic/r.gif" width="28" height="28"></td>
+  </tr>
+</TBODY>
+</table>
+
+<table border="0" cellPadding="0" cellSpacing="0" width="100%">
+<TBODY>
+  <tr>
+    <td><img height="28" src="bl.gif" tppabs="http://www.owlei.com/DancingWind/Pic/bl.gif" width="28"></td>
+    <td width="100%"><img height="28" src="bc.gif" tppabs="http://www.owlei.com/DancingWind/Pic/bc.gif" width="100%"></td>
+    <td><img height="28" src="br.gif" tppabs="http://www.owlei.com/DancingWind/Pic/br.gif" width="28"></td>
+  </tr>
+</TBODY>
+</table>
+<font color="#aaffaa" size="3"> 
+<pre>				&quot;Wingdings&quot;);			<font color="#ffffaa">// 字体名称</font>
+</pre>
+</font> 
+<table border="0" cellPadding="0" cellSpacing="0" width="100%">
+<TBODY>
+  <tr>
+    <td><img height="28" src="tl.jpg" tppabs="http://www.owlei.com/DancingWind/Pic/tl.jpg" width="28"></td>
+    <td width="100%"><img height="28" src="tc.gif" tppabs="http://www.owlei.com/DancingWind/Pic/tc.gif" width="100%"></td>
+    <td><img height="28" src="tr.gif" tppabs="http://www.owlei.com/DancingWind/Pic/tr.gif" width="28"></td>
+  </tr>
+</TBODY>
+</table>
+
+<table border="0" cellPadding="0" cellSpacing="0" width="100%">
+<TBODY>
+  <tr>
+    <td background="l.gif" tppabs="http://www.owlei.com/DancingWind/Pic/l.gif"><img src="l.gif" tppabs="http://www.owlei.com/DancingWind/Pic/l.gif" width="28" height="28"></td>
+      <td vAlign="top" width="100%">剩下几行代码没有变化</td>
+    <td background="r.gif" tppabs="http://www.owlei.com/DancingWind/Pic/r.gif"><img src="r.gif" tppabs="http://www.owlei.com/DancingWind/Pic/r.gif" width="28" height="28"></td>
+  </tr>
+</TBODY>
+</table>
+
+<table border="0" cellPadding="0" cellSpacing="0" width="100%">
+<TBODY>
+  <tr>
+    <td><img height="28" src="bl.gif" tppabs="http://www.owlei.com/DancingWind/Pic/bl.gif" width="28"></td>
+    <td width="100%"><img height="28" src="bc.gif" tppabs="http://www.owlei.com/DancingWind/Pic/bc.gif" width="100%"></td>
+    <td><img height="28" src="br.gif" tppabs="http://www.owlei.com/DancingWind/Pic/br.gif" width="28"></td>
+  </tr>
+</TBODY>
+</table>
+<font color="#aaffaa" size="3"> 
+<pre>	SelectObject(hDC, font);				<font color="#ffffaa">	// 选择创建的字体</font>
+
+	wglUseFontOutlines(	hDC,				<font
+color="#ffffaa">// 设置当前窗口设备描述表的句柄</font>
+				0,				<font color="#ffffaa">// 用于创建显示列表字体的第一个字符的ASCII值</font>
+				255,				<font
+color="#ffffaa">// 字符数</font>
+				base,				<font
+color="#ffffaa">// 第一个显示列表的名称</font>
+</pre>
+</font> 
+<table border="0" cellPadding="0" cellSpacing="0" width="100%">
+<TBODY>
+  <tr>
+    <td><img height="28" src="tl.jpg" tppabs="http://www.owlei.com/DancingWind/Pic/tl.jpg" width="28"></td>
+    <td width="100%"><img height="28" src="tc.gif" tppabs="http://www.owlei.com/DancingWind/Pic/tc.gif" width="100%"></td>
+    <td><img height="28" src="tr.gif" tppabs="http://www.owlei.com/DancingWind/Pic/tr.gif" width="28"></td>
+  </tr>
+</TBODY>
+</table>
+
+<table border="0" cellPadding="0" cellSpacing="0" width="100%">
+<TBODY>
+  <tr>
+    <td background="l.gif" tppabs="http://www.owlei.com/DancingWind/Pic/l.gif"><img src="l.gif" tppabs="http://www.owlei.com/DancingWind/Pic/l.gif" width="28" height="28"></td>
+      <td vAlign="top" width="100%">我们允许有更多的误差，这意味着GL不会严格的遵守字体的轮廓线。如果你把误差设置为0.0f，你就会发现严格地在曲面上贴图存在一些问题。但是如果你允许一定的误差，很多问题都可以避免。<br></td>
+    <td background="r.gif" tppabs="http://www.owlei.com/DancingWind/Pic/r.gif"><img src="r.gif" tppabs="http://www.owlei.com/DancingWind/Pic/r.gif" width="28" height="28"></td>
+  </tr>
+</TBODY>
+</table>
+
+<table border="0" cellPadding="0" cellSpacing="0" width="100%">
+<TBODY>
+  <tr>
+    <td><img height="28" src="bl.gif" tppabs="http://www.owlei.com/DancingWind/Pic/bl.gif" width="28"></td>
+    <td width="100%"><img height="28" src="bc.gif" tppabs="http://www.owlei.com/DancingWind/Pic/bc.gif" width="100%"></td>
+    <td><img height="28" src="br.gif" tppabs="http://www.owlei.com/DancingWind/Pic/br.gif" width="28"></td>
+  </tr>
+</TBODY>
+</table>
+<font color="#aaffaa" size="3"> 
+<pre>				0.1f,				<font color="#ffffaa">// 字体的光滑度，越小越光滑，0.0为最光滑的状态</font>
+</pre>
+</font> 
+<table border="0" cellPadding="0" cellSpacing="0" width="100%">
+<TBODY>
+  <tr>
+    <td><img height="28" src="tl.jpg" tppabs="http://www.owlei.com/DancingWind/Pic/tl.jpg" width="28"></td>
+    <td width="100%"><img height="28" src="tc.gif" tppabs="http://www.owlei.com/DancingWind/Pic/tc.gif" width="100%"></td>
+    <td><img height="28" src="tr.gif" tppabs="http://www.owlei.com/DancingWind/Pic/tr.gif" width="28"></td>
+  </tr>
+</TBODY>
+</table>
+
+<table border="0" cellPadding="0" cellSpacing="0" width="100%">
+<TBODY>
+  <tr>
+    <td background="l.gif" tppabs="http://www.owlei.com/DancingWind/Pic/l.gif"><img src="l.gif" tppabs="http://www.owlei.com/DancingWind/Pic/l.gif" width="28" height="28"></td>
+      <td vAlign="top" width="100%">下面三行代码还是相同的</td>
+    <td background="r.gif" tppabs="http://www.owlei.com/DancingWind/Pic/r.gif"><img src="r.gif" tppabs="http://www.owlei.com/DancingWind/Pic/r.gif" width="28" height="28"></td>
+  </tr>
+</TBODY>
+</table>
+
+<table border="0" cellPadding="0" cellSpacing="0" width="100%">
+<TBODY>
+  <tr>
+    <td><img height="28" src="bl.gif" tppabs="http://www.owlei.com/DancingWind/Pic/bl.gif" width="28"></td>
+    <td width="100%"><img height="28" src="bc.gif" tppabs="http://www.owlei.com/DancingWind/Pic/bc.gif" width="100%"></td>
+    <td><img height="28" src="br.gif" tppabs="http://www.owlei.com/DancingWind/Pic/br.gif" width="28"></td>
+  </tr>
+</TBODY>
+</table>
+<font color="#aaffaa" size="3"> 
+<pre>				0.2f,				<font color="#ffffaa">// 在z方向突出的距离</font>
+				WGL_FONT_POLYGONS,		<font
+color="#ffffaa">	// 使用多边形来生成字符，每个顶点具有独立的法线</font>
+				gmf);				<font color="#ffffaa">// 一个接收字形度量数据的数组的地址，每个数组元素用它对应的显示列表字符的数据填充</font>
+}
+</pre>
+</font> 
+<table border="0" cellPadding="0" cellSpacing="0" width="100%">
+<TBODY>
+  <tr>
+    <td><img height="28" src="tl.jpg" tppabs="http://www.owlei.com/DancingWind/Pic/tl.jpg" width="28"></td>
+    <td width="100%"><img height="28" src="tc.gif" tppabs="http://www.owlei.com/DancingWind/Pic/tc.gif" width="100%"></td>
+    <td><img height="28" src="tr.gif" tppabs="http://www.owlei.com/DancingWind/Pic/tr.gif" width="28"></td>
+  </tr>
+</TBODY>
+</table>
+
+<table border="0" cellPadding="0" cellSpacing="0" width="100%">
+<TBODY>
+  <tr>
+    <td background="l.gif" tppabs="http://www.owlei.com/DancingWind/Pic/l.gif"><img src="l.gif" tppabs="http://www.owlei.com/DancingWind/Pic/l.gif" width="28" height="28"></td>
+      <td vAlign="top" width="100%">在ReSizeGLScene()函数之前，我们要加上下面一段代码来读取纹理。你可能会认得这些前几课中的代码。我们创建一个保存位图的地方，读取位图，告诉Windows生成一个纹理，并把它保存在texture[0]中。
+        <p>我们创建一种细化纹理（mipmapped texture），这样会看起来好些。纹理的名字叫做lights.bmp。</p></td>
+    <td background="r.gif" tppabs="http://www.owlei.com/DancingWind/Pic/r.gif"><img src="r.gif" tppabs="http://www.owlei.com/DancingWind/Pic/r.gif" width="28" height="28"></td>
+  </tr>
+</TBODY>
+</table>
+
+<table border="0" cellPadding="0" cellSpacing="0" width="100%">
+<TBODY>
+  <tr>
+    <td><img height="28" src="bl.gif" tppabs="http://www.owlei.com/DancingWind/Pic/bl.gif" width="28"></td>
+    <td width="100%"><img height="28" src="bc.gif" tppabs="http://www.owlei.com/DancingWind/Pic/bc.gif" width="100%"></td>
+    <td><img height="28" src="br.gif" tppabs="http://www.owlei.com/DancingWind/Pic/br.gif" width="28"></td>
+  </tr>
+</TBODY>
+</table>
+<font color="#aaffaa" size="3"> 
+<pre>if (TextureImage[0]=LoadBMP(&quot;Data/Lights.bmp&quot;))			<font
+color="#ffffaa">// 载入位图</font>
+</pre>
+</font>
+
+<table border="0" cellPadding="0" cellSpacing="0" width="100%">
+<TBODY>
+  <tr>
+    <td><img height="28" src="tl.jpg" tppabs="http://www.owlei.com/DancingWind/Pic/tl.jpg" width="28"></td>
+    <td width="100%"><img height="28" src="tc.gif" tppabs="http://www.owlei.com/DancingWind/Pic/tc.gif" width="100%"></td>
+    <td><img height="28" src="tr.gif" tppabs="http://www.owlei.com/DancingWind/Pic/tr.gif" width="28"></td>
+  </tr>
+</TBODY>
+</table>
+
+<table border="0" cellPadding="0" cellSpacing="0" width="100%">
+<TBODY>
+  <tr>
+    <td background="l.gif" tppabs="http://www.owlei.com/DancingWind/Pic/l.gif"><img src="l.gif" tppabs="http://www.owlei.com/DancingWind/Pic/l.gif" width="28" height="28"></td>
+      <td vAlign="top" width="100%">下面四行代码将为我们绘制在屏幕上的任何物体自动生成纹理坐标。函数glTexGen非常强大，而且复杂，如果要完全讲清楚它的数学原理需要再写一篇教程。不过，你只要知道GL_S和GL_T是纹理坐标就可以了。默认状态下，它被设置为提取物体此刻在屏幕上的x坐标和y坐标，并把它们转换为顶点坐标。你会发现到物体在z平面没有纹理，只显示一些斑纹。正面和反面都被赋予了纹理，这些都是由glTexGen函数产生的。(X(GL_S)用于从左到右映射纹理，Y(GL_T)用于从上到下映射纹理。
+        <p>GL_TEXTURE_GEN_MODE允许我们选择我们想在S和T纹理坐标上使用的纹理映射模式。你有3种选择：</p>
+        <p>GL_EYE_LINEAR - 纹理会固定在屏幕上。它永远不会移动。物体将被赋予处于它通过的地区的那一块纹理。</p>
+        <p>GL_OBJECT_LINEAR - 这种就是我们使用的模式。纹理被固定于在屏幕上运动的物体上。<br>
+          GL_SPHERE_MAP - 每个人都喜欢。创建一种有金属质感的物体。<br>
+        </p></td>
+    <td background="r.gif" tppabs="http://www.owlei.com/DancingWind/Pic/r.gif"><img src="r.gif" tppabs="http://www.owlei.com/DancingWind/Pic/r.gif" width="28" height="28"></td>
+  </tr>
+</TBODY>
+</table>
+
+<table border="0" cellPadding="0" cellSpacing="0" width="100%">
+<TBODY>
+  <tr>
+    <td><img height="28" src="bl.gif" tppabs="http://www.owlei.com/DancingWind/Pic/bl.gif" width="28"></td>
+    <td width="100%"><img height="28" src="bc.gif" tppabs="http://www.owlei.com/DancingWind/Pic/bc.gif" width="100%"></td>
+    <td><img height="28" src="br.gif" tppabs="http://www.owlei.com/DancingWind/Pic/br.gif" width="28"></td>
+  </tr>
+</TBODY>
+</table>
+<font color="#aaffaa" size="3">
+
+<pre>		<font color="#ffffaa">// 设置纹理映射模式</font>
+		glTexGeni(GL_S, GL_TEXTURE_GEN_MODE, GL_OBJECT_LINEAR);
+		glTexGeni(GL_T, GL_TEXTURE_GEN_MODE, GL_OBJECT_LINEAR);
+		glEnable(GL_TEXTURE_GEN_S);				<font
+color="#ffffaa">// 使用自动生成纹理</font>
+		glEnable(GL_TEXTURE_GEN_T);		</pre>
+</font>
+
+<table border="0" cellPadding="0" cellSpacing="0" width="100%">
+<TBODY>
+  <tr>
+    <td><img height="28" src="tl.jpg" tppabs="http://www.owlei.com/DancingWind/Pic/tl.jpg" width="28"></td>
+    <td width="100%"><img height="28" src="tc.gif" tppabs="http://www.owlei.com/DancingWind/Pic/tc.gif" width="100%"></td>
+    <td><img height="28" src="tr.gif" tppabs="http://www.owlei.com/DancingWind/Pic/tr.gif" width="28"></td>
+  </tr>
+</TBODY>
+</table>
+
+<table border="0" cellPadding="0" cellSpacing="0" width="100%">
+<TBODY>
+  <tr>
+    <td background="l.gif" tppabs="http://www.owlei.com/DancingWind/Pic/l.gif"><img src="l.gif" tppabs="http://www.owlei.com/DancingWind/Pic/l.gif" width="28" height="28"></td>
+      <td vAlign="top" width="100%">在InitGL()的最后有几行新代码。BuildFont()被放到了读取纹理的代码之后。glEnable(GL_COLOR_MATERIAL) 
+        这行被删掉了，如果你想使用glColor3f(r,g,b)来改变纹理的颜色，那么就把glEnable(GL_COLOR_MATERIAL)这行重新加到这部分代码中。</td>
+    <td background="r.gif" tppabs="http://www.owlei.com/DancingWind/Pic/r.gif"><img src="r.gif" tppabs="http://www.owlei.com/DancingWind/Pic/r.gif" width="28" height="28"></td>
+  </tr>
+</TBODY>
+</table>
+
+<table border="0" cellPadding="0" cellSpacing="0" width="100%">
+<TBODY>
+  <tr>
+    <td><img height="28" src="bl.gif" tppabs="http://www.owlei.com/DancingWind/Pic/bl.gif" width="28"></td>
+    <td width="100%"><img height="28" src="bc.gif" tppabs="http://www.owlei.com/DancingWind/Pic/bc.gif" width="100%"></td>
+    <td><img height="28" src="br.gif" tppabs="http://www.owlei.com/DancingWind/Pic/br.gif" width="28"></td>
+  </tr>
+</TBODY>
+</table>
+<font color="#aaffaa" size="3"> 
+<pre>int InitGL(GLvoid)							<font color="#ffffaa">// 此处开始对OpenGL进行所有设置</font>
+{
+	if (!LoadGLTextures())					<font
+color="#ffffaa">// 载入纹理</font>
+	{
+		return FALSE;					<font
+color="#ffffaa">// 失败则返回</font>
+	}
+	BuildFont();						<font
+color="#ffffaa">// 创建字体显示列表</font>
+
+	glShadeModel(GL_SMOOTH);					<font color="#ffffaa">// 启用阴影平滑</font>
+	glClearColor(0.0f, 0.0f, 0.0f, 0.5f);			<font
+color="#ffffaa">// 黑色背景</font>
+	glClearDepth(1.0f);					<font color="#ffffaa">// 设置深度缓存</font>
+	glEnable(GL_DEPTH_TEST);				<font
+color="#ffffaa">	// 启用深度测试</font>
+	glDepthFunc(GL_LEQUAL);					<font
+color="#ffffaa">// 所作深度测试的类型</font>
+	glEnable(GL_LIGHT0);					<font
+color="#ffffaa">// 使用第0号灯</font>
+	glEnable(GL_LIGHTING);					<font
+color="#ffffaa">// 使用光照</font>
+	glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);		<font
+color="#ffffaa">// 告诉系统对透视进行修正</font>
+</pre>
+</font> 
+<table border="0" cellPadding="0" cellSpacing="0" width="100%">
+<TBODY>
+  <tr>
+    <td><img height="28" src="tl.jpg" tppabs="http://www.owlei.com/DancingWind/Pic/tl.jpg" width="28"></td>
+    <td width="100%"><img height="28" src="tc.gif" tppabs="http://www.owlei.com/DancingWind/Pic/tc.gif" width="100%"></td>
+    <td><img height="28" src="tr.gif" tppabs="http://www.owlei.com/DancingWind/Pic/tr.gif" width="28"></td>
+  </tr>
+</TBODY>
+</table>
+
+<table border="0" cellPadding="0" cellSpacing="0" width="100%">
+<TBODY>
+  <tr>
+    <td background="l.gif" tppabs="http://www.owlei.com/DancingWind/Pic/l.gif"><img src="l.gif" tppabs="http://www.owlei.com/DancingWind/Pic/l.gif" width="28" height="28"></td>
+      <td vAlign="top" width="100%">启动2D纹理映射，并选择第一个纹理。这样就把第一个纹理映射到我们绘制在屏幕上的3D物体上了。如果你想加入更多的操作，可以按自己的意愿启动或禁用纹理映射。</td>
+    <td background="r.gif" tppabs="http://www.owlei.com/DancingWind/Pic/r.gif"><img src="r.gif" tppabs="http://www.owlei.com/DancingWind/Pic/r.gif" width="28" height="28"></td>
+  </tr>
+</TBODY>
+</table>
+
+<table border="0" cellPadding="0" cellSpacing="0" width="100%">
+<TBODY>
+  <tr>
+    <td><img height="28" src="bl.gif" tppabs="http://www.owlei.com/DancingWind/Pic/bl.gif" width="28"></td>
+    <td width="100%"><img height="28" src="bc.gif" tppabs="http://www.owlei.com/DancingWind/Pic/bc.gif" width="100%"></td>
+    <td><img height="28" src="br.gif" tppabs="http://www.owlei.com/DancingWind/Pic/br.gif" width="28"></td>
+  </tr>
+</TBODY>
+</table>
+<font color="#aaffaa" size="3">
+
+<pre>	glEnable(GL_TEXTURE_2D);				<font color="#ffffaa">	// 使用二维纹理</font>
+	glBindTexture(GL_TEXTURE_2D, texture[0]);		<font
+color="#ffffaa">	// 选择使用的纹理</font>
+	return TRUE;						<font color="#ffffaa">// 初始化成功</font>
+}
+</pre>
+</font>
+
+<table border="0" cellPadding="0" cellSpacing="0" width="100%">
+<TBODY>
+  <tr>
+    <td><img height="28" src="tl.jpg" tppabs="http://www.owlei.com/DancingWind/Pic/tl.jpg" width="28"></td>
+    <td width="100%"><img height="28" src="tc.gif" tppabs="http://www.owlei.com/DancingWind/Pic/tc.gif" width="100%"></td>
+    <td><img height="28" src="tr.gif" tppabs="http://www.owlei.com/DancingWind/Pic/tr.gif" width="28"></td>
+  </tr>
+</TBODY>
+</table>
+
+<table border="0" cellPadding="0" cellSpacing="0" width="100%">
+<TBODY>
+  <tr>
+    <td background="l.gif" tppabs="http://www.owlei.com/DancingWind/Pic/l.gif"><img src="l.gif" tppabs="http://www.owlei.com/DancingWind/Pic/l.gif" width="28" height="28"></td>
+      <td vAlign="top" width="100%">重置大小的代码没有变化，但DrawGLScene这部分代码有变化。</td>
+    <td background="r.gif" tppabs="http://www.owlei.com/DancingWind/Pic/r.gif"><img src="r.gif" tppabs="http://www.owlei.com/DancingWind/Pic/r.gif" width="28" height="28"></td>
+  </tr>
+</TBODY>
+</table>
+
+<table border="0" cellPadding="0" cellSpacing="0" width="100%">
+<TBODY>
+  <tr>
+    <td><img height="28" src="bl.gif" tppabs="http://www.owlei.com/DancingWind/Pic/bl.gif" width="28"></td>
+    <td width="100%"><img height="28" src="bc.gif" tppabs="http://www.owlei.com/DancingWind/Pic/bc.gif" width="100%"></td>
+    <td><img height="28" src="br.gif" tppabs="http://www.owlei.com/DancingWind/Pic/br.gif" width="28"></td>
+  </tr>
+</TBODY>
+</table>
+<font color="#aaffaa" size="3"> </font> 
+<table border="0" cellPadding="0" cellSpacing="0" width="100%">
+<TBODY>
+  <tr>
+    <td><img height="28" src="tl.jpg" tppabs="http://www.owlei.com/DancingWind/Pic/tl.jpg" width="28"></td>
+    <td width="100%"><img height="28" src="tc.gif" tppabs="http://www.owlei.com/DancingWind/Pic/tc.gif" width="100%"></td>
+    <td><img height="28" src="tr.gif" tppabs="http://www.owlei.com/DancingWind/Pic/tr.gif" width="28"></td>
+  </tr>
+</TBODY>
+</table>
+
+<table border="0" cellPadding="0" cellSpacing="0" width="100%">
+<TBODY>
+  <tr>
+    <td background="l.gif" tppabs="http://www.owlei.com/DancingWind/Pic/l.gif"><img src="l.gif" tppabs="http://www.owlei.com/DancingWind/Pic/l.gif" width="28" height="28"></td>
+      <td vAlign="top" width="100%">这里是第一处变动。我们打算使用COS和SIN让物体绕着屏幕旋转而不是把它固定在屏幕中间。我们将把物体向屏幕里移动3个单位。在x轴，我们将移动范围限制在-1.1到+1.1之间。我们使用rot变量来控制左右移动。我们把上下移动的范围限制在+0.8到-0.8之间。同样使用rot变量来控制上下移动（最好充分利用你的变量）。</td>
+    <td background="r.gif" tppabs="http://www.owlei.com/DancingWind/Pic/r.gif"><img src="r.gif" tppabs="http://www.owlei.com/DancingWind/Pic/r.gif" width="28" height="28"></td>
+  </tr>
+</TBODY>
+</table>
+
+<table border="0" cellPadding="0" cellSpacing="0" width="100%">
+<TBODY>
+  <tr>
+    <td><img height="28" src="bl.gif" tppabs="http://www.owlei.com/DancingWind/Pic/bl.gif" width="28"></td>
+    <td width="100%"><img height="28" src="bc.gif" tppabs="http://www.owlei.com/DancingWind/Pic/bc.gif" width="100%"></td>
+    <td><img height="28" src="br.gif" tppabs="http://www.owlei.com/DancingWind/Pic/br.gif" width="28"></td>
+  </tr>
+</TBODY>
+</table>
+<font color="#aaffaa" size="3">
+
+<pre>	<font color="#ffffaa">// 设置字体的位置</font>
+	glTranslatef(1.1f*float(cos(rot/16.0f)),0.8f*float(sin(rot/20.0f)),-3.0f);
+</pre>
+</font>
+
+<table border="0" cellPadding="0" cellSpacing="0" width="100%">
+<TBODY>
+  <tr>
+    <td><img height="28" src="tl.jpg" tppabs="http://www.owlei.com/DancingWind/Pic/tl.jpg" width="28"></td>
+    <td width="100%"><img height="28" src="tc.gif" tppabs="http://www.owlei.com/DancingWind/Pic/tc.gif" width="100%"></td>
+    <td><img height="28" src="tr.gif" tppabs="http://www.owlei.com/DancingWind/Pic/tr.gif" width="28"></td>
+  </tr>
+</TBODY>
+</table>
+
+<table border="0" cellPadding="0" cellSpacing="0" width="100%">
+<TBODY>
+  <tr>
+    <td background="l.gif" tppabs="http://www.owlei.com/DancingWind/Pic/l.gif"><img src="l.gif" tppabs="http://www.owlei.com/DancingWind/Pic/l.gif" width="28" height="28"></td>
+      <td vAlign="top" width="100%">下面做常规的旋转。这会使符号在X，Y和Z轴旋转。</td>
+    <td background="r.gif" tppabs="http://www.owlei.com/DancingWind/Pic/r.gif"><img src="r.gif" tppabs="http://www.owlei.com/DancingWind/Pic/r.gif" width="28" height="28"></td>
+  </tr>
+</TBODY>
+</table>
+
+<table border="0" cellPadding="0" cellSpacing="0" width="100%">
+<TBODY>
+  <tr>
+    <td><img height="28" src="bl.gif" tppabs="http://www.owlei.com/DancingWind/Pic/bl.gif" width="28"></td>
+    <td width="100%"><img height="28" src="bc.gif" tppabs="http://www.owlei.com/DancingWind/Pic/bc.gif" width="100%"></td>
+    <td><img height="28" src="br.gif" tppabs="http://www.owlei.com/DancingWind/Pic/br.gif" width="28"></td>
+  </tr>
+</TBODY>
+</table>
+<font color="#aaffaa" size="3"> 
+<pre>	glRotatef(rot,1.0f,0.0f,0.0f);				<font color="#ffffaa">// 沿X轴旋转</font>
+	glRotatef(rot*1.2f,0.0f,1.0f,0.0f);				<font
+color="#ffffaa">// 沿Y轴旋转</font>
+	glRotatef(rot*1.4f,0.0f,0.0f,1.0f);				<font
+color="#ffffaa">// 沿Z轴旋转</font>
+</pre>
+</font> 
+<table border="0" cellPadding="0" cellSpacing="0" width="100%">
+<TBODY>
+  <tr>
+    <td><img height="28" src="tl.jpg" tppabs="http://www.owlei.com/DancingWind/Pic/tl.jpg" width="28"></td>
+    <td width="100%"><img height="28" src="tc.gif" tppabs="http://www.owlei.com/DancingWind/Pic/tc.gif" width="100%"></td>
+    <td><img height="28" src="tr.gif" tppabs="http://www.owlei.com/DancingWind/Pic/tr.gif" width="28"></td>
+  </tr>
+</TBODY>
+</table>
+
+<table border="0" cellPadding="0" cellSpacing="0" width="100%">
+<TBODY>
+  <tr>
+    <td background="l.gif" tppabs="http://www.owlei.com/DancingWind/Pic/l.gif"><img src="l.gif" tppabs="http://www.owlei.com/DancingWind/Pic/l.gif" width="28" height="28"></td>
+      <td vAlign="top" width="100%">我们将物体相对观察点向左向下移动一点，以便于把符号定位于每个轴的中心。否则，当我们旋转它的时候，看起来就不像是在围绕它自己的中心在旋转。-0.35只是一个能让符号正确显示的数。我也试过一些其它数，因为我不知道这种字体的宽度是多少，可以适情况作出调整。我不知道为什么这种字体没有一个中心。</td>
+    <td background="r.gif" tppabs="http://www.owlei.com/DancingWind/Pic/r.gif"><img src="r.gif" tppabs="http://www.owlei.com/DancingWind/Pic/r.gif" width="28" height="28"></td>
+  </tr>
+</TBODY>
+</table>
+
+<table border="0" cellPadding="0" cellSpacing="0" width="100%">
+<TBODY>
+  <tr>
+    <td><img height="28" src="bl.gif" tppabs="http://www.owlei.com/DancingWind/Pic/bl.gif" width="28"></td>
+    <td width="100%"><img height="28" src="bc.gif" tppabs="http://www.owlei.com/DancingWind/Pic/bc.gif" width="100%"></td>
+    <td><img height="28" src="br.gif" tppabs="http://www.owlei.com/DancingWind/Pic/br.gif" width="28"></td>
+  </tr>
+</TBODY>
+</table>
+<font color="#aaffaa" size="3">
+
+<pre>	glTranslatef(-0.35f,-0.35f,0.1f);			<font color="#ffffaa">	// 移动到可以显示的位置</font>
+</pre>
+</font>
+
+<table border="0" cellPadding="0" cellSpacing="0" width="100%">
+<TBODY>
+  <tr>
+    <td><img height="28" src="tl.jpg" tppabs="http://www.owlei.com/DancingWind/Pic/tl.jpg" width="28"></td>
+    <td width="100%"><img height="28" src="tc.gif" tppabs="http://www.owlei.com/DancingWind/Pic/tc.gif" width="100%"></td>
+    <td><img height="28" src="tr.gif" tppabs="http://www.owlei.com/DancingWind/Pic/tr.gif" width="28"></td>
+  </tr>
+</TBODY>
+</table>
+
+<table border="0" cellPadding="0" cellSpacing="0" width="100%">
+<TBODY>
+  <tr>
+    <td background="l.gif" tppabs="http://www.owlei.com/DancingWind/Pic/l.gif"><img src="l.gif" tppabs="http://www.owlei.com/DancingWind/Pic/l.gif" width="28" height="28"></td>
+      <td vAlign="top" width="100%">最后，我们绘制海盗旗的符号，然后增加rot变量，从而使这个符号在屏幕中旋转和移动。如果你不知道我是如何从字母‘N’中得到海盗旗符号的，那就打开Microsoft 
+        Word或是写字板。在字体下拉菜单中选择Wingdings字体。输入大写字母‘N’，就会显示出海盗旗符号了。</td>
+    <td background="r.gif" tppabs="http://www.owlei.com/DancingWind/Pic/r.gif"><img src="r.gif" tppabs="http://www.owlei.com/DancingWind/Pic/r.gif" width="28" height="28"></td>
+  </tr>
+</TBODY>
+</table>
+
+<table border="0" cellPadding="0" cellSpacing="0" width="100%">
+<TBODY>
+  <tr>
+    <td><img height="28" src="bl.gif" tppabs="http://www.owlei.com/DancingWind/Pic/bl.gif" width="28"></td>
+    <td width="100%"><img height="28" src="bc.gif" tppabs="http://www.owlei.com/DancingWind/Pic/bc.gif" width="100%"></td>
+    <td><img height="28" src="br.gif" tppabs="http://www.owlei.com/DancingWind/Pic/br.gif" width="28"></td>
+  </tr>
+</TBODY>
+</table>
+<font color="#aaffaa" size="3"> 
+<pre>	glPrint(&quot;N&quot;);						<font color="#ffffaa">// 绘制海盗旗符号</font>
+	rot+=0.1f;						<font
+color="#ffffaa">// 增加旋转变量</font>
+</pre>
+</font> 
+<table border="0" cellPadding="0" cellSpacing="0" width="100%">
+<TBODY>
+  <tr>
+    <td><img height="28" src="tl.jpg" tppabs="http://www.owlei.com/DancingWind/Pic/tl.jpg" width="28"></td>
+    <td width="100%"><img height="28" src="tc.gif" tppabs="http://www.owlei.com/DancingWind/Pic/tc.gif" width="100%"></td>
+    <td><img height="28" src="tr.gif" tppabs="http://www.owlei.com/DancingWind/Pic/tr.gif" width="28"></td>
+  </tr>
+</TBODY>
+</table>
+
+<table border="0" cellPadding="0" cellSpacing="0" width="100%">
+<TBODY>
+  <tr>
+    <td background="l.gif" tppabs="http://www.owlei.com/DancingWind/Pic/l.gif"><img src="l.gif" tppabs="http://www.owlei.com/DancingWind/Pic/l.gif" width="28" height="28"></td>
+      <td vAlign="top" width="100%">最后要做的事就是在KillGLWindow()的最后添加KillFont()函数，如下所示。添加这行代码很重要。它将在我们退出程序之前做清理工作。<br></td>
+    <td background="r.gif" tppabs="http://www.owlei.com/DancingWind/Pic/r.gif"><img src="r.gif" tppabs="http://www.owlei.com/DancingWind/Pic/r.gif" width="28" height="28"></td>
+  </tr>
+</TBODY>
+</table>
+
+<table border="0" cellPadding="0" cellSpacing="0" width="100%">
+<TBODY>
+  <tr>
+    <td><img height="28" src="bl.gif" tppabs="http://www.owlei.com/DancingWind/Pic/bl.gif" width="28"></td>
+    <td width="100%"><img height="28" src="bc.gif" tppabs="http://www.owlei.com/DancingWind/Pic/bc.gif" width="100%"></td>
+    <td><img height="28" src="br.gif" tppabs="http://www.owlei.com/DancingWind/Pic/br.gif" width="28"></td>
+  </tr>
+</TBODY>
+</table>
+<font color="#aaffaa" size="3"> </font> 
+<table border="0" cellPadding="0" cellSpacing="0" width="100%">
+<TBODY>
+  <tr>
+    <td><img height="28" src="tl.jpg" tppabs="http://www.owlei.com/DancingWind/Pic/tl.jpg" width="28"></td>
+    <td width="100%"><img height="28" src="tc.gif" tppabs="http://www.owlei.com/DancingWind/Pic/tc.gif" width="100%"></td>
+    <td><img height="28" src="tr.gif" tppabs="http://www.owlei.com/DancingWind/Pic/tr.gif" width="28"></td>
+  </tr>
+</TBODY>
+</table>
+
+<table border="0" cellPadding="0" cellSpacing="0" width="100%">
+<TBODY>
+  <tr>
+    <td background="l.gif" tppabs="http://www.owlei.com/DancingWind/Pic/l.gif"><img src="l.gif" tppabs="http://www.owlei.com/DancingWind/Pic/l.gif" width="28" height="28"></td>
+      <td vAlign="top" width="100%"><p>尽管我没有讲的细致入微，但我想你应该很好的理解了如何让OpenGL为你生成纹理坐标。在给你的字体或者是同类物体赋予纹理映射时，应该没有问题了，而且只需要改变两行代码，你就可以启用球体映射了，它的效果简直酷毙了！</p>
+<table width="100%" border="1">
+  <tr>
+    <td width="27%"><img src="logo 3.jpg" tppabs="http://www.owlei.com/DancingWind/images/logo%203.jpg" width="209" height="200" align="middle"></td>
+    <td width="73%">版权与使用声明:<br>
+      我是个对学习和生活充满激情的普通男孩,在网络上我以DancingWind为昵称，我的联系方式是zhouwei02@mails.tsinghua.edu.cn，如果你有任何问题，都可以联系我。
+      <p>引子<br>
+        网络是一个共享的资源，但我在自己的学习生涯中浪费大量的时间去搜索可用的资料，在现实生活中花费了大量的金钱和时间在书店中寻找资料，于是我给自己起了个昵称DancingWind，其意义是想风一样从各个知识的站点中吸取成长的养料。在飘荡了多年之后，我决定把自己收集的资料整理为一个统一的资源库。</p>
+      <p>版权声明<br>
+        所有DancingWind发表的内容，大多都来自共享的资源，所以我没有资格把它们据为己有，或声称自己为这些资源作出了一点贡献。故任何人都可以复制，修改，重新发表，甚至以自己的名义发表，我都不会追究，但你在做以上事情的时候必须保证内容的完整性，给后来的人一个完整的教程。最后，任何人不能以这些资料的任何部分，谋取任何形式的报酬。</p>
+      <p>发展计划<br>
+        在国外，很多资料都是很多人花费几年的时间慢慢积累起来的。如果任何人有兴趣与别人共享你的知识，我很欢迎你与我联系，但你必须同意我上面的声明。</p>
+                <p>感谢<br>
+                  感谢我的母亲一直以来对我的支持和在生活上的照顾。<br>
+                  感谢我深爱的女友田芹，一直以来默默的在精神上和生活中对我的支持，她甚至把买衣服的钱都用来给我买书了，她真的是我见过的最好的女孩，希望我能带给她幸福。</p>
+                <p>资源下载: <br>
+                  文档 <a href="javascript:if(confirm('http://www.owlei.com/DancingWind/Res/mht/NeHe%20OpenGL%20Chinese%20Course%2015.mht  \n\nThis file was not retrieved by Teleport Pro, because the server reports that this file cannot be found.  \n\nDo you want to open it from the server?'))window.location='http://www.owlei.com/DancingWind/Res/mht/NeHe%20OpenGL%20Chinese%20Course%2015.mht'" tppabs="http://www.owlei.com/DancingWind/Res/mht/NeHe%20OpenGL%20Chinese%20Course%2015.mht">网页格式</a> 
+                  <a href="javascript:if(confirm('http://www.owlei.com/DancingWind/Res/pdf/OpenGL_Nehe_Course_Tutorial_15.pdf  \n\nThis file was not retrieved by Teleport Pro, because the server reports that this file cannot be found.  \n\nDo you want to open it from the server?'))window.location='http://www.owlei.com/DancingWind/Res/pdf/OpenGL_Nehe_Course_Tutorial_15.pdf'" tppabs="http://www.owlei.com/DancingWind/Res/pdf/OpenGL_Nehe_Course_Tutorial_15.pdf">PDF格式</a><br>
+                  源码 <a href="javascript:if(confirm('http://www.owlei.com/DancingWind/Res/Src/15_FontTexture.rar  \n\nThis file was not retrieved by Teleport Pro, because the server reports that this file cannot be found.  \n\nDo you want to open it from the server?'))window.location='http://www.owlei.com/DancingWind/Res/Src/15_FontTexture.rar'" tppabs="http://www.owlei.com/DancingWind/Res/Src/15_FontTexture.rar">RAR格式</a></p></td>
+  </tr>
+</table>
+          <table border="0" width="100%">
+<TBODY>
+      <tr>
+              <td align="left" width="50%"><a href="Tutorial_14.htm" tppabs="http://www.owlei.com/DancingWind/Course/Tutorial_14.htm"><b><font size="-1">&lt; 
+                第14课</font></b></a></td>
+              <td align="right" width="50%"><a href="Tutorial_16.htm" tppabs="http://www.owlei.com/DancingWind/Course/Tutorial_16.htm"><b><font size="-1">第16课 
+                &gt;</font></b></a></td>
+      </tr>
+</TBODY>
+    </table>
+    </td>
+    <td background="r.gif" tppabs="http://www.owlei.com/DancingWind/Pic/r.gif"><img src="r.gif" tppabs="http://www.owlei.com/DancingWind/Pic/r.gif" width="28" height="28"></td>
+  </tr>
+</TBODY>
+</table>
+
+<table border="0" cellPadding="0" cellSpacing="0" width="100%">
+  <TBODY>
+  <tr>
+    <td><img height="28" src="bl.gif" tppabs="http://www.owlei.com/DancingWind/Pic/bl.gif" width="28"></td>
+    <td width="100%"><img height="28" src="bc.gif" tppabs="http://www.owlei.com/DancingWind/Pic/bc.gif" width="100%"></td>
+    <td><img height="28" src="br.gif" tppabs="http://www.owlei.com/DancingWind/Pic/br.gif" width="28"></td>
+  </tr>
+</TBODY>
+</table>
+
+</center></body>
+</html>

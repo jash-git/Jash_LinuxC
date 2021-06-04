@@ -1,0 +1,906 @@
+﻿<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3c.org/TR/1999/REC-html401-19991224/loose.dtd">
+<!-- saved from url=(0075)http://dyerlab.bio.vcu.edu/trac/GeneticStudio/browser/trunk/geno.pro?rev=53 -->
+<HTML lang=en xml:lang="en" xmlns="http://www.w3.org/1999/xhtml"><HEAD><TITLE>/trunk/geno.pro - GeneticStudio - Trac</TITLE>
+<META http-equiv=Content-Type content="text/html; charset=utf-8"><LINK 
+href="/trac/GeneticStudio/wiki" rel=start><LINK 
+href="/trac/GeneticStudio/search" rel=search><LINK 
+href="/trac/GeneticStudio/wiki/TracGuide" rel=help><LINK 
+href="qmake_opengl.files/trac.css" type=text/css rel=stylesheet><LINK 
+href="qmake_opengl.files/code.css" type=text/css rel=stylesheet><LINK 
+href="qmake_opengl.files/browser.css" type=text/css rel=stylesheet><LINK 
+href="/trac/GeneticStudio/chrome/site/loco.icon.gif" type=image/gif 
+rel=icon><LINK href="/trac/GeneticStudio/chrome/site/loco.icon.gif" 
+type=image/gif rel="shortcut icon"><LINK title="Parent directory" 
+href="/trac/GeneticStudio/browser/trunk?rev=53" rel=up><LINK 
+title="Original Format" 
+href="/trac/GeneticStudio/browser/trunk/geno.pro?rev=53&amp;format=raw" 
+type=text/plain rel=alternate>
+<STYLE type=text/css>@import url( /style/style.css );
+</STYLE>
+
+<SCRIPT src="qmake_opengl.files/trac.js" type=text/javascript></SCRIPT>
+<!--[if lt IE 7]>
+<SCRIPT language=JavaScript>
+function correctPNG() // correctly handle PNG transparency in Win IE 5.5 & 6.
+{
+   var arVersion = navigator.appVersion.split("MSIE")
+   var version = parseFloat(arVersion[1])
+   if ((version >= 5.5) && (document.body.filters)) 
+   {
+      for(var i=0; i<document.images.length; i++)
+      {
+         var img = document.images[i]
+         var imgName = img.src.toUpperCase()
+         if (imgName.substring(imgName.length-3, imgName.length) == "PNG")
+         {
+            var imgID = (img.id) ? "id='" + img.id + "' " : ""
+            var imgClass = (img.className) ? "class='" + img.className + "' " : ""
+            var imgTitle = (img.title) ? "title='" + img.title + "' " : "title='" + img.alt + "' "
+            var imgStyle = "display:inline-block;" + img.style.cssText 
+            if (img.align == "left") imgStyle = "float:left;" + imgStyle
+            if (img.align == "right") imgStyle = "float:right;" + imgStyle
+            if (img.parentElement.href) imgStyle = "cursor:hand;" + imgStyle
+            var strNewHTML = "<span " + imgID + imgClass + imgTitle
+            + " style=\"" + "width:" + img.width + "px; height:" + img.height + "px;" + imgStyle + ";"
+            + "filter:progid:DXImageTransform.Microsoft.AlphaImageLoader"
+            + "(src=\'" + img.src + "\', sizingMethod='scale');\"></span>" 
+            img.outerHTML = strNewHTML
+            i = i-1
+         }
+      }
+   }    
+}
+window.attachEvent("onload", correctPNG);
+</SCRIPT>
+<![endif]-->
+<META content="MSHTML 6.00.2900.3157" name=GENERATOR></HEAD>
+<BODY>
+<DIV id=topContent>
+<DIV id=nav>
+<UL id=links-menu>
+  <LI><A href="http://dyerlab.bio.vcu.edu/lab/people/">People</A> 
+  <LI><A href="http://dyerlab.bio.vcu.edu/lab/research/">Research</A> 
+  <LI><A href="http://dyerlab.bio.vcu.edu/lab/publications/">Publications</A> 
+  <LI><A href="http://dyerlab.bio.vcu.edu/trac/">Software</A> 
+  <LI><A href="http://dyerlab.bio.vcu.edu/lab/documents/">Documents</A> 
+</LI></UL></DIV></DIV>
+<DIV id=topLogo><A href="http://dyerlab.bio.vcu.edu/"><IMG alt="site logo" 
+src="qmake_opengl.files/dyerlab.logo.png"></A> </DIV>
+<DIV id=tracContent>
+<DIV id=banner>
+<DIV id=header>
+<H1>GeneticStudio</H1></DIV>
+<FORM id=search action=/trac/GeneticStudio/search method=get>
+<DIV><LABEL for=proj-search>Search:</LABEL> <INPUT id=proj-search accessKey=f 
+size=10 name=q> <INPUT type=submit value=Search> <INPUT type=hidden value=on 
+name=wiki> <INPUT type=hidden value=on name=changeset> <INPUT type=hidden 
+value=on name=ticket> </DIV></FORM>
+<DIV class=nav id=metanav>
+<UL>
+  <LI class=first><A 
+  href="http://dyerlab.bio.vcu.edu/trac/GeneticStudio/login">Login</A>
+  <LI><A 
+  href="http://dyerlab.bio.vcu.edu/trac/GeneticStudio/settings">Settings</A>
+  <LI><A accessKey=6 
+  href="http://dyerlab.bio.vcu.edu/trac/GeneticStudio/wiki/TracGuide">Help/Guide</A>
+  <LI class=last><A 
+  href="http://dyerlab.bio.vcu.edu/trac/GeneticStudio/about">About 
+Trac</A></LI></UL></DIV></DIV>
+<DIV class=nav id=mainnav>
+<UL>
+  <LI class=first><A accessKey=1 
+  href="http://dyerlab.bio.vcu.edu/trac/GeneticStudio/wiki">Wiki</A>
+  <LI><A accessKey=2 
+  href="http://dyerlab.bio.vcu.edu/trac/GeneticStudio/timeline">Timeline</A>
+  <LI><A accessKey=3 
+  href="http://dyerlab.bio.vcu.edu/trac/GeneticStudio/roadmap">Roadmap</A>
+  <LI class=active><A 
+  href="http://dyerlab.bio.vcu.edu/trac/GeneticStudio/browser">Browse Source</A>
+  <LI><A href="http://dyerlab.bio.vcu.edu/trac/GeneticStudio/report">View 
+  Tickets</A>
+  <LI><A accessKey=7 
+  href="http://dyerlab.bio.vcu.edu/trac/GeneticStudio/newticket">New Ticket</A>
+  <LI class=last><A accessKey=4 
+  href="http://dyerlab.bio.vcu.edu/trac/GeneticStudio/search">Search</A></LI></UL></DIV>
+<DIV id=main>
+<DIV class=nav id=ctxtnav>
+<UL>
+  <LI class=first><A 
+  href="http://dyerlab.bio.vcu.edu/trac/GeneticStudio/changeset/53/trunk/geno.pro">Last 
+  Change</A> 
+  <LI class=last><A 
+  href="http://dyerlab.bio.vcu.edu/trac/GeneticStudio/log/trunk/geno.pro?rev=53">Revision 
+  Log</A> </LI></UL></DIV>
+<DIV id=searchable>
+<DIV class=browser id=content>
+<H1><A class=first title="Go to root directory" 
+href="http://dyerlab.bio.vcu.edu/trac/GeneticStudio/browser?rev=53">root</A><SPAN 
+class=sep>/</SPAN><A title="View trunk" 
+href="http://dyerlab.bio.vcu.edu/trac/GeneticStudio/browser/trunk?rev=53">trunk</A><SPAN 
+class=sep>/</SPAN><A title="View geno.pro" 
+href="http://dyerlab.bio.vcu.edu/trac/GeneticStudio/browser/trunk/geno.pro?rev=53">geno.pro</A></H1>
+<DIV id=jumprev>
+<FORM action="" method=get>
+<DIV><LABEL for=rev>View revision:</LABEL> <INPUT id=rev size=4 value=53 
+name=rev> </DIV></FORM></DIV>
+<TABLE id=info summary="Revision info">
+  <TBODY>
+  <TR>
+    <TH scope=col>Revision <A 
+      href="http://dyerlab.bio.vcu.edu/trac/GeneticStudio/changeset/53">53</A>, 
+      5.0 kB (checked in by rodney, 1 week ago) </TH></TR>
+  <TR>
+    <TD class=message>
+      <P>started on permutation <BR></P></TD></TR></TBODY></TABLE>
+<DIV id=preview>
+<TABLE class=code>
+  <THEAD>
+  <TR>
+    <TH class=lineno>Line</TH>
+    <TH class=content>&nbsp;</TH></TR></THEAD>
+  <TBODY>
+  <TR>
+    <TH id=L1><A 
+      href="http://dyerlab.bio.vcu.edu/trac/GeneticStudio/browser/trunk/geno.pro?rev=53#L1">1</A></TH>
+    <TD>######################################################################</TD></TR>
+  <TR>
+    <TH id=L2><A 
+      href="http://dyerlab.bio.vcu.edu/trac/GeneticStudio/browser/trunk/geno.pro?rev=53#L2">2</A></TH>
+    <TD># Automatically generated by qmake (2.01a) Mon Jul 30 08:31:35 
+  2007</TD></TR>
+  <TR>
+    <TH id=L3><A 
+      href="http://dyerlab.bio.vcu.edu/trac/GeneticStudio/browser/trunk/geno.pro?rev=53#L3">3</A></TH>
+    <TD>######################################################################</TD></TR>
+  <TR>
+    <TH id=L4><A 
+      href="http://dyerlab.bio.vcu.edu/trac/GeneticStudio/browser/trunk/geno.pro?rev=53#L4">4</A></TH>
+    <TD></TD></TR>
+  <TR>
+    <TH id=L5><A 
+      href="http://dyerlab.bio.vcu.edu/trac/GeneticStudio/browser/trunk/geno.pro?rev=53#L5">5</A></TH>
+    <TD>TEMPLATE = app</TD></TR>
+  <TR>
+    <TH id=L6><A 
+      href="http://dyerlab.bio.vcu.edu/trac/GeneticStudio/browser/trunk/geno.pro?rev=53#L6">6</A></TH>
+    <TD>CONFIG += assistant </TD></TR>
+  <TR>
+    <TH id=L7><A 
+      href="http://dyerlab.bio.vcu.edu/trac/GeneticStudio/browser/trunk/geno.pro?rev=53#L7">7</A></TH>
+    <TD>QT += opengl</TD></TR>
+  <TR>
+    <TH id=L8><A 
+      href="http://dyerlab.bio.vcu.edu/trac/GeneticStudio/browser/trunk/geno.pro?rev=53#L8">8</A></TH>
+    <TD>TARGET = GeneticStudio</TD></TR>
+  <TR>
+    <TH id=L9><A 
+      href="http://dyerlab.bio.vcu.edu/trac/GeneticStudio/browser/trunk/geno.pro?rev=53#L9">9</A></TH>
+    <TD>DEPENDPATH += .</TD></TR>
+  <TR>
+    <TH id=L10><A 
+      href="http://dyerlab.bio.vcu.edu/trac/GeneticStudio/browser/trunk/geno.pro?rev=53#L10">10</A></TH>
+    <TD>INCLUDEPATH += .</TD></TR>
+  <TR>
+    <TH id=L11><A 
+      href="http://dyerlab.bio.vcu.edu/trac/GeneticStudio/browser/trunk/geno.pro?rev=53#L11">11</A></TH>
+    <TD>INCLUDEPATH += /usr/include</TD></TR>
+  <TR>
+    <TH id=L12><A 
+      href="http://dyerlab.bio.vcu.edu/trac/GeneticStudio/browser/trunk/geno.pro?rev=53#L12">12</A></TH>
+    <TD>LIBS += -lm -lgsl -lgslcblas </TD></TR>
+  <TR>
+    <TH id=L13><A 
+      href="http://dyerlab.bio.vcu.edu/trac/GeneticStudio/browser/trunk/geno.pro?rev=53#L13">13</A></TH>
+    <TD>RESOURCES = geno.qrc</TD></TR>
+  <TR>
+    <TH id=L14><A 
+      href="http://dyerlab.bio.vcu.edu/trac/GeneticStudio/browser/trunk/geno.pro?rev=53#L14">14</A></TH>
+    <TD>MOC_DIR = ./moc</TD></TR>
+  <TR>
+    <TH id=L15><A 
+      href="http://dyerlab.bio.vcu.edu/trac/GeneticStudio/browser/trunk/geno.pro?rev=53#L15">15</A></TH>
+    <TD>OBJECTS_DIR = ./moc</TD></TR>
+  <TR>
+    <TH id=L16><A 
+      href="http://dyerlab.bio.vcu.edu/trac/GeneticStudio/browser/trunk/geno.pro?rev=53#L16">16</A></TH>
+    <TD>QMAKE_EXTRA_UNIX_TARGETS += dox</TD></TR>
+  <TR>
+    <TH id=L17><A 
+      href="http://dyerlab.bio.vcu.edu/trac/GeneticStudio/browser/trunk/geno.pro?rev=53#L17">17</A></TH>
+    <TD></TD></TR>
+  <TR>
+    <TH id=L18><A 
+      href="http://dyerlab.bio.vcu.edu/trac/GeneticStudio/browser/trunk/geno.pro?rev=53#L18">18</A></TH>
+    <TD>linux-g++-64 {</TD></TR>
+  <TR>
+    <TH id=L19><A 
+      href="http://dyerlab.bio.vcu.edu/trac/GeneticStudio/browser/trunk/geno.pro?rev=53#L19">19</A></TH>
+    <TD>&nbsp; &nbsp; message(" Building on linux 64")</TD></TR>
+  <TR>
+    <TH id=L20><A 
+      href="http://dyerlab.bio.vcu.edu/trac/GeneticStudio/browser/trunk/geno.pro?rev=53#L20">20</A></TH>
+    <TD>&nbsp; &nbsp; LIBS += -lglut&nbsp; &nbsp; &nbsp;</TD></TR>
+  <TR>
+    <TH id=L21><A 
+      href="http://dyerlab.bio.vcu.edu/trac/GeneticStudio/browser/trunk/geno.pro?rev=53#L21">21</A></TH>
+    <TD>}</TD></TR>
+  <TR>
+    <TH id=L22><A 
+      href="http://dyerlab.bio.vcu.edu/trac/GeneticStudio/browser/trunk/geno.pro?rev=53#L22">22</A></TH>
+    <TD></TD></TR>
+  <TR>
+    <TH id=L23><A 
+      href="http://dyerlab.bio.vcu.edu/trac/GeneticStudio/browser/trunk/geno.pro?rev=53#L23">23</A></TH>
+    <TD>linux-g++ {</TD></TR>
+  <TR>
+    <TH id=L24><A 
+      href="http://dyerlab.bio.vcu.edu/trac/GeneticStudio/browser/trunk/geno.pro?rev=53#L24">24</A></TH>
+    <TD>&nbsp; message(" Building on linux 32")</TD></TR>
+  <TR>
+    <TH id=L25><A 
+      href="http://dyerlab.bio.vcu.edu/trac/GeneticStudio/browser/trunk/geno.pro?rev=53#L25">25</A></TH>
+    <TD>&nbsp; LIBS += -lglut&nbsp; &nbsp; &nbsp;</TD></TR>
+  <TR>
+    <TH id=L26><A 
+      href="http://dyerlab.bio.vcu.edu/trac/GeneticStudio/browser/trunk/geno.pro?rev=53#L26">26</A></TH>
+    <TD></TD></TR>
+  <TR>
+    <TH id=L27><A 
+      href="http://dyerlab.bio.vcu.edu/trac/GeneticStudio/browser/trunk/geno.pro?rev=53#L27">27</A></TH>
+    <TD>}</TD></TR>
+  <TR>
+    <TH id=L28><A 
+      href="http://dyerlab.bio.vcu.edu/trac/GeneticStudio/browser/trunk/geno.pro?rev=53#L28">28</A></TH>
+    <TD></TD></TR>
+  <TR>
+    <TH id=L29><A 
+      href="http://dyerlab.bio.vcu.edu/trac/GeneticStudio/browser/trunk/geno.pro?rev=53#L29">29</A></TH>
+    <TD></TD></TR>
+  <TR>
+    <TH id=L30><A 
+      href="http://dyerlab.bio.vcu.edu/trac/GeneticStudio/browser/trunk/geno.pro?rev=53#L30">30</A></TH>
+    <TD>macx-g++ {</TD></TR>
+  <TR>
+    <TH id=L31><A 
+      href="http://dyerlab.bio.vcu.edu/trac/GeneticStudio/browser/trunk/geno.pro?rev=53#L31">31</A></TH>
+    <TD>&nbsp; &nbsp; &nbsp;message("Building macx-g++")</TD></TR>
+  <TR>
+    <TH id=L32><A 
+      href="http://dyerlab.bio.vcu.edu/trac/GeneticStudio/browser/trunk/geno.pro?rev=53#L32">32</A></TH>
+    <TD>&nbsp; &nbsp; &nbsp;QMAKE_LIBS_OPENGL += -framework GLUT -framework 
+      OpenGL -framework Cocoa -lobjc</TD></TR>
+  <TR>
+    <TH id=L33><A 
+      href="http://dyerlab.bio.vcu.edu/trac/GeneticStudio/browser/trunk/geno.pro?rev=53#L33">33</A></TH>
+    <TD>&nbsp; &nbsp; &nbsp;INCLUDEPATH += 
+      "/System/Library/Frameworks/GLUT.framework/Versions/A/Headers/"</TD></TR>
+  <TR>
+    <TH id=L34><A 
+      href="http://dyerlab.bio.vcu.edu/trac/GeneticStudio/browser/trunk/geno.pro?rev=53#L34">34</A></TH>
+    <TD>&nbsp; &nbsp; &nbsp;INCLUDEPATH += "/usr/local/include"</TD></TR>
+  <TR>
+    <TH id=L35><A 
+      href="http://dyerlab.bio.vcu.edu/trac/GeneticStudio/browser/trunk/geno.pro?rev=53#L35">35</A></TH>
+    <TD>&nbsp; &nbsp; &nbsp;INCLUDEPATH += "."</TD></TR>
+  <TR>
+    <TH id=L36><A 
+      href="http://dyerlab.bio.vcu.edu/trac/GeneticStudio/browser/trunk/geno.pro?rev=53#L36">36</A></TH>
+    <TD>&nbsp; &nbsp; &nbsp; &nbsp; 
+      &nbsp;QMAKE_MAC_SDK=/Developer/SDKs/MacOSX10.4u.sdk</TD></TR>
+  <TR>
+    <TH id=L37><A 
+      href="http://dyerlab.bio.vcu.edu/trac/GeneticStudio/browser/trunk/geno.pro?rev=53#L37">37</A></TH>
+    <TD>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;CONFIG+=x86 ppc</TD></TR>
+  <TR>
+    <TH id=L38><A 
+      href="http://dyerlab.bio.vcu.edu/trac/GeneticStudio/browser/trunk/geno.pro?rev=53#L38">38</A></TH>
+    <TD>&nbsp; &nbsp; &nbsp;config -= debug</TD></TR>
+  <TR>
+    <TH id=L39><A 
+      href="http://dyerlab.bio.vcu.edu/trac/GeneticStudio/browser/trunk/geno.pro?rev=53#L39">39</A></TH>
+    <TD>&nbsp; &nbsp; &nbsp;config -= debug_and_release</TD></TR>
+  <TR>
+    <TH id=L40><A 
+      href="http://dyerlab.bio.vcu.edu/trac/GeneticStudio/browser/trunk/geno.pro?rev=53#L40">40</A></TH>
+    <TD>&nbsp; &nbsp; &nbsp;config += static </TD></TR>
+  <TR>
+    <TH id=L41><A 
+      href="http://dyerlab.bio.vcu.edu/trac/GeneticStudio/browser/trunk/geno.pro?rev=53#L41">41</A></TH>
+    <TD>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;config += release</TD></TR>
+  <TR>
+    <TH id=L42><A 
+      href="http://dyerlab.bio.vcu.edu/trac/GeneticStudio/browser/trunk/geno.pro?rev=53#L42">42</A></TH>
+    <TD>&nbsp; &nbsp; &nbsp;LIBS += -L/usr/local/lib</TD></TR>
+  <TR>
+    <TH id=L43><A 
+      href="http://dyerlab.bio.vcu.edu/trac/GeneticStudio/browser/trunk/geno.pro?rev=53#L43">43</A></TH>
+    <TD>&nbsp; &nbsp; &nbsp;LIBS += -L.</TD></TR>
+  <TR>
+    <TH id=L44><A 
+      href="http://dyerlab.bio.vcu.edu/trac/GeneticStudio/browser/trunk/geno.pro?rev=53#L44">44</A></TH>
+    <TD>}</TD></TR>
+  <TR>
+    <TH id=L45><A 
+      href="http://dyerlab.bio.vcu.edu/trac/GeneticStudio/browser/trunk/geno.pro?rev=53#L45">45</A></TH>
+    <TD></TD></TR>
+  <TR>
+    <TH id=L46><A 
+      href="http://dyerlab.bio.vcu.edu/trac/GeneticStudio/browser/trunk/geno.pro?rev=53#L46">46</A></TH>
+    <TD></TD></TR>
+  <TR>
+    <TH id=L47><A 
+      href="http://dyerlab.bio.vcu.edu/trac/GeneticStudio/browser/trunk/geno.pro?rev=53#L47">47</A></TH>
+    <TD>win32 {</TD></TR>
+  <TR>
+    <TH id=L48><A 
+      href="http://dyerlab.bio.vcu.edu/trac/GeneticStudio/browser/trunk/geno.pro?rev=53#L48">48</A></TH>
+    <TD>&nbsp; INCLUDEPATH += "C:\MinGW\include"</TD></TR>
+  <TR>
+    <TH id=L49><A 
+      href="http://dyerlab.bio.vcu.edu/trac/GeneticStudio/browser/trunk/geno.pro?rev=53#L49">49</A></TH>
+    <TD>&nbsp; LIBPATH += "C:\MinGW\lib"</TD></TR>
+  <TR>
+    <TH id=L50><A 
+      href="http://dyerlab.bio.vcu.edu/trac/GeneticStudio/browser/trunk/geno.pro?rev=53#L50">50</A></TH>
+    <TD>&nbsp; config -= debug</TD></TR>
+  <TR>
+    <TH id=L51><A 
+      href="http://dyerlab.bio.vcu.edu/trac/GeneticStudio/browser/trunk/geno.pro?rev=53#L51">51</A></TH>
+    <TD>&nbsp; config -= debug_and_release</TD></TR>
+  <TR>
+    <TH id=L52><A 
+      href="http://dyerlab.bio.vcu.edu/trac/GeneticStudio/browser/trunk/geno.pro?rev=53#L52">52</A></TH>
+    <TD>&nbsp; config -= shared</TD></TR>
+  <TR>
+    <TH id=L53><A 
+      href="http://dyerlab.bio.vcu.edu/trac/GeneticStudio/browser/trunk/geno.pro?rev=53#L53">53</A></TH>
+    <TD>&nbsp; LIBS += -lglut32</TD></TR>
+  <TR>
+    <TH id=L54><A 
+      href="http://dyerlab.bio.vcu.edu/trac/GeneticStudio/browser/trunk/geno.pro?rev=53#L54">54</A></TH>
+    <TD>&nbsp; config += static release warn_off</TD></TR>
+  <TR>
+    <TH id=L55><A 
+      href="http://dyerlab.bio.vcu.edu/trac/GeneticStudio/browser/trunk/geno.pro?rev=53#L55">55</A></TH>
+    <TD>&nbsp; message("Building on win32")</TD></TR>
+  <TR>
+    <TH id=L56><A 
+      href="http://dyerlab.bio.vcu.edu/trac/GeneticStudio/browser/trunk/geno.pro?rev=53#L56">56</A></TH>
+    <TD>}</TD></TR>
+  <TR>
+    <TH id=L57><A 
+      href="http://dyerlab.bio.vcu.edu/trac/GeneticStudio/browser/trunk/geno.pro?rev=53#L57">57</A></TH>
+    <TD></TD></TR>
+  <TR>
+    <TH id=L58><A 
+      href="http://dyerlab.bio.vcu.edu/trac/GeneticStudio/browser/trunk/geno.pro?rev=53#L58">58</A></TH>
+    <TD>#################################################################################</TD></TR>
+  <TR>
+    <TH id=L59><A 
+      href="http://dyerlab.bio.vcu.edu/trac/GeneticStudio/browser/trunk/geno.pro?rev=53#L59">59</A></TH>
+    <TD>#</TD></TR>
+  <TR>
+    <TH id=L60><A 
+      href="http://dyerlab.bio.vcu.edu/trac/GeneticStudio/browser/trunk/geno.pro?rev=53#L60">60</A></TH>
+    <TD>#&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Input 
+      Files</TD></TR>
+  <TR>
+    <TH id=L61><A 
+      href="http://dyerlab.bio.vcu.edu/trac/GeneticStudio/browser/trunk/geno.pro?rev=53#L61">61</A></TH>
+    <TD>#</TD></TR>
+  <TR>
+    <TH id=L62><A 
+      href="http://dyerlab.bio.vcu.edu/trac/GeneticStudio/browser/trunk/geno.pro?rev=53#L62">62</A></TH>
+    <TD>#################################################################################</TD></TR>
+  <TR>
+    <TH id=L63><A 
+      href="http://dyerlab.bio.vcu.edu/trac/GeneticStudio/browser/trunk/geno.pro?rev=53#L63">63</A></TH>
+    <TD></TD></TR>
+  <TR>
+    <TH id=L64><A 
+      href="http://dyerlab.bio.vcu.edu/trac/GeneticStudio/browser/trunk/geno.pro?rev=53#L64">64</A></TH>
+    <TD>HEADERS += AlleleFrequencies.H \ </TD></TR>
+  <TR>
+    <TH id=L65><A 
+      href="http://dyerlab.bio.vcu.edu/trac/GeneticStudio/browser/trunk/geno.pro?rev=53#L65">65</A></TH>
+    <TD>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;AMOVADialog.H \</TD></TR>
+  <TR>
+    <TH id=L66><A 
+      href="http://dyerlab.bio.vcu.edu/trac/GeneticStudio/browser/trunk/geno.pro?rev=53#L66">66</A></TH>
+    <TD>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;AnalysisBase.H \ </TD></TR>
+  <TR>
+    <TH id=L67><A 
+      href="http://dyerlab.bio.vcu.edu/trac/GeneticStudio/browser/trunk/geno.pro?rev=53#L67">67</A></TH>
+    <TD>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;BinDistanceDialog.H \</TD></TR>
+  <TR>
+    <TH id=L68><A 
+      href="http://dyerlab.bio.vcu.edu/trac/GeneticStudio/browser/trunk/geno.pro?rev=53#L68">68</A></TH>
+    <TD>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;ColorComboBoxDelegate.H 
+  \</TD></TR>
+  <TR>
+    <TH id=L69><A 
+      href="http://dyerlab.bio.vcu.edu/trac/GeneticStudio/browser/trunk/geno.pro?rev=53#L69">69</A></TH>
+    <TD>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;ConvertDswDistance.H \</TD></TR>
+  <TR>
+    <TH id=L70><A 
+      href="http://dyerlab.bio.vcu.edu/trac/GeneticStudio/browser/trunk/geno.pro?rev=53#L70">70</A></TH>
+    <TD>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;ConvertGenoToAMOVA.H \ </TD></TR>
+  <TR>
+    <TH id=L71><A 
+      href="http://dyerlab.bio.vcu.edu/trac/GeneticStudio/browser/trunk/geno.pro?rev=53#L71">71</A></TH>
+    <TD>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;ConvertGenoToRelatedness.H 
+    \</TD></TR>
+  <TR>
+    <TH id=L72><A 
+      href="http://dyerlab.bio.vcu.edu/trac/GeneticStudio/browser/trunk/geno.pro?rev=53#L72">72</A></TH>
+    <TD>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;ConvertStrataDistance.H 
+  \</TD></TR>
+  <TR>
+    <TH id=L73><A 
+      href="http://dyerlab.bio.vcu.edu/trac/GeneticStudio/browser/trunk/geno.pro?rev=53#L73">73</A></TH>
+    <TD>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;ConvertPhysicalCoordinates.H 
+      \ </TD></TR>
+  <TR>
+    <TH id=L74><A 
+      href="http://dyerlab.bio.vcu.edu/trac/GeneticStudio/browser/trunk/geno.pro?rev=53#L74">74</A></TH>
+    <TD>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;ConvertStrataToH.H \ </TD></TR>
+  <TR>
+    <TH id=L75><A 
+      href="http://dyerlab.bio.vcu.edu/trac/GeneticStudio/browser/trunk/geno.pro?rev=53#L75">75</A></TH>
+    <TD>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;DataConversionBase.H \ </TD></TR>
+  <TR>
+    <TH id=L76><A 
+      href="http://dyerlab.bio.vcu.edu/trac/GeneticStudio/browser/trunk/geno.pro?rev=53#L76">76</A></TH>
+    <TD>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;Data.H \ </TD></TR>
+  <TR>
+    <TH id=L77><A 
+      href="http://dyerlab.bio.vcu.edu/trac/GeneticStudio/browser/trunk/geno.pro?rev=53#L77">77</A></TH>
+    <TD>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;DataItemBase.H \ </TD></TR>
+  <TR>
+    <TH id=L78><A 
+      href="http://dyerlab.bio.vcu.edu/trac/GeneticStudio/browser/trunk/geno.pro?rev=53#L78">78</A></TH>
+    <TD>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;DataItemGraph.H \</TD></TR>
+  <TR>
+    <TH id=L79><A 
+      href="http://dyerlab.bio.vcu.edu/trac/GeneticStudio/browser/trunk/geno.pro?rev=53#L79">79</A></TH>
+    <TD>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;DataItemGrid.H \ </TD></TR>
+  <TR>
+    <TH id=L80><A 
+      href="http://dyerlab.bio.vcu.edu/trac/GeneticStudio/browser/trunk/geno.pro?rev=53#L80">80</A></TH>
+    <TD>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;DataItemImage.H \ </TD></TR>
+  <TR>
+    <TH id=L81><A 
+      href="http://dyerlab.bio.vcu.edu/trac/GeneticStudio/browser/trunk/geno.pro?rev=53#L81">81</A></TH>
+    <TD>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;DataItemText.H \ </TD></TR>
+  <TR>
+    <TH id=L82><A 
+      href="http://dyerlab.bio.vcu.edu/trac/GeneticStudio/browser/trunk/geno.pro?rev=53#L82">82</A></TH>
+    <TD>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;DiversityAnalysis.H \ </TD></TR>
+  <TR>
+    <TH id=L83><A 
+      href="http://dyerlab.bio.vcu.edu/trac/GeneticStudio/browser/trunk/geno.pro?rev=53#L83">83</A></TH>
+    <TD>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;DoubleEdit.H \ </TD></TR>
+  <TR>
+    <TH id=L84><A 
+      href="http://dyerlab.bio.vcu.edu/trac/GeneticStudio/browser/trunk/geno.pro?rev=53#L84">84</A></TH>
+    <TD>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;DoubleInputDialog.H \ </TD></TR>
+  <TR>
+    <TH id=L85><A 
+      href="http://dyerlab.bio.vcu.edu/trac/GeneticStudio/browser/trunk/geno.pro?rev=53#L85">85</A></TH>
+    <TD>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;Edge.H \</TD></TR>
+  <TR>
+    <TH id=L86><A 
+      href="http://dyerlab.bio.vcu.edu/trac/GeneticStudio/browser/trunk/geno.pro?rev=53#L86">86</A></TH>
+    <TD>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;EdgeTableModel.H \</TD></TR>
+  <TR>
+    <TH id=L87><A 
+      href="http://dyerlab.bio.vcu.edu/trac/GeneticStudio/browser/trunk/geno.pro?rev=53#L87">87</A></TH>
+    <TD>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;FrequencyAnalysis.H \ </TD></TR>
+  <TR>
+    <TH id=L88><A 
+      href="http://dyerlab.bio.vcu.edu/trac/GeneticStudio/browser/trunk/geno.pro?rev=53#L88">88</A></TH>
+    <TD>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;geneticOps.H \ </TD></TR>
+  <TR>
+    <TH id=L89><A 
+      href="http://dyerlab.bio.vcu.edu/trac/GeneticStudio/browser/trunk/geno.pro?rev=53#L89">89</A></TH>
+    <TD>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;GeneticVariance.H \ </TD></TR>
+  <TR>
+    <TH id=L90><A 
+      href="http://dyerlab.bio.vcu.edu/trac/GeneticStudio/browser/trunk/geno.pro?rev=53#L90">90</A></TH>
+    <TD>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;GeneticVarianceDialog.H 
+  \</TD></TR>
+  <TR>
+    <TH id=L91><A 
+      href="http://dyerlab.bio.vcu.edu/trac/GeneticStudio/browser/trunk/geno.pro?rev=53#L91">91</A></TH>
+    <TD>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;GenotypeTableItemDelegate.H \ 
+    </TD></TR>
+  <TR>
+    <TH id=L92><A 
+      href="http://dyerlab.bio.vcu.edu/trac/GeneticStudio/browser/trunk/geno.pro?rev=53#L92">92</A></TH>
+    <TD>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;GenotypeTableModel.H \ </TD></TR>
+  <TR>
+    <TH id=L93><A 
+      href="http://dyerlab.bio.vcu.edu/trac/GeneticStudio/browser/trunk/geno.pro?rev=53#L93">93</A></TH>
+    <TD>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;globalz.H \</TD></TR>
+  <TR>
+    <TH id=L94><A 
+      href="http://dyerlab.bio.vcu.edu/trac/GeneticStudio/browser/trunk/geno.pro?rev=53#L94">94</A></TH>
+    <TD>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;Graph.H \</TD></TR>
+  <TR>
+    <TH id=L95><A 
+      href="http://dyerlab.bio.vcu.edu/trac/GeneticStudio/browser/trunk/geno.pro?rev=53#L95">95</A></TH>
+    <TD>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;GraphWidget.H \</TD></TR>
+  <TR>
+    <TH id=L96><A 
+      href="http://dyerlab.bio.vcu.edu/trac/GeneticStudio/browser/trunk/geno.pro?rev=53#L96">96</A></TH>
+    <TD>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;graphOps.H \</TD></TR>
+  <TR>
+    <TH id=L97><A 
+      href="http://dyerlab.bio.vcu.edu/trac/GeneticStudio/browser/trunk/geno.pro?rev=53#L97">97</A></TH>
+    <TD>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;graphicOps.H \</TD></TR>
+  <TR>
+    <TH id=L98><A 
+      href="http://dyerlab.bio.vcu.edu/trac/GeneticStudio/browser/trunk/geno.pro?rev=53#L98">98</A></TH>
+    <TD>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;GstAnalysis.H \ </TD></TR>
+  <TR>
+    <TH id=L99><A 
+      href="http://dyerlab.bio.vcu.edu/trac/GeneticStudio/browser/trunk/geno.pro?rev=53#L99">99</A></TH>
+    <TD>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;HWETest.H \</TD></TR>
+  <TR>
+    <TH id=L100><A 
+      href="http://dyerlab.bio.vcu.edu/trac/GeneticStudio/browser/trunk/geno.pro?rev=53#L100">100</A></TH>
+    <TD>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;ImageFactory.H \</TD></TR>
+  <TR>
+    <TH id=L101><A 
+      href="http://dyerlab.bio.vcu.edu/trac/GeneticStudio/browser/trunk/geno.pro?rev=53#L101">101</A></TH>
+    <TD>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;Individual.H \ </TD></TR>
+  <TR>
+    <TH id=L102><A 
+      href="http://dyerlab.bio.vcu.edu/trac/GeneticStudio/browser/trunk/geno.pro?rev=53#L102">102</A></TH>
+    <TD>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;Locus.H \ </TD></TR>
+  <TR>
+    <TH id=L103><A 
+      href="http://dyerlab.bio.vcu.edu/trac/GeneticStudio/browser/trunk/geno.pro?rev=53#L103">103</A></TH>
+    <TD>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;MatrixSummary.H \</TD></TR>
+  <TR>
+    <TH id=L104><A 
+      href="http://dyerlab.bio.vcu.edu/trac/GeneticStudio/browser/trunk/geno.pro?rev=53#L104">104</A></TH>
+    <TD>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;MainWindow.H \ </TD></TR>
+  <TR>
+    <TH id=L105><A 
+      href="http://dyerlab.bio.vcu.edu/trac/GeneticStudio/browser/trunk/geno.pro?rev=53#L105">105</A></TH>
+    <TD>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;MantelAnalysis.H \</TD></TR>
+  <TR>
+    <TH id=L106><A 
+      href="http://dyerlab.bio.vcu.edu/trac/GeneticStudio/browser/trunk/geno.pro?rev=53#L106">106</A></TH>
+    <TD>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;MatrixDelegate.H \ </TD></TR>
+  <TR>
+    <TH id=L107><A 
+      href="http://dyerlab.bio.vcu.edu/trac/GeneticStudio/browser/trunk/geno.pro?rev=53#L107">107</A></TH>
+    <TD>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;matrixOps.H \ </TD></TR>
+  <TR>
+    <TH id=L108><A 
+      href="http://dyerlab.bio.vcu.edu/trac/GeneticStudio/browser/trunk/geno.pro?rev=53#L108">108</A></TH>
+    <TD>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;MatrixTableModel.H \</TD></TR>
+  <TR>
+    <TH id=L109><A 
+      href="http://dyerlab.bio.vcu.edu/trac/GeneticStudio/browser/trunk/geno.pro?rev=53#L109">109</A></TH>
+    <TD>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;Node.H \</TD></TR>
+  <TR>
+    <TH id=L110><A 
+      href="http://dyerlab.bio.vcu.edu/trac/GeneticStudio/browser/trunk/geno.pro?rev=53#L110">110</A></TH>
+    <TD>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;NodeTableModel.H \</TD></TR>
+  <TR>
+    <TH id=L111><A 
+      href="http://dyerlab.bio.vcu.edu/trac/GeneticStudio/browser/trunk/geno.pro?rev=53#L111">111</A></TH>
+    <TD>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;Population.H \ </TD></TR>
+  <TR>
+    <TH id=L112><A 
+      href="http://dyerlab.bio.vcu.edu/trac/GeneticStudio/browser/trunk/geno.pro?rev=53#L112">112</A></TH>
+    <TD>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;PopulationGraph.H \</TD></TR>
+  <TR>
+    <TH id=L113><A 
+      href="http://dyerlab.bio.vcu.edu/trac/GeneticStudio/browser/trunk/geno.pro?rev=53#L113">113</A></TH>
+    <TD>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;RenderArea.H \ </TD></TR>
+  <TR>
+    <TH id=L114><A 
+      href="http://dyerlab.bio.vcu.edu/trac/GeneticStudio/browser/trunk/geno.pro?rev=53#L114">114</A></TH>
+    <TD>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;SequenceToPath.H \</TD></TR>
+  <TR>
+    <TH id=L115><A 
+      href="http://dyerlab.bio.vcu.edu/trac/GeneticStudio/browser/trunk/geno.pro?rev=53#L115">115</A></TH>
+    <TD>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;SpatialDialog.H \</TD></TR>
+  <TR>
+    <TH id=L116><A 
+      href="http://dyerlab.bio.vcu.edu/trac/GeneticStudio/browser/trunk/geno.pro?rev=53#L116">116</A></TH>
+    <TD>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;TableItemDelegate.H \</TD></TR>
+  <TR>
+    <TH id=L117><A 
+      href="http://dyerlab.bio.vcu.edu/trac/GeneticStudio/browser/trunk/geno.pro?rev=53#L117">117</A></TH>
+    <TD></TD></TR>
+  <TR>
+    <TH id=L118><A 
+      href="http://dyerlab.bio.vcu.edu/trac/GeneticStudio/browser/trunk/geno.pro?rev=53#L118">118</A></TH>
+    <TD>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</TD></TR>
+  <TR>
+    <TH id=L119><A 
+      href="http://dyerlab.bio.vcu.edu/trac/GeneticStudio/browser/trunk/geno.pro?rev=53#L119">119</A></TH>
+    <TD>SOURCES += AlleleFrequencies.C \</TD></TR>
+  <TR>
+    <TH id=L120><A 
+      href="http://dyerlab.bio.vcu.edu/trac/GeneticStudio/browser/trunk/geno.pro?rev=53#L120">120</A></TH>
+    <TD>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;AMOVADialog.C \ </TD></TR>
+  <TR>
+    <TH id=L121><A 
+      href="http://dyerlab.bio.vcu.edu/trac/GeneticStudio/browser/trunk/geno.pro?rev=53#L121">121</A></TH>
+    <TD>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;AnalysisBase.C \ </TD></TR>
+  <TR>
+    <TH id=L122><A 
+      href="http://dyerlab.bio.vcu.edu/trac/GeneticStudio/browser/trunk/geno.pro?rev=53#L122">122</A></TH>
+    <TD>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;BinDistanceDialog.C \</TD></TR>
+  <TR>
+    <TH id=L123><A 
+      href="http://dyerlab.bio.vcu.edu/trac/GeneticStudio/browser/trunk/geno.pro?rev=53#L123">123</A></TH>
+    <TD>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;ColorComboBoxDelegate.C 
+  \</TD></TR>
+  <TR>
+    <TH id=L124><A 
+      href="http://dyerlab.bio.vcu.edu/trac/GeneticStudio/browser/trunk/geno.pro?rev=53#L124">124</A></TH>
+    <TD>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;ConvertDswDistance.C \</TD></TR>
+  <TR>
+    <TH id=L125><A 
+      href="http://dyerlab.bio.vcu.edu/trac/GeneticStudio/browser/trunk/geno.pro?rev=53#L125">125</A></TH>
+    <TD>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;ConvertGenoToAMOVA.C \ </TD></TR>
+  <TR>
+    <TH id=L126><A 
+      href="http://dyerlab.bio.vcu.edu/trac/GeneticStudio/browser/trunk/geno.pro?rev=53#L126">126</A></TH>
+    <TD>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;ConvertGenoToRelatedness.C 
+    \</TD></TR>
+  <TR>
+    <TH id=L127><A 
+      href="http://dyerlab.bio.vcu.edu/trac/GeneticStudio/browser/trunk/geno.pro?rev=53#L127">127</A></TH>
+    <TD>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;ConvertStrataDistance.C 
+  \</TD></TR>
+  <TR>
+    <TH id=L128><A 
+      href="http://dyerlab.bio.vcu.edu/trac/GeneticStudio/browser/trunk/geno.pro?rev=53#L128">128</A></TH>
+    <TD>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;ConvertPhysicalCoordinates.C 
+      \ </TD></TR>
+  <TR>
+    <TH id=L129><A 
+      href="http://dyerlab.bio.vcu.edu/trac/GeneticStudio/browser/trunk/geno.pro?rev=53#L129">129</A></TH>
+    <TD>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;ConvertStrataToH.C \ </TD></TR>
+  <TR>
+    <TH id=L130><A 
+      href="http://dyerlab.bio.vcu.edu/trac/GeneticStudio/browser/trunk/geno.pro?rev=53#L130">130</A></TH>
+    <TD>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;Data.C \ </TD></TR>
+  <TR>
+    <TH id=L131><A 
+      href="http://dyerlab.bio.vcu.edu/trac/GeneticStudio/browser/trunk/geno.pro?rev=53#L131">131</A></TH>
+    <TD>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;DataConversionBase.C \ </TD></TR>
+  <TR>
+    <TH id=L132><A 
+      href="http://dyerlab.bio.vcu.edu/trac/GeneticStudio/browser/trunk/geno.pro?rev=53#L132">132</A></TH>
+    <TD>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;DataItemBase.C \ </TD></TR>
+  <TR>
+    <TH id=L133><A 
+      href="http://dyerlab.bio.vcu.edu/trac/GeneticStudio/browser/trunk/geno.pro?rev=53#L133">133</A></TH>
+    <TD>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;DataItemGrid.C \ </TD></TR>
+  <TR>
+    <TH id=L134><A 
+      href="http://dyerlab.bio.vcu.edu/trac/GeneticStudio/browser/trunk/geno.pro?rev=53#L134">134</A></TH>
+    <TD>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;DataItemGraph.C \</TD></TR>
+  <TR>
+    <TH id=L135><A 
+      href="http://dyerlab.bio.vcu.edu/trac/GeneticStudio/browser/trunk/geno.pro?rev=53#L135">135</A></TH>
+    <TD>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;DataItemImage.C \ </TD></TR>
+  <TR>
+    <TH id=L136><A 
+      href="http://dyerlab.bio.vcu.edu/trac/GeneticStudio/browser/trunk/geno.pro?rev=53#L136">136</A></TH>
+    <TD>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;DataItemText.C \ </TD></TR>
+  <TR>
+    <TH id=L137><A 
+      href="http://dyerlab.bio.vcu.edu/trac/GeneticStudio/browser/trunk/geno.pro?rev=53#L137">137</A></TH>
+    <TD>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;DiversityAnalysis.C \ </TD></TR>
+  <TR>
+    <TH id=L138><A 
+      href="http://dyerlab.bio.vcu.edu/trac/GeneticStudio/browser/trunk/geno.pro?rev=53#L138">138</A></TH>
+    <TD>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;DoubleEdit.C \ </TD></TR>
+  <TR>
+    <TH id=L139><A 
+      href="http://dyerlab.bio.vcu.edu/trac/GeneticStudio/browser/trunk/geno.pro?rev=53#L139">139</A></TH>
+    <TD>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;DoubleInputDialog.C \</TD></TR>
+  <TR>
+    <TH id=L140><A 
+      href="http://dyerlab.bio.vcu.edu/trac/GeneticStudio/browser/trunk/geno.pro?rev=53#L140">140</A></TH>
+    <TD>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;Edge.C \</TD></TR>
+  <TR>
+    <TH id=L141><A 
+      href="http://dyerlab.bio.vcu.edu/trac/GeneticStudio/browser/trunk/geno.pro?rev=53#L141">141</A></TH>
+    <TD>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;EdgeTableModel.C \</TD></TR>
+  <TR>
+    <TH id=L142><A 
+      href="http://dyerlab.bio.vcu.edu/trac/GeneticStudio/browser/trunk/geno.pro?rev=53#L142">142</A></TH>
+    <TD>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;FrequencyAnalysis.C \ </TD></TR>
+  <TR>
+    <TH id=L143><A 
+      href="http://dyerlab.bio.vcu.edu/trac/GeneticStudio/browser/trunk/geno.pro?rev=53#L143">143</A></TH>
+    <TD>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;geneticOps.C \ </TD></TR>
+  <TR>
+    <TH id=L144><A 
+      href="http://dyerlab.bio.vcu.edu/trac/GeneticStudio/browser/trunk/geno.pro?rev=53#L144">144</A></TH>
+    <TD>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;GeneticVariance.C \ </TD></TR>
+  <TR>
+    <TH id=L145><A 
+      href="http://dyerlab.bio.vcu.edu/trac/GeneticStudio/browser/trunk/geno.pro?rev=53#L145">145</A></TH>
+    <TD>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;GeneticVarianceDialog.C 
+  \</TD></TR>
+  <TR>
+    <TH id=L146><A 
+      href="http://dyerlab.bio.vcu.edu/trac/GeneticStudio/browser/trunk/geno.pro?rev=53#L146">146</A></TH>
+    <TD>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;GenotypeTableItemDelegate.C \ 
+    </TD></TR>
+  <TR>
+    <TH id=L147><A 
+      href="http://dyerlab.bio.vcu.edu/trac/GeneticStudio/browser/trunk/geno.pro?rev=53#L147">147</A></TH>
+    <TD>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;GenotypeTableModel.C \ </TD></TR>
+  <TR>
+    <TH id=L148><A 
+      href="http://dyerlab.bio.vcu.edu/trac/GeneticStudio/browser/trunk/geno.pro?rev=53#L148">148</A></TH>
+    <TD>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;globalz.C \</TD></TR>
+  <TR>
+    <TH id=L149><A 
+      href="http://dyerlab.bio.vcu.edu/trac/GeneticStudio/browser/trunk/geno.pro?rev=53#L149">149</A></TH>
+    <TD>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;Graph.C \</TD></TR>
+  <TR>
+    <TH id=L150><A 
+      href="http://dyerlab.bio.vcu.edu/trac/GeneticStudio/browser/trunk/geno.pro?rev=53#L150">150</A></TH>
+    <TD>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;GraphWidget.C \</TD></TR>
+  <TR>
+    <TH id=L151><A 
+      href="http://dyerlab.bio.vcu.edu/trac/GeneticStudio/browser/trunk/geno.pro?rev=53#L151">151</A></TH>
+    <TD>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;graphOps.C \</TD></TR>
+  <TR>
+    <TH id=L152><A 
+      href="http://dyerlab.bio.vcu.edu/trac/GeneticStudio/browser/trunk/geno.pro?rev=53#L152">152</A></TH>
+    <TD>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;graphicOps.C \</TD></TR>
+  <TR>
+    <TH id=L153><A 
+      href="http://dyerlab.bio.vcu.edu/trac/GeneticStudio/browser/trunk/geno.pro?rev=53#L153">153</A></TH>
+    <TD>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;GstAnalysis.C \</TD></TR>
+  <TR>
+    <TH id=L154><A 
+      href="http://dyerlab.bio.vcu.edu/trac/GeneticStudio/browser/trunk/geno.pro?rev=53#L154">154</A></TH>
+    <TD>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;HWETest.C \</TD></TR>
+  <TR>
+    <TH id=L155><A 
+      href="http://dyerlab.bio.vcu.edu/trac/GeneticStudio/browser/trunk/geno.pro?rev=53#L155">155</A></TH>
+    <TD>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;ImageFactory.C \</TD></TR>
+  <TR>
+    <TH id=L156><A 
+      href="http://dyerlab.bio.vcu.edu/trac/GeneticStudio/browser/trunk/geno.pro?rev=53#L156">156</A></TH>
+    <TD>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;Individual.C \ </TD></TR>
+  <TR>
+    <TH id=L157><A 
+      href="http://dyerlab.bio.vcu.edu/trac/GeneticStudio/browser/trunk/geno.pro?rev=53#L157">157</A></TH>
+    <TD>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;Locus.C \ </TD></TR>
+  <TR>
+    <TH id=L158><A 
+      href="http://dyerlab.bio.vcu.edu/trac/GeneticStudio/browser/trunk/geno.pro?rev=53#L158">158</A></TH>
+    <TD>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;main.C \ </TD></TR>
+  <TR>
+    <TH id=L159><A 
+      href="http://dyerlab.bio.vcu.edu/trac/GeneticStudio/browser/trunk/geno.pro?rev=53#L159">159</A></TH>
+    <TD>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;MatrixSummary.C \</TD></TR>
+  <TR>
+    <TH id=L160><A 
+      href="http://dyerlab.bio.vcu.edu/trac/GeneticStudio/browser/trunk/geno.pro?rev=53#L160">160</A></TH>
+    <TD>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;MainWindow.C \ </TD></TR>
+  <TR>
+    <TH id=L161><A 
+      href="http://dyerlab.bio.vcu.edu/trac/GeneticStudio/browser/trunk/geno.pro?rev=53#L161">161</A></TH>
+    <TD>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;MantelAnalysis.C \</TD></TR>
+  <TR>
+    <TH id=L162><A 
+      href="http://dyerlab.bio.vcu.edu/trac/GeneticStudio/browser/trunk/geno.pro?rev=53#L162">162</A></TH>
+    <TD>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;MatrixDelegate.C \ </TD></TR>
+  <TR>
+    <TH id=L163><A 
+      href="http://dyerlab.bio.vcu.edu/trac/GeneticStudio/browser/trunk/geno.pro?rev=53#L163">163</A></TH>
+    <TD>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;matrixOps.C \ </TD></TR>
+  <TR>
+    <TH id=L164><A 
+      href="http://dyerlab.bio.vcu.edu/trac/GeneticStudio/browser/trunk/geno.pro?rev=53#L164">164</A></TH>
+    <TD>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;MatrixTableModel.C \</TD></TR>
+  <TR>
+    <TH id=L165><A 
+      href="http://dyerlab.bio.vcu.edu/trac/GeneticStudio/browser/trunk/geno.pro?rev=53#L165">165</A></TH>
+    <TD>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;Node.C \</TD></TR>
+  <TR>
+    <TH id=L166><A 
+      href="http://dyerlab.bio.vcu.edu/trac/GeneticStudio/browser/trunk/geno.pro?rev=53#L166">166</A></TH>
+    <TD>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;NodeTableModel.C \</TD></TR>
+  <TR>
+    <TH id=L167><A 
+      href="http://dyerlab.bio.vcu.edu/trac/GeneticStudio/browser/trunk/geno.pro?rev=53#L167">167</A></TH>
+    <TD>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;Population.C \ </TD></TR>
+  <TR>
+    <TH id=L168><A 
+      href="http://dyerlab.bio.vcu.edu/trac/GeneticStudio/browser/trunk/geno.pro?rev=53#L168">168</A></TH>
+    <TD>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;PopulationGraph.C \</TD></TR>
+  <TR>
+    <TH id=L169><A 
+      href="http://dyerlab.bio.vcu.edu/trac/GeneticStudio/browser/trunk/geno.pro?rev=53#L169">169</A></TH>
+    <TD>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;RenderArea.C \ </TD></TR>
+  <TR>
+    <TH id=L170><A 
+      href="http://dyerlab.bio.vcu.edu/trac/GeneticStudio/browser/trunk/geno.pro?rev=53#L170">170</A></TH>
+    <TD>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;SequenceToPath.C \&nbsp; 
+    &nbsp;</TD></TR>
+  <TR>
+    <TH id=L171><A 
+      href="http://dyerlab.bio.vcu.edu/trac/GeneticStudio/browser/trunk/geno.pro?rev=53#L171">171</A></TH>
+    <TD>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;SpatialDialog.C \</TD></TR>
+  <TR>
+    <TH id=L172><A 
+      href="http://dyerlab.bio.vcu.edu/trac/GeneticStudio/browser/trunk/geno.pro?rev=53#L172">172</A></TH>
+    <TD>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;TableItemDelegate.C \</TD></TR>
+  <TR>
+    <TH id=L173><A 
+      href="http://dyerlab.bio.vcu.edu/trac/GeneticStudio/browser/trunk/geno.pro?rev=53#L173">173</A></TH>
+    <TD></TD></TR>
+  <TR>
+    <TH id=L174><A 
+      href="http://dyerlab.bio.vcu.edu/trac/GeneticStudio/browser/trunk/geno.pro?rev=53#L174">174</A></TH>
+    <TD>#################################################################################</TD></TR>
+  <TR>
+    <TH id=L175><A 
+      href="http://dyerlab.bio.vcu.edu/trac/GeneticStudio/browser/trunk/geno.pro?rev=53#L175">175</A></TH>
+    <TD>#</TD></TR>
+  <TR>
+    <TH id=L176><A 
+      href="http://dyerlab.bio.vcu.edu/trac/GeneticStudio/browser/trunk/geno.pro?rev=53#L176">176</A></TH>
+    <TD>#&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Other 
+      Targets</TD></TR>
+  <TR>
+    <TH id=L177><A 
+      href="http://dyerlab.bio.vcu.edu/trac/GeneticStudio/browser/trunk/geno.pro?rev=53#L177">177</A></TH>
+    <TD>#</TD></TR>
+  <TR>
+    <TH id=L178><A 
+      href="http://dyerlab.bio.vcu.edu/trac/GeneticStudio/browser/trunk/geno.pro?rev=53#L178">178</A></TH>
+    <TD>#################################################################################</TD></TR>
+  <TR>
+    <TH id=L179><A 
+      href="http://dyerlab.bio.vcu.edu/trac/GeneticStudio/browser/trunk/geno.pro?rev=53#L179">179</A></TH>
+    <TD></TD></TR>
+  <TR>
+    <TH id=L180><A 
+      href="http://dyerlab.bio.vcu.edu/trac/GeneticStudio/browser/trunk/geno.pro?rev=53#L180">180</A></TH>
+    <TD></TD></TR>
+  <TR>
+    <TH id=L181><A 
+      href="http://dyerlab.bio.vcu.edu/trac/GeneticStudio/browser/trunk/geno.pro?rev=53#L181">181</A></TH>
+    <TD>dox.target = doc</TD></TR>
+  <TR>
+    <TH id=L182><A 
+      href="http://dyerlab.bio.vcu.edu/trac/GeneticStudio/browser/trunk/geno.pro?rev=53#L182">182</A></TH>
+    <TD>dox.commands = doxygen geno.doxygen; \</TD></TR>
+  <TR>
+    <TH id=L183><A 
+      href="http://dyerlab.bio.vcu.edu/trac/GeneticStudio/browser/trunk/geno.pro?rev=53#L183">183</A></TH>
+    <TD>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;xsltproc 
+      doc/tag2adp.xslt doc/geno.tag &gt; doc/GeneticStudio.adp</TD></TR>
+  <TR>
+    <TH id=L184><A 
+      href="http://dyerlab.bio.vcu.edu/trac/GeneticStudio/browser/trunk/geno.pro?rev=53#L184">184</A></TH>
+    <TD>dox.depends = </TD></TR></TBODY></TABLE></DIV>
+<DIV id=help><STRONG>Note:</STRONG> See <A 
+href="http://dyerlab.bio.vcu.edu/trac/GeneticStudio/wiki/TracBrowser">TracBrowser</A> 
+for help on using the browser. </DIV>
+<DIV id=anydiff>
+<FORM action=/trac/GeneticStudio/anydiff method=get>
+<DIV class=buttons><INPUT type=hidden value=/trunk/geno.pro name=new_path> 
+<INPUT type=hidden value=/trunk/geno.pro name=old_path> <INPUT type=hidden 
+value=53 name=new_rev> <INPUT type=hidden value=53 name=old_rev> <INPUT title="Prepare an Arbitrary Diff" type=submit value="View changes..."> 
+</DIV></FORM></DIV></DIV></DIV></DIV><!-- For tracContent --></DIV></BODY></HTML>

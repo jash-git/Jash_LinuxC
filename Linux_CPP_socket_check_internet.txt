@@ -1,0 +1,80 @@
+#include <iostream>
+#include <cstring>
+#include <sys/socket.h>
+#include <arpa/inet.h>
+#include <unistd.h>
+
+#define RCVBUFSIZE 1024
+
+int main(int argc, char *argv[])
+{
+    int sock;                        // Socket descriptor
+    struct sockaddr_in servAddr;     // server address
+    unsigned short servPort;         // server port
+    char const *servIP;              // Server IP address (dotted quad)
+    char const *request;             // String to send to server
+    char recvBuffer[RCVBUFSIZE];     // Buffer for response string
+    unsigned int requestLen;         // Length of string to send
+    int bytesRcvd;                   // Bytes read in single recv()
+    bool status = true;
+
+    // Initialize port
+    servIP = "72.233.89.199";
+    servPort = 80;
+    request = "GET /automation/n09230945.asp HTTP/1.1\r\nHost: www.whatismyip.com\r\n\r\n";
+
+    std::cout << request << std::endl;
+
+    /* Create a reliable, stream socket using TCP */
+    if ((sock = socket(PF_INET, SOCK_STREAM, IPPROTO_TCP)) < 0)
+    {
+        status = false;
+    }
+
+    if (status)
+    {
+        // Convert dotted decimal into binary server address.
+        memset(&servAddr, 0, sizeof(servAddr));
+        servAddr.sin_family      = AF_INET;
+        servAddr.sin_addr.s_addr = inet_addr(servIP);
+        servAddr.sin_port        = htons(servPort);
+
+        // Connect to the server.
+        if (connect(sock, (struct sockaddr *) &servAddr, sizeof(servAddr)) < 0)
+        {
+            status = false;
+        }
+    }
+
+    if (status)
+    {
+        // Calculate request length.
+        requestLen = strlen(request);
+
+        // Send the request to the server.
+        if (send(sock, request, requestLen, 0) != requestLen)
+        {
+            status = false;
+        }
+    }
+
+    if (status)
+    {
+        std::cout << "My IP Address: ";
+
+        if ((bytesRcvd = recv(sock, recvBuffer, RCVBUFSIZE - 1, 0)) <= 0)
+        {
+            status = false;
+        }
+
+        if (status && (bytesRcvd >0) && (bytesRcvd < (RCVBUFSIZE-1)))
+        {
+            recvBuffer[bytesRcvd] = '\0';
+            std::cout << recvBuffer << std::endl;
+        }
+    }
+
+    close(sock);
+
+    return 0;
+}

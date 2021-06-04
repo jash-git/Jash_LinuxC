@@ -1,0 +1,408 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<!-- 这篇文章由Dancingwind翻译，作者的联系方式zhouwei02@mails.tsinghua.edu.cn -->
+<html>
+<head>
+<title>NeHe OpenGL教程第三十一课，DancingWind翻译</title>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<style type=text/css>
+A:link {COLOR: #ccaaff; TEXT-DECORATION: none}
+A:visited {COLOR: #ccaaff; TEXT-DECORATION: none}
+A:active {COLOR: #ccaaff; TEXT-DECORATION: none}
+A:hover {COLOR: #ffccaa; TEXT-DECORATION: none}
+</style>
+</head>
+
+<br><br>
+
+<body bgcolor=#000000 text=#ffffff><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td width=326 height=130><img src="logo.png" tppabs="http://www.owlei.com/DancingWind/Pic/logo.png" width=326 height=130></td>
+    <td valign=middle align=center width="75%"><font color=#ffccaa size=+3><b><i>第31课 
+      </i></b></font></td>
+  </tr></table>
+  <!-- 上边框-->
+<table border="0" cellPadding="0" cellSpacing="0" width="100%">
+<TBODY>
+  <tr>
+    <td><img height="28" src="tl.jpg" tppabs="http://www.owlei.com/DancingWind/Pic/tl.jpg" width="28"></td>
+    <td width="100%"><img height="28" src="tc.gif" tppabs="http://www.owlei.com/DancingWind/Pic/tc.gif" width="100%"></td>
+    <td><img height="28" src="tr.gif" tppabs="http://www.owlei.com/DancingWind/Pic/tr.gif" width="28"></td>
+  </tr>
+</TBODY>
+</table>
+
+<!-- 中部-->
+<table border="0" cellPadding="0" cellSpacing="0" width="100%">
+<TBODY>
+  <tr>
+  	<!-- 中部左边框-->
+    <td  background="l.gif" tppabs="http://www.owlei.com/DancingWind/Pic/l.gif"><img src="l.gif" tppabs="http://www.owlei.com/DancingWind/Pic/l.gif" width="28" height="28"></td>
+	<!-- 中部文字部分-->
+    <td vAlign="top" width="100%">
+	<table width="100%" border="0">
+          <tr>
+            <td width="28%"><img src="lesson31.jpg" tppabs="http://www.owlei.com/DancingWind/Pic/lesson31.jpg" width="240" height="180"></td>
+            <td width="72%"><p><FONT size="3" class=head>模型加载</FONT><FONT class=head>:</FONT></p>
+              <p><font size="3">你知道大名鼎鼎的Milkshape3D建模软件么，我们将加载它的模型，当然你可以加载任何你认为不错的模型。</FONT></p></td>
+          </tr>
+     </table>
+      </td>
+	<!-- 中部右边框-->
+    <td background="r.gif" tppabs="http://www.owlei.com/DancingWind/Pic/r.gif"><img src="r.gif" tppabs="http://www.owlei.com/DancingWind/Pic/r.gif" width="28" height="28"></td>
+  </tr>
+</TBODY>
+</table>
+
+<!-- 下边框-->
+<table border="0" cellPadding="0" cellSpacing="0" width="100%">
+<TBODY>
+  <tr>
+    <td><img height="28" src="bl.gif" tppabs="http://www.owlei.com/DancingWind/Pic/bl.gif" width="28"></td>
+    <td width="100%"><img height="28" src="bc.gif" tppabs="http://www.owlei.com/DancingWind/Pic/bc.gif" width="100%"></td>
+    <td><img height="28" src="br.gif" tppabs="http://www.owlei.com/DancingWind/Pic/br.gif" width="28"></td>
+  </tr>
+</TBODY>
+</table>
+  <table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>这篇渲染模型的文章是由Brett Porter所写的。<br>
+      这篇教程的代码是从PortaLib3D中提取出来的，PortaLib3D是一个可以读取3D文件实用库。
+      <p>这篇教程的代码是以第六课为基础的，我们只讨论改变的部分。</p>
+      <p>这课中使用的模型是从Milkshape3D中提取出来的，Milkshape3D是一个非常好的建模软件，它包含了自己的文件格式，所以你能很容易去分析和理解。</p>
+      <p>但是文件格式并不能使你加载一个模型，你必须自己定义一个结构去保存数据，接着把数据读入那个结构，我们将告诉你如何定义这样一个结构。</p>
+      <p>模型的定义在model.h中，好吧我们开始吧：</p></td><td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table><font color=#aaffaa size=3>
+<pre>
+<font color=#ffffaa>// 顶点结构</font>
+struct Vertex
+{
+	char m_boneID;	<font color=#ffffaa>// 顶点所在的骨骼</font>
+	float m_location[3];
+};
+
+<font color=#ffffaa>// 顶点的个数和数据</font>
+int m_numVertices;
+Vertex *m_pVertices;
+</pre>
+</font><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>在这一课你，你可以忽略m_boneID，我们将在以后的教程中介绍骨骼动画。m_location定义顶点的位置。
+      <p>下面是三角形结构</p></td><td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table><font color=#aaffaa size=3>
+	  
+<pre><font color=#ffffaa>// 三角形结构</font>
+struct Triangle
+{
+	float m_vertexNormals[3][3];
+	float m_s[3], m_t[3];
+	int m_vertexIndices[3];
+};
+
+<font color=#ffffaa>// 使用的三角形</font>
+int m_numTriangles;
+Triangle *m_pTriangles;
+</pre>
+</font><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>3个顶点构成一个三角形，m_vertexIndices保存了三个顶点的索引。 m_s 和 m_t储存了三个顶点的纹理坐标。m_vertexNormals保存了三个顶点的法线。 
+      <p>下面我们定义网格结构</p></td><td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table><font color=#aaffaa size=3>
+	  
+<pre><font color=#ffffaa>// 网格结构</font>
+struct Mesh
+{
+	int m_materialIndex;
+	int m_numTriangles;
+	int *m_pTriangleIndices;
+};
+
+<font color=#ffffaa>// 使用的网格</font>
+int m_numMeshes;
+Mesh *m_pMeshes;
+</pre>
+</font><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>m_pTriangleIndices指向包含在网格中三角形的数据，它是动态分配的。 m_materialIndex 
+      指向了这个网格所用的材质。</td>
+    <td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table><font color=#aaffaa size=3>
+<pre>
+<font color=#ffffaa>// 材质属性</font>
+struct Material
+{
+	float m_ambient[4], m_diffuse[4], m_specular[4], m_emissive[4];
+	float m_shininess;
+	GLuint m_texture;
+	char *m_pTextureFilename;
+};
+
+<font color=#ffffaa>// 使用的纹理</font>
+int m_numMaterials;
+Material *m_pMaterials;
+</pre>
+</font><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>这里我们使用与OpenGL中相对的材质。 <p>下面的代码用来载入模型，我们通过重载loadModelData函数来实现它。</p>
+      我们创建了一个新类MilkshapeModel,它是从Model继承而来的。</td>
+    <td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table><font color=#aaffaa size=3>
+<pre>
+bool MilkshapeModel::loadModelData( const char *filename )
+{
+	ifstream inputFile( filename, ios::in | ios::binary | ios::nocreate );
+	if ( inputFile.fail())
+		return false;	<font color=#ffffaa>// 不能打开文件，返回失败</font>
+</pre>
+</font><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>以二进制的方式打开文件，如果失败则返回</td>
+    <td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table><font color=#aaffaa size=3><pre>
+	inputFile.seekg( 0, ios::end );
+	long fileSize = inputFile.tellg();
+	inputFile.seekg( 0, ios::beg );
+</pre></font><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>返回文件大小</td>
+    <td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table><font color=#aaffaa size=3><pre>
+	byte *pBuffer = new byte[fileSize];
+	inputFile.read( pBuffer, fileSize );
+	inputFile.close();
+</pre></font><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>分配一个内存，载入文件，并关闭文件</td>
+    <td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table><font color=#aaffaa size=3>
+<pre>
+	const byte *pPtr = pBuffer;
+	MS3DHeader *pHeader = ( MS3DHeader* )pPtr;
+	pPtr += sizeof( MS3DHeader );
+
+	if ( strncmp( pHeader-&gt;m_ID, "MS3D000000", 10 ) != 0 )
+		return false;	<font color=#ffffaa>// 如果不是一个有效的MS3D文件则返回</font>
+
+	if ( pHeader-&gt;m_version &lt; 3 || pHeader-&gt;m_version &gt; 4 )
+		return false;	<font color=#ffffaa>// 如果不能支持这种版本的文件，则返回失败</font></pre>
+</font><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>上面的文件读取文件头</td>
+    <td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table><font color=#aaffaa size=3><pre>
+	int nVertices = *( word* )pPtr;
+	m_numVertices = nVertices;
+	m_pVertices = new Vertex[nVertices];
+	pPtr += sizeof( word );
+
+	int i;
+	for ( i = 0; i &lt; nVertices; i++ )
+	{
+		MS3DVertex *pVertex = ( MS3DVertex* )pPtr;
+		m_pVertices[i].m_boneID = pVertex-&gt;m_boneID;
+		memcpy( m_pVertices[i].m_location, pVertex-&gt;m_vertex, sizeof( float )*3 );
+		pPtr += sizeof( MS3DVertex );
+	}
+</pre></font><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>上面的代码读取顶点数据</td>
+    <td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table><font color=#aaffaa size=3><pre>
+	int nTriangles = *( word* )pPtr;
+	m_numTriangles = nTriangles;
+	m_pTriangles = new Triangle[nTriangles];
+	pPtr += sizeof( word );
+
+	for ( i = 0; i &lt; nTriangles; i++ )
+	{
+		MS3DTriangle *pTriangle = ( MS3DTriangle* )pPtr;
+		int vertexIndices[3] = { pTriangle-&gt;m_vertexIndices[0], pTriangle-&gt;m_vertexIndices[1], pTriangle-&gt;m_vertexIndices[2] };
+		float t[3] = { 1.0f-pTriangle-&gt;m_t[0], 1.0f-pTriangle-&gt;m_t[1], 1.0f-pTriangle-&gt;m_t[2] };
+		memcpy( m_pTriangles[i].m_vertexNormals, pTriangle-&gt;m_vertexNormals, sizeof( float )*3*3 );
+		memcpy( m_pTriangles[i].m_s, pTriangle-&gt;m_s, sizeof( float )*3 );
+		memcpy( m_pTriangles[i].m_t, t, sizeof( float )*3 );
+		memcpy( m_pTriangles[i].m_vertexIndices, vertexIndices, sizeof( int )*3 );
+		pPtr += sizeof( MS3DTriangle );
+	}
+</pre></font><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>上面的代码用来读取三角形信息，因为MS3D使用窗口坐标系而OpenGL使用笛卡儿坐标系，所以需要反转每个顶点Y方向的纹理坐标</td>
+    <td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table><font color=#aaffaa size=3>
+<pre>
+	int nGroups = *( word* )pPtr;
+	m_numMeshes = nGroups;
+	m_pMeshes = new Mesh[nGroups];
+	pPtr += sizeof( word );
+	for ( i = 0; i &lt; nGroups; i++ )
+	{
+		pPtr += sizeof( byte );	
+		pPtr += 32;	
+
+		word nTriangles = *( word* )pPtr;
+		pPtr += sizeof( word );
+		int *pTriangleIndices = new int[nTriangles];
+		for ( int j = 0; j &lt; nTriangles; j++ )
+		{
+			pTriangleIndices[j] = *( word* )pPtr;
+			pPtr += sizeof( word );
+		}
+
+		char materialIndex = *( char* )pPtr;
+		pPtr += sizeof( char );
+
+		m_pMeshes[i].m_materialIndex = materialIndex;
+		m_pMeshes[i].m_numTriangles = nTriangles;
+		m_pMeshes[i].m_pTriangleIndices = pTriangleIndices;
+	}
+</pre>
+</font><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>上面的代码填充网格结构</td>
+    <td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table><font color=#aaffaa size=3><pre>
+	int nMaterials = *( word* )pPtr;
+	m_numMaterials = nMaterials;
+	m_pMaterials = new Material[nMaterials];
+	pPtr += sizeof( word );
+	for ( i = 0; i &lt; nMaterials; i++ )
+	{
+		MS3DMaterial *pMaterial = ( MS3DMaterial* )pPtr;
+		memcpy( m_pMaterials[i].m_ambient, pMaterial-&gt;m_ambient, sizeof( float )*4 );
+		memcpy( m_pMaterials[i].m_diffuse, pMaterial-&gt;m_diffuse, sizeof( float )*4 );
+		memcpy( m_pMaterials[i].m_specular, pMaterial-&gt;m_specular, sizeof( float )*4 );
+		memcpy( m_pMaterials[i].m_emissive, pMaterial-&gt;m_emissive, sizeof( float )*4 );
+		m_pMaterials[i].m_shininess = pMaterial-&gt;m_shininess;
+		m_pMaterials[i].m_pTextureFilename = new char[strlen( pMaterial-&gt;m_texture )+1];
+		strcpy( m_pMaterials[i].m_pTextureFilename, pMaterial-&gt;m_texture );
+		pPtr += sizeof( MS3DMaterial );
+	}
+
+	reloadTextures();
+</pre></font><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>上面的代码加载纹理数据</td>
+    <td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table><font color=#aaffaa size=3><pre>
+	delete[] pBuffer;
+
+	return true;
+}
+</pre></font><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>上面的代码设置好了一切参数，但纹理还没有载入内存，下面的代码完成这个功能。</td>
+    <td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table><font color=#aaffaa size=3><pre>
+void Model::reloadTextures()
+{
+	for ( int i = 0; i &lt; m_numMaterials; i++ )
+		if ( strlen( m_pMaterials[i].m_pTextureFilename ) &gt; 0 )
+			m_pMaterials[i].m_texture = LoadGLTexture( m_pMaterials[i].m_pTextureFilename );
+		else
+			m_pMaterials[i].m_texture = 0;
+}
+</pre></font><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>有了数据，就可以写出绘制函数了，下面的函数根据模型的信息，按网格分组，分别绘制每一组的数据。</td>
+    <td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table><font color=#aaffaa size=3><pre>
+void Model::draw()
+{
+	GLboolean texEnabled = glIsEnabled( GL_TEXTURE_2D );
+</pre>
+</font><font color=#aaffaa size=3>
+<pre>
+	<font color=#ffffaa>// 按网格分组绘制</font>
+	for ( int i = 0; i &lt; m_numMeshes; i++ )
+	{
+</pre>
+</font><font color=#aaffaa size=3>
+<pre>
+		int materialIndex = m_pMeshes[i].m_materialIndex;
+		if ( materialIndex &gt;= 0 )
+		{
+			glMaterialfv( GL_FRONT, GL_AMBIENT, m_pMaterials[materialIndex].m_ambient );
+			glMaterialfv( GL_FRONT, GL_DIFFUSE, m_pMaterials[materialIndex].m_diffuse );
+			glMaterialfv( GL_FRONT, GL_SPECULAR, m_pMaterials[materialIndex].m_specular );
+			glMaterialfv( GL_FRONT, GL_EMISSION, m_pMaterials[materialIndex].m_emissive );
+			glMaterialf( GL_FRONT, GL_SHININESS, m_pMaterials[materialIndex].m_shininess );
+
+			if ( m_pMaterials[materialIndex].m_texture &gt; 0 )
+			{
+				glBindTexture( GL_TEXTURE_2D, m_pMaterials[materialIndex].m_texture );
+				glEnable( GL_TEXTURE_2D );
+			}
+			else
+				glDisable( GL_TEXTURE_2D );
+		}
+		else
+		{
+			glDisable( GL_TEXTURE_2D );
+		}
+</pre>
+</font><font color=#aaffaa size=3>
+<pre>
+		glBegin( GL_TRIANGLES );
+		{
+			for ( int j = 0; j &lt; m_pMeshes[i].m_numTriangles; j++ )
+			{
+				int triangleIndex = m_pMeshes[i].m_pTriangleIndices[j];
+				const Triangle* pTri = &amp;m_pTriangles[triangleIndex];
+
+				for ( int k = 0; k &lt; 3; k++ )
+				{
+					int index = pTri-&gt;m_vertexIndices[k];
+
+					glNormal3fv( pTri-&gt;m_vertexNormals[k] );
+					glTexCoord2f( pTri-&gt;m_s[k], pTri-&gt;m_t[k] );
+					glVertex3fv( m_pVertices[index].m_location );
+				}
+			}
+		}
+		glEnd();
+	}
+</pre>
+</font><font color=#aaffaa size=3>
+<pre>
+	if ( texEnabled )
+		glEnable( GL_TEXTURE_2D );
+	else
+		glDisable( GL_TEXTURE_2D );
+}
+</pre></font><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>有了上面的函数，我们来看看如何使用它们。首先，我们定义一个MilkshapeModel类。</td>
+    <td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table><font color=#aaffaa size=3><pre>
+	Model *pModel = NULL;	<font color=#ffffaa>// 定义一个指向模型类的指针</font>
+</pre></font><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>接着加载模型文件</td>
+    <td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table><font color=#aaffaa size=3>
+<pre>
+	pModel = new MilkshapeModel();
+	if ( pModel-&gt;loadModelData( "data/model.ms3d" ) == false )
+	{
+		MessageBox( NULL, "不能加载data/model.ms3d文件", "加载错误", MB_OK | MB_ICONERROR );
+		return 0;									<font color=#ffffaa>// 返回失败</font>
+	}
+</pre>
+</font><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>接着载入纹理</td>
+    <td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table><font color=#aaffaa size=3><pre>
+	pModel-&gt;reloadTextures();
+</pre></font><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>完成了初始化操作，我们来实际绘制我们的模型</td>
+    <td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table><font color=#aaffaa size=3>
+<pre>
+int DrawGLScene(GLvoid)
+{
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);	<font color=#ffffaa>// 情况缓存</font>
+	glLoadIdentity();				
+	gluLookAt( 75, 75, 75, 0, 0, 0, 0, 1, 0 );
+
+	glRotatef(yrot,0.0f,1.0f,0.0f);
+
+	<font color=#ffffaa>//绘制模型</font>
+	pModel-&gt;draw();
+
+	yrot+=1.0f;
+	return TRUE;						<font color=#ffffaa>//成功返回 </font>
+}
+</pre>
+</font><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top><p>简单吧？下一步我们该做什么？在以后的教程中，我将会加入骨骼动画的知识，到时候见吧！ </p>
+<table width="100%" border="1">
+  <tr>
+    <td width="27%"><img src="logo 3.jpg" tppabs="http://www.owlei.com/DancingWind/images/logo%203.jpg" width="209" height="200" align="middle"></td>
+    <td width="73%">版权与使用声明:<br>
+      我是个对学习和生活充满激情的普通男孩,在网络上我以DancingWind为昵称，我的联系方式是zhouwei02@mails.tsinghua.edu.cn，如果你有任何问题，都可以联系我。
+      <p>引子<br>
+        网络是一个共享的资源，但我在自己的学习生涯中浪费大量的时间去搜索可用的资料，在现实生活中花费了大量的金钱和时间在书店中寻找资料，于是我给自己起了个昵称DancingWind，其意义是想风一样从各个知识的站点中吸取成长的养料。在飘荡了多年之后，我决定把自己收集的资料整理为一个统一的资源库。</p>
+      <p>版权声明<br>
+        所有DancingWind发表的内容，大多都来自共享的资源，所以我没有资格把它们据为己有，或声称自己为这些资源作出了一点贡献。故任何人都可以复制，修改，重新发表，甚至以自己的名义发表，我都不会追究，但你在做以上事情的时候必须保证内容的完整性，给后来的人一个完整的教程。最后，任何人不能以这些资料的任何部分，谋取任何形式的报酬。</p>
+      <p>发展计划<br>
+        在国外，很多资料都是很多人花费几年的时间慢慢积累起来的。如果任何人有兴趣与别人共享你的知识，我很欢迎你与我联系，但你必须同意我上面的声明。</p>
+            <p>感谢<br>
+              感谢我的母亲一直以来对我的支持和在生活上的照顾。<br>
+              感谢我深爱的女友田芹，一直以来默默的在精神上和生活中对我的支持，她甚至把买衣服的钱都用来给我买书了，她真的是我见过的最好的女孩，希望我能带给她幸福。</p>
+            <p>资源下载: <br>
+              文档 <a href="javascript:if(confirm('http://www.owlei.com/DancingWind/Res/mht/NeHe%20OpenGL%20Chinese%20Course%2031.mht  \n\nThis file was not retrieved by Teleport Pro, because the server reports that this file cannot be found.  \n\nDo you want to open it from the server?'))window.location='http://www.owlei.com/DancingWind/Res/mht/NeHe%20OpenGL%20Chinese%20Course%2031.mht'" tppabs="http://www.owlei.com/DancingWind/Res/mht/NeHe%20OpenGL%20Chinese%20Course%2031.mht">网页格式</a> 
+              <a href="javascript:if(confirm('http://www.owlei.com/DancingWind/Res/pdf/OpenGL_Nehe_Course_Tutorial_31.pdf  \n\nThis file was not retrieved by Teleport Pro, because the server reports that this file cannot be found.  \n\nDo you want to open it from the server?'))window.location='http://www.owlei.com/DancingWind/Res/pdf/OpenGL_Nehe_Course_Tutorial_31.pdf'" tppabs="http://www.owlei.com/DancingWind/Res/pdf/OpenGL_Nehe_Course_Tutorial_31.pdf">PDF格式</a><br>
+              源码 <a href="javascript:if(confirm('http://www.owlei.com/DancingWind/Res/Src/31_LoadMilkshapeFile.rar  \n\nThis file was not retrieved by Teleport Pro, because the server reports that this file cannot be found.  \n\nDo you want to open it from the server?'))window.location='http://www.owlei.com/DancingWind/Res/Src/31_LoadMilkshapeFile.rar'" tppabs="http://www.owlei.com/DancingWind/Res/Src/31_LoadMilkshapeFile.rar">RAR格式</a></p></td>
+  </tr>
+</table><table border="0" width="100%">
+        <td width="50%" align="left"><b><font size="-1"><a href="Tutorial_30.htm" tppabs="http://www.owlei.com/DancingWind/Course/Tutorial_30.htm">< 
+          第30课 </a></font></b></td>
+        <td width="50%" align="right"><b><font size="-1"><a href="Tutorial_32.htm" tppabs="http://www.owlei.com/DancingWind/Course/Tutorial_32.htm">第32课 
+          ></a></font></b></td>
+      </table>
+      </font></td>
+    <td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table>
+
+</body>
+</html>

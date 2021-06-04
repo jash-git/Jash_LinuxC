@@ -1,0 +1,51 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN">
+<html>
+<head>
+<title>How I built DBD::Oracle under HPUX</title>
+<link rel="stylesheet" type="text/css" href="standard.css" tppabs="http://www.yabasic.de/standard.css">
+<meta name="author" content="Marc-Oliver Ihm">
+<meta name="keywords" content="DBD::Oracle perl hpux 11.0 compile">
+<meta name="generator" content="Namo WebEditor v3.0">
+
+<script language="JavaScript"><!--
+if (top == self) window.location.href='default.htm'/*tpa=http://www.yabasic.de/default.htm*/;
+//--></script>
+
+</head>
+
+<body bgcolor="white" text="black" link="blue" vlink="purple" alink="red">
+
+<h2>How I built DBD::Oracle under HPUX ...</h2>
+<p>Just (march 17, 2000) managed to build DBD::Oracle under HPUX 11.0. If you 
+are trying to do the same and have found that it's not a piece of cake, you 
+may read on.</p>
+<p>Here is my configuration: 
+<ul type="square">
+    <li>Oracle 8.1.6 
+    <li>HP's commercial C-Compiler. Not gcc and not the bundled one 
+    <li>HPUX 11.0, 32 Bit 
+    <li>Latest version of perl, DBI and DBD 
+</ul>
+<h3>Rebuilding perl</h3>
+<p>Yes, I had to rebuild my perl (a guy from HP support gave me that tip): 
+<ul type="square">
+    <li>Added the linker switch &quot;+s&quot;, to make the dynamic loader search 
+    through the directories in $SHLIB_PATH. Maybe this is not necessary, but 
+    it helps when you use the same perl executable on different machines with 
+    different directory structures. In this case you just have to make SHLIB_PATH 
+    point into $ORACL_HOME/lib and the dynamic loader will be able to find the 
+    libraries. 
+    <li>Linked with the libraries &quot;-lcl -lpthread&quot;. I first tried 
+    without those libraries, but then I got lots of errors during tests of DBD::Oracle 
+    from the hpux dynamic loader dld.sl. After linking you may check your perl 
+    executable with chatr: &quot;chatr ./perl&quot; the libraries libcl.sl and 
+    libpthread.sl should appear in the output. 
+</ul>
+<p>Afterwards I build DBI without any special settings. DBD::Oracle requires 
+again some modifications: 
+<ul type="square">
+    <li>Added the libraries &quot;-lclntsh -lqsmashr&quot; 
+</ul>
+</body>
+
+</html>

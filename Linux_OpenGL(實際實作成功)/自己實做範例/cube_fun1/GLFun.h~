@@ -1,0 +1,591 @@
+#ifndef GLFun_H
+#define GLFun_H
+#include <GL/gl.h>
+#include <GL/glu.h>
+#include <GL/glut.h>
+// Define a constant for the value of PI
+#define GL_PI 3.1415f
+
+// Rotation amounts
+static GLfloat xRot = 0.0f;
+static GLfloat yRot = 0.0f;
+
+static GLfloat specular[]={0.7,0.7,0.7,1.0};		//燈光性質
+static GLfloat specref[]={0.5,0.5,0.2,1.0};		//反射性質
+
+// Flags for effects
+#define MODE_SOLID 0
+#define MODE_LINE  1
+#define MODE_POINT 2
+
+int iMode = MODE_SOLID;
+//GLboolean bEdgeFlag = TRUE;
+
+//*************************************機構零件尺寸********************************************************//
+	static GLfloat Base_W1 = 1000.0f;		//基盤
+	static GLfloat Base_L1 = 1000.0f;
+	static GLfloat Base_H1 = 50.0f;
+
+	static GLfloat Base_W2 = 500.0f;		//旋轉軸1
+	static GLfloat Base_L2 = 200.0f;
+	static GLfloat Base_H2 = 32.0f;
+
+	static GLfloat Base_W3 = 400.0f;		//工作圓上的旋轉支撐(長方體)
+	static GLfloat Base_L3 = 200.0f;
+	static GLfloat Base_H3 = 500.0f;
+	
+	static GLfloat Base_W3_W3 = 300.0f;		//工作圓上內的旋轉支撐(小長方體)
+	static GLfloat Base_L3_L3 = 150.0f;
+	static GLfloat Base_H3_H3 = 400.0f;
+	
+	static GLfloat Base_UP4 = 200.0f;		//工作圓上的旋轉支撐(梯形)
+	static GLfloat Base_Donw4 = 500.0f;		//with --> Base_H3
+	static GLfloat Base_H4 = 200.0f;		//with --> Base_L3
+	static GLfloat Base_Dep4 = 400.0f;		//with --> Base_W3
+
+	static GLfloat Base_UP4_UP4 = 200.0f;		//工作圓上的旋轉支撐(小梯形)
+	static GLfloat Base_Donw4_Down4 = 500.0f;		//with --> Base_H3
+	static GLfloat Base_H4_H4 = 200.0f;		//with --> Base_L3
+	static GLfloat Base_Dep4_Dep4 = 300.0f;		//400.0f;		//with --> Base_W3
+
+	static GLfloat Base_W4 = 70.0f;			//旋轉軸2-1
+	static GLfloat Base_L4 = 1000.0f;
+	static GLfloat Base_A4 = 32.0f;
+
+	static GLfloat Base_W4_W4 = 125.0f;		//旋轉軸2-2
+	static GLfloat Base_L4_L4 = 700.0f;
+	static GLfloat Base_A4_A4 = 32.0f;
+
+	
+	static GLfloat Base_W5 = 290.0f;		//旋轉2-3(長方體工作柱)
+	static GLfloat Base_L5 = 500.0f;
+	static GLfloat Base_H5 = 125.0f;
+
+	static GLfloat Base_W5_W5 = 100.0f;		//旋轉2-3(長方體工作柱)
+	static GLfloat Base_L5_L5 = 290.0f;
+	static GLfloat Base_H5_H5 = 32.0f;
+
+
+	static GLfloat Base_W6 = 290.0f;		//旋轉2-3(長方體工作柱+上方柱)
+	static GLfloat Base_L6 = 500.0f;
+	static GLfloat Base_H6 = 125.0f;
+
+	static GLfloat Base_W7 = 80.0f;			//旋轉3(馬達)
+	static GLfloat Base_L7 = 350.0f;
+	static GLfloat Base_H7 = 32.0f;
+
+	static GLfloat Base_W8 = 300.0f;			//旋轉3(馬達後的平座)
+	static GLfloat Base_L8 = 350.0f;
+	static GLfloat Base_H8 = 160.0f;//(2*Base_W7);//125.0f;
+
+	static GLfloat Base_W9 = 130.0f;			//旋轉4的固定架
+	static GLfloat Base_L9 = 300.0f;
+	static GLfloat Base_H9 = 32.0f;
+
+	static GLfloat Base_W10 = 100.0f;			//旋轉4
+	static GLfloat Base_L10 = 700.0f;
+	static GLfloat Base_H10 = 32.0f;
+
+	static GLfloat Base_W11 = 170.0f;			//旋轉4的前端
+	static GLfloat Base_L11 = 50.0f;
+	static GLfloat Base_H11 = 32.0f;
+
+	static GLfloat Base_W12 = 130.0f;			//旋轉4前端的基座
+	static GLfloat Base_L12 = 100.0f;
+	static GLfloat Base_H12 = 32.0f;
+
+	static GLfloat Base_W13 = 150.0f;			//旋轉4前端的基座(正方形)
+	static GLfloat Base_L13 = 150.0f;
+	static GLfloat Base_H13 = 150.0f;
+
+	static GLfloat Base_W14 = 100;			//旋轉4前端的基座
+	static GLfloat Base_L14 = 150.0f;
+	static GLfloat Base_H14 = 32.0f;
+
+	static GLfloat Base_W15 = 70.0f;			//旋轉45中心軸
+	static GLfloat Base_L15 = 200.0f;
+	static GLfloat Base_H15 = 32.0f;
+
+	static GLfloat Base_W16 = 120.0f;			//旋轉5(左.右馬達)
+	static GLfloat Base_L16 = 70.0f;
+	static GLfloat Base_H16 = 32.0f;
+
+	static GLfloat Base_W17 = 200.0f;			//旋轉5左右馬達(側邊)支撐版
+	static GLfloat Base_L17 = 150.0f;
+	static GLfloat Base_H17 = 30.0f;
+
+	static GLfloat Base_W18 = 390.0f;//(Base_L16)+(Base_L15)+(Base_H17);//200.0f;			//旋轉5左右馬達(前方)支撐版
+	static GLfloat Base_L18 = 150.0f;
+	static GLfloat Base_H18 = 30.0f;
+
+	static GLfloat Base_W19 = 120.0f;//200.0f;			//旋轉6基盤
+	static GLfloat Base_L19 = 70.0f;
+	static GLfloat Base_H19 = 30.0f;
+
+	static GLfloat Base_W20 = 120.0f;//200.0f;			//旋轉6基盤
+	static GLfloat Base_L20 = 70.0f;
+	static GLfloat Base_H20 = 30.0f;
+
+
+
+//********************************************************************************************//
+
+///////////////////////////////////////////////////////////////////////////////
+// Reset flags as appropriate in response to menu selections
+void ProcessMenu(int value)
+	{
+	switch(value)
+		{
+		case 1:
+			iMode = MODE_SOLID;
+			break;
+
+		case 2:
+			iMode = MODE_LINE;
+			break;
+
+		case 3:
+			iMode = MODE_POINT;
+			break;
+
+		/*case 4:
+			bEdgeFlag = TRUE;
+			break;*/
+
+		/*case 5:
+		default:
+			bEdgeFlag = FALSE;*/
+			break;
+		}
+
+	glutPostRedisplay();
+	}
+//**************************************************
+void ReduceToUnit(float vector[3])
+{
+	float length;
+	
+	// Calculate the length of the vector		
+	length = (float)sqrt((vector[0]*vector[0]) + 
+						(vector[1]*vector[1]) +
+						(vector[2]*vector[2]));
+
+	// Keep the program from blowing up by providing an exceptable
+	// value for vectors that may calculated too close to zero.
+	if(length == 0.0f)
+		length = 1.0f;
+
+	// Dividing each element by the length will result in a
+	// unit normal vector.
+	vector[0] /= length;
+	vector[1] /= length;
+	vector[2] /= length;
+}
+void calcNormal(float v[3][3], float out[3])
+{
+	float v1[3],v2[3];
+	static const int x = 0;
+	static const int y = 1;
+	static const int z = 2;
+
+	// Calculate two vectors from the three points
+	v1[x] = v[0][x] - v[1][x];
+	v1[y] = v[0][y] - v[1][y];
+	v1[z] = v[0][z] - v[1][z];
+
+	v2[x] = v[1][x] - v[2][x];
+	v2[y] = v[1][y] - v[2][y];
+	v2[z] = v[1][z] - v[2][z];
+
+	// Take the cross product of the two vectors to get
+	// the normal vector which will be stored in out
+	out[x] = v1[y]*v2[z] - v1[z]*v2[y];
+	out[y] = v1[z]*v2[x] - v1[x]*v2[z];
+	out[z] = v1[x]*v2[y] - v1[y]*v2[x];
+
+	// Normalize the vector (shorten length to one)
+	ReduceToUnit(out);
+}
+
+void drawRetc(float W,float L,float H)
+{
+
+//	if(Line_Side==false)
+//	{
+	float normal[3];
+	glBegin(GL_QUADS);
+	{
+	float v[4][3] =	{{ W/2, L/2, H/2},
+					{ -W/2, L/2, H/2},
+					{ -W/2,-L/2, H/2},
+					{  W/2,-L/2, H/2}};
+
+	// Calculate the normal for the plane
+	calcNormal(v,normal);
+	glNormal3fv(normal);
+	glVertex3fv(v[0]);
+	glVertex3fv(v[1]);
+	glVertex3fv(v[2]);
+	glVertex3fv(v[3]);
+	}
+	{
+	float v[4][3] = {{ W/2, L/2, H/2},
+					{  W/2,-L/2, H/2},
+					{  W/2,-L/2,-H/2},
+					{  W/2, L/2,-H/2}};   
+	calcNormal(v,normal);
+	glNormal3fv(normal);
+	glVertex3fv(v[0]);
+	glVertex3fv(v[1]);
+	glVertex3fv(v[2]);
+	glVertex3fv(v[3]);
+	}
+	{
+	float v[4][3] = {{ W/2, L/2, H/2},
+					{  W/2, L/2,-H/2},
+					{ -W/2, L/2,-H/2},
+					{ -W/2, L/2, H/2}};   
+	calcNormal(v,normal);
+	glNormal3fv(normal);
+	glVertex3fv(v[0]);
+	glVertex3fv(v[1]);
+	glVertex3fv(v[2]);
+	glVertex3fv(v[3]);
+	}
+	{
+	float v[4][3] = {{-W/2, L/2, H/2},
+					{ -W/2, L/2,-H/2},
+					{ -W/2,-L/2,-H/2},
+					{ -W/2,-L/2, H/2}};   
+	calcNormal(v,normal);
+	glNormal3fv(normal);
+	glVertex3fv(v[0]);
+	glVertex3fv(v[1]);
+	glVertex3fv(v[2]);
+	glVertex3fv(v[3]);
+	}
+	{
+	float v[4][3] = {{-W/2,-L/2, H/2},
+					{ -W/2,-L/2,-H/2},
+					{  W/2,-L/2,-H/2},
+					{  W/2,-L/2, H/2}};   
+	calcNormal(v,normal);
+	glNormal3fv(normal);
+	glVertex3fv(v[0]);
+	glVertex3fv(v[1]);
+	glVertex3fv(v[2]);
+	glVertex3fv(v[3]);
+	}
+	{
+	float v[4][3] = {{ W/2, L/2,-H/2},
+					{  W/2,-L/2,-H/2},
+					{ -W/2,-L/2,-H/2},
+					{ -W/2, L/2,-H/2}};   
+	calcNormal(v,normal);
+	glNormal3fv(normal);
+	glVertex3fv(v[0]);
+	glVertex3fv(v[1]);
+	glVertex3fv(v[2]);
+	glVertex3fv(v[3]);
+	}
+	glEnd();
+
+}
+
+
+void drawCir(float radius, float L, int segment)
+{
+	float angle[2];
+	float normal[3];
+
+//	if(Line_Side==false)
+//	{
+	glBegin(GL_QUADS);
+	{
+		for(angle[0]=0.0f, angle[1]=0.0f; angle[0]< (2.0f*GL_PI); angle[0]+=((2.0f*GL_PI)/segment))
+		{
+			float r[4][3] = {{radius*(float)cos(angle[1]), radius*(float)sin(angle[1]), L/2}, 
+							{ radius*(float)cos(angle[1]), radius*(float)sin(angle[1]),-L/2},  
+							{ radius*(float)cos(angle[0]), radius*(float)sin(angle[0]),-L/2},
+							{ radius*(float)cos(angle[0]), radius*(float)sin(angle[0]), L/2}};
+			calcNormal(r,normal);
+			glNormal3fv(normal);
+			glVertex3fv(r[0]);
+			glVertex3fv(r[1]);
+			glVertex3fv(r[2]);
+			glVertex3fv(r[3]);
+			angle[1]=angle[0];
+		}
+	}
+	glEnd();
+
+	glBegin(GL_TRIANGLE_FAN);
+	{
+		glVertex3f(0.0f, 0.0f, L/2);
+		for (angle[1]=0.0f, angle[0]=0.0f; angle[1]<=(2.0f*GL_PI); angle[0]+=((2.0f*GL_PI)/segment))
+		{
+			float x=radius*(float)cos(angle[0]);
+			float y=radius*(float)sin(angle[0]);
+
+			float v[3][3] = {{0.0f                , 0.0f                , L/2},
+							{ radius*(float)cos(angle[1]), radius*(float)sin(angle[1]), L/2},   
+							{ radius*(float)cos(angle[0]), radius*(float)sin(angle[0]), L/2}};
+			calcNormal(v,normal);
+			glNormal3fv(normal);
+			glVertex3f(x, y, L/2);
+			angle[1]=angle[0];
+		}
+	}
+	glEnd();
+
+	glBegin(GL_TRIANGLE_FAN);
+	{
+		glVertex3f(0.0f, 0.0f,-L/2);
+		for (angle[1]=0.0f, angle[0]=0.0f; angle[1]<= (2.0f*GL_PI); angle[0]+=((2.0f*GL_PI)/segment))
+		{
+			float x=radius*(float)cos(angle[0]);
+			float y=radius*(float)sin(angle[0]);		
+			float v[3][3] = {{0.0f                , 0.0f                ,-L/2},
+							{ radius*(float)cos(angle[0]), radius*(float)sin(angle[0]),-L/2},   
+							{ radius*(float)cos(angle[1]), radius*(float)sin(angle[1]),-L/2}};
+			calcNormal(v,normal);
+			glNormal3fv(normal);
+			glVertex3f(x, y,-L/2);
+			angle[1]=angle[0];
+		}
+	}
+	glEnd();
+
+}
+void drawtriangle(float W,float L,float H)
+{
+//	if(Line_Side==false)
+//	{
+	static float normal[3];
+	glBegin(GL_QUADS);
+	{
+	float v[4][3] =	{{ W/2, L/2, -H/2},
+					{ -W/2, L/2, H/2},
+					{ -W/2,-L/2, H/2},
+					{  W/2,-L/2, -H/2}};
+
+	// Calculate the normal for the plane
+	calcNormal(v,normal);
+	glNormal3fv(normal);
+	glVertex3fv(v[0]);
+	glVertex3fv(v[1]);
+	glVertex3fv(v[2]);
+	glVertex3fv(v[3]);
+	}
+	{
+	float v[3][3] = {{ W/2, L/2, -H/2},
+					{  -W/2,L/2, -H/2},
+					{  -W/2,L/2,H/2}};   
+	calcNormal(v,normal);
+	glNormal3fv(normal);
+	glVertex3fv(v[0]);
+	glVertex3fv(v[1]);
+	glVertex3fv(v[2]);
+	glVertex3fv(v[3]);
+	}
+	{
+	float v[4][3] = {{ -W/2, L/2, H/2},
+					{  -W/2, L/2,-H/2},
+					{ -W/2, -L/2,-H/2},
+					{ -W/2, -L/2, H/2}};   
+	calcNormal(v,normal);
+	glNormal3fv(normal);
+	glVertex3fv(v[0]);
+	glVertex3fv(v[1]);
+	glVertex3fv(v[2]);
+	glVertex3fv(v[3]);
+	}
+	{
+	float v[3][3] = {{-W/2, -L/2, H/2},
+					{ -W/2, -L/2,-H/2},
+					{ W/2,-L/2,-H/2}};   
+	calcNormal(v,normal);
+	glNormal3fv(normal);
+	glVertex3fv(v[0]);
+	glVertex3fv(v[1]);
+	glVertex3fv(v[2]);
+	glVertex3fv(v[3]);
+	}
+	{
+		float v[4][3] = {{ W/2, L/2, -H/2},
+					{  W/2, -L/2,-H/2},
+					{ -W/2, -L/2,-H/2},
+					{ -W/2, L/2, -H/2}};   
+	calcNormal(v,normal);
+	glNormal3fv(normal);
+	glVertex3fv(v[0]);
+	glVertex3fv(v[1]);
+	glVertex3fv(v[2]);
+	glVertex3fv(v[3]);
+	}
+	
+	glEnd();
+
+
+}
+
+void drawtriangle_1(float W,float L,float H)
+{
+//	if(Line_Side==false)
+//	{
+	static float normal[3];
+	glBegin(GL_QUADS);
+	{
+	float v[4][3] =	{{ W/2, -L/2, H/2},
+					{ W/2, L/2, H/2},
+					{ -W/2,L/2, -H/2},
+					{  -W/2,-L/2, -H/2}};
+
+	// Calculate the normal for the plane
+	calcNormal(v,normal);
+	glNormal3fv(normal);
+	glVertex3fv(v[0]);
+	glVertex3fv(v[1]);
+	glVertex3fv(v[2]);
+	glVertex3fv(v[3]);
+	}
+	{
+	float v[3][3] = {{ W/2, L/2, H/2},
+					{  W/2,L/2, -H/2},
+					{  -W/2,L/2,-H/2}};   
+	calcNormal(v,normal);
+	glNormal3fv(normal);
+	glVertex3fv(v[0]);
+	glVertex3fv(v[1]);
+	glVertex3fv(v[2]);
+	glVertex3fv(v[3]);
+	}
+	{
+	float v[4][3] = {{ W/2, L/2, H/2},
+					{  W/2, -L/2,H/2},
+					{ W/2, -L/2,-H/2},
+					{ W/2, L/2, -H/2}};   
+	calcNormal(v,normal);
+	glNormal3fv(normal);
+	glVertex3fv(v[0]);
+	glVertex3fv(v[1]);
+	glVertex3fv(v[2]);
+	glVertex3fv(v[3]);
+	}
+	{
+	float v[3][3] = {{W/2, -L/2, H/2},
+					{ -W/2,-L/2,-H/2},
+					{ W/2, -L/2,-H/2}};  
+	calcNormal(v,normal);
+	glNormal3fv(normal);
+	glVertex3fv(v[0]);
+	glVertex3fv(v[1]);
+	glVertex3fv(v[2]);
+	glVertex3fv(v[3]);
+	}
+	{
+	float v[4][3] = {{ -W/2, L/2, -H/2},
+					{  W/2, L/2,-H/2},
+					{ W/2, -L/2,-H/2},
+					{ -W/2, -L/2, -H/2}};   
+	calcNormal(v,normal);
+	glNormal3fv(normal);
+	glVertex3fv(v[0]);
+	glVertex3fv(v[1]);
+	glVertex3fv(v[2]);
+	glVertex3fv(v[3]);
+	}
+	
+	glEnd();
+
+
+}
+
+void drawladder(float U,float L,float H,float W)
+
+{
+//	if(Line_Side==false)
+//	{
+	static float normal[3];
+	glBegin(GL_QUADS);
+	{
+	float v[4][3] =	{{ U/2, W/2, H/2},
+					{ -U/2, W/2, H/2},
+					{ -U/2,-W/2, H/2},
+					{  U/2,-W/2, H/2}};
+	// Calculate the normal for the plane
+	calcNormal(v,normal);
+	glNormal3fv(normal);
+	glVertex3fv(v[0]);
+	glVertex3fv(v[1]);
+	glVertex3fv(v[2]);
+	glVertex3fv(v[3]);
+	}
+	{
+	float v[4][3] = {{ U/2, -W/2, H/2},
+					{ -U/2,-W/2, H/2},
+					{ -L/2,-W/2,-H/2},
+					{  L/2,-W/2,-H/2}};   
+	calcNormal(v,normal);
+	glNormal3fv(normal);
+	glVertex3fv(v[0]);
+	glVertex3fv(v[1]);
+	glVertex3fv(v[2]);
+	glVertex3fv(v[3]);
+	}
+	{
+	float v[4][3] = {{ U/2, W/2, H/2},
+					{  U/2, -W/2,H/2},
+					{  L/2, -W/2,-H/2},
+					{  L/2, W/2, -H/2}};   
+	calcNormal(v,normal);
+	glNormal3fv(normal);
+	glVertex3fv(v[0]);
+	glVertex3fv(v[1]);
+	glVertex3fv(v[2]);
+	glVertex3fv(v[3]);
+	}
+	{
+	float v[4][3] = {{U/2, W/2, H/2},
+					{ -U/2, W/2,H/2},
+					{ -L/2, W/2,-H/2},
+					{  L/2, W/2,-H/2}};   
+	calcNormal(v,normal);
+	glNormal3fv(normal);
+	glVertex3fv(v[0]);
+	glVertex3fv(v[1]);
+	glVertex3fv(v[2]);
+	glVertex3fv(v[3]);
+	}
+	{
+	float v[4][3] = {{-U/2,W/2, H/2},
+					{ -U/2,-W/2,H/2},
+					{ -L/2,-W/2,-H/2},
+					{ -L/2,W/2,-H/2}};   
+	calcNormal(v,normal);
+	glNormal3fv(normal);
+	glVertex3fv(v[0]);
+	glVertex3fv(v[1]);
+	glVertex3fv(v[2]);
+	glVertex3fv(v[3]);
+	}
+	{
+	float v[4][3] = {{ L/2, W/2,-H/2},
+					{ -L/2, W/2,-H/2},
+					{ -L/2,-W/2,-H/2},
+					{  L/2,-W/2,-H/2}};   
+	calcNormal(v,normal);
+	glNormal3fv(normal);
+	glVertex3fv(v[0]);
+	glVertex3fv(v[1]);
+	glVertex3fv(v[2]);
+	glVertex3fv(v[3]);
+	}
+	glEnd();
+
+
+}
+
+
+//****************************************************
+#endif

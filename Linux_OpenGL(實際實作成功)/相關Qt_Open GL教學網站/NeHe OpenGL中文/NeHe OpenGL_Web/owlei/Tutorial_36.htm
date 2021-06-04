@@ -1,0 +1,486 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<!-- 这篇文章由Dancingwind翻译，作者的联系方式zhouwei02@mails.tsinghua.edu.cn -->
+<html>
+<head>
+<title>NeHe OpenGL教程第三十六课，DancingWind翻译</title>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<style type=text/css>
+A:link {COLOR: #ccaaff; TEXT-DECORATION: none}
+A:visited {COLOR: #ccaaff; TEXT-DECORATION: none}
+A:active {COLOR: #ccaaff; TEXT-DECORATION: none}
+A:hover {COLOR: #ffccaa; TEXT-DECORATION: none}
+</style>
+</head>
+
+<br><br>
+
+<body bgcolor=#000000 text=#ffffff><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td width=326 height=130><img src="logo.png" tppabs="http://www.owlei.com/DancingWind/Pic/logo.png" width=326 height=130></td>
+    <td valign=middle align=center width="75%"><font color=#ffccaa size=+3><b><i>第36课 
+      </i></b></font></td>
+  </tr></table>
+  <!-- 上边框-->
+<table border="0" cellPadding="0" cellSpacing="0" width="100%">
+<TBODY>
+  <tr>
+    <td><img height="28" src="tl.jpg" tppabs="http://www.owlei.com/DancingWind/Pic/tl.jpg" width="28"></td>
+    <td width="100%"><img height="28" src="tc.gif" tppabs="http://www.owlei.com/DancingWind/Pic/tc.gif" width="100%"></td>
+    <td><img height="28" src="tr.gif" tppabs="http://www.owlei.com/DancingWind/Pic/tr.gif" width="28"></td>
+  </tr>
+</TBODY>
+</table>
+
+<!-- 中部-->
+<table border="0" cellPadding="0" cellSpacing="0" width="100%">
+<TBODY>
+  <tr>
+  	<!-- 中部左边框-->
+    <td  background="l.gif" tppabs="http://www.owlei.com/DancingWind/Pic/l.gif"><img src="l.gif" tppabs="http://www.owlei.com/DancingWind/Pic/l.gif" width="28" height="28"></td>
+	<!-- 中部文字部分-->
+    <td vAlign="top" width="100%">
+	<table width="100%" border="0">
+          <tr>
+            <td width="32%"><img src="lesson36.jpg" tppabs="http://www.owlei.com/DancingWind/Pic/lesson36.jpg" width="240" height="180"></td>
+            <td width="68%"><p><FONT class=head>放射模糊和渲染到纹理:</FONT></p>
+              <p><font size="3">如何实现放射状的滤镜效果呢，看上去很难，其实很简单。把渲染得图像作为纹理提取出来，在利用OpenGL本身自带的纹理过滤，就能实现这种效果，不信，你试试。</FONT></p></td>
+          </tr>
+     </table>
+      </td>
+	<!-- 中部右边框-->
+    <td background="r.gif" tppabs="http://www.owlei.com/DancingWind/Pic/r.gif"><img src="r.gif" tppabs="http://www.owlei.com/DancingWind/Pic/r.gif" width="28" height="28"></td>
+  </tr>
+</TBODY>
+</table>
+
+<!-- 下边框-->
+<table border="0" cellPadding="0" cellSpacing="0" width="100%">
+<TBODY>
+  <tr>
+    <td><img height="28" src="bl.gif" tppabs="http://www.owlei.com/DancingWind/Pic/bl.gif" width="28"></td>
+    <td width="100%"><img height="28" src="bc.gif" tppabs="http://www.owlei.com/DancingWind/Pic/bc.gif" width="100%"></td>
+    <td><img height="28" src="br.gif" tppabs="http://www.owlei.com/DancingWind/Pic/br.gif" width="28"></td>
+  </tr>
+</TBODY>
+</table>
+  <table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>嗨，我是Dario Corno,也因SpinningKids的rIo而为大家所知。首先，我想要解释我为什么决定写这点指南。我自1989年以来就从事scener的工作。我想要你们去下载一些demo(示例程序，也就是演示——译者)以帮助你理解什么是Demo并且demo的效果是什么。
+      <p>Demos是被用来展示恰似风雅的技术一样无限并且时而严酷的译码。在今天的演示中你通常总可以发现一些真正迷人的效果。这不是一本迷人的效果指南，但结果将非常的酷！你能够从http://www.pouet.net和 
+        http://ftp.scene.org. 发现大量的演示收集。<br>
+        既然绪论超出了我们探讨的范围，我们可以继续我们的指南了。 <br>
+        我将解释如何做一个看起来象径向模糊的eye candy 效果。有时它以测定体积的光线被提到。不要相信，它仅仅是一个冒牌的辐射状模糊;D<br>
+        辐射状模糊效果通常借助于模糊在一个方向上相对于模糊物的中心原始图象的每一个象素来做的。<br>
+        借助于现今的硬件用色彩缓冲器来手工作模糊处理是极其困难的（至少在某种程度上它被所有的gfx卡所支持），因此我们需要一些窍门来达到同样的效果。<br>
+        作为一个奖励当学习径向模糊效果时，你同样将学到如何轻松地提供材料的纹理。<br>
+        我决定在这篇指南中使用弹簧作为外形因为它是一个酷的外形，另外还因为我对立方体感到厌烦：}<br>
+        多留意这篇指南关于如何创建那个效果的指导方针是重要的。我不研究解释那些代码的详情。你应当用心记下它们中的大部分：}<br>
+        下面是变量的定义和用到的头文件。<br>
+      </p></td><td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table>
+<font color=#aaffaa size=3> 
+<pre>
+#include &lt;math.h&gt;								<font color=#ffffaa>// 数学库</font>
+
+float		angle;							<font color=#ffffaa>// 用来旋转那个螺旋</font>
+float		vertexes[3][3];						<font color=#ffffaa>// 为3个设置的顶点保存浮点信息</font>
+float		normal[3];						<font color=#ffffaa>// 存放法线数据的数组</font>
+GLuint		BlurTexture;						<font color=#ffffaa>// 存放纹理编号的一个无符号整型</font>
+</pre>
+</font> 
+<table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>函数EmptyTexture()创建了一个空的纹理并返回纹理的编号。我们刚分配了一些自由空间（准确的是128*128*4无符号整数）。<br>
+      128*128是纹理的大小（128象素宽和高），4意味着为每一个象素我们想用4byte来存储红，绿，蓝和ALPHA组件。<br></td><td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table>
+<font color=#aaffaa size=3> 
+<pre>
+GLuint EmptyTexture()							<font color=#ffffaa>// 创建一个空的纹理</font>
+{
+	GLuint txtnumber;						<font color=#ffffaa>	// 纹理ID</font>
+	unsigned int* data;						<font color=#ffffaa>// 存储数据</font>
+
+	<font color=#ffffaa>// 为纹理数据（128*128*4）建立存储区</font>
+	data = (unsigned int*)new GLuint[((128 * 128)* 4 * sizeof(unsigned int))];
+</pre>
+</font> 
+<table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>在分配完空间之后我们用ZeroMemory函数清0，返回指针（数据）和被清0的存贮区的大小。<br>
+      另一半需注意的重要的事情是我们设置GL_LINEAR的放大率和缩放率的方法。因为我们将被我们的纹理要求投入全部的精力并且如果被滥用，GL_NEAREST会看起来非常糟糕。<br></td><td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table>
+<font color=#aaffaa size=3> 
+<pre>
+	ZeroMemory(data,((128 * 128)* 4 * sizeof(unsigned int)));	<font color=#ffffaa>// 清除存储区</font>
+
+	glGenTextures(1, &txtnumber);				<font color=#ffffaa>// 创建一个纹理</font>
+	glBindTexture(GL_TEXTURE_2D, txtnumber);			<font color=#ffffaa>// 构造纹理</font>
+	glTexImage2D(GL_TEXTURE_2D, 0, 4, 128, 128, 0,
+		GL_RGBA, GL_UNSIGNED_BYTE, data);			<font color=#ffffaa>// 用数据中的信息构造纹理</font>
+	glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_LINEAR);
+
+	delete [] data;						<font color=#ffffaa>// 释放数据</font>
+
+	return txtnumber;						<font color=#ffffaa>// 返回纹理ID</font>
+}
+</pre>
+</font> 
+<table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>这个函数简单规格化法线向量的长度。向量被当作有3个浮点类型的元素的数组来表示，第一个元素表示X轴，第二个表示Y，第三个表示Z。一个规格化的向量[Nv]被Vn表达为Vn=[Vox/|Vo|，Voy/|Vo|，Voz/|Vo|]，这里Vo是最初的向量，|Vo|是该向量的系数（或长度），X，Y，Z它的组件。之后由向量的长度区分每一个法线向量组件。<br></td><td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table>
+<font color=#aaffaa size=3> 
+<pre>
+void ReduceToUnit(float vector[3])					<font color=#ffffaa>// 归一化一个法向量</font>
+{								<font color=#ffffaa>// 一定长度的单位法线向量</font>
+	float length;						<font color=#ffffaa>// 保存长度</font>
+	<font color=#ffffaa>// 计算向量</font>
+	length = (float)sqrt((vector[0]*vector[0]) + (vector[1]*vector[1]) + (vector[2]*vector[2]));
+
+	if(length == 0.0f)						<font color=#ffffaa>// 避免除0错误</font>
+		length = 1.0f;					<font color=#ffffaa>// 如果为0设置为1</font>
+
+	vector[0] /= length;					<font color=#ffffaa>// 归一化向量</font>
+	vector[1] /= length;						
+	vector[2] /= length;						
+}
+</pre>
+</font> 
+<table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>下面各项计算所给的3个顶点向量（总在3个浮点数组中）。我们有两个参数：v[3][3]和out[3]。当然第一个参数是一个m=3，n=3每一行代表三角形一个顶点的浮点矩阵。Out是我们要放置作为结果的法线向量的位置。<br>
+      相当简单的数学。我们将使用著名的交叉乘积运算。理论上说交叉乘积是两个向量——它返回另一个直交向量到两个原始向量——之间的操作。法线向量是一个垂直物体表面的直交向量，是与该表面相对的（通常一个规格化的长度）。设想两个向量是在一个三角形的一侧的上方，那么这个三角形两边的直交向量（由交叉乘积计算）就是那个三角形的法线。<br>
+      解释比实行还难。<br>
+      我们将着手从现存的顶点0到顶点1，从顶点1到顶点2找到那个向量。这是基本上通过减法——下一个顶点的每个组件减一个顶点的每个组件——作好了的。现在我们已经为我们的三角形的边找到了那个向量。通过交叉相乘我们为那个三角形找到了法线向量。<br>
+      看代码。<br>
+      V[0][ ]是第一个顶点，v[1][ ]是第二个顶点，v[2][ ]是第三个顶点。每个顶点包括：v[ ][0]是顶点的x坐标，v[ ][1]是顶点的y坐标，v[ 
+      ][2]是顶点的z坐标。<br>
+      通过简单的减法从一个顶点的每个坐标到另一个顶点每个坐标我们得到了那个VECTOR。v1[0] = v[0][0] - v[1][0]，这计算现存的从一个顶点到另一个顶点的向量的X组件，v1[1] 
+      = v[0][1] - v[1][1]将计算Y组件，v1[2] = v[0][2] - v[1][2] 计算Z组件等等。<br>
+      现在我们有了两个向量，所以我们计算它们的交叉乘积得到那个三角形的法线。 <p>交叉相乘的规则是：<br>
+        out[x] = v1[y] * v2[z] - v1[z] * v2[y] </p>
+      <p>out[y] = v1[z] * v2[x] - v1[x] * v2[z] </p>
+      <p>out[z] = v1[x] * v2[y] - v1[y] * v2[x] </p>
+      <p><br>
+        我们最终得到了这个三角形的法线in out[ ]。<br>
+      </p>
+      </td><td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table>
+<font color=#aaffaa size=3> 
+<pre>
+void calcNormal(float v[3][3], float out[3])				<font color=#ffffaa>// 用三点计算一个立方体法线</font>
+{
+	float v1[3],v2[3];						<font color=#ffffaa>// 向量 1 (x,y,z) 和向量 2 (x,y,z)</font>
+	static const int x = 0;					<font color=#ffffaa>// 定义 X坐标</font>
+	static const int y = 1;					<font color=#ffffaa>// 定义 Y 坐标</font>
+	static const int z = 2;					<font color=#ffffaa>// 定义 Z 坐标</font>
+
+<font color=#ffffaa>// 用减法在两点之间得到向量<br>// 从一点到另一点的X，Y，Z坐标<br>// 计算点1到点0的向量</font>
+	v1[x] = v[0][x] - v[1][x];					
+	v1[y] = v[0][y] - v[1][y];					
+	v1[z] = v[0][z] - v[1][z];					
+	<font color=#ffffaa>// 计算点2到点1的向量</font>
+	v2[x] = v[1][x] - v[2][x];					
+	v2[y] = v[1][y] - v[2][y];					
+	v2[z] = v[1][z] - v[2][z];					
+	<font color=#ffffaa>// 计算交叉乘积为我们提供一个表面的法线</font>
+	out[x] = v1[y]*v2[z] - v1[z]*v2[y];				
+	out[y] = v1[z]*v2[x] - v1[x]*v2[z];				
+	out[z] = v1[x]*v2[y] - v1[y]*v2[x];				
+
+	ReduceToUnit(out);						<font color=#ffffaa>//  规格化向量</font>
+}
+</pre>
+</font> 
+<table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>下面的例子正好用gluLookAt设立了一个观察点。我们设置一个观察点放置在0，5，50位置——正照看0，0，0并且所属的向上的向量正仰望（0，1，0）！：D</td>
+    <td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table>
+<font color=#aaffaa size=3> 
+<pre>
+void ProcessHelix()							<font color=#ffffaa>// 绘制一个螺旋</font>
+{
+	GLfloat x;							<font color=#ffffaa>// 螺旋x坐标</font>
+	GLfloat y;							<font color=#ffffaa>// 螺旋y坐标</font>
+	GLfloat z;							<font color=#ffffaa>// 螺旋z坐标</font>
+	GLfloat phi;							<font color=#ffffaa>// 角</font>
+	GLfloat theta;							<font color=#ffffaa>// 角</font>
+	GLfloat v,u;							<font color=#ffffaa>// 角</font>
+	GLfloat r;							<font color=#ffffaa>// 螺旋半径</font>
+	int twists = 5;							<font color=#ffffaa>// 5个螺旋</font>
+
+	GLfloat glfMaterialColor[]={0.4f,0.2f,0.8f,1.0f};		<font color=#ffffaa>	// 设置材料色彩</font>
+	GLfloat specular[]={1.0f,1.0f,1.0f,1.0f};				<font color=#ffffaa>// 设置镜象灯光</font>
+
+	glLoadIdentity();						<font color=#ffffaa>	// 重置Modelview矩阵</font>
+	gluLookAt(0, 5, 50, 0, 0, 0, 0, 1, 0);				<font color=#ffffaa>// 场景（0，0，0）的视点中心 (0,5,50)，Y轴向上</font>
+									
+	glPushMatrix();							<font color=#ffffaa>// 保存Modelview矩阵</font>
+
+	glTranslatef(0,0,-50);						<font color=#ffffaa>// 移入屏幕50个单位</font>
+	glRotatef(angle/2.0f,1,0,0);					<font color=#ffffaa>// 在X轴上以1/2角度旋转</font>
+	glRotatef(angle/3.0f,0,1,0);					<font color=#ffffaa>// 在Y轴上以1/3角度旋转</font>
+
+	glMaterialfv(GL_FRONT_AND_BACK,GL_AMBIENT_AND_DIFFUSE,glfMaterialColor);
+	glMaterialfv(GL_FRONT_AND_BACK,GL_SPECULAR,specular);
+</pre>
+</font> 
+<table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>然后我们计算螺旋的公式并给弹簧着色。十分简单，我就不再解释了，因为它不是这篇指南的主要目的。这段螺旋代码经过软件赞助者的许可被借用（并作了一点优化）。这是写作的简单的方法，但不是最块的方法。使用顶点数组可以使它更快！</td>
+    <td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table>
+<font color=#aaffaa size=3> 
+<pre>
+	r=1.5f;							<font color=#ffffaa>// 半径</font>
+
+	glBegin(GL_QUADS);						<font color=#ffffaa>// 开始绘制立方体</font>
+	for(phi=0; phi &lt;= 360; phi+=20.0)				<font color=#ffffaa>// 以20度的间隔绘制</font>
+	{
+		for(theta=0; theta&lt;=360*twists; theta+=20.0)		
+		{
+			v=(phi/180.0f*3.142f);			<font color=#ffffaa>// 计算第一个点 ( 0 )的角度</font>
+			u=(theta/180.0f*3.142f);			<font color=#ffffaa>// 计算第一个点 ( 0 )的角度</font>
+
+			x=float(cos(u)*(2.0f+cos(v) ))*r;		<font color=#ffffaa>// 计算x的位置（第一个点）</font>
+			y=float(sin(u)*(2.0f+cos(v) ))*r;		<font color=#ffffaa>// 计算y的位置（第一个位置）</font>
+			z=float((( u-(2.0f*3.142f)) + sin(v) ) * r);	<font color=#ffffaa>// 计算z的位置（第一个位置）</font>
+
+			vertexes[0][0]=x;				<font color=#ffffaa>// 设置第一个顶点的x值</font>
+			vertexes[0][1]=y;				<font color=#ffffaa>// 设置第一个顶点的y值</font>
+			vertexes[0][2]=z;				<font color=#ffffaa>// 设置第一个顶点的z值 </font>
+
+			v=(phi/180.0f*3.142f);			<font color=#ffffaa>// 计算第二个点（ 0 ）的角度</font>
+			u=((theta+20)/180.0f*3.142f);		<font color=#ffffaa>// 计算第二个点（ 20 ）的角度</font>
+
+			x=float(cos(u)*(2.0f+cos(v) ))*r;		<font color=#ffffaa>// 计算x位置（第二个点)</font>
+			y=float(sin(u)*(2.0f+cos(v) ))*r;		<font color=#ffffaa>// 计算y位置（第二个点)</font>
+			z=float((( u-(2.0f*3.142f)) + sin(v) ) * r);	<font color=#ffffaa>// 计算z位置（第二个点)</font>
+
+			vertexes[1][0]=x;				<font color=#ffffaa>// 设置第二个顶点的x值</font>
+			vertexes[1][1]=y;				<font color=#ffffaa>// 设置第二个顶点的y值</font>
+			vertexes[1][2]=z;				<font color=#ffffaa>// 设置第二个顶点的z值</font>
+
+			v=((phi+20)/180.0f*3.142f);			<font color=#ffffaa>// 计算第三个点 ( 20 )的角度</font>
+			u=((theta+20)/180.0f*3.142f);		<font color=#ffffaa>// 计算第三个点 ( 20 )的角度</font>
+
+			x=float(cos(u)*(2.0f+cos(v) ))*r;		<font color=#ffffaa>// 计算x位置 (第三个点)</font>
+			y=float(sin(u)*(2.0f+cos(v) ))*r;		<font color=#ffffaa>// 计算y位置 (第三个点)</font>
+			z=float((( u-(2.0f*3.142f)) + sin(v) ) * r);	<font color=#ffffaa>// 计算z位置 (第三个点)</font>
+
+			vertexes[2][0]=x;				<font color=#ffffaa>// 设置第三个顶点的x值</font>
+			vertexes[2][1]=y;				<font color=#ffffaa>// 设置第三个顶点的y值</font>
+			vertexes[2][2]=z;				<font color=#ffffaa>// 设置第三个顶点的z值</font>
+
+			v=((phi+20)/180.0f*3.142f);			<font color=#ffffaa>// 计算第四个点( 20 )的角度</font>
+			u=((theta)/180.0f*3.142f);			<font color=#ffffaa>// 计算第四个点( 0 )的角度</font>
+
+			x=float(cos(u)*(2.0f+cos(v) ))*r;		<font color=#ffffaa>// 计算x位置 (第四个点)</font>
+			y=float(sin(u)*(2.0f+cos(v) ))*r;		<font color=#ffffaa>// 计算y位置 (第四个点)</font>
+			z=float((( u-(2.0f*3.142f)) + sin(v) ) * r);	<font color=#ffffaa>// 计算z位置 (第四个点))</font>
+
+			vertexes[3][0]=x;				<font color=#ffffaa>// 设置第四个顶点的x值</font>
+			vertexes[3][1]=y;				<font color=#ffffaa>// 设置第四个顶点的y值</font>
+			vertexes[3][2]=z;				<font color=#ffffaa>// 设置第四个顶点的z值</font>
+
+			calcNormal(vertexes,normal);		<font color=#ffffaa>// 计算立方体的法线</font>
+
+			glNormal3f(normal[0],normal[1],normal[2]);	<font color=#ffffaa>// 设置法线</font>
+
+			<font color=#ffffaa>// 渲染四边形</font>
+			glVertex3f(vertexes[0][0],vertexes[0][1],vertexes[0][2]);
+			glVertex3f(vertexes[1][0],vertexes[1][1],vertexes[1][2]);
+			glVertex3f(vertexes[2][0],vertexes[2][1],vertexes[2][2]);
+			glVertex3f(vertexes[3][0],vertexes[3][1],vertexes[3][2]);
+		}
+	}
+	glEnd();							<font color=#ffffaa>// 绘制结束</font>
+
+	glPopMatrix();						<font color=#ffffaa>// 取出矩阵</font>
+}
+</pre>
+</font> 
+<table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>这两个事例（ViewOrtho and ViewPerspective）被编码以使它变得很容易地在一个直交的情形下绘制并且不费力的返回透视图。<br>
+      ViewOrtho简单地设立了这个射影矩阵，然后增加一份现行射影矩阵的拷贝到OpenGL栈上。这个恒等矩阵然后被装载并且当前屏幕正投影观察决议被提出。<br>
+      利用2维坐标以屏幕左上角0，0和屏幕右下角639，479来绘制是可能的。<br>
+      最后，modelview矩阵为透视材料激活。<br>
+      ViewPerspective设置射影矩阵模式取回ViewOrtho在堆栈上推进的非正交矩阵。然后样本视图被选择因此我们可以透视材料。<br>
+      我建议你保留这两个过程，能够着色2D而不需担心射影矩阵很不错。</td>
+    <td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table>
+<font color=#aaffaa size=3> 
+<pre>
+void ViewOrtho()							<font color=#ffffaa>// 设置一个z正视图</font>
+{
+	glMatrixMode(GL_PROJECTION);				<font color=#ffffaa>// 选择投影矩阵</font>
+	glPushMatrix();						<font color=#ffffaa>// 保存当前矩阵</font>
+	glLoadIdentity();						<font color=#ffffaa>// 重置矩阵</font>
+	glOrtho( 0, 640 , 480 , 0, -1, 1 );				<font color=#ffffaa>// 选择标准模式</font>
+	glMatrixMode(GL_MODELVIEW);					<font color=#ffffaa>// 选择样本视图矩阵</font>
+	glPushMatrix();						<font color=#ffffaa>// 保存当前矩阵</font>
+	glLoadIdentity();						<font color=#ffffaa>// 重置矩阵</font>
+}
+
+void ViewPerspective()							<font color=#ffffaa>// 设置透视视图</font>
+{
+	glMatrixMode( GL_PROJECTION );					<font color=#ffffaa>// </font><font color=#aaffaa size=3><font color=#ffffaa>选择投影矩阵</font></font>
+	glPopMatrix();							<font color=#ffffaa>// 取出矩阵</font>
+	glMatrixMode( GL_MODELVIEW );					<font color=#ffffaa>// 选择模型变换矩阵</font>
+	glPopMatrix();							<font color=#ffffaa>//弹出矩阵</font>
+}
+</pre>
+</font> 
+<table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>现在是解释那个冒牌的辐射状的模糊效果是如何作的时候了。<br>
+      我们需要绘制这个场景——它从中心开始在所有方向上模糊出现。窍门是在没有主要的性能瓶颈的情况下做出的。我们不能读写象素，并且如果我们想和非kick-butt视频卡兼容，我们不能使用扩展名何驱动程序特殊命令。<br>
+      没办法了吗？<br>
+      不，解决方法非常简单，OpenGL赋予我们“模糊”纹理的能力。OK……并非真正的模糊，但我们利用线性过滤去依比例决定一个纹理，结果（有些想象成分）看起来象高斯模糊。<br>
+      因此如果我们正确地在3D场景中放了大量的被拉伸的纹理并依比例决定会有什么发生？<br>
+      答案比你想象的还简单。<br>
+      问题一：透视一个纹理<br>
+      有一个后缓冲器在象素格式下问题容易解决。在没有后缓冲器的情况下透视一个纹理在眼睛看来是一个真正的痛苦。<br>
+      透视纹理刚好借助一个函数来完成。我们需要绘制我们的实体然后利用glCopytexImage函数复制这个结果（在交换前，后缓冲器之前）后到纹理。<br>
+      问题二：在3D实体前精确地协调纹理。<br>
+      我们知道：如果我们在没有设置正确的透视的情况下改变了视口，我们就得到一个我们的实体的一个被拉伸的透视图。例如如果我们设置一个是视口足够宽我们就得到一个垂直地被拉伸的透视图。<br>
+      解决方法是首先设置一个视口正如我们的纹理（128×128）。透视我们的实体到这个纹理之后，我们利用当前屏幕决议着色这个纹理到屏幕。这种方法OpenGL缩减这个实体去适应纹理，并且我们拉伸纹理到全屏大小时，OpenGL重新调整纹理的大小去完美的适应在我们的3d实体顶端。希望我没有丢掉任何一点。另一个灵活的例子是，如果你取一个640×480大小screenshot，然后调整成为256x256的位图，你可以以一个纹理装载这个位图，并拉伸它使之适合640x480的屏幕。这个质量可能不会以前一样好，但是这个纹理排列起的效果应当接近最初的640x480图象。<br>
+      On to the fun stuff! 这个函数相当简单，并且是我的首选的“设计窍门”之一。它设置一个与我们的BlurTexture度数相匹配的大小的视口。然后它被弹簧的着色程序调用。弹簧将由于视口被拉伸适应128*128的纹理。<br>
+      在弹簧被拉伸至128x128视口大小之后，我们约定BlurTexture 且用glCopyTexImage2D从视口拷贝色彩缓冲器到BlurTexture。<br>
+      参数如下：<br>
+      GL_TEXTURE_2D指出我们正使用一个2Dimensional纹理，0是我们想要拷贝缓冲器到mip的绘图等级，默认等级是0。GL_LUMINANCE指出被拷贝的数据格式。我之所以使用GL_LUMINANCE因为最终结果看起来比较好。这种情形缓冲器的亮度部分将被拷贝到纹理。其它参数可以是GL_ALPHA, 
+      GL_RGB, GL_INTENSITY等等。<br>
+      其次的两个参数告诉OpenGL从（0，0）开始拷贝到哪里。宽度和高度(128,128)是从左到右有多少象素要拷贝并且上下拷贝多少。最后一个参数仅用来指出我们是否想要一个边界——哪个不想要。<br>
+      既然在我们的BlurTexture我们已经有了一个色彩缓冲器的副本（和被拉伸的弹簧一致），我们可以清除那个缓冲器，向后设置那个视口到适当的度数（640x480全屏）。<br>
+      重要：<br>
+      这个窍门能用在只有双缓冲器象素格式的情况下。原因是所有这些操作从观察者面前被隐藏起来。（在后缓冲器完成）。<br></td><td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table>
+<font color=#aaffaa size=3> 
+<pre>
+void RenderToTexture()						<font color=#ffffaa>// 着色到一个纹理</font>
+{
+	glViewport(0,0,128,128);					<font color=#ffffaa>// 设置我们的视口</font>
+
+	ProcessHelix();						<font color=#ffffaa>// 着色螺旋</font>
+
+	glBindTexture(GL_TEXTURE_2D,BlurTexture);			<font color=#ffffaa>// 绑定模糊纹理</font>
+
+	<font color=#ffffaa>// 拷贝我们的视口到模糊纹理 (从 0,0 到 128,128... 无边界)</font>
+	glCopyTexImage2D(GL_TEXTURE_2D, 0, GL_LUMINANCE, 0, 0, 128, 128, 0);
+
+	glClearColor(0.0f, 0.0f, 0.5f, 0.5);				<font color=#ffffaa>//调整清晰的色彩到中等蓝色</font>
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);		<font color=#ffffaa>// 清屏和深度缓冲</font>
+
+	glViewport(0 , 0,640 ,480);					<font color=#ffffaa>// 调整视口 (0,0 to 640x480)</font>
+}
+</pre>
+</font> 
+<table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>DrawBlur函数仅在我们的3D场景前绘制一些混合的方块——用BlurTexture我们以前已实现。这样，借由阿尔发和缩放这个纹理，我们得到了真正看起来象辐射状的模糊的效果。<br>
+      我首先禁用GEN_S 和 GEN_T（我沉溺于球体影射，因此我的程序通常启用这些指令：P）。<br>
+      我们启用2D纹理，禁用深度测试，调整正确的函数，起用混合然后约束BlurTexture。<br>
+      下一件我们要作的事情是转换到标准视图，那样比较容易绘制一些完美适应屏幕大小的方块。这是我们在3D实体顶端排列纹理的方法（通过拉伸纹理匹配屏幕比例）。这是问题二要解决的地方。<br></td><td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table>
+<font color=#aaffaa size=3> 
+<pre>
+void DrawBlur(int times, float inc)					<font color=#ffffaa>// 绘制模糊的图象</font>
+{
+	float spost = 0.0f;					<font color=#ffffaa>// 纹理坐标偏移量</font>
+	float alphainc = 0.9f / times;				<font color=#ffffaa>// alpha混合的衰减量</font>
+	float alpha = 0.2f;					<font color=#ffffaa>// Alpha初值
+
+// 禁用自动生成纹理坐标</font>
+	glDisable(GL_TEXTURE_GEN_S);
+	glDisable(GL_TEXTURE_GEN_T);
+
+	glEnable(GL_TEXTURE_2D);					<font color=#ffffaa>// 启用 2D 纹理映射</font>
+	glDisable(GL_DEPTH_TEST);					<font color=#ffffaa>// 深度测试不可用</font>
+	glBlendFunc(GL_SRC_ALPHA,GL_ONE);				<font color=#ffffaa>// 设置混合模式</font>
+	glEnable(GL_BLEND);					<font color=#ffffaa>// 启用混合</font>
+	glBindTexture(GL_TEXTURE_2D,BlurTexture);			<font color=#ffffaa>// 绑定混合纹理</font>
+	ViewOrtho();						<font color=#ffffaa>// 切换到标准视图</font>
+
+	alphainc = alpha / times;					<font color=#ffffaa>// 减少alpha值</font>
+</pre>
+</font> 
+<table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>我们多次绘制这个纹理用于创建那个辐射效果， 缩放这个纹理坐标并且每次我们做另一个关口时增大混合因数 
+      。我们绘制25个方块，每次按照0.015f拉伸这个纹理。</td>
+    <td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table>
+<font color=#aaffaa size=3> 
+<pre>
+	glBegin(GL_QUADS);						<font color=#ffffaa>// 开始绘制方块</font>
+		for (int num = 0;num < times;num++)			<font color=#ffffaa>// 着色模糊物的次数</font>
+		{
+			glColor4f(1.0f, 1.0f, 1.0f, alpha);		<font color=#ffffaa>// 调整alpha值</font>
+			glTexCoord2f(0+spost,1-spost);			
+			glVertex2f(0,0);				
+
+			glTexCoord2f(0+spost,0+spost);			
+			glVertex2f(0,480);			
+
+			glTexCoord2f(1-spost,0+spost);		
+			glVertex2f(640,480);				
+
+			glTexCoord2f(1-spost,1-spost);			
+			glVertex2f(640,0);			
+
+			spost += inc;				<font color=#ffffaa>// 逐渐增加 spost (快速靠近纹理中心)</font>
+			alpha = alpha - alphainc;			<font color=#ffffaa>// 逐渐增加 alpha (逐渐淡出纹理)</font>
+		}
+	glEnd();							<font color=#ffffaa>// 完成绘制方块</font>
+
+	ViewPerspective();						<font color=#ffffaa>// 转换到一个透视视图</font>
+
+	glEnable(GL_DEPTH_TEST);					<font color=#ffffaa>// 深度测试可用</font>
+	glDisable(GL_TEXTURE_2D);					<font color=#ffffaa>// 2D纹理映射不可用</font>
+	glDisable(GL_BLEND);					<font color=#ffffaa>// 混合不可用</font>
+	glBindTexture(GL_TEXTURE_2D,0);				<font color=#ffffaa>// 释放模糊纹理</font>
+}
+</pre>
+</font> 
+<table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>瞧，这是以前从未见过的最短的绘制程序，有很棒的视觉效果！<br>
+      我们调用RenderToTexture 函数。幸亏我们视口改变这个函数才着色被拉伸的弹簧。 对于我们的纹理拉伸的弹簧被着色，并且这些缓冲器被清除。<br>
+      我们之后绘制“真正的”弹簧 (你在屏幕上看到的3D实体) 通过调用 ProcessHelix( )。
+      <p>最后我们在弹簧前面绘制一些混合的方块。有织纹的方块将被拉伸以适应在真正的3D弹簧<br>
+        上面。<br>
+      </p></td><td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table>
+<font color=#aaffaa size=3> 
+<pre>
+void Draw (void)							<font color=#ffffaa>// 绘制场景</font>
+{
+	glClearColor(0.0f, 0.0f, 0.0f, 0.5);				<font color=#ffffaa>// 将清晰的颜色设定为黑色</font>
+	glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);		<font color=#ffffaa>// 清除屏幕和深度缓冲器</font>
+	glLoadIdentity();						<font color=#ffffaa>// 重置视图</font>
+	RenderToTexture();						<font color=#ffffaa>// 着色纹理</font>
+	ProcessHelix();						<font color=#ffffaa>// 绘制我们的螺旋</font>
+	DrawBlur(25,0.02f);					<font color=#ffffaa>// 绘制模糊效果</font>
+	glFlush ();						<font color=#ffffaa>// 强制OpenGL绘制我们所有的图形</font>
+}
+</pre>
+</font> 
+<table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top><p>我希望你满意这篇指南，它实在没有比透视一个纹理讲授更多其它内容，但它是一个干脆地添加到你的3D应用程序中有趣的效果。 
+        <br>
+        如果你有任何的注释建议或者如果你知道一种更好的方法执行这个效果联系我rio@spinningkids.org。<br>
+        我也想要委托你去做一列事情（家庭作业）：D<br>
+        1） 更改DrawBlur程序变为一个水平的模糊之物，垂直的模糊之物和一些更好的效果。（转动模糊之物！）。<br>
+        2） 玩转DrawBlur参数（添加，删除）变为一个好的程序和你的音乐同步。<br>
+        3） 用GL_LUMINANCE玩弄DrawBlur参数和一个SMALL纹理（惊人的光亮！）。<br>
+        4） 用暗色纹理代替亮色尝试大骗（哈哈，自己造的）测定体积的阴影。<br>
+        好了，这应该是所有的了（到此为止）。<br>
+        访问我的站点http://www.spinningkids.org/rio. <br>
+        获得更多的最新指南。</p>
+<table width="100%" border="1">
+  <tr>
+    <td width="27%"><img src="logo 3.jpg" tppabs="http://www.owlei.com/DancingWind/images/logo%203.jpg" width="209" height="200" align="middle"></td>
+    <td width="73%">版权与使用声明:<br>
+      我是个对学习和生活充满激情的普通男孩,在网络上我以DancingWind为昵称，我的联系方式是zhouwei02@mails.tsinghua.edu.cn，如果你有任何问题，都可以联系我。
+      <p>引子<br>
+        网络是一个共享的资源，但我在自己的学习生涯中浪费大量的时间去搜索可用的资料，在现实生活中花费了大量的金钱和时间在书店中寻找资料，于是我给自己起了个昵称DancingWind，其意义是想风一样从各个知识的站点中吸取成长的养料。在飘荡了多年之后，我决定把自己收集的资料整理为一个统一的资源库。</p>
+      <p>版权声明<br>
+        所有DancingWind发表的内容，大多都来自共享的资源，所以我没有资格把它们据为己有，或声称自己为这些资源作出了一点贡献。故任何人都可以复制，修改，重新发表，甚至以自己的名义发表，我都不会追究，但你在做以上事情的时候必须保证内容的完整性，给后来的人一个完整的教程。最后，任何人不能以这些资料的任何部分，谋取任何形式的报酬。</p>
+      <p>发展计划<br>
+        在国外，很多资料都是很多人花费几年的时间慢慢积累起来的。如果任何人有兴趣与别人共享你的知识，我很欢迎你与我联系，但你必须同意我上面的声明。</p>
+            <p>感谢<br>
+              感谢我的母亲一直以来对我的支持和在生活上的照顾。<br>
+              感谢我深爱的女友田芹，一直以来默默的在精神上和生活中对我的支持，她甚至把买衣服的钱都用来给我买书了，她真的是我见过的最好的女孩，希望我能带给她幸福。</p>
+            <p>资源下载: <br>
+              文档 <a href="javascript:if(confirm('http://www.owlei.com/DancingWind/Res/mht/NeHe%20OpenGL%20Chinese%20Course%2036.mht  \n\nThis file was not retrieved by Teleport Pro, because the server reports that this file cannot be found.  \n\nDo you want to open it from the server?'))window.location='http://www.owlei.com/DancingWind/Res/mht/NeHe%20OpenGL%20Chinese%20Course%2036.mht'" tppabs="http://www.owlei.com/DancingWind/Res/mht/NeHe%20OpenGL%20Chinese%20Course%2036.mht">网页格式</a> 
+              <a href="javascript:if(confirm('http://www.owlei.com/DancingWind/Res/pdf/OpenGL_Nehe_Course_Tutorial_36.pdf  \n\nThis file was not retrieved by Teleport Pro, because the server reports that this file cannot be found.  \n\nDo you want to open it from the server?'))window.location='http://www.owlei.com/DancingWind/Res/pdf/OpenGL_Nehe_Course_Tutorial_36.pdf'" tppabs="http://www.owlei.com/DancingWind/Res/pdf/OpenGL_Nehe_Course_Tutorial_36.pdf">PDF格式</a><br>
+              源码 <a href="javascript:if(confirm('http://www.owlei.com/DancingWind/Res/Src/36_Blur.rar  \n\nThis file was not retrieved by Teleport Pro, because the server reports that this file cannot be found.  \n\nDo you want to open it from the server?'))window.location='http://www.owlei.com/DancingWind/Res/Src/36_Blur.rar'" tppabs="http://www.owlei.com/DancingWind/Res/Src/36_Blur.rar">RAR格式</a></p></td>
+  </tr>
+</table><table border="0" width="100%">
+        <td width="50%" align="left"><b><font size="-1"><a href="Tutorial_35.htm" tppabs="http://www.owlei.com/DancingWind/Course/Tutorial_35.htm">< 
+          第35课 </a></font></b></td>
+        <td width="50%" align="right"><b><font size="-1"><a href="Tutorial_37.htm" tppabs="http://www.owlei.com/DancingWind/Course/Tutorial_37.htm">第37课 
+          ></a></font></b></td>
+      </table>
+      </font></td>
+    <td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table>
+
+</body>
+</html>

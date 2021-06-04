@@ -1,0 +1,199 @@
+mysql命令行的基本用法(通用linux和windows)
+基礎介紹:
+1.在linux下使用下列命令,請確認mysql的bin目錄是否已經加入到PATH路徑中,或者是已經進入到mysql安裝路徑下的bin目錄
+查看PATH
+shell> echo $PATH
+或者
+shell> cd /usr/local/mysql/bin
+2.windows下,請運行cmd後,同樣檢查mysql的bin目錄是否已加入到系統的PATH路徑中,或直接進入mysql的安裝目錄
+
+下面所有操作都是確認你以檢查mysql的bin目錄已加入到系統的PATH路徑中,或已經進入mysql的安裝目錄的bin目錄下
+
+1]如何創建mysqld數據庫的管理用戶？
+
+數據庫安裝好後，我們應該為mysql數據庫創建一個管理帳號。要把root用戶設置為管理員，我們應該運行下面的命令；
+
+shell> mysqladmin -u root password 123456
+
+通過上面的命令，我們可以知道，mysql數據庫的管理員是root，密碼是123456。
+
+2]如何進入mysql數據庫？以mysql數據庫管理員root，密碼為123456為例；
+
+shell> mysql -uroot -p123456
+
+輸出上面的命令後，出現的是如下的提示；
+
+Welcome to the MySQL monitor. Commands end with ; or /g.
+Your MySQL connection id is 6 to server version: 3.23.58
+
+Type 'help;' or '/h' for help. Type '/c' to clear the buffer.
+
+mysql>
+
+注意：操作這些命令的時候，應該把mysqld服務器打開。這些新手兄弟早就知道了吧：)
+
+3]如何在數據庫中操作命令呢，我想這是mysql手冊都有的，我主要說幾個要注意的地方。其實我也會不了幾個命令。如果自己想學的弟兄，也不是什麼難事；在windows中操作過mysql的，其實在這裡也是一樣的，mysql是跨平台的數據庫，用法都是相同的。
+
+在mysql數據庫中，每操作一個命令，都是;號結尾的，可能有的新手弟兄，忘記輸入了；號結尾，結果退不出來。:):)
+
+1]查看mysql中都有哪些數據庫？
+
+代碼:
+mysql>
+show databases;
++----------+
+| Database |
++----------+
+| mysql |
+| test |
++----------+
+2 rows in set (0.00 sec) mysql>
+在mysql安裝好，設置好管理員後，第一次進入系統，我們用show databases;命令查看數據庫的列表，發現有兩個數據庫，mysql和test，這是系統自建的，是讓大家練習用的。
+
+4]如何創建和刪除一個數據庫？
+
+比如我要創建一個名為linux的數據庫，應該運行如下命令
+
+mysql> create database [數據庫名];
+
+所以我們應該運行如下的命令，來創建名為linux的數據庫
+
+mysql> create database linux;
+Query OK, 1 row affected (0.00 sec)
+
+是不是建好了呢？？肯定是建好了，因為都有OK了:)
+
+查看是不是有linux這個數據庫了呢？
+
+代碼:
+mysql> show databases;
++----------+
+| Database |
++----------+
+| linux |
+| mysql |
+| test |
++----------+
+3 rows in set (0.00 sec)
+
+那我們如何刪除一個數據庫呢？？
+mysql> drop database [數據庫名];
+
+比如我們要把剛才創建的linux數據庫刪除，應該用下面的命令；
+mysql> drop database linux;
+Query OK, 0 rows affected (0.00 sec)
+
+是不是已經刪除了呢？？
+
+代碼:
+mysql> show databases;
++----------+
+| Database |
++----------+
+| mysql |
+| test |
++----------+
+2 rows in set (0.00 sec) 
+
+5]如何操作一個數據庫呢，這個問題就比較多了，建議還是看一下mysql的手冊吧。裡面的東西太多了。如果操作一個數據庫，首先是要指定一個數據庫為當前數據庫，應該用use命令
+
+mysql>use [數據庫];
+
+比如我想指定linux這個數據庫為當前數據庫，應該是
+
+mysql> use linux;
+Database changed
+
+6]如何備份數據庫？？
+
+比如我們要備份mysql中已經存在的名為linux的數據庫，要用到命令mysqldump
+
+命令格式如下：
+注意:所有用來登入MYSQL的帳號在LINUX 裡面都是 "MYSQL" 群組,在MYSQL 要存取的路徑記得設定LINUX 群組權限 , 如文件在MYSQL的安裝路徑可不用輸入路徑, MYSQL 5.0 預設路徑/var/lib/mysql
+shell> mysqldump -uroot -p linux > /root/linux.sql
+Enter password:在這裡輸入數據庫的密碼
+
+通過上面的命令，我們要明白兩件事，首先備份數據庫是要以數據庫管理員的身份備份；其次：備份目的地是/root，備份的文件名是linux.sql。其實備份的位置和文件名，根據自己的情況來定。文件名可以自己來取，路徑也可以自己來安排；
+
+比如我想把linux的數據庫備份到/home/beinan，數據庫的文件名為linuxsir031130.sql，所以應該輸入如下的命令。
+shell> mysqldump -uroot -p linux > /home/beinan/linuxsir031130.sql
+Enter password:在這裡輸入數據庫管理員root的數據庫密碼
+
+這樣我們到/home/beinan目錄下就能發現mysql中名為linux的數據庫的備份文件linuxsir031130.sql
+
+綜上所述，我們學習時要學會變通。:):)
+
+5]如何把把備份的數據庫導入到數據庫中？
+
+首先我們還是要操作上面幾個過程，比如添加數據庫管理員(如果您沒有添加過mysql數據庫管理員的話)，創建數據庫等。
+
+比如我們要把在/home/beinan這個目錄中的linuxsir031130.sql這個備份，導入名為linux的數據庫中，應該如下操作；
+
+shell> mysql -uroot -p linux < /home/beinan/linuxsir031130.sql
+Enter password:在這裡輸入密碼
+
+如果機器好，數據庫比較小，幾分鐘就好了。
+
+6]其它一些比較常用的mysql指令；
+
+查看狀態
+mysql> show status;
+
+查看進程
+
+代碼:
+mysql> show processlist;
++----+------+-----------+------+---------+------+-------+------------------+| Id | User | Host | db | Command | Time | State | Info |
++----+------+-----------+------+---------+------+-------+------------------+| 16 | root | localhost | NULL | Query | 0 | NULL | show processlist |
++----+------+-----------+------+---------+------+-------+------------------+
+1 row in set (0.00 sec) 
+
+查看表，應該先指定一個數據庫為當前數據庫；比如是名為linux的數據庫；
+
+mysql>use linux;
+mysql> show tables;
+Empty set (0.00 sec)
+
+7]對mysql數據庫常用命令的一點補充；
+
+幾個常用的mysql相關的管理命令
+
+mysql 命令：基本文本的，顯示和使用的mysql數據庫。前面已經簡單的提過用法；比如登錄等。
+
+mysqladmin 命令，用來創建和維護mysql數據庫的命令，前面已經簡單的提過；
+
+isamchk 是用來修復、檢查和優化.ism後綴的數據庫文件；
+
+mysqldump 是用於備份數據庫，前面已經簡單的說明過；
+
+myisamchk 用來修復.myi後綴的數據庫文件；
+
+比如我們要檢查名為linux的數據庫.myi數據庫表是否存在問題，應該用下面的命令；
+
+要把mysqld服務器停下來
+shell> ../share/mysql.server stop
+
+然後執行
+shell> myisamchk ../var/linux/*.MYI
+
+上面的命令的意思就是檢查所有的.myi文件，數據庫的目錄在../var/linux/目錄中
+
+如果有問題，應該用-r參數來修復
+shell> myisamchk -r ../var/linux/*.MYI
+
+6]mysqlshow 命令：顯示用戶選擇的數據庫和表
+shell> mysqlshow -uroot -p [數據庫名]
+
+比如我要查看名為linux的數據庫；應該是：
+
+shell> mysqlshow -uroot -p linux
+
+好了,到這裡,你可能已經知道命令行下的所有基本操作了~
+
+
+
+ps:補充一個。。
+
+更改ROOT帳號名。
+
+update set user="新名字" where user="舊名字";

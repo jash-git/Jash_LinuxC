@@ -1,0 +1,628 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+    dir="ltr"
+    xml:lang="en"
+    lang="en">
+  <head>
+    <title>NeHe Productions: Morphing &amp; Loading Objects From A File</title>
+
+    <link rel="stylesheet" type="text/css" href="public_base.css" tppabs="http://nehe.gamedev.net/static/css/public_base.css" />
+    <link type="text/css" rel="stylesheet" href="shThemeMidnight.css" tppabs="http://nehe.gamedev.net/static/css/syntax_highlighter/shThemeMidnight.css"/>
+    
+    <link rel="alternate" type="application/atom+xml" title="Atom feed" href="index-1.htm" tppabs="http://nehe.gamedev.net/atom/" />
+    <link rel="alternate" type="application/rss+xml" title="RSS feed" href="index-2.htm" tppabs="http://nehe.gamedev.net/rss/" />
+    
+    <meta name="author" content="Luke Benstead + Carsten Haubold" />
+    <meta name="description" content="OpenGL Tutorials, Demos, Games and More..." />
+    <meta name="keywords" content="opengl, tutorial, article, demo, game, blend, texturemap, lighting, contest, 3D" />
+
+    
+    
+
+    
+
+</script>
+
+
+    
+    
+    
+    
+        
+        <script type='text/javascript'>
+        var googletag = googletag || {};
+        googletag.cmd = googletag.cmd || [];
+        (function() {
+        var gads = document.createElement('script');
+        gads.async = true;
+        gads.type = 'text/javascript';
+        var useSSL = 'https:' == document.location.protocol;
+        gads.src = (useSSL ? 'https:' : 'http:') + 
+        '//www.googletagservices.com/tag/js/gpt.js';
+        var node = document.getElementsByTagName('script')[0];
+        node.parentNode.insertBefore(gads, node);
+        })();
+        </script>
+
+        <script type='text/javascript'>
+        googletag.cmd.push(function() {
+        googletag.defineSlot('/1004699/Leaderboard_NeHe', [728, 90], 'div-gpt-ad-1327940144417-0').addService(googletag.pubads());
+        googletag.defineSlot('/1004699/Skyscraper_NeHe', [160, 600], 'div-gpt-ad-1327940144417-1').addService(googletag.pubads());
+        googletag.pubads().enableSingleRequest();
+        googletag.enableServices();
+        });
+        </script>
+    
+    
+
+    
+  </head>
+
+  <body>
+    
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "all.js#xfbml=1"/*tpa=http://connect.facebook.net/en_GB/all.js#xfbml=1*/;
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+
+
+    <table cellpadding="0" cellspacing="0" border="0" id="layout_table">
+    <tr><td>
+        <div id="header">
+                <a href="index.htm" tppabs="http://nehe.gamedev.net/"><img class="logo" class="logo" src="nehe.png" tppabs="http://nehe.gamedev.net/static/images/nehe.png" border="0" alt="Nehe" /></a>
+        </div>            
+    </td></tr>
+    <tr><td colspan="2">
+            
+<div class="navbar">
+    <a href="index.htm" tppabs="http://nehe.gamedev.net/">HOME</a>
+    <a href="javascript:if(confirm('http://twitter.com/  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://twitter.com/#!/nehegl'" tppabs="http://twitter.com/#!/nehegl">TWITTER</a>  
+    <a href="javascript:if(confirm('http://www.facebook.com/pages/NeHe/300582493323181  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://www.facebook.com/pages/NeHe/300582493323181'" tppabs="http://www.facebook.com/pages/NeHe/300582493323181">FACEBOOK</a>     
+    <a href="index-2.htm" tppabs="http://nehe.gamedev.net/rss/">RSS</a>    
+    <a href="index-1.htm" tppabs="http://nehe.gamedev.net/atom/">ATOM</a>    
+    <a href="javascript:if(confirm('http://www.gamedev.net/forum/27-nehe-productions/page__forum_title__NeHe+Productions  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://www.gamedev.net/forum/27-nehe-productions/page__forum_title__NeHe+Productions'" tppabs="http://www.gamedev.net/forum/27-nehe-productions/page__forum_title__NeHe+Productions">FORUM</a>    
+</div>
+    
+    </td></tr>
+    <tr>
+        <td class="col1">
+
+            
+<div id="article_container">
+
+
+<h1 class="article-header">Morphing &amp; Loading Objects From A File</h1>
+<div class="social-media">
+<!-- Place this tag where you want the +1 button to render -->
+<div class="g-plusone" data-size="medium" data-width="120" data-annotation="inline"></div>
+<div class="fb-like" data-send="false" data-layout="button_count" data-width="60" data-show-faces="false" data-colorscheme="dark" data-font="arial"></div>
+</div>
+<div style="clear:both;"></div>
+<p>Welcome to yet another exciting tutorial! This time we will focus on the effect rather than the graphics, although the final result is pretty cool looking! In this tutorial you will learn how to morph seamlessly from one object to another. Similar to the effect I use in the dolphin demo. Although there are a few catches. First thing to note is that each object must have the same amount of points. Very rare to luck out and get 3 object made up of exactly the same amount of vertices, but it just so happens, in this tutorial we have 3 objects with exactly the same amount of points :) Don't get me wrong, you can use objects with different values, but the transition from one object to another is odd looking and not as smooth.</p>
+<p>You will also learn how to read object data from a file. Similar to the format used in lesson 10, although it shouldn't be hard to modify the code to read .ASC files or some other text type data files. In general, it's a really cool effect, a really cool tutorial, so lets begin!</p>
+<p>We start off as usual. Including all the required header files, along with the math and standard input / output headers. Notice we don't include glaux. That's because we'll be drawing points rather than textures in this tutorial. After you've got the tutorial figured out, you can try playing with Polygons, Lines, and Textures!</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">#include	&lt;windows.h&gt;								// Header File For Windows
+#include	&lt;math.h&gt;								// Math Library Header File
+#include	&lt;stdio.h&gt;								// Header File For Standard Input/Output
+#include	&lt;gl\gl.h&gt;								// Header File For The OpenGL32 Library
+#include	&lt;gl\glu.h&gt;								// Header File For The GLu32 Library
+
+HDC		hDC=NULL;								// Device Context Handle
+HGLRC		hRC=NULL;								// Rendering Context Handle
+HWND		hWnd=NULL;								// Window Handle
+HINSTANCE	hInstance;								// Instance Handle
+
+bool		keys[256];								// Key Array
+bool		active=TRUE;								// Program's Active
+bool		fullscreen=TRUE;							// Default Fullscreen To True
+</pre>
+<p>After setting up all the standard variables, we will add some new variables. xrot, yrot and zrot will hold the current rotation values for the x, y and z axes of the onscreen object. xspeed, yspeed and zspeed will control how fast the object is rotating on each axis. cx, cy and cz control the position of the object on the screen (where it's drawn left to right cx, up and down cy and into and out of the screen cz).</p>
+<p>The variable key is a variable that I have included to make sure the user doesn't try to morph from the first shape back into the first shape. This would be pretty pointless and would cause a delay while the points were trying to morph to the position they're already in.</p>
+<p>step is a counter variable that counts through all the steps specified by steps. If you increase the value of steps it will take longer for the object to morph, but the movement of the points as they morph will be smoother. Once step is equal to steps we know the morphing has been completed.</p>
+<p>The last variable morph lets our program know if it should be morphing the points or leaving them where they are. If it's TRUE, the object is in the process of morphing from one shape to another.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">GLfloat		xrot,yrot,zrot,								// X, Y &amp; Z Rotation
+		xspeed,yspeed,zspeed,							// X, Y &amp; Z Spin Speed
+		cx,cy,cz=-15;								// X, Y &amp; Z Position
+
+int		key=1;									// Used To Make Sure Same Morph Key Is Not Pressed
+int		step=0,steps=200;							// Step Counter And Maximum Number Of Steps
+bool		morph=FALSE;								// Default morph To False (Not Morphing)
+</pre>
+<p>Now we create a structure to keep track of a vertex. The structure will hold the x, y and z values of any point on the screen. The variables x, y &amp; z are all floating point so we can position the point anywhere on the screen with great accuracy. The structure name is VERTEX.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">typedef struct										// Structure For 3D Points
+{
+	float	x, y, z;								// X, Y &amp; Z Points
+} VERTEX;										// Called VERTEX
+</pre>
+<p>We already have a structure to keep track of vertices, and we know that an object is made up of many vertices so lets create an OBJECT structure. The first variable verts is an integer value that will hold the number of vertices required to make up an object. So if our object has 5 points, the value of verts will be equal to 5. We will set the value later in the code. For now, all you need to know is that verts keeps track of how many points we use to create the object.</p>
+<p>The variable points will reference a single VERTEX (x, y and z values). This allows us to grab the x, y or z value of any point using points[{point we want to access}].{x, y or z}.</p>
+<p>The name of this structure is... you guessed it... OBJECT!</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">typedef	struct										// Structure For An Object
+{
+ int		verts;									// Number Of Vertices For The Object
+ VERTEX		*points;								// One Vertice (Vertex x,y &amp; z)
+} OBJECT;										// Called OBJECT
+</pre>
+<p>Now that we have created a VERTEX structure and an OBJECT structure we can define some objects.</p>
+<p>The variable maxver will be used to keep track of the maximum number of variables used in any of the objects. If one object only had 5 points, another had 20, and the last object had 15, the value of maxver would be equal to the greatest number of points used. So maxver would be equal to 20.</p>
+<p>After we define maxver we can define the objects. morph1, morph2, morph3, morph4 &amp; helper are all defined as an OBJECT. *sour &amp; *dest are defined as OBJECT* (pointer to an object). The object is made up of vertices (VERTEX). The first 4 morph{num} objects will hold the 4 objects we want to morph to and from. helper will be used to keep track of changes as the object is morphed. *sour will point to the source object and *dest will point to the object we want to morph to (destination object).</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">int		maxver;									// Will Eventually Hold The Maximum Number Of Vertices
+OBJECT		morph1,morph2,morph3,morph4,						// Our 4 Morphable Objects (morph1,2,3 &amp; 4)
+		helper,*sour,*dest;		 					// Helper Object, Source Object, Destination Object
+</pre>
+<p>Same as always, we declare WndProc().</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">LRESULT	CALLBACK WndProc(HWND, UINT, WPARAM, LPARAM);					// Declaration
+</pre>
+<p>The code below allocates memory for each object, based on the number of vertices we pass to n. *k will point to the object we want to allocate memory for.</p>
+<p>The line inside the { }'s allocates the memory for object k's points. A point is an entire VERTEX (3 floats). The memory allocated is the size of VERTEX (3 floats) multiplied by the number of points (n). So if there were 10 points (n=10) we would be allocating room for 30 floating point values (3 floats * 10 points).</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">void objallocate(OBJECT *k,int n)							// Allocate Memory For Each Object
+{											// And Defines points
+	k-&gt;points=(VERTEX*)malloc(sizeof(VERTEX)*n);					// Sets points Equal To VERTEX * Number Of Vertices
+}											// (3 Points For Each Vertice)
+</pre>
+<p>The following code frees the object, releasing the memory used to create the object. The object is passed as k. The free command tells our program to release all the points used to make up our object (k).</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">void objfree(OBJECT *k)									// Frees The Object (Releasing The Memory)
+{
+	free(k-&gt;points);								// Frees Points
+}
+</pre>
+<p>The code below reads a string of text from a file. The pointer to our file structure is passed to *f. The variable string will hold the text that we have read in.</p>
+<p>We start off by creating a do / while loop. fgets() will read up to 255 characters from our file f and store the characters at *string. If the line read is blank (carriage return \n), the loop will start over, attempting to find a line with text. The while() statement checks for blank lines and if found starts over again.</p>
+<p>After the string has been read in we return.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">void readstr(FILE *f,char *string)							// Reads A String From File (f)
+{
+	do										// Do This
+	{
+		fgets(string, 255, f);							// Gets A String Of 255 Chars Max From f (File)
+	} while ((string[0] == '/') || (string[0] == '\n'));				// Read Again If Line Has Comment Or Is Blank
+	return;										// Return
+}
+</pre>
+<p>Now we load in an object. *name points to the filename. *k points to the object we wish to load data into.</p>
+<p>We start off with an integer variable called ver. ver will hold the number of vertices used to build the object.</p>
+<p>The variables rx, ry &amp; rz will hold the x, y &amp; z values of each vertex.</p>
+<p>The variable filein is the pointer to our file structure, and oneline[ ] will be used to hold 255 characters of text.</p>
+<p>We open the file name for read in text translated mode (meaning CTRL-Z represents the end of a line). Then we read in a line of text using readstr(filein,oneline). The line of text will be stored in oneline.</p>
+<p>After we have read in the text, we scan the line of text (oneline) for the phrase "Vertices: {some number}{carriage return}. If the text is found, the number is stored in the variable ver. This number is the number of vertices used to create the object. If you look at the object text files, you'll see that the first line of text is: Vertices: {some number}.</p>
+<p>After we know how many vertices are used we store the results in the objects verts variable. Each object could have a different value if each object had a different number of vertices.</p>
+<p>The last thing we do in this section of code is allocate memory for the object. We do this by calling objallocate({object name},{number of verts}).</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">void objload(char *name,OBJECT *k)							// Loads Object From File (name)
+{
+	int	ver;									// Will Hold Vertice Count
+	float	rx,ry,rz;								// Hold Vertex X, Y &amp; Z Position
+	FILE	*filein;								// Filename To Open
+	char	oneline[255];								// Holds One Line Of Text (255 Chars Max)
+
+	filein = fopen(name, "rt");							// Opens The File For Reading Text In Translated Mode
+											// CTRL Z Symbolizes End Of File In Translated Mode
+	readstr(filein,oneline);							// Jumps To Code That Reads One Line Of Text From The File
+	sscanf(oneline, "Vertices: %d\n", &amp;ver);					// Scans Text For "Vertices: ".  Number After Is Stored In ver
+	k-&gt;verts=ver;									// Sets Objects verts Variable To Equal The Value Of ver
+	objallocate(k,ver);								// Jumps To Code That Allocates Ram To Hold The Object
+</pre>
+<p>We know how many vertices the object has. We have allocated memory, now all that is left to do is read in the vertices. We create a loop using the variable i. The loop will go through all the vertices.</p>
+<p>Next we read in a line of text. This will be the first line of valid text underneath the "Vertices: {some number}" line. What we should end up reading is a line with floating point values for x, y &amp; z.</p>
+<p>The line is analyzed with sscanf() and the three floating point values are extracted and stored in rx, ry and rz.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	for (int i=0;i&lt;ver;i++)								// Loops Through The Vertices
+	{
+		readstr(filein,oneline);						// Reads In The Next Line Of Text
+		sscanf(oneline, "%f %f %f", &amp;rx, &amp;ry, &amp;rz);				// Searches For 3 Floating Point Numbers, Store In rx,ry &amp; rz
+</pre>
+<p>The following three lines are hard to explain in plain english if you don't understand structures, etc, but I'll try my best :)</p>
+<p>The line k-&gt;points[i].x=rx can be broken down like this:</p>
+<p>rx is the value on the x axis for one of the points.<br /> points[i].x is the x axis position of point[i].<br /> If i is 0 then were are setting the x axis value of point 1, if i is 1, we are setting the x axis value of point 2, and so on.<br /> points[i] is part of our object (which is represented as k).</p>
+<p>So if i is equal to 0, what we are saying is: The x axis of point 1 (point[0].x) in our object (k) equals the x axis value we just read from the file (rx).</p>
+<p>The other two lines set the y &amp; z axis values for each point in our object.</p>
+<p>We loop through all the vertices. If there are not enough vertices, an error might occur, so make sure the text at the beginning of the file "Vertices: {some number}" is actually the number of vertices in the file. Meaning if the top line of the file says "Vertices: 10", there had better be 10 Vertices (x, y and z values)!</p>
+<p>After reading in all of the vertices we close the file, and check to see if the variable ver is greater than the variable maxver. If ver is greater than maxver, we set maxver to equal ver. That way if we read in one object and it has 20 vertices, maxver will become 20. If we read in another object, and it has 40 vertices, maxver will become 40. That way we know how many vertices our largest object has.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">		k-&gt;points[i].x = rx;							// Sets Objects (k) points.x Value To rx
+		k-&gt;points[i].y = ry;							// Sets Objects (k) points.y Value To ry
+		k-&gt;points[i].z = rz;							// Sets Objects (k) points.z Value To rz
+	}
+	fclose(filein);									// Close The File
+
+	if(ver&gt;maxver) maxver=ver;							// If ver Is Greater Than maxver Set maxver Equal To ver
+}											// Keeps Track Of Highest Number Of Vertices Used
+</pre>
+<p>The next bit of code may look a little intimidating... it's NOT :) I'll explain it so clearly you'll laugh when you next look at it.</p>
+<p>What the code below does is calculates a new position for each point when morphing is enabled. The number of the point to calculate is stored in i. The results will be returned in the VERTEX structure.</p>
+<p>The first variable we create is a VERTEX called a. This will give a an x, y and z value.</p>
+<p>Lets look at the first line. The x value of the VERTEX a equals the x value of point[i] (point[i].x) in our SOURCE object minus the x value of point[i] (point[i].x) in our DESTINATION object divided by steps.</p>
+<p>So lets plug in some numbers. Lets say our source objects first x value is 40 and our destination objects first x value is 20. We already know that steps is equal to 200! So that means that a.x=(40-20)/200... a.x=(20)/200... a.x=0.1.</p>
+<p>What this means is that in order to move from 40 to 20 in 200 steps, we need to move by 0.1 units each calculation. To prove this calculation, multiply 0.1 by 200, and you get 20. 40-20=20 :)</p>
+<p>We do the same thing to calculate how many units to move on both the y axis and the z axis for each point. If you increase the value of steps the movements will be even more fine (smooth), but it will take longer to morph from one position to another.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">VERTEX calculate(int i)									// Calculates Movement Of Points During Morphing
+{
+	VERTEX a;									// Temporary Vertex Called a
+	a.x=(sour-&gt;points[i].x - dest-&gt;points[i].x) / steps;				// a.x Value Equals Source x - Destination x Divided By Steps
+	a.y=(sour-&gt;points[i].y - dest-&gt;points[i].y) / steps;				// a.y Value Equals Source y - Destination y Divided By Steps
+	a.z=(sour-&gt;points[i].z - dest-&gt;points[i].z) / steps;				// a.z Value Equals Source z - Destination z Divided By Steps
+	return a;									// Return The Results
+}											// This Makes Points Move At A Speed So They All Get To Their
+</pre>
+<p>The ReSizeGLScene() code hasn't changed so we'll skip over it.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">GLvoid ReSizeGLScene(GLsizei width, GLsizei height)					// Resize And Initialize The GL Window
+</pre>
+<p>In the code below we set blending for translucency. This allows us to create neat looking trails when the points are moving.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">int InitGL(GLvoid)									// All Setup For OpenGL Goes Here
+{
+	glBlendFunc(GL_SRC_ALPHA,GL_ONE);						// Set The Blending Function For Translucency
+	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);						// This Will Clear The Background Color To Black
+	glClearDepth(1.0);								// Enables Clearing Of The Depth Buffer
+	glDepthFunc(GL_LESS);								// The Type Of Depth Test To Do
+	glEnable(GL_DEPTH_TEST);							// Enables Depth Testing
+	glShadeModel(GL_SMOOTH);							// Enables Smooth Color Shading
+	glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);				// Really Nice Perspective Calculations
+</pre>
+<p>We set the maxver variable to 0 to start off. We haven't read in any objects so we don't know what the maximum amount of vertices will be.</p>
+<p>Next well load in 3 objects. The first object is a sphere. The data for the sphere is stored in the file sphere.txt. The data will be loaded into the object named morph1. We also load a torus, and a tube into objects morph2 and morph3.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	maxver=0;									// Sets Max Vertices To 0 By Default
+	objload("data/sphere.txt",&amp;morph1);						// Load The First Object Into morph1 From File sphere.txt
+	objload("data/torus.txt",&amp;morph2);						// Load The Second Object Into morph2 From File torus.txt
+	objload("data/tube.txt",&amp;morph3);						// Load The Third Object Into morph3 From File tube.txt
+</pre>
+<p>The 4th object isn't read from a file. It's a bunch of dots randomly scattered around the screen. Because we're not reading the data from a file, we have to manually allocate the memory by calling objallocate(&amp;morph4,468). 468 means we want to allocate enough space to hold 468 vertices (the same amount of vertices the other 3 objects have).</p>
+<p>After allocating the space, we create a loop that assigns a random x, y and z value to each point. The random value will be a floating point value from +7 to -7. (14000/1000=14... minus 7 gives us a max value of +7... if the random number is 0, we have a minimum value of 0-7 or -7).</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	objallocate(&amp;morph4,486);							// Manually Reserver Ram For A 4th 468 Vertice Object (morph4)
+	for(int i=0;i&lt;486;i++)								// Loop Through All 468 Vertices
+	{
+		morph4.points[i].x=((float)(rand()%14000)/1000)-7;			// morph4 x Point Becomes A Random Float Value From -7 to 7
+		morph4.points[i].y=((float)(rand()%14000)/1000)-7;			// morph4 y Point Becomes A Random Float Value From -7 to 7
+		morph4.points[i].z=((float)(rand()%14000)/1000)-7;			// morph4 z Point Becomes A Random Float Value From -7 to 7
+	}
+</pre>
+<p>We then load the sphere.txt as a helper object. We never want to modify the object data in morph{1/2/3/4} directly. We modify the helper data to make it become one of the 4 shapes. Because we start out displaying morph1 (a sphere) we start the helper out as a sphere as well.</p>
+<p>After all of the objects are loaded, we set the source and destination objects (sour and dest) to equal morph1, which is the sphere. This way everything starts out as a sphere.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	objload("data/sphere.txt",&amp;helper);						// Load sphere.txt Object Into Helper (Used As Starting Point)
+	sour=dest=&amp;morph1;								// Source &amp; Destination Are Set To Equal First Object (morph1)
+
+	return TRUE;									// Initialization Went OK
+}
+</pre>
+<p>Now for the fun stuff. The actual rendering code :)</p>
+<p>We start off normal. Clear the screen, depth buffer and reset the modelview matrix. Then we position the object on the screen using the values stored in cx, cy and cz.</p>
+<p>Rotations are done using xrot, yrot and zrot.</p>
+<p>The rotation angle is increased based on xspeed, yspeed and zspeed.</p>
+<p>Finally 3 temporary variables are created tx, ty and tz, along with a new VERTEX called q.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">void DrawGLScene(GLvoid)								// Here's Where We Do All The Drawing
+{
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);				// Clear The Screen And The Depth Buffer
+	glLoadIdentity();								// Reset The View
+	glTranslatef(cx,cy,cz);								// Translate To The Current Position
+	glRotatef(xrot,1,0,0);								// Rotate On The X Axis By xrot
+	glRotatef(yrot,0,1,0);								// Rotate On The Y Axis By yrot
+	glRotatef(zrot,0,0,1);								// Rotate On The Z Axis By zrot
+
+	xrot+=xspeed; yrot+=yspeed; zrot+=zspeed;					// Increase xrot,yrot &amp; zrot by xspeed, yspeed &amp; zspeed
+
+	GLfloat tx,ty,tz;								// Temp X, Y &amp; Z Variables
+	VERTEX q;									// Holds Returned Calculated Values For One Vertex
+</pre>
+<p>Now we draw the points and do our calculations if morphing is enabled. glBegin(GL_POINTS) tells OpenGL that each vertex that we specify will be drawn as a point on the screen.</p>
+<p>We create a loop to loop through all the vertices. You could use maxver, but because every object has the same number of vertices we'll use morph1.verts.</p>
+<p>Inside the loop we check to see if morph is TRUE. If it is we calculate the movement for the current point (i). q.x, q.y and q.z will hold the results. If morph is false, q.x, q.y and q.z will be set to 0 (preventing movement).</p>
+<p>The points in the helper object are moved based on the results of we got from calculate(i). (remember earlier that we calculated a point would have to move 0.1 units to make it from 40 to 20 in 200 steps).</p>
+<p>We adjust the each points value on the x, y and z axis by subtracting the number of units to move from helper.</p>
+<p>The new helper point is stored in tx, ty and tz. (t{x/y/z}=helper.points[i].{x/y/z}).</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	glBegin(GL_POINTS);								// Begin Drawing Points
+		for(int i=0;i&lt;morph1.verts;i++)						// Loop Through All The Verts Of morph1 (All Objects Have
+		{									// The Same Amount Of Verts For Simplicity, Could Use maxver Also)
+			if(morph) q=calculate(i); else q.x=q.y=q.z=0;			// If morph Is True Calculate Movement Otherwise Movement=0
+			helper.points[i].x-=q.x;					// Subtract q.x Units From helper.points[i].x (Move On X Axis)
+			helper.points[i].y-=q.y;					// Subtract q.y Units From helper.points[i].y (Move On Y Axis)
+			helper.points[i].z-=q.z;					// Subtract q.z Units From helper.points[i].z (Move On Z Axis)
+			tx=helper.points[i].x;						// Make Temp X Variable Equal To Helper's X Variable
+			ty=helper.points[i].y;						// Make Temp Y Variable Equal To Helper's Y Variable
+			tz=helper.points[i].z;						// Make Temp Z Variable Equal To Helper's Z Variable
+</pre>
+<p>Now that we have the new position calculated it's time to draw our points. We set the color to a bright bluish color, and then draw the first point with glVertex3f(tx,ty,tz). This draws a point at the newly calculated position.</p>
+<p>We then darken the color a little, and move 2 steps in the direction we just calculated instead of one. This moves the point to the newly calculated position, and then moves it again in the same direction. So if it was travelling left at 0.1 units, the next dot would be at 0.2 units. After calculating 2 positions ahead we draw the second point.</p>
+<p>Finally we set the color to dark blue, and calculate even further ahead. This time using our example we would move 0.4 units to the left instead of 0.1 or 0.2. The end result is a little tail of particles following as the dots move. With blending, this creates a pretty cool effect!</p>
+<p>glEnd() tells OpenGL we are done drawing points.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">			glColor3f(0,1,1);						// Set Color To A Bright Shade Of Off Blue
+			glVertex3f(tx,ty,tz);						// Draw A Point At The Current Temp Values (Vertex)
+			glColor3f(0,0.5f,1);						// Darken Color A Bit
+			tx-=2*q.x; ty-=2*q.y; ty-=2*q.y;				// Calculate Two Positions Ahead
+			glVertex3f(tx,ty,tz);						// Draw A Second Point At The Newly Calculate Position
+			glColor3f(0,0,1);						// Set Color To A Very Dark Blue
+			tx-=2*q.x; ty-=2*q.y; ty-=2*q.y;				// Calculate Two More Positions Ahead
+			glVertex3f(tx,ty,tz);						// Draw A Third Point At The Second New Position
+		}									// This Creates A Ghostly Tail As Points Move
+	glEnd();									// Done Drawing Points
+</pre>
+<p>The last thing we do is check to see if morph is TRUE and step is less than steps (200). If step is less than 200, we increase step by 1.</p>
+<p>If morph is false or step is greater than or equal to steps (200), morph is set to FALSE, the sour (source) object is set to equal the dest (destination) object, and step is set back to 0. This tells the program that morphing is not happening or it has just finished.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	// If We're Morphing And We Haven't Gone Through All 200 Steps Increase Our Step Counter
+	// Otherwise Set Morphing To False, Make Source=Destination And Set The Step Counter Back To Zero.
+	if(morph &amp;&amp; step&lt;=steps)step++; else { morph=FALSE; sour=dest; step=0;}
+}
+</pre>
+<p>The KillGLWindow() code hasn't changed much. The only real difference is that we free all of the objects from memory before we kill the windows. This prevents memory leaks, and is good practice ;)</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">GLvoid KillGLWindow(GLvoid)								// Properly Kill The Window
+{
+	objfree(&amp;morph1);								// Jump To Code To Release morph1 Allocated Ram
+	objfree(&amp;morph2);								// Jump To Code To Release morph2 Allocated Ram
+	objfree(&amp;morph3);								// Jump To Code To Release morph3 Allocated Ram
+	objfree(&amp;morph4);								// Jump To Code To Release morph4 Allocated Ram
+	objfree(&amp;helper);								// Jump To Code To Release helper Allocated Ram
+
+	if (fullscreen)									// Are We In Fullscreen Mode?
+	{
+		ChangeDisplaySettings(NULL,0);						// If So Switch Back To The Desktop
+		ShowCursor(TRUE);							// Show Mouse Pointer
+	}
+
+	if (hRC)									// Do We Have A Rendering Context?
+	{
+		if (!wglMakeCurrent(NULL,NULL))						// Are We Able To Release The DC And RC Contexts?
+		{
+			MessageBox(NULL,"Release Of DC And RC Failed.","SHUTDOWN ERROR",MB_OK | MB_ICONINFORMATION);
+		}
+
+		if (!wglDeleteContext(hRC))						// Are We Able To Delete The RC?
+		{
+			MessageBox(NULL,"Release Rendering Context Failed.","SHUTDOWN ERROR",MB_OK | MB_ICONINFORMATION);
+		}
+		hRC=NULL;								// Set RC To NULL
+	}
+
+	if (hDC &amp;&amp; !ReleaseDC(hWnd,hDC))						// Are We Able To Release The DC
+	{
+		MessageBox(NULL,"Release Device Context Failed.","SHUTDOWN ERROR",MB_OK | MB_ICONINFORMATION);
+		hDC=NULL;								// Set DC To NULL
+	}
+
+	if (hWnd &amp;&amp; !DestroyWindow(hWnd))						// Are We Able To Destroy The Window?
+	{
+		MessageBox(NULL,"Could Not Release hWnd.","SHUTDOWN ERROR",MB_OK | MB_ICONINFORMATION);
+		hWnd=NULL;								// Set hWnd To NULL
+	}
+
+	if (!UnregisterClass("OpenGL",hInstance))					// Are We Able To Unregister Class
+	{
+		MessageBox(NULL,"Could Not Unregister Class.","SHUTDOWN ERROR",MB_OK | MB_ICONINFORMATION);
+		hInstance=NULL;								// Set hInstance To NULL
+	}
+}
+</pre>
+<p>The CreateGLWindow() and WndProc() code hasn't changed. So I'll skip over it.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">BOOL CreateGLWindow()									// Creates The GL Window
+
+LRESULT CALLBACK WndProc()								// Handle For This Window
+</pre>
+<p>In WinMain() there are a few changes. First thing to note is the new caption on the title bar :)</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">int WINAPI WinMain(	HINSTANCE	hInstance,					// Instance
+			HINSTANCE	hPrevInstance,					// Previous Instance
+			LPSTR		lpCmdLine,					// Command Line Parameters
+			int		nCmdShow)					// Window Show State
+{
+	MSG	msg;									// Windows Message Structure
+	BOOL	done=FALSE;								// Bool Variable To Exit Loop
+
+	// Ask The User Which Screen Mode They Prefer
+	if (MessageBox(NULL,"Would You Like To Run In Fullscreen Mode?", "Start FullScreen?",MB_YESNO|MB_ICONQUESTION)==IDNO)
+	{
+		fullscreen=FALSE;							// Windowed Mode
+	}
+
+	// Create Our OpenGL Window
+	if (!CreateGLWindow("Piotr Cieslak &amp; NeHe's Morphing Points Tutorial",640,480,16,fullscreen))
+	{
+		return 0;								// Quit If Window Was Not Created
+	}
+
+	while(!done)									// Loop That Runs While done=FALSE
+	{
+		if (PeekMessage(&amp;msg,NULL,0,0,PM_REMOVE))				// Is There A Message Waiting?
+		{
+			if (msg.message==WM_QUIT)					// Have We Received A Quit Message?
+			{
+				done=TRUE;						// If So done=TRUE
+			}
+			else								// If Not, Deal With Window Messages
+			{
+				TranslateMessage(&amp;msg);					// Translate The Message
+				DispatchMessage(&amp;msg);					// Dispatch The Message
+			}
+		}
+		else									// If There Are No Messages
+		{
+			// Draw The Scene.  Watch For ESC Key And Quit Messages From DrawGLScene()
+			if (active &amp;&amp; keys[VK_ESCAPE])					// Active?  Was There A Quit Received?
+			{
+				done=TRUE;						// ESC or DrawGLScene Signaled A Quit
+			}
+			else								// Not Time To Quit, Update Screen
+			{
+				DrawGLScene();						// Draw The Scene (Don't Draw When Inactive 1% CPU Use)
+				SwapBuffers(hDC);					// Swap Buffers (Double Buffering)
+</pre>
+<p>The code below watches for key presses. By now you should understand the code fairly easily. If page up is pressed we increase zspeed. This causes the object to spin faster on the z axis in a positive direction.</p>
+<p>If page down is pressed we decrease zspeed. This causes the object to spin faster on the z axis in a negative direction.</p>
+<p>If the down arrow is pressed we increase xspeed. This causes the object to spin faster on the x axis in a positive direction.</p>
+<p>If the up arrow is pressed we decrease xspeed. This causes the object to spin faster on the x axis in a negative direction.</p>
+<p>If the right arrow is pressed we increase yspeed. This causes the object to spin faster on the y axis in a positive direction.</p>
+<p>If the left arrow is pressed we decrease yspeed. This causes the object to spin faster on the y axis in a negative direction.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">				if(keys[VK_PRIOR])					// Is Page Up Being Pressed?
+					zspeed+=0.01f;					// Increase zspeed
+
+				if(keys[VK_NEXT])					// Is Page Down Being Pressed?
+					zspeed-=0.01f;					// Decrease zspeed
+
+				if(keys[VK_DOWN])					// Is Down Arrow Being Pressed?
+					xspeed+=0.01f;					// Increase xspeed
+
+				if(keys[VK_UP])						// Is Up Arrow Being Pressed?
+					xspeed-=0.01f;					// Decrease xspeed
+
+				if(keys[VK_RIGHT])					// Is Right Arrow Being Pressed?
+					yspeed+=0.01f;					// Increase yspeed
+
+				if(keys[VK_LEFT])					// Is Left Arrow Being Pressed?
+					yspeed-=0.01f;					// Decrease yspeed
+</pre>
+<p>The following keys physically move the object. 'Q' moves it into the screen, 'Z' moves it towards the viewer, 'W' moves the object up, 'S' moves it down, 'D' moves it right, and 'A' moves it left.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">				if (keys['Q'])						// Is Q Key Being Pressed?
+				 cz-=0.01f;						// Move Object Away From Viewer
+
+				if (keys['Z'])						// Is Z Key Being Pressed?
+				 cz+=0.01f;						// Move Object Towards Viewer
+
+				if (keys['W'])						// Is W Key Being Pressed?
+				 cy+=0.01f;						// Move Object Up
+
+				if (keys['S'])						// Is S Key Being Pressed?
+				 cy-=0.01f;						// Move Object Down
+
+				if (keys['D'])						// Is D Key Being Pressed?
+				 cx+=0.01f;						// Move Object Right
+
+				if (keys['A'])						// Is A Key Being Pressed?
+				 cx-=0.01f;						// Move Object Left
+</pre>
+<p>Now we watch to see if keys 1 through 4 are pressed. If 1 is pressed and key is not equal to 1 (not the current object already) and morph is false (not already in the process of morphing), we set key to 1, so that our program knows we just selected object 1. We then set morph to TRUE, letting our program know it's time to start morphing, and last we set the destination object (dest) to equal object 1 (morph1).</p>
+<p>Pressing keys 2, 3, and 4 does the same thing. If 2 is pressed we set dest to morph2, and we set key to equal 2. Pressing 3, sets dest to morph3 and key to 3.</p>
+<p>By setting key to the value of the key we just pressed on the keyboard, we prevent the user from trying to morph from a sphere to a sphere or a cone to a cone!</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">				if (keys['1'] &amp;&amp; (key!=1) &amp;&amp; !morph)			// Is 1 Pressed, key Not Equal To 1 And Morph False?
+				{
+					key=1;						// Sets key To 1 (To Prevent Pressing 1 2x In A Row)
+					morph=TRUE;					// Set morph To True (Starts Morphing Process)
+					dest=&amp;morph1;					// Destination Object To Morph To Becomes morph1
+				}
+				if (keys['2'] &amp;&amp; (key!=2) &amp;&amp; !morph)			// Is 2 Pressed, key Not Equal To 2 And Morph False?
+				{
+					key=2;						// Sets key To 2 (To Prevent Pressing 2 2x In A Row)
+					morph=TRUE;					// Set morph To True (Starts Morphing Process)
+					dest=&amp;morph2;					// Destination Object To Morph To Becomes morph2
+				}
+				if (keys['3'] &amp;&amp; (key!=3) &amp;&amp; !morph)			// Is 3 Pressed, key Not Equal To 3 And Morph False?
+				{
+					key=3;						// Sets key To 3 (To Prevent Pressing 3 2x In A Row)
+					morph=TRUE;					// Set morph To True (Starts Morphing Process)
+					dest=&amp;morph3;					// Destination Object To Morph To Becomes morph3
+				}
+				if (keys['4'] &amp;&amp; (key!=4) &amp;&amp; !morph)			// Is 4 Pressed, key Not Equal To 4 And Morph False?
+				{
+					key=4;						// Sets key To 4 (To Prevent Pressing 4 2x In A Row)
+					morph=TRUE;					// Set morph To True (Starts Morphing Process)
+					dest=&amp;morph4;					// Destination Object To Morph To Becomes morph4
+				}
+</pre>
+<p>Finally we watch to see if F1 is pressed if it is we toggle from Fullscreen to Windowed mode or Windowed mode to Fullscreen mode!</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">				if (keys[VK_F1])					// Is F1 Being Pressed?
+				{
+					keys[VK_F1]=FALSE;				// If So Make Key FALSE
+					KillGLWindow();					// Kill Our Current Window
+					fullscreen=!fullscreen;				// Toggle Fullscreen / Windowed Mode
+					// Recreate Our OpenGL Window
+					if (!CreateGLWindow("Piotr Cieslak &amp; NeHe's Morphing Points Tutorial",640,480,16,fullscreen))
+					{
+						return 0;				// Quit If Window Was Not Created
+					}
+				}
+			}
+		}
+	}
+
+	// Shutdown
+	KillGLWindow();									// Kill The Window
+	return (msg.wParam);								// Exit The Program
+}
+</pre>
+<p>I hope you have enjoyed this tutorial. Although it's not an incredibly complex tutorial, you can learn alot from the code! The animation in my dolphin demo is done in a similar way to the morphing in this demo. By playing around with the code you can come up with some really cool effects. Dots turning into words. Faked animation, and more! You may even want to try using solid polygons or lines instead of dots. The effect can be quite impressive!</p>
+<p>Piotr's code is new and refreshing. I hope that after reading through this tutorial you have a better understanding on how to store and load object data from a file, and how to manipulate the data to create cool GL effects in your own programs! The .html for this tutorial took 3 days to write. If you notice any mistakes please let me know. Alot of it was written late at night, meaning a few mistakes may have crept in. I want these tutorials to be the best they can be. Feedback is appreciated!</p>
+<p>RabidHaMsTeR released a demo called "Morph" before this tutorial was written that shows off a more advanced version of this effect. You can check it out yourself at <a href="javascript:if(confirm('http://nehe.gamedev.net/data/lessons/http://homepage.ntlworld.com/fj.williams/PgSoftware.html  \n\nThis file was not retrieved by Teleport Pro, because the server reports that this file cannot be found.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev.net/data/lessons/http://homepage.ntlworld.com/fj.williams/PgSoftware.html'" tppabs="http://nehe.gamedev.net/data/lessons/http://homepage.ntlworld.com/fj.williams/PgSoftware.html"> /data/lessons/http://homepage.ntlworld.com/fj.williams/PgSoftware.html</a>.</p>
+<p><strong>Piotr Cieslak</strong></p>
+<p><strong>Jeff Molofee</strong> (<strong>NeHe</strong>)</p>
+<p>* DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/vc/lesson25.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/vc/lesson25.zip'" tppabs="http://nehe.gamedev.net/data/lessons/vc/lesson25.zip">Visual C++</a> Code For This Lesson.</p>
+<p>* DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/bcb6/lesson25_bcb6.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/bcb6/lesson25_bcb6.zip'" tppabs="http://nehe.gamedev.net/data/lessons/bcb6/lesson25_bcb6.zip">Borland C++ Builder 6</a> Code For This Lesson. ( Conversion by <a href="mailto:christian@tugzip.com">Christian Kindahl</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/cwarrior/lesson25.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/cwarrior/lesson25.zip'" tppabs="http://nehe.gamedev.net/data/lessons/cwarrior/lesson25.zip">Code Warrior 5.3</a> Code For This Lesson. ( Conversion by <a href="mailto:DelusionalBeing@hotmail.com">Scott Lupton</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/delphi/lesson25.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/delphi/lesson25.zip'" tppabs="http://nehe.gamedev.net/data/lessons/delphi/lesson25.zip">Delphi</a> Code For This Lesson. ( Conversion by <a href="mailto:michal_praha@seznam.cz">Michal Tucek</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/devc/lesson25.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/devc/lesson25.zip'" tppabs="http://nehe.gamedev.net/data/lessons/devc/lesson25.zip">Dev C++</a> Code For This Lesson. ( Conversion by <a href="mailto:danprogram@hotmail.com">Dan</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/euphoria/lesson25.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/euphoria/lesson25.zip'" tppabs="http://nehe.gamedev.net/data/lessons/euphoria/lesson25.zip">Euphoria</a> Code For This Lesson. ( Conversion by <a href="mailto:1evan@sbcglobal.net">Evan Marshall</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/lccwin32/lccwin32_lesson25.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/lccwin32/lccwin32_lesson25.zip'" tppabs="http://nehe.gamedev.net/data/lessons/lccwin32/lccwin32_lesson25.zip">LCC Win32</a> Code For This Lesson. ( Conversion by <a href="mailto:rwishlaw@shaw.ca">Robert Wishlaw</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/linux/lesson25.tar.gz  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/linux/lesson25.tar.gz'" tppabs="http://nehe.gamedev.net/data/lessons/linux/lesson25.tar.gz">Linux</a> Code For This Lesson. ( Conversion by <a href="mailto:jay@remotepoint.com">Jay Groven</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/linuxglx/lesson25.tar.gz  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/linuxglx/lesson25.tar.gz'" tppabs="http://nehe.gamedev.net/data/lessons/linuxglx/lesson25.tar.gz">Linux/GLX</a> Code For This Lesson. ( Conversion by <a href="mailto:Schubert_P@Yahoo.de">Patrick Schubert</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/linuxsdl/lesson25.tar.gz  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/linuxsdl/lesson25.tar.gz'" tppabs="http://nehe.gamedev.net/data/lessons/linuxsdl/lesson25.tar.gz">Linux/SDL</a> Code For This Lesson. ( Conversion by <a href="mailto:scarab@egyptian.net">DarkAlloy</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/lwjgl/lesson25.jar  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/lwjgl/lesson25.jar'" tppabs="http://nehe.gamedev.net/data/lessons/lwjgl/lesson25.jar">LWJGL</a> Code For This Lesson. ( Conversion by <a href="mailto:mark.bernard@rogers.com">Mark Bernard</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/macosxcocoa/lesson25.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/macosxcocoa/lesson25.zip'" tppabs="http://nehe.gamedev.net/data/lessons/macosxcocoa/lesson25.zip">Mac OS X/Cocoa</a> Code For This Lesson. ( Conversion by <a href="mailto:blb@pobox.com">Bryan Blackburn</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/vs_net/lesson25.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/vs_net/lesson25.zip'" tppabs="http://nehe.gamedev.net/data/lessons/vs_net/lesson25.zip">Visual Studio .NET</a> Code For This Lesson. ( Conversion by <a href="mailto:ultimatezeus@hotmail.com">Grant James</a> )</p>
+<p>&nbsp;</p>
+<p><strong><span><a href="index-64.htm" tppabs="http://nehe.gamedev.net/data/lessons/lesson.asp?lesson=24">&lt; Lesson 24</a></span></strong><strong><span><a href="index-66.htm" tppabs="http://nehe.gamedev.net/data/lessons/lesson.asp?lesson=26">Lesson 26 &gt;</a></span></strong></p>
+
+
+</div>
+</div>
+
+
+
+            <div style="width:728px;padding:0px;margin:auto; margin-top: 10px;">
+            
+
+    
+                <!-- Leaderboard_NeHe -->
+                <div id='div-gpt-ad-1327940144417-0' style='width:728px; height:90px;'>
+                <script type='text/javascript'>
+                googletag.cmd.push(function() { googletag.display('div-gpt-ad-1327940144417-0'); });
+                </script>
+                </div>
+            
+
+                           
+            </div>   
+        </td>
+        <td class="col2">
+            
+
+
+
+
+<div style="text-align: center; padding:10px;">
+
+<script type='text/javascript'>
+    GA_googleFillSlot("Skyscraper_NeHe");
+</script>
+
+</div>
+            
+        </td>
+    </table>
+    <div id="footer">
+        <p>
+            
+    
+    © 1997-2012 Gamedev . All rights reserved.<br/>
+
+			NeHe™ and NeHe Productions™ are trademarks of GameDev.net, LLC<br/>
+			OpenGL® is a registered trademark of Silicon Graphics Inc.<br/>
+		</p>        
+		<br/>
+    </div>
+
+    
+    
+	    <script type="text/javascript" src="shCore.js" tppabs="http://nehe.gamedev.net/static/js/syntax_highlighter/shCore.js"></script>
+        <script type="text/javascript" src="shBrushCpp.js" tppabs="http://nehe.gamedev.net/static/js/syntax_highlighter/shBrushCpp.js"></script>
+	    <script type="text/javascript" src="shBrushJScript.js" tppabs="http://nehe.gamedev.net/static/js/syntax_highlighter/shBrushJScript.js"></script>
+	    <script type="text/javascript">SyntaxHighlighter.all();</script>
+    
+
+    <!-- Place this render call where appropriate -->
+    <script type="text/javascript">
+      (function() {
+        var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+        po.src = 'plusone.js'/*tpa=https://apis.google.com/js/plusone.js*/;
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+      })();
+    </script>    
+
+    
+<!-- GoogleAnalytics code -->
+<script src="urchin.js" tppabs="http://www.google-analytics.com/urchin.js" type="text/javascript">
+</script>
+<script type="text/javascript">
+_uacct = "UA-279474-2"; // Gamedev
+urchinTracker();
+_uff = 0; // Reset for second account
+_uacct = "UA-24180731-1"; // Non-GD
+urchinTracker();
+</script> 
+  </body>
+</html>

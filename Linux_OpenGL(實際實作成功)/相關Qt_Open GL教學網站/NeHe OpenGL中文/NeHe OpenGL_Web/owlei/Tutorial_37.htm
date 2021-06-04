@@ -1,0 +1,576 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<!-- 这篇文章由Dancingwind翻译，作者的联系方式zhouwei02@mails.tsinghua.edu.cn -->
+<html>
+<head>
+<title>NeHe OpenGL教程第三十七课，DancingWind翻译</title>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<style type=text/css>
+A:link {COLOR: #ccaaff; TEXT-DECORATION: none}
+A:visited {COLOR: #ccaaff; TEXT-DECORATION: none}
+A:active {COLOR: #ccaaff; TEXT-DECORATION: none}
+A:hover {COLOR: #ffccaa; TEXT-DECORATION: none}
+</style>
+</head>
+
+<br><br>
+
+<body bgcolor=#000000 text=#ffffff><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td width=326 height=130><img src="logo.png" tppabs="http://www.owlei.com/DancingWind/Pic/logo.png" width=326 height=130></td>
+    <td valign=middle align=center width="75%"><font color=#ffccaa size=+3><b><i>第37课 
+      </i></b></font></td>
+  </tr></table>
+  <!-- 上边框-->
+<table border="0" cellPadding="0" cellSpacing="0" width="100%">
+<TBODY>
+  <tr>
+    <td><img height="28" src="tl.jpg" tppabs="http://www.owlei.com/DancingWind/Pic/tl.jpg" width="28"></td>
+    <td width="100%"><img height="28" src="tc.gif" tppabs="http://www.owlei.com/DancingWind/Pic/tc.gif" width="100%"></td>
+    <td><img height="28" src="tr.gif" tppabs="http://www.owlei.com/DancingWind/Pic/tr.gif" width="28"></td>
+  </tr>
+</TBODY>
+</table>
+
+<!-- 中部-->
+<table border="0" cellPadding="0" cellSpacing="0" width="100%">
+<TBODY>
+  <tr>
+  	<!-- 中部左边框-->
+    <td  background="l.gif" tppabs="http://www.owlei.com/DancingWind/Pic/l.gif"><img src="l.gif" tppabs="http://www.owlei.com/DancingWind/Pic/l.gif" width="28" height="28"></td>
+	<!-- 中部文字部分-->
+    <td vAlign="top" width="100%">
+	<table width="100%" border="0">
+          <tr>
+            <td width="25%"><img src="lesson37.jpg" tppabs="http://www.owlei.com/DancingWind/Pic/lesson37.jpg" width="240" height="180"></td>
+            <td width="75%"><p><FONT 
+                  class=head>卡通映射:</FONT></p>
+              <p><font size="3">什么是卡通了，一个轮廓加上少量的几种颜色。使用一维纹理映射，你也可以实现这种效果。</FONT></p></td>
+          </tr>
+     </table>
+      </td>
+	<!-- 中部右边框-->
+    <td background="r.gif" tppabs="http://www.owlei.com/DancingWind/Pic/r.gif"><img src="r.gif" tppabs="http://www.owlei.com/DancingWind/Pic/r.gif" width="28" height="28"></td>
+  </tr>
+</TBODY>
+</table>
+
+<!-- 下边框-->
+<table border="0" cellPadding="0" cellSpacing="0" width="100%">
+<TBODY>
+  <tr>
+    <td><img height="28" src="bl.gif" tppabs="http://www.owlei.com/DancingWind/Pic/bl.gif" width="28"></td>
+    <td width="100%"><img height="28" src="bc.gif" tppabs="http://www.owlei.com/DancingWind/Pic/bc.gif" width="100%"></td>
+    <td><img height="28" src="br.gif" tppabs="http://www.owlei.com/DancingWind/Pic/br.gif" width="28"></td>
+  </tr>
+</TBODY>
+</table>
+  <table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>看到人们仍然e-mail我请求在文章中使用我方才在GameDev.net上写的源代码，还看到文章的第二版（在那每一个API附带源码）不是在中途完成之前连贯的结束。我已经把这篇指南一并出租给了NeHe（这实际上是写文章的最初意图）因此你们所有的OpenGL领袖可以玩转它。对模型的选择表示抱歉，但是我最近一直在玩Quake 
+      2。<br>
+      注释：这篇文章的源代码可以在这里找到：<br>
+      http://www.gamedev.net/reference/programming/features/celshading. <br>
+      这篇指南实际上并不解释原理，仅仅解释代码。在上面的连接中可以发现为什么它能工作。现在不断地大声抱怨STOP E-MAILING ME REQUESTS 
+      FOR SOURCE CODE!!!! <br>
+      首先，我们需要包含一些额外的头文件。第一个（math.h）我们可以使用sqrtf (square root)函数，第二个用来访问文件。 <br></td><td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table><font color=#aaffaa size=3><pre>
+#include &lt;math.h&gt;						
+#include &lt;stdio.h&gt;						
+</pre></font><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>现在我们将定义一些结构体来帮助我们存贮我们的数据（保存好几百浮点数组）。第一个是tagMATRIX结构体。如果你仔细地看，你将看到我们正象包含一个十六个浮点数的1维数组~一个2维4×4数族一样存储那个矩阵。这下至OpenGL存储它的矩阵的方式。如果我们使用4x4数组，这些值将发生错误的顺序。<br></td><td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table>
+<font color=#aaffaa size=3>
+<pre>
+typedef struct tagMATRIX					<font color=#ffffaa>// 保存OpenGL矩阵的结构体</font>
+{
+	float Data[16];					<font color=#ffffaa>// 由于OpenGL的矩阵的格式我们使用[16</font>
+}
+MATRIX;
+</pre>
+</font>
+<table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>第二是向量的类。 仅存储X，Y和Z的值</td>
+    <td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table>
+<font color=#aaffaa size=3>
+<pre>
+typedef struct tagVECTOR					<font color=#ffffaa>// 存储一个单精度向量的结构体</font>
+{
+	float X, Y, Z;					<font color=#ffffaa>// 向量的分量</font>
+}
+VECTOR;
+</pre>
+</font>
+<table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>第三，我们持有顶点的结构。每一个顶点仅需要它的法线和位置（没有纹理的现行纵坐标）信息。它们必须以这样的次序被存放，否则当它停止装载文件的事件将发生严重的错误（我发现艰难的情形：（教我分块出租我的代码。）。<br></td><td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table>
+<font color=#aaffaa size=3> 
+<pre>
+typedef struct tagVERTEX					<font color=#ffffaa>// 存放单一顶点的结构</font>
+{
+	VECTOR Nor;					<font color=#ffffaa>// 顶点法线</font>
+	VECTOR Pos;					<font color=#ffffaa>// 顶点位置</font>
+}
+VERTEX;
+</pre>
+</font> 
+<table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>最后是多边形的结构。我知道这是存储顶点的愚蠢的方法，要不是它完美工作的简单的缘故。通常我愿意使用一个顶点数组，一个多边形数组，和包括一个在多边形中的3个顶点的指数，但这比较容易显示你想干什么。</td>
+    <td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table>
+<font color=#aaffaa size=3>
+<pre>
+typedef struct tagPOLYGON					<font color=#ffffaa>// 存储单一多边形的结构</font>
+{
+	VERTEX Verts[3];					<font color=#ffffaa>// 3个顶点结构数组</font>
+}
+POLYGON;
+</pre>
+</font>
+<table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>优美简单的材料也在这里了。为每一个变量的一个解释考虑那个注释。</td>
+    <td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table>
+<font color=#aaffaa size=3> 
+<pre>
+bool		outlineDraw	= true;				<font color=#ffffaa>// 绘制轮廓的标记</font>
+bool		outlineSmooth	= false;				<font color=#ffffaa>// Anti-Alias 线段的标记</font>
+float		outlineColor[3]	= { 0.0f, 0.0f, 0.0f };		<font color=#ffffaa>// 线段的颜色</font>
+float		outlineWidth	= 3.0f;				<font color=#ffffaa>// 线段的宽度</font>
+
+VECTOR		lightAngle;					<font color=#ffffaa>// 灯光的方向</font>
+bool		lightRotate	= false;			<font color=#ffffaa>	// 是否我们旋转灯光的标记</font>
+
+float		modelAngle	= 0.0f;				<font color=#ffffaa>// 模型的Y轴角度</font>
+bool    	modelRotate	= false;					<font color=#ffffaa>// 旋转模型的标记</font>
+
+POLYGON		*polyData	= NULL;					<font color=#ffffaa>// 多边形数据</font>
+int		polyNum		= 0;				<font color=#ffffaa>// 多边形的编号</font>
+
+GLuint		shaderTexture[1];					<font color=#ffffaa>// 存储纹理ID</font>
+</pre>
+</font> 
+<table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>这是得到的再简单不过的模型文件格式。 最初的少量字节存储在场景中的多边形的编号，文件的其余是tagPOLYGON结构体的一个数组。正因如此，数据在没有任何需要去分类到详细的顺序的情况下被读出。</td>
+    <td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table>
+<font color=#aaffaa size=3> 
+<pre>
+BOOL ReadMesh ()						<font color=#ffffaa>// 读“model.txt” 文件</font>
+{
+	FILE *In = fopen ("Data\\model.txt", "rb");		<font color=#ffffaa>// 打开文件</font>
+
+	if (!In)
+		return FALSE;				<font color=#ffffaa>// 如果文件没有打开返回 FALSE</font>
+
+	fread (&amp;polyNum, sizeof (int), 1, In);		<font color=#ffffaa>// 读文件头，多边形的个数</font>
+
+	polyData = new POLYGON [polyNum];			<font color=#ffffaa>// 分配内存</font>
+
+	fread (&amp;polyData[0], sizeof (POLYGON) * polyNum, 1, In);<font color=#ffffaa>// 把所有多边形的数据读入</font>
+
+	fclose (In);					<font color=#ffffaa>// 关闭文件</font>
+
+	return TRUE;					<font color=#ffffaa>// 工作完成</font>
+}
+</pre>
+</font> 
+<table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>一些基本的数学函数而已。DotProduct计算2个向量或平面之间的角，Magnitude函数计算向量的长度，Normalize函数缩放向量到一个单位长度。<br></td><td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table>
+<font color=#aaffaa size=3> 
+<pre>
+inline float DotProduct (VECTOR &amp;V1, VECTOR &amp;V2)		<font color=#ffffaa>//计算两个向量之间的角度</font>
+{
+	return V1.X * V2.X + V1.Y * V2.Y + V1.Z * V2.Z;		
+}
+
+inline float Magnitude (VECTOR &amp;V)				<font color=#ffffaa>// 计算向量的长度</font>
+{
+	return sqrtf (V.X * V.X + V.Y * V.Y + V.Z * V.Z);	
+}
+
+void Normalize (VECTOR &amp;V)					<font color=#ffffaa>// 创建一个单位长度的向量</font>
+{
+	float M = Magnitude (V);				
+
+	if (M != 0.0f)					<font color=#ffffaa>// 确保我们没有被0隔开</font>
+	{
+		V.X /= M;					
+		V.Y /= M;
+		V.Z /= M;
+	}
+}
+</pre>
+</font> 
+<table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>这个函数利用给定的矩阵旋转一个向量。请注意它仅旋转这个向量——与向量的位置相比它算不了什么。它用来当旋转法线确保当我们在计算灯光时它们停留在正确的方向上。</td>
+    <td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table><font color=#aaffaa size=3>
+<pre>
+void RotateVector (MATRIX &amp;M, VECTOR &amp;V, VECTOR &amp;D)		<font color=#ffffaa>// 利用提供的矩阵旋转一个向量</font>
+{
+	D.X = (M.Data[0] * V.X) + (M.Data[4] * V.Y) + (M.Data[8]  * V.Z);	
+	D.Y = (M.Data[1] * V.X) + (M.Data[5] * V.Y) + (M.Data[9]  * V.Z);	
+	D.Z = (M.Data[2] * V.X) + (M.Data[6] * V.Y) + (M.Data[10] * V.Z);	
+}
+</pre>
+</font><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>引擎的第一个主要的函数…… 初始化，按所说的精确地做。我已经砍掉了在注释中不再需要的代码段。</td>
+    <td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table><font color=#aaffaa size=3><pre>
+<font color=#ffffaa>// 一些GL 初始代码和用户初始化从这里开始</font>
+BOOL Initialize (GL_Window* window, Keys* keys)
+{
+</pre></font><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>这3个变量用来装载着色文件。在文本文件中为了单一的线段线段包含了空间，虽然shaderData存储了真实的着色值。你可能奇怪为什么我们的96个值被32个代替了。好了，我们需要转换greyscale 
+      值为RGB以便OpenGL能使用它们。我们仍然可以以greyscale存储这些值，但向上负载纹理时我们至于R，G和B成分仅仅使用同一值。</td>
+    <td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table>
+<font color=#aaffaa size=3> 
+<pre>
+	char Line[255];						<font color=#ffffaa>// 255个字符的存储量</font>
+	float shaderData[32][3];					<font color=#ffffaa>// 96个着色值的存储量</font>
+	g_window	= window;<br>	g_keys		= keys;
+	FILE *In = NULL;						<font color=#ffffaa>// 文件指针</font>
+</pre>
+</font>
+<table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>当绘制线条时，我们想要确保很平滑。初值被关闭，但是按“2”键，它可以被toggled on/off。</td>
+    <td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table>
+<font color=#aaffaa size=3> 
+<pre>
+	glShadeModel (GL_SMOOTH);				<font color=#ffffaa>// 使用色彩阴影平滑</font>
+	glDisable (GL_LINE_SMOOTH);				<font color=#ffffaa>// 线条平滑初始化不可用</font>
+
+	glHint (GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);	<font color=#ffffaa>// 提高计算精度	</font>	
+	glClearColor (0.7f, 0.7f, 0.7f, 0.0f);		<font color=#ffffaa>// 设置为灰色背景</font>	
+	glClearDepth (1.0f);				<font color=#ffffaa>// 设置深度缓存值</font>
+  	glEnable (GL_DEPTH_TEST); 	<font color=#ffffaa>// 启用深度测试</font>
+  	glDepthFunc (GL_LESS); <font color=#ffffaa>	// 设置深度比较函数</font>
+	glShadeModel (GL_SMOOTH); <font color=#ffffaa>	// 启用反走样</font>
+  	glDisable (GL_LINE_SMOOTH); 
+</pre>
+<pre>
+glEnable (GL_CULL_FACE);				<font color=#ffffaa>// 启用剔除多边形功能</font>
+</pre>
+</font> 
+<table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>我们使 OpenGL灯光不可用因为我们自己做所以的灯光计算。</td>
+    <td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table><font color=#aaffaa size=3><pre>
+	glDisable (GL_LIGHTING);				<font color=#ffffaa>// 使 OpenGL 灯光不可用</font>
+</pre></font><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>这里是我们装载阴影文件的地方。它简单地以32个浮点值ASCII码存放（为了轻松修改），每一个在separate线上。</td>
+    <td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table>
+<font color=#aaffaa size=3> 
+<pre>
+	In = fopen ("Data\\shader.txt", "r");			<font color=#ffffaa>// 打开阴影文件</font>
+
+	if (In)							<font color=#ffffaa>// 检查文件是否打开</font>
+	{
+		for (i = 0; i &lt; 32; i++)			<font color=#ffffaa>	// 循环32次</font>
+		{
+			if (feof (In))				<font color=#ffffaa>// 检查文件是否结束</font>
+				break;
+
+			fgets (Line, 255, In);			<font color=#ffffaa>// 获得当前线条</font>
+</pre>
+</font> 
+<table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>这里我们转换 greyscale 值为 RGB, 正象上面所描述的。</td>
+    <td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table>
+<font color=#aaffaa size=3>
+<pre>
+			<font color=#ffffaa>// 从头到尾复制这个值</font>
+			shaderData[i][0] = shaderData[i][1] = shaderData[i][2] = atof (Line);
+		}
+
+		fclose (In);					<font color=#ffffaa>// 关闭文件</font>
+	}
+
+	else
+		return FALSE;					</pre>
+</font>
+<table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>现在我们向上装载这个纹理。同样它清楚地规定，不要使用任何一种过滤在纹理上否则它看起来奇怪，至少可以这样说。GL_TEXTURE_1D被使用因为它是值的一维数组。</td>
+    <td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table>
+<font color=#aaffaa size=3>
+<pre>
+	glGenTextures (1, &amp;shaderTexture[0]);			<font color=#ffffaa>// 获得一个自由的纹理ID</font>
+
+	glBindTexture (GL_TEXTURE_1D, shaderTexture[0]);	<font color=#ffffaa>	// 绑定这个纹理。 从现在开始它变为一维</font>
+
+	<font color=#ffffaa>// 使用邻近点过滤</font>
+	glTexParameteri (GL_TEXTURE_1D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	glTexParameteri (GL_TEXTURE_1D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+
+	<font color=#ffffaa>// 设置纹理</font>
+	glTexImage1D (GL_TEXTURE_1D, 0, GL_RGB, 32, 0, GL_RGB , GL_FLOAT, shaderData);
+</pre>
+</font>
+<table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>现在调整灯光方向。我已经使得它向下指向Z轴正方向，这意味着它将正面碰撞模型</td>
+    <td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table><font color=#aaffaa size=3>
+<pre>
+	lightAngle.X = 0.0f;					
+	lightAngle.Y = 0.0f;					
+	lightAngle.Z = 1.0f;				
+
+	Normalize (lightAngle);
+</pre>
+</font><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>读取Mesh文件,并返回</td>
+    <td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table><font color=#aaffaa size=3><pre>
+	return ReadMesh ();					<font color=#ffffaa>// 读取Mesh文件,并返回</font>
+}
+</pre></font><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>与上面的函数相对应…… 卸载，删除由Initalize 和 ReadMesh 创建的纹理和多边形数据。</td>
+    <td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table>
+<font color=#aaffaa size=3> 
+<pre>
+void Deinitialize (void)
+{
+	glDeleteTextures (1, &amp;shaderTexture[0]);		<font color=#ffffaa>// 删除阴影纹理</font>
+
+	delete [] polyData;				<font color=#ffffaa>// 删除多边形数据</font>
+}
+</pre>
+</font> 
+<table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>主要的演示循环。所有这些用来处理输入和更新角度。控制如下： 
+      <p>&lt;SPACE&gt; =锁定旋转</p>
+      <p>1 = 锁定轮廓绘制<br>
+        2 = 锁定轮廓 anti-aliasing </p>
+      <p>&lt;UP&gt; =增加线宽<br>
+        &lt;DOWN&gt; = 减小线宽</p></td><td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table>
+<font color=#aaffaa size=3> 
+<pre>
+void Update (DWORD milliseconds)				<font color=#ffffaa>// 这里执行动作更新</font>
+{
+	if (g_keys-&gt;keyDown [' '] == TRUE)			<font color=#ffffaa>// 空格是否被按下</font>
+	{
+		modelRotate = !modelRotate;			<font color=#ffffaa>// 锁定模型旋转开/关</font>
+
+		g_keys-&gt;keyDown [' '] = FALSE;
+	}
+
+	if (g_keys-&gt;keyDown ['1'] == TRUE)			<font color=#ffffaa>// 1是否被按下</font>
+	{
+		outlineDraw = !outlineDraw;			<font color=#ffffaa>// 切换是否绘制轮廓线</font>
+
+		g_keys-&gt;keyDown ['1'] = FALSE;
+	}
+
+	if (g_keys-&gt;keyDown ['2'] == TRUE)			<font color=#ffffaa>// 2是否被按下</font>
+	{
+		outlineSmooth = !outlineSmooth;		<font color=#ffffaa>// 切换是否使用反走样</font>
+
+		g_keys-&gt;keyDown ['2'] = FALSE;
+	}
+
+	if (g_keys-&gt;keyDown [VK_UP] == TRUE)			<font color=#ffffaa>// 上键增加线的宽度</font>
+	{
+		outlineWidth++;					
+
+		g_keys-&gt;keyDown [VK_UP] = FALSE;
+	}
+
+	if (g_keys-&gt;keyDown [VK_DOWN] == TRUE)		<font color=#ffffaa>// 下减少线的宽度</font>
+	{
+		outlineWidth--;					
+
+		g_keys-&gt;keyDown [VK_DOWN] = FALSE;
+	}
+
+	if (modelRotate)					<font color=#ffffaa>// 是否旋转</font>
+		modelAngle += (float) (milliseconds) / 10.0f;	<font color=#ffffaa>// 更新旋转角度</font>
+}
+</pre>
+</font>
+<table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>你一直在等待的函数。Draw 函数做每一件事情——计算阴影的值，着色网孔，着色轮廓，等等，这是它作的。</td>
+    <td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table><font color=#aaffaa size=3><pre>
+void Draw (void)
+{
+</pre></font><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>TmpShade用来存储当前顶点的色度值。所有顶点数据同时被计算，意味着我们只需使用我们能继续使用的单个的变量。<br>
+      TmpMatrix, TmpVector 和 TmpNormal同样被用来计算顶点数据，TmpMatrix在函数开始时被调整一次并一直保持到Draw函数被再次调用。TmpVector 
+      和 TmpNormal则相反，当另一个顶点被处理时改变。<br></td><td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table>
+<font color=#aaffaa size=3> 
+<pre>
+	float TmpShade;						<font color=#ffffaa>// 临时色度值</font>
+
+	MATRIX TmpMatrix;						<font color=#ffffaa>// 临时 MATRIX 结构体</font>
+	VECTOR TmpVector, TmpNormal;				<font color=#ffffaa>// 临时 VECTOR结构体</font>
+</pre>
+</font> 
+<table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>清除缓冲区矩阵数据</td>
+    <td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table>
+<font color=#aaffaa size=3>
+<pre>
+	glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);	<font color=#ffffaa>//  清除缓冲区</font>
+	glLoadIdentity ();					<font color=#ffffaa>// 重置矩阵</font>
+</pre>
+</font>
+<table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>首先检查我们是否想拥有平滑的轮廓。如果是，我们就打开anti-alaising 。否则把它关闭。简单！</td>
+    <td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table><font color=#aaffaa size=3>
+<pre>
+	if (outlineSmooth)					<font color=#ffffaa>// 检查我们是否想要 Anti-Aliased 线条</font>
+	{
+		glHint (GL_LINE_SMOOTH_HINT, GL_NICEST);	<font color=#ffffaa>// 启用它们</font>
+		glEnable (GL_LINE_SMOOTH);			
+	}
+
+	else						<font color=#ffffaa>// 否则不启用</font>
+		glDisable (GL_LINE_SMOOTH);		</pre>
+</font><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>然后我们设置视口。我们反向移动摄象机2个单元，之后以一定角度旋转模型。注：由于我们首先移动摄象机，这个模型将在现场旋转。如果我们以另一种方法做，模型将绕摄象机旋转。<br>
+      我们之后从OpenGL中取最新创建的矩阵并把它存储在 TmpMatrix。<br></td><td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table>
+<font color=#aaffaa size=3>
+<pre>
+	glTranslatef (0.0f, 0.0f, -2.0f);			<font color=#ffffaa>// 移入屏幕两个单位</font>
+	glRotatef (modelAngle, 0.0f, 1.0f, 0.0f);		<font color=#ffffaa>// 绕Y轴旋转这个模型</font>
+
+	glGetFloatv (GL_MODELVIEW_MATRIX, TmpMatrix.Data);	<font color=#ffffaa>// 获得产生的矩阵</font>
+</pre>
+</font>
+<table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>戏法开始了。首先我们启用一维纹理，然后启用着色纹理。这被OpenGL用来当作一个look-up表格。我们之后调整模型的颜色（白色）我选择白色是因为它亮度高并且描影法比其它颜色好。我建议你不要使用黑色：）<br></td><td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table>
+<font color=#aaffaa size=3> 
+<pre>
+	<font color=#ffffaa>// 卡通渲染代码</font>
+	glEnable (GL_TEXTURE_1D);				<font color=#ffffaa>// 启用一维纹理</font>
+	glBindTexture (GL_TEXTURE_1D, shaderTexture[0]);	<font color=#ffffaa>// 锁定我们的纹理</font>
+
+	glColor3f (1.0f, 1.0f, 1.0f);				<font color=#ffffaa>// 调整模型的颜色</font>
+</pre>
+</font> 
+<table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>现在我们开始绘制那些三角形。尽管我们看到在数组中的每一个多边形，然后旋转它的每一个顶点。第一步是拷贝法线信息到一个临时的结构中。因此我们能旋转法线，但仍然保留原来保存的值（没有精确降级）。<br></td><td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table>
+<font color=#aaffaa size=3> 
+<pre>
+	glBegin (GL_TRIANGLES);					<font color=#ffffaa>// 告诉 OpenGL 我们即将绘制三角形</font>
+
+		for (i = 0; i &lt; polyNum; i++)			<font color=#ffffaa>// 从头到尾循环每一个多边形</font>
+		{
+			for (j = 0; j &lt; 3; j++)			<font color=#ffffaa>// 从头到尾循环每一个顶点 </font>
+			{
+				TmpNormal.X = polyData[i].Verts[j].Nor.X;	<font color=#ffffaa>// 用当前顶点的法线值填充TmpNormal结构</font>
+				TmpNormal.Y = polyData[i].Verts[j].Nor.Y;	
+				TmpNormal.Z = polyData[i].Verts[j].Nor.Z;
+</pre>
+</font> 
+<table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>第二，我们通过初期从OpenGL中攫取的矩阵来旋转这个法线。我们之后规格化因此它并不全部变为螺旋形。</td>
+    <td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table>
+<font color=#aaffaa size=3>
+<pre>
+				<font color=#ffffaa>// 通过矩阵旋转</font>
+				RotateVector (TmpMatrix, TmpNormal, TmpVector);
+
+				Normalize (TmpVector);		<font color=#ffffaa>// 规格化这个新法线</font>
+</pre>
+</font>
+<table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top><p>第三，我们获得那个旋转的法线的点积灯光方向（称为lightAngle，因为我忘了从我的旧的light类中改变它）。我们之后约束这个值在0——1的范围。（从-1到+1）</p>
+      </td>
+    <td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table>
+<font color=#aaffaa size=3>
+<pre>
+				<font color=#ffffaa>// 计算色度值</font>
+				TmpShade = DotProduct (TmpVector, lightAngle);
+
+				if (TmpShade &lt; 0.0f)
+					TmpShade = 0.0f;	<font color=#ffffaa>// 如果负值约束这个值到0</font>
+</pre>
+</font>
+<table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>第四，对于OpenGL我们象忽略纹理坐标一样忽略这个值。阴影纹理与一个查找表一样来表现（色度值正成为指数），这是（我认为）为什么1D纹理被创造主要原因。对于OpenGL我们之后忽略这个顶点位置，并不断重复，重复。至此我认为你已经抓到了概念。</td>
+    <td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table>
+<font color=#aaffaa size=3> 
+<pre>
+				glTexCoord1f (TmpShade);	<font color=#ffffaa>// 规定纹理的纵坐标当作这个色度值</font>
+				<font color=#ffffaa>// 送顶点</font>
+				glVertex3fv (&amp;polyData[i].Verts[j].Pos.X);
+		    }
+		}
+
+	glEnd ();						<font color=#ffffaa>// 告诉OpenGL 完成绘制</font>
+
+	glDisable (GL_TEXTURE_1D);				<font color=#ffffaa>// 1D 纹理不可用</font>
+</pre>
+</font> 
+<table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>现在我们转移到轮廓之上。一个轮廓能以“它的相邻的边，一边为可见，另一边为不可见”定义。在OpenGL中，这是深度测试被规定小于或等于(GL_LEQUAL)当前值的地方，并且就在那时所有前面的面被精选。我们同样也要混合线条，以使它看起来不错：）<br>
+      那么，我们使混合可用并规定混合模式。我们告诉OpenGL与着色线条一样着色backfacing多边形，并且规定这些线条的宽度。我们精选所有前面多边形，并规定测试深度小于或等于当前的Z值。在这个线条的的颜色被规定后，我们从头到尾循环每一个多边形，绘制它的顶点。我们仅需忽略顶点位置，而不是法线或着色值因为我们需要的仅仅是轮廓。<br></td><td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table>
+<font color=#aaffaa size=3> 
+<pre>
+	<font color=#ffffaa>// 轮廓代码</font>
+	if (outlineDraw)						<font color=#ffffaa>// 检查看是否我们需要绘制轮廓</font>
+	{
+		glEnable (GL_BLEND);				<font color=#ffffaa>// 使混合可用</font>
+		<font color=#ffffaa>// 调整混合模式</font>
+		glBlendFunc (GL_SRC_ALPHA ,GL_ONE_MINUS_SRC_ALPHA);
+
+		glPolygonMode (GL_BACK, GL_LINE);			<font color=#ffffaa>// 绘制轮廓线</font>
+		glLineWidth (outlineWidth);			<font color=#ffffaa>	// 调整线宽</font>
+
+		glCullFace (GL_FRONT);				<font color=#ffffaa>// 剔出前面的多边形</font>
+
+		glDepthFunc (GL_LEQUAL);				<font color=#ffffaa>// 改变深度模式</font>
+
+		glColor3fv (&amp;outlineColor[0]);			<font color=#ffffaa>// 规定轮廓颜色</font>
+
+		glBegin (GL_TRIANGLES);				<font color=#ffffaa>// 告诉OpenGL我们想要绘制什么</font>
+
+			for (i = 0; i &lt; polyNum; i++)		<font color=#ffffaa>// 从头到尾循环每一个多边形</font>
+			{
+				for (j = 0; j &lt; 3; j++)		<font color=#ffffaa>// 从头到尾循环每一个顶点</font>
+				{
+					<font color=#ffffaa>// 送顶点</font>
+					glVertex3fv (&amp;polyData[i].Verts[j].Pos.X);
+				}
+			}
+
+		glEnd ();						<font color=#ffffaa>// 告诉 OpenGL我们已经完成</font>
+</pre>
+</font> 
+<table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>这样以后，我们就把它规定为以前的状态，然后退出</td>
+    <td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table>
+<font color=#aaffaa size=3> 
+<pre>
+		glDepthFunc (GL_LESS);				<font color=#ffffaa>// 重置深度测试模式</font>
+
+		glCullFace (GL_BACK);				<font color=#ffffaa>// 重置剔出背面多边形</font>
+
+		glPolygonMode (GL_BACK, GL_FILL);			<font color=#ffffaa>// 重置背面多边形绘制方式</font>
+
+		glDisable (GL_BLEND);				<font color=#ffffaa>//  混合不可用</font>
+	}
+}
+</pre>
+</font> 
+<table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top><p>你现在看到Cel-Shading并非那样难。当然技术可以提高非常多。一个好的例子是游戏XIII 
+        http://www.nvidia.com/object/game_xiii.html，它使你认为你在一个卡通世界里。如果你想在卡通透视技术里达到更深层次，你可以浏览这本书实时透视这一章“Non-Photorealistic 
+        Rendering”。如果你更喜欢在WEB上读论文，在这里可以发现一大堆联接列表：http://www.red3d.com/cwr/npr/ 
+      </p>
+<table width="100%" border="1">
+  <tr>
+    <td width="27%"><img src="logo 3.jpg" tppabs="http://www.owlei.com/DancingWind/images/logo%203.jpg" width="209" height="200" align="middle"></td>
+    <td width="73%">版权与使用声明:<br>
+      我是个对学习和生活充满激情的普通男孩,在网络上我以DancingWind为昵称，我的联系方式是zhouwei02@mails.tsinghua.edu.cn，如果你有任何问题，都可以联系我。
+      <p>引子<br>
+        网络是一个共享的资源，但我在自己的学习生涯中浪费大量的时间去搜索可用的资料，在现实生活中花费了大量的金钱和时间在书店中寻找资料，于是我给自己起了个昵称DancingWind，其意义是想风一样从各个知识的站点中吸取成长的养料。在飘荡了多年之后，我决定把自己收集的资料整理为一个统一的资源库。</p>
+      <p>版权声明<br>
+        所有DancingWind发表的内容，大多都来自共享的资源，所以我没有资格把它们据为己有，或声称自己为这些资源作出了一点贡献。故任何人都可以复制，修改，重新发表，甚至以自己的名义发表，我都不会追究，但你在做以上事情的时候必须保证内容的完整性，给后来的人一个完整的教程。最后，任何人不能以这些资料的任何部分，谋取任何形式的报酬。</p>
+      <p>发展计划<br>
+        在国外，很多资料都是很多人花费几年的时间慢慢积累起来的。如果任何人有兴趣与别人共享你的知识，我很欢迎你与我联系，但你必须同意我上面的声明。</p>
+            <p>感谢<br>
+              感谢我的母亲一直以来对我的支持和在生活上的照顾。<br>
+              感谢我深爱的女友田芹，一直以来默默的在精神上和生活中对我的支持，她甚至把买衣服的钱都用来给我买书了，她真的是我见过的最好的女孩，希望我能带给她幸福。</p>
+            <p>资源下载: <br>
+              文档 <a href="javascript:if(confirm('http://www.owlei.com/DancingWind/Res/mht/NeHe%20OpenGL%20Chinese%20Course%2037.mht  \n\nThis file was not retrieved by Teleport Pro, because the server reports that this file cannot be found.  \n\nDo you want to open it from the server?'))window.location='http://www.owlei.com/DancingWind/Res/mht/NeHe%20OpenGL%20Chinese%20Course%2037.mht'" tppabs="http://www.owlei.com/DancingWind/Res/mht/NeHe%20OpenGL%20Chinese%20Course%2037.mht">网页格式</a> 
+              <a href="javascript:if(confirm('http://www.owlei.com/DancingWind/Res/pdf/OpenGL_Nehe_Course_Tutorial_37.pdf  \n\nThis file was not retrieved by Teleport Pro, because the server reports that this file cannot be found.  \n\nDo you want to open it from the server?'))window.location='http://www.owlei.com/DancingWind/Res/pdf/OpenGL_Nehe_Course_Tutorial_37.pdf'" tppabs="http://www.owlei.com/DancingWind/Res/pdf/OpenGL_Nehe_Course_Tutorial_37.pdf">PDF格式</a><br>
+              源码 <a href="javascript:if(confirm('http://www.owlei.com/DancingWind/Res/Src/37_CellRender.rar  \n\nThis file was not retrieved by Teleport Pro, because the server reports that this file cannot be found.  \n\nDo you want to open it from the server?'))window.location='http://www.owlei.com/DancingWind/Res/Src/37_CellRender.rar'" tppabs="http://www.owlei.com/DancingWind/Res/Src/37_CellRender.rar">RAR格式</a></p></td>
+  </tr>
+</table><table border="0" width="100%">
+        <td width="50%" align="left"><b><font size="-1"><a href="Tutorial_36.htm" tppabs="http://www.owlei.com/DancingWind/Course/Tutorial_36.htm">< 
+          第36课 </a></font></b></td>
+        <td width="50%" align="right"><b><font size="-1"><a href="Tutorial_38.htm" tppabs="http://www.owlei.com/DancingWind/Course/Tutorial_38.htm">第38课 
+          ></a></font></b></td>
+      </table>
+      </font></td>
+    <td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table>
+
+</body>
+</html>

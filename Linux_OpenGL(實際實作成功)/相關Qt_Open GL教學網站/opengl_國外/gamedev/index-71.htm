@@ -1,0 +1,489 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+    dir="ltr"
+    xml:lang="en"
+    lang="en">
+  <head>
+    <title>NeHe Productions: Model Loading</title>
+
+    <link rel="stylesheet" type="text/css" href="public_base.css" tppabs="http://nehe.gamedev.net/static/css/public_base.css" />
+    <link type="text/css" rel="stylesheet" href="shThemeMidnight.css" tppabs="http://nehe.gamedev.net/static/css/syntax_highlighter/shThemeMidnight.css"/>
+    
+    <link rel="alternate" type="application/atom+xml" title="Atom feed" href="index-1.htm" tppabs="http://nehe.gamedev.net/atom/" />
+    <link rel="alternate" type="application/rss+xml" title="RSS feed" href="index-2.htm" tppabs="http://nehe.gamedev.net/rss/" />
+    
+    <meta name="author" content="Luke Benstead + Carsten Haubold" />
+    <meta name="description" content="OpenGL Tutorials, Demos, Games and More..." />
+    <meta name="keywords" content="opengl, tutorial, article, demo, game, blend, texturemap, lighting, contest, 3D" />
+
+    
+    
+
+    
+
+</script>
+
+
+    
+    
+    
+    
+        
+        <script type='text/javascript'>
+        var googletag = googletag || {};
+        googletag.cmd = googletag.cmd || [];
+        (function() {
+        var gads = document.createElement('script');
+        gads.async = true;
+        gads.type = 'text/javascript';
+        var useSSL = 'https:' == document.location.protocol;
+        gads.src = (useSSL ? 'https:' : 'http:') + 
+        '//www.googletagservices.com/tag/js/gpt.js';
+        var node = document.getElementsByTagName('script')[0];
+        node.parentNode.insertBefore(gads, node);
+        })();
+        </script>
+
+        <script type='text/javascript'>
+        googletag.cmd.push(function() {
+        googletag.defineSlot('/1004699/Leaderboard_NeHe', [728, 90], 'div-gpt-ad-1327940144417-0').addService(googletag.pubads());
+        googletag.defineSlot('/1004699/Skyscraper_NeHe', [160, 600], 'div-gpt-ad-1327940144417-1').addService(googletag.pubads());
+        googletag.pubads().enableSingleRequest();
+        googletag.enableServices();
+        });
+        </script>
+    
+    
+
+    
+  </head>
+
+  <body>
+    
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "all.js#xfbml=1"/*tpa=http://connect.facebook.net/en_GB/all.js#xfbml=1*/;
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+
+
+    <table cellpadding="0" cellspacing="0" border="0" id="layout_table">
+    <tr><td>
+        <div id="header">
+                <a href="index.htm" tppabs="http://nehe.gamedev.net/"><img class="logo" class="logo" src="nehe.png" tppabs="http://nehe.gamedev.net/static/images/nehe.png" border="0" alt="Nehe" /></a>
+        </div>            
+    </td></tr>
+    <tr><td colspan="2">
+            
+<div class="navbar">
+    <a href="index.htm" tppabs="http://nehe.gamedev.net/">HOME</a>
+    <a href="javascript:if(confirm('http://twitter.com/  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://twitter.com/#!/nehegl'" tppabs="http://twitter.com/#!/nehegl">TWITTER</a>  
+    <a href="javascript:if(confirm('http://www.facebook.com/pages/NeHe/300582493323181  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://www.facebook.com/pages/NeHe/300582493323181'" tppabs="http://www.facebook.com/pages/NeHe/300582493323181">FACEBOOK</a>     
+    <a href="index-2.htm" tppabs="http://nehe.gamedev.net/rss/">RSS</a>    
+    <a href="index-1.htm" tppabs="http://nehe.gamedev.net/atom/">ATOM</a>    
+    <a href="javascript:if(confirm('http://www.gamedev.net/forum/27-nehe-productions/page__forum_title__NeHe+Productions  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://www.gamedev.net/forum/27-nehe-productions/page__forum_title__NeHe+Productions'" tppabs="http://www.gamedev.net/forum/27-nehe-productions/page__forum_title__NeHe+Productions">FORUM</a>    
+</div>
+    
+    </td></tr>
+    <tr>
+        <td class="col1">
+
+            
+<div id="article_container">
+
+
+<h1 class="article-header">Model Loading</h1>
+<div class="social-media">
+<!-- Place this tag where you want the +1 button to render -->
+<div class="g-plusone" data-size="medium" data-width="120" data-annotation="inline"></div>
+<div class="fb-like" data-send="false" data-layout="button_count" data-width="60" data-show-faces="false" data-colorscheme="dark" data-font="arial"></div>
+</div>
+<div style="clear:both;"></div>
+<p>Model Rendering Tutorial by Brett Porter (brettporter@yahoo.com)</p>
+<p>The source for this project has been extracted from PortaLib3D, a library I have written to enable users to do things like displaying models with very little extra code. But so that you can trust such a library, you should understand what it is doing, so this tutorial aims to help with that.</p>
+<p>The portions of PortaLib3D included here retain my copyright notices. This doesn't mean they can't be used by you - it means that if you cut-and-paste the code into your project, you have to give me proper credit. That's all. If you choose to read, understand, and re-implement the code yourself (and it is what you are encouraged to do if you are not actually using the library. You don't learn anything with cut-and-paste!), then you free yourself of that obligation. Let's face it, the code is nothing special. Ok, let's get onto something more interesting!</p>
+<p>OpenGL Base Code</p>
+<p>The OpenGL base code is in Lesson31.cpp. Mostly it came from Lesson 6, with a small modification to the loading of textures and the drawing routine. The changes will be discussed later.</p>
+<p>Milkshape 3D</p>
+<p>The model I use in this example is from Milkshape 3D. The reason I use this is because it is a damn fine modelling package, and it includes its file-format so it is easy to parse and understand. My next plan is to implement an Anim8or (http://www.anim8or.com) file reader because it is free and of course a 3DS reader.</p>
+<p>However, the file format, while it will be described briefly here, is not the major concern for loading a model. You must create your own structures that are suitable to store the data, and then read the file into that. So first, let's describe the structures required for a model.</p>
+<p>Model Data Structures</p>
+<p>These model data structures come from the class Model in Model.h. First, and most important, we need vertices:</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">// Vertex Structure
+struct Vertex
+{
+	char m_boneID;	// For Skeletal Animation
+	float m_location[3];
+};
+
+// Vertices Used
+int m_numVertices;
+Vertex *m_pVertices;
+</pre>
+<p>For now, you can ignore the m_boneID variable - that will come in a future tutorial! The m_location array represents the coordinate of the vertex (X,Y,Z). The two variables store the number of vertices and the actual vertices in a dynamic array which is allocated by the loader.</p>
+<p>Next we need to group these vertices into triangles:</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">// Triangle Structure
+struct Triangle
+{
+	float m_vertexNormals[3][3];
+	float m_s[3], m_t[3];
+	int m_vertexIndices[3];
+};
+
+// Triangles Used
+int m_numTriangles;
+Triangle *m_pTriangles;
+</pre>
+<p>Now, the 3 vertices that make up the triangle are stored in m_vertexIndices. These are offsets into the array of m_pVertices. This way each vertex need only be listed once, saving memory (and calculations when it comes to animating later). m_s and m_t are the (s,t) texture coordinates for each of the 3 vertices. The texture used is the one applied to this mesh (which is described next). Finally we have the m_vertexNormals member which stores the normal to each of the 3 vertices. Each normal has 3 float coordinates describing the vector.</p>
+<p>The next structure we have in a model is a mesh. A mesh is a group of triangles that all have the same material applied to them. The collection of meshes make up the entire model. The mesh structure is as follows:</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">// Mesh
+struct Mesh
+{
+	int m_materialIndex;
+	int m_numTriangles;
+	int *m_pTriangleIndices;
+};
+
+// Meshes Used
+int m_numMeshes;
+Mesh *m_pMeshes;
+</pre>
+<p>This time you have m_pTriangleIndices storing the triangles in the mesh in the same way as the triangle stored indices to its vertices. It will be dynamically allocated because the number of triangles in a mesh is not known in advance, and is specified by m_numTriangles. Finally, m_materialIndex is the index of the material (texture and lighting coeffecients) to use for the mesh. I'll show you the material structure below:</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">// Material Properties
+struct Material
+{
+	float m_ambient[4], m_diffuse[4], m_specular[4], m_emissive[4];
+	float m_shininess;
+	GLuint m_texture;
+	char *m_pTextureFilename;
+};
+
+// Materials Used
+int m_numMaterials;
+Material *m_pMaterials;
+</pre>
+<p>Here we have all the standard lighting coeffecients in the same format as OpenGL: ambient, diffuse, specular, emissive and shininess. We also have the texture object m_texture and the filename (dynamically allocated) of the texture so that it can be reloaded if the OpenGL context is lost.</p>
+<p>The Code - Loading the Model</p>
+<p>Now, on to loading the model. You will notice there is a pure virtual function called loadModelData, which takes the filename of the model as an argument. What happens is we create a derived class, MilkshapeModel, which implements this function, filling in the protected data structures mentioned above. Lets look at that function now:</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">bool MilkshapeModel::loadModelData( const char *filename )
+{
+	ifstream inputFile( filename, ios::in | ios::binary | ios::nocreate );
+	if ( inputFile.fail() )
+		return false;	// "Couldn't Open The Model File."
+</pre>
+<p>First, the file is opened. It is a binary file, hence the ios::binary qualifier. If it is not found, the function returns false to indicate an error.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	inputFile.seekg( 0, ios::end );
+	long fileSize = inputFile.tellg();
+	inputFile.seekg( 0, ios::beg );
+</pre>
+<p>The above code determines the size of the file in bytes.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	byte *pBuffer = new byte[fileSize];
+	inputFile.read( pBuffer, fileSize );
+	inputFile.close();
+</pre>
+<p>Then the file is read into a temporary buffer in it's entirety.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	const byte *pPtr = pBuffer;
+	MS3DHeader *pHeader = ( MS3DHeader* )pPtr;
+	pPtr += sizeof( MS3DHeader );
+
+	if ( strncmp( pHeader-&gt;m_ID, "MS3D000000", 10 ) != 0 )
+		return false;	// "Not A Valid Milkshape3D Model File."
+
+	if ( pHeader-&gt;m_version &lt; 3 || pHeader-&gt;m_version &gt; 4 )
+		return false;	// "Unhandled File Version.  Only Milkshape3D Version 1.3 And 1.4 Is Supported."
+</pre>
+<p>Now, a pointer is acquired to out current position in the file, pPtr. A pointer to the header is saved, and then the pointer is advanced past the header. You will notice several MS3D... structures being used here. These are declared at the top of MilkshapeModel.cpp, and come directly from the file format specification. The fields of the header are checked to make sure that this is a valid file we are reading.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	int nVertices = *( word* )pPtr;
+	m_numVertices = nVertices;
+	m_pVertices = new Vertex[nVertices];
+	pPtr += sizeof( word );
+
+	int i;
+	for ( i = 0; i &lt; nVertices; i++ )
+	{
+		MS3DVertex *pVertex = ( MS3DVertex* )pPtr;
+		m_pVertices[i].m_boneID = pVertex-&gt;m_boneID;
+		memcpy( m_pVertices[i].m_location, pVertex-&gt;m_vertex, sizeof( float )*3 );
+		pPtr += sizeof( MS3DVertex );
+	}
+</pre>
+<p>The above code reads each of the vertex structures in the file. First memory is allocated in the model for the vertices, and then each is parsed from the file as the pointer is advanced. Several calls to memcpy will be used in this function, which copies the contents of the small arrays easily. The m_boneID member can still be ignored for now - it's for skeletal animation!</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	int nTriangles = *( word* )pPtr;
+	m_numTriangles = nTriangles;
+	m_pTriangles = new Triangle[nTriangles];
+	pPtr += sizeof( word );
+
+	for ( i = 0; i &lt; nTriangles; i++ )
+	{
+		MS3DTriangle *pTriangle = ( MS3DTriangle* )pPtr;
+		int vertexIndices[3] = { pTriangle-&gt;m_vertexIndices[0], pTriangle-&gt;m_vertexIndices[1], pTriangle-&gt;m_vertexIndices[2] };
+		float t[3] = { 1.0f-pTriangle-&gt;m_t[0], 1.0f-pTriangle-&gt;m_t[1], 1.0f-pTriangle-&gt;m_t[2] };
+		memcpy( m_pTriangles[i].m_vertexNormals, pTriangle-&gt;m_vertexNormals, sizeof( float )*3*3 );
+		memcpy( m_pTriangles[i].m_s, pTriangle-&gt;m_s, sizeof( float )*3 );
+		memcpy( m_pTriangles[i].m_t, t, sizeof( float )*3 );
+		memcpy( m_pTriangles[i].m_vertexIndices, vertexIndices, sizeof( int )*3 );
+		pPtr += sizeof( MS3DTriangle );
+	}
+</pre>
+<p>As for the vertices, this part of the function stores all of the triangles in the model. While most of it involves just copying the arrays from one structure to another, you'll notice the difference for the vertexIndices and t arrays. In the file, the vertex indices are stores as an array of word values, but in the model they are int values for consistency and simplicity (no nasty casting needed). So this just converts the 3 values to integers. The t values are all set to 1.0-(original value). The reason for this is that OpenGL uses a lower-left coordinate system, whereas Milkshape uses an upper-left coordinate system for it's texture coordinates. This reverses the y coordinate.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	int nGroups = *( word* )pPtr;
+	m_numMeshes = nGroups;
+	m_pMeshes = new Mesh[nGroups];
+	pPtr += sizeof( word );
+	for ( i = 0; i &lt; nGroups; i++ )
+	{
+		pPtr += sizeof( byte );	// Flags
+		pPtr += 32;		// Name
+
+		word nTriangles = *( word* )pPtr;
+		pPtr += sizeof( word );
+		int *pTriangleIndices = new int[nTriangles];
+		for ( int j = 0; j &lt; nTriangles; j++ )
+		{
+			pTriangleIndices[j] = *( word* )pPtr;
+			pPtr += sizeof( word );
+		}
+
+		char materialIndex = *( char* )pPtr;
+		pPtr += sizeof( char );
+
+		m_pMeshes[i].m_materialIndex = materialIndex;
+		m_pMeshes[i].m_numTriangles = nTriangles;
+		m_pMeshes[i].m_pTriangleIndices = pTriangleIndices;
+	}
+</pre>
+<p>The above code loads the mesh data structures (also called groups in Milkshape3D). Since the number of triangles varies from mesh to mesh, there is no standard structure to read. Instead, they are taken field by field. The memory for the triangle indices is dynamically allocated within the mesh and read one at a time.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	int nMaterials = *( word* )pPtr;
+	m_numMaterials = nMaterials;
+	m_pMaterials = new Material[nMaterials];
+	pPtr += sizeof( word );
+	for ( i = 0; i &lt; nMaterials; i++ )
+	{
+		MS3DMaterial *pMaterial = ( MS3DMaterial* )pPtr;
+		memcpy( m_pMaterials[i].m_ambient, pMaterial-&gt;m_ambient, sizeof( float )*4 );
+		memcpy( m_pMaterials[i].m_diffuse, pMaterial-&gt;m_diffuse, sizeof( float )*4 );
+		memcpy( m_pMaterials[i].m_specular, pMaterial-&gt;m_specular, sizeof( float )*4 );
+		memcpy( m_pMaterials[i].m_emissive, pMaterial-&gt;m_emissive, sizeof( float )*4 );
+		m_pMaterials[i].m_shininess = pMaterial-&gt;m_shininess;
+		m_pMaterials[i].m_pTextureFilename = new char[strlen( pMaterial-&gt;m_texture )+1];
+		strcpy( m_pMaterials[i].m_pTextureFilename, pMaterial-&gt;m_texture );
+		pPtr += sizeof( MS3DMaterial );
+	}
+
+	reloadTextures();
+</pre>
+<p>Lastly, the material information is taken from the buffer. This is done in the same way as those above, copying each of the lighting coefficients into the new structure. Also, new memory is allocated for the texture filename, and it is copied into there. The final call to reloadTextures is used to actually load the textures and bind them to OpenGL texture objects. That function, from the Model base class, is described later.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	delete[] pBuffer;
+
+	return true;
+}
+</pre>
+<p>The last fragment frees the temporary buffer now that all the data has been copied and returns successfully.</p>
+<p>So at this point, the protected member variables of the Model class are filled with the model information. You'll note also that this is the only code in MilkshapeModel because it is the only code specific to Milkshape3D. Now, before the model can be rendered, it is necessary to load the textures for each of it's materials. This is done with the following code:</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">void Model::reloadTextures()
+{
+	for ( int i = 0; i &lt; m_numMaterials; i++ )
+		if ( strlen( m_pMaterials[i].m_pTextureFilename ) &gt; 0 )
+			m_pMaterials[i].m_texture = LoadGLTexture( m_pMaterials[i].m_pTextureFilename );
+		else
+			m_pMaterials[i].m_texture = 0;
+}
+</pre>
+<p>For each material, the texture is loaded using a function from NeHe's base code (slightly modified from it's previous version). If the texture filename was an empty string, then it is not loaded, and instead the texture object identifier is set to 0 to indicate there is no texture.</p>
+<p>The Code - Drawing the Model</p>
+<p>Now we can start the code to draw the model! This is not difficult at all now that we have a careful arrangement of the data structures in memory.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">void Model::draw()
+{
+	GLboolean texEnabled = glIsEnabled( GL_TEXTURE_2D );
+</pre>
+<p>This first part saves the state of texture mapping within OpenGL so that the function does not disturb it. Note however that it does not preserve the material properties in the same way.</p>
+<p>Now we loop through each of the meshes and draw them individually:</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	// Draw By Group
+	for ( int i = 0; i &lt; m_numMeshes; i++ )
+	{
+</pre>
+<p>m_pMeshes[i] will be used to reference the current mesh. Now, each mesh has it's own material properties, so we set up the OpenGL states according to that. If the materialIndex of the mesh is -1 however, there is no material for this mesh and it is drawn with the OpenGL defaults.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">		int materialIndex = m_pMeshes[i].m_materialIndex;
+		if ( materialIndex &gt;= 0 )
+		{
+			glMaterialfv( GL_FRONT, GL_AMBIENT, m_pMaterials[materialIndex].m_ambient );
+			glMaterialfv( GL_FRONT, GL_DIFFUSE, m_pMaterials[materialIndex].m_diffuse );
+			glMaterialfv( GL_FRONT, GL_SPECULAR, m_pMaterials[materialIndex].m_specular );
+			glMaterialfv( GL_FRONT, GL_EMISSION, m_pMaterials[materialIndex].m_emissive );
+			glMaterialf( GL_FRONT, GL_SHININESS, m_pMaterials[materialIndex].m_shininess );
+
+			if ( m_pMaterials[materialIndex].m_texture &gt; 0 )
+			{
+				glBindTexture( GL_TEXTURE_2D, m_pMaterials[materialIndex].m_texture );
+				glEnable( GL_TEXTURE_2D );
+			}
+			else
+				glDisable( GL_TEXTURE_2D );
+		}
+		else
+		{
+			glDisable( GL_TEXTURE_2D );
+		}
+</pre>
+<p>The material properties are set according to the values stored in the model. Note that the texture is only bound and enabled if it is greater than 0. If it is set to 0, you'll recall, there was no texture, so texturing is disabled. Texturing is also disabled if there was no material at all for the mesh.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">		glBegin( GL_TRIANGLES );
+		{
+			for ( int j = 0; j &lt; m_pMeshes[i].m_numTriangles; j++ )
+			{
+				int triangleIndex = m_pMeshes[i].m_pTriangleIndices[j];
+				const Triangle* pTri = &amp;m_pTriangles[triangleIndex];
+
+				for ( int k = 0; k &lt; 3; k++ )
+				{
+					int index = pTri-&gt;m_vertexIndices[k];
+
+					glNormal3fv( pTri-&gt;m_vertexNormals[k] );
+					glTexCoord2f( pTri-&gt;m_s[k], pTri-&gt;m_t[k] );
+					glVertex3fv( m_pVertices[index].m_location );
+				}
+			}
+		}
+		glEnd();
+	}
+</pre>
+<p>The above section does the rendering of the triangles for the model. It loops through each of the triangles for the mesh, and then draws each of it's three vertices, including the normal and texture coordinates. Remember that each triangle in a mesh and likewise each vertex in a triangle is indexed into the total model arrays (these are the two index variables used). pTri is a pointer to the current triangle in the mesh used to simplify the code following it.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	if ( texEnabled )
+		glEnable( GL_TEXTURE_2D );
+	else
+		glDisable( GL_TEXTURE_2D );
+}
+</pre>
+<p>This final fragment of code sets the texture mapping state back to it's original value.</p>
+<p>The only other code of interest in the Model class is the constructor and destructor. These are self explanatory. The constructor initializes all members to 0 (or NULL for pointers), and the destructor deletes the dynamic memory for all of the model structures. You should note that if you call the loadModelData function twice for one Model object, you will get memory leaks. Be careful!</p>
+<p>The final topic I will discuss here is the changes to the base code to render using the new Model class, and where I plan to go from here in a future tutorial introducing skeletal animation.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	Model *pModel = NULL;	// Holds The Model Data
+</pre>
+<p>At the top of the code in Lesson31.cpp the model is declared, but not initialized. It is created in WinMain:</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	pModel = new MilkshapeModel();
+	if ( pModel-&gt;loadModelData( "data/model.ms3d" ) == false )
+	{
+		MessageBox( NULL, "Couldn't load the model data/model.ms3d", "Error", MB_OK | MB_ICONERROR );
+		return 0;									// If Model Didn't Load, Quit
+	}
+</pre>
+<p>The model is created here, and not in InitGL because InitGL gets called everytime we change the screen mode (losing the OpenGL context). But the model doesn't need to be reloaded, as it's data remains intact. What doesn't remain intact are the textures that were bound to texture objects when we loaded the object. So the following line is added to InitGL:</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	pModel-&gt;reloadTextures();
+</pre>
+<p>This takes the place of calling LoadGLTextures as we used to. If there was more than one model in the scene, then this function must be called for all of them. If you get white objects all of a sudden, then your textures have been thrown away and not reloaded correctly.</p>
+<p>Finally there is a new DrawGLScene function:</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">int DrawGLScene(GLvoid)						// Here's Where We Do All The Drawing
+{
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);	// Clear The Screen And The Depth Buffer
+	glLoadIdentity();					// Reset The View
+	gluLookAt( 75, 75, 75, 0, 0, 0, 0, 1, 0 );
+
+	glRotatef(yrot,0.0f,1.0f,0.0f);
+
+	pModel-&gt;draw();
+
+	yrot+=1.0f;
+	return TRUE;						// Keep Going
+}
+</pre>
+<p>Simple? We clear the colour buffer, set the identity into the model/view matrix, and then set an eye projection with gluLookAt. If you haven't used gluLookAt before, essentially it places the camera at the position of the first 3 parameters, places the center of the scene at the position of the next 3 parameters, and the last 3 parameters describe the vector that is "up". In this case, we look from (75, 75, 75) to (0,0,0) - as the model is drawn about (0,0,0) unless you translate before drawing it - and the positive Y-axis is facing up. The function must be called first, and after loading the identity to behave in this fashion.</p>
+<p>To make it a bit more interesting, the scene gradually rotates around the y-axis with glRotatef.</p>
+<p>Finally, the model is drawn with it's draw member function. It is drawn centered at the origin (assuming it was modeled around the origin in Milkshape 3D!), so If you want to position or rotate or scale it, simply call the appropriate GL functions before drawing it. Voila! To test it out - try making your own models in Milkshape (or use it's import function), and load them instead by changing the line in WinMain. Or add them to the scene and draw several models!</p>
+<p>What Next?</p>
+<p>In a future tutorial for NeHe Productions, I will explain how to extend this class structure to incorporate skeletal animation. And if I get around to it, I will write more loader classes to make the program more versatile.</p>
+<p>The step to skeletal animation is not as large as it may seem, although the math involved is much more tricky. If you don't understand much about matrices and vectors, now is the time to read up them! There are several resources on the web that can help you out.</p>
+<p>See you then!</p>
+<p>Some information about Brett Porter: Born in Australia, he studied at the University of Wollongong, recently graduating with a BCompSc and a BMath. He began programming in BASIC 12 years ago on a Commodore 64 "clone" called the VZ300, but soon moved up to Pascal, Intel assembly, C++ and Java. During the last few years 3D programming has become an interest and OpenGL has become his graphics API of choice. For more information visit his homepage at: http://rsn.gamedev.net.</p>
+<p>A follow up to this tutorial on Skeletal Animation can be found on Brett's homepage. Visit the link above!</p>
+<p><strong>Brett Porter</strong></p>
+<p><strong>Jeff Molofee</strong> (<strong>NeHe</strong>)</p>
+<p>* DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/vc/lesson31.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/vc/lesson31.zip'" tppabs="http://nehe.gamedev.net/data/lessons/vc/lesson31.zip">Visual C++</a> Code For This Lesson.</p>
+<p>* DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/bcb6/lesson31_bcb6.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/bcb6/lesson31_bcb6.zip'" tppabs="http://nehe.gamedev.net/data/lessons/bcb6/lesson31_bcb6.zip">Borland C++ Builder 6</a> Code For This Lesson. ( Conversion by <a href="mailto:christian@tugzip.com">Christian Kindahl</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/cwarrior/lesson31.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/cwarrior/lesson31.zip'" tppabs="http://nehe.gamedev.net/data/lessons/cwarrior/lesson31.zip">Code Warrior 5.3</a> Code For This Lesson. ( Conversion by <a href="mailto:DelusionalBeing@hotmail.com">Scott Lupton</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/delphi/lesson31.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/delphi/lesson31.zip'" tppabs="http://nehe.gamedev.net/data/lessons/delphi/lesson31.zip">Delphi</a> Code For This Lesson. ( Conversion by <a href="mailto:michal_praha@seznam.cz">Michal Tucek</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/devc/lesson31.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/devc/lesson31.zip'" tppabs="http://nehe.gamedev.net/data/lessons/devc/lesson31.zip">Dev C++</a> Code For This Lesson. ( Conversion by <a href="mailto:zealouselixir@mchsi.com">Warren Moore</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/euphoria/lesson31.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/euphoria/lesson31.zip'" tppabs="http://nehe.gamedev.net/data/lessons/euphoria/lesson31.zip">Euphoria</a> Code For This Lesson. ( Conversion by <a href="mailto:1evan@sbcglobal.net">Evan Marshall</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/glut/lesson31.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/glut/lesson31.zip'" tppabs="http://nehe.gamedev.net/data/lessons/glut/lesson31.zip">GLut</a> Code For This Lesson. ( Conversion by <a href="mailto:rb@roccobalsamo.com">Rocco Balsamo</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/linuxglx/lesson31.tar.gz  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/linuxglx/lesson31.tar.gz'" tppabs="http://nehe.gamedev.net/data/lessons/linuxglx/lesson31.tar.gz">Linux/GLX</a> Code For This Lesson. ( Conversion by <a href="mailto:rodolphe.suescun@wanadoo.fr">Rodolphe Suescun</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/macosxcocoa/lesson31.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/macosxcocoa/lesson31.zip'" tppabs="http://nehe.gamedev.net/data/lessons/macosxcocoa/lesson31.zip">Mac OS X/Cocoa</a> Code For This Lesson. ( Conversion by <a href="mailto:blb@pobox.com">Bryan Blackburn</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/vs_net/lesson31.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/vs_net/lesson31.zip'" tppabs="http://nehe.gamedev.net/data/lessons/vs_net/lesson31.zip">Visual Studio .NET</a> Code For This Lesson. ( Conversion by <a href="mailto:ultimatezeus@hotmail.com">Grant James</a> )</p>
+<p>&nbsp;</p>
+<p><strong><span><a href="index-70.htm" tppabs="http://nehe.gamedev.net/data/lessons/lesson.asp?lesson=30">&lt; Lesson 30</a></span></strong><strong><span><a href="index-72.htm" tppabs="http://nehe.gamedev.net/data/lessons/lesson.asp?lesson=32">Lesson 32 &gt;</a></span></strong></p>
+
+
+</div>
+</div>
+
+
+
+            <div style="width:728px;padding:0px;margin:auto; margin-top: 10px;">
+            
+
+    
+                <!-- Leaderboard_NeHe -->
+                <div id='div-gpt-ad-1327940144417-0' style='width:728px; height:90px;'>
+                <script type='text/javascript'>
+                googletag.cmd.push(function() { googletag.display('div-gpt-ad-1327940144417-0'); });
+                </script>
+                </div>
+            
+
+                           
+            </div>   
+        </td>
+        <td class="col2">
+            
+
+
+
+
+<div style="text-align: center; padding:10px;">
+
+<script type='text/javascript'>
+    GA_googleFillSlot("Skyscraper_NeHe");
+</script>
+
+</div>
+            
+        </td>
+    </table>
+    <div id="footer">
+        <p>
+            
+    
+    © 1997-2012 Gamedev . All rights reserved.<br/>
+
+			NeHe™ and NeHe Productions™ are trademarks of GameDev.net, LLC<br/>
+			OpenGL® is a registered trademark of Silicon Graphics Inc.<br/>
+		</p>        
+		<br/>
+    </div>
+
+    
+    
+	    <script type="text/javascript" src="shCore.js" tppabs="http://nehe.gamedev.net/static/js/syntax_highlighter/shCore.js"></script>
+        <script type="text/javascript" src="shBrushCpp.js" tppabs="http://nehe.gamedev.net/static/js/syntax_highlighter/shBrushCpp.js"></script>
+	    <script type="text/javascript" src="shBrushJScript.js" tppabs="http://nehe.gamedev.net/static/js/syntax_highlighter/shBrushJScript.js"></script>
+	    <script type="text/javascript">SyntaxHighlighter.all();</script>
+    
+
+    <!-- Place this render call where appropriate -->
+    <script type="text/javascript">
+      (function() {
+        var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+        po.src = 'plusone.js'/*tpa=https://apis.google.com/js/plusone.js*/;
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+      })();
+    </script>    
+
+    
+<!-- GoogleAnalytics code -->
+<script src="urchin.js" tppabs="http://www.google-analytics.com/urchin.js" type="text/javascript">
+</script>
+<script type="text/javascript">
+_uacct = "UA-279474-2"; // Gamedev
+urchinTracker();
+_uff = 0; // Reset for second account
+_uacct = "UA-24180731-1"; // Non-GD
+urchinTracker();
+</script> 
+  </body>
+</html>

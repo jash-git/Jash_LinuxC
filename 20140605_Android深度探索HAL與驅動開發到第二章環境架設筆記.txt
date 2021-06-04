@@ -1,0 +1,38 @@
+01.install google chrome
+02.install/set ibus（讓系統可以輸入中文）
+03.install java jdk
+	sudo apt-get autoremove openjdk-*
+	get jdk：jdk-7u60-linux-i586.tar.gz
+	sudo chmod 777 /opt
+	extract : jdk-7u60-linux-i586.tar.gz to /opt
+	sudo pluma /etc/profile
+		export JAVA_HOME=/opt/jdk1.7.0_60
+		export JRE_HOME=/opt/jdk1.7.0_60/jre  
+		export CLASSPATH=.:$JAVA_HOME/lib:$JRE_HOME/lib:$CLASSPATH  
+		export PATH=$JAVA_HOME/bin:$JRE_HOME/bin:$PATH
+	java -version
+04.install Android
+	http://developer.android.com/sdk/index.html
+	get : adt-bundle-linux-x86-20140321.zip
+	extract : adt-bundle-linux-x86-20140321.zip to  /opt/Android_tools/
+	run : /opt/Android_tools/adt-bundle-linux-x86-20140321/eclipse/eclipse
+		Window->Android SDK Manager(更新開發套件)
+	http://developer.android.com/tools/sdk/ndk/index.html
+	get : android-ndk-r9d-linux-x86.tar.bz2
+	extract : android-ndk-r9d-linux-x86.tar.bz2 to  /opt/Android_tools/
+	sudo pluma /etc/profile
+		export Android_NDK_HOME=/opt/Android_tools/android-ndk-r9d
+		export PATH=.:$Android_NDK_HOME:$PATH
+	open command line(測試NDK)
+		cd /opt/Android_tools/android-ndk-r9d/samples/hello-gl2
+		ndk-build
+	http://www.eclipse.org/cdt/downloads.php
+	get : cdt-master-8.0.2.zip (CDT 8.0.2 for Eclipse Indigo)
+	extract :  cdt-master-8.0.2.zip to  /opt/Android_tools/adt-bundle-linux-x86-20140321/eclipse
+	run : /opt/Android_tools/adt-bundle-linux-x86-20140321/eclipse/eclipse
+		Import Android (  /opt/Android_tools/android-ndk-r9d/samples/hello-gl2 )
+		look p22~p25 ( 讓NDK和SDK連動編譯 )
+			Main Location - /bin/bash
+			Main Working Directory - /bin
+			Main Arguments - -c "cd /opt/Android_tools/android-ndk-r9d/samples/hello-gl2 && /opt/Android_tools/android-ndk-r9d/ndk-build"
+			

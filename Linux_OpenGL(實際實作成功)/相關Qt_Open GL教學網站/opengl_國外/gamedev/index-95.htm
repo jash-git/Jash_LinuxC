@@ -1,0 +1,310 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+    dir="ltr"
+    xml:lang="en"
+    lang="en">
+  <head>
+    <title>NeHe Productions: Polygon Classes</title>
+
+    <link rel="stylesheet" type="text/css" href="public_base.css" tppabs="http://nehe.gamedev.net/static/css/public_base.css" />
+    <link type="text/css" rel="stylesheet" href="shThemeMidnight.css" tppabs="http://nehe.gamedev.net/static/css/syntax_highlighter/shThemeMidnight.css"/>
+    
+    <link rel="alternate" type="application/atom+xml" title="Atom feed" href="index-1.htm" tppabs="http://nehe.gamedev.net/atom/" />
+    <link rel="alternate" type="application/rss+xml" title="RSS feed" href="index-2.htm" tppabs="http://nehe.gamedev.net/rss/" />
+    
+    <meta name="author" content="Luke Benstead + Carsten Haubold" />
+    <meta name="description" content="OpenGL Tutorials, Demos, Games and More..." />
+    <meta name="keywords" content="opengl, tutorial, article, demo, game, blend, texturemap, lighting, contest, 3D" />
+
+    
+    
+
+    
+
+</script>
+
+
+    
+    
+    
+    
+        
+        <script type='text/javascript'>
+        var googletag = googletag || {};
+        googletag.cmd = googletag.cmd || [];
+        (function() {
+        var gads = document.createElement('script');
+        gads.async = true;
+        gads.type = 'text/javascript';
+        var useSSL = 'https:' == document.location.protocol;
+        gads.src = (useSSL ? 'https:' : 'http:') + 
+        '//www.googletagservices.com/tag/js/gpt.js';
+        var node = document.getElementsByTagName('script')[0];
+        node.parentNode.insertBefore(gads, node);
+        })();
+        </script>
+
+        <script type='text/javascript'>
+        googletag.cmd.push(function() {
+        googletag.defineSlot('/1004699/Leaderboard_NeHe', [728, 90], 'div-gpt-ad-1327940144417-0').addService(googletag.pubads());
+        googletag.defineSlot('/1004699/Skyscraper_NeHe', [160, 600], 'div-gpt-ad-1327940144417-1').addService(googletag.pubads());
+        googletag.pubads().enableSingleRequest();
+        googletag.enableServices();
+        });
+        </script>
+    
+    
+
+    
+  </head>
+
+  <body>
+    
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "all.js#xfbml=1"/*tpa=http://connect.facebook.net/en_GB/all.js#xfbml=1*/;
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+
+
+    <table cellpadding="0" cellspacing="0" border="0" id="layout_table">
+    <tr><td>
+        <div id="header">
+                <a href="index.htm" tppabs="http://nehe.gamedev.net/"><img class="logo" class="logo" src="nehe.png" tppabs="http://nehe.gamedev.net/static/images/nehe.png" border="0" alt="Nehe" /></a>
+        </div>            
+    </td></tr>
+    <tr><td colspan="2">
+            
+<div class="navbar">
+    <a href="index.htm" tppabs="http://nehe.gamedev.net/">HOME</a>
+    <a href="javascript:if(confirm('http://twitter.com/  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://twitter.com/#!/nehegl'" tppabs="http://twitter.com/#!/nehegl">TWITTER</a>  
+    <a href="javascript:if(confirm('http://www.facebook.com/pages/NeHe/300582493323181  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://www.facebook.com/pages/NeHe/300582493323181'" tppabs="http://www.facebook.com/pages/NeHe/300582493323181">FACEBOOK</a>     
+    <a href="index-2.htm" tppabs="http://nehe.gamedev.net/rss/">RSS</a>    
+    <a href="index-1.htm" tppabs="http://nehe.gamedev.net/atom/">ATOM</a>    
+    <a href="javascript:if(confirm('http://www.gamedev.net/forum/27-nehe-productions/page__forum_title__NeHe+Productions  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://www.gamedev.net/forum/27-nehe-productions/page__forum_title__NeHe+Productions'" tppabs="http://www.gamedev.net/forum/27-nehe-productions/page__forum_title__NeHe+Productions">FORUM</a>    
+</div>
+    
+    </td></tr>
+    <tr>
+        <td class="col1">
+
+            
+<div id="article_container">
+
+
+<h1 class="article-header">Polygon Classes</h1>
+<div class="social-media">
+<!-- Place this tag where you want the +1 button to render -->
+<div class="g-plusone" data-size="medium" data-width="120" data-annotation="inline"></div>
+<div class="fb-like" data-send="false" data-layout="button_count" data-width="60" data-show-faces="false" data-colorscheme="dark" data-font="arial"></div>
+</div>
+<div style="clear:both;"></div>
+<p><strong style="text-decoration: underline;"><span style="text-decoration: underline;">This Article</span></strong></p>
+<p>If you have ever worked on a 3D app/game, you will know the importance of the 3D polygon structure. If you have never worked on a 3D app or game, then you might been having a few worries about how to organise such an important structure. This tutorial will describe how a polygon structure should work, what to do and not, and will provide a base for other more advanced tutorials.</p>
+<!-- break -->
+<p><strong><span style="text-decoration: underline;">Choices...</span></strong></p>
+<p>The structure of polygons in your application may vary; depending on whatever purpose you have in mind. If you want an application solely for viewing wireframes, you can have a structure different to one for viewing solid polygons. However, I am going to describe the most common method, and the one that I think is easiest to work with and most extensible.</p>
+<p><strong><span style="text-decoration: underline;">Back To Basics</span></strong></p>
+<p>Firstly, imagine a 3D polygon in your head. What do you see? Just a collection of vertices, connected to each other?</p>
+<p>With a confident gleam in your eye, you might start of like this:</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">class CPolygon
+{
+public:
+	CPolygon() : m_pVertices(NULL), m_nVertexCount(0) {}
+	~CPolygon() {delete [] m_pVertices;}
+
+	VERTEX*	m_pVertices;
+	int	m_nVertexCount;	
+};
+</pre>
+<p>OK, most of you will have seen the problem by now. How do you draw a polygon like this? There is just an array of vertices; there are no actual faces. With a groan, you realize; this is going to be a little more complicated than you imagined</p>
+<p><strong><span style="text-decoration: underline;">Faces, Edges, Vertices, Indices And Other Nightmares</span></strong></p>
+<p>A Polygon structure will need and array of vertices, certainly. However, it will need either:</p>
+<ol>
+<li>An Array of <em>Edges</em>, each edge having a pair of <em>Indices</em> into the vertex array. With this layout you would dray a series of lines.</li>
+<li>An Array of <em>Faces</em>, each one having a variable array of <em>Indices</em> into the vertex array. With this setup, you would iterate through the index array, drawing a polygon for each face.</li>
+</ol>
+<p>The edge setup immediately looks more attractive, but there is a problem. Without some difficult coding, there is no way for one edge to know if it is next to another one, <em>so you can only draw wireframes</em>. If this is all you intend to do, then that is fine.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">struct EDGE
+{
+int nStartIndex, nEndIndex;
+};
+
+class CPolygon
+{
+public:
+	CPolygon() : m_pVertices(NULL), m_nVertexCount(0), m_pEdges(NULL, m_nEdgeCount(0){}
+	~CPolygon() {delete [] m_pVertices, delete [] m_pEdges;}
+	
+	VERTEX*	m_pVertices;
+	int	m_nVertexCount;
+	EDGE*	m_pEdges;
+	int 	m_nEdgeCount;	
+};
+</pre>
+<p>However, you will come against problems if you ever want to draw solid bodies. The best thing to do if you dont want to deviate from this basic structure, is have another array, of faces, each with an array of indices into the edge array.</p>
+<p>Whew!</p>
+<p>Thats tough stuff, and I myself wouldnt recommend it. There are other problems too, if you are making a modeling app, how the heck do you triangulate a polygon, when all you have is its edges?</p>
+<p>The way to go is almost certainly the face array. When you think about it, it is much better. Look at the code below.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">struct VERTEX {
+	float x,y,z;
+};
+
+struct INDEX {
+	int nVertex;
+};
+
+struct FACE {
+	INDEX* pIndices;
+	int nCount;
+};
+
+class CPolygon
+{
+public:
+	CPolygon() : m_pVertices(NULL), m_pFaces(NULL), m_nFaces(0), m_nVertices(0) {}
+	~CPolygon() {delete [] m_pVertices, delete m_pFaces;}
+
+	virtual void Draw();
+
+	//	Member Data
+	VERTEX* m_pVertices;
+	int	m_nVertices;
+	FACE*	m_pFaces;
+	int	m_nFaces;
+};
+</pre>
+<p>It looks very similar to the previous class. Do not underestimate the importance of the INDEX structure; you will later update it to index into an UV array as well. It is also a good place to put vertex colour values if you want them.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">void CPolygon::Draw()
+{
+	for(int n=0; n&lt;m_nVertices; n++)
+	{
+		FACE&amp; face = m_pFaces[n];
+
+		glBegin(GL_POLYGON);
+		for(int f=0; f&lt;face.nCount; f++)
+			glVertex3fv(&amp; m_pVertices[ face.nIndices[f].nVertex ] );
+		glEnd();
+	}
+}
+</pre>
+<p>At the end of the article I have included a faster drawing function, this one is really to show what is happening.</p>
+<p><strong><span style="text-decoration: underline;">Other Notes</span></strong></p>
+<p>This is not a complete polygon class, but it is a good base. It wont take much work to add persistence (saving and loading) and drawing the polygons is a breeze.</p>
+<p>Here are a few dos and donts.</p>
+<p><strong><em>Do Not</em></strong></p>
+<ul>Put vertices into something like a vector or linked list. These containers are fast, but they are not fast enough. Iterators are fast, but they wont go fast enough when you are drawing 14,000 polys, 20 times a second!</ul>
+<p>Make faces that instead of having a variable number of indices, have a variable number of vertices. If you do this, each face will take up a lot more space, and you wont be able to do some of the cooler modeling functions like smoothing, and triangulating. <strong><em>Do</em></strong></p>
+<ul>Extend this class! This is a base for you to work from, and is fast. Apart from the OpenGL draw routine I showed you, it needs nothing to work with. You can make a fast powerful CPolygon class without one include file in the header.</ul>
+<p>Use C++. Im sorry, but with C++ and especially polymorphism, you can create extraordinarily extensible applications, plugins and render engines can be added easily, and the code looks much better than C code. I started out on C, and I used to think it wasnt much different, but it is, C++ is <em>the</em> most powerful language Ive ever used, and it is <em>fast</em>. <strong><span style="text-decoration: underline;">The Faster Drawing Routine</span></strong></p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">void CPolygon::Draw()
+{
+FACE* ptrFace = m_pFaces[0];
+	INDEX* ptrIndex = NULL;
+	int nFaceCount = m_nFaces, nIndexCount = 0;
+	
+while(nFaceCount--)
+{
+	ptrIndex = ptrFace++-&gt;pIndices;
+	nIndexCount = ptrFace-&gt;nCount;
+	glBegin(GL_POLYGON);
+	while(nIndexCount--)
+		glVertex3fv(&amp;m_pVertices[ptrIndex++-&gt;nVertex]);
+	glEnd();
+}
+}
+</pre>
+<p>This may not look faster, but the while(x--) loops are a bit faster than for loops. Also, incrementing pointers (ptrFace++-&gt;) is faster than accessing the array each time. This isnt much faster, but you will notice the difference when you are drawing a lot in your scene.</p>
+<p><strong><span style="text-decoration: underline;">In the Future</span></strong></p>
+<p>I will be writing more, advanced articles soon. It would be a pain to describe the polygon structure before each one, so it the basic structure outlined above that will be used. If you start off with this structure, you will be able to extend it with each new article.</p>
+<p><strong><span style="text-decoration: underline;">Notes On Raytracing And Raycasting</span></strong></p>
+<p>Raytracing is a magic word amongst those new to 3D, but I designed this class with Raytracing in mind. When you raytrace, you (basically) cast a ray from youre eye through every pixel on the screen, and see what it hits. The Polygon class can easily support ray-tracing, so look out for more later on.</p>
+<p>Check out my website, <a href="javascript:if(confirm('http://www.focus.esmartweb.com/  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://www.focus.esmartweb.com/'" tppabs="http://www.focus.esmartweb.com/" target="_blank">http://www.focus.esmartweb.com</a>.</p>
+<p>E-mail me: <a href="mailto:focus_business@hotmail.com">Dave Kerr</a></p>
+
+
+</div>
+</div>
+
+
+
+            <div style="width:728px;padding:0px;margin:auto; margin-top: 10px;">
+            
+
+    
+                <!-- Leaderboard_NeHe -->
+                <div id='div-gpt-ad-1327940144417-0' style='width:728px; height:90px;'>
+                <script type='text/javascript'>
+                googletag.cmd.push(function() { googletag.display('div-gpt-ad-1327940144417-0'); });
+                </script>
+                </div>
+            
+
+                           
+            </div>   
+        </td>
+        <td class="col2">
+            
+
+
+
+
+<div style="text-align: center; padding:10px;">
+
+<script type='text/javascript'>
+    GA_googleFillSlot("Skyscraper_NeHe");
+</script>
+
+</div>
+            
+        </td>
+    </table>
+    <div id="footer">
+        <p>
+            
+    
+    © 1997-2012 Gamedev . All rights reserved.<br/>
+
+			NeHe™ and NeHe Productions™ are trademarks of GameDev.net, LLC<br/>
+			OpenGL® is a registered trademark of Silicon Graphics Inc.<br/>
+		</p>        
+		<br/>
+    </div>
+
+    
+    
+	    <script type="text/javascript" src="shCore.js" tppabs="http://nehe.gamedev.net/static/js/syntax_highlighter/shCore.js"></script>
+        <script type="text/javascript" src="shBrushCpp.js" tppabs="http://nehe.gamedev.net/static/js/syntax_highlighter/shBrushCpp.js"></script>
+	    <script type="text/javascript" src="shBrushJScript.js" tppabs="http://nehe.gamedev.net/static/js/syntax_highlighter/shBrushJScript.js"></script>
+	    <script type="text/javascript">SyntaxHighlighter.all();</script>
+    
+
+    <!-- Place this render call where appropriate -->
+    <script type="text/javascript">
+      (function() {
+        var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+        po.src = 'plusone.js'/*tpa=https://apis.google.com/js/plusone.js*/;
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+      })();
+    </script>    
+
+    
+<!-- GoogleAnalytics code -->
+<script src="urchin.js" tppabs="http://www.google-analytics.com/urchin.js" type="text/javascript">
+</script>
+<script type="text/javascript">
+_uacct = "UA-279474-2"; // Gamedev
+urchinTracker();
+_uff = 0; // Reset for second account
+_uacct = "UA-24180731-1"; // Non-GD
+urchinTracker();
+</script> 
+  </body>
+</html>

@@ -1,0 +1,641 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+    dir="ltr"
+    xml:lang="en"
+    lang="en">
+  <head>
+    <title>NeHe Productions: Multiple Viewports</title>
+
+    <link rel="stylesheet" type="text/css" href="public_base.css" tppabs="http://nehe.gamedev.net/static/css/public_base.css" />
+    <link type="text/css" rel="stylesheet" href="shThemeMidnight.css" tppabs="http://nehe.gamedev.net/static/css/syntax_highlighter/shThemeMidnight.css"/>
+    
+    <link rel="alternate" type="application/atom+xml" title="Atom feed" href="index-1.htm" tppabs="http://nehe.gamedev.net/atom/" />
+    <link rel="alternate" type="application/rss+xml" title="RSS feed" href="index-2.htm" tppabs="http://nehe.gamedev.net/rss/" />
+    
+    <meta name="author" content="Luke Benstead + Carsten Haubold" />
+    <meta name="description" content="OpenGL Tutorials, Demos, Games and More..." />
+    <meta name="keywords" content="opengl, tutorial, article, demo, game, blend, texturemap, lighting, contest, 3D" />
+
+    
+    
+
+    
+
+</script>
+
+
+    
+    
+    
+    
+        
+        <script type='text/javascript'>
+        var googletag = googletag || {};
+        googletag.cmd = googletag.cmd || [];
+        (function() {
+        var gads = document.createElement('script');
+        gads.async = true;
+        gads.type = 'text/javascript';
+        var useSSL = 'https:' == document.location.protocol;
+        gads.src = (useSSL ? 'https:' : 'http:') + 
+        '//www.googletagservices.com/tag/js/gpt.js';
+        var node = document.getElementsByTagName('script')[0];
+        node.parentNode.insertBefore(gads, node);
+        })();
+        </script>
+
+        <script type='text/javascript'>
+        googletag.cmd.push(function() {
+        googletag.defineSlot('/1004699/Leaderboard_NeHe', [728, 90], 'div-gpt-ad-1327940144417-0').addService(googletag.pubads());
+        googletag.defineSlot('/1004699/Skyscraper_NeHe', [160, 600], 'div-gpt-ad-1327940144417-1').addService(googletag.pubads());
+        googletag.pubads().enableSingleRequest();
+        googletag.enableServices();
+        });
+        </script>
+    
+    
+
+    
+  </head>
+
+  <body>
+    
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "all.js#xfbml=1"/*tpa=http://connect.facebook.net/en_GB/all.js#xfbml=1*/;
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+
+
+    <table cellpadding="0" cellspacing="0" border="0" id="layout_table">
+    <tr><td>
+        <div id="header">
+                <a href="index.htm" tppabs="http://nehe.gamedev.net/"><img class="logo" class="logo" src="nehe.png" tppabs="http://nehe.gamedev.net/static/images/nehe.png" border="0" alt="Nehe" /></a>
+        </div>            
+    </td></tr>
+    <tr><td colspan="2">
+            
+<div class="navbar">
+    <a href="index.htm" tppabs="http://nehe.gamedev.net/">HOME</a>
+    <a href="javascript:if(confirm('http://twitter.com/  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://twitter.com/#!/nehegl'" tppabs="http://twitter.com/#!/nehegl">TWITTER</a>  
+    <a href="javascript:if(confirm('http://www.facebook.com/pages/NeHe/300582493323181  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://www.facebook.com/pages/NeHe/300582493323181'" tppabs="http://www.facebook.com/pages/NeHe/300582493323181">FACEBOOK</a>     
+    <a href="index-2.htm" tppabs="http://nehe.gamedev.net/rss/">RSS</a>    
+    <a href="index-1.htm" tppabs="http://nehe.gamedev.net/atom/">ATOM</a>    
+    <a href="javascript:if(confirm('http://www.gamedev.net/forum/27-nehe-productions/page__forum_title__NeHe+Productions  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://www.gamedev.net/forum/27-nehe-productions/page__forum_title__NeHe+Productions'" tppabs="http://www.gamedev.net/forum/27-nehe-productions/page__forum_title__NeHe+Productions">FORUM</a>    
+</div>
+    
+    </td></tr>
+    <tr>
+        <td class="col1">
+
+            
+<div id="article_container">
+
+
+<h1 class="article-header">Multiple Viewports</h1>
+<div class="social-media">
+<!-- Place this tag where you want the +1 button to render -->
+<div class="g-plusone" data-size="medium" data-width="120" data-annotation="inline"></div>
+<div class="fb-like" data-send="false" data-layout="button_count" data-width="60" data-show-faces="false" data-colorscheme="dark" data-font="arial"></div>
+</div>
+<div style="clear:both;"></div>
+<p>Welcome to another fun filled tutorial. This time I will show you how to display multiple viewports in a single window. The viewports will resize correctly in windowed mode. Two of the windows use lighting. One of the windows is Ortho and three are Perspective. To keep the tutorial exciting, you will also learn about the maze code used in this demo, how rendering to a texture (yet again) and how to get the current windows dimensions.</p>
+<p>Once you understand this tutorial, making split screen games or 3D applications with multiple views should be a snap! With that said, let dive into the code!!!</p>
+<p>You can use either the latest NeHeGL code or the IPicture code as the main basecode. The first file we need to look at is the NeHeGL.cpp file. Three sections of code have been modified. I will list just the sections of code that have changed.</p>
+<p>The first and most important thing that has changed is ReshapeGL( ). This is where we used to set up the screen dimensions (our main viewport). All of the main viewport setup is done in our main drawing loop now. So all we do here is set up the main window.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">void ReshapeGL (int width, int height)								// Reshape The Window When It's Moved Or Resized
+{
+	glViewport (0, 0, (GLsizei)(width), (GLsizei)(height));					// Reset The Current Viewport
+}
+</pre>
+<p>Next we add some code to watch for the Window Message Erase Background (WM_ERASEBKGND). If it's called, we intercept it and return 0. This prevents the background from being erased, and allows us to resize our main window without all the annoying flicker you would usually see. If you are not sure what I mean, remove: case WM_ERASEBKGND: and return 0; and you can compare for yourself.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">// Process Window Message Callbacks
+LRESULT CALLBACK WindowProc (HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
+{
+	DWORD		tickCount;								// Holds Current Tick Count
+	__int64		timer;									// Used For The Tick Counter
+
+	// Get The Window Context
+	GL_Window* window = (GL_Window*)(GetWindowLong (hWnd, GWL_USERDATA));
+
+	switch (uMsg)										// Evaluate Window Message
+	{
+		case WM_ERASEBKGND:								// Check To See If Windows Is Trying To Erase The Background
+			return 0;								// Return 0 (Prevents Flickering While Resizing A Window)
+</pre>
+<p>In WinMain we need to modify the window title and crank the resolution up to 1024x768. If your monitor for some reason will not support 1024x768, you can drop down to a lower resolution and sacrifice some of the detail.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">// Program Entry (WinMain)
+int WINAPI WinMain (HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
+{
+	Application			application;						// Application Structure
+	GL_Window			window;							// Window Structure
+	Keys				keys;							// Key Structure
+	BOOL				isMessagePumpActive;					// Message Pump Active?
+	MSG				msg;							// Window Message Structure
+
+	// Fill Out Application Data
+	application.className = "OpenGL";							// Application Class Name
+	application.hInstance = hInstance;							// Application Instance
+
+	// Fill Out Window
+	ZeroMemory (&amp;window, sizeof (GL_Window));						// Make Sure Memory Is Zeroed
+	window.keys			= &amp;keys;						// Window Key Structure
+	window.init.application		= &amp;application;						// Window Application
+
+	// Window Title
+	window.init.title		= "Lesson 42: Multiple Viewports... 2003 NeHe Productions... Building Maze!";
+
+	window.init.width		= 1024;							// Window Width
+	window.init.height		= 768;							// Window Height
+	window.init.bitsPerPixel	= 32;							// Bits Per Pixel
+	window.init.isFullScreen	= TRUE;							// Fullscreen? (Set To TRUE)
+</pre>
+<p>Now it's time to modify lesson42.cpp (the main code)...</p>
+<p>We start off by including the standard list of header and library files.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">#include &lt;windows.h&gt;										// Header File For Windows
+#include &lt;gl\gl.h&gt;										// Header File For The OpenGL32 Library
+#include &lt;gl\glu.h&gt;										// Header File For The GLu32 Library
+
+#include "NeHeGL.h"										// Header File For NeHeGL
+
+#pragma comment( lib, "opengl32.lib" )								// Search For OpenGL32.lib While Linking
+#pragma comment( lib, "glu32.lib" )								// Search For GLu32.lib While Linking
+
+GL_Window*	g_window;									// Window Structure
+Keys*		g_keys;										// Keyboard
+</pre>
+<p>We then set up any global variables that we intend to use throughout the program.</p>
+<p>mx and my keep track of which room in the maze we are currently in. Each room is separated by a wall (so rooms are 2 units apart).</p>
+<p>width and height are used to build our texture. It is also the width and height of the maze. The reason we make the maze and the texture the same size is so that each pixel drawn in the maze is one pixel in the texture. I like width and height set to 256, although it takes longer to build the maze.</p>
+<p>If your video card can handle large textures, try increasing the values by a power of 2 (256, 512, 1024). Make sure you do not increase the values too much. If the main window is 1024 pixels wide, and each viewport is half the size of the main window, the widest you should make your texture is: Width Of The Window / 2. If you make your texture 1024 pixels wide, but your viewport size is only 512, every second pixel will overlap because there is not enough room to fit all the pixels of the texture in the viewport. The same goes for the texture height. It should be: Height Of The Window / 2. Of course you have to round down to the nearest power of 2.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">// User Defined Variables
+int	mx,my;											// General Loops (Used For Seeking)
+
+const	width	= 128;										// Maze Width  (Must Be A Power Of 2)
+const	height	= 128;										// Maze Height (Must Be A Power Of 2)
+</pre>
+<p>done will be used to keep track of when the maze has been completed. More about this later.</p>
+<p>sp is used to check if the spacebar is being held down. By pressing space, the maze is reset, and the program starts drawing a new maze. If we don't check to see if the spacebar is being held, the maze resets many times during the split second that the spacebar is pressed. This variable makes sure that the maze is only reset once.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">BOOL	done;											// Flag To Let Us Know When It's Done
+BOOL	sp;											// Spacebar Pressed?
+</pre>
+<p>r[4] will hold 4 random values for red, g[4] will hold 4 random values for green and b[4] will hold 4 random values for blue. These values will be used to assign a different color to each viewport. The first viewports color will be r[0],g[0],b[0]. Take note that each color will be a byte value and not a float value like most of you are used to using. The reason I use a byte is because it's easier to assign a random value from 0 to 255 than it is a value from 0.0f to 1.0f.</p>
+<p>tex_data points to our texture data.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">BYTE	r[4], g[4], b[4];									// Random Colors (4 Red, 4 Green, 4 Blue)
+BYTE	*tex_data;										// Holds Our Texture Data
+</pre>
+<p>xrot, yrot and zrot will be used to rotate our 3D objects.</p>
+<p>Finally, we set up a quadric object so we can draw a cylinder and sphere using gluCylinder and gluSphere. Much easier than drawing the objects manually.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">GLfloat	xrot, yrot, zrot;									// Use For Rotation Of Objects
+
+GLUquadricObj *quadric;										// The Quadric Object
+</pre>
+<p>The following bit of code will set a pixel in our texture at location dmx, dmy to bright white. tex_data is the pointer to our texture data. Each pixel is made up of 3 bytes (1 for red, 1 for green and 1 for blue). The offset for red is 0. And the location of the pixel we want to modify is dmx (the x position) plus dmy (the y position) multiplied by the width of our texture, with the end result multiplied by 3 (3 bytes per pixel).</p>
+<p>The first line below sets the red (0) color to 255. The second line sets the green (1) color to 255 and the last line sets the blue (2) color to 255. The end result is a bright white pixel at dmx,dmy.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">void UpdateTex(int dmx, int dmy)								// Update Pixel dmx, dmy On The Texture
+{
+	tex_data[0+((dmx+(width*dmy))*3)]=255;							// Set Red Pixel To Full Bright
+	tex_data[1+((dmx+(width*dmy))*3)]=255;							// Set Green Pixel To Full Bright
+	tex_data[2+((dmx+(width*dmy))*3)]=255;							// Set Blue Pixel To Full Bright
+}
+</pre>
+<p>Reset has quite a few jobs. It clears our texture, assigns some random colors to each viewport, resets all the walls in the maze and assigns a new random starting point for the maze generation.</p>
+<p>The first line of code does the clearing. tex_data points to our texture data. We need to clear width (width of our texture) multiplied by height (height of our texture) multiplied by 3 (red, green, blue). Clearing this memory sets all all bytes to 0. If all 3 color values are set to 0, our texture will be completely black!</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">void Reset (void)										// Reset The Maze, Colors, Start Point, Etc
+{
+	ZeroMemory(tex_data, width * height *3);						// Clear Out The Texture Memory With 0's
+</pre>
+<p>No we need to assign a random color to each view port. For those of you that do not already know this, random is not really all that random! If you made a simple program to print 10 random digits. Each time you ran the program, you would get the exact same digits. In order to make things more random (to appear more random) we can set the random seed. Again, if we set the seed to 1, we would always get the same numbers. However, if we set srand to our current tick count (which could be any number), we end up getting different numbers every time the program is run.</p>
+<p>We have 4 viewports, so we need to make a loop from 0 to 3. We assign each color (red, green, blue) a random value from 128 to 255. The reason I add 128 is because I want bright colors. With a min value of 0 and a max value of 255, 128 is roughly 50% brightness.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	srand(GetTickCount());									// Try To Get More Randomness
+
+	for (int loop=0; loop&lt;4; loop++)							// Loop So We Can Assign 4 Random Colors
+	{
+		r[loop]=rand()%128+128;								// Pick A Random Red Color (Bright)
+		g[loop]=rand()%128+128;								// Pick A Random Green Color (Bright)
+		b[loop]=rand()%128+128;								// Pick A Random Blue Color (Bright)
+	}
+</pre>
+<p>Next we assign a random starting point. We must start in a room. Every second pixel in the texture is a room. To make sure we start in a room and not on a wall, we pick a random number from 0 to half the width of the texture and multiply it by 2. That way the only numbers we can get are 0, 2, 4, 6, 8, etc. Which means we will always get a random room and never end up landing on a wall which would be 1, 3, 5, 7, 9, etc.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	mx=int(rand()%(width/2))*2;								// Pick A New Random X Position
+	my=int(rand()%(height/2))*2;								// Pick A New Random Y Position
+}
+</pre>
+<p>The first line of initialization is very important. It allocates enough memory to hold our text (width*height*3). If you do not allocate memory, you will more than likely crash your system!</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">BOOL Initialize (GL_Window* window, Keys* keys)							// Any GL Init Code &amp; User Initialiazation Goes Here
+{
+	tex_data=new BYTE[width*height*3];							// Allocate Space For Our Texture
+
+	g_window	= window;								// Window Values
+	g_keys		= keys;									// Key Values
+</pre>
+<p>Right after we allocate memory for our texture, we call Reset( ). Reset will clear the texture, set up our colors, and pick a random starting point for our maze.</p>
+<p>Once everything has been reset, we need to create our initial texture. The first 2 texture parameters CLAMP our texture to the range [0,1]. This prevents wrapping artifacts when mapping a single image onto an object. To see why it's important to clamp the texture, try removing the 2 lines of code. Without clamping, you will notice a thin line at the top of the texture and on the right side of the texture. The lines appear because linear filtering tries to smooth the entire texture, including the borders. If pixels is drawn to close to a border, a line appears on the opposite side of the texture.</p>
+<p>We are going to use linear filtering to make things look a little smoother. It's up to you what type of filtering you use. If it runs really slow, try changing the filtering to GL_NEAREST.</p>
+<p>Finally, we build an RGB 2D texture using tex_data (the alpha channel is not used).</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	Reset();										// Call Reset To Build Our Initial Texture, Etc.
+
+	// Start Of User Initialization
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
+	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR); 
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, tex_data);
+</pre>
+<p>We set our clear color to black and the clear depth to 1.0f. We set our depth function to less than or equal to, and then enable depth testing.</p>
+<p>Enabling GL_COLOR MATERIAL let's you color your objects, with glColor, when lighting is enabled. This method is called color tracking, and is often used instead of performance-draining calls to glMaterial. I get alot of emails asking how to change the color of an object... hope the information is useful! For those of you that have emailed me asking why textures in your projects are weird colors or tinted with the current glColor( )... Make sure you do not have GL_COLOR_MATERIAL enabled!</p>
+<p>* Thanks to James Trotter for the correct explanation on how GL_COLOR_MATERIAL works. I had said it lets you color your textures... However, it actually lets you color objects.</p>
+<p>Finally we enable 2D texture mapping.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	glClearColor (0.0f, 0.0f, 0.0f, 0.0f);							// Black Background
+	glClearDepth (1.0f);									// Depth Buffer Setup
+
+	glDepthFunc (GL_LEQUAL);								// The Type Of Depth Testing
+	glEnable (GL_DEPTH_TEST);								// Enable Depth Testing
+
+	glEnable(GL_COLOR_MATERIAL);								// Enable Color Material (Allows Us To Tint Textures)
+
+	glEnable(GL_TEXTURE_2D);								// Enable Texture Mapping
+</pre>
+<p>The following code creates a pointer to our quadric object. Once we have the pointer we set the Normals to smooth, and we ask for texture coordinates. By doing this, lighting will work properly, and our texture will be mapped to any quadric object automatically!</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	quadric=gluNewQuadric();								// Create A Pointer To The Quadric Object
+	gluQuadricNormals(quadric, GLU_SMOOTH);							// Create Smooth Normals 
+	gluQuadricTexture(quadric, GL_TRUE);							// Create Texture Coords
+</pre>
+<p>Light 0 is enabled, however it will not do anything until we enable lighting. Light 0 for those of you that do not already know is a predefined light that points directly into the screen. Handy if you don't feel like setting the light up yourself.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	glEnable(GL_LIGHT0);									// Enable Light0 (Default GL Light)
+
+	return TRUE;										// Return TRUE (Initialization Successful)
+}
+</pre>
+<p>Whenever you allocate memory, it's important to deallocate it. The line of code below deletes the memory whenever you toggle fullscreen / windowed mode or whenever the program exits.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">void Deinitialize (void)									// Any User DeInitialization Goes Here
+{
+	delete [] tex_data;									// Delete Our Texture Data (Freeing Up Memory)
+}
+</pre>
+<p>Update( ) is where most of the maze creation is done, along with watching for keypresses, rotation, etc.</p>
+<p>We need to set up a variable called dir. We will use this variable to randomly travel up, right, down or left.</p>
+<p>We watch to see if the spacebar is pressed. If it is, and it's not being held down, we reset the maze. If the keyboard is released, we set sp to FALSE so that our program knows it is no longer being held down.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">void Update (float milliseconds)								// Perform Motion Updates Here
+{
+	int	dir;										// Will Hold Current Direction
+
+	if (g_keys-&gt;keyDown [VK_ESCAPE])							// Is ESC Being Pressed?
+		TerminateApplication (g_window);						// Terminate The Program
+
+	if (g_keys-&gt;keyDown [VK_F1])								// Is F1 Being Pressed?
+		ToggleFullscreen (g_window);							// Toggle Fullscreen Mode
+
+	if (g_keys-&gt;keyDown [' '] &amp;&amp; !sp)							// Check To See If Spacebar Is Pressed
+	{
+		sp=TRUE;									// If So, Set sp To TRUE (Spacebar Pressed)
+		Reset();									// If So, Call Reset And Start A New Maze
+	}
+
+	if (!g_keys-&gt;keyDown [' '])								// Check To See If Spacebar Has Been Released
+		sp=FALSE;									// If So, Set sp To FALSE (Spacebar Released)
+</pre>
+<p>xrot, yrot and zrot are increased by the number of milliseconds that have passed multiplied by some small floating point number. This allows us to rotate objects on the x-axis, y-axis and z-axis. Each variable increases by a different amount to make the rotation a little nicer to watch.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	xrot+=(float)(milliseconds)*0.02f;							// Increase Rotation On The X-Axis
+	yrot+=(float)(milliseconds)*0.03f;							// Increase Rotation On The Y-Axis
+	zrot+=(float)(milliseconds)*0.015f;							// Increase Rotation On The Z-Axis
+</pre>
+<p>The code below checks to see if we are done drawing the maze. We start off by setting done to TRUE. We then loop through every single room to see if any of the rooms still need a wall knocked out. If any of the rooms have not been visited we set done to FALSE.</p>
+<p>If tex_data[((x+(width*y))*3)] equals zero, we know that room has not been visited yet, and does not have a pixel drawn in it yet. If there was a pixel, the value would be 255. We only check the red pixel value, because we know the red value will either be 0 (empty) or 255 (updated).</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	done=TRUE;										// Set done To True
+	for (int x=0; x&lt;width; x+=2)								// Loop Through All The Rooms
+	{
+		for (int y=0; y&lt;height; y+=2)							// On X And Y Axis
+		{
+			if (tex_data[((x+(width*y))*3)]==0)					// If Current Texture Pixel (Room) Is Blank
+				done=FALSE;							// We Have To Set done To False (Not Finished Yet)
+		}
+	}
+</pre>
+<p>After checking all of the rooms, if done is still TRUE, we know that the maze is complete. SetWindowsText will change the title of a window. We change the title so that it says "Maze Complete!". We then pause for 5000 milliseconds so that the person watching the demo has time to read the title bar (or if they are in fullscreen, they see that the animation has stopped). After 5000 milliseconds, we change the title back so that it says "Building Maze!" and we reset the maze (starting the entire process over).</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	if (done)										// If done Is True Then There Were No Unvisited Rooms
+	{
+		// Display A Message At The Top Of The Window, Pause For A Bit And Then Start Building A New Maze!
+		SetWindowText(g_window-&gt;hWnd,"Lesson 42: Multiple Viewports... 2003 NeHe Productions... Maze Complete!");
+		Sleep(5000);
+		SetWindowText(g_window-&gt;hWnd,"Lesson 42: Multiple Viewports... 2003 NeHe Productions... Building Maze!");
+		Reset();
+	}
+</pre>
+<p>The following code might look confusing but it's really not that hard to understand. We check to see if the room to the right of the current room has been visited or if our current location is too close to the far right side of the maze (there are no more rooms to the right). We check if the room to the left has been visited or we are to close to the left size of the maze (no more rooms to the left). We check if the room below us has been visited or if we are too far down (no more rooms below us) and finally we check to see if the room above us has been visited or if we are to close to the top (no more rooms above).</p>
+<p>If the red pixel value of a room equals 255 we know that room has been visited (because it has been updated with UpdateTex). If mx (current x position) is less than 2 we know that we are almost to the far left of the screen and can not go any further left.</p>
+<p>If we are trapped or we are to close to a border, we give mx and my random values. We then check to see if the pixel at that location is has already been visited. If it has not, we grab new random mx, my values until we find a cell that has already been visited. We want new paths to branch off old paths which is why we need to keep searching until we find an old path to launch from.</p>
+<p>To keep the code to a minimum, I don't bother checking if mx-2 is less than 0. If you want 100% error checking, you can modify this section of code to prevent checking memory that does not belong to the current texture.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	// Check To Make Sure We Are Not Trapped (Nowhere Else To Move)
+	if (((mx&gt;(width-4) || tex_data[(((mx+2)+(width*my))*3)]==255)) &amp;&amp; ((mx&lt;2 || tex_data[(((mx-2)+(width*my))*3)]==255)) &amp;&amp;
+		((my&gt;(height-4) || tex_data[((mx+(width*(my+2)))*3)]==255)) &amp;&amp; ((my&lt;2 || tex_data[((mx+(width*(my-2)))*3)]==255)))
+	{
+		do										// If We Are Trapped
+		{
+			mx=int(rand()%(width/2))*2;						// Pick A New Random X Position
+			my=int(rand()%(height/2))*2;						// Pick A New Random Y Position
+		}
+		while (tex_data[((mx+(width*my))*3)]==0);					// Keep Picking A Random Position Until We Find
+	}											// One That Has Already Been Tagged (Safe Starting Point)
+</pre>
+<p>The first line below assigns dir with a random value from 0 to 3. We will use this value to tell our maze to draw right, up, left, down.</p>
+<p>after we get a random direction, we check to see if the value of dir is equal to 0 (move right). if it is and we are not already at the far right side of the maze, we check the room to the right of the current room. If the room to the right has not been visited, we knock out the wall between the two room with UpdateTex(mx+1,my) and then we move to the new room by increasing mx by 2.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	dir=int(rand()%4);									// Pick A Random Direction
+
+	if ((dir==0) &amp;&amp; (mx&lt;=(width-4)))							// If The Direction Is 0 (Right) And We Are Not At The Far Right
+	{
+		if (tex_data[(((mx+2)+(width*my))*3)]==0)					// And If The Room To The Right Has Not Already Been Visited
+		{
+			UpdateTex(mx+1,my);							// Update The Texture To Show Path Cut Out Between Rooms
+			mx+=2;									// Move To The Right (Room To The Right)
+		}
+	}
+</pre>
+<p>If the value of dir is 1 (down) and we are not at the very bottom, we check to see if the room below has been visited. If it has not been visited, we knock out the wall between the two rooms (current room and room below it) and then move to the new room by increasing my by 2.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	if ((dir==1) &amp;&amp; (my&lt;=(height-4)))							// If The Direction Is 1 (Down) And We Are Not At The Bottom
+	{
+		if (tex_data[((mx+(width*(my+2)))*3)]==0)					// And If The Room Below Has Not Already Been Visited
+		{
+			UpdateTex(mx,my+1);							// Update The Texture To Show Path Cut Out Between Rooms
+			my+=2;									// Move Down (Room Below)
+		}
+	}
+</pre>
+<p>If the value of dir is 2 (left) and we are not at the far left, we check to see if the room to the left has been visited. If it has not been visited, we knock out the wall between the two rooms (current room and room to the left) and then move to the new room by decreasing mx by 2.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	if ((dir==2) &amp;&amp; (mx&gt;=2))								// If The Direction Is 2 (Left) And We Are Not At The Far Left
+	{
+		if (tex_data[(((mx-2)+(width*my))*3)]==0)					// And If The Room To The Left Has Not Already Been Visited
+		{
+			UpdateTex(mx-1,my);							// Update The Texture To Show Path Cut Out Between Rooms
+			mx-=2;									// Move To The Left (Room To The Left)
+		}
+	}
+</pre>
+<p>If the value of dir is 3 (up) and we are not at the very top, we check to see if the room above has been visited. If it has not been visited, we knock out the wall between the two rooms (current room and room above it) and then move to the new room by decreasing my by 2.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	if ((dir==3) &amp;&amp; (my&gt;=2))								// If The Direction Is 3 (Up) And We Are Not At The Top
+	{
+		if (tex_data[((mx+(width*(my-2)))*3)]==0)					// And If The Room Above Has Not Already Been Visited
+		{
+			UpdateTex(mx,my-1);							// Update The Texture To Show Path Cut Out Between Rooms
+			my-=2;									// Move Up (Room Above)
+		}
+	}
+</pre>
+<p>After moving to the new room, we need to mark it as being visited. We do this by calling UpdateTex( ) with the current mx, my position.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	UpdateTex(mx,my);									// Update Current Room
+}
+</pre>
+<p>We will start this section of code off with something new... We need to know how large the current window is in order to resize the viewports correctly. To get the current window width and height, we need to grab the left value of the window, the right value of the window, the top of the window and the bottom of the window. After we have these values we can calculate the width by subtracting the left value of the window from the right value. We can get the height by subtracting the top of the window from the bottom of the window.</p>
+<p>We can get the left, right, top and bottom values by using RECT. RECT holds the coordinates of a rectangle. The left, right, top and bottom coordinates to be exact.</p>
+<p>To grab the coordinates for our screen, we use GetClientRect( ). The first parameter we pass is our current window handle. The second parameter is the structure that will hold the information returned (rect).</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">void Draw (void)										// Our Drawing Routine
+{
+	RECT	rect;										// Holds Coordinates Of A Rectangle
+
+	GetClientRect(g_window-&gt;hWnd, &amp;rect);							// Get Window Dimensions
+	int window_width=rect.right-rect.left;							// Calculate The Width (Right Side-Left Side)
+	int window_height=rect.bottom-rect.top;							// Calculate The Height (Bottom-Top)
+</pre>
+<p>We need to update the texture every frame and we want it updated before we draw the textured scenes. The fastest way to update a texture is to use the command glTexSubImage2D( ). glTexSubImage2D will map all or part of a texture in memory to an object on the screen. In the code below we tell it we are using a 2D texture. The level of detail number is 0, we do not want an x (0) or y (0) offset. We want to use the entire width of the texture and the entire height. The data is GL_RGB format, and it's type is GL_UNSIGNED_BYTE. tex_data is the data we want to map.</p>
+<p>This is a very fast way to use updated texture data without having to rebuild the texture. It's also important to note that this command will not BUILD a texture. You have to create a texture before you can use this command to update it!</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	// Update Our Texture... This Is The Key To The Programs Speed... Much Faster Than Rebuilding The Texture Each Time
+	glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, width, height, GL_RGB, GL_UNSIGNED_BYTE, tex_data);
+</pre>
+<p>This line of code is very important. It will clear the entire screen. Because we only want to clear the screen BEFORE ALL 4 viewports are drawn, and before each viewport is drawn, we need to clear before the main loop that draws the 4 viewports! Also notice that we are not clearing the depth buffer at the moment. It will be cleared on it's own before drawing each scene! It's VERY important that you clear the screen once, and then clear the depth buffer before drawing each viewport.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	glClear (GL_COLOR_BUFFER_BIT);								// Clear Screen
+</pre>
+<p>Now for the main drawing loop. We want to draw 4 different viewports, so we create a loop from 0 to 3.</p>
+<p>The first thing we do is set the color of the current viewport using glColor3ub(r,g,b). This may be new to a few of you. It just like glColor3f(r,g,b) but it uses unsigned bytes instead of floating point values. Remember earlier that I said it was easier to assign a random value from 0 to 255 as a color. Well now that we have such large values for each color this is the command we need to use to set the colors properly.</p>
+<p>glColor3f(0.5f,0.5f,0.5f) is 50% brightness for red, green and blue. glColor3ub(127,127,127) is also 50% brightness for red, green, blue.</p>
+<p>If loop is 0, we would be selecting r[0],g[0],b[0]. If loop is 1, we would be selecting the colors stored in r[1],g[1],b[1]. That way, each scene has it's own random color.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	for (int loop=0; loop&lt;4; loop++)							// Loop To Draw Our 4 Views
+	{
+		glColor3ub(r[loop],g[loop],b[loop]);						// Assign Color To Current View
+</pre>
+<p>The first thing we need to do before we can draw anything is set up the current viewport. If loop equals 0, we are drawing the first viewport. We want this viewport on the left half of the screen (0), and halfway up the screen (window_height/2). We want the width of the viewport to be half the width of the main window (window_width/2) and we want the height to be half the height of the main window (window_height/2).</p>
+<p>If the main window is 1024x768, we would end up with a viewport at 0,384 with a width of 512 and a height of 384.</p>
+<p>This viewport would look like this:</p>
+<p><img src="viewport1-1.jpg" tppabs="http://nehe.gamedev.net/data/lessons/extras/lesson42/viewport1.jpg" alt="" width="160" height="120" /></p>
+<p>After setting up the viewport, we select the projection matrix, reset it and then set up our 2D Ortho view. We want the Ortho view to fill the entire viewport. So we give it a left value of 0 and a right value of window_width/2 (same width as the viewport). We also assign it a bottom value of window_height/2 and a top value of 0. This gives us the same height as the viewport.</p>
+<p>The top left of our Ortho view will be 0,0. The bottom right of our Ortho view will be window_width/2, window_height/2.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">		if (loop==0)									// If We Are Drawing The First Scene
+		{
+			// Set The Viewport To The Top Left.  It Will Take Up Half The Screen Width And Height
+			glViewport (0, window_height/2, window_width/2, window_height/2);
+			glMatrixMode (GL_PROJECTION);						// Select The Projection Matrix
+			glLoadIdentity ();							// Reset The Projection Matrix
+			// Set Up Ortho Mode To Fit 1/4 The Screen (Size Of A Viewport)
+			gluOrtho2D(0, window_width/2, window_height/2, 0);
+		}
+</pre>
+<p>If loop equals 1, we are drawing the second viewport. It will be on the right half of the screen, and halfway up the screen (main window). The width and height will be the same as the first viewport. The only thing different is the first parameter of glViewport( ) is window_width/2. This tells our program that we want the viewport to start halfway from the left side of the main window.</p>
+<p>The second viewport would look like this:</p>
+<p><img src="viewport2-1.jpg" tppabs="http://nehe.gamedev.net/data/lessons/extras/lesson42/viewport2.jpg" alt="" width="160" height="120" /></p>
+<p>Again, we select the projection matrix and reset it, but this time we set up a perspective view with a 45 degree field of view and near value of 0.1f and a far value of 500.0f.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">		if (loop==1)									// If We Are Drawing The Second Scene
+		{
+			// Set The Viewport To The Top Right.  It Will Take Up Half The Screen Width And Height
+			glViewport (window_width/2, window_height/2, window_width/2, window_height/2);
+			glMatrixMode (GL_PROJECTION);						// Select The Projection Matrix
+			glLoadIdentity ();							// Reset The Projection Matrix
+			// Set Up Perspective Mode To Fit 1/4 The Screen (Size Of A Viewport)
+			gluPerspective( 45.0, (GLfloat)(width)/(GLfloat)(height), 0.1f, 500.0 ); 
+		}
+</pre>
+<p>If loop equals 2, we are drawing the third viewport. It will be on the bottom right half of the main window. The width and height will be the same as the first and second viewports. The only thing different from the second viewport is the second parameter of glViewport( ) is now 0. This tells our program that we want the viewport to start at the bottom right half of the main window.</p>
+<p>The third viewport would look like this:</p>
+<p><img src="viewport3-1.jpg" tppabs="http://nehe.gamedev.net/data/lessons/extras/lesson42/viewport3.jpg" alt="" width="160" height="120" /></p>
+<p>We set up a perspective view exactly the same way we did for the second viewport.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">		if (loop==2)									// If We Are Drawing The Third Scene
+		{
+			// Set The Viewport To The Bottom Right.  It Will Take Up Half The Screen Width And Height
+			glViewport (window_width/2, 0, window_width/2, window_height/2);
+			glMatrixMode (GL_PROJECTION);						// Select The Projection Matrix
+			glLoadIdentity ();							// Reset The Projection Matrix
+			// Set Up Perspective Mode To Fit 1/4 The Screen (Size Of A Viewport)
+			gluPerspective( 45.0, (GLfloat)(width)/(GLfloat)(height), 0.1f, 500.0 ); 
+		}
+</pre>
+<p>If loop equals 3, we are drawing the last viewport (viewport 4). It will be on the bottom left half of the main window. The width and height will be the same as the first, second and third viewports. The only thing different from the third viewport is the first parameter of glViewport( ) is now 0. This tells our program that we want the viewport to start at the bottom left half of the main window.</p>
+<p>The fourth viewport would look like this:</p>
+<p><img src="viewport4-1.jpg" tppabs="http://nehe.gamedev.net/data/lessons/extras/lesson42/viewport4.jpg" alt="" width="160" height="120" /></p>
+<p>We set up a perspective view exactly the same way we did for the second viewport.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">		if (loop==3)									// If We Are Drawing The Fourth Scene
+		{
+			// Set The Viewport To The Bottom Left.  It Will Take Up Half The Screen Width And Height
+			glViewport (0, 0, window_width/2, window_height/2);
+			glMatrixMode (GL_PROJECTION);						// Select The Projection Matrix
+			glLoadIdentity ();							// Reset The Projection Matrix
+			// Set Up Perspective Mode To Fit 1/4 The Screen (Size Of A Viewport)
+			gluPerspective( 45.0, (GLfloat)(width)/(GLfloat)(height), 0.1f, 500.0 ); 
+		}
+</pre>
+<p>The following code selects the modelview matrix, resets it, then clears the depth buffer. We clear the depth buffer for each viewport drawn. Notice we are not clearing the screen color. Just the Depth Buffer! If you do not clear the depth buffer, you will see portions of objects disappear, etc. Definitely not pretty!</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">		glMatrixMode (GL_MODELVIEW);							// Select The Modelview Matrix
+		glLoadIdentity ();								// Reset The Modelview Matrix
+
+		glClear (GL_DEPTH_BUFFER_BIT);							// Clear Depth Buffer
+</pre>
+<p>The first image we draw is a flat 2D textured quad. The quad is drawn in ortho mode, and will fill the entire viewport. Because we are using ortho mode, there is no 3rd dimension, so there is no need to translate on the z-axis.</p>
+<p>Remember that the top left of the first viewport is 0,0 and the bottom right is window_width/2, window_height/2. So that means that the top right of our quad is at window_width/2, 0. The top left is at 0,0, the bottom left is at 0, window_height/2 and the bottom right is at window_width/2, window_height/2. Notice in ortho mode, we can actually work with pixels rather than units (depending on how we set the viewport up).</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">		if (loop==0)									// Are We Drawing The First Image?  (Original Texture... Ortho)
+		{
+			glBegin(GL_QUADS);							// Begin Drawing A Single Quad
+				// We Fill The Entire 1/4 Section With A Single Textured Quad.
+				glTexCoord2f(1.0f, 0.0f); glVertex2i(window_width/2, 0              );
+				glTexCoord2f(0.0f, 0.0f); glVertex2i(0,              0              );
+				glTexCoord2f(0.0f, 1.0f); glVertex2i(0,              window_height/2);
+				glTexCoord2f(1.0f, 1.0f); glVertex2i(window_width/2, window_height/2);
+			glEnd();								// Done Drawing The Textured Quad
+		}
+</pre>
+<p>The second image we draw is a smooth sphere with lighting. The second viewport is perspective, so the first thing we need to do is move into the screen 14 units. We then rotate our object on the x-axis, y-axis and z-axis.</p>
+<p>We enable lighting, draw our sphere and then disable lighting. The sphere has a radius of 4 units with 32 slices and 32 stacks. If you feel like playing around, try changing the number of stacks or slices to a lower number. By reducing the number of stacks / slices, you reduce the smoothness of the sphere.</p>
+<p>Texture coordinates are automatically generated!</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">		if (loop==1)									// Are We Drawing The Second Image?  (3D Texture Mapped Sphere... Perspective)
+		{
+			glTranslatef(0.0f,0.0f,-14.0f);						// Move 14 Units Into The Screen
+
+			glRotatef(xrot,1.0f,0.0f,0.0f);						// Rotate By xrot On The X-Axis
+			glRotatef(yrot,0.0f,1.0f,0.0f);						// Rotate By yrot On The Y-Axis
+			glRotatef(zrot,0.0f,0.0f,1.0f);						// Rotate By zrot On The Z-Axis
+
+			glEnable(GL_LIGHTING);							// Enable Lighting
+			gluSphere(quadric,4.0f,32,32);						// Draw A Sphere
+			glDisable(GL_LIGHTING);							// Disable Lighting
+		}
+</pre>
+<p>The third image drawn is the same as the first image, but it's drawn with perspective, It's tilted at an angle and it rotates (oh yay!).</p>
+<p>We move 2 units into the screen and then tilt the quad back 45 degrees. This makes the top of the quad further away from us, and the bottom of the quad closer towards us!</p>
+<p>We then rotate on the z-axis to get the quad spinning and draw the quad. We need to set the texture coordinates manually.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">		if (loop==2)									// Are We Drawing The Third Image?  (Texture At An Angle... Perspective)
+		{
+			glTranslatef(0.0f,0.0f,-2.0f);						// Move 2 Units Into The Screen
+			glRotatef(-45.0f,1.0f,0.0f,0.0f);					// Tilt The Quad Below Back 45 Degrees.
+			glRotatef(zrot/1.5f,0.0f,0.0f,1.0f);					// Rotate By zrot/1.5 On The Z-Axis
+
+			glBegin(GL_QUADS);							// Begin Drawing A Single Quad
+				glTexCoord2f(1.0f, 1.0f); glVertex3f( 1.0f,  1.0f, 0.0f);
+				glTexCoord2f(0.0f, 1.0f); glVertex3f(-1.0f,  1.0f, 0.0f);
+				glTexCoord2f(0.0f, 0.0f); glVertex3f(-1.0f, -1.0f, 0.0f);
+				glTexCoord2f(1.0f, 0.0f); glVertex3f( 1.0f, -1.0f, 0.0f);
+			glEnd();								// Done Drawing The Textured Quad
+		}
+</pre>
+<p>If we are drawing the 4th image, we move 7 units into the screen. We then rotate the object on the x-axis, y-axis and z-axis.</p>
+<p>We enable lighting to give the object some nice shading and then we translate -2 units on the z-axis. The reason we do this is so that our object rotates around it's center point rather than rotating around one of the ends. The cylinder is 1.5 units wide on one end, 1.5 unit wide on the other end, it has a length of 4 units and is made up of 32 slices (panels around) and 16 stacks (length panels).</p>
+<p>In order to rotate around the center we need to translate half the length. Half of 4 is 2!</p>
+<p>After translating, rotating and then translating some more, we draw the cylinder and then disable lighting.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">		if (loop==3)									// Are We Drawing The Fourth Image?  (3D Texture Mapped Cylinder... Perspective)
+		{
+			glTranslatef(0.0f,0.0f,-7.0f);						// Move 7 Units Into The Screen
+			glRotatef(-xrot/2,1.0f,0.0f,0.0f);					// Rotate By -xrot/2 On The X-Axis
+			glRotatef(-yrot/2,0.0f,1.0f,0.0f);					// Rotate By -yrot/2 On The Y-Axis
+			glRotatef(-zrot/2,0.0f,0.0f,1.0f);					// Rotate By -zrot/2 On The Z-Axis
+
+			glEnable(GL_LIGHTING);							// Enable Lighting
+			glTranslatef(0.0f,0.0f,-2.0f);						// Translate -2 On The Z-Axis (To Rotate Cylinder Around The Center, Not An End)
+			gluCylinder(quadric,1.5f,1.5f,4.0f,32,16);				// Draw A Cylinder
+			glDisable(GL_LIGHTING);							// Disable Lighting
+		}
+	}
+</pre>
+<p>The last thing we do is flush the rendering pipeline.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	glFlush ();										// Flush The GL Rendering Pipeline
+}
+</pre>
+<p>Hopefully this tutorial answers any questions you may have had about multiple viewports. The code is not all that hard to understand. The code is almost identical to the standard basecode. The only thing that has really changed is the viewport setup is now done in the main drawing loop, the screen is cleared once before the viewports are drawn, and the depth buffer is cleared on it's own.</p>
+<p>You can use the code to display a variety of images all running in their own viewport, or you could use the code to display multiple views of a certain object. What you do with this code is up to you.</p>
+<p>I hope you guys enjoy the tutorial... If you find any mistakes in the code, or you feel you can make this tutorial even better, let me know.</p>
+<p><strong>Jeff Molofee</strong> (<strong>NeHe</strong>)</p>
+<p>* DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/vc/lesson42.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/vc/lesson42.zip'" tppabs="http://nehe.gamedev.net/data/lessons/vc/lesson42.zip">Visual C++</a> Code For This Lesson.</p>
+<p>* DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/bcb6/lesson42_bcb6.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/bcb6/lesson42_bcb6.zip'" tppabs="http://nehe.gamedev.net/data/lessons/bcb6/lesson42_bcb6.zip">Borland C++ Builder 6</a> Code For This Lesson. ( Conversion by <a href="mailto:conglth@hotmail.com">Le Thanh Cong</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/cwarrior/lesson42.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/cwarrior/lesson42.zip'" tppabs="http://nehe.gamedev.net/data/lessons/cwarrior/lesson42.zip">Code Warrior 5.3</a> Code For This Lesson. ( Conversion by <a href="mailto:DelusionalBeing@hotmail.com">Scott Lupton</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/delphi/lesson42.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/delphi/lesson42.zip'" tppabs="http://nehe.gamedev.net/data/lessons/delphi/lesson42.zip">Delphi</a> Code For This Lesson. ( Conversion by <a href="mailto:michal_praha@seznam.cz">Michal Tucek</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/devc/lesson42.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/devc/lesson42.zip'" tppabs="http://nehe.gamedev.net/data/lessons/devc/lesson42.zip">Dev C++</a> Code For This Lesson. ( Conversion by <a href="mailto:robohog_64@hotmail.com">Victor Andr&eacute;e</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/euphoria/lesson42.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/euphoria/lesson42.zip'" tppabs="http://nehe.gamedev.net/data/lessons/euphoria/lesson42.zip">Euphoria</a> Code For This Lesson. ( Conversion by <a href="mailto:1evan@sbcglobal.net">Evan Marshall</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/linuxsdl/lesson42.tar.gz  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/linuxsdl/lesson42.tar.gz'" tppabs="http://nehe.gamedev.net/data/lessons/linuxsdl/lesson42.tar.gz">Linux/SDL</a> Code For This Lesson. ( Conversion by <a href="mailto:evik@chaos.hu">Evik</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/macosxcocoa/lesson42.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/macosxcocoa/lesson42.zip'" tppabs="http://nehe.gamedev.net/data/lessons/macosxcocoa/lesson42.zip">Mac OS X/Cocoa</a> Code For This Lesson. ( Conversion by <a href="mailto:bholley@unlnotes.unl.edu">Brian Holley</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/python/lesson42.tar.gz  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/python/lesson42.tar.gz'" tppabs="http://nehe.gamedev.net/data/lessons/python/lesson42.tar.gz">Python</a> Code For This Lesson. ( Conversion by <a href="mailto:bleair@comcast.net">Brian Leair</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/vs_net/lesson42.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/vs_net/lesson42.zip'" tppabs="http://nehe.gamedev.net/data/lessons/vs_net/lesson42.zip">Visual Studio .NET</a> Code For This Lesson. ( Conversion by <a href="mailto:webmaster@joachimrohde.de">Joachim Rohde</a> )</p>
+<p>* DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/extras/lesson42/lesson42_dual_window.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/extras/lesson42/lesson42_dual_window.zip'" tppabs="http://nehe.gamedev.net/data/lessons/extras/lesson42/lesson42_dual_window.zip">Lesson 42 - Multi Window</a> Code For This Lesson by Marcel Laverdet</p>
+<p><strong><span><a href="index-81.htm" tppabs="http://nehe.gamedev.net/data/lessons/lesson.asp?lesson=41">&lt; Lesson 41</a></span></strong><strong><span><a href="index-83.htm" tppabs="http://nehe.gamedev.net/data/lessons/lesson.asp?lesson=43">Lesson 43 &gt;</a></span></strong></p>
+
+
+</div>
+</div>
+
+
+
+            <div style="width:728px;padding:0px;margin:auto; margin-top: 10px;">
+            
+
+    
+                <!-- Leaderboard_NeHe -->
+                <div id='div-gpt-ad-1327940144417-0' style='width:728px; height:90px;'>
+                <script type='text/javascript'>
+                googletag.cmd.push(function() { googletag.display('div-gpt-ad-1327940144417-0'); });
+                </script>
+                </div>
+            
+
+                           
+            </div>   
+        </td>
+        <td class="col2">
+            
+
+
+
+
+<div style="text-align: center; padding:10px;">
+
+<script type='text/javascript'>
+    GA_googleFillSlot("Skyscraper_NeHe");
+</script>
+
+</div>
+            
+        </td>
+    </table>
+    <div id="footer">
+        <p>
+            
+    
+    © 1997-2012 Gamedev . All rights reserved.<br/>
+
+			NeHe™ and NeHe Productions™ are trademarks of GameDev.net, LLC<br/>
+			OpenGL® is a registered trademark of Silicon Graphics Inc.<br/>
+		</p>        
+		<br/>
+    </div>
+
+    
+    
+	    <script type="text/javascript" src="shCore.js" tppabs="http://nehe.gamedev.net/static/js/syntax_highlighter/shCore.js"></script>
+        <script type="text/javascript" src="shBrushCpp.js" tppabs="http://nehe.gamedev.net/static/js/syntax_highlighter/shBrushCpp.js"></script>
+	    <script type="text/javascript" src="shBrushJScript.js" tppabs="http://nehe.gamedev.net/static/js/syntax_highlighter/shBrushJScript.js"></script>
+	    <script type="text/javascript">SyntaxHighlighter.all();</script>
+    
+
+    <!-- Place this render call where appropriate -->
+    <script type="text/javascript">
+      (function() {
+        var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+        po.src = 'plusone.js'/*tpa=https://apis.google.com/js/plusone.js*/;
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+      })();
+    </script>    
+
+    
+<!-- GoogleAnalytics code -->
+<script src="urchin.js" tppabs="http://www.google-analytics.com/urchin.js" type="text/javascript">
+</script>
+<script type="text/javascript">
+_uacct = "UA-279474-2"; // Gamedev
+urchinTracker();
+_uff = 0; // Reset for second account
+_uacct = "UA-24180731-1"; // Non-GD
+urchinTracker();
+</script> 
+  </body>
+</html>

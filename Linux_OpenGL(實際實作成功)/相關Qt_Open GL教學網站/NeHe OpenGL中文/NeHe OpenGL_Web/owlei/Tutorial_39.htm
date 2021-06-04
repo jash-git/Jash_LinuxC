@@ -1,0 +1,698 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<!-- 这篇文章由Dancingwind翻译，作者的联系方式zhouwei02@mails.tsinghua.edu.cn -->
+<HTML><HEAD><TITLE>NeHe OpenGL教程第三十九课，DancingWind翻译</TITLE>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<style type=text/css>
+A:link {COLOR: #ccaaff; TEXT-DECORATION: none}
+A:visited {COLOR: #ccaaff; TEXT-DECORATION: none}
+A:active {COLOR: #ccaaff; TEXT-DECORATION: none}
+A:hover {COLOR: #ffccaa; TEXT-DECORATION: none}
+</style>
+</head>
+<br><br>
+<body bgcolor=#000000 text=#ffffff><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td width=326 height=130><img src="logo.png" tppabs="http://www.owlei.com/DancingWind/Pic/logo.png" width=326 height=130></td>
+    <td valign=middle align=center width="75%"><font color=#ffccaa size=+3><b><i>第39课</i></b></font></td>
+  </tr></table>
+  <!-- 上边框-->
+<table border="0" cellPadding="0" cellSpacing="0" width="100%">
+<TBODY>
+  <tr>
+    <td><img height="28" src="tl.jpg" tppabs="http://www.owlei.com/DancingWind/Pic/tl.jpg" width="28"></td>
+    <td width="100%"><img height="28" src="tc.gif" tppabs="http://www.owlei.com/DancingWind/Pic/tc.gif" width="100%"></td>
+    <td><img height="28" src="tr.gif" tppabs="http://www.owlei.com/DancingWind/Pic/tr.gif" width="28"></td>
+  </tr>
+</TBODY>
+</table>
+
+<!-- 中部-->
+<table border="0" cellPadding="0" cellSpacing="0" width="100%">
+<TBODY>
+  <tr>
+  	<!-- 中部左边框-->
+    <td  background="l.gif" tppabs="http://www.owlei.com/DancingWind/Pic/l.gif"><img src="l.gif" tppabs="http://www.owlei.com/DancingWind/Pic/l.gif" width="28" height="28"></td>
+	<!-- 中部文字部分-->
+    <td vAlign="top" width="100%">
+	<table width="100%" border="0">
+          <tr>
+            <td width="25%"><img src="lesson39.jpg" tppabs="http://www.owlei.com/DancingWind/Pic/lesson39.jpg" width="240" height="180"></td>
+            <td width="75%"><p><FONT class=head>物理模拟简介:</FONT></p>
+              <p><font size="3">还记得高中的物理吧，直线运动，自由落体运动，弹簧。在这一课里，我们将创造这一切。</FONT></p></td>
+          </tr>
+     </table>
+      </td>
+	<!-- 中部右边框-->
+    <td background="r.gif" tppabs="http://www.owlei.com/DancingWind/Pic/r.gif"><img src="r.gif" tppabs="http://www.owlei.com/DancingWind/Pic/r.gif" width="28" height="28"></td>
+  </tr>
+</TBODY>
+</table>
+
+<!-- 下边框-->
+<table border="0" cellPadding="0" cellSpacing="0" width="100%">
+<TBODY>
+  <tr>
+    <td><img height="28" src="bl.gif" tppabs="http://www.owlei.com/DancingWind/Pic/bl.gif" width="28"></td>
+    <td width="100%"><img height="28" src="bc.gif" tppabs="http://www.owlei.com/DancingWind/Pic/bc.gif" width="100%"></td>
+    <td><img height="28" src="br.gif" tppabs="http://www.owlei.com/DancingWind/Pic/br.gif" width="28"></td>
+  </tr>
+</TBODY>
+</table>
+  <table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top><U>物理模拟介绍</U><BR> <BR>
+      如果你很熟悉物理规律，并且想实现它，这篇文章很适合你。<BR> <BR>
+      在这篇教程里，你会创建一个非常简单的物理引擎，我们将创建以下类：<BR> <br> <u>内容:</u> <br> <br> <table border=0>
+        <tbody>
+          <tr> 
+            <th align=left>位置类</th>
+          </tr>
+          <tr> 
+            <td><font color=#aaffaa>* class Vector3D</font></td>
+            <td>---&gt; </td>
+            <td><font color=#ffffaa>用来记录物体的三维坐标的类</font></td>
+          </tr>
+          <tr></tr>
+          <tr> 
+            <th align=left>力和运动</th>
+          </tr>
+          <tr> 
+            <td><font color=#aaffaa>* class Mass</font></td>
+            <td>---&gt; </td>
+            <td><font color=#ffffaa>表示一个物体的物理属性</font></td>
+          </tr>
+          <tr></tr>
+          <tr> 
+            <th align=left>模拟类</th>
+          </tr>
+          <tr> 
+            <td><font color=#aaffaa>* class Simulation</font></td>
+            <td>---&gt; </td>
+            <td><font color=#ffffaa>模拟物理规律</font></td>
+          </tr>
+          <tr></tr>
+          <tr> 
+            <th align=left>模拟匀速运动</th>
+          </tr>
+          <tr> 
+            <td><font color=#aaffaa>* class ConstantVelocity : public Simulation</font></td>
+            <td>---&gt; </td>
+            <td><font color=#ffffaa>模拟匀速运动</font></td>
+          </tr>
+          <tr></tr>
+          <tr> 
+            <th align=left>模拟在力的作用下运动</th>
+          </tr>
+          <tr> 
+            <td><font color=#aaffaa>* class MotionUnderGravitation : public Simulation</font></td>
+            <td>---&gt; </td>
+            <td><font color=#ffffaa>模拟在引力的作用下运动</font></td>
+          </tr>
+          <tr> 
+            <td><font color=#aaffaa>* class MassConnectedWithSpring : public Simulation</font></td>
+            <td>---&gt; </td>
+            <td><font color=#ffffaa>模拟在弹簧的作用下运动</font></td>
+          </tr>
+        </tbody>
+      </table>
+      <FONT face=Tahoma,Verdana,sans-serif size=-1> <BR>
+      </FONT></TD>
+    <TD background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><IMG
+    src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></TD></TR></TABLE>
+<TABLE cellSpacing=0 cellPadding=0 width="100%" border=0>
+  <TBODY>
+  <TR>
+    <TD><IMG height=28 src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28></TD>
+    <TD width="100%"><IMG height=28 src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png"
+      width="100%"></TD>
+    <TD><IMG height=28 src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png"
+width=28></TD></TR></TBODY></TABLE><FONT color=#aaffaa size=3>
+<PRE>class Mass
+{
+public:
+	float m;									<FONT color=#ffffaa>// 质量</FONT>
+	Vector3D pos;								<FONT color=#ffffaa>// 位置</FONT>
+	Vector3D vel;								<FONT color=#ffffaa>// 速度</FONT>
+	Vector3D force;								<FONT color=#ffffaa>// 力</FONT>
+
+	Mass(float m)								<FONT color=#ffffaa>// 构造函数</FONT>
+	{
+		this-&gt;m = m;
+	}
+
+	...
+</PRE>
+</FONT>
+<TABLE cellSpacing=0 cellPadding=0 width="100%" border=0>
+  <TBODY>
+  <TR>
+    <TD><IMG height=28 src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28></TD>
+    <TD width="100%"><IMG height=28 src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png"
+      width="100%"></TD>
+    <TD><IMG height=28 src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png"
+width=28></TD></TR></TBODY></TABLE>
+<TABLE cellSpacing=0 cellPadding=0 width="100%" border=0>
+  <TBODY>
+  <TR>
+    <TD background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><IMG
+    src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></TD>
+    <TD vAlign=top width="100%"><p>下面的代码给物体增加一个力，在初始时这个力为0</p>
+        </TD>
+    <TD background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><IMG
+    src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></TD></TR></TBODY></TABLE>
+<TABLE cellSpacing=0 cellPadding=0 width="100%" border=0>
+  <TBODY>
+  <TR>
+    <TD><IMG height=28 src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28></TD>
+    <TD width="100%"><IMG height=28 src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png"
+      width="100%"></TD>
+    <TD><IMG height=28 src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png"
+width=28></TD></TR></TBODY></TABLE>
+<FONT color=#aaffaa size=3> 
+<PRE>
+	void applyForce(Vector3D force)
+	{
+		this-&gt;force += force;						<FONT color=#ffffaa>// 增加一个力</FONT>
+	}
+
+	void init()								<FONT color=#ffffaa>// 初始时设为0</FONT>
+	{
+		force.x = 0;
+		force.y = 0;
+		force.z = 0;
+	}
+
+	...
+</PRE>
+</FONT>
+<TABLE cellSpacing=0 cellPadding=0 width="100%" border=0>
+  <TBODY>
+  <TR>
+    <TD><IMG height=28 src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28></TD>
+    <TD width="100%"><IMG height=28 src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png"
+      width="100%"></TD>
+    <TD><IMG height=28 src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png"
+width=28></TD></TR></TBODY></TABLE>
+<TABLE cellSpacing=0 cellPadding=0 width="100%" border=0>
+  <TBODY>
+  <TR>
+    <TD background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><IMG
+    src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></TD>
+    <TD vAlign=top width="100%"><p>下面的步骤完成一个模拟：</p>
+        <p>1.设置力<br>
+          2.应用外力<br>
+          3.根据力的时间，计算物体的位置和速度</p>
+        </TD>
+    <TD background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><IMG
+    src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></TD></TR></TBODY></TABLE>
+<TABLE cellSpacing=0 cellPadding=0 width="100%" border=0>
+  <TBODY>
+  <TR>
+    <TD><IMG height=28 src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28></TD>
+    <TD width="100%"><IMG height=28 src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png"
+      width="100%"></TD>
+    <TD><IMG height=28 src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png"
+width=28></TD></TR></TBODY></TABLE>
+<FONT color=#aaffaa size=3> 
+<PRE>
+	void simulate(float dt)
+	{
+		vel += (force / m) * dt;					<FONT color=#ffffaa>// 更新速度</FONT>
+								
+
+		pos += vel * dt;						<FONT color=#ffffaa>// 更新位置</FONT>
+										
+	}
+</PRE>
+</FONT>
+<TABLE cellSpacing=0 cellPadding=0 width="100%" border=0>
+  <TBODY>
+  <TR>
+    <TD><IMG height=28 src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28></TD>
+    <TD width="100%"><IMG height=28 src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png"
+      width="100%"></TD>
+    <TD><IMG height=28 src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png"
+width=28></TD></TR></TBODY></TABLE>
+<TABLE cellSpacing=0 cellPadding=0 width="100%" border=0>
+  <TBODY>
+  <TR>
+    <TD background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><IMG
+    src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></TD>
+      <TD vAlign=top width="100%"><U>模拟类怎样运作:</U> <BR> <BR>
+        在一个物理模拟中，我们按以下规律进行模拟，设置力，更新物体的位置和速度，按时间一次又一次的进行模拟。下面是它的实现代码：</TD>
+    <TD background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><IMG
+    src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></TD></TR></TBODY></TABLE>
+<TABLE cellSpacing=0 cellPadding=0 width="100%" border=0>
+  <TBODY>
+  <TR>
+    <TD><IMG height=28 src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28></TD>
+    <TD width="100%"><IMG height=28 src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png"
+      width="100%"></TD>
+    <TD><IMG height=28 src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png"
+width=28></TD></TR></TBODY></TABLE><FONT color=#aaffaa size=3>
+<PRE>class Simulation
+{
+public:
+	int numOfMasses;								<FONT color=#ffffaa>// 物体的个数</FONT>
+	Mass** masses;								<FONT color=#ffffaa>// 指向物体结构的指针</FONT>
+
+	Simulation(int numOfMasses, float m)						<FONT color=#ffffaa>// 构造函数</FONT>
+	{
+		this-&gt;numOfMasses = numOfMasses;
+
+		masses = new Mass*[numOfMasses];				
+
+		for (int a = 0; a &lt; numOfMasses; ++a)				
+			masses[a] = new Mass(m);			
+	}
+
+	virtual void release()							<FONT color=#ffffaa>// 释放所有的物体</FONT>
+	{
+		for (int a = 0; a &lt; numOfMasses; ++a)				
+		{
+			delete(masses[a]);
+			masses[a] = NULL;
+		}
+
+		delete(masses);
+		masses = NULL;
+	}
+
+	Mass* getMass(int index)
+	{
+		if (index &lt; 0 || index &gt;= numOfMasses)				<FONT color=#ffffaa>// 返回第i个物体</FONT>
+			return NULL;						
+
+		return masses[index];						
+	}
+
+...
+</PRE>
+</FONT> <FONT color=#aaffaa size=3> 
+<PRE>	(class Simulation continued)
+
+	virtual void init()							<FONT color=#ffffaa>// 初始化所有的物体</FONT>
+	{
+		for (int a = 0; a &lt; numOfMasses; ++a)				
+			masses[a]-&gt;init();					
+	}
+
+	virtual void solve()							<FONT color=#ffffaa>//虚函数，在具体的应用中设置各个施加给各个物体的力 </FONT>
+	{
+									
+	}
+
+	virtual void simulate(float dt)						<FONT color=#ffffaa>//让所有的物体模拟一步</FONT>
+	{
+		for (int a = 0; a &lt; numOfMasses; ++a)				
+			masses[a]-&gt;simulate(dt);				
+	}
+
+	...
+</PRE>
+</FONT> 
+<TABLE cellSpacing=0 cellPadding=0 width="100%" border=0>
+  <TBODY>
+  <TR>
+    <TD><IMG height=28 src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28></TD>
+    <TD width="100%"><IMG height=28 src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png"
+      width="100%"></TD>
+    <TD><IMG height=28 src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png"
+width=28></TD></TR></TBODY></TABLE>
+<TABLE cellSpacing=0 cellPadding=0 width="100%" border=0>
+  <TBODY>
+  <TR>
+    <TD background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><IMG
+    src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></TD>
+      <TD vAlign=top width="100%">整个模拟的部分被封装到下面的函数中</TD>
+    <TD background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><IMG
+    src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></TD></TR></TBODY></TABLE>
+<TABLE cellSpacing=0 cellPadding=0 width="100%" border=0>
+  <TBODY>
+  <TR>
+    <TD><IMG height=28 src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28></TD>
+    <TD width="100%"><IMG height=28 src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png"
+      width="100%"></TD>
+    <TD><IMG height=28 src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png"
+width=28></TD></TR></TBODY></TABLE>
+<FONT color=#aaffaa size=3> 
+<PRE>	(class Simulation continued)
+
+	virtual void operate(float dt)						<FONT color=#ffffaa>//  完整的模拟过程</FONT>
+	{
+		init();								<FONT color=#ffffaa>// 设置力为0</FONT>
+		solve();							<FONT color=#ffffaa>	// 应用力</FONT>
+		simulate(dt);							<FONT color=#ffffaa>// 模拟</FONT>
+	}
+};
+</PRE>
+</FONT> 
+<TABLE cellSpacing=0 cellPadding=0 width="100%" border=0>
+  <TBODY>
+  <TR>
+    <TD><IMG height=28 src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28></TD>
+    <TD width="100%"><IMG height=28 src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png"
+      width="100%"></TD>
+    <TD><IMG height=28 src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png"
+width=28></TD></TR></TBODY></TABLE>
+<TABLE cellSpacing=0 cellPadding=0 width="100%" border=0>
+  <TBODY>
+  <TR>
+    <TD background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><IMG
+    src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></TD>
+      <TD vAlign=top width="100%">现在我们已经有了一个简单的物理模拟引擎了，它包含有物体和模拟两个类，下面我们基于它们创建三个具体的模拟对象: 
+        <BR> <BR> <FONT color=#ffffaa>1. 具有恒定速度的物体</FONT><BR> <FONT
+      color=#ffffaa>2. 具有恒定加速度的物体</FONT><BR> <FONT
+      color=#ffffaa>3. 具有与距离成反比的力的物体</FONT><BR> <BR> <U>在程序中控制一个模拟对象：</U><BR> 
+        <BR>
+        在我们写一个具体的模拟类之前，让我们看看如何在程序中模拟一个对象，在这个教程里，模拟引擎和操作模拟的程序在两个文件里，在程序中我们使用如下的函数，操作模拟：<BR> 
+        <FONT face=Tahoma,Verdana,sans-serif size=-1><BR>
+        </FONT></TD>
+    <TD background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><IMG
+    src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></TD></TR></TBODY></TABLE>
+<TABLE cellSpacing=0 cellPadding=0 width="100%" border=0>
+  <TBODY>
+  <TR>
+    <TD><IMG height=28 src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28></TD>
+    <TD width="100%"><IMG height=28 src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png"
+      width="100%"></TD>
+    <TD><IMG height=28 src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png"
+width=28></TD></TR></TBODY></TABLE><FONT color=#aaffaa size=3><PRE>void Update (DWORD milliseconds)						<FONT color=#ffffaa>// 执行模拟</FONT>
+</PRE></FONT>
+<TABLE cellSpacing=0 cellPadding=0 width="100%" border=0>
+  <TBODY>
+  <TR>
+    <TD><IMG height=28 src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28></TD>
+    <TD width="100%"><IMG height=28 src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png"
+      width="100%"></TD>
+    <TD><IMG height=28 src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png"
+width=28></TD></TR></TBODY></TABLE>
+<TABLE cellSpacing=0 cellPadding=0 width="100%" border=0>
+  <TBODY>
+  <TR>
+    <TD background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><IMG
+    src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></TD>
+      <TD vAlign=top width="100%">这个函数在每一帧的开始更新，参数为相隔的时间。</TD>
+    <TD background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><IMG
+    src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></TD></TR></TBODY></TABLE>
+<TABLE cellSpacing=0 cellPadding=0 width="100%" border=0>
+  <TBODY>
+  <TR>
+    <TD><IMG height=28 src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28></TD>
+    <TD width="100%"><IMG height=28 src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png"
+      width="100%"></TD>
+    <TD><IMG height=28 src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png"
+width=28></TD></TR></TBODY></TABLE><FONT color=#aaffaa size=3>
+<PRE>void Update (DWORD milliseconds)
+{
+	...
+	...
+	...
+
+	float dt = milliseconds / 1000.0f;					<FONT color=#ffffaa>// 转化为秒</FONT>
+
+	dt /= slowMotionRatio;						<FONT color=#ffffaa>// 除以模拟系数</FONT>
+
+	timeElapsed += dt;							<FONT color=#ffffaa>// 更新流失的时间</FONT>
+
+	...
+</PRE>
+</FONT>
+<TABLE cellSpacing=0 cellPadding=0 width="100%" border=0>
+  <TBODY>
+  <TR>
+    <TD><IMG height=28 src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28></TD>
+    <TD width="100%"><IMG height=28 src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png"
+      width="100%"></TD>
+    <TD><IMG height=28 src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png"
+width=28></TD></TR></TBODY></TABLE>
+<TABLE cellSpacing=0 cellPadding=0 width="100%" border=0>
+  <TBODY>
+  <TR>
+    <TD background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><IMG
+    src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></TD>
+      <TD vAlign=top width="100%">在下面的代码中，我们定义一个处理间隔，没隔这么长时间，让物理引擎模拟一次。</TD>
+    <TD background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><IMG
+    src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></TD></TR></TBODY></TABLE>
+<TABLE cellSpacing=0 cellPadding=0 width="100%" border=0>
+  <TBODY>
+  <TR>
+    <TD><IMG height=28 src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28></TD>
+    <TD width="100%"><IMG height=28 src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png"
+      width="100%"></TD>
+    <TD><IMG height=28 src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png"
+width=28></TD></TR></TBODY></TABLE><FONT color=#aaffaa size=3>
+<PRE>	...
+
+	float maxPossible_dt = 0.1f;					<FONT color=#ffffaa>// 设置模拟间隔</FONT>
+									
+
+  	int numOfIterations = (int)(dt / maxPossible_dt) + 1;			<FONT color=#ffffaa>//计算在流失的时间里模拟的次数</FONT>
+	if (numOfIterations != 0)					
+		dt = dt / numOfIterations;					
+
+	for (int a = 0; a &lt; numOfIterations; ++a)				<FONT color=#ffffaa>// 模拟它们</FONT>	
+	{
+		constantVelocity-&gt;operate(dt);					
+		motionUnderGravitation-&gt;operate(dt);				
+		massConnectedWithSpring-&gt;operate(dt);				
+	}
+}
+</PRE>
+</FONT>
+<TABLE cellSpacing=0 cellPadding=0 width="100%" border=0>
+  <TBODY>
+  <TR>
+    <TD><IMG height=28 src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28></TD>
+    <TD width="100%"><IMG height=28 src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png"
+      width="100%"></TD>
+    <TD><IMG height=28 src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png"
+width=28></TD></TR></TBODY></TABLE>
+<TABLE cellSpacing=0 cellPadding=0 width="100%" border=0>
+  <TBODY>
+  <TR>
+    <TD background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><IMG
+    src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></TD>
+      <TD vAlign=top width="100%">下面让我们来写着两个具体的模拟类: <BR> <BR>
+        1. 具有恒定速度的物体<BR> <FONT
+      color=#aaffaa>* class ConstantVelocity : public Simulation</FONT> ---&gt; 
+        <FONT color=#ffffaa>模拟一个匀速运动的物体</FONT><FONT face=Tahoma,Verdana,sans-serif size=-1><BR>
+        <BR>
+        </FONT></TD>
+    <TD background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><IMG
+    src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></TD></TR></TBODY></TABLE>
+<TABLE cellSpacing=0 cellPadding=0 width="100%" border=0>
+  <TBODY>
+  <TR>
+    <TD><IMG height=28 src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28></TD>
+    <TD width="100%"><IMG height=28 src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png"
+      width="100%"></TD>
+    <TD><IMG height=28 src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png"
+width=28></TD></TR></TBODY></TABLE><FONT color=#aaffaa size=3>
+<PRE>class ConstantVelocity : public Simulation
+{
+public:
+	ConstantVelocity() : Simulation(1, 1.0f)				<FONT color=#ffffaa> </FONT>
+	{
+		masses[0]-&gt;pos = Vector3D(0.0f, 0.0f, 0.0f);			<FONT color=#ffffaa>// 初始位置为0</FONT>
+		masses[0]-&gt;vel = Vector3D(1.0f, 0.0f, 0.0f);			<FONT color=#ffffaa>// 向右运动</FONT>
+	}
+};
+</PRE>
+</FONT>
+<TABLE cellSpacing=0 cellPadding=0 width="100%" border=0>
+  <TBODY>
+  <TR>
+    <TD><IMG height=28 src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28></TD>
+    <TD width="100%"><IMG height=28 src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png"
+      width="100%"></TD>
+    <TD><IMG height=28 src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png"
+width=28></TD></TR></TBODY></TABLE>
+<TABLE cellSpacing=0 cellPadding=0 width="100%" border=0>
+  <TBODY>
+  <TR>
+    <TD background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><IMG
+    src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></TD>
+      <TD vAlign=top width="100%">下面我们来创建一个具有恒定加速的物体：<FONT face=Tahoma,Verdana,sans-serif size=-1><BR>
+        <BR>
+        </FONT></TD>
+    <TD background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><IMG
+    src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></TD></TR></TBODY></TABLE>
+<TABLE cellSpacing=0 cellPadding=0 width="100%" border=0>
+  <TBODY>
+  <TR>
+    <TD><IMG height=28 src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28></TD>
+    <TD width="100%"><IMG height=28 src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png"
+      width="100%"></TD>
+    <TD><IMG height=28 src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png"
+width=28></TD></TR></TBODY></TABLE>
+<FONT color=#aaffaa size=3> 
+<PRE>class MotionUnderGravitation : public Simulation
+{
+	Vector3D gravitation;							<FONT color=#ffffaa>// 加速度</FONT>
+
+	MotionUnderGravitation(Vector3D gravitation) : Simulation(1, 1.0f)	<FONT color=#ffffaa>	//  构造函数</FONT>
+	{									
+		this-&gt;gravitation = gravitation;				<FONT color=#ffffaa>	// 设置加速度</FONT>
+		masses[0]-&gt;pos = Vector3D(-10.0f, 0.0f, 0.0f);			<FONT color=#ffffaa>// 设置位置为左边-10处</FONT>
+		masses[0]-&gt;vel = Vector3D(10.0f, 15.0f, 0.0f);			<FONT color=#ffffaa>// 设置速度为右上</FONT>
+	}
+
+	...
+</PRE>
+</FONT> 
+<TABLE cellSpacing=0 cellPadding=0 width="100%" border=0>
+  <TBODY>
+  <TR>
+    <TD><IMG height=28 src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28></TD>
+    <TD width="100%"><IMG height=28 src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png"
+      width="100%"></TD>
+    <TD><IMG height=28 src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png"
+width=28></TD></TR></TBODY></TABLE>
+<TABLE cellSpacing=0 cellPadding=0 width="100%" border=0>
+  <TBODY>
+  <TR>
+    <TD background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><IMG
+    src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></TD>
+      <TD vAlign=top width="100%">下面的函数设置施加给物体的力</TD>
+    <TD background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><IMG
+    src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></TD></TR></TBODY></TABLE>
+<TABLE cellSpacing=0 cellPadding=0 width="100%" border=0>
+  <TBODY>
+  <TR>
+    <TD><IMG height=28 src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28></TD>
+    <TD width="100%"><IMG height=28 src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png"
+      width="100%"></TD>
+    <TD><IMG height=28 src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png"
+width=28></TD></TR></TBODY></TABLE>
+<FONT color=#aaffaa size=3> 
+<PRE>	virtual void solve()							<FONT color=#ffffaa>// 设置当前的力</FONT>
+	{
+		for (int a = 0; a &lt; numOfMasses; ++a)				
+			masses[a]-&gt;applyForce(gravitation * masses[a]-&gt;m);	
+	}
+</PRE>
+</FONT> 
+<TABLE cellSpacing=0 cellPadding=0 width="100%" border=0>
+  <TBODY>
+  <TR>
+    <TD><IMG height=28 src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28></TD>
+    <TD width="100%"><IMG height=28 src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png"
+      width="100%"></TD>
+    <TD><IMG height=28 src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png"
+width=28></TD></TR></TBODY></TABLE>
+<TABLE cellSpacing=0 cellPadding=0 width="100%" border=0>
+  <TBODY>
+  <TR>
+    <TD background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><IMG
+    src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></TD>
+      <TD vAlign=top width="100%">下面的类创建一个受到与距离成正比的力的物体：</TD>
+    <TD background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><IMG
+    src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></TD></TR></TBODY></TABLE>
+<TABLE cellSpacing=0 cellPadding=0 width="100%" border=0>
+  <TBODY>
+  <TR>
+    <TD><IMG height=28 src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28></TD>
+    <TD width="100%"><IMG height=28 src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png"
+      width="100%"></TD>
+    <TD><IMG height=28 src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png"
+width=28></TD></TR></TBODY></TABLE>
+<FONT color=#aaffaa size=3> 
+<PRE>class MassConnectedWithSpring : public Simulation
+{
+public:
+	float springConstant;							<FONT color=#ffffaa>// 弹性系数</FONT>
+	Vector3D connectionPos;							<FONT color=#ffffaa>// 连接方向</FONT>
+
+	MassConnectedWithSpring(float springConstant) : Simulation(1, 1.0f)		<FONT color=#ffffaa>// 构造函数</FONT>
+	{
+		this-&gt;springConstant = springConstant;				
+
+		connectionPos = Vector3D(0.0f, -5.0f, 0.0f);		
+
+		masses[0]-&gt;pos = connectionPos + Vector3D(10.0f, 0.0f, 0.0f);	
+		masses[0]-&gt;vel = Vector3D(0.0f, 0.0f, 0.0f);		
+	}
+
+	...
+</PRE>
+</FONT> 
+<TABLE cellSpacing=0 cellPadding=0 width="100%" border=0>
+  <TBODY>
+  <TR>
+    <TD><IMG height=28 src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28></TD>
+    <TD width="100%"><IMG height=28 src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png"
+      width="100%"></TD>
+    <TD><IMG height=28 src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png"
+width=28></TD></TR></TBODY></TABLE>
+<TABLE cellSpacing=0 cellPadding=0 width="100%" border=0>
+  <TBODY>
+  <TR>
+    <TD background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><IMG
+    src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></TD>
+      <TD vAlign=top width="100%">下面的函数设置当前物体所受到的力：</TD>
+    <TD background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><IMG
+    src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></TD></TR></TBODY></TABLE>
+<TABLE cellSpacing=0 cellPadding=0 width="100%" border=0>
+  <TBODY>
+  <TR>
+    <TD><IMG height=28 src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28></TD>
+    <TD width="100%"><IMG height=28 src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png"
+      width="100%"></TD>
+    <TD><IMG height=28 src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png"
+width=28></TD></TR></TBODY></TABLE>
+<FONT color=#aaffaa size=3>
+<PRE>virtual void solve()								<FONT color=#ffffaa>// 设置当前的力</FONT>
+{
+	for (int a = 0; a &lt; numOfMasses; ++a)					
+	{
+		Vector3D springVector = masses[a]-&gt;pos - connectionPos;		
+		masses[a]-&gt;applyForce(-springVector * springConstant);		
+	}
+}
+</PRE>
+</FONT> 
+<TABLE cellSpacing=0 cellPadding=0 width="100%" border=0>
+  <TBODY>
+  <TR>
+    <TD><IMG height=28 src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28></TD>
+    <TD width="100%"><IMG height=28 src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png"
+      width="100%"></TD>
+    <TD><IMG height=28 src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png"
+width=28></TD></TR></TBODY></TABLE>
+<TABLE cellSpacing=0 cellPadding=0 width="100%" border=0>
+  <TBODY>
+  <TR>
+    <TD background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><IMG
+    src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></TD>
+      <TD vAlign=top width="100%"><p>好了上面就是一个简单的物理模拟，希望你能喜欢：）</p>
+<table width="100%" border="1">
+  <tr>
+    <td width="27%"><img src="logo 3.jpg" tppabs="http://www.owlei.com/DancingWind/images/logo%203.jpg" width="209" height="200" align="middle"></td>
+    <td width="73%">版权与使用声明:<br>
+      我是个对学习和生活充满激情的普通男孩,在网络上我以DancingWind为昵称，我的联系方式是zhouwei02@mails.tsinghua.edu.cn，如果你有任何问题，都可以联系我。
+      <p>引子<br>
+        网络是一个共享的资源，但我在自己的学习生涯中浪费大量的时间去搜索可用的资料，在现实生活中花费了大量的金钱和时间在书店中寻找资料，于是我给自己起了个昵称DancingWind，其意义是想风一样从各个知识的站点中吸取成长的养料。在飘荡了多年之后，我决定把自己收集的资料整理为一个统一的资源库。</p>
+      <p>版权声明<br>
+        所有DancingWind发表的内容，大多都来自共享的资源，所以我没有资格把它们据为己有，或声称自己为这些资源作出了一点贡献。故任何人都可以复制，修改，重新发表，甚至以自己的名义发表，我都不会追究，但你在做以上事情的时候必须保证内容的完整性，给后来的人一个完整的教程。最后，任何人不能以这些资料的任何部分，谋取任何形式的报酬。</p>
+      <p>发展计划<br>
+        在国外，很多资料都是很多人花费几年的时间慢慢积累起来的。如果任何人有兴趣与别人共享你的知识，我很欢迎你与我联系，但你必须同意我上面的声明。</p>
+              <p>感谢<br>
+                感谢我的母亲一直以来对我的支持和在生活上的照顾。<br>
+                感谢我深爱的女友田芹，一直以来默默的在精神上和生活中对我的支持，她甚至把买衣服的钱都用来给我买书了，她真的是我见过的最好的女孩，希望我能带给她幸福。</p>
+              <p>资源下载: <br>
+                文档 <a href="javascript:if(confirm('http://www.owlei.com/DancingWind/Res/mht/NeHe%20OpenGL%20Chinese%20Course%2039.mht  \n\nThis file was not retrieved by Teleport Pro, because the server reports that this file cannot be found.  \n\nDo you want to open it from the server?'))window.location='http://www.owlei.com/DancingWind/Res/mht/NeHe%20OpenGL%20Chinese%20Course%2039.mht'" tppabs="http://www.owlei.com/DancingWind/Res/mht/NeHe%20OpenGL%20Chinese%20Course%2039.mht">网页格式</a> 
+                <a href="javascript:if(confirm('http://www.owlei.com/DancingWind/Res/pdf/OpenGL_Nehe_Course_Tutorial_39.pdf  \n\nThis file was not retrieved by Teleport Pro, because the server reports that this file cannot be found.  \n\nDo you want to open it from the server?'))window.location='http://www.owlei.com/DancingWind/Res/pdf/OpenGL_Nehe_Course_Tutorial_39.pdf'" tppabs="http://www.owlei.com/DancingWind/Res/pdf/OpenGL_Nehe_Course_Tutorial_39.pdf">PDF格式</a><br>
+                源码 <a href="javascript:if(confirm('http://www.owlei.com/DancingWind/Res/Src/39_Physics.rar  \n\nThis file was not retrieved by Teleport Pro, because the server reports that this file cannot be found.  \n\nDo you want to open it from the server?'))window.location='http://www.owlei.com/DancingWind/Res/Src/39_Physics.rar'" tppabs="http://www.owlei.com/DancingWind/Res/Src/39_Physics.rar">RAR格式</a></p></td>
+  </tr>
+</table><table border="0" width="100%">
+            <td width="50%" align="left"><b><font size="-1"> <a href="Tutorial_38.htm" tppabs="http://www.owlei.com/DancingWind/Course/Tutorial_38.htm">< 
+              第38课 </a></font></b></td>
+            <td width="50%" align="right"><b><font size="-1"> <a href="Tutorial_40.htm" tppabs="http://www.owlei.com/DancingWind/Course/Tutorial_40.htm">第40课 
+              ></a></font></b></td>
+</table>
+</font></td><td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr>
+</table><table border=0 cellpadding=0 cellspacing=0 width="100%">
+<tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td>
+<td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td>
+<td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr>
+</table>
+</body>
+</html>

@@ -1,0 +1,524 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+    dir="ltr"
+    xml:lang="en"
+    lang="en">
+  <head>
+    <title>NeHe Productions: Radial Blur &amp; Rendering To A Texture</title>
+
+    <link rel="stylesheet" type="text/css" href="public_base.css" tppabs="http://nehe.gamedev.net/static/css/public_base.css" />
+    <link type="text/css" rel="stylesheet" href="shThemeMidnight.css" tppabs="http://nehe.gamedev.net/static/css/syntax_highlighter/shThemeMidnight.css"/>
+    
+    <link rel="alternate" type="application/atom+xml" title="Atom feed" href="index-1.htm" tppabs="http://nehe.gamedev.net/atom/" />
+    <link rel="alternate" type="application/rss+xml" title="RSS feed" href="index-2.htm" tppabs="http://nehe.gamedev.net/rss/" />
+    
+    <meta name="author" content="Luke Benstead + Carsten Haubold" />
+    <meta name="description" content="OpenGL Tutorials, Demos, Games and More..." />
+    <meta name="keywords" content="opengl, tutorial, article, demo, game, blend, texturemap, lighting, contest, 3D" />
+
+    
+    
+
+    
+
+</script>
+
+
+    
+    
+    
+    
+        
+        <script type='text/javascript'>
+        var googletag = googletag || {};
+        googletag.cmd = googletag.cmd || [];
+        (function() {
+        var gads = document.createElement('script');
+        gads.async = true;
+        gads.type = 'text/javascript';
+        var useSSL = 'https:' == document.location.protocol;
+        gads.src = (useSSL ? 'https:' : 'http:') + 
+        '//www.googletagservices.com/tag/js/gpt.js';
+        var node = document.getElementsByTagName('script')[0];
+        node.parentNode.insertBefore(gads, node);
+        })();
+        </script>
+
+        <script type='text/javascript'>
+        googletag.cmd.push(function() {
+        googletag.defineSlot('/1004699/Leaderboard_NeHe', [728, 90], 'div-gpt-ad-1327940144417-0').addService(googletag.pubads());
+        googletag.defineSlot('/1004699/Skyscraper_NeHe', [160, 600], 'div-gpt-ad-1327940144417-1').addService(googletag.pubads());
+        googletag.pubads().enableSingleRequest();
+        googletag.enableServices();
+        });
+        </script>
+    
+    
+
+    
+  </head>
+
+  <body>
+    
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "all.js#xfbml=1"/*tpa=http://connect.facebook.net/en_GB/all.js#xfbml=1*/;
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+
+
+    <table cellpadding="0" cellspacing="0" border="0" id="layout_table">
+    <tr><td>
+        <div id="header">
+                <a href="index.htm" tppabs="http://nehe.gamedev.net/"><img class="logo" class="logo" src="nehe.png" tppabs="http://nehe.gamedev.net/static/images/nehe.png" border="0" alt="Nehe" /></a>
+        </div>            
+    </td></tr>
+    <tr><td colspan="2">
+            
+<div class="navbar">
+    <a href="index.htm" tppabs="http://nehe.gamedev.net/">HOME</a>
+    <a href="javascript:if(confirm('http://twitter.com/  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://twitter.com/#!/nehegl'" tppabs="http://twitter.com/#!/nehegl">TWITTER</a>  
+    <a href="javascript:if(confirm('http://www.facebook.com/pages/NeHe/300582493323181  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://www.facebook.com/pages/NeHe/300582493323181'" tppabs="http://www.facebook.com/pages/NeHe/300582493323181">FACEBOOK</a>     
+    <a href="index-2.htm" tppabs="http://nehe.gamedev.net/rss/">RSS</a>    
+    <a href="index-1.htm" tppabs="http://nehe.gamedev.net/atom/">ATOM</a>    
+    <a href="javascript:if(confirm('http://www.gamedev.net/forum/27-nehe-productions/page__forum_title__NeHe+Productions  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://www.gamedev.net/forum/27-nehe-productions/page__forum_title__NeHe+Productions'" tppabs="http://www.gamedev.net/forum/27-nehe-productions/page__forum_title__NeHe+Productions">FORUM</a>    
+</div>
+    
+    </td></tr>
+    <tr>
+        <td class="col1">
+
+            
+<div id="article_container">
+
+
+<h1 class="article-header">Radial Blur &amp; Rendering To A Texture</h1>
+<div class="social-media">
+<!-- Place this tag where you want the +1 button to render -->
+<div class="g-plusone" data-size="medium" data-width="120" data-annotation="inline"></div>
+<div class="fb-like" data-send="false" data-layout="button_count" data-width="60" data-show-faces="false" data-colorscheme="dark" data-font="arial"></div>
+</div>
+<div style="clear:both;"></div>
+<p>Hi! I'm Dario Corno, also known as rIo of SpinningKids. First of all, I want to explain why I decided to write this little tutorial. I have been a scener since 1989. I want all of you to download some demos so you understand what a demo is and what demo effects are.</p>
+<p>Demos are done to show off hardcore and sometimes brutal coding as well as artistic skill. You can usually find some really killer effects in todays demos! This won't be a killer effect tutorial, but the end result is very cool! You can find a huge collection of demos at http://www.pouet.net and http://ftp.scene.org.</p>
+<p>Now that the introduction is out of the way, we can go on with the tutorial...</p>
+<p>I will explain how to do an eye candy effect (used in demos) that looks like radial blur. Sometimes it's referred to as volumetric lights, don't believe it, it's just a fake radial blur! ;D</p>
+<p>Radial blur was usually done (when there were only software renderers) by blurring every pixel of the original image in a direction opposite the center of the blur.</p>
+<p>With todays hardware it is quite difficult to do blurring by hand using the color buffer (at least in a way that is supported by all the gfx cards), so we need to do a little trick to achieve the same effect.</p>
+<p>As a bonus while learning the radial blur effect, you will also learn how to render to a texture the easy way!</p>
+<p>I decided to use a spring as the shape in this tutorial because it's a cool shape, and I'm tired of cubes :)</p>
+<p>It's important to note that this tutorial is more a guideline on how to create the effect. I don't go into great detail explaining the code. You should know most of it off by heart :)</p>
+<p>Below are the variable definitions and includes used:</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">#include &lt;math.h&gt;							// We'll Need Some Math
+
+float		angle;							// Used To Rotate The Helix
+float		vertexes[4][3];						// Holds Float Info For 4 Sets Of Vertices
+float		normal[3];						// An Array To Store The Normal Data
+GLuint		BlurTexture;						// An Unsigned Int To Store The Texture Number
+</pre>
+<p>The function EmptyTexture() creates an empty texture and returns the number of that texture. We just allocate some free space (exactly 128 * 128 * 4 unsigned integers).</p>
+<p>128 * 128 is the size of the texture (128 pixels wide and tall), the 4 means that for every pixel we want 4 byte to store the RED, GREEN, BLUE and ALPHA components.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">GLuint EmptyTexture()							// Create An Empty Texture
+{
+	GLuint txtnumber;						// Texture ID
+	unsigned int* data;						// Stored Data
+
+	// Create Storage Space For Texture Data (128x128x4)
+	data = (unsigned int*)new GLuint[((128 * 128)* 4 * sizeof(unsigned int))];
+</pre>
+<p>After allocating space we zero it using the ZeroMemory function, passing the pointer (data) and the size of memory to be "zeroed".</p>
+<p>A semi important thing to note is that we set the magnification and minification methods to GL_LINEAR. That's because we will be stretching our texture and GL_NEAREST looks quite bad if stretched.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	ZeroMemory(data,((128 * 128)* 4 * sizeof(unsigned int)));	// Clear Storage Memory
+
+	glGenTextures(1, &amp;txtnumber);					// Create 1 Texture
+	glBindTexture(GL_TEXTURE_2D, txtnumber);			// Bind The Texture
+	glTexImage2D(GL_TEXTURE_2D, 0, 4, 128, 128, 0,
+		GL_RGBA, GL_UNSIGNED_BYTE, data);			// Build Texture Using Information In data
+	glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_LINEAR);
+
+	delete [] data;							// Release data
+
+	return txtnumber;						// Return The Texture ID
+}
+</pre>
+<p>This function simply normalizes the length of the normal vectors. Vectors are expressed as arrays of 3 elements of type float, where the first element represents X, the second Y and the third Z. A normalized vector (Nv) is expressed by Vn = (Vox / |Vo| , Voy / |Vo|, Voz / |Vo|), where Vo is the original vector, |vo| is the modulus (or length) of that vector, and x,y,z are the component of that vector. Doing it "digitally" will be: Calculating the length of the original vector by doing: sqrt(x^2 + y^2 + z^2) ,where x,y,z are the 3 components of the vector. And then dividing each normal vector component by the length of the vector.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">void ReduceToUnit(float vector[3])					// Reduces A Normal Vector (3 Coordinates)
+{									// To A Unit Normal Vector With A Length Of One.
+	float length;							// Holds Unit Length
+	// Calculates The Length Of The Vector
+	length = (float)sqrt((vector[0]*vector[0]) + (vector[1]*vector[1]) + (vector[2]*vector[2]));
+
+	if(length == 0.0f)						// Prevents Divide By 0 Error By Providing
+		length = 1.0f;						// An Acceptable Value For Vectors To Close To 0.
+
+	vector[0] /= length;						// Dividing Each Element By
+	vector[1] /= length;						// The Length Results In A
+	vector[2] /= length;						// Unit Normal Vector.
+}
+</pre>
+<p>The following routine calculates the normal given 3 vertices (always in the 3 float array). We have two parameters : v[3][3] and out[3]. Of course the first parameter is a matrix of floats with m=3 and n=3 where every line is a vertex of the triangle. out is the place where we'll put the resulting normal vector.</p>
+<p>A bit of (easy) math. We are going to use the famous cross product. By definition the cross product is an operation between two vectors that returns another vector orthogonal to the two original vectors. The normal is the vector orthogonal to a surface, with the versus opposite to that surface (and usually a normalized length). Imagine now if the two vectors above are the sides of a triangle, then the orthogonal vector (calculated with the cross product) of two sides of a triangle is exactly the normal of that triangle.</p>
+<p>Harder to explain than to do.</p>
+<p>We will start finding the vector going from vertex 0 to vertex 1, and the vector from vertex 1 to vertex 2. This is basically done by (brutally) subtracting each component of each vertex from the next. Now we got the vectors for our triangle sides. By doing the cross product (vXw) we get the normal vector for that triangle.</p>
+<p>Let's see the code.</p>
+<p>v[0][] is the first vertex, v[1][] is the second vertex, v[2][] is the third vertex. Every vertex has: v[][0] the x coordinate of that vertex, v[][1] the y coord of that vertex, v[][2] the z coord of that vertex.</p>
+<p>By simply subtracting every coord of one vertex from the next we get the VECTOR from this vertex to the next. v1[0] = v[0][0] - v[1][0], this calculates the X component of the VECTOR going from VERTEX 0 to vertex 1. v1[1] = v[0][1] - v[1][1] will calculate the Y component v1[2] = v[0][2] - v[1][2] will calculate the Z component and so on...</p>
+<p>Now we have the two VECTORS, so let's calculate the cross product of them to get the normal of the triangle.</p>
+<p>The formula for the cross product is:</p>
+<p>out[x] = v1[y] * v2[z] - v1[z] * v2[y]</p>
+<p>out[y] = v1[z] * v2[x] - v1[x] * v2[z]</p>
+<p>out[z] = v1[x] * v2[y] - v1[y] * v2[x]</p>
+<p>We finally have the normal of the triangle in out[].</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">void calcNormal(float v[3][3], float out[3])				// Calculates Normal For A Quad Using 3 Points
+{
+	float v1[3],v2[3];						// Vector 1 (x,y,z) &amp; Vector 2 (x,y,z)
+	static const int x = 0;						// Define X Coord
+	static const int y = 1;						// Define Y Coord
+	static const int z = 2;						// Define Z Coord
+
+	// Finds The Vector Between 2 Points By Subtracting
+	// The x,y,z Coordinates From One Point To Another.
+
+	// Calculate The Vector From Point 1 To Point 0
+	v1[x] = v[0][x] - v[1][x];					// Vector 1.x=Vertex[0].x-Vertex[1].x
+	v1[y] = v[0][y] - v[1][y];					// Vector 1.y=Vertex[0].y-Vertex[1].y
+	v1[z] = v[0][z] - v[1][z];					// Vector 1.z=Vertex[0].y-Vertex[1].z
+	// Calculate The Vector From Point 2 To Point 1
+	v2[x] = v[1][x] - v[2][x];					// Vector 2.x=Vertex[0].x-Vertex[1].x
+	v2[y] = v[1][y] - v[2][y];					// Vector 2.y=Vertex[0].y-Vertex[1].y
+	v2[z] = v[1][z] - v[2][z];					// Vector 2.z=Vertex[0].z-Vertex[1].z
+	// Compute The Cross Product To Give Us A Surface Normal
+	out[x] = v1[y]*v2[z] - v1[z]*v2[y];				// Cross Product For Y - Z
+	out[y] = v1[z]*v2[x] - v1[x]*v2[z];				// Cross Product For X - Z
+	out[z] = v1[x]*v2[y] - v1[y]*v2[x];				// Cross Product For X - Y
+
+	ReduceToUnit(out);						// Normalize The Vectors
+}
+</pre>
+<p>The following routine just sets up a point of view using gluLookAt. We set a point of view placed at 0, 5, 50 that is looking to 0, 0, 0 and that has the UP vector looking UP (0, 1, 0)! :D</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">void ProcessHelix()							// Draws A Helix
+{
+	GLfloat x;							// Helix x Coordinate
+	GLfloat y;							// Helix y Coordinate
+	GLfloat z;							// Helix z Coordinate
+	GLfloat phi;							// Angle
+	GLfloat theta;							// Angle
+	GLfloat v,u;							// Angles
+	GLfloat r;							// Radius Of Twist
+	int twists = 5;							// 5 Twists
+
+	GLfloat glfMaterialColor[]={0.4f,0.2f,0.8f,1.0f};		// Set The Material Color
+	GLfloat specular[]={1.0f,1.0f,1.0f,1.0f};			// Sets Up Specular Lighting
+
+	glLoadIdentity();						// Reset The Modelview Matrix
+	gluLookAt(0, 5, 50, 0, 0, 0, 0, 1, 0);				// Eye Position (0,5,50) Center Of Scene (0,0,0)
+									// Up On Y Axis.
+	glPushMatrix();							// Push The Modelview Matrix
+
+	glTranslatef(0,0,-50);						// Translate 50 Units Into The Screen
+	glRotatef(angle/2.0f,1,0,0);					// Rotate By angle/2 On The X-Axis
+	glRotatef(angle/3.0f,0,1,0);					// Rotate By angle/3 On The Y-Axis
+
+	glMaterialfv(GL_FRONT_AND_BACK,GL_AMBIENT_AND_DIFFUSE,glfMaterialColor);
+	glMaterialfv(GL_FRONT_AND_BACK,GL_SPECULAR,specular);
+</pre>
+<p>We then calculate the helix formula and render the spring. It's quite simple, I won't explain it, because it isn't the main goal of this tutorial. The helix code was borrowed (and optimized a bit) from Listen Software friends. This is written the simple way, and is not the fastest method. Using vertex arrays would make it faster!</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	r=1.5f;								// Radius
+
+	glBegin(GL_QUADS);						// Begin Drawing Quads
+	for(phi=0; phi &lt;= 360; phi+=20.0)				// 360 Degrees In Steps Of 20
+	{
+		for(theta=0; theta&lt;=360*twists; theta+=20.0)		// 360 Degrees * Number Of Twists In Steps Of 20
+		{
+			v=(phi/180.0f*3.142f);				// Calculate Angle Of First Point	(  0 )
+			u=(theta/180.0f*3.142f);			// Calculate Angle Of First Point	(  0 )
+
+			x=float(cos(u)*(2.0f+cos(v) ))*r;		// Calculate x Position (1st Point)
+			y=float(sin(u)*(2.0f+cos(v) ))*r;		// Calculate y Position (1st Point)
+			z=float((( u-(2.0f*3.142f)) + sin(v) ) * r);	// Calculate z Position (1st Point)
+
+			vertexes[0][0]=x;				// Set x Value Of First Vertex
+			vertexes[0][1]=y;				// Set y Value Of First Vertex
+			vertexes[0][2]=z;				// Set z Value Of First Vertex
+
+			v=(phi/180.0f*3.142f);				// Calculate Angle Of Second Point	(  0 )
+			u=((theta+20)/180.0f*3.142f);			// Calculate Angle Of Second Point	( 20 )
+
+			x=float(cos(u)*(2.0f+cos(v) ))*r;		// Calculate x Position (2nd Point)
+			y=float(sin(u)*(2.0f+cos(v) ))*r;		// Calculate y Position (2nd Point)
+			z=float((( u-(2.0f*3.142f)) + sin(v) ) * r);	// Calculate z Position (2nd Point)
+
+			vertexes[1][0]=x;				// Set x Value Of Second Vertex
+			vertexes[1][1]=y;				// Set y Value Of Second Vertex
+			vertexes[1][2]=z;				// Set z Value Of Second Vertex
+
+			v=((phi+20)/180.0f*3.142f);			// Calculate Angle Of Third Point	( 20 )
+			u=((theta+20)/180.0f*3.142f);			// Calculate Angle Of Third Point	( 20 )
+
+			x=float(cos(u)*(2.0f+cos(v) ))*r;		// Calculate x Position (3rd Point)
+			y=float(sin(u)*(2.0f+cos(v) ))*r;		// Calculate y Position (3rd Point)
+			z=float((( u-(2.0f*3.142f)) + sin(v) ) * r);	// Calculate z Position (3rd Point)
+
+			vertexes[2][0]=x;				// Set x Value Of Third Vertex
+			vertexes[2][1]=y;				// Set y Value Of Third Vertex
+			vertexes[2][2]=z;				// Set z Value Of Third Vertex
+
+			v=((phi+20)/180.0f*3.142f);			// Calculate Angle Of Fourth Point	( 20 )
+			u=((theta)/180.0f*3.142f);			// Calculate Angle Of Fourth Point	(  0 )
+
+			x=float(cos(u)*(2.0f+cos(v) ))*r;		// Calculate x Position (4th Point)
+			y=float(sin(u)*(2.0f+cos(v) ))*r;		// Calculate y Position (4th Point)
+			z=float((( u-(2.0f*3.142f)) + sin(v) ) * r);	// Calculate z Position (4th Point)
+
+			vertexes[3][0]=x;				// Set x Value Of Fourth Vertex
+			vertexes[3][1]=y;				// Set y Value Of Fourth Vertex
+			vertexes[3][2]=z;				// Set z Value Of Fourth Vertex
+
+			calcNormal(vertexes,normal);			// Calculate The Quad Normal
+
+			glNormal3f(normal[0],normal[1],normal[2]);	// Set The Normal
+
+			// Render The Quad
+			glVertex3f(vertexes[0][0],vertexes[0][1],vertexes[0][2]);
+			glVertex3f(vertexes[1][0],vertexes[1][1],vertexes[1][2]);
+			glVertex3f(vertexes[2][0],vertexes[2][1],vertexes[2][2]);
+			glVertex3f(vertexes[3][0],vertexes[3][1],vertexes[3][2]);
+		}
+	}
+	glEnd();							// Done Rendering Quads
+	
+	glPopMatrix();							// Pop The Matrix
+}
+</pre>
+<p>This two routines (ViewOrtho and ViewPerspective) were coded to make it easy to draw in an orthogonal way and get back to perspective rendering with ease.</p>
+<p>ViewOrtho simply sets the projection matrix, then pushes a copy of the actual projection matrix onto the OpenGL stack. The identity matrix is then loaded and an orthographic view with the current screen resolution is set up.</p>
+<p>This way it is possible to draw using 2D coordinates with 0,0 in the upper left corner of the screen and with 639, 479 in the lower right corner of the screen.</p>
+<p>Finally, the modelview matrix is activated for rendering stuff.</p>
+<p>ViewPerspective sets up projection matrix mode and pops back the non-orthogonal matrix that ViewOrtho pushed onto the stack. The modelview matrix is then selected so we can rendering stuff.</p>
+<p>I suggest you keep these two procedures, it's nice being able to render in 2D without having to worry about the projection matrix!</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">void ViewOrtho()							// Set Up An Ortho View
+{
+	glMatrixMode(GL_PROJECTION);					// Select Projection
+	glPushMatrix();							// Push The Matrix
+	glLoadIdentity();						// Reset The Matrix
+	glOrtho( 0, 640 , 480 , 0, -1, 1 );				// Select Ortho Mode (640x480)
+	glMatrixMode(GL_MODELVIEW);					// Select Modelview Matrix
+	glPushMatrix();							// Push The Matrix
+	glLoadIdentity();						// Reset The Matrix
+}
+
+void ViewPerspective()							// Set Up A Perspective View
+{
+	glMatrixMode( GL_PROJECTION );					// Select Projection
+	glPopMatrix();							// Pop The Matrix
+	glMatrixMode( GL_MODELVIEW );					// Select Modelview
+	glPopMatrix();							// Pop The Matrix
+}
+</pre>
+<p>Now it's time to explain how the fake radial blur effect is done:</p>
+<p>We need to draw the scene so it appears blurred in all directions starting from the center. The trick is doing this without a major performance hit. We can't read and write pixels, and if we want compatibility with non kick-butt video cards, we can't use extensions or driver specific commands.</p>
+<p>Time to give up... ?</p>
+<p>No, the solution is quite easy, OpenGL gives us the ability to "blur" textures. Ok... Not really blurring, but if we scale a texture using linear filtering, the result (with a bit of imagination) looks like gaussian blur.</p>
+<p>So what would happen if we put a lot of stretched textures right on top of the 3D scene and scaled them?</p>
+<p>The answer is simple... A radial blur effect!</p>
+<p>There are two problems: How do we create the texture realtime and how do we place the texture exactly in front of the 3D object?</p>
+<p>The solutions are easier than you may think!</p>
+<p>Problem ONE: Rendering To A Texture</p>
+<p>The problem is easy to solve on pixel formats that have a back buffer. Rendering to a texture without a back buffer can be a real pain on the eyes!</p>
+<p>Rendering to texture is achieved with just one function! We need to draw our object and then copy the result (BEFORE SWAPPING THE BACK BUFFER WITH THE FRONT BUFFER) to a texture using the glCopytexImage function.</p>
+<p>Problem TWO: Fitting The Texture Exactly In Front Of The 3D Object</p>
+<p>We know that, if we change the viewport without setting the right perspective, we get a stretched rendering of our object. For example if we set a viewport really wide we get a vertically stretched rendering.</p>
+<p>The solution is first to set a viewport that is square like our texture (128x128). After rendering our object to the texture, we render the texture to the screen using the current screen resolution. This way OpenGL reduces the object to fit into the texture, and when we stretch the texture to the full size of the screen, OpenGL resizes the texture to fit perfectly over top of our 3d object. Hopefully I haven't lost anyone. Another quick example... If you took a 640x480 screenshot, and then resized the screenshot to a 256x256 bitmap, you could load that bitmap as a texture and stretch it to fit on a 640x480 screen. The quality would not be as good, but the texture should line up pretty close to the original 640x480 image.</p>
+<p>On to the fun stuff! This function is really easy and is one of my preferred "design tricks". It sets a viewport with a size that matches our BlurTexture dimensions (128x128). It then calls the routine that renders the spring. The spring will be stretched to fit the 128*128 texture because of the viewport (128x128 viewport).</p>
+<p>After the spring is rendered to fit the 128x128 viewport, we bind to the BlurTexture and copy the colour buffer from the viewport to the BlurTexture using glCopyTexImage2D.</p>
+<p>The parameters are as follows:</p>
+<p>GL_TEXTURE_2D indicates that we are using a 2Dimensional texture, 0 is the mip map level we want to copy the buffer to, the default level is 0, GL_LUMINANCE indicates the format of the data to be copied. I used GL_LUMINANCE because the final result looks better, this way the luminance part of the buffer will be copied to the texture. Other parameters could be GL_ALPHA, GL_RGB, GL_INTENSITY and more.</p>
+<p>The next 2 parameters tell OpenGL where to start copying from (0,0). The width and height (128,128) is how many pixels to copy from left to right and how many to copy up and down. The last parameter is only used if we want a border which we dont.</p>
+<p>Now that we have a copy of the colour buffer (with the stretched spring) in our BlurTexture we can clear the buffer and set the viewport back to the proper dimensions (640x480 - fullscreen).</p>
+<p>IMPORTANT:</p>
+<p>This trick can be used only with double buffered pixel formats. The reason why is because all these operations are hidden from the viewer (done on the back buffer).</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">void RenderToTexture()							// Renders To A Texture
+{
+	glViewport(0,0,128,128);					// Set Our Viewport (Match Texture Size)
+
+	ProcessHelix();							// Render The Helix
+
+	glBindTexture(GL_TEXTURE_2D,BlurTexture);			// Bind To The Blur Texture
+
+	// Copy Our ViewPort To The Blur Texture (From 0,0 To 128,128... No Border)
+	glCopyTexImage2D(GL_TEXTURE_2D, 0, GL_LUMINANCE, 0, 0, 128, 128, 0);
+
+	glClearColor(0.0f, 0.0f, 0.5f, 0.5);				// Set The Clear Color To Medium Blue
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);		// Clear The Screen And Depth Buffer
+
+	glViewport(0 , 0,640 ,480);					// Set Viewport (0,0 to 640x480)
+}
+</pre>
+<p>The DrawBlur function simply draws some blended quads in front of our 3D scene, using the BlurTexture we got before. This way, playing a bit with alpha and scaling the texture, we get something that really looks like radial blur.</p>
+<p>I first disable GEN_S and GEN_T (I'm addicted to sphere mapping, so my routines usually enable these instructions :P ).</p>
+<p>We enable 2D texturing, disable depth testing, set the proper blend function, enable blending and then bind the BlurTexture.</p>
+<p>The next thing we do is switch to an ortho view, that way it's easier to draw a quad that perfectly fits the screen size. This is how we line up the texture over top of the 3D object (by stretching the texture to match the screen ratio). This is where problem two is resolved!</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">void DrawBlur(int times, float inc)					// Draw The Blurred Image
+{
+	float spost = 0.0f;						// Starting Texture Coordinate Offset
+	float alphainc = 0.9f / times;					// Fade Speed For Alpha Blending
+	float alpha = 0.2f;						// Starting Alpha Value
+
+	// Disable AutoTexture Coordinates
+	glDisable(GL_TEXTURE_GEN_S);
+	glDisable(GL_TEXTURE_GEN_T);
+
+	glEnable(GL_TEXTURE_2D);					// Enable 2D Texture Mapping
+	glDisable(GL_DEPTH_TEST);					// Disable Depth Testing
+	glBlendFunc(GL_SRC_ALPHA,GL_ONE);				// Set Blending Mode
+	glEnable(GL_BLEND);						// Enable Blending
+	glBindTexture(GL_TEXTURE_2D,BlurTexture);			// Bind To The Blur Texture
+	ViewOrtho();							// Switch To An Ortho View
+
+	alphainc = alpha / times;					// alphainc=0.2f / Times To Render Blur
+</pre>
+<p>We draw the texture many times to create the radial effect, scaling the texture coordinates and raising the blend factor every time we do another pass. We draw 25 quads stretching the texture by 0.015f each time.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	glBegin(GL_QUADS);						// Begin Drawing Quads
+		for (int num = 0;num &lt; times;num++)			// Number Of Times To Render Blur
+		{
+			glColor4f(1.0f, 1.0f, 1.0f, alpha);		// Set The Alpha Value (Starts At 0.2)
+			glTexCoord2f(0+spost,1-spost);			// Texture Coordinate	(   0,   1 )
+			glVertex2f(0,0);				// First Vertex		(   0,   0 )
+
+			glTexCoord2f(0+spost,0+spost);			// Texture Coordinate	(   0,   0 )
+			glVertex2f(0,480);				// Second Vertex	(   0, 480 )
+
+			glTexCoord2f(1-spost,0+spost);			// Texture Coordinate	(   1,   0 )
+			glVertex2f(640,480);				// Third Vertex		( 640, 480 )
+
+			glTexCoord2f(1-spost,1-spost);			// Texture Coordinate	(   1,   1 )
+			glVertex2f(640,0);				// Fourth Vertex	( 640,   0 )
+
+			spost += inc;					// Gradually Increase spost (Zooming Closer To Texture Center)
+			alpha = alpha - alphainc;			// Gradually Decrease alpha (Gradually Fading Image Out)
+		}
+	glEnd();							// Done Drawing Quads
+
+	ViewPerspective();						// Switch To A Perspective View
+
+	glEnable(GL_DEPTH_TEST);					// Enable Depth Testing
+	glDisable(GL_TEXTURE_2D);					// Disable 2D Texture Mapping
+	glDisable(GL_BLEND);						// Disable Blending
+	glBindTexture(GL_TEXTURE_2D,0);					// Unbind The Blur Texture
+}
+</pre>
+<p>And voila', this is the shortest Draw routine ever seen, with a great looking effect!</p>
+<p>We call the RenderToTexture function. This renders the stretched spring once thanks to our viewport change. The stretched spring is rendered to our texture, and the buffers are cleared.</p>
+<p>We then draw the "REAL" spring (the 3D object you see on the screen) by calling ProcessHelix( ).</p>
+<p>Finally, we draw some blended quads in front of the spring. The textured quads will be stretched to fit over top of the REAL 3D spring.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">void Draw (void)							// Draw The Scene
+{
+	glClearColor(0.0f, 0.0f, 0.0f, 0.5);				// Set The Clear Color To Black
+	glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);		// Clear Screen And Depth Buffer
+	glLoadIdentity();						// Reset The View
+	RenderToTexture();						// Render To A Texture
+	ProcessHelix();							// Draw Our Helix
+	DrawBlur(25,0.02f);						// Draw The Blur Effect
+	glFlush ();							// Flush The GL Rendering Pipeline
+}
+</pre>
+<p>I hope you enjoyed this tutorial, it really doesn't teach much other than rendering to a texture, but it's definitely an interesting effect to add to your 3d programs.</p>
+<p>If you have any comments suggestions or if you know of a better way to implement this effect contact me <a href="mailto:rio@spinningkids.org">rio@spinningkids.org</a>.</p>
+<p>You are free to use this code however you want in productions of your own, but before you RIP it, give it a look and try to understand what it does, that's the only way ripping is allowed! Also, if you use this code, please, give me some credit!</p>
+<p>I want also leave you all with a list of things to do (homework) :D</p>
+<p>1) Modify the DrawBlur routine to get an horizontal blur, vertical blur and some more good effects (Twirl blur!).<br /> 2) Play with the DrawBlur parameter (add, remove) to get a good routine to sync with your music.<br /> 3) Play around with DrawBlur params and a SMALL texture using GL_LUMINANCE (Funky Shininess!).<br /> 4) Try superfake volumetric shadows using dark textures instead of luminance one!</p>
+<p>Ok, that should be all for now.</p>
+<p>Visit my site and (SK one) for more upcoming tutorials at http://www.spinningkids.org/rio.</p>
+<p><strong>Dario Corno</strong> (<strong>rIo</strong>)</p>
+<p><strong>Jeff Molofee</strong> (<strong>NeHe</strong>)</p>
+<p>* DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/vc/lesson36.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/vc/lesson36.zip'" tppabs="http://nehe.gamedev.net/data/lessons/vc/lesson36.zip">Visual C++</a> Code For This Lesson.</p>
+<p>* DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/bcb6/lesson36_bcb6.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/bcb6/lesson36_bcb6.zip'" tppabs="http://nehe.gamedev.net/data/lessons/bcb6/lesson36_bcb6.zip">Borland C++ Builder 6</a> Code For This Lesson. ( Conversion by <a href="mailto:christian@tugzip.com">Christian Kindahl</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/cwarrior/lesson36.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/cwarrior/lesson36.zip'" tppabs="http://nehe.gamedev.net/data/lessons/cwarrior/lesson36.zip">Code Warrior 5.3</a> Code For This Lesson. ( Conversion by <a href="mailto:DelusionalBeing@hotmail.com">Scott Lupton</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/delphi/lesson36.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/delphi/lesson36.zip'" tppabs="http://nehe.gamedev.net/data/lessons/delphi/lesson36.zip">Delphi</a> Code For This Lesson. ( Conversion by <a href="mailto:michal_praha@seznam.cz">Michal Tucek</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/devc/lesson36.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/devc/lesson36.zip'" tppabs="http://nehe.gamedev.net/data/lessons/devc/lesson36.zip">Dev C++</a> Code For This Lesson. ( Conversion by <a href="mailto:zealouselixir@mchsi.com">Warren Moore</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/euphoria/lesson36.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/euphoria/lesson36.zip'" tppabs="http://nehe.gamedev.net/data/lessons/euphoria/lesson36.zip">Euphoria</a> Code For This Lesson. ( Conversion by <a href="mailto:1evan@sbcglobal.net">Evan Marshall</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/lccwin32/lccwin32_lesson36.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/lccwin32/lccwin32_lesson36.zip'" tppabs="http://nehe.gamedev.net/data/lessons/lccwin32/lccwin32_lesson36.zip">LCC Win32</a> Code For This Lesson. ( Conversion by <a href="mailto:parmentier.yann@wanadoo.fr">Yann Parmentier</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/linuxglx/lesson36.tar.gz  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/linuxglx/lesson36.tar.gz'" tppabs="http://nehe.gamedev.net/data/lessons/linuxglx/lesson36.tar.gz">Linux/GLX</a> Code For This Lesson. ( Conversion by <a href="mailto:Schubert_P@Yahoo.de">Patrick Schubert</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/linuxsdl/lesson36.tar.gz  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/linuxsdl/lesson36.tar.gz'" tppabs="http://nehe.gamedev.net/data/lessons/linuxsdl/lesson36.tar.gz">Linux/SDL</a> Code For This Lesson. ( Conversion by <a href="mailto:ant@solace.mh.se">Anthony Whitehead</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/macosxcocoa/lesson36.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/macosxcocoa/lesson36.zip'" tppabs="http://nehe.gamedev.net/data/lessons/macosxcocoa/lesson36.zip">Mac OS X/Cocoa</a> Code For This Lesson. ( Conversion by <a href="mailto:blb@pobox.com">Bryan Blackburn</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/vb/lesson36.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/vb/lesson36.zip'" tppabs="http://nehe.gamedev.net/data/lessons/vb/lesson36.zip">Visual Basic</a> Code For This Lesson. ( Conversion by <a href="mailto:dario@solinf.it">Dario Corno</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/vs_net/lesson36.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/vs_net/lesson36.zip'" tppabs="http://nehe.gamedev.net/data/lessons/vs_net/lesson36.zip">Visual Studio .NET</a> Code For This Lesson. ( Conversion by <a href="mailto:ultimatezeus@hotmail.com">Grant James</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/masm/lesson36.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/masm/lesson36.zip'" tppabs="http://nehe.gamedev.net/data/lessons/masm/lesson36.zip">MASM</a> Code For This Lesson. ( Conversion by Else.Popelse )</p>
+<p><strong><span><a href="index-75.htm" tppabs="http://nehe.gamedev.net/data/lessons/lesson.asp?lesson=35">&lt; Lesson 35</a></span></strong><strong><span><a href="index-143.htm" tppabs="http://nehe.gamedev.net/data/lessons/lesson.asp?lesson=37">Lesson 37 &gt;</a></span></strong></p>
+
+
+</div>
+</div>
+
+
+
+            <div style="width:728px;padding:0px;margin:auto; margin-top: 10px;">
+            
+
+    
+                <!-- Leaderboard_NeHe -->
+                <div id='div-gpt-ad-1327940144417-0' style='width:728px; height:90px;'>
+                <script type='text/javascript'>
+                googletag.cmd.push(function() { googletag.display('div-gpt-ad-1327940144417-0'); });
+                </script>
+                </div>
+            
+
+                           
+            </div>   
+        </td>
+        <td class="col2">
+            
+
+
+
+
+<div style="text-align: center; padding:10px;">
+
+<script type='text/javascript'>
+    GA_googleFillSlot("Skyscraper_NeHe");
+</script>
+
+</div>
+            
+        </td>
+    </table>
+    <div id="footer">
+        <p>
+            
+    
+    © 1997-2012 Gamedev . All rights reserved.<br/>
+
+			NeHe™ and NeHe Productions™ are trademarks of GameDev.net, LLC<br/>
+			OpenGL® is a registered trademark of Silicon Graphics Inc.<br/>
+		</p>        
+		<br/>
+    </div>
+
+    
+    
+	    <script type="text/javascript" src="shCore.js" tppabs="http://nehe.gamedev.net/static/js/syntax_highlighter/shCore.js"></script>
+        <script type="text/javascript" src="shBrushCpp.js" tppabs="http://nehe.gamedev.net/static/js/syntax_highlighter/shBrushCpp.js"></script>
+	    <script type="text/javascript" src="shBrushJScript.js" tppabs="http://nehe.gamedev.net/static/js/syntax_highlighter/shBrushJScript.js"></script>
+	    <script type="text/javascript">SyntaxHighlighter.all();</script>
+    
+
+    <!-- Place this render call where appropriate -->
+    <script type="text/javascript">
+      (function() {
+        var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+        po.src = 'plusone.js'/*tpa=https://apis.google.com/js/plusone.js*/;
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+      })();
+    </script>    
+
+    
+<!-- GoogleAnalytics code -->
+<script src="urchin.js" tppabs="http://www.google-analytics.com/urchin.js" type="text/javascript">
+</script>
+<script type="text/javascript">
+_uacct = "UA-279474-2"; // Gamedev
+urchinTracker();
+_uff = 0; // Reset for second account
+_uacct = "UA-24180731-1"; // Non-GD
+urchinTracker();
+</script> 
+  </body>
+</html>

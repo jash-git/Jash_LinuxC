@@ -1,0 +1,508 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+    dir="ltr"
+    xml:lang="en"
+    lang="en">
+  <head>
+    <title>NeHe Productions: Loading Compressed And Uncompressed TGA&#39;s</title>
+
+    <link rel="stylesheet" type="text/css" href="public_base.css" tppabs="http://nehe.gamedev.net/static/css/public_base.css" />
+    <link type="text/css" rel="stylesheet" href="shThemeMidnight.css" tppabs="http://nehe.gamedev.net/static/css/syntax_highlighter/shThemeMidnight.css"/>
+    
+    <link rel="alternate" type="application/atom+xml" title="Atom feed" href="index-1.htm" tppabs="http://nehe.gamedev.net/atom/" />
+    <link rel="alternate" type="application/rss+xml" title="RSS feed" href="index-2.htm" tppabs="http://nehe.gamedev.net/rss/" />
+    
+    <meta name="author" content="Luke Benstead + Carsten Haubold" />
+    <meta name="description" content="OpenGL Tutorials, Demos, Games and More..." />
+    <meta name="keywords" content="opengl, tutorial, article, demo, game, blend, texturemap, lighting, contest, 3D" />
+
+    
+    
+
+    
+
+</script>
+
+
+    
+    
+    
+    
+        
+        <script type='text/javascript'>
+        var googletag = googletag || {};
+        googletag.cmd = googletag.cmd || [];
+        (function() {
+        var gads = document.createElement('script');
+        gads.async = true;
+        gads.type = 'text/javascript';
+        var useSSL = 'https:' == document.location.protocol;
+        gads.src = (useSSL ? 'https:' : 'http:') + 
+        '//www.googletagservices.com/tag/js/gpt.js';
+        var node = document.getElementsByTagName('script')[0];
+        node.parentNode.insertBefore(gads, node);
+        })();
+        </script>
+
+        <script type='text/javascript'>
+        googletag.cmd.push(function() {
+        googletag.defineSlot('/1004699/Leaderboard_NeHe', [728, 90], 'div-gpt-ad-1327940144417-0').addService(googletag.pubads());
+        googletag.defineSlot('/1004699/Skyscraper_NeHe', [160, 600], 'div-gpt-ad-1327940144417-1').addService(googletag.pubads());
+        googletag.pubads().enableSingleRequest();
+        googletag.enableServices();
+        });
+        </script>
+    
+    
+
+    
+  </head>
+
+  <body>
+    
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "all.js#xfbml=1"/*tpa=http://connect.facebook.net/en_GB/all.js#xfbml=1*/;
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+
+
+    <table cellpadding="0" cellspacing="0" border="0" id="layout_table">
+    <tr><td>
+        <div id="header">
+                <a href="index.htm" tppabs="http://nehe.gamedev.net/"><img class="logo" class="logo" src="nehe.png" tppabs="http://nehe.gamedev.net/static/images/nehe.png" border="0" alt="Nehe" /></a>
+        </div>            
+    </td></tr>
+    <tr><td colspan="2">
+            
+<div class="navbar">
+    <a href="index.htm" tppabs="http://nehe.gamedev.net/">HOME</a>
+    <a href="javascript:if(confirm('http://twitter.com/  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://twitter.com/#!/nehegl'" tppabs="http://twitter.com/#!/nehegl">TWITTER</a>  
+    <a href="javascript:if(confirm('http://www.facebook.com/pages/NeHe/300582493323181  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://www.facebook.com/pages/NeHe/300582493323181'" tppabs="http://www.facebook.com/pages/NeHe/300582493323181">FACEBOOK</a>     
+    <a href="index-2.htm" tppabs="http://nehe.gamedev.net/rss/">RSS</a>    
+    <a href="index-1.htm" tppabs="http://nehe.gamedev.net/atom/">ATOM</a>    
+    <a href="javascript:if(confirm('http://www.gamedev.net/forum/27-nehe-productions/page__forum_title__NeHe+Productions  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://www.gamedev.net/forum/27-nehe-productions/page__forum_title__NeHe+Productions'" tppabs="http://www.gamedev.net/forum/27-nehe-productions/page__forum_title__NeHe+Productions">FORUM</a>    
+</div>
+    
+    </td></tr>
+    <tr>
+        <td class="col1">
+
+            
+<div id="article_container">
+
+
+<h1 class="article-header">Loading Compressed And Uncompressed TGA&#39;s</h1>
+<div class="social-media">
+<!-- Place this tag where you want the +1 button to render -->
+<div class="g-plusone" data-size="medium" data-width="120" data-annotation="inline"></div>
+<div class="fb-like" data-send="false" data-layout="button_count" data-width="60" data-show-faces="false" data-colorscheme="dark" data-font="arial"></div>
+</div>
+<div style="clear:both;"></div>
+<p>Loading Uncompressed and RunLength Encoded TGA images By Evan "terminate" Pipho.</p>
+<p>I've seen lots of people ask around in #gamdev, the gamedev forums, and other places about TGA loading. The following code and explanation will show you how to load both uncompressed TGA files and RLE compressed files. This particular tutorial is geared toward OpenGL, but I plan to make it more universal in the future.</p>
+<p>We will begin with the two header files. The first file will hold our texture structure, the second, structures and variables used by the loading code.</p>
+<p>Like every header file we need some inclusion guards to prevent the file from being included multiple times.</p>
+<p>At the top of the file add these lines:</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	#ifndef __TEXTURE_H__				// See If The Header Has Been Defined Yet
+	#define __TEXTURE_H__				// If Not, Define It.
+</pre>
+<p>Then scroll all the way down to the bottom and add:</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	#endif						// __TEXTURE_H__ End Inclusion Guard
+</pre>
+<p>These three lines prevent the file from being included more than once into a file. The rest of the code in the file will be between the first two, and the last line.</p>
+<p>Into this header file we we will insert the standard headers we will need for everything we do. Add the following lines after the #define __TGA_H__ command.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	#pragma comment(lib, "OpenGL32.lib")		// Link To Opengl32.lib
+	#include &lt;windows.h&gt;				// Standard Windows header
+	#include &lt;stdio.h&gt;				// Standard Header For File I/O
+	#include &lt;gl\gl.h&gt;				// Standard Header For OpenGL
+</pre>
+<p>The first header is the standard windows header, the second is for the file I/O functions we will be using later, and the 3rd is the standard OpenGL header file for OpenGL32.lib.</p>
+<p>We will need a place to store image data and specifications for generating a texture usable by OpenGL. We will use the following structure.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	typedef struct
+	{
+		GLubyte* imageData;			// Hold All The Color Values For The Image.
+		GLuint  bpp;				// Hold The Number Of Bits Per Pixel.			
+		GLuint width;				// The Width Of The Entire Image.	
+		GLuint height;				// The Height Of The Entire Image.	
+		GLuint texID;				// Texture ID For Use With glBindTexture.	
+		GLuint type;			 	// Data Stored In * ImageData (GL_RGB Or GL_RGBA)
+	} Texture;
+</pre>
+<p>Next come two more structures used during processing of the TGA file.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	typedef struct
+	{
+		GLubyte Header[12];			// File Header To Determine File Type
+	} TGAHeader;
+
+	typedef struct
+	{
+		GLubyte header[6];			// Holds The First 6 Useful Bytes Of The File
+		GLuint bytesPerPixel;			// Number Of BYTES Per Pixel (3 Or 4)
+		GLuint imageSize;			// Amount Of Memory Needed To Hold The Image
+		GLuint type;				// The Type Of Image, GL_RGB Or GL_RGBA
+		GLuint Height;				// Height Of Image					
+		GLuint Width;				// Width Of Image				
+		GLuint Bpp;				// Number Of BITS Per Pixel (24 Or 32)
+	} TGA;
+</pre>
+<p>Now we declare some instances of our two structures so we can use them within our code.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	TGAHeader tgaheader;				// Used To Store Our File Header
+	TGA tga;					// Used To Store File Information
+</pre>
+<p>We need to define a couple file headers so we can tell the program what kinds of file headers are on valid images. The first 12 bytes will be 0 0 2 0 0 0 0 0 0 0 0 0 if it is uncompressed TGA image and 0 0 10 0 0 0 0 0 0 0 0 0 if it an RLE compressed one. These two values allow us to check to see if the file we are reading is valid.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	// Uncompressed TGA Header
+	GLubyte uTGAcompare[12] = {0,0, 2,0,0,0,0,0,0,0,0,0};
+	// Compressed TGA Header
+	GLubyte cTGAcompare[12] = {0,0,10,0,0,0,0,0,0,0,0,0};
+</pre>
+<p>Finally we declare a pair of functions to use in the loading process.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	// Load An Uncompressed File
+	bool LoadUncompressedTGA(Texture *, char *, FILE *);
+	// Load A Compressed File
+	bool LoadCompressedTGA(Texture *, char *, FILE *);
+</pre>
+<p>Now, on to the cpp file, and the real brunt of the code. I will leave out some of the error message code and the like to make the tutorial shorter and more readable. You may look in the included file (link at the bottom of the article)</p>
+<p>Right off the bat we have to include the file we just made so at the top of the file put.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	#include "tga.h"				// Include The Header We Just Made
+</pre>
+<p>We don't have to include any other files, because we included them inside our header we just completed.</p>
+<p>The next thing we see is the first function, which is called LoadTGA(...).</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	// Load A TGA File!
+	bool LoadTGA(Texture * texture, char * filename)
+	{
+</pre>
+<p>It takes two parameters. The first is a pointer to a Texture structure, which you must have declared in your code some where (see included example). The second parameter is a string that tells the computer where to find your texture file.</p>
+<p>The first two lines of the function declare a file pointer and then open the file specified by "filename" which was passed to the function in the second parameter for reading.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	FILE * fTGA;					// Declare File Pointer
+	fTGA = fopen(filename, "rb");			// Open File For Reading
+</pre>
+<p>The next few lines check to make sure that the file opened correctly.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	if(fTGA == NULL)				// If Here Was An Error
+	{
+		...Error code...
+		return false;				// Return False
+	}		
+</pre>
+<p>Next we try to read the first twelve bytes of the file and store them in our TGAHeader structure so we can check on the file type. If fread fails, the file is closed, an error displayed, and the function returns false.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	// Attempt To Read The File Header
+	if(fread(&amp;tgaheader, sizeof(TGAHeader), 1, fTGA) == 0)
+	{
+		...Error code here...
+		return false;				// Return False If It Fails
+	}		
+</pre>
+<p>Next we try to determine what type of file it is by comparing our newly aquired header with our two hard coded ones. This will tell us if its compressed, uncompressed, or even if its the wrong file type. For this purpose we will use the memcmp(...) function.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	// If The File Header Matches The Uncompressed Header
+	if(memcmp(uTGAcompare, &amp;tgaheader, sizeof(tgaheader)) == 0)
+	{
+		// Load An Uncompressed TGA
+		LoadUncompressedTGA(texture, filename, fTGA);
+	}
+	// If The File Header Matches The Compressed Header
+	else if(memcmp(cTGAcompare, &amp;tgaheader, sizeof(tgaheader)) == 0)
+	{											
+		// Load A Compressed TGA
+		LoadCompressedTGA(texture, filename, fTGA);
+	}
+	else						// If It Doesn't Match Either One
+	{
+		...Error code here...						
+		return false;				// Return False
+	}									
+</pre>
+<p>We will begin this section with the loading of an UNCOMPRESSED file. This function is heavily based on NeHe's code in lesson 25.</p>
+<p>First thing we come to, as always, is the function header.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	// Load An Uncompressed TGA!
+	bool LoadUncompressedTGA(Texture * texture, char * filename, FILE * fTGA)
+	{
+</pre>
+<p>This function takes three parameters. The first two are the same as from LoadTGA, and are simply passed on. The third is the file pointer from the previous function so that we don't lose our place.</p>
+<p>Next we try to read the next 6 bytes of the file, and store them in tga.header. If it fails, we run some error code, and return false.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	// Attempt To Read Next 6 Bytes
+	if(fread(tga.header, sizeof(tga.header), 1, fTGA) == 0)
+	{										
+		...Error code here...
+		return false;				// Return False
+	}	
+</pre>
+<p>Now we have all the information we need to calculate the height, width and bpp of our image. We store it in both the texture and local structure.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	texture-&gt;width  = tga.header[1] * 256 + tga.header[0];	// Calculate Height
+	texture-&gt;height = tga.header[3] * 256 + tga.header[2];	// Calculate The Width
+	texture-&gt;bpp = tga.header[4];				// Calculate Bits Per Pixel
+	tga.Width = texture-&gt;width;				// Copy Width Into Local Structure
+	tga.Height = texture-&gt;height;				// Copy Height Into Local Structure
+	tga.Bpp = texture-&gt;bpp;					// Copy Bpp Into Local Structure
+</pre>
+<p>Now we check to make sure that the height and width are at least one pixel, and that the bpp is either 24 or 32. If any of the values are outside their boundaries we again display an error, close the file, and leave the function.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	// Make Sure All Information Is Valid
+	if((texture-&gt;width &lt;= 0) || (texture-&gt;height &lt;= 0) || ((texture-&gt;bpp != 24) &amp;&amp; (texture-&gt;bpp !=32)))
+	{
+		...Error code here...
+		return false;				// Return False
+	}
+</pre>
+<p>Next we set the type of the image. 24 bit images are type GL_RGB and 32 bit images are type GL_RGBA</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	if(texture-&gt;bpp == 24)				// Is It A 24bpp Image?
+		texture-&gt;type	= GL_RGB;		// If So, Set Type To GL_RGB
+	else						// If It's Not 24, It Must Be 32
+		texture-&gt;type	= GL_RGBA;		// So Set The Type To GL_RGBA
+</pre>
+<p>Now we calculate the BYTES per pixel and the total size of the image data.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	tga.bytesPerPixel = (tga.Bpp / 8);		// Calculate The BYTES Per Pixel
+	// Calculate Memory Needed To Store Image
+	tga.imageSize = (tga.bytesPerPixel * tga.Width * tga.Height);
+</pre>
+<p>We need some place to store all that image data so we will use malloc to allocate the right amount of memory.</p>
+<p>Then we check to make sure memory was allocated, and is not NULL. If there was an error, run error handling code.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	// Allocate Memory
+	texture-&gt;imageData = (GLubyte *)malloc(tga.imageSize);
+	if(texture-&gt;imageData == NULL)			// Make Sure It Was Allocated Ok
+	{
+		...Error code here...
+		return false;				// If Not, Return False
+	}
+</pre>
+<p>Here we try to read all the image data. If we can't, we trigger error code again.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	// Attempt To Read All The Image Data
+	if(fread(texture-&gt;imageData, 1, tga.imageSize, fTGA) != tga.imageSize)
+	{
+		...Error code here...								
+		return false;				// If We Cant, Return False
+	}
+</pre>
+<p>TGA files store their image in reverse order than what OpenGL wants so we must change the format from BGR to RGB. To do this we swap the first and third bytes in every pixel.</p>
+<p>Steve Thomas Adds: I've got a little speedup in TGA loading code. It concerns switching BGR into RGB using only 3 binary operations. Instead of using a temp variable you XOR the two bytes 3 times.</p>
+<p>Then we close the file, and exit the function successfully.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	// Start The Loop
+	for(GLuint cswap = 0; cswap &lt; (int)tga.imageSize; cswap += tga.bytesPerPixel)
+	{
+		// 1st Byte XOR 3rd Byte XOR 1st Byte XOR 3rd Byte
+		texture-&gt;imageData[cswap] ^= texture-&gt;imageData[cswap+2] ^=
+		texture-&gt;imageData[cswap] ^= texture-&gt;imageData[cswap+2];
+	}
+
+	fclose(fTGA);					// Close The File
+	return true;					// Return Success
+}
+</pre>
+<p>Thats all there is to loading an uncompressed TGA file. Loading a RLE compressed one is only slightly harder. We read the header and collect height/width/bpp as usual, same as the uncompressed version, so i will just post the code, you can look in the previous pages for a complete explanation.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	bool LoadCompressedTGA(Texture * texture, char * filename, FILE * fTGA)
+	{ 
+		if(fread(tga.header, sizeof(tga.header), 1, fTGA) == 0)
+		{
+			...Error code here...
+		}							
+		texture-&gt;width  = tga.header[1] * 256 + tga.header[0];
+		texture-&gt;height = tga.header[3] * 256 + tga.header[2];
+		texture-&gt;bpp	= tga.header[4];
+		tga.Width	= texture-&gt;width;
+		tga.Height	= texture-&gt;height;
+		tga.Bpp	= texture-&gt;bpp;
+		if((texture-&gt;width &lt;= 0) || (texture-&gt;height &lt;= 0) || ((texture-&gt;bpp != 24) &amp;&amp; (texture-&gt;bpp !=32)))
+		{
+			...Error code here...
+		}								}
+
+		if(texture-&gt;bpp == 24)			// Is It A 24bpp Image?
+			texture-&gt;type	= GL_RGB;	// If So, Set Type To GL_RGB
+		else					// If It's Not 24, It Must Be 32
+			texture-&gt;type	= GL_RGBA;	// So Set The Type To GL_RGBA
+
+		tga.bytesPerPixel	= (tga.Bpp / 8);
+		tga.imageSize		= (tga.bytesPerPixel * tga.Width * tga.Height);
+</pre>
+<p>Now we need to allocate the amount of storage for the image to use AFTER we uncompress it, we will use malloc. If memory fails to be allocated, run error code, and return false.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	// Allocate Memory To Store Image Data
+	texture-&gt;imageData	= (GLubyte *)malloc(tga.imageSize);
+	if(texture-&gt;imageData == NULL)			// If Memory Can Not Be Allocated...
+	{
+		...Error code here...
+		return false;				// Return False
+	}	
+</pre>
+<p>Next we need to determine how many pixels make up the image. We will store it in the variable "pixelcount"</p>
+<p>We also need to store which pixel we are currently on, and what byte of the imageData we are writing to, to avoid overflows and overwriting old data.</p>
+<p>We will allocate enough memory to store one pixel.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	GLuint pixelcount = tga.Height * tga.Width;	// Number Of Pixels In The Image
+	GLuint currentpixel	= 0;			// Current Pixel We Are Reading From Data
+	GLuint currentbyte	= 0;			// Current Byte We Are Writing Into Imagedata
+	// Storage For 1 Pixel
+	GLubyte * colorbuffer = (GLubyte *)malloc(tga.bytesPerPixel);
+</pre>
+<p>Next we have a big loop.</p>
+<p>Lets break it down into more manageable chunks.</p>
+<p>First we declare a variable in order to store the chunk header. A chunk header dictates whether the following section is RLE, or RAW, and how long it is. If the one byte header is less than or equal to 127, then it is a RAW header. The value of the header is the number of colors, minus one, that we read ahead and copy into memory, before we hit another header byte. So we add one to the value we get, and then read that many pixels and copy them into the ImageData, just like we did with the uncompressed ones. If the header is ABOVE 127, then it is the number of times that the next pixel value is repeated consequtively. To get the actual number of repetitions we take the value returned and subtract 127 to get rid of the one bit header identifier. Then we read the next one pixel and copy it the said number of times consecutively into the memory.</p>
+<p>On to the code. First we read the one byte header.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	do						// Start Loop
+	{
+	GLubyte chunkheader = 0;			// Variable To Store The Value Of The Id Chunk
+	if(fread(&amp;chunkheader, sizeof(GLubyte), 1, fTGA) == 0)	// Attempt To Read The Chunk's Header
+	{
+		...Error code...
+		return false;				// If It Fails, Return False
+	}
+</pre>
+<p>Next we will check to see if it a RAW header. If it is, we need to add one to the value to get the total number of pixels following the header.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	if(chunkheader &lt; 128)				// If The Chunk Is A 'RAW' Chunk
+	{													
+		chunkheader++;				// Add 1 To The Value To Get Total Number Of Raw Pixels
+</pre>
+<p>We then start another loop to read all the color information. It will loop the amout of times specified in the chunk header, and will read and store one pixel each loop.</p>
+<p>First we read and verify the pixel data. The data for one pixel will be stored in the colorbuffer variable. Next we will check to see if it a RAW header. If it is, we need to add one to the value to get the total number of pixels following the header.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	// Start Pixel Reading Loop
+	for(short counter = 0; counter &lt; chunkheader; counter++)
+	{
+		// Try To Read 1 Pixel
+		if(fread(colorbuffer, 1, tga.bytesPerPixel, fTGA) != tga.bytesPerPixel)
+		{
+			...Error code...
+			return false;			// If It Fails, Return False
+		}
+</pre>
+<p>The next part in our loop will take the color values stored in colorbuffer and writing them to the imageData variable to be used later. In the process it will flip the data from BGR format to RGB or from BGRA to RGBA depending on the number of bits per pixel. When we are done we increment the current byte, and current pixel counters.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	texture-&gt;imageData[currentbyte] = colorbuffer[2];		// Write The 'R' Byte
+	texture-&gt;imageData[currentbyte + 1	] = colorbuffer[1];	// Write The 'G' Byte
+	texture-&gt;imageData[currentbyte + 2	] = colorbuffer[0];	// Write The 'B' Byte
+	if(tga.bytesPerPixel == 4)					// If It's A 32bpp Image...
+	{
+		texture-&gt;imageData[currentbyte + 3] = colorbuffer[3];	// Write The 'A' Byte
+	}
+	// Increment The Byte Counter By The Number Of Bytes In A Pixel
+	currentbyte += tga.bytesPerPixel;
+	currentpixel++;					// Increment The Number Of Pixels By 1
+</pre>
+<p>The next section deals with the chunk headers that represent the RLE sections. First thing we do is subtract 127 from the chunkheader to get the amount of times the next color is repeated.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	else						// If It's An RLE Header
+	{
+		chunkheader -= 127;			// Subtract 127 To Get Rid Of The ID Bit
+</pre>
+<p>Then we attempt to read the next color value.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	// Read The Next Pixel
+	if(fread(colorbuffer, 1, tga.bytesPerPixel, fTGA) != tga.bytesPerPixel)
+	{	
+		...Error code...
+		return false;				// If It Fails, Return False
+	}
+</pre>
+<p>Next we begin a loop to copy the pixel we just read into memory multiple times, as dictated by the value from the RLE header.</p>
+<p>Then we copy the color values into the image data, performing the R and B value switch.</p>
+<p>Then we increment the current bytes, and current pixel, so we are in the right spot when we write the values again.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	// Start The Loop
+	for(short counter = 0; counter &lt; chunkheader; counter++)
+	{
+		// Copy The 'R' Byte
+		texture-&gt;imageData[currentbyte] = colorbuffer[2];
+		// Copy The 'G' Byte
+		texture-&gt;imageData[currentbyte + 1	] = colorbuffer[1];
+		// Copy The 'B' Byte
+		texture-&gt;imageData[currentbyte + 2	] = colorbuffer[0];
+		if(tga.bytesPerPixel == 4)		// If It's A 32bpp Image
+		{
+			// Copy The 'A' Byte
+			texture-&gt;imageData[currentbyte + 3] = colorbuffer[3];
+		}
+		currentbyte += tga.bytesPerPixel;	// Increment The Byte Counter
+		currentpixel++;				// Increment The Pixel Counter
+</pre>
+<p>Then we contiune the main loop, as long as we still have pixels left to read.</p>
+<p>Last of all we close up the file and return success.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">		while(currentpixel &lt; pixelcount);	// More Pixels To Read? ... Start Loop Over
+		fclose(fTGA);				// Close File
+		return true;				// Return Success
+	}
+</pre>
+<p>Now you have some image data ready for glGenTextures and glBindTexture. I suggest you check out NeHe's tutorial #6 and #24 for info on these commands. That concludes my first ever tutorial. I do not guarantee my code is error free, though i made an effort to see that it was. Special thanks to Jeff "NeHe" Molofee for his great tutorials and to Trent "ShiningKnight" Polack for helping me revise this tutorial. If you find errors, have suggestions, or comments please feel free to email me (terminate@gdnmail.net), or ICQ me at UIN# 38601160. Enjoy!</p>
+<p><strong>Evan Pipho</strong> (<strong>Terminate</strong>)</p>
+<p><strong>Jeff Molofee</strong> (<strong>NeHe</strong>)</p>
+<p>* DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/vc/lesson33.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/vc/lesson33.zip'" tppabs="http://nehe.gamedev.net/data/lessons/vc/lesson33.zip">Visual C++</a> Code For This Lesson.</p>
+<p>* DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/bcb6/lesson33_bcb6.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/bcb6/lesson33_bcb6.zip'" tppabs="http://nehe.gamedev.net/data/lessons/bcb6/lesson33_bcb6.zip">Borland C++ Builder 6</a> Code For This Lesson. ( Conversion by <a href="mailto:christian@tugzip.com">Christian Kindahl</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/cwarrior/lesson33.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/cwarrior/lesson33.zip'" tppabs="http://nehe.gamedev.net/data/lessons/cwarrior/lesson33.zip">Code Warrior 5.3</a> Code For This Lesson. ( Conversion by <a href="mailto:DelusionalBeing@hotmail.com">Scott Lupton</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/delphi/lesson33.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/delphi/lesson33.zip'" tppabs="http://nehe.gamedev.net/data/lessons/delphi/lesson33.zip">Delphi</a> Code For This Lesson. ( Conversion by <a href="mailto:michal_praha@seznam.cz">Michal Tucek</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/devc/lesson33.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/devc/lesson33.zip'" tppabs="http://nehe.gamedev.net/data/lessons/devc/lesson33.zip">Dev C++</a> Code For This Lesson. ( Conversion by <a href="mailto:danprogram@hotmail.com">Dan</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/linuxglx/lesson33.tar.gz  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/linuxglx/lesson33.tar.gz'" tppabs="http://nehe.gamedev.net/data/lessons/linuxglx/lesson33.tar.gz">Linux/GLX</a> Code For This Lesson. ( Conversion by <a href="mailto:Schubert_P@Yahoo.de">Patrick Schubert</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/macosxcocoa/lesson33.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/macosxcocoa/lesson33.zip'" tppabs="http://nehe.gamedev.net/data/lessons/macosxcocoa/lesson33.zip">Mac OS X/Cocoa</a> Code For This Lesson. ( Conversion by <a href="mailto:blb@pobox.com">Bryan Blackburn</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/vs_net/lesson33.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/vs_net/lesson33.zip'" tppabs="http://nehe.gamedev.net/data/lessons/vs_net/lesson33.zip">Visual Studio .NET</a> Code For This Lesson. ( Conversion by <a href="mailto:ultimatezeus@hotmail.com">Grant James</a> )</p>
+<p>&nbsp;</p>
+<p><strong><span><a href="index-72.htm" tppabs="http://nehe.gamedev.net/data/lessons/lesson.asp?lesson=32">&lt; Lesson 32</a></span></strong><strong><span><a href="index-74.htm" tppabs="http://nehe.gamedev.net/data/lessons/lesson.asp?lesson=34">Lesson 34 &gt;</a></span></strong></p>
+
+
+</div>
+</div>
+
+
+
+            <div style="width:728px;padding:0px;margin:auto; margin-top: 10px;">
+            
+
+    
+                <!-- Leaderboard_NeHe -->
+                <div id='div-gpt-ad-1327940144417-0' style='width:728px; height:90px;'>
+                <script type='text/javascript'>
+                googletag.cmd.push(function() { googletag.display('div-gpt-ad-1327940144417-0'); });
+                </script>
+                </div>
+            
+
+                           
+            </div>   
+        </td>
+        <td class="col2">
+            
+
+
+
+
+<div style="text-align: center; padding:10px;">
+
+<script type='text/javascript'>
+    GA_googleFillSlot("Skyscraper_NeHe");
+</script>
+
+</div>
+            
+        </td>
+    </table>
+    <div id="footer">
+        <p>
+            
+    
+    © 1997-2012 Gamedev . All rights reserved.<br/>
+
+			NeHe™ and NeHe Productions™ are trademarks of GameDev.net, LLC<br/>
+			OpenGL® is a registered trademark of Silicon Graphics Inc.<br/>
+		</p>        
+		<br/>
+    </div>
+
+    
+    
+	    <script type="text/javascript" src="shCore.js" tppabs="http://nehe.gamedev.net/static/js/syntax_highlighter/shCore.js"></script>
+        <script type="text/javascript" src="shBrushCpp.js" tppabs="http://nehe.gamedev.net/static/js/syntax_highlighter/shBrushCpp.js"></script>
+	    <script type="text/javascript" src="shBrushJScript.js" tppabs="http://nehe.gamedev.net/static/js/syntax_highlighter/shBrushJScript.js"></script>
+	    <script type="text/javascript">SyntaxHighlighter.all();</script>
+    
+
+    <!-- Place this render call where appropriate -->
+    <script type="text/javascript">
+      (function() {
+        var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+        po.src = 'plusone.js'/*tpa=https://apis.google.com/js/plusone.js*/;
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+      })();
+    </script>    
+
+    
+<!-- GoogleAnalytics code -->
+<script src="urchin.js" tppabs="http://www.google-analytics.com/urchin.js" type="text/javascript">
+</script>
+<script type="text/javascript">
+_uacct = "UA-279474-2"; // Gamedev
+urchinTracker();
+_uff = 0; // Reset for second account
+_uacct = "UA-24180731-1"; // Non-GD
+urchinTracker();
+</script> 
+  </body>
+</html>

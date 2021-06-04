@@ -1,0 +1,537 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+    dir="ltr"
+    xml:lang="en"
+    lang="en">
+  <head>
+    <title>NeHe Productions: Cel-Shading</title>
+
+    <link rel="stylesheet" type="text/css" href="public_base.css" tppabs="http://nehe.gamedev.net/static/css/public_base.css" />
+    <link type="text/css" rel="stylesheet" href="shThemeMidnight.css" tppabs="http://nehe.gamedev.net/static/css/syntax_highlighter/shThemeMidnight.css"/>
+    
+    <link rel="alternate" type="application/atom+xml" title="Atom feed" href="index-1.htm" tppabs="http://nehe.gamedev.net/atom/" />
+    <link rel="alternate" type="application/rss+xml" title="RSS feed" href="index-2.htm" tppabs="http://nehe.gamedev.net/rss/" />
+    
+    <meta name="author" content="Luke Benstead + Carsten Haubold" />
+    <meta name="description" content="OpenGL Tutorials, Demos, Games and More..." />
+    <meta name="keywords" content="opengl, tutorial, article, demo, game, blend, texturemap, lighting, contest, 3D" />
+
+    
+    
+
+    
+
+</script>
+
+
+    
+    
+    
+    
+        
+        <script type='text/javascript'>
+        var googletag = googletag || {};
+        googletag.cmd = googletag.cmd || [];
+        (function() {
+        var gads = document.createElement('script');
+        gads.async = true;
+        gads.type = 'text/javascript';
+        var useSSL = 'https:' == document.location.protocol;
+        gads.src = (useSSL ? 'https:' : 'http:') + 
+        '//www.googletagservices.com/tag/js/gpt.js';
+        var node = document.getElementsByTagName('script')[0];
+        node.parentNode.insertBefore(gads, node);
+        })();
+        </script>
+
+        <script type='text/javascript'>
+        googletag.cmd.push(function() {
+        googletag.defineSlot('/1004699/Leaderboard_NeHe', [728, 90], 'div-gpt-ad-1327940144417-0').addService(googletag.pubads());
+        googletag.defineSlot('/1004699/Skyscraper_NeHe', [160, 600], 'div-gpt-ad-1327940144417-1').addService(googletag.pubads());
+        googletag.pubads().enableSingleRequest();
+        googletag.enableServices();
+        });
+        </script>
+    
+    
+
+    
+  </head>
+
+  <body>
+    
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "all.js#xfbml=1"/*tpa=http://connect.facebook.net/en_GB/all.js#xfbml=1*/;
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+
+
+    <table cellpadding="0" cellspacing="0" border="0" id="layout_table">
+    <tr><td>
+        <div id="header">
+                <a href="index.htm" tppabs="http://nehe.gamedev.net/"><img class="logo" class="logo" src="nehe.png" tppabs="http://nehe.gamedev.net/static/images/nehe.png" border="0" alt="Nehe" /></a>
+        </div>            
+    </td></tr>
+    <tr><td colspan="2">
+            
+<div class="navbar">
+    <a href="index.htm" tppabs="http://nehe.gamedev.net/">HOME</a>
+    <a href="javascript:if(confirm('http://twitter.com/  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://twitter.com/#!/nehegl'" tppabs="http://twitter.com/#!/nehegl">TWITTER</a>  
+    <a href="javascript:if(confirm('http://www.facebook.com/pages/NeHe/300582493323181  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://www.facebook.com/pages/NeHe/300582493323181'" tppabs="http://www.facebook.com/pages/NeHe/300582493323181">FACEBOOK</a>     
+    <a href="index-2.htm" tppabs="http://nehe.gamedev.net/rss/">RSS</a>    
+    <a href="index-1.htm" tppabs="http://nehe.gamedev.net/atom/">ATOM</a>    
+    <a href="javascript:if(confirm('http://www.gamedev.net/forum/27-nehe-productions/page__forum_title__NeHe+Productions  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://www.gamedev.net/forum/27-nehe-productions/page__forum_title__NeHe+Productions'" tppabs="http://www.gamedev.net/forum/27-nehe-productions/page__forum_title__NeHe+Productions">FORUM</a>    
+</div>
+    
+    </td></tr>
+    <tr>
+        <td class="col1">
+
+            
+<div id="article_container">
+
+
+<h1 class="article-header">Cel-Shading</h1>
+<div class="social-media">
+<!-- Place this tag where you want the +1 button to render -->
+<div class="g-plusone" data-size="medium" data-width="120" data-annotation="inline"></div>
+<div class="fb-like" data-send="false" data-layout="button_count" data-width="60" data-show-faces="false" data-colorscheme="dark" data-font="arial"></div>
+</div>
+<div style="clear:both;"></div>
+<p>Cel-Shading By Sami "MENTAL" Hamlaoui</p>
+<p>Seeing as people still e-mail me asking for source code to the article I wrote on GameDev.net a while ago, and seeing as the 2nd version of that article (with source for every API out there) isn't even close to being halfway finished, I've hacked together this tutorial for NeHe (that was actually going to be the original intention of the article) so all of you OpenGL gurus can play around with it. Sorry for the choice of model, but I've been playing Quake 2 extensivly recently... :)</p>
+<p>Note: The original article for this code can be found at: http://www.gamedev.net/reference/programming/features/celshading.</p>
+<p>This tutorial doesn't actually explain the theory, just the code. WHY it works can be found at the above link. Now for crying out loud STOP E-MAILING ME REQUESTS FOR SOURCE CODE!!!!</p>
+<p>Enjoy :).</p>
+<p>First of all, we need to include a few extra header files. The first one (math.h) is so we can use the sqrtf (square root) function, and the second (stdio.h) is for file access.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">#include &lt;math.h&gt;						// Header File For The Math Library
+#include &lt;stdio.h&gt;						// Header File For The Standard I/O Library
+</pre>
+<p>Now we are going to define a few structures to help store our data (saves having hundreds of arrays of floats). The first one is the tagMATRIX structure. If you look closely, you will see that we are storing the matrix as a 1D array of 16 floats as opposed to a 2D 4x4 array. This is down to how OpenGL stores it's matrices. If we used 4x4, the values would come out in the wrong order.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">typedef struct tagMATRIX					// A Structure To Hold An OpenGL Matrix
+{
+	float Data[16];						// We Use [16] Due To OpenGL's Matrix Format
+}
+MATRIX;
+</pre>
+<p>Second up is the vector class. This simply stores a value for X, Y and Z.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">typedef struct tagVECTOR					// A Structure To Hold A Single Vector
+{
+	float X, Y, Z;						// The Components Of The Vector
+}
+VECTOR;
+</pre>
+<p>Third, we have the vertex structure. Each vertex only needs it's normal and position (no texture co-ordinates). They MUST be stored in this order, or else when it comes to loading the file things will go horribly wrong (I found out the hard way :(. That'll teach me to hack my code to pieces.).</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">typedef struct tagVERTEX					// A Structure To Hold A Single Vertex
+{
+	VECTOR Nor;						// Vertex Normal
+	VECTOR Pos;						// Vertex Position
+}
+VERTEX;
+</pre>
+<p>Finally, the polygon structure. I know this is a stupid way of storing vertexes, but for the sake of simplicity it works perfectly. Usually I would use an array of vertexes, an array of polygons, and contain the Index number of the 3 verts in the polygon structure, but this is easier to show you what's going on.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">typedef struct tagPOLYGON					// A Structure To Hold A Single Polygon
+{
+	VERTEX Verts[3];					// Array Of 3 VERTEX Structures
+}
+POLYGON;
+</pre>
+<p>Pretty simple stuff here too. Look at the comments for an explanation of each variable.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">bool		outlineDraw	= true;				// Flag To Draw The Outline
+bool		outlineSmooth	= false;			// Flag To Anti-Alias The Lines
+float		outlineColor[3]	= { 0.0f, 0.0f, 0.0f };		// Color Of The Lines
+float		outlineWidth	= 3.0f;				// Width Of The Lines
+
+VECTOR		lightAngle;					// The Direction Of The Light
+bool		lightRotate	= false;			// Flag To See If We Rotate The Light
+
+float		modelAngle	= 0.0f;				// Y-Axis Angle Of The Model
+bool    	modelRotate	= false;			// Flag To Rotate The Model
+
+POLYGON		*polyData	= NULL;				// Polygon Data
+int		polyNum		= 0;				// Number Of Polygons
+
+GLuint		shaderTexture[1];				// Storage For One Texture
+</pre>
+<p>This is as simple as model file formats get. The first few bytes store the number of polygons in the scene, and the rest of the file is an array of tagPOLYGON structures. Because of this, the data can be read in without any need to sort it into any particular order.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">BOOL ReadMesh ()						// Reads The Contents Of The "model.txt" File
+{
+	FILE *In = fopen ("Data\\model.txt", "rb");		// Open The File
+
+	if (!In)
+		return FALSE;					// Return FALSE If File Not Opened
+
+	fread (&amp;polyNum, sizeof (int), 1, In);			// Read The Header (i.e. Number Of Polygons)
+
+	polyData = new POLYGON [polyNum];			// Allocate The Memory
+
+	fread (&amp;polyData[0], sizeof (POLYGON) * polyNum, 1, In);// Read In All Polygon Data
+
+	fclose (In);						// Close The File
+
+	return TRUE;						// It Worked
+}
+</pre>
+<p>Some basic math functions now. The DotProduct calculates the angle between 2 vectors or planes, the Magnitude function calculates the length of the vector, and the Normalize function reduces the vector to a unit length of 1.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">inline float DotProduct (VECTOR &amp;V1, VECTOR &amp;V2)		// Calculate The Angle Between The 2 Vectors
+{
+	return V1.X * V2.X + V1.Y * V2.Y + V1.Z * V2.Z;		// Return The Angle
+}
+
+inline float Magnitude (VECTOR &amp;V)				// Calculate The Length Of The Vector
+{
+	return sqrtf (V.X * V.X + V.Y * V.Y + V.Z * V.Z);	// Return The Length Of The Vector
+}
+
+void Normalize (VECTOR &amp;V)					// Creates A Vector With A Unit Length Of 1
+{
+	float M = Magnitude (V);				// Calculate The Length Of The Vector 
+
+	if (M != 0.0f)						// Make Sure We Don't Divide By 0 
+	{
+		V.X /= M;					// Normalize The 3 Components 
+		V.Y /= M;
+		V.Z /= M;
+	}
+}
+</pre>
+<p>This function rotates a vector using the matrix provided. Please note that it ONLY rotates the vector - it has nothing to do with the position of the vector. This is used when rotating normals to make sure that they stay pointing in the right direction when we calculate the lighting.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">void RotateVector (MATRIX &amp;M, VECTOR &amp;V, VECTOR &amp;D)		// Rotate A Vector Using The Supplied Matrix
+{
+	D.X = (M.Data[0] * V.X) + (M.Data[4] * V.Y) + (M.Data[8]  * V.Z);	// Rotate Around The X Axis
+	D.Y = (M.Data[1] * V.X) + (M.Data[5] * V.Y) + (M.Data[9]  * V.Z);	// Rotate Around The Y Axis
+	D.Z = (M.Data[2] * V.X) + (M.Data[6] * V.Y) + (M.Data[10] * V.Z);	// Rotate Around The Z Axis
+}
+</pre>
+<p>The first major function of the engine... Initialize, does exactly what is says. I've cut out a few lines of code as they are not needed in the explanation.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">// Any GL Init Code &amp; User Initialization Goes Here
+BOOL Initialize (GL_Window* window, Keys* keys)
+{
+</pre>
+<p>These 3 variables are used to load the shader file. Line contains space for a single line in the text file, while shaderData stores the actual shader values. You may be wondering why we have 96 values instead of 32. Well, we need to convert the greyscale values to RGB so that OpenGL can use them. We can still store the values as greyscale, but we will simply use the same value for the R, G and B components when uploading the texture.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	char Line[255];						// Storage For 255 Characters
+	float shaderData[32][3];				// Storage For The 96 Shader Values
+
+	FILE *In = NULL;					// File Pointer
+</pre>
+<p>When drawing the lines, we want to make sure that they are nice and smooth. Initially this value is turned off, but by pressing the "2" key, it can be toggled on/off.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	glShadeModel (GL_SMOOTH);				// Enables Smooth Color Shading
+	glDisable (GL_LINE_SMOOTH);				// Initially Disable Line Smoothing
+
+	glEnable (GL_CULL_FACE);				// Enable OpenGL Face Culling
+</pre>
+<p>We disable OpenGL lighting because we do all of the lighting calculations ourself.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	glDisable (GL_LIGHTING);				// Disable OpenGL Lighting
+</pre>
+<p>Here is where we load the shader file. It is simply 32 floating point values stored as ASCII (for easy modification), each one on a seperate line.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	In = fopen ("Data\\shader.txt", "r");			// Open The Shader File
+
+	if (In)							// Check To See If The File Opened
+	{
+		for (i = 0; i &lt; 32; i++)			// Loop Though The 32 Greyscale Values
+		{
+			if (feof (In))				// Check For The End Of The File
+				break;
+
+			fgets (Line, 255, In);			// Get The Current Line
+</pre>
+<p>Here we convert the greyscale value into RGB, as described above.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">			// Copy Over The Value
+			shaderData[i][0] = shaderData[i][1] = shaderData[i][2] = atof (Line);
+		}
+
+		fclose (In);					// Close The File
+	}
+
+	else
+		return FALSE;					// It Went Horribly Horribly Wrong
+</pre>
+<p>Now we upload the texture. As it clearly states, do not use any kind of filtering on the texture or else it will look odd, to say the least. GL_TEXTURE_1D is used because it is a 1D array of values.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	glGenTextures (1, &amp;shaderTexture[0]);			// Get A Free Texture ID
+
+	glBindTexture (GL_TEXTURE_1D, shaderTexture[0]);	// Bind This Texture. From Now On It Will Be 1D
+
+	// For Crying Out Loud Don't Let OpenGL Use Bi/Trilinear Filtering!
+	glTexParameteri (GL_TEXTURE_1D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);	
+	glTexParameteri (GL_TEXTURE_1D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+
+	// Upload
+	glTexImage1D (GL_TEXTURE_1D, 0, GL_RGB, 32, 0, GL_RGB , GL_FLOAT, shaderData);
+</pre>
+<p>Now set the lighting direction. I've got it pointing down positive Z, which means it's going to hit the model face-on.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	lightAngle.X = 0.0f;					// Set The X Direction
+	lightAngle.Y = 0.0f;					// Set The Y Direction
+	lightAngle.Z = 1.0f;					// Set The Z Direction
+
+	Normalize (lightAngle);					// Normalize The Light Direction
+</pre>
+<p>Load in the mesh from file (described above).</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	return ReadMesh ();					// Return The Value Of ReadMesh
+}
+</pre>
+<p>The opposite of the above function... Deinitialize, deletes the texture and polygon data created by Initalize and ReadMesh.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">void Deinitialize (void)					// Any User DeInitialization Goes Here
+{
+	glDeleteTextures (1, &amp;shaderTexture[0]);		// Delete The Shader Texture
+
+	delete [] polyData;					// Delete The Polygon Data
+}
+</pre>
+<p>The main demo loop. All this does is process the input and update the angle. Controls are as follows:</p>
+<p>= Toggle rotation</p>
+<p>1 = Toggle outline drawing</p>
+<p>2 = Toggle outline anti-aliasing</p>
+<p>= Increase line width</p>
+<p>= Decrease line width</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">void Update (DWORD milliseconds)				// Perform Motion Updates Here
+{
+	if (g_keys-&gt;keyDown [' '] == TRUE)			// Is the Space Bar Being Pressed?
+	{
+		modelRotate = !modelRotate;			// Toggle Model Rotation On/Off
+
+		g_keys-&gt;keyDown [' '] = FALSE;
+	}
+
+	if (g_keys-&gt;keyDown ['1'] == TRUE)			// Is The Number 1 Being Pressed?
+	{
+		outlineDraw = !outlineDraw;			// Toggle Outline Drawing On/Off
+
+		g_keys-&gt;keyDown ['1'] = FALSE;
+	}
+
+	if (g_keys-&gt;keyDown ['2'] == TRUE)			// Is The Number 2 Being Pressed?
+	{
+		outlineSmooth = !outlineSmooth;			// Toggle Anti-Aliasing On/Off
+
+		g_keys-&gt;keyDown ['2'] = FALSE;
+	}
+
+	if (g_keys-&gt;keyDown [VK_UP] == TRUE)			// Is The Up Arrow Being Pressed?
+	{
+		outlineWidth++;					// Increase Line Width
+
+		g_keys-&gt;keyDown [VK_UP] = FALSE;
+	}
+
+	if (g_keys-&gt;keyDown [VK_DOWN] == TRUE)			// Is The Down Arrow Being Pressed?
+	{
+		outlineWidth--;					// Decrease Line Width
+
+		g_keys-&gt;keyDown [VK_DOWN] = FALSE;
+	}
+
+	if (modelRotate)					// Check To See If Rotation Is Enabled
+		modelAngle += (float) (milliseconds) / 10.0f;	// Update Angle Based On The Clock
+}
+</pre>
+<p>The function you've all been waiting for. The Draw function does everything - calculates the shade values, renders the mesh, renders the outline, and, well that's it really.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">void Draw (void)
+{
+</pre>
+<p>TmpShade is used to store the shader value for the current vertex. All vertex data is calculated at the same time, meaning that we only need to use a single variable that we can just keep reusing.</p>
+<p>The TmpMatrix, TmpVector and TmpNormal structures are also used to calculate the vertex data. TmpMatrix is set once at the start of the function and never changed until Draw is called again. TmpVector and TmpNormal on the other hand, change when another vertex is processed.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	float TmpShade;						// Temporary Shader Value
+
+	MATRIX TmpMatrix;					// Temporary MATRIX Structure
+	VECTOR TmpVector, TmpNormal;				// Temporary VECTOR Structures
+</pre>
+<p>Let's clear the buffers and matrix data.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);	// Clear The Buffers
+	glLoadIdentity ();					// Reset The Matrix
+</pre>
+<p>The first check is to see if we want to have smooth outlines. If so, then we turn on anti-alaising. If not, we turn it off. Simple!</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	if (outlineSmooth)					// Check To See If We Want Anti-Aliased Lines
+	{
+		glHint (GL_LINE_SMOOTH_HINT, GL_NICEST);	// Use The Good Calculations
+		glEnable (GL_LINE_SMOOTH);			// Enable Anti-Aliasing
+	}
+
+	else							// We Don't Want Smooth Lines
+		glDisable (GL_LINE_SMOOTH);			// Disable Anti-Aliasing
+</pre>
+<p>We then setup the viewport. We move the camera back 2 units, and then rotate the model by the angle. Note: because we moved the camera first, the model will rotate on the spot. If we did it the other way around, the model would rotate around the camera.</p>
+<p>We then grab the newly created matrix from OpenGL and store it in TmpMatrix.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	glTranslatef (0.0f, 0.0f, -2.0f);			// Move 2 Units Away From The Screen
+	glRotatef (modelAngle, 0.0f, 1.0f, 0.0f);		// Rotate The Model On It's Y-Axis
+
+	glGetFloatv (GL_MODELVIEW_MATRIX, TmpMatrix.Data);	// Get The Generated Matrix
+</pre>
+<p>The magic begins. We first enable 1D texturing, and then enable the shader texture. This is to be used as a look-up table by OpenGL. We then set the color of the model (white). I chose white because it shows up the highlights and shading much better then other colors. I suggest that you don't use black :)</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	// Cel-Shading Code
+	glEnable (GL_TEXTURE_1D);				// Enable 1D Texturing
+	glBindTexture (GL_TEXTURE_1D, shaderTexture[0]);	// Bind Our Texture
+
+	glColor3f (1.0f, 1.0f, 1.0f);				// Set The Color Of The Model
+</pre>
+<p>Now we start drawing the triangles. We look though each polygon in the array, and then in turn each of it's vertexes. The first step is to copy the normal information into a temporary structure. This is so we can rotate the normals, but still keep the original values preserved (no precision degradation).</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	glBegin (GL_TRIANGLES);					// Tell OpenGL That We're Drawing Triangles
+
+		for (i = 0; i &lt; polyNum; i++)			// Loop Through Each Polygon
+		{
+			for (j = 0; j &lt; 3; j++)			// Loop Through Each Vertex
+			{
+				TmpNormal.X = polyData[i].Verts[j].Nor.X;	// Fill Up The TmpNormal Structure With The
+				TmpNormal.Y = polyData[i].Verts[j].Nor.Y;	// Current Vertices' Normal Values
+				TmpNormal.Z = polyData[i].Verts[j].Nor.Z;
+</pre>
+<p>Second, we rotate the normal by the matrix grabbed from OpenGL earlier. We then normalize this so it doesn't go all screwy.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">				// Rotate This By The Matrix
+				RotateVector (TmpMatrix, TmpNormal, TmpVector);
+
+				Normalize (TmpVector);		// Normalize The New Normal
+</pre>
+<p>Third, we get the dot product of the rotated normal and light direction (called lightAngle, because I forgot to change it from my old light class). We then clamp the value to the range 0-1 (from -1 to +1).</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">				// Calculate The Shade Value
+				TmpShade = DotProduct (TmpVector, lightAngle);
+
+				if (TmpShade &lt; 0.0f)
+					TmpShade = 0.0f;	// Clamp The Value to 0 If Negative
+</pre>
+<p>Forth, we pass this value to OpenGL as the texture coordinate. The shader texture acts as a lookup table (the shader value being the index), which is (I think) the main reason why 1D textures were invented. We then pass the vertices position to OpenGL, and repeat. And Repeat. And Repeat. And I think you get the idea.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">				glTexCoord1f (TmpShade);	// Set The Texture Co-ordinate As The Shade Value
+				// Send The Vertices
+				glVertex3fv (&amp;polyData[i].Verts[j].Pos.X);
+		    }
+		}
+
+	glEnd ();						// Tell OpenGL To Finish Drawing
+
+	glDisable (GL_TEXTURE_1D);				// Disable 1D Textures
+</pre>
+<p>Now we move onto the outlines. An outline can be defined as "an edge where one polygon is front facing, and the other is backfacing". In OpenGL, it's where the depth test is set to less than or equal to (GL_LEQUAL) the current value, and when all front faces are being culled. We also blend the lines in, to make it look nice :)</p>
+<p>So, we enable blending and set the blend mode. We tell OpenGL to render backfacing polygons as lines, and set the width of those lines. We cull all front facing polygons, and set the depth test to less than or equal to the current Z value. After this the color of the line is set, and we loop through each polygon, drawing it's vertices. We only need to pass the vertex position, and not the normal or shade value because all we want is an outline.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	// Outline Code
+	if (outlineDraw)					// Check To See If We Want To Draw The Outline
+	{
+		glEnable (GL_BLEND);				// Enable Blending
+		// Set The Blend Mode		
+		glBlendFunc (GL_SRC_ALPHA ,GL_ONE_MINUS_SRC_ALPHA);
+
+		glPolygonMode (GL_BACK, GL_LINE);		// Draw Backfacing Polygons As Wireframes
+		glLineWidth (outlineWidth);			// Set The Line Width
+
+		glCullFace (GL_FRONT);				// Don't Draw Any Front-Facing Polygons
+
+		glDepthFunc (GL_LEQUAL);			// Change The Depth Mode
+
+		glColor3fv (&amp;outlineColor[0]);			// Set The Outline Color
+
+		glBegin (GL_TRIANGLES);				// Tell OpenGL What We Want To Draw
+
+			for (i = 0; i &lt; polyNum; i++)		// Loop Through Each Polygon
+			{
+				for (j = 0; j &lt; 3; j++)		// Loop Through Each Vertice
+				{
+					// Send The Vertices
+					glVertex3fv (&amp;polyData[i].Verts[j].Pos.X);
+				}
+			}
+
+		glEnd ();					// Tell OpenGL We've Finished
+</pre>
+<p>After this, we just set everything back to how it was before, and exit.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">		glDepthFunc (GL_LESS);				// Reset The Depth-Testing Mode
+
+		glCullFace (GL_BACK);				// Reset The Face To Be Culled
+
+		glPolygonMode (GL_BACK, GL_FILL);		// Reset Back-Facing Polygon Drawing Mode
+
+		glDisable (GL_BLEND);				// Disable Blending
+	}
+}
+</pre>
+<p>You see now Cel-Shading isn't that difficult. Of course the techniques could be enhanced a lot. A good example is the game XIII <a href="javascript:if(confirm('http://nehe.gamedev.net/data/lessons/http://www.nvidia.com/object/game_xiii.html  \n\nThis file was not retrieved by Teleport Pro, because the server reports that this file cannot be found.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev.net/data/lessons/http://www.nvidia.com/object/game_xiii.html'" tppabs="http://nehe.gamedev.net/data/lessons/http://www.nvidia.com/object/game_xiii.html" target="_blank">/data/lessons/http://www.nvidia.com/object/game_xiii.html</a>, which makes you think you are in a cartoon world. If you want to get deeper into cartoon rendering techniques, you could look into the book Real-time Rendering (M&ouml;ller, Haines) on the chapter "Non-Photorealistic Rendering". If you prefer reading articles from the web, a huge link list can be found here: <a href="javascript:if(confirm('http://nehe.gamedev.net/data/lessons/http://www.red3d.com/cwr/npr/  \n\nThis file was not retrieved by Teleport Pro, because the server reports that this file cannot be found.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev.net/data/lessons/http://www.red3d.com/cwr/npr/'" tppabs="http://nehe.gamedev.net/data/lessons/http://www.red3d.com/cwr/npr/" target="_blank">/data/lessons/http://www.red3d.com/cwr/npr/</a></p>
+<p><strong>Sami Hamlaoui</strong> (<strong>MENTAL</strong>)</p>
+<p><strong>Jeff Molofee</strong> (<strong>NeHe</strong>)</p>
+<p>* DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/vc/lesson37.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/vc/lesson37.zip'" tppabs="http://nehe.gamedev.net/data/lessons/vc/lesson37.zip">Visual C++</a> Code For This Lesson.</p>
+<p>* DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/bcb6/lesson37_bcb6.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/bcb6/lesson37_bcb6.zip'" tppabs="http://nehe.gamedev.net/data/lessons/bcb6/lesson37_bcb6.zip">Borland C++ Builder 6</a> Code For This Lesson. ( Conversion by <a href="mailto:christian@tugzip.com">Christian Kindahl</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/cwarrior/lesson37.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/cwarrior/lesson37.zip'" tppabs="http://nehe.gamedev.net/data/lessons/cwarrior/lesson37.zip">Code Warrior 5.3</a> Code For This Lesson. ( Conversion by <a href="mailto:DelusionalBeing@hotmail.com">Scott Lupton</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/delphi/lesson37.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/delphi/lesson37.zip'" tppabs="http://nehe.gamedev.net/data/lessons/delphi/lesson37.zip">Delphi</a> Code For This Lesson. ( Conversion by <a href="mailto:michal_praha@seznam.cz">Michal Tucek</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/devc/lesson37.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/devc/lesson37.zip'" tppabs="http://nehe.gamedev.net/data/lessons/devc/lesson37.zip">Dev C++</a> Code For This Lesson. ( Conversion by <a href="mailto:zealouselixir@mchsi.com">Warren Moore</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/euphoria/lesson37.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/euphoria/lesson37.zip'" tppabs="http://nehe.gamedev.net/data/lessons/euphoria/lesson37.zip">Euphoria</a> Code For This Lesson. ( Conversion by <a href="mailto:1evan@sbcglobal.net">Evan Marshall</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/jogl/lesson37.jar  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/jogl/lesson37.jar'" tppabs="http://nehe.gamedev.net/data/lessons/jogl/lesson37.jar">JoGL</a> Code For This Lesson. ( Conversion by <a href="mailto:abezrati@hotmail.com">Abdul Bezrati</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/linux/lesson37.tar.gz  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/linux/lesson37.tar.gz'" tppabs="http://nehe.gamedev.net/data/lessons/linux/lesson37.tar.gz">Linux / GLut</a> Code For This Lesson. ( Conversion by <a href="mailto:rainmaker@xs4all.nl">Kah</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/linuxglx/lesson37.tar.gz  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/linuxglx/lesson37.tar.gz'" tppabs="http://nehe.gamedev.net/data/lessons/linuxglx/lesson37.tar.gz">Linux/GLX</a> Code For This Lesson. ( Conversion by <a href="mailto:Schubert_P@Yahoo.de">Patrick Schubert</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/linuxsdl/lesson37.tar.gz  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/linuxsdl/lesson37.tar.gz'" tppabs="http://nehe.gamedev.net/data/lessons/linuxsdl/lesson37.tar.gz">Linux/SDL</a> Code For This Lesson. ( Conversion by <a href="mailto:drfnbee@wanadoo.fr">Sean Farrell</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/macosxcocoa/lesson37.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/macosxcocoa/lesson37.zip'" tppabs="http://nehe.gamedev.net/data/lessons/macosxcocoa/lesson37.zip">Mac OS X/Cocoa</a> Code For This Lesson. ( Conversion by <a href="mailto:blb@pobox.com">Bryan Blackburn</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/vs_net/lesson37.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/vs_net/lesson37.zip'" tppabs="http://nehe.gamedev.net/data/lessons/vs_net/lesson37.zip">Visual Studio .NET</a> Code For This Lesson. ( Conversion by <a href="mailto:ultimatezeus@hotmail.com">Grant James</a> )</p>
+<p>&nbsp;</p>
+<p><strong><span><a href="index-76.htm" tppabs="http://nehe.gamedev.net/data/lessons/lesson.asp?lesson=36">&lt; Lesson 36</a></span></strong><strong><span><a href="index-78.htm" tppabs="http://nehe.gamedev.net/data/lessons/lesson.asp?lesson=38">Lesson 38 &gt;</a></span></strong></p>
+
+
+</div>
+</div>
+
+
+
+            <div style="width:728px;padding:0px;margin:auto; margin-top: 10px;">
+            
+
+    
+                <!-- Leaderboard_NeHe -->
+                <div id='div-gpt-ad-1327940144417-0' style='width:728px; height:90px;'>
+                <script type='text/javascript'>
+                googletag.cmd.push(function() { googletag.display('div-gpt-ad-1327940144417-0'); });
+                </script>
+                </div>
+            
+
+                           
+            </div>   
+        </td>
+        <td class="col2">
+            
+
+
+
+
+<div style="text-align: center; padding:10px;">
+
+<script type='text/javascript'>
+    GA_googleFillSlot("Skyscraper_NeHe");
+</script>
+
+</div>
+            
+        </td>
+    </table>
+    <div id="footer">
+        <p>
+            
+    
+    © 1997-2012 Gamedev . All rights reserved.<br/>
+
+			NeHe™ and NeHe Productions™ are trademarks of GameDev.net, LLC<br/>
+			OpenGL® is a registered trademark of Silicon Graphics Inc.<br/>
+		</p>        
+		<br/>
+    </div>
+
+    
+    
+	    <script type="text/javascript" src="shCore.js" tppabs="http://nehe.gamedev.net/static/js/syntax_highlighter/shCore.js"></script>
+        <script type="text/javascript" src="shBrushCpp.js" tppabs="http://nehe.gamedev.net/static/js/syntax_highlighter/shBrushCpp.js"></script>
+	    <script type="text/javascript" src="shBrushJScript.js" tppabs="http://nehe.gamedev.net/static/js/syntax_highlighter/shBrushJScript.js"></script>
+	    <script type="text/javascript">SyntaxHighlighter.all();</script>
+    
+
+    <!-- Place this render call where appropriate -->
+    <script type="text/javascript">
+      (function() {
+        var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+        po.src = 'plusone.js'/*tpa=https://apis.google.com/js/plusone.js*/;
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+      })();
+    </script>    
+
+    
+<!-- GoogleAnalytics code -->
+<script src="urchin.js" tppabs="http://www.google-analytics.com/urchin.js" type="text/javascript">
+</script>
+<script type="text/javascript">
+_uacct = "UA-279474-2"; // Gamedev
+urchinTracker();
+_uff = 0; // Reset for second account
+_uacct = "UA-24180731-1"; // Non-GD
+urchinTracker();
+</script> 
+  </body>
+</html>

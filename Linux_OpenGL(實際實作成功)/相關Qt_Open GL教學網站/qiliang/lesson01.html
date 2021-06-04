@@ -1,0 +1,276 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<meta name="Author" content="Qi Liang">
+<meta name="Qt OpenGL Tutorial" content="http://www.qiliang.net/nehe_qt">
+<title>创建一个OpenGL窗口</title>
+<style type="text/css"><!--
+h3.fn,span.fn { margin-left: 1cm; text-indent: -1cm; }
+a:link { color: #004faf; text-decoration: none }
+a:visited { color: #672967; text-decoration: none }
+body { background: #ffffff; color: black; font-family: "Times New Roman" }
+--></style>
+</head>
+<body>
+<p align="right">[<a href="require.html" tppabs="http://www.qiliang.net/nehe_qt/require.html">上一课：Qt OpenGL的准备工作</a>] [<a href="index.html" tppabs="http://www.qiliang.net/nehe_qt/index.html">Qt OpenGL教程主页</a>] [<a href="lesson02.html" tppabs="http://www.qiliang.net/nehe_qt/lesson02.html">下一课：你的第一个多边形</a>]</p>
+
+<h2 align=center>创建一个OpenGL窗口</h2>
+
+<p> <center><img src="lesson01.png" tppabs="http://www.qiliang.net/nehe_qt/lesson01.png"></center> 
+<p> 我假设您对Qt编程已经有了一定的了解，如果您还没有熟悉Qt编程，建议您先学习一下Qt编程的基础知识。
+<p> Qt中已经包含了OpenGL模块，具体情况您可以参考Qt OpenGL模块的相关内容。
+
+<h3><a name="1"></a>NeHeWidget类</h3>
+<p> 这就是我们继承QGLWidget类得到的OpenGL窗口部件类。
+<p> （由<tt>nehewidget.h</tt>展开。）
+<pre>
+#include &lt;qgl.h&gt;
+
+class NeHeWidget : public QGLWidget
+{
+    Q_OBJECT
+</pre>
+<p> 因为QGLWidget类被包含在qgl.h头文件中，所以我们的类就需要包含这个头文件。Q_OBJECT是Qt中的一个专用的宏，具体说明请参见Qt的文档。
+<pre>
+public:
+    
+  NeHeWidget( QWidget* parent = 0, const char* name = 0, bool fs = false );
+  ~NeHeWidget();
+
+protected:
+
+  void initializeGL();
+  void paintGL();
+  void resizeGL( int width, int height );
+</pre>
+<p> 因为QGLWidget类已经内置了对OpenGL的处理，就是通过对initializeGL()、paintGL()和resizeGL()这个三个函数实现的，具体情况可以参考QGLWidget类的文档。
+<p> 因为我们的这个Qt OpenGL教程取材于NeHe OpenGL教程，所以这里就用这个NeHeWidget类来继承QGLWidget类来使用相关OpenGL的功能。
+<p>  initializeGL()是用来初始化这个OpenGL窗口部件的，可以在里面设定一些有关选项。paintGL()就是用来绘制OpenGL的窗口了，只要有更新发生，这个函数就会被调用。resizeGL()就是用来处理窗口大小变化这一事件的，width和height就是新的大小状态下的宽和高了，另外resizeGL()在处理完后会自动刷新屏幕。
+<pre>
+  void keyPressEvent( QKeyEvent *e );
+</pre>
+<p> 这是Qt里面的鼠标按下事件处理函数。
+<pre>
+protected:
+
+  bool fullscreen;
+</pre>
+<p> 用来保存窗口是否处于全屏状态的变量。
+<pre>
+};
+</pre>
+<p> （由<tt>nehewidget.cpp</tt>展开。）
+<pre>
+#include "nehewidget.h"
+
+NeHeWidget::NeHeWidget( QWidget* parent, const char* name, bool fs )
+    : QGLWidget( parent, name )
+{
+  fullscreen = fs;
+</pre>
+<p> 保存窗口是否为全屏的状态。
+<pre>
+  setGeometry( 0, 0, 640, 480 );
+</pre>
+<p> 设置窗口的位置，即左上角为(0,0)点，大小为640*480。
+<pre>
+  setCaption( "NeHe's OpenGL Framework" );
+</pre>
+<p> 设置窗口的标题为“NeHe's OpenGL Framework”。
+<pre>
+  if ( fullscreen )
+    showFullScreen();
+</pre>
+<p> 如果fullscreen为真，那么就全屏显示这个窗口。
+<pre>
+}
+</pre>
+<p> 这个是构造函数，parent就是父窗口部件的指针，name就是这个窗口部件的名称，fs就是窗口是否最大化。
+<pre>
+NeHeWidget::~NeHeWidget()
+{
+}
+</pre>
+<p> 这个是析构函数。
+<pre>
+void NeHeWidget::initializeGL()
+{
+  glShadeModel( GL_SMOOTH );
+</pre>
+<p> 这一行启用smooth shading(阴影平滑)。阴影平滑通过多边形精细的混合色彩，并对外部光进行平滑。我将在另一个教程中更详细的解释阴影平滑。 
+<pre>
+  glClearColor( 0.0, 0.0, 0.0, 0.0 );
+</pre>
+<p> 这一行设置清除屏幕时所用的颜色。如果您对色彩的工作原理不清楚的话，我快速解释一下。色彩值的范围从0.0到1.0。0.0代表最黑的情况，1.0就是最亮的情况。glClearColor后的第一个参数是红色,第二个是绿色，第三个是蓝色。最大值也是1.0，代表特定颜色分量的最亮情况。最后一个参数是Alpha值。当它用来清除屏幕的时候，我们不用关心第四个数字。现在让它为0.0。我会用另一个教程来解释这个参数。
+<p> 通过混合三种原色（红、绿、蓝），您可以得到不同的色彩。希望您在学校里学过这些。因此，当您使用glClearColor(0.0, 0.0, 1.0, 0.0 )，您将用亮蓝色来清除屏幕。如果您用glClearColor(0.5, 0.0, 0.0, 0.0 )的话，您将使用中红色来清除屏幕。不是最亮(1.0)，也不是最暗 (0.0)。要得到白色背景，您应该将所有的颜色设成最亮(1.0)。要黑色背景的话，您该将所有的颜色设为最暗(0.0)。 
+<pre>
+  glClearDepth( 1.0 );
+</pre>
+<p> 设置深度缓存。
+<pre>
+  glEnable( GL_DEPTH_TEST );
+</pre>
+<p> 启用深度测试。
+<pre>
+  glDepthFunc( GL_LEQUAL );
+</pre>
+<p> 所作深度测试的类型。
+<p> 上面这三行必须做的是关于depth buffer（深度缓存）的。将深度缓存设想为屏幕后面的层。深度缓存不断的对物体进入屏幕内部有多深进行跟踪。我们本节的程序其实没有真正使用深度缓存，但几乎所有在屏幕上显示3D场景OpenGL程序都使用深度缓存。它的排序决定那个物体先画。这样您就不会将一个圆形后面的正方形画到圆形上来。深度缓存是OpenGL十分重要的部分。 
+<pre>
+  glHint( GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST );
+</pre>
+<p> 真正精细的透视修正。这一行告诉OpenGL我们希望进行最好的透视修正。这会十分轻微的影响性能。但使得透视图看起来好一点。
+<pre>
+}
+</pre>
+<p> 这个函数中，我们对OpenGL进行所有的设置。我们设置清除屏幕所用的颜色，打开深度缓存，启用smooth shading（阴影平滑），等等。这个例程直到OpenGL窗口创建之后才会被调用。
+<pre>
+void NeHeWidget::paintGL()
+{
+  glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
+</pre>
+<p> 清楚屏幕和深度缓存。
+<pre>
+  glLoadIdentity();
+</pre>
+<p> 重置当前的模型观察矩阵。
+<pre>
+}
+</pre>
+<p> 这个函数中包括了所有的绘图代码。任何您所想在屏幕上显示的东东都将在此段代码中出现。以后的每个教程中我都会在例程的此处增加新的代码。如果您对OpenGL已经有所了解的话，您可以在 glLoadIdentity()调用之后，函数返回之前，试着添加一些OpenGL代码来创建基本的形。如果您是OpenGL新手，等着我的下个教程。目前我们所作的全部就是将屏幕清除成我们前面所决定的颜色，清除深度缓存并且重置场景。我们仍没有绘制任何东东。
+<pre>
+void NeHeWidget::resizeGL( int width, int height )
+{
+  if ( height == 0 )
+  {
+    height = 1;
+  }
+</pre>
+<p> 防止height为0。
+<pre>
+  glViewport( 0, 0, (GLint)width, (GLint)height );
+</pre>
+<p> 重置当前的视口（Viewport）。
+<pre>
+  glMatrixMode( GL_PROJECTION );
+</pre>
+<p> 选择投影矩阵。
+<pre>
+  glLoadIdentity();
+</pre>
+<p> 重置投影矩阵。
+<pre>
+  gluPerspective( 45.0, (GLfloat)width/(GLfloat)height, 0.1, 100.0 );
+</pre>
+<p> 建立透视投影矩阵。
+<pre>
+  glMatrixMode( GL_MODELVIEW );
+</pre>
+<p> 选择模型观察矩阵。
+<pre>
+  glLoadIdentity();
+</pre>
+<p> 重置模型观察矩阵。
+<pre>
+}
+</pre>
+<p> 上面几行为透视图设置屏幕。意味着越远的东西看起来越小。这么做创建了一个现实外观的场景。此处透视按照基于窗口宽度和高度的45度视角来计算。0.1，100.0是我们在场景中所能绘制深度的起点和终点。 
+<p> glMatrixMode(GL_PROJECTION)指明接下来的两行代码将影响projection matrix（投影矩阵）。投影矩阵负责为我们的场景增加透视。 glLoadIdentity()近似于重置。它将所选的矩阵状态恢复成其原始状态。调用glLoadIdentity()之后我们为场景设置透视图。 
+<p> glMatrixMode(GL_MODELVIEW)指明任何新的变换将会影响 modelview matrix（模型观察矩阵）。模型观察矩阵中存放了我们的物体讯息。最后我们重置模型观察矩阵。如果您还不能理解这些术语的含义，请别着急。在以后的教程里，我会向大家解释。只要知道如果您想获得一个精彩的透视场景的话，必须这么做。
+<p> 这个函数的作用是重新设置OpenGL场景的大小，而不管窗口的大小是否已经改变（假定您没有使用全屏模式）。甚至您无法改变窗口的大小时（例如您在全屏模式下），它至少仍将运行一次——在程序开始时设置我们的透视图。OpenGL场景的尺寸将被设置成它显示时所在窗口的大小。 
+</pre>
+<pre>
+void NeHeWidget::keyPressEvent( QKeyEvent *e )
+{
+  switch ( e->key() )
+  {
+  case Qt::Key_F2:
+    fullscreen = !fullscreen;
+    if ( fullscreen )
+    {
+      showFullScreen();
+    }
+    else
+    {
+      showNormal();
+      setGeometry( 0, 0, 640, 480 );
+    }
+    updateGL();
+    break;
+</pre>
+<p> 如果按下了F2键，那么屏幕是否全屏的状态就切换一次。然后再根据需要，显示所要的全屏窗口或者普通窗口。
+<pre>
+  case Qt::Key_Escape:
+    close();
+  }
+</pre>
+<p> 如果按下了Escape键，程序退出。
+<pre>
+}
+</pre>
+<h3><a name="2"></a>main.cpp</h3>
+<p> （由<tt>main.cpp</tt>展开。）
+<pre>
+#include &lt;qapplication.h&gt;
+#include &lt;qmessagebox.h&gt;
+</pre>
+<p> Qt的应用程序都是一个QApplication类，所以qapplication.h必须要包含。因为我们在进入OpenGL窗口之前让用户选择是否使用全屏窗口，所以使用了QMessageBox类，所以qmessagebox.h也要包含。
+<pre>
+#include "nehewidget.h"
+</pre>
+<p> 
+<pre>
+int main( int argc, char **argv )
+{
+  bool fs = false;
+</pre>
+<p> 我们把这个布尔型变量的初始值设置为false。
+<pre>
+  QApplication a(argc,argv);
+</pre>
+<p> 每一个Qt应用程序都使用QApplication类。
+<pre>
+  switch( QMessageBox::information( 0,
+      "Start FullScreen?",
+      "Would You Like To Run In Fullscreen Mode?",
+      QMessageBox::Yes,
+      QMessageBox::No | QMessageBox::Default ) )
+  {
+  case QMessageBox::Yes:
+    fs = true;
+    break;
+  case QMessageBox::No:
+    fs = false;
+    break;
+  }
+</pre>
+<p> 这里弹出一个消息对话框，让用户选择是否使用全屏模式。
+<pre>
+  NeHeWidget w( 0, 0, fs );
+</pre>
+<p> 创建一个NeHeWidget对象。
+<pre>
+  a.setMainWidget( &w );
+</pre>
+<p> 设置应用程序的主窗口部件为w。
+<pre>
+  w.show();
+</pre>
+<p> 显示w。
+<pre>
+  return a.exec();
+</pre>
+<p> 程序返回。
+<pre>
+}
+</pre>
+<p> 本课程的<a href="lesson01.tar.gz" tppabs="http://www.qiliang.net/nehe_qt/source/lesson01.tar.gz">源代码</a>。
+
+<p align="right">[<a href="require.html" tppabs="http://www.qiliang.net/nehe_qt/require.html">上一课：Qt OpenGL的准备工作</a>] [<a href="index.html" tppabs="http://www.qiliang.net/nehe_qt/index.html">Qt OpenGL教程主页</a>] [<a href="lesson02.html" tppabs="http://www.qiliang.net/nehe_qt/lesson02.html">下一课：你的第一个多边形</a>]</p>
+<p><address><hr><div align=center>
+<table width=100% cellspacing=0 border=0><tr>
+<td align=left><div align=left><a href="javascript:if(confirm('http://www.qiliang.net/  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://www.qiliang.net/'" tppabs="http://www.qiliang.net/">http://www.qiliang.net</a></div>
+<td><center><a href="mailto:cavendish@qiliang.net">mailto:cavendish@qiliang.net</a></center>
+<td align=right><div align=right>2002年12月17日</div>
+</table></div></address></body>
+</html>

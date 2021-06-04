@@ -1,0 +1,1144 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+    dir="ltr"
+    xml:lang="en"
+    lang="en">
+  <head>
+    <title>NeHe Productions: Lines, Antialiasing, Timing, Ortho View And Simple Sounds</title>
+
+    <link rel="stylesheet" type="text/css" href="public_base.css" tppabs="http://nehe.gamedev.net/static/css/public_base.css" />
+    <link type="text/css" rel="stylesheet" href="shThemeMidnight.css" tppabs="http://nehe.gamedev.net/static/css/syntax_highlighter/shThemeMidnight.css"/>
+    
+    <link rel="alternate" type="application/atom+xml" title="Atom feed" href="index-1.htm" tppabs="http://nehe.gamedev.net/atom/" />
+    <link rel="alternate" type="application/rss+xml" title="RSS feed" href="index-2.htm" tppabs="http://nehe.gamedev.net/rss/" />
+    
+    <meta name="author" content="Luke Benstead + Carsten Haubold" />
+    <meta name="description" content="OpenGL Tutorials, Demos, Games and More..." />
+    <meta name="keywords" content="opengl, tutorial, article, demo, game, blend, texturemap, lighting, contest, 3D" />
+
+    
+    
+
+    
+
+</script>
+
+
+    
+    
+    
+    
+        
+        <script type='text/javascript'>
+        var googletag = googletag || {};
+        googletag.cmd = googletag.cmd || [];
+        (function() {
+        var gads = document.createElement('script');
+        gads.async = true;
+        gads.type = 'text/javascript';
+        var useSSL = 'https:' == document.location.protocol;
+        gads.src = (useSSL ? 'https:' : 'http:') + 
+        '//www.googletagservices.com/tag/js/gpt.js';
+        var node = document.getElementsByTagName('script')[0];
+        node.parentNode.insertBefore(gads, node);
+        })();
+        </script>
+
+        <script type='text/javascript'>
+        googletag.cmd.push(function() {
+        googletag.defineSlot('/1004699/Leaderboard_NeHe', [728, 90], 'div-gpt-ad-1327940144417-0').addService(googletag.pubads());
+        googletag.defineSlot('/1004699/Skyscraper_NeHe', [160, 600], 'div-gpt-ad-1327940144417-1').addService(googletag.pubads());
+        googletag.pubads().enableSingleRequest();
+        googletag.enableServices();
+        });
+        </script>
+    
+    
+
+    
+  </head>
+
+  <body>
+    
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "all.js#xfbml=1"/*tpa=http://connect.facebook.net/en_GB/all.js#xfbml=1*/;
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+
+
+    <table cellpadding="0" cellspacing="0" border="0" id="layout_table">
+    <tr><td>
+        <div id="header">
+                <a href="index.htm" tppabs="http://nehe.gamedev.net/"><img class="logo" class="logo" src="nehe.png" tppabs="http://nehe.gamedev.net/static/images/nehe.png" border="0" alt="Nehe" /></a>
+        </div>            
+    </td></tr>
+    <tr><td colspan="2">
+            
+<div class="navbar">
+    <a href="index.htm" tppabs="http://nehe.gamedev.net/">HOME</a>
+    <a href="javascript:if(confirm('http://twitter.com/  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://twitter.com/#!/nehegl'" tppabs="http://twitter.com/#!/nehegl">TWITTER</a>  
+    <a href="javascript:if(confirm('http://www.facebook.com/pages/NeHe/300582493323181  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://www.facebook.com/pages/NeHe/300582493323181'" tppabs="http://www.facebook.com/pages/NeHe/300582493323181">FACEBOOK</a>     
+    <a href="index-2.htm" tppabs="http://nehe.gamedev.net/rss/">RSS</a>    
+    <a href="index-1.htm" tppabs="http://nehe.gamedev.net/atom/">ATOM</a>    
+    <a href="javascript:if(confirm('http://www.gamedev.net/forum/27-nehe-productions/page__forum_title__NeHe+Productions  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://www.gamedev.net/forum/27-nehe-productions/page__forum_title__NeHe+Productions'" tppabs="http://www.gamedev.net/forum/27-nehe-productions/page__forum_title__NeHe+Productions">FORUM</a>    
+</div>
+    
+    </td></tr>
+    <tr>
+        <td class="col1">
+
+            
+<div id="article_container">
+
+
+<h1 class="article-header">Lines, Antialiasing, Timing, Ortho View And Simple Sounds</h1>
+<div class="social-media">
+<!-- Place this tag where you want the +1 button to render -->
+<div class="g-plusone" data-size="medium" data-width="120" data-annotation="inline"></div>
+<div class="fb-like" data-send="false" data-layout="button_count" data-width="60" data-show-faces="false" data-colorscheme="dark" data-font="arial"></div>
+</div>
+<div style="clear:both;"></div>
+<p>Welcome to my 21st OpenGL Tutorial! Coming up with a topic for this tutorial was extremely difficult. I know alot of you are tired of learning the basics. Everyone is dying to learn about 3D objects, Multitexturing and all that other good stuff. For those people, I'm sorry, but I want to keep the learning curve gradual. Once I've gone a step ahead it's not as easy to take a step back without people losing interest. So I'd prefer to keep pushing forward at a steady pace.</p>
+<p>In case I've lost a few of you :) I'll tell you a bit about this tutorial. Until now all of my tutorials have used polygons, quads and triangles. So I decided it would be nice to write a tutorial on lines. A few hours after starting the line tutorial, I decided to call it quits. The tutorial was coming along fine, but it was BORING! Lines are great, but there's only so much you can do to make lines exciting. I read through my email, browsed through the message board, and wrote down a few of your tutorial requests. Out of all the requests there were a few questions that came up more than others. So... I decided to write a multi-tutorial :)</p>
+<p>In this tutorial you will learn about: Lines, Anti-Aliasing, Orthographic Projection, Timing, Basic Sound Effects, and Simple Game Logic. Hopefully there's enough in this tutorial to keep everyone happy :) I spent 2 days coding this tutorial, and It's taken almost 2 weeks to write this HTML file. I hope you enjoy my efforts!</p>
+<p>At the end of this tutorial you will have made a simple 'amidar' type game. Your mission is to fill in the grid without being caught by the bad guys. The game has levels, stages, lives, sound, and a secret item to help you progress through the levels when things get tough. Although this game will run fine on a Pentium 166 with a Voodoo 2, a faster processor is recommended if you want smoother animation.</p>
+<p>I used the code from lesson 1 as a starting point while writing this tutorial. We start off by adding the required header files. stdio.h is used for file operations, and we include stdarg.h so that we can display variables on the screen, such as the score and current stage.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">// This Code Was Created By Jeff Molofee 2000
+// If You've Found This Code Useful, Please Let Me Know.
+
+#include	&lt;windows.h&gt;							// Header File For Windows
+#include	&lt;stdio.h&gt;							// Standard Input / Output
+#include	&lt;stdarg.h&gt;							// Header File For Variable Argument Routines
+#include	&lt;gl\gl.h&gt;							// Header File For The OpenGL32 Library
+#include	&lt;gl\glu.h&gt;							// Header File For The GLu32 Library
+#include	&lt;gl\glaux.h&gt;							// Header File For The Glaux Library
+
+HDC		hDC=NULL;							// Private GDI Device Context
+HGLRC		hRC=NULL;							// Permanent Rendering Context
+HWND		hWnd=NULL;							// Holds Our Window Handle
+HINSTANCE	hInstance;							// Holds The Instance Of The Application
+</pre>
+<p>Now we set up our boolean variables. vline keeps track of the 121 vertical lines that make up our game grid. 11 lines across and 11 up and down. hline keeps track of the 121 horizontal lines that make up the game grid. We use ap to keep track of whether or not the 'A' key is being pressed.</p>
+<p>filled is FALSE while the grid isn't filled and TRUE when it's been filled in. gameover is pretty obvious. If gameover is TRUE, that's it, the game is over, otherwise you're still playing. anti keeps track of antialiasing. If anti is TRUE, object antialiasing is ON. Otherwise it's off. active and fullscreen keep track of whether or not the program has been minimized or not, and whether you're running in fullscreen mode or windowed mode.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">bool		keys[256];							// Array Used For The Keyboard Routine
+bool		vline[11][10];							// Keeps Track Of Verticle Lines
+bool		hline[10][11];							// Keeps Track Of Horizontal Lines
+bool		ap;								// 'A' Key Pressed?
+bool		filled;								// Done Filling In The Grid?
+bool		gameover;							// Is The Game Over?
+bool		anti=TRUE;							// Antialiasing?
+bool		active=TRUE;							// Window Active Flag Set To TRUE By Default
+bool		fullscreen=TRUE;						// Fullscreen Flag Set To Fullscreen Mode By Default
+</pre>
+<p>Now we set up our integer variables. loop1 and loop2 will be used to check points on our grid, see if an enemy has hit us and to give objects random locations on the grid. You'll see loop1 / loop2 in action later in the program. delay is a counter variable that I use to slow down the bad guys. If delay is greater than a certain value, the enemies are moved and delay is set back to zero.</p>
+<p>The variable adjust is a very special variable! Even though this program has a timer, the timer only checks to see if your computer is too fast. If it is, a delay is created to slow the computer down. On my GeForce card, the program runs insanely smooth, and very very fast. After testing this program on my PIII/450 with a Voodoo 3500TV, I noticed that the program was running extremely slow. The problem is that my timing code only slows down the gameplay. It wont speed it up. So I made a new variable called adjust. adjust can be any value from 0 to 5. The objects in the game move at different speeds depending on the value of adjust. The lower the value the smoother they move, the higher the value, the faster they move (choppy at values higher than 3). This was the only real easy way to make the game playable on slow systems. One thing to note, no matter how fast the objects are moving the game speed will never run faster than I intended it to run. So setting the adjust value to 3 is safe for fast and slow systems.</p>
+<p>The variable lives is set to 5 so that you start the game with 5 lives. level is an internal variable. The game uses it to keep track of the level of difficulty. This is not the level that you will see on the screen. The variable level2 starts off with the same value as level but can increase forever depending on your skill. If you manage to get past level 3 the level variable will stop increasing at 3. The level variable is an internal variable used for game difficulty. The stage variable keeps track of the current game stage.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">int		loop1;								// Generic Loop1
+int		loop2;								// Generic Loop2
+int		delay;								// Enemy Delay
+int		adjust=3;							// Speed Adjustment For Really Slow Video Cards
+int		lives=5;							// Player Lives
+int		level=1;							// Internal Game Level
+int		level2=level;							// Displayed Game Level
+int		stage=1;							// Game Stage
+</pre>
+<p>Now we create a structure to keep track of the objects in our game. We have a fine X position (fx) and a fine Y position (fy). These variables will move the player and enemies around the grid a few pixels at a time. Creating a smooth moving object.</p>
+<p>Then we have x and y. These variables will keep track of what intersection our player is at. There are 11 points left and right and 11 points up and down. So x and y can be any value from 0 to 10. That is why we need the fine values. If we could only move one of 11 spots left and right and one of 11 spots up and down our player would jump around the screen in a quick (non smooth) motion.</p>
+<p>The last variable spin will be used to spin the objects on their z-axis.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">struct		object								// Create A Structure For Our Player
+{
+	int	fx, fy;								// Fine Movement Position
+	int	x, y;								// Current Player Position
+	float	spin;								// Spin Direction
+};
+</pre>
+<p>Now that we have created a structure that can be used for our player, enemies and even a special item we can create new structures that take on the characteristics of the structure we just made.</p>
+<p>The first line below creates a structure for our player. Basically we're giving our player structure fx, fy, x, y and spin values. By adding this line, we can access the player x position by checking player.x. We can change the player spin by adding a number to player.spin.</p>
+<p>The second line is a bit different. Because we can have up to 9 enemies on the screen at a time, we need to create the above variables for each enemy. We do this by making an array of 9 enemies. the x position of the first enemy will be enemy[0].x. The second enemy will be enemy[1].x, etc.</p>
+<p>The last line creates a structure for our special item. The special item is an hourglass that will appear on the screen from time to time. We need to keep track of the x and y values for the hourglass, but because the hourglass doesn't move, we don't need to keep track of the fine positions. Instead we will use the fine variables (fx and fy) for other things later in the program.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">struct	object	player;								// Player Information
+struct	object	enemy[9];							// Enemy Information
+struct	object	hourglass;							// Hourglass Information
+</pre>
+<p>Now we create a timer structure. We create a structure so that it's easier to keep track of timer variables and so that it's easier to tell that the variable is a timer variable.</p>
+<p>The first thing we do is create a 64 bit integer called frequency. This variable will hold the frequency of the timer. When I first wrote this program, I forgot to include this variable. I didn't realize that the frequency on one machine may not match the frequency on another. Big mistake on my part! The code ran fine on the 3 systems in my house, but when I tested it on a friends machine the game ran WAY to fast. Frequency is basically how fast the clock is updated. Good thing to keep track of :)</p>
+<p>The resolution variable keeps track of the steps it takes before we get 1 millisecond of time.</p>
+<p>mm_timer_start and mm_timer_elapsed hold the value that the timer started at, and the amount of time that has elapsed since the the timer was started. These two variables are only used if the computer doesn't have a performance counter. In that case we end up using the less accurate multimedia timer, which is still not to bad for a non-time critical game like this.</p>
+<p>The variable performance_timer can be either TRUE of FALSE. If the program detects a performance counter, the variable performance_timer variable is set to TRUE, and all timing is done using the performance counter (alot more accurate than the multimedia timer). If a performance counter is not found, performance_timer is set to FALSE and the multimedia timer is used for timing.</p>
+<p>The last 2 variables are 64 bit integer variables that hold the start time of the performance counter and the amount of time that has elapsed since the performance counter was started.</p>
+<p>The name of this structure is "timer" as you can see at the bottom of the structure. If we want to know the timer frequency we can now check timer.frequency. Nice!</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">struct			 							// Create A Structure For The Timer Information
+{
+  __int64       frequency;							// Timer Frequency
+  float         resolution;							// Timer Resolution
+  unsigned long mm_timer_start;							// Multimedia Timer Start Value
+  unsigned long mm_timer_elapsed;						// Multimedia Timer Elapsed Time
+  bool		performance_timer;						// Using The Performance Timer?
+  __int64       performance_timer_start;					// Performance Timer Start Value
+  __int64       performance_timer_elapsed;					// Performance Timer Elapsed Time
+} timer;									// Structure Is Named timer
+</pre>
+<p>The next line of code is our speed table. The objects in the game will move at a different rate depending on the value of adjust. If adjust is 0 the objects will move one pixel at a time. If the value of adjust is 5, the objects will move 20 pixels at a time. So by increasing the value of adjust the speed of the objects will increase, making the game run faster on slow computers. The higher adjust is however, the choppier the game will play.</p>
+<p>Basically steps[ ] is just a look-up table. If adjust was 3, we would look at the number stored at location 3 in steps[ ]. Location 0 holds the value 1, location 1 holds the value 2, location 2 holds the value 4, and location 3 hold the value 5. If adjust was 3, our objects would move 5 pixels at a time. Make sense?</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">int		steps[6]={ 1, 2, 4, 5, 10, 20 };				// Stepping Values For Slow Video Adjustment
+</pre>
+<p>Next we make room for two textures. We'll load a background scene, and a bitmap font texture. Then we set up a base variable so we can keep track of our font display list just like we did in the other font tutorials. Finally we declare WndProc().</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">GLuint		texture[2];							// Font Texture Storage Space
+GLuint		base;								// Base Display List For The Font
+
+LRESULT	CALLBACK WndProc(HWND, UINT, WPARAM, LPARAM);				// Declaration For WndProc
+</pre>
+<p>Now for the fun stuff :) The next section of code initializes our timer. It will check the computer to see if a performance counter is available (very accurate counter). If we don't have a performance counter the computer will use the multimedia timer. This code should be portable from what I'm told.</p>
+<p>We start off by clearing all the timer variables to zero. This will set all the variables in our timer structure to zero. After that, we check to see if there is NOT a performance counter. The ! means NOT. If there is, the frequency will be stored in timer.frequency.</p>
+<p>If there was no performance counter, the code in between the { }'s is run. The first line sets the variable timer.performance_timer to FALSE. This tells our program that there is no performance counter. The second line gets our starting multimedia timer value from timeGetTime(). We set the timer.resolution to 0.001f, and the timer.frequency to 1000. Because no time has elapsed yet, we make the elapsed time equal the start time.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">void TimerInit(void)								// Initialize Our Timer (Get It Ready)
+{
+	memset(&amp;timer, 0, sizeof(timer));					// Clear Our Timer Structure
+
+	// Check To See If A Performance Counter Is Available
+	// If One Is Available The Timer Frequency Will Be Updated
+	if (!QueryPerformanceFrequency((LARGE_INTEGER *) &amp;timer.frequency))
+	{
+		// No Performace Counter Available
+		timer.performance_timer	= FALSE;				// Set Performance Timer To FALSE
+		timer.mm_timer_start	= timeGetTime();			// Use timeGetTime() To Get Current Time
+		timer.resolution	= 1.0f/1000.0f;				// Set Our Timer Resolution To .001f
+		timer.frequency		= 1000;					// Set Our Timer Frequency To 1000
+		timer.mm_timer_elapsed	= timer.mm_timer_start;			// Set The Elapsed Time To The Current Time
+	}
+</pre>
+<p>If there is a performance counter, the following code is run instead. The first line grabs the current starting value of the performance counter, and stores it in timer.performance_timer_start. Then we set timer.performance_timer to TRUE so that our program knows there is a performance counter available. After that we calculate the timer resolution by using the frequency that we got when we checked for a performance counter in the code above. We divide 1 by the frequency to get the resolution. The last thing we do is make the elapsed time the same as the starting time.</p>
+<p>Notice instead of sharing variables for the performance and multimedia timer start and elapsed variables, I've decided to make seperate variables. Either way it will work fine.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	else
+	{
+		// Performance Counter Is Available, Use It Instead Of The Multimedia Timer
+		// Get The Current Time And Store It In performance_timer_start
+		QueryPerformanceCounter((LARGE_INTEGER *) &amp;timer.performance_timer_start);
+		timer.performance_timer		= TRUE;				// Set Performance Timer To TRUE
+		// Calculate The Timer Resolution Using The Timer Frequency
+		timer.resolution		= (float) (((double)1.0f)/((double)timer.frequency));
+		// Set The Elapsed Time To The Current Time
+		timer.performance_timer_elapsed	= timer.performance_timer_start;
+	}
+}
+</pre>
+<p>The section of code above sets up the timer. The code below reads the timer and returns the amount of time that has passed in milliseconds.</p>
+<p>The first thing we do is set up a 64 bit variable called time. We will use this variable to grab the current counter value. The next line checks to see if we have a performance counter. If we do, timer.performance_timer will be TRUE and the code right after will run.</p>
+<p>The first line of code inside the { }'s grabs the counter value and stores it in the variable we created called time. The second line takes the time we just grabbed (time and subtracts the start time that we got when we initialized the timer. This way our timer should start out pretty close to zero. We then multiply the results by the resolution to find out how many seconds have passed. The last thing we do is multiply the result by 1000 to figure out how many milliseconds have passed. After the calculation is done, our results are sent back to the section of code that called this procedure. The results will be in floating point format for greater accuracy.</p>
+<p>If we are not using the peformance counter, the code after the else statement will be run. It does pretty much the same thing. We grab the current time with timeGetTime() and subtract our starting counter value. We multiply it by our resolution and then multiply the result by 1000 to convert from seconds into milliseconds.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">float TimerGetTime()								// Get Time In Milliseconds
+{
+	__int64 time;								// time Will Hold A 64 Bit Integer
+
+	if (timer.performance_timer)						// Are We Using The Performance Timer?
+	{
+		QueryPerformanceCounter((LARGE_INTEGER *) &amp;time);		// Grab The Current Performance Time
+		// Return The Current Time Minus The Start Time Multiplied By The Resolution And 1000 (To Get MS)
+		return ( (float) ( time - timer.performance_timer_start) * timer.resolution)*1000.0f;
+	}
+	else
+	{
+		// Return The Current Time Minus The Start Time Multiplied By The Resolution And 1000 (To Get MS)
+		return( (float) ( timeGetTime() - timer.mm_timer_start) * timer.resolution)*1000.0f;
+	}
+}
+</pre>
+<p>The following section of code resets the player to the top left corner of the screen, and gives the enemies a random starting point.</p>
+<p>The top left of the screen is 0 on the x-axis and 0 on the y-axis. So by setting the player.x value to 0 we move the player to the far left side of the screen. By setting the player.y value to 0 we move our player to the top of the screen.</p>
+<p>The fine positions have to be equal to the current player position, otherwise our player would move from whatever value it's at on the fine position to the top left of the screen. We don't want to player to move there, we want it to appear there, so we set the fine positions to 0 as well.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">void ResetObjects(void)								// Reset Player And Enemies
+{
+	player.x=0;								// Reset Player X Position To Far Left Of The Screen
+	player.y=0;								// Reset Player Y Position To The Top Of The Screen
+	player.fx=0;								// Set Fine X Position To Match
+	player.fy=0;								// Set Fine Y Position To Match
+</pre>
+<p>Next we give the enemies a random starting location. The number of enemies displayed on the screen will be equal to the current (internal) level value multiplied by the current stage. Remember, the maximum value that level can equal is 3 and the maximum number of stages per level is 3. So we can have a total of 9 enemies.</p>
+<p>To make sure we give all the viewable enemies a new position, we loop through all the visible enemies (stage times level). We set each enemies x position to 5 plus a random value from 0 to 5. (the maximum value rand can be is always the number you specify minus 1). So the enemy can appear on the grid, anywhere from 5 to 10. We then give the enemy a random value on the y axis from 0 to 10.</p>
+<p>We don't want the enemy to move from it's old position to the new random position so we make sure the fine x (fx) and y (fy) values are equal to the actual x and y values multiplied by width and height of each tile on the screen. Each tile has a width of 60 and a height of 40.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	for (loop1=0; loop1&lt;(stage*level); loop1++)				// Loop Through All The Enemies
+	{
+		enemy[loop1].x=5+rand()%6;					// Select A Random X Position
+		enemy[loop1].y=rand()%11;					// Select A Random Y Position
+		enemy[loop1].fx=enemy[loop1].x*60;				// Set Fine X To Match
+		enemy[loop1].fy=enemy[loop1].y*40;				// Set Fine Y To Match
+	}
+}
+</pre>
+<p>The AUX_RGBImageRec code hasn't changed so I'm skipping over it. In LoadGLTextures() we will load in our two textures. First the font bitmap (Font.bmp) and then the background image (Image.bmp). We'll convert both the images into textures that we can use in our game. After we have built the textures we clean up by deleting the bitmap information. Nothing really new. If you've read the other tutorials you should have no problems understanding the code.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">int LoadGLTextures()								// Load Bitmaps And Convert To Textures
+{
+	int Status=FALSE;							// Status Indicator
+	AUX_RGBImageRec *TextureImage[2];					// Create Storage Space For The Textures
+	memset(TextureImage,0,sizeof(void *)*2);				// Set The Pointer To NULL
+
+	if 	((TextureImage[0]=LoadBMP("Data/Font.bmp")) &amp;&amp;			// Load The Font
+		 (TextureImage[1]=LoadBMP("Data/Image.bmp")))			// Load Background Image
+	{
+		Status=TRUE;							// Set The Status To TRUE
+
+		glGenTextures(2, &amp;texture[0]);					// Create The Texture
+
+		for (loop1=0; loop1&lt;2; loop1++)					// Loop Through 2 Textures
+		{
+			glBindTexture(GL_TEXTURE_2D, texture[loop1]);
+			glTexImage2D(GL_TEXTURE_2D, 0, 3, TextureImage[loop1]-&gt;sizeX, TextureImage[loop1]-&gt;sizeY,
+				0, GL_RGB, GL_UNSIGNED_BYTE, TextureImage[loop1]-&gt;data);
+			glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_LINEAR);
+			glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_LINEAR);
+		}
+
+		for (loop1=0; loop1&lt;2; loop1++)					// Loop Through 2 Textures
+		{
+			if (TextureImage[loop1])				// If Texture Exists
+			{
+				if (TextureImage[loop1]-&gt;data)			// If Texture Image Exists
+				{
+					free(TextureImage[loop1]-&gt;data);	// Free The Texture Image Memory
+				}
+				free(TextureImage[loop1]);			// Free The Image Structure
+			}
+		}
+	}
+	return Status;								// Return The Status
+}
+</pre>
+<p>The code below builds our font display list. I've already done a tutorial on bitmap texture fonts. All the code does is divides the Font.bmp image into 16 x 16 cells (256 characters). Each 16x16 cell will become a character. Because I've set the y-axis up so that positive goes down instead of up, it's necessary to subtract our y-axis values from 1.0f. Otherwise the letters will all be upside down :) If you don't understand what's going on, go back and read the bitmap texture font tutorial.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">GLvoid BuildFont(GLvoid)							// Build Our Font Display List
+{
+	base=glGenLists(256);							// Creating 256 Display Lists
+	glBindTexture(GL_TEXTURE_2D, texture[0]);				// Select Our Font Texture
+	for (loop1=0; loop1&lt;256; loop1++)					// Loop Through All 256 Lists
+	{
+		float cx=float(loop1%16)/16.0f;					// X Position Of Current Character
+		float cy=float(loop1/16)/16.0f;					// Y Position Of Current Character
+
+		glNewList(base+loop1,GL_COMPILE);				// Start Building A List
+			glBegin(GL_QUADS);					// Use A Quad For Each Character
+				glTexCoord2f(cx,1.0f-cy-0.0625f);		// Texture Coord (Bottom Left)
+				glVertex2d(0,16);				// Vertex Coord (Bottom Left)
+				glTexCoord2f(cx+0.0625f,1.0f-cy-0.0625f);	// Texture Coord (Bottom Right)
+				glVertex2i(16,16);				// Vertex Coord (Bottom Right)
+				glTexCoord2f(cx+0.0625f,1.0f-cy);		// Texture Coord (Top Right)
+				glVertex2i(16,0);				// Vertex Coord (Top Right)
+				glTexCoord2f(cx,1.0f-cy);			// Texture Coord (Top Left)
+				glVertex2i(0,0);				// Vertex Coord (Top Left)
+			glEnd();						// Done Building Our Quad (Character)
+			glTranslated(15,0,0);					// Move To The Right Of The Character
+		glEndList();							// Done Building The Display List
+	}									// Loop Until All 256 Are Built
+}
+</pre>
+<p>It's a good idea to destroy the font display list when you're done with it, so I've added the following section of code. Again, nothing new.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">GLvoid KillFont(GLvoid)								// Delete The Font From Memory
+{
+	glDeleteLists(base,256);						// Delete All 256 Display Lists
+}
+</pre>
+<p>The glPrint() code hasn't changed that much. The only difference from the tutorial on bitmap font textures is that I have added the ability to print the value of variables. The only reason I've written this section of code out is so that you can see the changes. The print statement will position the text at the x and y position that you specify. You can pick one of 2 character sets, and the value of variables will be written to the screen. This allows us to display the current level and stage on the screen.</p>
+<p>Notice that I enable texture mapping, reset the view and then translate to the proper x / y position. Also notice that if character set 0 is selected, the font is enlarged one and half times width wise, and double it's original size up and down. I did this so that I could write the title of the game in big letters. After the text has been drawn, I disable texture mapping.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">GLvoid glPrint(GLint x, GLint y, int set, const char *fmt, ...)			// Where The Printing Happens
+{
+	char		text[256];						// Holds Our String
+	va_list		ap;							// Pointer To List Of Arguments
+
+	if (fmt == NULL)							// If There's No Text
+		return;								// Do Nothing
+
+	va_start(ap, fmt);							// Parses The String For Variables
+	    vsprintf(text, fmt, ap);						// And Converts Symbols To Actual Numbers
+	va_end(ap);								// Results Are Stored In Text
+
+	if (set&gt;1)								// Did User Choose An Invalid Character Set?
+	{
+		set=1;								// If So, Select Set 1 (Italic)
+	}
+	glEnable(GL_TEXTURE_2D);						// Enable Texture Mapping
+	glLoadIdentity();							// Reset The Modelview Matrix
+	glTranslated(x,y,0);							// Position The Text (0,0 - Bottom Left)
+	glListBase(base-32+(128*set));						// Choose The Font Set (0 or 1)
+
+	if (set==0)								// If Set 0 Is Being Used Enlarge Font
+	{
+		glScalef(1.5f,2.0f,1.0f);					// Enlarge Font Width And Height
+	}
+
+	glCallLists(strlen(text),GL_UNSIGNED_BYTE, text);			// Write The Text To The Screen
+	glDisable(GL_TEXTURE_2D);						// Disable Texture Mapping
+}
+</pre>
+<p>The resize code is NEW :) Instead of using a perspective view I'm using an ortho view for this tutorial. That means that objects don't get smaller as they move away from the viewer. The z-axis is pretty much useless in this tutorial.</p>
+<p>We start off by setting up the view port. We do this the same way we'd do it if we were setting up a perspective view. We make the viewport equal to the width of our window.</p>
+<p>Then we select the projection matrix (thing movie projector, it information on how to display our image). and reset it.</p>
+<p>Immediately after we reset the projection matrix, we set up our ortho view. I'll explain the command in detail:</p>
+<p>The first parameter (0.0f) is the value that we want for the far left side of the screen. You wanted to know how to use actual pixel values, so instead of using a negative number for far left, I've set the value to 0. The second parameter is the value for the far right side of the screen. If our window is 640x480, the value stored in width will be 640. So the far right side of the screen effectively becomes 640. Therefore our screen runs from 0 to 639 on the x-axis (640 pixels).</p>
+<p>The third parameter (height) would normally be our negative y-axis value (bottom of the screen). But because we want exact pixels, we wont have a negative value. Instead we will make the bottom of the screen equal the height of our window. If our window is 640x480, height will be equal to 480. So the bottom of our screen will be 479. The fourth parameter would normally be the positive value for the top of our screen. We want the top of the screen to be 0 (good old fashioned screen coordinates) so we just set the fourth parameter to 0. This gives us from 0 to 479 on the y-axis (480 pixels).</p>
+<p>The last two parameters are for the z-axis. We don't really care about the z-axis so we'll set the range from -1.0f to 1.0f. Just enough that we can see anything drawn at 0.0f on the z-axis.</p>
+<p>After we've set up the ortho view, we select the modelview matrix (object information... location, etc) and reset it.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">GLvoid ReSizeGLScene(GLsizei width, GLsizei height)				// Resize And Initialize The GL Window
+{
+	if (height==0)								// Prevent A Divide By Zero By
+	{
+		height=1;							// Making Height Equal One
+	}
+
+	glViewport(0,0,width,height);						// Reset The Current Viewport
+
+	glMatrixMode(GL_PROJECTION);						// Select The Projection Matrix
+	glLoadIdentity();							// Reset The Projection Matrix
+
+	glOrtho(0.0f,width,height,0.0f,-1.0f,1.0f);				// Create Ortho 640x480 View (0,0 At Top Left)
+
+	glMatrixMode(GL_MODELVIEW);						// Select The Modelview Matrix
+	glLoadIdentity();							// Reset The Modelview Matrix
+}
+</pre>
+<p>The init code has a few new commands. We start off by loading our textures. If they didn't load properly, the program will quit with an error message. After we have built the textures, we build our font set. I don't bother error checking but you can if you want.</p>
+<p>After the font has been built, we set things up. We enable smooth shading, set our clear color to black and set depth clearing to 1.0f. After that is a new line of code.</p>
+<p>glHint() tells OpenGL how to draw something. In this case we are telling OpenGL that we want line smoothing to be the best (nicest) that OpenGL can do. This is the command that enables anti-aliasing.</p>
+<p>The last thing we do is enable blending and select the blend mode that makes anti-aliased lines possible. Blending is required if you want the lines to blend nicely with the background image. Disable blending if you want to see how crappy things look without it.</p>
+<p>It's important to point out that antialiasing may not appear to be working. The objects in this game are quite small so you may not notice the antialaising right off the start. Look hard. Notice how the jaggie lines on the enemies smooth out when antialiasing is on. The player and hourglass should look better as well.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">int InitGL(GLvoid)								// All Setup For OpenGL Goes Here
+{
+	if (!LoadGLTextures())							// Jump To Texture Loading Routine
+	{
+		return FALSE;							// If Texture Didn't Load Return FALSE
+	}
+
+	BuildFont();								// Build The Font
+
+	glShadeModel(GL_SMOOTH);						// Enable Smooth Shading
+	glClearColor(0.0f, 0.0f, 0.0f, 0.5f);					// Black Background
+	glClearDepth(1.0f);							// Depth Buffer Setup
+	glHint(GL_LINE_SMOOTH_HINT, GL_NICEST);					// Set Line Antialiasing
+	glEnable(GL_BLEND);							// Enable Blending
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);			// Type Of Blending To Use
+	return TRUE;								// Initialization Went OK
+}
+</pre>
+<p>Now for the drawing code. This is where the magic happens :)</p>
+<p>We clear the screen (to black) along with the depth buffer. Then we select the font texture (texture[0]). We want the words "GRID CRAZY" to be a purple color so we set red and blue to full intensity, and we turn the green up half way. After we've selected the color, we call glPrint(). We position the words "GRID CRAZY" at 207 on the x axis (center on the screen) and 24 on the y-axis (up and down). We use our large font by selecting font set 0.</p>
+<p>After we've drawn "GRID CRAZY" to the screen, we change the color to yellow (full red, full green). We write "Level:" and the variable level2 to the screen. Remember that level2 can be greater than 3. level2 holds the level value that the player sees on the screen. %2i means that we don't want any more than 2 digits on the screen to represent the level. The i means the number is an integer number.</p>
+<p>After we have written the level information to the screen, we write the stage information right under it using the same color.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">int DrawGLScene(GLvoid)								// Here's Where We Do All The Drawing
+{
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);			// Clear Screen And Depth Buffer
+	glBindTexture(GL_TEXTURE_2D, texture[0]);				// Select Our Font Texture
+	glColor3f(1.0f,0.5f,1.0f);						// Set Color To Purple
+	glPrint(207,24,0,"GRID CRAZY");						// Write GRID CRAZY On The Screen
+	glColor3f(1.0f,1.0f,0.0f);						// Set Color To Yellow
+	glPrint(20,20,1,"Level:%2i",level2);					// Write Actual Level Stats
+	glPrint(20,40,1,"Stage:%2i",stage);					// Write Stage Stats
+</pre>
+<p>Now we check to see if the game is over. If the game is over, the variable gameover will be TRUE. If the game is over, we use glColor3ub(r,g,b) to select a random color. Notice we are using 3ub instead of 3f. By using 3ub we can use integer values from 0 to 255 to set our colors. Plus it's easier to get a random value from 0 to 255 than it is to get a random value from 0.0f to 1.0f.</p>
+<p>Once a random color has been selected, we write the words "GAME OVER" to the right of the game title. Right under "GAME OVER" we write "PRESS SPACE". This gives the player a visual message letting them know that they have died and to press the spacebar to restart the game.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	if (gameover)								// Is The Game Over?
+	{
+		glColor3ub(rand()%255,rand()%255,rand()%255);			// Pick A Random Color
+		glPrint(472,20,1,"GAME OVER");					// Write GAME OVER To The Screen
+		glPrint(456,40,1,"PRESS SPACE");				// Write PRESS SPACE To The Screen
+	}
+</pre>
+<p>If the player still has lives left, we draw animated images of the players character to the right of the game title. To do this we create a loop that goes from 0 to the current number of lives the player has left minus one. I subtract one, because the current life is the image you control.</p>
+<p>Inside the loop, we reset the view. After the view has been reset, we translate to the 490 pixels to the right plus the value of loop1 times 40.0f. This draws each of the animated player lives 40 pixels apart from eachother. The first animated image will be drawn at 490+(0*40) (= 490), the second animated image will be drawn at 490+(1*40) (= 530), etc.</p>
+<p>After we have moved to the spot we want to draw the animated image, we rotate counterclockwise depending on the value stored in player.spin. This causes the animated life images to spin the opposite way that your active player is spinning.</p>
+<p>We then select green as our color, and start drawing the image. Drawing lines is alot like drawing a quad or a polygon. You start off with glBegin(GL_LINES), telling OpenGL we want to draw a line. Lines have 2 vertices. We use glVertex2d to set our first point. glVertex2d doesn't require a z value, which is nice considering we don't care about the z value. The first point is drawn 5 pixels to the left of the current x location and 5 pixels up from the current y location. Giving us a top left point. The second point of our first line is drawn 5 pixels to the right of our current x location, and 5 pixels down, giving us a bottom right point. This draws a line from the top left to the bottom right. Our second line is drawn from the top right to the bottom left. This draws a green X on the screen.</p>
+<p>After we have drawn the green X, we rotate counterclockwise (on the z axis) even more, but this time at half the speed. We then select a darker shade of green (0.75f) and draw another x, but we use 7 instead of 5 this time. This draws a bigger / darker x on top of the first green X. Because the darker X spins slower though, it will look as if the bright X has a spinning set of feelers (grin) on top of it.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	for (loop1=0; loop1&lt;lives-1; loop1++)					// Loop Through Lives Minus Current Life
+	{
+		glLoadIdentity();						// Reset The View
+		glTranslatef(490+(loop1*40.0f),40.0f,0.0f);			// Move To The Right Of Our Title Text
+		glRotatef(-player.spin,0.0f,0.0f,1.0f);				// Rotate Counter Clockwise
+		glColor3f(0.0f,1.0f,0.0f);					// Set Player Color To Light Green
+		glBegin(GL_LINES);						// Start Drawing Our Player Using Lines
+			glVertex2d(-5,-5);					// Top Left Of Player
+			glVertex2d( 5, 5);					// Bottom Right Of Player
+			glVertex2d( 5,-5);					// Top Right Of Player
+			glVertex2d(-5, 5);					// Bottom Left Of Player
+		glEnd();							// Done Drawing The Player
+		glRotatef(-player.spin*0.5f,0.0f,0.0f,1.0f);			// Rotate Counter Clockwise
+		glColor3f(0.0f,0.75f,0.0f);					// Set Player Color To Dark Green
+		glBegin(GL_LINES);						// Start Drawing Our Player Using Lines
+			glVertex2d(-7, 0);					// Left Center Of Player
+			glVertex2d( 7, 0);					// Right Center Of Player
+			glVertex2d( 0,-7);					// Top Center Of Player
+			glVertex2d( 0, 7);					// Bottom Center Of Player
+		glEnd();							// Done Drawing The Player
+	}
+</pre>
+<p>Now we're going to draw the grid. We set the variable filled to TRUE. This tells our program that the grid has been completely filled in (you'll see why we do this in a second).</p>
+<p>Right after that we set the line width to 2.0f. This makes the lines thicker, making the grid look more defined.</p>
+<p>Then we disable anti-aliasing. The reason we disable anti-aliasing is because although it's a great feature, it eats CPU's for breakfast. Unless you have a killer graphics card, you'll notice a huge slow down if you leave anti-aliasing on. Go ahead and try if you want :)</p>
+<p>The view is reset, and we start two loops. loop1 will travel from left to right. loop2 will travel from top to bottom.</p>
+<p>We set the line color to blue, then we check to see if the horizontal line that we are about to draw has been traced over. If it has we set the color to white. The value of hline[loop1][loop2] will be TRUE if the line has been traced over, and FALSE if it hasn't.</p>
+<p>After we have set the color to blue or white, we draw the line. The first thing to do is make sure we haven't gone to far to the right. We don't want to draw any lines or check to see if the line has been filled in when loop1 is greater than 9.</p>
+<p>Once we are sure loop1 is in the valid range we check to see if the horizontal line hasn't been filled in. If it hasn't, filled is set to FALSE, letting our OpenGL program know that there is at least one line that hasn't been filled in.</p>
+<p>The line is then drawn. We draw our first horizontal (left to right) line starting at 20+(0*60) (= 20). This line is drawn all the way to 80+(0*60) (= 80). Notice the line is drawn to the right. That is why we don't want to draw 11 (0-10) lines. because the last line would start at the far right of the screen and end 80 pixels off the screen.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	filled=TRUE;								// Set Filled To True Before Testing
+	glLineWidth(2.0f);							// Set Line Width For Cells To 2.0f
+	glDisable(GL_LINE_SMOOTH);						// Disable Antialiasing
+	glLoadIdentity();							// Reset The Current Modelview Matrix
+	for (loop1=0; loop1&lt;11; loop1++)					// Loop From Left To Right
+	{
+		for (loop2=0; loop2&lt;11; loop2++)				// Loop From Top To Bottom
+		{
+			glColor3f(0.0f,0.5f,1.0f);				// Set Line Color To Blue
+			if (hline[loop1][loop2])				// Has The Horizontal Line Been Traced
+			{
+				glColor3f(1.0f,1.0f,1.0f);			// If So, Set Line Color To White
+			}
+			if (loop1&lt;10)						// Dont Draw To Far Right
+			{
+				if (!hline[loop1][loop2])			// If A Horizontal Line Isn't Filled
+				{
+					filled=FALSE;				// filled Becomes False
+				}
+				glBegin(GL_LINES);				// Start Drawing Horizontal Cell Borders
+					glVertex2d(20+(loop1*60),70+(loop2*40));	// Left Side Of Horizontal Line
+					glVertex2d(80+(loop1*60),70+(loop2*40));	// Right Side Of Horizontal Line
+				glEnd();					// Done Drawing Horizontal Cell Borders
+			}
+</pre>
+<p>The code below does the same thing, but it checks to make sure the line isn't being drawn too far down the screen instead of too far right. This code is responsible for drawing vertical lines.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">			glColor3f(0.0f,0.5f,1.0f);				// Set Line Color To Blue
+			if (vline[loop1][loop2])				// Has The Horizontal Line Been Traced
+			{
+				glColor3f(1.0f,1.0f,1.0f);			// If So, Set Line Color To White
+			}
+			if (loop2&lt;10)						// Dont Draw To Far Down
+			{
+				if (!vline[loop1][loop2])			// If A Verticle Line Isn't Filled
+				{
+					filled=FALSE;				// filled Becomes False
+				}
+				glBegin(GL_LINES);				// Start Drawing Verticle Cell Borders
+					glVertex2d(20+(loop1*60),70+(loop2*40));	// Left Side Of Horizontal Line
+					glVertex2d(20+(loop1*60),110+(loop2*40));	// Right Side Of Horizontal Line
+				glEnd();					// Done Drawing Verticle Cell Borders
+			}
+</pre>
+<p>Now we check to see if 4 sides of a box are traced. Each box on the screen is 1/10th of a full screen picture. Because each box is piece of a larger texture, the first thing we need to do is enable texture mapping. We don't want the texture to be tinted red, green or blue so we set the color to bright white. After the color is set to white we select our grid texture (texture[1]).</p>
+<p>The next thing we do is check to see if we are checking a box that exists on the screen. Remember that our loop draws the 11 lines right and left and 11 lines up and down. But we dont have 11 boxes. We have 10 boxes. So we have to make sure we don't check the 11th position. We do this by making sure both loop1 and loop2 is less than 10. That's 10 boxes from 0 - 9.</p>
+<p>After we have made sure that we are in bounds we can start checking the borders. hline[loop1][loop2] is the top of a box. hline[loop1][loop2+1] is the bottom of a box. vline[loop1][loop2] is the left side of a box and vline[loop1+1][loop2] is the right side of a box. Hopefully I can clear things up with a diagram:</p>
+<center><img src="lesson21-1-1.jpg" tppabs="http://nehe.gamedev.net/data/lessons/extras/lesson21/lesson21-1.jpg" alt="" width="256" height="128" /></center>
+<p><br /> All horizontal lines are assumed to run from loop1 to loop1+1. As you can see, the first horizontal line runs along loop2. The second horizontal line runs along loop2+1. Vertical lines are assumed to run from loop2 to loop2+1. The first vertical line runs along loop1 and the second vertical line runs along loop1+1.</p>
+<p>When loop1 is increased, the right side of our old box becomes the left side of the new box. When loop2 is increased, the bottom of the old box becomes the top of the new box.</p>
+<p>If all 4 borders are TRUE (meaning we've passed over them all) we can texture map the box. We do this the same way we broke the font texture into seperate letters. We divide both loop1 and loop2 by 10 because we want to map the texture across 10 boxes from left to right and 10 boxes up and down. Texture coordinates run from 0.0f to 1.0f and 1/10th of 1.0f is 0.1f.</p>
+<p>So to get the top right side of our box we divide the loop values by 10 and add 0.1f to the x texture coordinate. To get the top left side of the box we divide our loop values by 10. To get the bottom left side of the box we divide our loop values by 10 and add 0.1f to the y texture coordinate. Finally to get the bottom right texture coordinate we divide the loop values by 10 and add 0.1f to both the x and y texture coordinates.</p>
+<p>Quick examples:</p>
+<p><span style="text-decoration: underline;">loop1=0 and loop2=0</span></p>
+<p>&nbsp;</p>
+<ul>
+<li>Right X Texture Coordinate = loop1/10+0.1f = 0/10+0.1f = 0+0.1f = 0.1f</li>
+<li>Left X Texture Coordinate = loop1/10 = 0/10 = 0.0f</li>
+<li>Top Y Texture Coordinate = loop2/10 = 0/10 = 0.0f;</li>
+<li>Bottom Y Texture Coordinate = loop2/10+0.1f = 0/10+0.1f = 0+0.1f = 0.1f;</li>
+</ul>
+<p>&nbsp;</p>
+<p><span style="text-decoration: underline;">loop1=1 and loop2=1</span></p>
+<p>&nbsp;</p>
+<ul>
+<li>Right X Texture Coordinate = loop1/10+0.1f = 1/10+0.1f = 0.1f+0.1f = 0.2f</li>
+<li>Left X Texture Coordinate = loop1/10 = 1/10 = 0.1f</li>
+<li>Top Y Texture Coordinate = loop2/10 = 1/10 = 0.1f;</li>
+<li>Bottom Y Texture Coordinate = loop2/10+0.1f = 1/10+0.1f = 0.1f+0.1f = 0.2f;</li>
+</ul>
+<p>&nbsp;</p>
+<p>Hopefully that all makes sense. If loop1 and loop2 were equal to 9 we would end up with the values 0.9f and 1.0f. So as you can see our texture coordinates mapped across the 10 boxes run from 0.0f at the lowest and 1.0f at the highest. Mapping the entire texture to the screen. After we've mapped a section of the texture to the screen, we disable texture mapping. Once we've drawn all the lines and filled in all the boxes, we set the line width to 1.0f.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">			glEnable(GL_TEXTURE_2D);				// Enable Texture Mapping
+			glColor3f(1.0f,1.0f,1.0f);				// Bright White Color
+			glBindTexture(GL_TEXTURE_2D, texture[1]);		// Select The Tile Image
+			if ((loop1&lt;10) &amp;&amp; (loop2&lt;10))				// If In Bounds, Fill In Traced Boxes
+			{
+				// Are All Sides Of The Box Traced?
+				if (hline[loop1][loop2] &amp;&amp; hline[loop1][loop2+1] &amp;&amp; vline[loop1][loop2] &amp;&amp; vline[loop1+1][loop2])
+				{
+					glBegin(GL_QUADS);			// Draw A Textured Quad
+						glTexCoord2f(float(loop1/10.0f)+0.1f,1.0f-(float(loop2/10.0f)));
+						glVertex2d(20+(loop1*60)+59,(70+loop2*40+1));	// Top Right
+						glTexCoord2f(float(loop1/10.0f),1.0f-(float(loop2/10.0f)));
+						glVertex2d(20+(loop1*60)+1,(70+loop2*40+1));	// Top Left
+						glTexCoord2f(float(loop1/10.0f),1.0f-(float(loop2/10.0f)+0.1f));
+						glVertex2d(20+(loop1*60)+1,(70+loop2*40)+39);	// Bottom Left
+						glTexCoord2f(float(loop1/10.0f)+0.1f,1.0f-(float(loop2/10.0f)+0.1f));
+						glVertex2d(20+(loop1*60)+59,(70+loop2*40)+39);	// Bottom Right
+					glEnd();				// Done Texturing The Box
+				}
+			}
+			glDisable(GL_TEXTURE_2D);				// Disable Texture Mapping
+		}
+	}
+	glLineWidth(1.0f);							// Set The Line Width To 1.0f
+</pre>
+<p>The code below checks to see if anti is TRUE. If it is, we enable line smoothing (anti-aliasing).</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	if (anti)								// Is Anti TRUE?
+	{
+		glEnable(GL_LINE_SMOOTH);					// If So, Enable Antialiasing
+	}
+</pre>
+<p>To make the game a little easier I've added a special item. The item is an hourglass. When you touch the hourglass, the enemies are frozen for a specific amount of time. The following section of code is resposible for drawing the hourglass.</p>
+<p>For the hourglass we use x and y to position the timer, but unlike our player and enemies we don't use fx and fy for fine positioning. Instead we'll use fx to keep track of whether or not the timer is being displayed. fx will equal 0 if the timer is not visible. 1 if it is visible, and 2 if the player has touched the timer. fy will be used as a counter to keep track of how long the timer should be visible or invisible.</p>
+<p>So we start off by checking to see if the timer is visible. If not, we skip over the code without drawing the timer. If the timer is visible, we reset the modelview matrix, and position the timer. Because our first grid point from left to right starts at 20, we will add hourglass.x times 60 to 20. We multiply hourglass.x by 60 because the points on our grid from left to right are spaced 60 pixels apart. We then position the hourglass on the y axis. We add hourglass.y times 40 to 70.0f because we want to start drawing 70 pixels down from the top of the screen. Each point on our grid from top to bottom is spaced 40 pixels apart.</p>
+<p>After we have positioned the hourglass, we can rotate it on the z-axis. hourglass.spin is used to keep track of the rotation, the same way player.spin keeps track of the player rotation. Before we start to draw the hourglass we select a random color.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	if (hourglass.fx==1)							// If fx=1 Draw The Hourglass
+	{
+		glLoadIdentity();						// Reset The Modelview Matrix
+		glTranslatef(20.0f+(hourglass.x*60),70.0f+(hourglass.y*40),0.0f);	// Move To The Fine Hourglass Position
+		glRotatef(hourglass.spin,0.0f,0.0f,1.0f);			// Rotate Clockwise
+		glColor3ub(rand()%255,rand()%255,rand()%255);			// Set Hourglass Color To Random Color
+</pre>
+<p>glBegin(GL_LINES) tells OpenGL we want to draw using lines. We start off by moving left and up 5 pixels from our current location. This gives us the top left point of our hourglass. OpenGL will start drawing the line from this location. The end of the line will be 5 pixels right and down from our original location. This gives us a line running from the top left to the bottom right. Immediately after that we draw a second line running from the top right to the bottom left. This gives us an 'X'. We finish off by connecting the bottom two points together, and then the top two points to create an hourglass type object :)</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">		glBegin(GL_LINES);						// Start Drawing Our Hourglass Using Lines
+			glVertex2d(-5,-5);					// Top Left Of Hourglass
+			glVertex2d( 5, 5);					// Bottom Right Of Hourglass
+			glVertex2d( 5,-5);					// Top Right Of Hourglass
+			glVertex2d(-5, 5);					// Bottom Left Of Hourglass
+			glVertex2d(-5, 5);					// Bottom Left Of Hourglass
+			glVertex2d( 5, 5);					// Bottom Right Of Hourglass
+			glVertex2d(-5,-5);					// Top Left Of Hourglass
+			glVertex2d( 5,-5);					// Top Right Of Hourglass
+		glEnd();							// Done Drawing The Hourglass
+	}
+</pre>
+<p>Now we draw our player. We reset the modelview matrix, and position the player on the screen. Notice we position the player using fx and fy. We want the player to move smoothly so we use fine positioning. After positioning the player, we rotate the player on it's z-axis using player.spin. We set the color to light green and begin drawing. Just like the code we used to draw the hourglass, we draw an 'X'. Starting at the top left to the bottom right, then from the top right to the bottom left.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	glLoadIdentity();							// Reset The Modelview Matrix
+	glTranslatef(player.fx+20.0f,player.fy+70.0f,0.0f);			// Move To The Fine Player Position
+	glRotatef(player.spin,0.0f,0.0f,1.0f);					// Rotate Clockwise
+	glColor3f(0.0f,1.0f,0.0f);						// Set Player Color To Light Green
+	glBegin(GL_LINES);							// Start Drawing Our Player Using Lines
+		glVertex2d(-5,-5);						// Top Left Of Player
+		glVertex2d( 5, 5);						// Bottom Right Of Player
+		glVertex2d( 5,-5);						// Top Right Of Player
+		glVertex2d(-5, 5);						// Bottom Left Of Player
+	glEnd();								// Done Drawing The Player
+</pre>
+<p>Drawing low detail objects with lines can be a little frustrating. I didn't want the player to look boring so I added the next section of code to create a larger and quicker spinning blade on top of the player that we drew above. We rotate on the z-axis by player.spin times 0.5f. Because we are rotating again, it will appear as if this piece of the player is moving a little quicker than the first piece of the player.</p>
+<p>After doing the new rotation, we set the color to a darker shade of green. So that it actually looks like the player is made up of different colors / pieces. We then draw a large '+' on top of the first piece of the player. It's larger because we're using -7 and +7 instead of -5 and +5. Also notice that instead of drawing from one corner to another, I'm drawing this piece of the player from left to right and top to bottom.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	glRotatef(player.spin*0.5f,0.0f,0.0f,1.0f);				// Rotate Clockwise
+	glColor3f(0.0f,0.75f,0.0f);						// Set Player Color To Dark Green
+	glBegin(GL_LINES);							// Start Drawing Our Player Using Lines
+		glVertex2d(-7, 0);						// Left Center Of Player
+		glVertex2d( 7, 0);						// Right Center Of Player
+		glVertex2d( 0,-7);						// Top Center Of Player
+		glVertex2d( 0, 7);						// Bottom Center Of Player
+	glEnd();								// Done Drawing The Player
+</pre>
+<p>All we have to do now is draw the enemies, and we're done drawing :) We start off by creating a loop that will loop through all the enemies visible on the current level. We calculate how many enemies to draw by multiplying our current game stage by the games internal level. Remember that each level has 3 stages, and the maximum value of the internal level is 3. So we can have a maximum of 9 enemies.</p>
+<p>Inside the loop we reset the modelview matrix, and position the current enemy (enemy[loop1]). We position the enemy using it's fine x and y values (fx and fy). After positioning the current enemy we set the color to pink and start drawing.</p>
+<p>The first line will run from 0, -7 (7 pixels up from the starting location) to -7,0 (7 pixels left of the starting location). The second line runs from -7,0 to 0,7 (7 pixels down from the starting location). The third line runs from 0,7 to 7,0 (7 pixels to the right of our starting location), and the last line runs from 7,0 back to the beginning of the first line (7 pixels up from the starting location). This creates a non spinning pink diamond on the screen.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	for (loop1=0; loop1&lt;(stage*level); loop1++)				// Loop To Draw Enemies
+	{
+		glLoadIdentity();						// Reset The Modelview Matrix
+		glTranslatef(enemy[loop1].fx+20.0f,enemy[loop1].fy+70.0f,0.0f);
+		glColor3f(1.0f,0.5f,0.5f);					// Make Enemy Body Pink
+		glBegin(GL_LINES);						// Start Drawing Enemy
+			glVertex2d( 0,-7);					// Top Point Of Body
+			glVertex2d(-7, 0);					// Left Point Of Body
+			glVertex2d(-7, 0);					// Left Point Of Body
+			glVertex2d( 0, 7);					// Bottom Point Of Body
+			glVertex2d( 0, 7);					// Bottom Point Of Body
+			glVertex2d( 7, 0);					// Right Point Of Body
+			glVertex2d( 7, 0);					// Right Point Of Body
+			glVertex2d( 0,-7);					// Top Point Of Body
+		glEnd();							// Done Drawing Enemy Body
+</pre>
+<p>We don't want the enemy to look boring either so we'll add a dark red spinning blade ('X') on top of the diamond that we just drew. We rotate on the z-axis by enemy[loop1].spin, and then draw the 'X'. We start at the top left and draw a line to the bottom right. Then we draw a second line from the top right to the bottom left. The two lines cross eachother creating an 'X' (or blade ... grin).</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">		glRotatef(enemy[loop1].spin,0.0f,0.0f,1.0f);			// Rotate The Enemy Blade
+		glColor3f(1.0f,0.0f,0.0f);					// Make Enemy Blade Red
+		glBegin(GL_LINES);						// Start Drawing Enemy Blade
+			glVertex2d(-7,-7);					// Top Left Of Enemy
+			glVertex2d( 7, 7);					// Bottom Right Of Enemy
+			glVertex2d(-7, 7);					// Bottom Left Of Enemy
+			glVertex2d( 7,-7);					// Top Right Of Enemy
+		glEnd();							// Done Drawing Enemy Blade
+	}
+	return TRUE;								// Everything Went OK
+}
+</pre>
+<p>I added the KillFont() command to the end of KillGLWindow(). This makes sure the font display list is destroyed when the window is destroyed.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">GLvoid KillGLWindow(GLvoid)							// Properly Kill The Window
+{
+	if (fullscreen)								// Are We In Fullscreen Mode?
+	{
+		ChangeDisplaySettings(NULL,0);					// If So Switch Back To The Desktop
+		ShowCursor(TRUE);						// Show Mouse Pointer
+	}
+
+	if (hRC)								// Do We Have A Rendering Context?
+	{
+		if (!wglMakeCurrent(NULL,NULL))					// Are We Able To Release The DC And RC Contexts?
+		{
+			MessageBox(NULL,"Release Of DC And RC Failed.","SHUTDOWN ERROR",MB_OK | MB_ICONINFORMATION);
+		}
+
+		if (!wglDeleteContext(hRC))					// Are We Able To Delete The RC?
+		{
+			MessageBox(NULL,"Release Rendering Context Failed.","SHUTDOWN ERROR",MB_OK | MB_ICONINFORMATION);
+		}
+		hRC=NULL;							// Set RC To NULL
+	}
+
+	if (hDC &amp;&amp; !ReleaseDC(hWnd,hDC))					// Are We Able To Release The DC
+	{
+		MessageBox(NULL,"Release Device Context Failed.","SHUTDOWN ERROR",MB_OK | MB_ICONINFORMATION);
+		hDC=NULL;							// Set DC To NULL
+	}
+
+	if (hWnd &amp;&amp; !DestroyWindow(hWnd))					// Are We Able To Destroy The Window?
+	{
+		MessageBox(NULL,"Could Not Release hWnd.","SHUTDOWN ERROR",MB_OK | MB_ICONINFORMATION);
+		hWnd=NULL;							// Set hWnd To NULL
+	}
+
+	if (!UnregisterClass("OpenGL",hInstance))				// Are We Able To Unregister Class
+	{
+		MessageBox(NULL,"Could Not Unregister Class.","SHUTDOWN ERROR",MB_OK | MB_ICONINFORMATION);
+		hInstance=NULL;							// Set hInstance To NULL
+	}
+
+	KillFont();								// Kill The Font We Built
+}
+</pre>
+<p>The CreateGLWindow() and WndProc() code hasn't changed so search until you find the following section of code.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">int WINAPI WinMain(	HINSTANCE	hInstance,				// Instance
+			HINSTANCE	hPrevInstance,				// Previous Instance
+			LPSTR		lpCmdLine,				// Command Line Parameters
+			int		nCmdShow)				// Window Show State
+{
+	MSG	msg;								// Windows Message Structure
+	BOOL	done=FALSE;							// Bool Variable To Exit Loop
+
+	// Ask The User Which Screen Mode They Prefer
+	if (MessageBox(NULL,"Would You Like To Run In Fullscreen Mode?", "Start FullScreen?",MB_YESNO|MB_ICONQUESTION)==IDNO)
+	{
+		fullscreen=FALSE;						// Windowed Mode
+	}
+</pre>
+<p>This section of code hasn't changed that much. I changed the window title to read "NeHe's Line Tutorial", and I added the ResetObjects() command. This sets the player to the top left point of the grid, and gives the enemies random starting locations. The enemies will always start off at least 5 tiles away from you. TimerInit() initializes the timer so it's set up properly.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	if (!CreateGLWindow("NeHe's Line Tutorial",640,480,16,fullscreen))	// Create Our OpenGL Window
+	{
+		return 0;							// Quit If Window Was Not Created
+	}
+
+	ResetObjects();								// Set Player / Enemy Starting Positions
+	TimerInit();								// Initialize The Timer
+
+	while(!done)								// Loop That Runs While done=FALSE
+	{
+		if (PeekMessage(&amp;msg,NULL,0,0,PM_REMOVE))			// Is There A Message Waiting?
+		{
+			if (msg.message==WM_QUIT)				// Have We Received A Quit Message?
+			{
+				done=TRUE;					// If So done=TRUE
+			}
+			else							// If Not, Deal With Window Messages
+			{
+				TranslateMessage(&amp;msg);				// Translate The Message
+				DispatchMessage(&amp;msg);				// Dispatch The Message
+			}
+		}
+		else								// If There Are No Messages
+		{
+</pre>
+<p>Now to make the timing code work. Notice before we draw our scene we grab the time, and store it in a floating point variable called start. We then draw the scene and swap buffers.</p>
+<p>Immediately after we swap the buffers we create a delay. We do this by checking to see if the current value of the timer (TimerGetTime( )) is less than our starting value plus the game stepping speed times 2. If the current timer value is less than the value we want, we endlessly loop until the current timer value is equal to or greater than the value we want. This slows down REALLY fast systems.</p>
+<p>Because we use the stepping speed (set by the value of adjust) the program will always run the same speed. For example, if our stepping speed was 1 we would wait until the timer was greater than or equal to 2 (1*2). But if we increased the stepping speed to 2 (causing the player to move twice as many pixels at a time), the delay is increased to 4 (2*2). So even though we are moving twice as fast, the delay is twice as long, so the game still runs the same speed :)</p>
+<p>One thing alot of people like to do is take the current time, and subtract the old time to find out how much time has passed. Then they move objects a certain distance based on the amount of time that has passed. Unfortunately I can't do that in this program because the fine movement has to be exact so that the player can line up with the lines on the grid. If the current fine x position was 59 and the computer decided the player needed to move two pixels, the player would never line up with the vertical line at position 60 on the grid.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">			float start=TimerGetTime();				// Grab Timer Value Before We Draw
+
+			// Draw The Scene.  Watch For ESC Key And Quit Messages From DrawGLScene()
+			if ((active &amp;&amp; !DrawGLScene()) || keys[VK_ESCAPE])	// Active?  Was There A Quit Received?
+			{
+				done=TRUE;					// ESC or DrawGLScene Signalled A Quit
+			}
+			else							// Not Time To Quit, Update Screen
+			{
+				SwapBuffers(hDC);				// Swap Buffers (Double Buffering)
+			}
+
+			while(TimerGetTime()&lt;start+float(steps[adjust]*2.0f)) {}// Waste Cycles On Fast Systems
+</pre>
+<p>The following code hasn't really changed. I changed the title of the window to read "NeHe's Line Tutorial".</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">			if (keys[VK_F1])					// Is F1 Being Pressed?
+			{
+				keys[VK_F1]=FALSE;				// If So Make Key FALSE
+				KillGLWindow();					// Kill Our Current Window
+				fullscreen=!fullscreen;				// Toggle Fullscreen / Windowed Mode
+				// Recreate Our OpenGL Window
+				if (!CreateGLWindow("NeHe's Line Tutorial",640,480,16,fullscreen))
+				{
+					return 0;				// Quit If Window Was Not Created
+				}
+			}
+</pre>
+<p>This section of code checks to see if the A key is being pressed and not held. If 'A' is being pressed, ap becomes TRUE (telling our program that A is being held down), and anti is toggled from TRUE to FALSE or FALSE to TRUE. Remember that anti is checked in the drawing code to see if antialiasing is turned on or off.</p>
+<p>If the 'A' key has been released (is FALSE) then ap is set to FALSE telling the program that the key is no longer being held down.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">			if (keys['A'] &amp;&amp; !ap)					// If 'A' Key Is Pressed And Not Held
+			{
+				ap=TRUE;					// ap Becomes TRUE
+				anti=!anti;					// Toggle Antialiasing
+			}
+			if (!keys['A'])						// If 'A' Key Has Been Released
+			{
+				ap=FALSE;					// ap Becomes FALSE
+			}
+</pre>
+<p>Now to move the enemies. I wanted to keep this section of code really simple. There is very little logic. Basically, the enemies check to see where you are and they move in that direction. Because I'm checking the actual x and y position of the players and no the fine values, the players seem to have a little more intelligence. They may see that you are way at the top of the screen. But by the time they're fine value actually gets to the top of the screen, you could already be in a different location. This causes them to sometimes move past you, before they realize you are no longer where they thought you were. May sound like they're really dumb, but because they sometimes move past you, you might find yourself being boxed in from all directions.</p>
+<p>We start off by checking to make sure the game isn't over, and that the window (if in windowed mode) is still active. By checking active the enemies wont move if the screen is minimized. This gives you a convenient pause feature when you need to take a break :)</p>
+<p>After we've made sure the enemies should be moving, we create a loop. The loop will loop through all the visible enemies. Again we calculate how many enemies should be on the screen by multiplying the current stage by the current internal level.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">			if (!gameover &amp;&amp; active)				// If Game Isn't Over And Programs Active Move Objects
+			{
+				for (loop1=0; loop1&lt;(stage*level); loop1++)	// Loop Through The Different Stages
+				{
+</pre>
+<p>Now we move the current enemy (enemy[loop1]). We start off by checking to see if the enemy's x position is less than the players x position and we make sure that the enemy's fine y position lines up with a horizontal line. We can't move the enemy left and right if it's not on a horizontal line. If we did, the enemy would cut right through the middle of the boxes, making the game even more difficult :)</p>
+<p>If the enemy x position is less than the player x position, and the enemy's fine y position is lined up with a horizontal line, we move the enemy x position one block closer to the current player position.</p>
+<p>We also do this to move the enemy left, down and up. When moving up and down, we need to make sure the enemy's fine x position lines up with a vertical line. We don't want the enemy cutting through the top or bottom of a box.</p>
+<p>Note: changing the enemies x and y positions doesn't move the enemy on the screen. Remember that when we drew the enemies we used the fine positions to place the enemies on the screen. Changing the x and y positions just tells our program where we WANT the enemies to move.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">					if ((enemy[loop1].x&lt;player.x) &amp;&amp; (enemy[loop1].fy==enemy[loop1].y*40))
+					{
+						enemy[loop1].x++;		// Move The Enemy Right
+					}
+
+					if ((enemy[loop1].x&gt;player.x) &amp;&amp; (enemy[loop1].fy==enemy[loop1].y*40))
+					{
+						enemy[loop1].x--;		// Move The Enemy Left
+					}
+
+					if ((enemy[loop1].y&lt;player.y) &amp;&amp; (enemy[loop1].fx==enemy[loop1].x*60))
+					{
+						enemy[loop1].y++;		// Move The Enemy Down
+					}
+
+					if ((enemy[loop1].y&gt;player.y) &amp;&amp; (enemy[loop1].fx==enemy[loop1].x*60))
+					{
+						enemy[loop1].y--;		// Move The Enemy Up
+					}
+</pre>
+<p>This code does the actual moving. We check to see if the variable delay is greater than 3 minus the current internal level. That way if our current level is 1 the program will loop through 2 (3-1) times before the enemies actually move. On level 3 (the highest value that level can be) the enemies will move the same speed as the player (no delays). We also make sure that hourglass.fx isn't the same as 2. Remember, if hourglass.fx is equal to 2, that means the player has touched the hourglass. Meaning the enemies shouldn't be moving.</p>
+<p>If delay is greater than 3-level and the player hasn't touched the hourglass, we move the enemies by adjusting the enemy fine positions (fx and fy). The first thing we do is set delay back to 0 so that we can start the delay counter again. Then we set up a loop that loops through all the visible enemies (stage times level).</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">					if (delay&gt;(3-level) &amp;&amp; (hourglass.fx!=2))		// If Our Delay Is Done And Player Doesn't Have Hourglass
+					{
+						delay=0;					// Reset The Delay Counter Back To Zero
+						for (loop2=0; loop2&lt;(stage*level); loop2++)	// Loop Through All The Enemies
+						{
+</pre>
+<p>To move the enemies we check to see if the current enemy (enemy[loop2]) needs to move in a specific direction to move towards the enemy x and y position we want. In the first line below we check to see if the enemy fine position on the x-axis is less than the desired x position times 60. (remember each grid crossing is 60 pixels apart from left to right). If the fine x position is less than the enemy x position times 60 we move the enemy to the right by steps[adjust] (the speed our game is set to play at based on the value of adjust). We also rotate the enemy clockwise to make it look like it's rolling to the right. We do this by increasing enemy[loop2].spin by steps[adjust] (the current game speed based on adjust).</p>
+<p>We then check to see if the enemy fx value is greater than the enemy x position times 60 and if so, we move the enemy left and spin the enemy left.</p>
+<p>We do the same when moving the enemy up and down. If the enemy y position is less than the enemy fy position times 40 (40 pixels between grid points up and down) we increase the enemy fy position, and rotate the enemy to make it look like it's rolling downwards. Lastly if the enemy y position is greater than the enemy fy position times 40 we decrease the value of fy to move the enemy upward. Again, the enemy spins to make it look like it's rolling upward.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">							if (enemy[loop2].fx&lt;enemy[loop2].x*60)	// Is Fine Position On X Axis Lower Than Intended Position?
+							{
+								enemy[loop2].fx+=steps[adjust];	// If So, Increase Fine Position On X Axis
+								enemy[loop2].spin+=steps[adjust];	// Spin Enemy Clockwise
+							}
+							if (enemy[loop2].fx&gt;enemy[loop2].x*60)	// Is Fine Position On X Axis Higher Than Intended Position?
+							{
+								enemy[loop2].fx-=steps[adjust];	// If So, Decrease Fine Position On X Axis
+								enemy[loop2].spin-=steps[adjust];	// Spin Enemy Counter Clockwise
+							}
+							if (enemy[loop2].fy&lt;enemy[loop2].y*40)	// Is Fine Position On Y Axis Lower Than Intended Position?
+							{
+								enemy[loop2].fy+=steps[adjust];	// If So, Increase Fine Position On Y Axis
+								enemy[loop2].spin+=steps[adjust];	// Spin Enemy Clockwise
+							}
+							if (enemy[loop2].fy&gt;enemy[loop2].y*40)	// Is Fine Position On Y Axis Higher Than Intended Position?
+							{
+								enemy[loop2].fy-=steps[adjust];	// If So, Decrease Fine Position On Y Axis
+								enemy[loop2].spin-=steps[adjust];	// Spin Enemy Counter Clockwise
+							}
+						}
+					}
+</pre>
+<p>After moving the enemies we check to see if any of them have hit the player. We want accuracy so we compare the enemy fine positions with the player fine positions. If the enemy fx position equals the player fx position and the enemy fy position equals the player fy position the player is DEAD :)</p>
+<p>If the player is dead, we decrease lives. Then we check to make sure the player isn't out of lives by checking to see if lives equals 0. If lives does equal zero, we set gameover to TRUE.</p>
+<p>We then reset our objects by calling ResetObjects(), and play the death sound.</p>
+<p>Sound is new in this tutorial. I've decided to use the most basic sound routine available... PlaySound(). PlaySound() takes three parameters. First we give it the name of the file we want to play. In this case we want it to play the Die .WAV file in the Data directory. The second parameter can be ignored. We'll set it to NULL. The third parameter is the flag for playing the sound. The two most common flags are: SND_SYNC which stops everything else until the sound is done playing, and SND_ASYNC, which plays the sound, but doesn't stop the program from running. We want a little delay after the player dies so we use SND_SYNC. Pretty easy!</p>
+<p>The one thing I forgot to mention at the beginning of the program: In order for PlaySound() and the timer to work, you have to include the WINMM.LIB file under PROJECT / SETTINGS / LINK in Visual C++. Winmm.lib is the Windows Multimedia Library. If you don't include this library, you will get error messages when you try to compile the program.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">					// Are Any Of The Enemies On Top Of The Player?
+					if ((enemy[loop1].fx==player.fx) &amp;&amp; (enemy[loop1].fy==player.fy))
+					{
+						lives--;			// If So, Player Loses A Life
+
+						if (lives==0)			// Are We Out Of Lives?
+						{
+							gameover=TRUE;		// If So, gameover Becomes TRUE
+						}
+
+						ResetObjects();			// Reset Player / Enemy Positions
+						PlaySound("Data/Die.wav", NULL, SND_SYNC);	// Play The Death Sound
+					}
+				}
+</pre>
+<p>Now we can move the player. In the first line of code below we check to see if the right arrow is being pressed, player.x is less than 10 (don't want to go off the grid), that player.fx equals player.x times 60 (lined up with a grid crossing on the x-axis, and that player.fy equals player.y times 40 (player is lined up with a grid crossing on the y-axis).</p>
+<p>If we didn't make sure the player was at a crossing, and we allowed the player to move anyways, the player would cut right through the middle of boxes, just like the enemies would have done if we didn't make sure they were lined up with a vertical or horizontal line. Checking this also makes sure the player is done moving before we move to a new location.</p>
+<p>If the player is at a grid crossing (where a vertical and horizontal lines meet) and he's not to far right, we mark the current horizontal line that we are on as being traced over. We then increase the player.x value by one, causing the new player position to be one box to the right.</p>
+<p>We do the same thing while moving left, down and up. When moving left, we make sure the player wont be going off the left side of the grid. When moving down we make sure the player wont be leaving the bottom of the grid, and when moving up we make sure the player doesn't go off the top of the grid.</p>
+<p>When moving left and right we make the horizontal line (hline[ ] [ ]) under us TRUE meaning it's been traced. When moving up and down we make the vertical line (vline[ ] [ ]) under us TRUE meaning it has been traced.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">				if (keys[VK_RIGHT] &amp;&amp; (player.x&lt;10) &amp;&amp; (player.fx==player.x*60) &amp;&amp; (player.fy==player.y*40))
+				{
+					hline[player.x][player.y]=TRUE;		// Mark The Current Horizontal Border As Filled
+					player.x++;				// Move The Player Right
+				}
+				if (keys[VK_LEFT] &amp;&amp; (player.x&gt;0) &amp;&amp; (player.fx==player.x*60) &amp;&amp; (player.fy==player.y*40))
+				{
+					player.x--;				// Move The Player Left
+					hline[player.x][player.y]=TRUE;		// Mark The Current Horizontal Border As Filled
+				}
+				if (keys[VK_DOWN] &amp;&amp; (player.y&lt;10) &amp;&amp; (player.fx==player.x*60) &amp;&amp; (player.fy==player.y*40))
+				{
+					vline[player.x][player.y]=TRUE;		// Mark The Current Verticle Border As Filled
+					player.y++;				// Move The Player Down
+				}
+				if (keys[VK_UP] &amp;&amp; (player.y&gt;0) &amp;&amp; (player.fx==player.x*60) &amp;&amp; (player.fy==player.y*40))
+				{
+					player.y--;				// Move The Player Up
+					vline[player.x][player.y]=TRUE;		// Mark The Current Verticle Border As Filled
+				}
+</pre>
+<p>We increase / decrease the player fine fx and fy variables the same way we increase / decreased the enemy fine fx and fy variables.</p>
+<p>If the player fx value is less than the player x value times 60 we increase the player fx position by the step speed our game is running at based on the value of adjust.</p>
+<p>If the player fx value is greater than the player x value times 60 we decrease the player fx position by the step speed our game is running at based on the value of adjust.</p>
+<p>If the player fy value is less than the player y value times 40 we increase the player fy position by the step speed our game is running at based on the value of adjust.</p>
+<p>If the player fy value is greater than the player y value times 40 we decrease the player fy position by the step speed our game is running at based on the value of adjust.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">				if (player.fx&lt;player.x*60)			// Is Fine Position On X Axis Lower Than Intended Position?
+				{
+					player.fx+=steps[adjust];		// If So, Increase The Fine X Position
+				}
+				if (player.fx&gt;player.x*60)			// Is Fine Position On X Axis Greater Than Intended Position?
+				{
+					player.fx-=steps[adjust];		// If So, Decrease The Fine X Position
+				}
+				if (player.fy&lt;player.y*40)			// Is Fine Position On Y Axis Lower Than Intended Position?
+				{
+					player.fy+=steps[adjust];		// If So, Increase The Fine Y Position
+				}
+				if (player.fy&gt;player.y*40)			// Is Fine Position On Y Axis Lower Than Intended Position?
+				{
+					player.fy-=steps[adjust];		// If So, Decrease The Fine Y Position
+				}
+			}
+</pre>
+<p>If the game is over the following bit of code will run. We check to see if the spacebar is being pressed. If it is we set gameover to FALSE (starting the game over). We set filled to TRUE. This causes the game to think we've finished a stage, causing the player to be reset, along with the enemies.</p>
+<p>We set the starting level to 1, along with the actual displayed level (level2). We set stage to 0. The reason we do this is because after the computer sees that the grid has been filled in, it will think you finished a stage, and will increase stage by 1. Because we set stage to 0, when the stage increases it will become 1 (exactly what we want). Lastly we set lives back to 5.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">			else							// Otherwise
+			{
+				if (keys[' '])					// If Spacebar Is Being Pressed
+				{
+					gameover=FALSE;				// gameover Becomes FALSE
+					filled=TRUE;				// filled Becomes TRUE
+					level=1;				// Starting Level Is Set Back To One
+					level2=1;				// Displayed Level Is Also Set To One
+					stage=0;				// Game Stage Is Set To Zero
+					lives=5;				// Lives Is Set To Five
+				}
+			}
+</pre>
+<p>The code below checks to see if the filled flag is TRUE (meaning the grid has been filled in). filled can be set to TRUE one of two ways. Either the grid is filled in completely and filled becomes TRUE or the game has ended but the spacebar was pressed to restart it (code above).</p>
+<p>If filled is TRUE, the first thing we do is play the cool level complete tune. I've already explained how PlaySound() works. This time we'll be playing the Complete .WAV file in the DATA directory. Again, we use SND_SYNC so that there is a delay before the game starts on the next stage.</p>
+<p>After the sound has played, we increase stage by one, and check to make sure stage isn't greater than 3. If stage is greater than 3 we set stage to 1, and increase the internal level and visible level by one.</p>
+<p>If the internal level is greater than 3 we set the internal leve (level) to 3, and increase lives by 1. If you're amazing enough to get past level 3 you deserve a free life :). After increasing lives we check to make sure the player doesn't have more than 5 lives. If lives is greater than 5 we set lives back to 5.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">			if (filled)						// Is The Grid Filled In?
+			{
+				PlaySound("Data/Complete.wav", NULL, SND_SYNC);	// If So, Play The Level Complete Sound
+				stage++;					// Increase The Stage
+				if (stage&gt;3)					// Is The Stage Higher Than 3?
+				{
+					stage=1;				// If So, Set The Stage To One
+					level++;				// Increase The Level
+					level2++;				// Increase The Displayed Level
+					if (level&gt;3)				// Is The Level Greater Than 3?
+					{
+						level=3;			// If So, Set The Level To 3
+						lives++;			// Give The Player A Free Life
+						if (lives&gt;5)			// Does The Player Have More Than 5 Lives?
+						{
+							lives=5;		// If So, Set Lives To Five
+						}
+					} 
+				}
+</pre>
+<p>We then reset all the objects (such as the player and enemies). This places the player back at the top left corner of the grid, and gives the enemies random locations on the grid.</p>
+<p>We create two loops (loop1 and loop2) to loop through the grid. We set all the vertical and horizontal lines to FALSE. If we didn't do this, the next stage would start, and the game would think the grid was still filled in.</p>
+<p>Notice the routine we use to clear the grid is similar to the routine we use to draw the grid. We have to make sure the lines are not being drawn to far right or down. That's why we check to make sure that loop1 is less than 10 before we reset the horizontal lines, and we check to make sure that loop2 is less than 10 before we reset the vertical lines.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">				ResetObjects();					// Reset Player / Enemy Positions
+
+				for (loop1=0; loop1&lt;11; loop1++)		// Loop Through The Grid X Coordinates
+				{
+					for (loop2=0; loop2&lt;11; loop2++)	// Loop Through The Grid Y Coordinates
+					{
+						if (loop1&lt;10)			// If X Coordinate Is Less Than 10
+						{
+							hline[loop1][loop2]=FALSE;	// Set The Current Horizontal Value To FALSE
+						}
+						if (loop2&lt;10)			// If Y Coordinate Is Less Than 10
+						{
+							vline[loop1][loop2]=FALSE;	// Set The Current Vertical Value To FALSE
+						}
+					}
+				}
+			}
+</pre>
+<p>Now we check to see if the player has hit the hourglass. If the fine player fx value is equal to the hourglass x value times 60 and the fine player fy value is equal to the hourglass y value times 40 AND hourglass.fx is equal to 1 (meaning the hourglass is displayed on the screen), the code below runs.</p>
+<p>The first line of code is PlaySound("Data/freeze.wav",NULL, SND_ASYNC | SND_LOOP). This line plays the freeze .WAV file in the DATA directory. Notice we are using SND_ASYNC this time. We want the freeze sound to play without the game stopping. SND_LOOP keeps the sound playing endlessly until we tell it to stop playing, or until another sound is played.</p>
+<p>After we have started the sound playing, we set hourglass.fx to 2. When hourglass.fx equals 2 the hourglass will no longer be drawn, the enemies will stop moving, and the sound will loop endlessly.</p>
+<p>We also set hourglass.fy to 0. hourglass.fy is a counter. When it hits a certain value, the value of hourglass.fx will change.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">			// If The Player Hits The Hourglass While It's Being Displayed On The Screen
+			if ((player.fx==hourglass.x*60) &amp;&amp; (player.fy==hourglass.y*40) &amp;&amp; (hourglass.fx==1))
+			{
+				// Play Freeze Enemy Sound
+				PlaySound("Data/freeze.wav", NULL, SND_ASYNC | SND_LOOP);
+				hourglass.fx=2;					// Set The hourglass fx Variable To Two
+				hourglass.fy=0;					// Set The hourglass fy Variable To Zero
+			}
+</pre>
+<p>This bit of code increases the player spin value by half the speed that the game runs at. If player.spin is greater than 360.0f we subtract 360.0f from player.spin. Keeps the value of player.spin from getting to high.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">			player.spin+=0.5f*steps[adjust];			// Spin The Player Clockwise
+			if (player.spin&gt;360.0f)					// Is The spin Value Greater Than 360?
+			{
+				player.spin-=360;				// If So, Subtract 360
+			}
+</pre>
+<p>The code below decreases the hourglass spin value by 1/4 the speed that the game is running at. If hourglass.spin is less than 0.0f we add 360.0f. We don't want hourglass.spin to become a negative number.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">			hourglass.spin-=0.25f*steps[adjust];			// Spin The Hourglass Counter Clockwise
+			if (hourglass.spin&lt;0.0f)				// Is The spin Value Less Than 0?
+			{
+				hourglass.spin+=360.0f;				// If So, Add 360
+			}
+</pre>
+<p>The first line below increased the hourglass counter that I was talking about. hourglass.fy is increased by the game speed (game speed is the steps value based on the value of adjust).</p>
+<p>The second line checks to see if hourglass.fx is equal to 0 (non visible) and the hourglass counter (hourglass.fy) is greater than 6000 divided by the current internal level (level).</p>
+<p>If the fx value is 0 and the counter is greater than 6000 divided by the internal level we play the hourglass .WAV file in the DATA directory. We don't want the action to stop so we use SND_ASYNC. We won't loop the sound this time though, so once the sound has played, it wont play again.</p>
+<p>After we've played the sound we give the hourglass a random value on the x-axis. We add one to the random value so that the hourglass doesn't appear at the players starting position at the top left of the grid. We also give the hourglass a random value on the y-axis. We set hourglass.fx to 1 this makes the hourglass appear on the screen at it's new location. We also set hourglass.fy back to zero so it can start counting again.</p>
+<p>This causes the hourglass to appear on the screen after a fixed amount of time.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">			hourglass.fy+=steps[adjust];				// Increase The hourglass fy Variable
+			if ((hourglass.fx==0) &amp;&amp; (hourglass.fy&gt;6000/level))	// Is The hourglass fx Variable Equal To 0 And The fy
+			{							// Variable Greater Than 6000 Divided By The Current Level?
+				PlaySound("Data/hourglass.wav", NULL, SND_ASYNC);	// If So, Play The Hourglass Appears Sound
+				hourglass.x=rand()%10+1;			// Give The Hourglass A Random X Value
+				hourglass.y=rand()%11;				// Give The Hourglass A Random Y Value
+				hourglass.fx=1;					// Set hourglass fx Variable To One (Hourglass Stage)
+				hourglass.fy=0;					// Set hourglass fy Variable To Zero (Counter)
+			}
+</pre>
+<p>If hourglass.fx is equal to zero and hourglass.fy is greater than 6000 divided by the current internal level (level) we set hourglass.fx back to 0, causing the hourglass to disappear. We also set hourglass.fy to 0 so it can start counting once again.</p>
+<p>This causes the hourglass to disappear if you don't get it after a certain amount of time.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">			if ((hourglass.fx==1) &amp;&amp; (hourglass.fy&gt;6000/level))	// Is The hourglass fx Variable Equal To 1 And The fy
+			{							// Variable Greater Than 6000 Divided By The Current Level?
+				hourglass.fx=0;					// If So, Set fx To Zero (Hourglass Will Vanish)
+				hourglass.fy=0;					// Set fy to Zero (Counter Is Reset)
+			}
+</pre>
+<p>Now we check to see if the 'freeze enemy' timer has run out after the player has touched the hourglass.</p>
+<p>if hourglass.fx equal 2 and hourglass.fy is greater than 500 plus 500 times the current internal level we kill the timer sound that we started playing endlessly. We kill the sound with the command PlaySound(NULL, NULL, 0). We set hourglass.fx back to 0, and set hourglass.fy to 0. Setting fx and fy to 0 starts the hourglass cycle from the beginning. fy will have to hit 6000 divided by the current internal level before the hourglass appears again.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">			if ((hourglass.fx==2) &amp;&amp; (hourglass.fy&gt;500+(500*level)))// Is The hourglass fx Variable Equal To 2 And The fy
+			{							// Variable Greater Than 500 Plus 500 Times The Current Level?
+				PlaySound(NULL, NULL, 0);			// If So, Kill The Freeze Sound
+				hourglass.fx=0;					// Set hourglass fx Variable To Zero
+				hourglass.fy=0;					// Set hourglass fy Variable To Zero
+			}
+</pre>
+<p>The last thing to do is increase the variable delay. If you remember, delay is used to update the player movement and animation. If our program has finished, we kill the window and return to the desktop.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">			delay++;						// Increase The Enemy Delay Counter
+		}
+	}
+
+	// Shutdown
+	KillGLWindow();								// Kill The Window
+	return (msg.wParam);							// Exit The Program
+}
+</pre>
+<p>I spent a long time writing this tutorial. It started out as a simple line tutorial, and flourished into an entertaining mini game. Hopefully you can use what you have learned in this tutorial in GL projects of your own. I know alot of you have been asking about TILE based games. Well you can't get more tiled than this :) I've also gotten alot of emails asking how to do exact pixel plotting. I think I've got it covered :) Most importantly, this tutorial not only teaches you new things about OpenGL, it also teaches you how to use simple sounds to add excitement to your visual works of art! I hope you've enjoyed this tutorial. If you feel I have incorrectly commented something or that the code could be done better in some sections, please let me know. I want to make the best OpenGL tutorials I can and I'm interested in hearing your feedback.</p>
+<p>Please note, this was an extremely large projects. I tried to comment everything as clearly as possible, but putting what things into words isn't as easy as it may seem. I know how everything works off by heart, but trying to explain is a different story :) If you've read through the tutorial and have a better way to word things, or if you feel diagrams might help out, please send me suggestions. I want this tutorial to be easy to follow through. Also note that this is not a beginner tutorial. If you haven't read through the previous tutorials please don't email me with questions until you have. Thanks.</p>
+<p><strong>Jeff Molofee</strong> (<strong>NeHe</strong>)</p>
+<p>* DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/vc/lesson21.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/vc/lesson21.zip'" tppabs="http://nehe.gamedev.net/data/lessons/vc/lesson21.zip">Visual C++</a> Code For This Lesson.</p>
+<p>* DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/bcb6/lesson21_bcb6.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/bcb6/lesson21_bcb6.zip'" tppabs="http://nehe.gamedev.net/data/lessons/bcb6/lesson21_bcb6.zip">Borland C++ Builder 6</a> Code For This Lesson. ( Conversion by <a href="mailto:christian@tugzip.com">Christian Kindahl</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/cwarrior/lesson21.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/cwarrior/lesson21.zip'" tppabs="http://nehe.gamedev.net/data/lessons/cwarrior/lesson21.zip">Code Warrior 5.3</a> Code For This Lesson. ( Conversion by <a href="mailto:DelusionalBeing@hotmail.com">Scott Lupton</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/delphi/lesson21.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/delphi/lesson21.zip'" tppabs="http://nehe.gamedev.net/data/lessons/delphi/lesson21.zip">Delphi</a> Code For This Lesson. ( Conversion by <a href="mailto:michal_praha@seznam.cz">Michal Tucek</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/devc/lesson21.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/devc/lesson21.zip'" tppabs="http://nehe.gamedev.net/data/lessons/devc/lesson21.zip">Dev C++</a> Code For This Lesson. ( Conversion by <a href="mailto:danprogram@hotmail.com">Dan</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/euphoria/lesson21.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/euphoria/lesson21.zip'" tppabs="http://nehe.gamedev.net/data/lessons/euphoria/lesson21.zip">Euphoria</a> Code For This Lesson. ( Conversion by <a href="mailto:1evan@sbcglobal.net">Evan Marshall</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/irix/lesson21.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/irix/lesson21.zip'" tppabs="http://nehe.gamedev.net/data/lessons/irix/lesson21.zip">Irix</a> Code For This Lesson. ( Conversion by <a href="mailto:christop@fhw.gr">Dimi</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/java/lesson21.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/java/lesson21.zip'" tppabs="http://nehe.gamedev.net/data/lessons/java/lesson21.zip">Java</a> Code For This Lesson. ( Conversion by <a href="mailto:jeff@consunet.com.au">Jeff Kirby</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/lccwin32/lccwin32_lesson21.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/lccwin32/lccwin32_lesson21.zip'" tppabs="http://nehe.gamedev.net/data/lessons/lccwin32/lccwin32_lesson21.zip">LCC Win32</a> Code For This Lesson. ( Conversion by <a href="mailto:rwishlaw@shaw.ca">Robert Wishlaw</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/linux/lesson21.tar.gz  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/linux/lesson21.tar.gz'" tppabs="http://nehe.gamedev.net/data/lessons/linux/lesson21.tar.gz">Linux</a> Code For This Lesson. ( Conversion by <a href="mailto:marius@hot.ee">Marius Andra</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/linuxglx/lesson21.tar.gz  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/linuxglx/lesson21.tar.gz'" tppabs="http://nehe.gamedev.net/data/lessons/linuxglx/lesson21.tar.gz">Linux/GLX</a> Code For This Lesson. ( Conversion by <a href="mailto:miqster@gmx.net">Mihael Vrbanec</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/linuxsdl/lesson21.tar.gz  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/linuxsdl/lesson21.tar.gz'" tppabs="http://nehe.gamedev.net/data/lessons/linuxsdl/lesson21.tar.gz">Linux/SDL</a> Code For This Lesson. ( Conversion by <a href="mailto:leggett@eecs.tulane.edu">Ti Leggett</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/lwjgl/lesson21.jar  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/lwjgl/lesson21.jar'" tppabs="http://nehe.gamedev.net/data/lessons/lwjgl/lesson21.jar">LWJGL</a> Code For This Lesson. ( Conversion by <a href="mailto:mark.bernard@rogers.com">Mark Bernard</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev.net/data/lessons/mac/lesson21.sit  \n\nThis file was not retrieved by Teleport Pro, because the server reports that this file cannot be found.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev.net/data/lessons/mac/lesson21.sit'" tppabs="http://nehe.gamedev.net/data/lessons/mac/lesson21.sit">Mac OS</a> Code For This Lesson. ( Conversion by <a href="mailto:asp@usc.edu">Anthony Parker</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/macosxcocoa/lesson21.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/macosxcocoa/lesson21.zip'" tppabs="http://nehe.gamedev.net/data/lessons/macosxcocoa/lesson21.zip">Mac OS X/Cocoa</a> Code For This Lesson. ( Conversion by <a href="mailto:blb@pobox.com">Bryan Blackburn</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/masm/lesson21.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/masm/lesson21.zip'" tppabs="http://nehe.gamedev.net/data/lessons/masm/lesson21.zip">MASM</a> Code For This Lesson. ( Conversion by <a href="mailto:chris.j84@free.fr">Christophe</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/openil/lesson21.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/openil/lesson21.zip'" tppabs="http://nehe.gamedev.net/data/lessons/openil/lesson21.zip">Visual C++ / OpenIL</a> Code For This Lesson. ( Conversion by <a href="mailto:doomwiz@ticnet.com">Denton Woods</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/vs_net/lesson21.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/vs_net/lesson21.zip'" tppabs="http://nehe.gamedev.net/data/lessons/vs_net/lesson21.zip">Visual Studio .NET</a> Code For This Lesson. ( Conversion by <a href="mailto:ultimatezeus@hotmail.com">Grant James</a> )</p>
+<p>&nbsp;</p>
+<p><strong><span><a href="index-60.htm" tppabs="http://nehe.gamedev.net/data/lessons/lesson.asp?lesson=20">&lt; Lesson 20</a></span></strong><strong><span><a href="index-140.htm" tppabs="http://nehe.gamedev.net/data/lessons/lesson.asp?lesson=22">Lesson 22 &gt;</a></span></strong></p>
+
+
+</div>
+</div>
+
+
+
+            <div style="width:728px;padding:0px;margin:auto; margin-top: 10px;">
+            
+
+    
+                <!-- Leaderboard_NeHe -->
+                <div id='div-gpt-ad-1327940144417-0' style='width:728px; height:90px;'>
+                <script type='text/javascript'>
+                googletag.cmd.push(function() { googletag.display('div-gpt-ad-1327940144417-0'); });
+                </script>
+                </div>
+            
+
+                           
+            </div>   
+        </td>
+        <td class="col2">
+            
+
+
+
+
+<div style="text-align: center; padding:10px;">
+
+<script type='text/javascript'>
+    GA_googleFillSlot("Skyscraper_NeHe");
+</script>
+
+</div>
+            
+        </td>
+    </table>
+    <div id="footer">
+        <p>
+            
+    
+    © 1997-2012 Gamedev . All rights reserved.<br/>
+
+			NeHe™ and NeHe Productions™ are trademarks of GameDev.net, LLC<br/>
+			OpenGL® is a registered trademark of Silicon Graphics Inc.<br/>
+		</p>        
+		<br/>
+    </div>
+
+    
+    
+	    <script type="text/javascript" src="shCore.js" tppabs="http://nehe.gamedev.net/static/js/syntax_highlighter/shCore.js"></script>
+        <script type="text/javascript" src="shBrushCpp.js" tppabs="http://nehe.gamedev.net/static/js/syntax_highlighter/shBrushCpp.js"></script>
+	    <script type="text/javascript" src="shBrushJScript.js" tppabs="http://nehe.gamedev.net/static/js/syntax_highlighter/shBrushJScript.js"></script>
+	    <script type="text/javascript">SyntaxHighlighter.all();</script>
+    
+
+    <!-- Place this render call where appropriate -->
+    <script type="text/javascript">
+      (function() {
+        var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+        po.src = 'plusone.js'/*tpa=https://apis.google.com/js/plusone.js*/;
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+      })();
+    </script>    
+
+    
+<!-- GoogleAnalytics code -->
+<script src="urchin.js" tppabs="http://www.google-analytics.com/urchin.js" type="text/javascript">
+</script>
+<script type="text/javascript">
+_uacct = "UA-279474-2"; // Gamedev
+urchinTracker();
+_uff = 0; // Reset for second account
+_uacct = "UA-24180731-1"; // Non-GD
+urchinTracker();
+</script> 
+  </body>
+</html>

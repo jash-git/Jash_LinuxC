@@ -1,0 +1,420 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+    dir="ltr"
+    xml:lang="en"
+    lang="en">
+  <head>
+    <title>NeHe Productions: Display Lists</title>
+
+    <link rel="stylesheet" type="text/css" href="public_base.css" tppabs="http://nehe.gamedev.net/static/css/public_base.css" />
+    <link type="text/css" rel="stylesheet" href="shThemeMidnight.css" tppabs="http://nehe.gamedev.net/static/css/syntax_highlighter/shThemeMidnight.css"/>
+    
+    <link rel="alternate" type="application/atom+xml" title="Atom feed" href="index-1.htm" tppabs="http://nehe.gamedev.net/atom/" />
+    <link rel="alternate" type="application/rss+xml" title="RSS feed" href="index-2.htm" tppabs="http://nehe.gamedev.net/rss/" />
+    
+    <meta name="author" content="Luke Benstead + Carsten Haubold" />
+    <meta name="description" content="OpenGL Tutorials, Demos, Games and More..." />
+    <meta name="keywords" content="opengl, tutorial, article, demo, game, blend, texturemap, lighting, contest, 3D" />
+
+    
+    
+
+    
+
+</script>
+
+
+    
+    
+    
+    
+        
+        <script type='text/javascript'>
+        var googletag = googletag || {};
+        googletag.cmd = googletag.cmd || [];
+        (function() {
+        var gads = document.createElement('script');
+        gads.async = true;
+        gads.type = 'text/javascript';
+        var useSSL = 'https:' == document.location.protocol;
+        gads.src = (useSSL ? 'https:' : 'http:') + 
+        '//www.googletagservices.com/tag/js/gpt.js';
+        var node = document.getElementsByTagName('script')[0];
+        node.parentNode.insertBefore(gads, node);
+        })();
+        </script>
+
+        <script type='text/javascript'>
+        googletag.cmd.push(function() {
+        googletag.defineSlot('/1004699/Leaderboard_NeHe', [728, 90], 'div-gpt-ad-1327940144417-0').addService(googletag.pubads());
+        googletag.defineSlot('/1004699/Skyscraper_NeHe', [160, 600], 'div-gpt-ad-1327940144417-1').addService(googletag.pubads());
+        googletag.pubads().enableSingleRequest();
+        googletag.enableServices();
+        });
+        </script>
+    
+    
+
+    
+  </head>
+
+  <body>
+    
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "all.js#xfbml=1"/*tpa=http://connect.facebook.net/en_GB/all.js#xfbml=1*/;
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+
+
+    <table cellpadding="0" cellspacing="0" border="0" id="layout_table">
+    <tr><td>
+        <div id="header">
+                <a href="index.htm" tppabs="http://nehe.gamedev.net/"><img class="logo" class="logo" src="nehe.png" tppabs="http://nehe.gamedev.net/static/images/nehe.png" border="0" alt="Nehe" /></a>
+        </div>            
+    </td></tr>
+    <tr><td colspan="2">
+            
+<div class="navbar">
+    <a href="index.htm" tppabs="http://nehe.gamedev.net/">HOME</a>
+    <a href="javascript:if(confirm('http://twitter.com/  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://twitter.com/#!/nehegl'" tppabs="http://twitter.com/#!/nehegl">TWITTER</a>  
+    <a href="javascript:if(confirm('http://www.facebook.com/pages/NeHe/300582493323181  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://www.facebook.com/pages/NeHe/300582493323181'" tppabs="http://www.facebook.com/pages/NeHe/300582493323181">FACEBOOK</a>     
+    <a href="index-2.htm" tppabs="http://nehe.gamedev.net/rss/">RSS</a>    
+    <a href="index-1.htm" tppabs="http://nehe.gamedev.net/atom/">ATOM</a>    
+    <a href="javascript:if(confirm('http://www.gamedev.net/forum/27-nehe-productions/page__forum_title__NeHe+Productions  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://www.gamedev.net/forum/27-nehe-productions/page__forum_title__NeHe+Productions'" tppabs="http://www.gamedev.net/forum/27-nehe-productions/page__forum_title__NeHe+Productions">FORUM</a>    
+</div>
+    
+    </td></tr>
+    <tr>
+        <td class="col1">
+
+            
+<div id="article_container">
+
+
+<h1 class="article-header">Display Lists</h1>
+<div class="social-media">
+<!-- Place this tag where you want the +1 button to render -->
+<div class="g-plusone" data-size="medium" data-width="120" data-annotation="inline"></div>
+<div class="fb-like" data-send="false" data-layout="button_count" data-width="60" data-show-faces="false" data-colorscheme="dark" data-font="arial"></div>
+</div>
+<div style="clear:both;"></div>
+<p>In this tutorial I'll teach you how to use Display Lists. Not only do display lists speed up your code, they also cut down on the number of lines of code you need to write when creating a simple GL scene.</p>
+<p>For example. Lets say you're making the game asteroids. Each level starts off with at least 2 asteroids. So you sit down with your graph paper (grin), and figure out how to make a 3D asteroid. Once you have everything figured out, you build the asteroid in OpenGL using Polygons or Quads. Lets say the asteroid is octagonal (8 sides). If you're smart you'll create a loop, and draw the asteroid once inside the loop. You'll end up with roughly 18 lines or more of code to make the asteroid. Creating the asteroid each time it's drawn to the screen is hard on your system. Once you get into more complex objects you'll see what I mean.</p>
+<p>So what's the solution? Display Lists!!! By using a display list, you create the object just once. You can texture map it, color it, whatever you want to do. You give the display list a name. Because it's an asteroid we'll call the display list 'asteroid'. Now any time I want to draw the textured / colored asteroid on the screen, all I have to do is call glCallList(asteroid). the premade asteroid will instantly appear on the screen. Because the asteroid has already built in the display list, OpenGL doesn't have to figure out how to build it. It's prebuilt in memory. This takes alot of strain off your processor and allows your programs to run alot faster!</p>
+<p>So are you ready to learn? :) We'll call this the Q-Bert Display List demo. What you'll end up with is a Q-Bert type screen made up of 15 cubes. Each cube is made up of a TOP, and a BOX. The top will be a seperate display list so that we can color it a darker shade. The box is a cube without the top :)</p>
+<p>This code is based around lesson 6. I'll rewrite most of the program so it's easier to see where I've made changes. The follow lines of code are standard code used in just about all the lessons.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">#include	&lt;windows.h&gt;								// Header File For Windows
+#include	&lt;stdio.h&gt;								// Header File For Standard Input/Output
+#include	&lt;gl\gl.h&gt;								// Header File For The OpenGL32 Library
+#include	&lt;gl\glu.h&gt;								// Header File For The GLu32 Library
+#include	&lt;gl\glaux.h&gt;								// Header File For The GLaux Library
+
+HDC		hDC=NULL;								// Private GDI Device Context
+HGLRC		hRC=NULL;								// Permanent Rendering Context
+HWND		hWnd=NULL;								// Holds Our Window Handle
+HINSTANCE	hInstance;								// Holds The Instance Of The Application
+
+bool		keys[256];								// Array Used For The Keyboard Routine
+bool		active=TRUE;								// Window Active Flag Set To TRUE By Default
+bool		fullscreen=TRUE;							// Fullscreen Flag Set To Fullscreen Mode By Default
+</pre>
+<p>Now we set up our variables. First we set up storage for one texture. Then we create two new variables for our 2 display lists. These variable will act as pointers to where the display list is stored in ram. They're called box and top.</p>
+<p>After that we have 2 variables called xloop and yloop which are used to position the cubes on the screen and 2 variables called xrot and yrot that are used to rotate the cubes on the x axis and y axis.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">GLuint	texture[1];									// Storage For One Texture
+GLuint	box;										// Storage For The Display List
+GLuint	top;										// Storage For The Second Display List
+GLuint	xloop;										// Loop For X Axis
+GLuint	yloop;										// Loop For Y Axis
+
+GLfloat	xrot;										// Rotates Cube On The X Axis
+GLfloat	yrot;										// Rotates Cube On The Y Axis
+</pre>
+<p>Next we create two color arrays. The first one boxcol stores the color values for Bright Red, Orange, Yellow, Green and Blue. Each value inside the {}'s represent a red, green and blue value. Each group of {}'s is a specific color.</p>
+<p>The second color array we create is for Dark Red, Dark Orange, Dark Yellow, Dark Green and Dark Blue. The dark colors will be used to draw the top of the boxes. We want the lid to be darker than the rest of the box.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">static GLfloat boxcol[5][3]=								// Array For Box Colors
+{
+	// Bright:  Red, Orange, Yellow, Green, Blue
+	{1.0f,0.0f,0.0f},{1.0f,0.5f,0.0f},{1.0f,1.0f,0.0f},{0.0f,1.0f,0.0f},{0.0f,1.0f,1.0f}
+};
+
+static GLfloat topcol[5][3]=								// Array For Top Colors
+{
+	// Dark:  Red, Orange, Yellow, Green, Blue
+	{.5f,0.0f,0.0f},{0.5f,0.25f,0.0f},{0.5f,0.5f,0.0f},{0.0f,0.5f,0.0f},{0.0f,0.5f,0.5f}
+};
+
+LRESULT	CALLBACK WndProc(HWND, UINT, WPARAM, LPARAM);					// Declaration For WndProc
+</pre>
+<p>Now we build the actual Display List. If you notice, all the code to build the box is in the first list, and all the code to build the top is in the other list. I'll try to explain this section in alot of detail.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">GLvoid BuildLists()									// Build Box Display List
+{
+</pre>
+<p>We start off by telling OpenGL we want to build 2 lists. glGenLists(2) creates room for the two lists, and returns a pointer to the first list. 'box' will hold the location of the first list. Whenever we call box the first list will be drawn.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	box=glGenLists(2);								// Building Two Lists
+</pre>
+<p>Now we're going to build the first list. We've already freed up room for two lists, and we know that box points to the area we're going to store the first list. So now all we have to do is tell OpenGL where the list should go, and what type of list to make.</p>
+<p>We use the command glNewList() to do the job. You'll notice box is the first parameter. This tells OpenGL to store the list in the memory location that box points to. The second parameter GL_COMPILE tells OpenGL we want to prebuild the list in memory so that OpenGL doesn't have to figure out how to create the object ever time we draw it.</p>
+<p>GL_COMPILE is similar to programming. If you write a program, and load it into your compiler, you have to compile it every time you want to run it. If it's already compiled into an .EXE file, all you have to do is click on the .exe to run it. No compiling needed. Once GL has compiled the display list, it's ready to go, no more compiling required. This is where we get the speed boost from using display lists.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	glNewList(box,GL_COMPILE);							// New Compiled box Display List
+</pre>
+<p>The next section of code draws the box without the top. It wont appear on the screen. It will be stored in the display list.</p>
+<p>You can put just about any command you want between glNewList() and glEndList(). You can set colors, you can change textures, etc. The only type of code you CAN'T add is code that would change the display list on the fly. Once the display list is built, you CAN'T change it.</p>
+<p>If you added the line glColor3ub(rand()%255,rand()%255,rand()%255) into the code below, you might think that each time you draw the object to the screen it will be a different color. But because the list is only CREATED once, the color will not change each time you draw it to the screen. Whatever color the object was when it was first made is the color it will remain.</p>
+<p>If you want to change the color of the display list, you have to change it BEFORE you draw the display list to the screen. I'll explain more on this later.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">		glBegin(GL_QUADS);							// Start Drawing Quads
+			// Bottom Face
+			glTexCoord2f(1.0f, 1.0f); glVertex3f(-1.0f, -1.0f, -1.0f);	// Top Right Of The Texture and Quad
+			glTexCoord2f(0.0f, 1.0f); glVertex3f( 1.0f, -1.0f, -1.0f);	// Top Left Of The Texture and Quad
+			glTexCoord2f(0.0f, 0.0f); glVertex3f( 1.0f, -1.0f,  1.0f);	// Bottom Left Of The Texture and Quad
+			glTexCoord2f(1.0f, 0.0f); glVertex3f(-1.0f, -1.0f,  1.0f);	// Bottom Right Of The Texture and Quad
+			// Front Face
+			glTexCoord2f(0.0f, 0.0f); glVertex3f(-1.0f, -1.0f,  1.0f);	// Bottom Left Of The Texture and Quad
+			glTexCoord2f(1.0f, 0.0f); glVertex3f( 1.0f, -1.0f,  1.0f);	// Bottom Right Of The Texture and Quad
+			glTexCoord2f(1.0f, 1.0f); glVertex3f( 1.0f,  1.0f,  1.0f);	// Top Right Of The Texture and Quad
+			glTexCoord2f(0.0f, 1.0f); glVertex3f(-1.0f,  1.0f,  1.0f);	// Top Left Of The Texture and Quad
+			// Back Face
+			glTexCoord2f(1.0f, 0.0f); glVertex3f(-1.0f, -1.0f, -1.0f);	// Bottom Right Of The Texture and Quad
+			glTexCoord2f(1.0f, 1.0f); glVertex3f(-1.0f,  1.0f, -1.0f);	// Top Right Of The Texture and Quad
+			glTexCoord2f(0.0f, 1.0f); glVertex3f( 1.0f,  1.0f, -1.0f);	// Top Left Of The Texture and Quad
+			glTexCoord2f(0.0f, 0.0f); glVertex3f( 1.0f, -1.0f, -1.0f);	// Bottom Left Of The Texture and Quad
+			// Right face
+			glTexCoord2f(1.0f, 0.0f); glVertex3f( 1.0f, -1.0f, -1.0f);	// Bottom Right Of The Texture and Quad
+			glTexCoord2f(1.0f, 1.0f); glVertex3f( 1.0f,  1.0f, -1.0f);	// Top Right Of The Texture and Quad
+			glTexCoord2f(0.0f, 1.0f); glVertex3f( 1.0f,  1.0f,  1.0f);	// Top Left Of The Texture and Quad
+			glTexCoord2f(0.0f, 0.0f); glVertex3f( 1.0f, -1.0f,  1.0f);	// Bottom Left Of The Texture and Quad
+			// Left Face
+			glTexCoord2f(0.0f, 0.0f); glVertex3f(-1.0f, -1.0f, -1.0f);	// Bottom Left Of The Texture and Quad
+			glTexCoord2f(1.0f, 0.0f); glVertex3f(-1.0f, -1.0f,  1.0f);	// Bottom Right Of The Texture and Quad
+			glTexCoord2f(1.0f, 1.0f); glVertex3f(-1.0f,  1.0f,  1.0f);	// Top Right Of The Texture and Quad
+			glTexCoord2f(0.0f, 1.0f); glVertex3f(-1.0f,  1.0f, -1.0f);	// Top Left Of The Texture and Quad
+		glEnd();								// Done Drawing Quads
+</pre>
+<p>We tell OpenGL we're done making our list with the command glEndList(). Anything between glNewList() and glEndList is part of the Display List, anything before glNewList() or after glEndList() is not part of the current display list.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	glEndList();									// Done Building The box List
+</pre>
+<p>Now we'll make our second display list. To find out where the second display list is stored in memory, we take the value of the old display list (box) and add one to it. The code below will make 'top' equal the location of the second display list.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	top=box+1;									// top List Value Is box List Value +1
+</pre>
+<p>Now that we know where to store the second display list, we can build it. We do this the same way we built the first display list, but this time we tell OpenGL to store the list at 'top' instead of 'box'.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	glNewList(top,GL_COMPILE);							// New Compiled top Display List
+</pre>
+<p>The following section of code just draws the top of the box. It's a simple quad drawn on the Z plane.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">		glBegin(GL_QUADS);							// Start Drawing Quad
+			// Top Face
+			glTexCoord2f(0.0f, 1.0f); glVertex3f(-1.0f,  1.0f, -1.0f);	// Top Left Of The Texture and Quad
+			glTexCoord2f(0.0f, 0.0f); glVertex3f(-1.0f,  1.0f,  1.0f);	// Bottom Left Of The Texture and Quad
+			glTexCoord2f(1.0f, 0.0f); glVertex3f( 1.0f,  1.0f,  1.0f);	// Bottom Right Of The Texture and Quad
+			glTexCoord2f(1.0f, 1.0f); glVertex3f( 1.0f,  1.0f, -1.0f);	// Top Right Of The Texture and Quad
+		glEnd();								// Done Drawing Quad
+</pre>
+<p>Again we tell OpenGL we're done building our second list with the command glEndList(). That's it. We've successfully created 2 display lists.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	glEndList();									// Done Building The top Display List
+}
+</pre>
+<p>The bitmap/texture building code is the same code we used in previous tutorials to load and build a texture. We want a texture that we can map onto all 6 sides of each cube. I've decided to use mipmapping to make the texture look real smooth. I hate seeing pixels :) The name of the texture to load is called 'cube.bmp'. It's stored in a directory called data. Find LoadBMP and change that line to look like the line below.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	if (TextureImage[0]=LoadBMP("Data/Cube.bmp"))					// Load The Bitmap
+</pre>
+<p>Resizing code is exactly the same as the code in Lesson 6.</p>
+<p>The init code only has a few changes. I've added the line BuildList(). This will jump to the section of code that builds the display lists. Notice that BuildList() is after LoadGLTextures(). It's important to know the order things should go in. First we build the textures, so when we create our display lists, there's a texture already created that we can map onto the cube.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">int InitGL(GLvoid)									// All Setup For OpenGL Goes Here
+{
+	if (!LoadGLTextures())								// Jump To Texture Loading Routine
+	{
+		return FALSE;								// If Texture Didn't Load Return FALSE
+	}
+	BuildLists();									// Jump To The Code That Creates Our Display Lists
+	glEnable(GL_TEXTURE_2D);							// Enable Texture Mapping 
+	glShadeModel(GL_SMOOTH);							// Enable Smooth Shading
+	glClearColor(0.0f, 0.0f, 0.0f, 0.5f);						// Black Background
+	glClearDepth(1.0f);								// Depth Buffer Setup
+	glEnable(GL_DEPTH_TEST);							// Enables Depth Testing
+	glDepthFunc(GL_LEQUAL);								// The Type Of Depth Testing To Do
+</pre>
+<p>The next three lines of code enable quick and dirty lighting. Light0 is predefined on most video cards, so it saves us the hassle of setting up lights. After we enable light0 we enable lighting. If light0 isn't working on your video card (you see blackness), just disable lighting.</p>
+<p>The last line GL_COLOR_MATERIAL lets us add color to texture maps. If we don't enable material coloring, the textures will always be their original color. glColor3f(r,g,b) will have no affect on the coloring. So it's important to enable this.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	glEnable(GL_LIGHT0);								// Quick And Dirty Lighting (Assumes Light0 Is Set Up)
+	glEnable(GL_LIGHTING);								// Enable Lighting
+	glEnable(GL_COLOR_MATERIAL);							// Enable Material Coloring
+</pre>
+<p>Finally we set the perspective correction to look nice, and we return TRUE letting our program know that initialization went OK.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);				// Nice Perspective Correction
+	return TRUE;									// Initialization Went OK
+</pre>
+<p>Now for the drawing code. As usual, I got a little crazy with the math. No SIN, and COS, but it's still a little strange :) We start off as usual by clearing the screen and depth buffer.</p>
+<p>Then we bind a texture to the cube. I could have added this line inside the display list code, but by leaving it outside the display list, I can change the texture whenever I want. If I added the line glBindTexture(GL_TEXTURE_2D, texture[0]) inside the display list code, the display list would be built with whatever texture I selected permanently mapped onto it.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">int DrawGLScene(GLvoid)									// Here's Where We Do All The Drawing
+{
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);				// Clear The Screen And The Depth Buffer
+
+	glBindTexture(GL_TEXTURE_2D, texture[0]);					// Select The Texture
+</pre>
+<p>Now for the fun stuff. We have a loop called yloop. This loop is used to position the cubes on the Y axis (up and down). We want 5 rows of cubes up and down, so we make a loop from 1 to less than 6 (which is 5).</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	for (yloop=1;yloop&lt;6;yloop++)							// Loop Through The Y Plane
+	{
+</pre>
+<p>We have another loop called xloop. It's used to position the cubes on the X axis (left to right). The number of cubes drawn left to right depends on what row we're on. If we're on the top row, xloop will only go from 0 to 1 (drawing one cube). The next row xloop will go from 0 to 2 (drawing 2 cubes), etc.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">		for (xloop=0;xloop&lt;yloop;xloop++)					// Loop Through The X Plane
+		{
+</pre>
+<p>We reset our view with glLoadIdentity().</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">			glLoadIdentity();						// Reset The View
+</pre>
+<p>The next line translates to a specific spot on the screen. It looks confussing, but it's actually not. On the X axis, the following happens:</p>
+<p>We move to the right 1.4 units so that the pyramid is in the center of the screen. Then we multiply xloop by 2.8 and add the 1.4 to it. (we multiply by 2.8 so that the cubes are not on top of eachother (2.8 is roughly the width of the cubes when they're rotated 45 degrees). Finally we subtract yloop*1.4. This moves the cubes left depending on what row we're on. If we didn't move to the left, the pyramid would line up on the left side (wouldn't really look a pyramid would it).</p>
+<p>On the Y axis we subtract yloop from 6 otherwise the pyramid would be built upside down. Then we multiply the result by 2.4. Otherwise the cubes would be on top of eachother on the y axis (2.4 is roughly the height of each cube). Then we subtract 7 so that the pyramid starts at the bottom of the screen and is built upwards.</p>
+<p>Finally, on the Z axis we move into the screen 20 units. That way the pyramid fits nicely on the screen.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">			// Position The Cubes On The Screen
+			glTranslatef(1.4f+(float(xloop)*2.8f)-(float(yloop)*1.4f),((6.0f-float(yloop))*2.4f)-7.0f,-20.0f);
+</pre>
+<p>Now we rotate on the x axis. We'll tilt the cube towards the view by 45 degrees minus 2 multiplied by yloop. Perspective mode tilts the cubes automatically, so I subtract to compensate for the tilt. Not the best way to do it, but it works :)</p>
+<p>Finally we add xrot. This gives us keyboard control over the angle. (fun to play around with).</p>
+<p>After we've rotated on the x axis, we rotate 45 degrees on the y axis, and add yrot so we have keyboard control on the y axis.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">			glRotatef(45.0f-(2.0f*yloop)+xrot,1.0f,0.0f,0.0f);		// Tilt The Cubes Up And Down
+			glRotatef(45.0f+yrot,0.0f,1.0f,0.0f);				// Spin Cubes Left And Right
+</pre>
+<p>Next we select a box color (bright) before we actually draw the box portion of the cube. Notice we're using glColor3fv(). What this does is loads all three values (red, green, blue) from inside the {}'s at once and sets the color. 3fv stands for 3 values, floating point, v is a pointer to an array. The color we select is yloop-1 which gives us a different color for each row of the cubes. If we used xloop-1 we'd get a different color for each column.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">			glColor3fv(boxcol[yloop-1]);					// Select A Box Color
+</pre>
+<p>Now that the color is set, all we have to do is draw our box. Instead of writing out all the code to draw a box, all we do is call our display list. We do this with the command glCallList(box). box tells OpenGL to select the box display list. The box display list is the cube without its top.</p>
+<p>The box will be drawn using the color we selected with glColor3fv(), at the position we translated to.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">			glCallList(box);						// Draw The Box
+</pre>
+<p>Now we select a top color (darker) before we draw the top of the box. If you actually wanted to make Q-Bert, you'd change this color whenever Q-Bert jumped on the box. The color depends on the row (yloop-1).</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">			glColor3fv(topcol[yloop-1]);					// Select The Top Color
+</pre>
+<p>Finally, the only thing left to do is draw the top display list. This will add a darker colored lid to the box. That's it. Very easy!</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">			glCallList(top);						// Draw The Top
+		}
+	}
+	return TRUE;									// Jump Back
+}
+</pre>
+<p>The remaining changes have all been made in WinMain(). The code has been added right after our SwapBuffers(hDC) line. It check to see if we are pressing left, right, up or down, and moves the cubes accordingly.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">		SwapBuffers(hDC);							// Swap Buffers (Double Buffering)
+		if (keys[VK_LEFT])							// Left Arrow Being Pressed?
+		{
+			yrot-=0.2f;							// If So Spin Cubes Left
+		}
+		if (keys[VK_RIGHT])							// Right Arrow Being Pressed?
+		{
+			yrot+=0.2f;							// If So Spin Cubes Right
+		}
+		if (keys[VK_UP])							// Up Arrow Being Pressed?
+		{
+			xrot-=0.2f;							// If So Tilt Cubes Up
+		}
+		if (keys[VK_DOWN])							// Down Arrow Being Pressed?
+		{
+			xrot+=0.2f;							// If So Tilt Cubes Down
+		}
+</pre>
+<p>Like all the previous tutorials, make sure the title at the top of the window is correct.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">		if (keys[VK_F1])							// Is F1 Being Pressed?
+		{
+			keys[VK_F1]=FALSE;						// If So Make Key FALSE
+			KillGLWindow();							// Kill Our Current Window
+			fullscreen=!fullscreen;						// Toggle Fullscreen / Windowed Mode
+			// Recreate Our OpenGL Window
+			if (!CreateGLWindow("NeHe's Display List Tutorial",640,480,16,fullscreen))
+			{
+				return 0;						// Quit If Window Was Not Created
+			}
+		}
+	}
+}
+</pre>
+<p>By the end of this tutorial you should have a good understanding of how display lists work, how to create them, and how to display them on the screen. Display lists are great. Not only do they simplify coding complex projects, they also give you that little bit of extra speed required to maintain high framerates.</p>
+<p>I hope you've enjoy the tutorial. If you have any questions or feel somethings not clear, please email me and let me know.</p>
+<p><strong>Jeff Molofee</strong> (<strong>NeHe</strong>)</p>
+<p>* DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/vc/lesson12.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/vc/lesson12.zip'" tppabs="http://nehe.gamedev.net/data/lessons/vc/lesson12.zip">Visual C++</a> Code For This Lesson.</p>
+<p>* DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/bcb6/lesson12_bcb6.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/bcb6/lesson12_bcb6.zip'" tppabs="http://nehe.gamedev.net/data/lessons/bcb6/lesson12_bcb6.zip">Borland C++ Builder 6</a> Code For This Lesson. ( Conversion by <a href="mailto:christian@tugzip.com">Christian Kindahl</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/c_sharp/lesson12.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/c_sharp/lesson12.zip'" tppabs="http://nehe.gamedev.net/data/lessons/c_sharp/lesson12.zip">C#</a> Code For This Lesson. ( Conversion by <a href="mailto:bholley@unlnotes.unl.edu">Brian Holley</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/cwarrior/lesson12.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/cwarrior/lesson12.zip'" tppabs="http://nehe.gamedev.net/data/lessons/cwarrior/lesson12.zip">Code Warrior 5.3</a> Code For This Lesson. ( Conversion by <a href="mailto:DelusionalBeing@hotmail.com">Scott Lupton</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/cygwin/lesson12.tar.gz  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/cygwin/lesson12.tar.gz'" tppabs="http://nehe.gamedev.net/data/lessons/cygwin/lesson12.tar.gz">Cygwin</a> Code For This Lesson. ( Conversion by <a href="mailto:stephan@lazyfellow.com">Stephan Ferraro</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/delphi/lesson12.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/delphi/lesson12.zip'" tppabs="http://nehe.gamedev.net/data/lessons/delphi/lesson12.zip">Delphi</a> Code For This Lesson. ( Conversion by <a href="mailto:michal_praha@seznam.cz">Michal Tucek</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/devc/lesson12.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/devc/lesson12.zip'" tppabs="http://nehe.gamedev.net/data/lessons/devc/lesson12.zip">Dev C++</a> Code For This Lesson. ( Conversion by <a href="mailto:danprogram@hotmail.com">Dan</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/euphoria/lesson12.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/euphoria/lesson12.zip'" tppabs="http://nehe.gamedev.net/data/lessons/euphoria/lesson12.zip">Euphoria</a> Code For This Lesson. ( Conversion by <a href="mailto:1evan@sbcglobal.net">Evan Marshall</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/gameglut/lesson12.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/gameglut/lesson12.zip'" tppabs="http://nehe.gamedev.net/data/lessons/gameglut/lesson12.zip">Game GLUT</a> Code For This Lesson. ( Conversion by <a href="mailto:milix_gr@hotmail.com">Milikas Anastasios</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/irix/lesson12.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/irix/lesson12.zip'" tppabs="http://nehe.gamedev.net/data/lessons/irix/lesson12.zip">Irix</a> Code For This Lesson. ( Conversion by <a href="mailto:rpf1@york.ac.uk">Rob Fletcher</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/java/lesson12.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/java/lesson12.zip'" tppabs="http://nehe.gamedev.net/data/lessons/java/lesson12.zip">Java</a> Code For This Lesson. ( Conversion by <a href="mailto:jeff@consunet.com.au">Jeff Kirby</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/jedisdl/lesson12.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/jedisdl/lesson12.zip'" tppabs="http://nehe.gamedev.net/data/lessons/jedisdl/lesson12.zip">Jedi-SDL</a> Code For This Lesson. ( Conversion by <a href="mailto:Dominique@SavageSoftware.com.au">Dominique Louis</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/jogl/lesson12.jar  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/jogl/lesson12.jar'" tppabs="http://nehe.gamedev.net/data/lessons/jogl/lesson12.jar">JoGL</a> Code For This Lesson. ( Conversion by <a href="mailto:abezrati@hotmail.com">Abdul Bezrati</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/lccwin32/lccwin32_lesson12.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/lccwin32/lccwin32_lesson12.zip'" tppabs="http://nehe.gamedev.net/data/lessons/lccwin32/lccwin32_lesson12.zip">LCC Win32</a> Code For This Lesson. ( Conversion by <a href="mailto:rwishlaw@shaw.ca">Robert Wishlaw</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/linux/lesson12.tar.gz  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/linux/lesson12.tar.gz'" tppabs="http://nehe.gamedev.net/data/lessons/linux/lesson12.tar.gz">Linux</a> Code For This Lesson. ( Conversion by <a href="mailto:ulmont@bellsouth.net">Richard Campbell</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/linuxglx/lesson12.tar.gz  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/linuxglx/lesson12.tar.gz'" tppabs="http://nehe.gamedev.net/data/lessons/linuxglx/lesson12.tar.gz">Linux/GLX</a> Code For This Lesson. ( Conversion by <a href="mailto:Mihael.Vrbanec@stud.uni-karlsruhe.de">Mihael Vrbanec</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/linuxsdl/lesson12.tar.gz  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/linuxsdl/lesson12.tar.gz'" tppabs="http://nehe.gamedev.net/data/lessons/linuxsdl/lesson12.tar.gz">Linux/SDL</a> Code For This Lesson. ( Conversion by <a href="mailto:leggett@eecs.tulane.edu">Ti Leggett</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/lwjgl/lesson12.jar  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/lwjgl/lesson12.jar'" tppabs="http://nehe.gamedev.net/data/lessons/lwjgl/lesson12.jar">LWJGL</a> Code For This Lesson. ( Conversion by <a href="mailto:mark.bernard@rogers.com">Mark Bernard</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev.net/data/lessons/mac/lesson12.sit  \n\nThis file was not retrieved by Teleport Pro, because the server reports that this file cannot be found.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev.net/data/lessons/mac/lesson12.sit'" tppabs="http://nehe.gamedev.net/data/lessons/mac/lesson12.sit">Mac OS</a> Code For This Lesson. ( Conversion by <a href="mailto:asp@usc.edu">Anthony Parker</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/macosxcocoa/lesson12.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/macosxcocoa/lesson12.zip'" tppabs="http://nehe.gamedev.net/data/lessons/macosxcocoa/lesson12.zip">Mac OS X/Cocoa</a> Code For This Lesson. ( Conversion by <a href="mailto:blb@pobox.com">Bryan Blackburn</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/masm/lesson12.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/masm/lesson12.zip'" tppabs="http://nehe.gamedev.net/data/lessons/masm/lesson12.zip">MASM</a> Code For This Lesson. ( Conversion by <a href="mailto:scalp@bigfoot.com">Nico (Scalp)</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/openil/lesson12.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/openil/lesson12.zip'" tppabs="http://nehe.gamedev.net/data/lessons/openil/lesson12.zip">Visual C++ / OpenIL</a> Code For This Lesson. ( Conversion by <a href="mailto:doomwiz@ticnet.com">Denton Woods</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/pelles_c/lesson12.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/pelles_c/lesson12.zip'" tppabs="http://nehe.gamedev.net/data/lessons/pelles_c/lesson12.zip">Pelles C</a> Code For This Lesson. ( Conversion by <a href="mailto:pelle@smorgasbordet.com">Pelle Orinius</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/vb/lesson12.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/vb/lesson12.zip'" tppabs="http://nehe.gamedev.net/data/lessons/vb/lesson12.zip">Visual Basic</a> Code For This Lesson. ( Conversion by <a href="mailto:rosscogl@email.com">Ross Dawson</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/vs_net/lesson12.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/vs_net/lesson12.zip'" tppabs="http://nehe.gamedev.net/data/lessons/vs_net/lesson12.zip">Visual Studio .NET</a> Code For This Lesson. ( Conversion by <a href="mailto:ultimatezeus@hotmail.com">Grant James</a> )</p>
+<p>&nbsp;</p>
+<p><strong><span><a href="javascript:if(confirm('http://nehe.gamedev.net/tutorial/flag_effect_waving_texture/16002/  \n\nThis file was not retrieved by Teleport Pro, because it was unavailable, or its retrieval was aborted, or the project was stopped too soon.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev.net/tutorial/flag_effect_waving_texture/16002/'" tppabs="http://nehe.gamedev.net/data/lessons/lesson.asp?lesson=11">&lt; Lesson 11</a></span></strong><strong><span><a href="index-53.htm" tppabs="http://nehe.gamedev.net/data/lessons/lesson.asp?lesson=13">Lesson 13 &gt;</a></span></strong></p>
+
+
+</div>
+</div>
+
+
+
+            <div style="width:728px;padding:0px;margin:auto; margin-top: 10px;">
+            
+
+    
+                <!-- Leaderboard_NeHe -->
+                <div id='div-gpt-ad-1327940144417-0' style='width:728px; height:90px;'>
+                <script type='text/javascript'>
+                googletag.cmd.push(function() { googletag.display('div-gpt-ad-1327940144417-0'); });
+                </script>
+                </div>
+            
+
+                           
+            </div>   
+        </td>
+        <td class="col2">
+            
+
+
+
+
+<div style="text-align: center; padding:10px;">
+
+<script type='text/javascript'>
+    GA_googleFillSlot("Skyscraper_NeHe");
+</script>
+
+</div>
+            
+        </td>
+    </table>
+    <div id="footer">
+        <p>
+            
+    
+    © 1997-2012 Gamedev . All rights reserved.<br/>
+
+			NeHe™ and NeHe Productions™ are trademarks of GameDev.net, LLC<br/>
+			OpenGL® is a registered trademark of Silicon Graphics Inc.<br/>
+		</p>        
+		<br/>
+    </div>
+
+    
+    
+	    <script type="text/javascript" src="shCore.js" tppabs="http://nehe.gamedev.net/static/js/syntax_highlighter/shCore.js"></script>
+        <script type="text/javascript" src="shBrushCpp.js" tppabs="http://nehe.gamedev.net/static/js/syntax_highlighter/shBrushCpp.js"></script>
+	    <script type="text/javascript" src="shBrushJScript.js" tppabs="http://nehe.gamedev.net/static/js/syntax_highlighter/shBrushJScript.js"></script>
+	    <script type="text/javascript">SyntaxHighlighter.all();</script>
+    
+
+    <!-- Place this render call where appropriate -->
+    <script type="text/javascript">
+      (function() {
+        var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+        po.src = 'plusone.js'/*tpa=https://apis.google.com/js/plusone.js*/;
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+      })();
+    </script>    
+
+    
+<!-- GoogleAnalytics code -->
+<script src="urchin.js" tppabs="http://www.google-analytics.com/urchin.js" type="text/javascript">
+</script>
+<script type="text/javascript">
+_uacct = "UA-279474-2"; // Gamedev
+urchinTracker();
+_uff = 0; // Reset for second account
+_uacct = "UA-24180731-1"; // Non-GD
+urchinTracker();
+</script> 
+  </body>
+</html>

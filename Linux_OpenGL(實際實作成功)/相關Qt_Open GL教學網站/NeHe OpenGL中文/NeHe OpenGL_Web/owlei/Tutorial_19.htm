@@ -1,0 +1,1911 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<!-- 这篇文章由Dancingwind翻译，作者的联系方式zhouwei02@mails.tsinghua.edu.cn --><html>
+<head>
+<title>NeHe OpenGL教程第十九课，DancingWind翻译</title>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<style type=text/css>
+A:link {COLOR: #ccaaff; TEXT-DECORATION: none}
+A:visited {COLOR: #ccaaff; TEXT-DECORATION: none}
+A:active {COLOR: #ccaaff; TEXT-DECORATION: none}
+A:hover {COLOR: #ffccaa; TEXT-DECORATION: none}
+</style>
+</head>
+
+<br><br>
+
+<body bgcolor=#000000 text=#ffffff><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td width=326 height=130><img src="logo.png" tppabs="http://www.owlei.com/DancingWind/Pic/logo.png" width=326 height=130></td>
+    <td valign=middle align=center width="75%"><font color=#ffccaa size=+3><b><i>第19课</i></b></font></td>
+  </tr></table>
+  <!-- 上边框-->
+<table border="0" cellPadding="0" cellSpacing="0" width="100%">
+<TBODY>
+  <tr>
+    <td><img height="28" src="tl.jpg" tppabs="http://www.owlei.com/DancingWind/Pic/tl.jpg" width="28"></td>
+    <td width="100%"><img height="28" src="tc.gif" tppabs="http://www.owlei.com/DancingWind/Pic/tc.gif" width="100%"></td>
+    <td><img height="28" src="tr.gif" tppabs="http://www.owlei.com/DancingWind/Pic/tr.gif" width="28"></td>
+  </tr>
+</TBODY>
+</table>
+
+<!-- 中部-->
+<table border="0" cellPadding="0" cellSpacing="0" width="100%">
+<TBODY>
+  <tr>
+  	<!-- 中部左边框-->
+    <td  background="l.gif" tppabs="http://www.owlei.com/DancingWind/Pic/l.gif"><img src="l.gif" tppabs="http://www.owlei.com/DancingWind/Pic/l.gif" width="28" height="28"></td>
+	<!-- 中部文字部分-->
+    <td vAlign="top" width="100%">
+	<table width="100%" border="0">
+          <tr>
+            <td width="30%"><img src="lesson19.jpg" tppabs="http://www.owlei.com/DancingWind/Pic/lesson19.jpg" width="240" height="180"></td>
+            <td width="70%"><p><FONT class=head>粒子系统:</FONT></p>
+              <p><font size="3">你是否希望创建爆炸，喷泉，流星之类的效果。这一课将告诉你如何创建一个简单的例子系统，并用它来创建一种喷射的效果。</FONT></p></td>
+          </tr>
+     </table>
+      </td>
+	<!-- 中部右边框-->
+    <td background="r.gif" tppabs="http://www.owlei.com/DancingWind/Pic/r.gif"><img src="r.gif" tppabs="http://www.owlei.com/DancingWind/Pic/r.gif" width="28" height="28"></td>
+  </tr>
+</TBODY>
+</table>
+
+<!-- 下边框-->
+<table border="0" cellPadding="0" cellSpacing="0" width="100%">
+<TBODY>
+  <tr>
+    <td><img height="28" src="bl.gif" tppabs="http://www.owlei.com/DancingWind/Pic/bl.gif" width="28"></td>
+    <td width="100%"><img height="28" src="bc.gif" tppabs="http://www.owlei.com/DancingWind/Pic/bc.gif" width="100%"></td>
+    <td><img height="28" src="br.gif" tppabs="http://www.owlei.com/DancingWind/Pic/br.gif" width="28"></td>
+  </tr>
+</TBODY>
+</table>
+  <table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>欢迎来到第十九课.你已经学习了很多知识,并且现在想自己来实践.我将在这讲解一个新命令... 三角形带(我的理解就是画很多三角形来组合成我们要的形状),它非常容易使用,当画很多三角形的时候能加快你程序的运行速度.在本课中,我将会教你该如何做一个半复杂的微粒程序.一旦您了解微粒程序的原理后,在创建例如:火,烟,喷泉等效果将是很轻松的事情.我必须警告你!直到今天我从未写一个真正的粒子程序.我想写一个&quot;出名&quot;的复杂的粒子程序.我尝试过,但在我了解我不能控制所有点变疯狂之后我放弃了!!!你也许不相信我要告诉你的,但这个课程从头到尾都是我自己的想法.开始我没有一点想法,并且没有任何技术数据放在我的面前.我开始考虑粒子,突然我的脑袋装满想法(脑袋开启了??):给予每个粒子生命,任意变化颜色,速度,重力影响等等.来适应环境的变化,把每个粒子看成单一的从这个点运动到另一个点的颗粒.很快我完成了这个项目.我看看时钟然后有个想法突然出现.四个小时过去了!我偶尔记得已经停止喝咖啡,眨眼,但是4个小时...?尽管这个程序我觉得很棒,并象我想象的那么严密的运行,但它不可能是最好的粒子引擎,这个我不关心,只要他运行好就可以.并且我能把它运行在我的项目中.如果你是那种想了解透彻的人,那么你要花费很多时间在网络上查找资料并弄明白它.在程序中有很多小的代码会看起来很模糊:)本课教程所用的部分代码来自于Lesson1.但有很多新的代码,因此我将重写一些发生代码变化的部分(使它更容易了解).<br>
+      下面用到的代码来自于Lesson6,我将会增加5行新的代码在我们程序的前面.第一行&quot;stdio.h&quot;允许我们读文件中的数据.它和我们以前用在纹理映射当中是一样的.第二行定义了一些我们要在屏幕上显示的粒子的数目.告诉程序MAX_PARTICLES在这里的数值为1000.第三条行将不断分离的彩色的粒子栓牢在一起,并设置为默认情况.sp和rp用来确定空格键和返回键是否有按住.<br></td>
+    <td background="r.gif" tppabs="http://www.owlei.com/DancingWind/Pic/r.gif"><img src="r.gif" tppabs="http://www.owlei.com/DancingWind/Pic/r.gif" width="28" height="28"></td>
+  </tr>
+</table>
+
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tr>
+    <td><img src="bl.gif" tppabs="http://www.owlei.com/DancingWind/Pic/bl.gif" width="28" height="28"></td>
+    <td width="100%"><img src="bc.gif" tppabs="http://www.owlei.com/DancingWind/Pic/bc.gif" width="100%" height="28"></td>
+    <td><img src="br.gif" tppabs="http://www.owlei.com/DancingWind/Pic/br.gif" width="28" height="28"></td>
+  </tr>
+</table>
+<font color="#aaffaa" size="3">
+
+<pre>#define	MAX_PARTICLES	1000		<font
+color="#ffffaa">// 定义最大的粒子数</font>
+bool	rainbow=true;			<font
+color="#ffffaa">// 是否为彩虹模式</font>
+bool	sp;				<font color="#ffffaa">// 空格键是否被按下</font>
+bool	rp;				<font
+color="#ffffaa">// 回车键是否被按下</font>
+</pre>
+</font>
+
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tr>
+    <td><img src="tl.jpg" tppabs="http://www.owlei.com/DancingWind/Pic/tl.jpg" width="28" height="28"></td>
+    <td width="100%"><img src="tc.gif" tppabs="http://www.owlei.com/DancingWind/Pic/tc.gif" width="100%" height="28"></td>
+    <td><img src="tr.gif" tppabs="http://www.owlei.com/DancingWind/Pic/tr.gif" width="28" height="28"></td>
+  </tr>
+</table>
+
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tr>
+    <td background="l.gif" tppabs="http://www.owlei.com/DancingWind/Pic/l.gif"><img src="l.gif" tppabs="http://www.owlei.com/DancingWind/Pic/l.gif" width="28" height="28"></td>
+    <td width="100%" valign="top">下面四行是复杂的变量.变量slowdown控制粒子移动的快慢.数值愈高,移动越慢.数值越底,移动越快.如果数值降低,粒子将快速的移动!粒子的速度影响它们在荧屏中移动的距离.记住速度慢的粒子不会射很远的.变量xspeed和yspeed控制尾部的方向.xspeed将会增加粒子在x轴上速度.如果xspeed是正值粒子将会向右边移动多.如果xspeed负价值,粒子将会向左边移动多.那个值越高,就向那个方向移动比较多.yspeed工作相同的方法,但是在y轴上.因为有其它的因素影响粒子的运动,所以我要说&quot;多&quot;.xspeed和yspeed有助于在我们想要的方向上移动粒子.最后是变量zoom,我们用该变量移入或移出我们的屏幕.在粒子引擎里,有时可看见更多的图象,而且当接近你时很酷 
+      <br></td>
+    <td background="r.gif" tppabs="http://www.owlei.com/DancingWind/Pic/r.gif"><img src="r.gif" tppabs="http://www.owlei.com/DancingWind/Pic/r.gif" width="28" height="28"></td>
+  </tr>
+</table>
+
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tr>
+    <td><img src="bl.gif" tppabs="http://www.owlei.com/DancingWind/Pic/bl.gif" width="28" height="28"></td>
+    <td width="100%"><img src="bc.gif" tppabs="http://www.owlei.com/DancingWind/Pic/bc.gif" width="100%" height="28"></td>
+    <td><img src="br.gif" tppabs="http://www.owlei.com/DancingWind/Pic/br.gif" width="28" height="28"></td>
+  </tr>
+</table>
+<font color="#aaffaa" size="3">
+
+<pre>
+float	slowdown=2.0f;			<font color="#ffffaa">// 减速粒子</font>
+float	xspeed;				<font
+color="#ffffaa">// X方向的速度</font>
+float	yspeed;				<font
+color="#ffffaa">// Y方向的速度</font>
+float	zoom=-40.0f;			<font
+color="#ffffaa">// 沿Z轴缩放</font>
+</pre>
+</font>
+
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tr>
+    <td><img src="tl.jpg" tppabs="http://www.owlei.com/DancingWind/Pic/tl.jpg" width="28" height="28"></td>
+    <td width="100%"><img src="tc.gif" tppabs="http://www.owlei.com/DancingWind/Pic/tc.gif" width="100%" height="28"></td>
+    <td><img src="tr.gif" tppabs="http://www.owlei.com/DancingWind/Pic/tr.gif" width="28" height="28"></td>
+  </tr>
+</table>
+
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tr>
+    <td background="l.gif" tppabs="http://www.owlei.com/DancingWind/Pic/l.gif"><img src="l.gif" tppabs="http://www.owlei.com/DancingWind/Pic/l.gif" width="28" height="28"></td>
+    <td width="100%" valign="top">我们定义了一个复杂的循环变量叫做Loop.我们用这变量预先定义粒子并在屏幕中画粒子.col用来给予粒子不同的颜色.delay用来控制在彩虹模式中圆的颜色变化.最后,我们设定一个存储空间(粒子纹理).我用纹理而不用点的重要原因是,点的速度慢,而且挺麻烦的.其次纹理很酷:)你用一个正方形的粒子,一张你脸的小图片,一张星星的图片等等.很好控制!</td>
+    <td background="r.gif" tppabs="http://www.owlei.com/DancingWind/Pic/r.gif"><img src="r.gif" tppabs="http://www.owlei.com/DancingWind/Pic/r.gif" width="28" height="28"></td>
+  </tr>
+</table>
+
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tr>
+    <td><img src="bl.gif" tppabs="http://www.owlei.com/DancingWind/Pic/bl.gif" width="28" height="28"></td>
+    <td width="100%"><img src="bc.gif" tppabs="http://www.owlei.com/DancingWind/Pic/bc.gif" width="100%" height="28"></td>
+    <td><img src="br.gif" tppabs="http://www.owlei.com/DancingWind/Pic/br.gif" width="28" height="28"></td>
+  </tr>
+</table>
+<font color="#aaffaa" size="3">
+
+<pre>
+GLuint	loop;				<font color="#ffffaa">// 循环变量</font>
+GLuint	col;				<font
+color="#ffffaa">// 当前的颜色</font>
+GLuint	delay;				<font color="#ffffaa">// 彩虹效果延迟</font>
+</pre>
+</font>
+
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tr>
+    <td><img src="tl.jpg" tppabs="http://www.owlei.com/DancingWind/Pic/tl.jpg" width="28" height="28"></td>
+    <td width="100%"><img src="tc.gif" tppabs="http://www.owlei.com/DancingWind/Pic/tc.gif" width="100%" height="28"></td>
+    <td><img src="tr.gif" tppabs="http://www.owlei.com/DancingWind/Pic/tr.gif" width="28" height="28"></td>
+  </tr>
+</table>
+
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tr>
+    <td background="l.gif" tppabs="http://www.owlei.com/DancingWind/Pic/l.gif"><img src="l.gif" tppabs="http://www.owlei.com/DancingWind/Pic/l.gif" width="28" height="28"></td>
+    <td width="100%" valign="top">好!现在是有趣的东西.下段程序描述单一粒子结构,这是我们给予粒子的属性.我们用布尔型变量active开始,如果为true,我们的粒子为活跃的.如果为false则粒子为死的,此时我们就删除它.在程序中我没有使用活跃的,因为它很好的实现.变量life和fade来控制粒子显示多久以及显示时候的亮度.随着life数值的降低fade的数值也相应降低.这将导致一些粒子比其他粒子燃烧的时间长.<br></td>
+    <td background="r.gif" tppabs="http://www.owlei.com/DancingWind/Pic/r.gif"><img src="r.gif" tppabs="http://www.owlei.com/DancingWind/Pic/r.gif" width="28" height="28"></td>
+  </tr>
+</table>
+
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tr>
+    <td><img src="bl.gif" tppabs="http://www.owlei.com/DancingWind/Pic/bl.gif" width="28" height="28"></td>
+    <td width="100%"><img src="bc.gif" tppabs="http://www.owlei.com/DancingWind/Pic/bc.gif" width="100%" height="28"></td>
+    <td><img src="br.gif" tppabs="http://www.owlei.com/DancingWind/Pic/br.gif" width="28" height="28"></td>
+  </tr>
+</table>
+<font color="#aaffaa" size="3">
+
+<pre>
+typedef struct						<font color="#ffffaa">// 创建粒子数据结构</font>
+{
+	bool	active;					<font
+color="#ffffaa">// 是否激活</font>
+	float	life;					<font color="#ffffaa">// 粒子生命</font>
+	float	fade;					<font
+color="#ffffaa">// 衰减速度</font>
+</pre>
+</font>
+
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tr>
+    <td><img src="tl.jpg" tppabs="http://www.owlei.com/DancingWind/Pic/tl.jpg" width="28" height="28"></td>
+    <td width="100%"><img src="tc.gif" tppabs="http://www.owlei.com/DancingWind/Pic/tc.gif" width="100%" height="28"></td>
+    <td><img src="tr.gif" tppabs="http://www.owlei.com/DancingWind/Pic/tr.gif" width="28" height="28"></td>
+  </tr>
+</table>
+
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tr>
+    <td background="l.gif" tppabs="http://www.owlei.com/DancingWind/Pic/l.gif"><img src="l.gif" tppabs="http://www.owlei.com/DancingWind/Pic/l.gif" width="28" height="28"></td>
+    <td width="100%" valign="top">变量r,g和b用来表示粒子的红色强度,绿色强度和蓝色强度.当r的值变成1.0f时粒子将会很红,当三个变量全为1.0f时则粒子将变成白色.<br></td>
+    <td background="r.gif" tppabs="http://www.owlei.com/DancingWind/Pic/r.gif"><img src="r.gif" tppabs="http://www.owlei.com/DancingWind/Pic/r.gif" width="28" height="28"></td>
+  </tr>
+</table>
+
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tr>
+    <td><img src="bl.gif" tppabs="http://www.owlei.com/DancingWind/Pic/bl.gif" width="28" height="28"></td>
+    <td width="100%"><img src="bc.gif" tppabs="http://www.owlei.com/DancingWind/Pic/bc.gif" width="100%" height="28"></td>
+    <td><img src="br.gif" tppabs="http://www.owlei.com/DancingWind/Pic/br.gif" width="28" height="28"></td>
+  </tr>
+</table>
+<font color="#aaffaa" size="3">
+
+<pre>
+	float	r;					<font color="#ffffaa">// 红色值</font>
+	float	g;					<font
+color="#ffffaa">// 绿色值</font>
+	float	b;					<font color="#ffffaa">// 蓝色值</font>
+</pre>
+</font>
+
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tr>
+    <td><img src="tl.jpg" tppabs="http://www.owlei.com/DancingWind/Pic/tl.jpg" width="28" height="28"></td>
+    <td width="100%"><img src="tc.gif" tppabs="http://www.owlei.com/DancingWind/Pic/tc.gif" width="100%" height="28"></td>
+    <td><img src="tr.gif" tppabs="http://www.owlei.com/DancingWind/Pic/tr.gif" width="28" height="28"></td>
+  </tr>
+</table>
+
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tr>
+    <td background="l.gif" tppabs="http://www.owlei.com/DancingWind/Pic/l.gif"><img src="l.gif" tppabs="http://www.owlei.com/DancingWind/Pic/l.gif" width="28" height="28"></td>
+    <td width="100%" valign="top">变量x.y和z控制粒子在屏幕上显示的位置.x表示粒子在x轴上的位置.y表示y轴上的位置.z表示粒子z轴上的位置 
+      <br></td>
+    <td background="r.gif" tppabs="http://www.owlei.com/DancingWind/Pic/r.gif"><img src="r.gif" tppabs="http://www.owlei.com/DancingWind/Pic/r.gif" width="28" height="28"></td>
+  </tr>
+</table>
+
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tr>
+    <td><img src="bl.gif" tppabs="http://www.owlei.com/DancingWind/Pic/bl.gif" width="28" height="28"></td>
+    <td width="100%"><img src="bc.gif" tppabs="http://www.owlei.com/DancingWind/Pic/bc.gif" width="100%" height="28"></td>
+    <td><img src="br.gif" tppabs="http://www.owlei.com/DancingWind/Pic/br.gif" width="28" height="28"></td>
+  </tr>
+</table>
+<font color="#aaffaa" size="3">
+
+<pre>
+	float	x;					<font color="#ffffaa">// X 位置</font>
+	float	y;					<font
+color="#ffffaa">// Y 位置</font>
+	float	z;					<font color="#ffffaa">// Z 位置</font>
+</pre>
+</font>
+
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tr>
+    <td><img src="tl.jpg" tppabs="http://www.owlei.com/DancingWind/Pic/tl.jpg" width="28" height="28"></td>
+    <td width="100%"><img src="tc.gif" tppabs="http://www.owlei.com/DancingWind/Pic/tc.gif" width="100%" height="28"></td>
+    <td><img src="tr.gif" tppabs="http://www.owlei.com/DancingWind/Pic/tr.gif" width="28" height="28"></td>
+  </tr>
+</table>
+
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tr>
+    <td background="l.gif" tppabs="http://www.owlei.com/DancingWind/Pic/l.gif"><img src="l.gif" tppabs="http://www.owlei.com/DancingWind/Pic/l.gif" width="28" height="28"></td>
+    <td width="100%" valign="top"> 下面三个变量很重要.这三个变量控制粒子在每个轴上移动的快慢和方向.如果xi是负价粒子将会向左移动,正值将会向右移动.如果yi是负值粒子将会向下移动,正值将向上.最后,如果zi负值粒子将会向荧屏内部移动,正植将移向观察者. 
+    </td>
+    <td background="r.gif" tppabs="http://www.owlei.com/DancingWind/Pic/r.gif"><img src="r.gif" tppabs="http://www.owlei.com/DancingWind/Pic/r.gif" width="28" height="28"></td>
+  </tr>
+</table>
+
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tr>
+    <td><img src="bl.gif" tppabs="http://www.owlei.com/DancingWind/Pic/bl.gif" width="28" height="28"></td>
+    <td width="100%"><img src="bc.gif" tppabs="http://www.owlei.com/DancingWind/Pic/bc.gif" width="100%" height="28"></td>
+    <td><img src="br.gif" tppabs="http://www.owlei.com/DancingWind/Pic/br.gif" width="28" height="28"></td>
+  </tr>
+</table>
+<font color="#aaffaa" size="3">
+
+<pre>
+	float	xi;					<font color="#ffffaa">// X 方向</font>
+	float	yi;					<font
+color="#ffffaa">// Y 方向</font>
+	float	zi;					<font color="#ffffaa">// Z 方向</font>
+</pre>
+</font>
+
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tr>
+    <td><img src="tl.jpg" tppabs="http://www.owlei.com/DancingWind/Pic/tl.jpg" width="28" height="28"></td>
+    <td width="100%"><img src="tc.gif" tppabs="http://www.owlei.com/DancingWind/Pic/tc.gif" width="100%" height="28"></td>
+    <td><img src="tr.gif" tppabs="http://www.owlei.com/DancingWind/Pic/tr.gif" width="28" height="28"></td>
+  </tr>
+</table>
+
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tr>
+    <td background="l.gif" tppabs="http://www.owlei.com/DancingWind/Pic/l.gif"><img src="l.gif" tppabs="http://www.owlei.com/DancingWind/Pic/l.gif" width="28" height="28"></td>
+    <td width="100%" valign="top">最后,另外3个变量!每一个变量可被看成加速度.如果xg正值时,粒子将会被拉倒右边,负值将拉向左边.所以如果粒子向左移动(负的)而我们给它一个正的加速度,粒子速度将变慢.最后将向反方向移动(高中物理).yg拉下或拉上.zg拉进或拉出屏幕.<br></td>
+    <td background="r.gif" tppabs="http://www.owlei.com/DancingWind/Pic/r.gif"><img src="r.gif" tppabs="http://www.owlei.com/DancingWind/Pic/r.gif" width="28" height="28"></td>
+  </tr>
+</table>
+
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tr>
+    <td><img src="bl.gif" tppabs="http://www.owlei.com/DancingWind/Pic/bl.gif" width="28" height="28"></td>
+    <td width="100%"><img src="bc.gif" tppabs="http://www.owlei.com/DancingWind/Pic/bc.gif" width="100%" height="28"></td>
+    <td><img src="br.gif" tppabs="http://www.owlei.com/DancingWind/Pic/br.gif" width="28" height="28"></td>
+  </tr>
+</table>
+<font color="#aaffaa" size="3">
+
+<pre>
+	float	xg;					<font color="#ffffaa">// X 方向重力加速度</font>
+	float	yg;					<font
+color="#ffffaa">// Y 方向重力加速度</font>
+	float	zg;					<font color="#ffffaa">// Z 方向重力加速度</font>
+</pre>
+</font>
+
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tr>
+    <td><img src="tl.jpg" tppabs="http://www.owlei.com/DancingWind/Pic/tl.jpg" width="28" height="28"></td>
+    <td width="100%"><img src="tc.gif" tppabs="http://www.owlei.com/DancingWind/Pic/tc.gif" width="100%" height="28"></td>
+    <td><img src="tr.gif" tppabs="http://www.owlei.com/DancingWind/Pic/tr.gif" width="28" height="28"></td>
+  </tr>
+</table>
+
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tr>
+    <td background="l.gif" tppabs="http://www.owlei.com/DancingWind/Pic/l.gif"><img src="l.gif" tppabs="http://www.owlei.com/DancingWind/Pic/l.gif" width="28" height="28"></td>
+    <td width="100%" valign="top">结构的名字为particles.</td>
+    <td background="r.gif" tppabs="http://www.owlei.com/DancingWind/Pic/r.gif"><img src="r.gif" tppabs="http://www.owlei.com/DancingWind/Pic/r.gif" width="28" height="28"></td>
+  </tr>
+</table>
+
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tr>
+    <td><img src="bl.gif" tppabs="http://www.owlei.com/DancingWind/Pic/bl.gif" width="28" height="28"></td>
+    <td width="100%"><img src="bc.gif" tppabs="http://www.owlei.com/DancingWind/Pic/bc.gif" width="100%" height="28"></td>
+    <td><img src="br.gif" tppabs="http://www.owlei.com/DancingWind/Pic/br.gif" width="28" height="28"></td>
+  </tr>
+</table>
+<font color="#aaffaa" size="3">
+
+<pre>
+}
+particles;						<font color="#ffffaa">// 粒子数据结构</font>
+</pre>
+</font>
+
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tr>
+    <td><img src="tl.jpg" tppabs="http://www.owlei.com/DancingWind/Pic/tl.jpg" width="28" height="28"></td>
+    <td width="100%"><img src="tc.gif" tppabs="http://www.owlei.com/DancingWind/Pic/tc.gif" width="100%" height="28"></td>
+    <td><img src="tr.gif" tppabs="http://www.owlei.com/DancingWind/Pic/tr.gif" width="28" height="28"></td>
+  </tr>
+</table>
+
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tr>
+    <td background="l.gif" tppabs="http://www.owlei.com/DancingWind/Pic/l.gif"><img src="l.gif" tppabs="http://www.owlei.com/DancingWind/Pic/l.gif" width="28" height="28"></td>
+    <td width="100%" valign="top">下面我们创建一个数组叫particle.数组存储MAX_PARTICLES个元素.也就是说我们创建1000(MAX_PARTICLES)个粒子,存储空间为每个粒子提供相应的信息<br></td>
+    <td background="r.gif" tppabs="http://www.owlei.com/DancingWind/Pic/r.gif"><img src="r.gif" tppabs="http://www.owlei.com/DancingWind/Pic/r.gif" width="28" height="28"></td>
+  </tr>
+</table>
+
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tr>
+    <td><img src="bl.gif" tppabs="http://www.owlei.com/DancingWind/Pic/bl.gif" width="28" height="28"></td>
+    <td width="100%"><img src="bc.gif" tppabs="http://www.owlei.com/DancingWind/Pic/bc.gif" width="100%" height="28"></td>
+    <td><img src="br.gif" tppabs="http://www.owlei.com/DancingWind/Pic/br.gif" width="28" height="28"></td>
+  </tr>
+</table>
+<font color="#aaffaa" size="3">
+
+<pre>
+particles particle[MAX_PARTICLES];				<font color="#ffffaa">// 保存1000个粒子的数组</font>
+</pre>
+</font>
+
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tr>
+    <td><img src="tl.jpg" tppabs="http://www.owlei.com/DancingWind/Pic/tl.jpg" width="28" height="28"></td>
+    <td width="100%"><img src="tc.gif" tppabs="http://www.owlei.com/DancingWind/Pic/tc.gif" width="100%" height="28"></td>
+    <td><img src="tr.gif" tppabs="http://www.owlei.com/DancingWind/Pic/tr.gif" width="28" height="28"></td>
+  </tr>
+</table>
+
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tr>
+    <td background="l.gif" tppabs="http://www.owlei.com/DancingWind/Pic/l.gif"><img src="l.gif" tppabs="http://www.owlei.com/DancingWind/Pic/l.gif" width="28" height="28"></td>
+    <td width="100%" valign="top"> 在颜色数组上我们减少一些代码来存储12中不同的颜色.对每一个颜色从0到11我们存储亮红,亮绿,和亮蓝.下面的颜色表里包含12个渐变颜色从红色到紫罗兰色</td>
+    <td background="r.gif" tppabs="http://www.owlei.com/DancingWind/Pic/r.gif"><img src="r.gif" tppabs="http://www.owlei.com/DancingWind/Pic/r.gif" width="28" height="28"></td>
+  </tr>
+</table>
+
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tr>
+    <td><img src="bl.gif" tppabs="http://www.owlei.com/DancingWind/Pic/bl.gif" width="28" height="28"></td>
+    <td width="100%"><img src="bc.gif" tppabs="http://www.owlei.com/DancingWind/Pic/bc.gif" width="100%" height="28"></td>
+    <td><img src="br.gif" tppabs="http://www.owlei.com/DancingWind/Pic/br.gif" width="28" height="28"></td>
+  </tr>
+</table>
+<font color="#aaffaa" size="3">
+
+<pre>
+static GLfloat colors[12][3]=				<font color="#ffffaa">// 彩虹颜色</font>
+{
+	{1.0f,0.5f,0.5f},{1.0f,0.75f,0.5f},{1.0f,1.0f,0.5f},{0.75f,1.0f,0.5f},
+	{0.5f,1.0f,0.5f},{0.5f,1.0f,0.75f},{0.5f,1.0f,1.0f},{0.5f,0.75f,1.0f},
+	{0.5f,0.5f,1.0f},{0.75f,0.5f,1.0f},{1.0f,0.5f,1.0f},{1.0f,0.5f,0.75f}
+};
+</pre>
+</font> <font color="#aaffaa" size="3"> </font> 
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tr>
+    <td><img src="tl.jpg" tppabs="http://www.owlei.com/DancingWind/Pic/tl.jpg" width="28" height="28"></td>
+    <td width="100%"><img src="tc.gif" tppabs="http://www.owlei.com/DancingWind/Pic/tc.gif" width="100%" height="28"></td>
+    <td><img src="tr.gif" tppabs="http://www.owlei.com/DancingWind/Pic/tr.gif" width="28" height="28"></td>
+  </tr>
+</table>
+
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tr>
+    <td background="l.gif" tppabs="http://www.owlei.com/DancingWind/Pic/l.gif"><img src="l.gif" tppabs="http://www.owlei.com/DancingWind/Pic/l.gif" width="28" height="28"></td>
+    <td width="100%" valign="top"> 这段代码调用前面的代码载入位图，与前面的代码相同，只是位图的名称不同。载入一符名为Particle.bmp的位图</td>
+    <td background="r.gif" tppabs="http://www.owlei.com/DancingWind/Pic/r.gif"><img src="r.gif" tppabs="http://www.owlei.com/DancingWind/Pic/r.gif" width="28" height="28"></td>
+  </tr>
+</table>
+
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tr>
+    <td><img src="bl.gif" tppabs="http://www.owlei.com/DancingWind/Pic/bl.gif" width="28" height="28"></td>
+    <td width="100%"><img src="bc.gif" tppabs="http://www.owlei.com/DancingWind/Pic/bc.gif" width="100%" height="28"></td>
+    <td><img src="br.gif" tppabs="http://www.owlei.com/DancingWind/Pic/br.gif" width="28" height="28"></td>
+  </tr>
+</table>
+<font color="#aaffaa" size="3">
+
+<pre>
+	if (TextureImage[0]=LoadBMP(&quot;Data/Particle.bmp&quot;))	<font color="#ffffaa">// 载入粒子纹理</font>
+</pre>
+</font><font color="#aaffaa" size="3"> </font> 
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tr>
+    <td><img src="tl.jpg" tppabs="http://www.owlei.com/DancingWind/Pic/tl.jpg" width="28" height="28"></td>
+    <td width="100%"><img src="tc.gif" tppabs="http://www.owlei.com/DancingWind/Pic/tc.gif" width="100%" height="28"></td>
+    <td><img src="tr.gif" tppabs="http://www.owlei.com/DancingWind/Pic/tr.gif" width="28" height="28"></td>
+  </tr>
+</table>
+
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tr>
+    <td background="l.gif" tppabs="http://www.owlei.com/DancingWind/Pic/l.gif"><img src="l.gif" tppabs="http://www.owlei.com/DancingWind/Pic/l.gif" width="28" height="28"></td>
+    <td width="100%" valign="top">窗口改变大小的代码和前面一样，不需要改变&nbsp;</td>
+    <td background="r.gif" tppabs="http://www.owlei.com/DancingWind/Pic/r.gif"><img src="r.gif" tppabs="http://www.owlei.com/DancingWind/Pic/r.gif" width="28" height="28"></td>
+  </tr>
+</table>
+
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tr>
+    <td><img src="bl.gif" tppabs="http://www.owlei.com/DancingWind/Pic/bl.gif" width="28" height="28"></td>
+    <td width="100%"><img src="bc.gif" tppabs="http://www.owlei.com/DancingWind/Pic/bc.gif" width="100%" height="28"></td>
+    <td><img src="br.gif" tppabs="http://www.owlei.com/DancingWind/Pic/br.gif" width="28" height="28"></td>
+  </tr>
+</table>
+<font color="#aaffaa" size="3"> </font> <font color="#aaffaa" size="3"> </font> 
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tr>
+    <td><img src="tl.jpg" tppabs="http://www.owlei.com/DancingWind/Pic/tl.jpg" width="28" height="28"></td>
+    <td width="100%"><img src="tc.gif" tppabs="http://www.owlei.com/DancingWind/Pic/tc.gif" width="100%" height="28"></td>
+    <td><img src="tr.gif" tppabs="http://www.owlei.com/DancingWind/Pic/tr.gif" width="28" height="28"></td>
+  </tr>
+</table>
+
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tr>
+    <td background="l.gif" tppabs="http://www.owlei.com/DancingWind/Pic/l.gif"><img src="l.gif" tppabs="http://www.owlei.com/DancingWind/Pic/l.gif" width="28" height="28"></td>
+    <td width="100%" valign="top"> 我们使用光滑的阴影,清除背景为黑色,关闭深度测试,绑定并映射纹理.启用映射位图后我们选择粒子纹理。唯一的改变就是禁用深度测试和初始化粒子</td>
+    <td background="r.gif" tppabs="http://www.owlei.com/DancingWind/Pic/r.gif"><img src="r.gif" tppabs="http://www.owlei.com/DancingWind/Pic/r.gif" width="28" height="28"></td>
+  </tr>
+</table>
+
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tr>
+    <td><img src="bl.gif" tppabs="http://www.owlei.com/DancingWind/Pic/bl.gif" width="28" height="28"></td>
+    <td width="100%"><img src="bc.gif" tppabs="http://www.owlei.com/DancingWind/Pic/bc.gif" width="100%" height="28"></td>
+    <td><img src="br.gif" tppabs="http://www.owlei.com/DancingWind/Pic/br.gif" width="28" height="28"></td>
+  </tr>
+</table>
+<font color="#aaffaa" size="3">
+
+<pre>
+	glDisable(GL_DEPTH_TEST);						<font
+color="#ffffaa">//禁止深度测试</font>
+</pre>
+</font>
+
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tr>
+    <td><img src="tl.jpg" tppabs="http://www.owlei.com/DancingWind/Pic/tl.jpg" width="28" height="28"></td>
+    <td width="100%"><img src="tc.gif" tppabs="http://www.owlei.com/DancingWind/Pic/tc.gif" width="100%" height="28"></td>
+    <td><img src="tr.gif" tppabs="http://www.owlei.com/DancingWind/Pic/tr.gif" width="28" height="28"></td>
+  </tr>
+</table>
+
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tr>
+    <td background="l.gif" tppabs="http://www.owlei.com/DancingWind/Pic/l.gif"><img src="l.gif" tppabs="http://www.owlei.com/DancingWind/Pic/l.gif" width="28" height="28"></td>
+    <td width="100%" valign="top">下面代码初始化每个粒子.我们从活跃的粒子开始.如果粒子不活跃,它在荧屏上将不出现,无论它有多少life.当我们使粒子活跃之後,我们给它life.我怀疑给粒子生命和颜色渐变的是否是最好的方法,但当它运行一次后,效果很好!life满值是1.0f.这也给粒子完整的光亮.<br></td>
+    <td background="r.gif" tppabs="http://www.owlei.com/DancingWind/Pic/r.gif"><img src="r.gif" tppabs="http://www.owlei.com/DancingWind/Pic/r.gif" width="28" height="28"></td>
+  </tr>
+</table>
+
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tr>
+    <td><img src="bl.gif" tppabs="http://www.owlei.com/DancingWind/Pic/bl.gif" width="28" height="28"></td>
+    <td width="100%"><img src="bc.gif" tppabs="http://www.owlei.com/DancingWind/Pic/bc.gif" width="100%" height="28"></td>
+    <td><img src="br.gif" tppabs="http://www.owlei.com/DancingWind/Pic/br.gif" width="28" height="28"></td>
+  </tr>
+</table>
+<font color="#aaffaa" size="3">
+
+<pre>
+	for (loop=0;loop&lt;MAX_PARTICLES;loop++)				<font color="#ffffaa">//初始化所有的粒子</font>
+	{
+		particle[loop].active=true;					<font
+color="#ffffaa">// 使所有的粒子为激活状态</font>
+		particle[loop].life=1.0f;					<font
+color="#ffffaa">// 所有的粒子生命值为最大</font>
+</pre>
+</font>
+
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tr>
+    <td><img src="tl.jpg" tppabs="http://www.owlei.com/DancingWind/Pic/tl.jpg" width="28" height="28"></td>
+    <td width="100%"><img src="tc.gif" tppabs="http://www.owlei.com/DancingWind/Pic/tc.gif" width="100%" height="28"></td>
+    <td><img src="tr.gif" tppabs="http://www.owlei.com/DancingWind/Pic/tr.gif" width="28" height="28"></td>
+  </tr>
+</table>
+
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tr>
+    <td background="l.gif" tppabs="http://www.owlei.com/DancingWind/Pic/l.gif"><img src="l.gif" tppabs="http://www.owlei.com/DancingWind/Pic/l.gif" width="28" height="28"></td>
+    <td width="100%" valign="top"> 我们通过给定的值来设定粒子退色快慢.每次粒子被拉的时候life随着fade而减小.结束的数值将是0~99中的任意一个,然后平分1000份来得到一个很小的浮点数.最后我们把结果加上0.003f来使fade速度值不为0<br></td>
+    <td background="r.gif" tppabs="http://www.owlei.com/DancingWind/Pic/r.gif"><img src="r.gif" tppabs="http://www.owlei.com/DancingWind/Pic/r.gif" width="28" height="28"></td>
+  </tr>
+</table>
+
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tr>
+    <td><img src="bl.gif" tppabs="http://www.owlei.com/DancingWind/Pic/bl.gif" width="28" height="28"></td>
+    <td width="100%"><img src="bc.gif" tppabs="http://www.owlei.com/DancingWind/Pic/bc.gif" width="100%" height="28"></td>
+    <td><img src="br.gif" tppabs="http://www.owlei.com/DancingWind/Pic/br.gif" width="28" height="28"></td>
+  </tr>
+</table>
+<font color="#aaffaa" size="3">
+
+<pre>
+		particle[loop].fade=float(rand()%100)/1000.0f+0.003f;		<font color="#ffffaa">// 随机生成衰减速率</font>
+</pre>
+</font>
+
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tr>
+    <td><img src="tl.jpg" tppabs="http://www.owlei.com/DancingWind/Pic/tl.jpg" width="28" height="28"></td>
+    <td width="100%"><img src="tc.gif" tppabs="http://www.owlei.com/DancingWind/Pic/tc.gif" width="100%" height="28"></td>
+    <td><img src="tr.gif" tppabs="http://www.owlei.com/DancingWind/Pic/tr.gif" width="28" height="28"></td>
+  </tr>
+</table>
+
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tr>
+    <td background="l.gif" tppabs="http://www.owlei.com/DancingWind/Pic/l.gif"><img src="l.gif" tppabs="http://www.owlei.com/DancingWind/Pic/l.gif" width="28" height="28"></td>
+    <td width="100%" valign="top"> 既然粒子是活跃的,而且我们又给它生命,下面将给它颜色数值.一开始,我们就想每个粒子有不同的颜色.我怎么做才能使每个粒子与前面颜色箱里的颜色一一对应那?数学很简单,我们用loop变量乘以箱子中颜色的数目与粒子最大值(MAX_PARTICLES)的余数.这样防止最后的颜色数值大于最大的颜色数值(12).举例:900*(12/900)=12.1000*(12/1000)=12,等等<br></td>
+    <td background="r.gif" tppabs="http://www.owlei.com/DancingWind/Pic/r.gif"><img src="r.gif" tppabs="http://www.owlei.com/DancingWind/Pic/r.gif" width="28" height="28"></td>
+  </tr>
+</table>
+
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tr>
+    <td><img src="bl.gif" tppabs="http://www.owlei.com/DancingWind/Pic/bl.gif" width="28" height="28"></td>
+    <td width="100%"><img src="bc.gif" tppabs="http://www.owlei.com/DancingWind/Pic/bc.gif" width="100%" height="28"></td>
+    <td><img src="br.gif" tppabs="http://www.owlei.com/DancingWind/Pic/br.gif" width="28" height="28"></td>
+  </tr>
+</table>
+<font color="#aaffaa" size="3">
+
+<pre>
+		particle[loop].r=colors[loop*(12/MAX_PARTICLES)][0];		<font color="#ffffaa">// 粒子的红色颜色</font>
+		particle[loop].g=colors[loop*(12/MAX_PARTICLES)][1];		<font
+color="#ffffaa">// 粒子的绿色颜色</font>
+		particle[loop].b=colors[loop*(12/MAX_PARTICLES)][2];		<font
+color="#ffffaa">// 粒子的蓝色颜色</font>
+</pre>
+</font>
+
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tr>
+    <td><img src="tl.jpg" tppabs="http://www.owlei.com/DancingWind/Pic/tl.jpg" width="28" height="28"></td>
+    <td width="100%"><img src="tc.gif" tppabs="http://www.owlei.com/DancingWind/Pic/tc.gif" width="100%" height="28"></td>
+    <td><img src="tr.gif" tppabs="http://www.owlei.com/DancingWind/Pic/tr.gif" width="28" height="28"></td>
+  </tr>
+</table>
+
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tr>
+    <td background="l.gif" tppabs="http://www.owlei.com/DancingWind/Pic/l.gif"><img src="l.gif" tppabs="http://www.owlei.com/DancingWind/Pic/l.gif" width="28" height="28"></td>
+    <td width="100%" valign="top">现在设定每个粒子移动的方向和速度.我们通过将结果乘于10.0f来创造开始时的爆炸效果.我们将会以任意一个正或负值结束.这个数值将以任意速度,任意方向移动粒子.</td>
+    <td background="r.gif" tppabs="http://www.owlei.com/DancingWind/Pic/r.gif"><img src="r.gif" tppabs="http://www.owlei.com/DancingWind/Pic/r.gif" width="28" height="28"></td>
+  </tr>
+</table>
+
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tr>
+    <td><img src="bl.gif" tppabs="http://www.owlei.com/DancingWind/Pic/bl.gif" width="28" height="28"></td>
+    <td width="100%"><img src="bc.gif" tppabs="http://www.owlei.com/DancingWind/Pic/bc.gif" width="100%" height="28"></td>
+    <td><img src="br.gif" tppabs="http://www.owlei.com/DancingWind/Pic/br.gif" width="28" height="28"></td>
+  </tr>
+</table>
+<font color="#aaffaa" size="3">
+
+<pre>
+		particle[loop].xi=float((rand()%50)-26.0f)*10.0f;		<font color="#ffffaa">// 随机生成X轴方向速度</font>
+		particle[loop].yi=float((rand()%50)-25.0f)*10.0f;		<font
+color="#ffffaa">// 随机生成Y轴方向速度</font>
+		particle[loop].zi=float((rand()%50)-25.0f)*10.0f;		<font
+color="#ffffaa">// 随机生成Z轴方向速度</font>
+</pre>
+</font>
+
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tr>
+    <td><img src="tl.jpg" tppabs="http://www.owlei.com/DancingWind/Pic/tl.jpg" width="28" height="28"></td>
+    <td width="100%"><img src="tc.gif" tppabs="http://www.owlei.com/DancingWind/Pic/tc.gif" width="100%" height="28"></td>
+    <td><img src="tr.gif" tppabs="http://www.owlei.com/DancingWind/Pic/tr.gif" width="28" height="28"></td>
+  </tr>
+</table>
+
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tr>
+    <td background="l.gif" tppabs="http://www.owlei.com/DancingWind/Pic/l.gif"><img src="l.gif" tppabs="http://www.owlei.com/DancingWind/Pic/l.gif" width="28" height="28"></td>
+    <td width="100%" valign="top">最后,我们设定加速度的数值.不像一般的加速度仅仅把事物拉下,我们的加速度能拉出,拉下,拉左,拉右,拉前和拉后粒子.开始我们需要强大的向下加速度.为了达到这样的效果我们将xg设为0.0f.在x方向没有拉力.我们设yg为-0.8f来产生一个向下的拉力.如果值为正则拉向上.我们不希望粒子拉近或远离我们,所以将zg设为0.0f<br></td>
+    <td background="r.gif" tppabs="http://www.owlei.com/DancingWind/Pic/r.gif"><img src="r.gif" tppabs="http://www.owlei.com/DancingWind/Pic/r.gif" width="28" height="28"></td>
+  </tr>
+</table>
+
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tr>
+    <td><img src="bl.gif" tppabs="http://www.owlei.com/DancingWind/Pic/bl.gif" width="28" height="28"></td>
+    <td width="100%"><img src="bc.gif" tppabs="http://www.owlei.com/DancingWind/Pic/bc.gif" width="100%" height="28"></td>
+    <td><img src="br.gif" tppabs="http://www.owlei.com/DancingWind/Pic/br.gif" width="28" height="28"></td>
+  </tr>
+</table>
+<font color="#aaffaa" size="3">
+
+<pre>
+		particle[loop].xg=0.0f;						<font color="#ffffaa">// 设置X轴方向加速度为0</font>
+		particle[loop].yg=-0.8f;					<font
+color="#ffffaa">	//  设置Y轴方向加速度为-0.8</font>
+		particle[loop].zg=0.0f;						<font
+color="#ffffaa">//  设置Z轴方向加速度为0</font>
+	}
+</pre>
+</font>
+
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tr>
+    <td><img src="tl.jpg" tppabs="http://www.owlei.com/DancingWind/Pic/tl.jpg" width="28" height="28"></td>
+    <td width="100%"><img src="tc.gif" tppabs="http://www.owlei.com/DancingWind/Pic/tc.gif" width="100%" height="28"></td>
+    <td><img src="tr.gif" tppabs="http://www.owlei.com/DancingWind/Pic/tr.gif" width="28" height="28"></td>
+  </tr>
+</table>
+
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tr>
+    <td background="l.gif" tppabs="http://www.owlei.com/DancingWind/Pic/l.gif"><img src="l.gif" tppabs="http://www.owlei.com/DancingWind/Pic/l.gif" width="28" height="28"></td>
+    <td width="100%" valign="top">现在为有趣的部分.下面的部分是我们从哪里拉粒子,检查加速度等等.你要明白它是怎么实现的,因此仔细的看:)我们重置Modelview巨阵.在画粒子位置的时候用glVertex3f()命令来代替tranlations,这样在我们画粒子的时候不会改变modelview巨阵 
+      <br></td>
+    <td background="r.gif" tppabs="http://www.owlei.com/DancingWind/Pic/r.gif"><img src="r.gif" tppabs="http://www.owlei.com/DancingWind/Pic/r.gif" width="28" height="28"></td>
+  </tr>
+</table>
+
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tr>
+    <td><img src="bl.gif" tppabs="http://www.owlei.com/DancingWind/Pic/bl.gif" width="28" height="28"></td>
+    <td width="100%"><img src="bc.gif" tppabs="http://www.owlei.com/DancingWind/Pic/bc.gif" width="100%" height="28"></td>
+    <td><img src="br.gif" tppabs="http://www.owlei.com/DancingWind/Pic/br.gif" width="28" height="28"></td>
+  </tr>
+</table>
+<font color="#aaffaa" size="3">
+
+<pre>
+int DrawGLScene(GLvoid)								<font color="#ffffaa">// 绘制粒子</font>
+{
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);				<font
+color="#ffffaa">// 以黑色背景清楚</font>
+	glLoadIdentity();								<font
+color="#ffffaa">// 重置模型变换矩阵</font>
+</pre>
+</font>
+
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tr>
+    <td><img src="tl.jpg" tppabs="http://www.owlei.com/DancingWind/Pic/tl.jpg" width="28" height="28"></td>
+    <td width="100%"><img src="tc.gif" tppabs="http://www.owlei.com/DancingWind/Pic/tc.gif" width="100%" height="28"></td>
+    <td><img src="tr.gif" tppabs="http://www.owlei.com/DancingWind/Pic/tr.gif" width="28" height="28"></td>
+  </tr>
+</table>
+
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tr>
+    <td background="l.gif" tppabs="http://www.owlei.com/DancingWind/Pic/l.gif"><img src="l.gif" tppabs="http://www.owlei.com/DancingWind/Pic/l.gif" width="28" height="28"></td>
+    <td width="100%" valign="top">我们开始创建一个循环loop.这个环将会更新每一个粒子. </td>
+    <td background="r.gif" tppabs="http://www.owlei.com/DancingWind/Pic/r.gif"><img src="r.gif" tppabs="http://www.owlei.com/DancingWind/Pic/r.gif" width="28" height="28"></td>
+  </tr>
+</table>
+
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tr>
+    <td><img src="bl.gif" tppabs="http://www.owlei.com/DancingWind/Pic/bl.gif" width="28" height="28"></td>
+    <td width="100%"><img src="bc.gif" tppabs="http://www.owlei.com/DancingWind/Pic/bc.gif" width="100%" height="28"></td>
+    <td><img src="br.gif" tppabs="http://www.owlei.com/DancingWind/Pic/br.gif" width="28" height="28"></td>
+  </tr>
+</table>
+<font color="#aaffaa" size="3">
+
+<pre>
+	for (loop=0;loop&lt;MAX_PARTICLES;loop++)					<font color="#ffffaa">// 循环所有的粒子</font>
+	{
+</pre>
+</font>
+
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tr>
+    <td><img src="tl.jpg" tppabs="http://www.owlei.com/DancingWind/Pic/tl.jpg" width="28" height="28"></td>
+    <td width="100%"><img src="tc.gif" tppabs="http://www.owlei.com/DancingWind/Pic/tc.gif" width="100%" height="28"></td>
+    <td><img src="tr.gif" tppabs="http://www.owlei.com/DancingWind/Pic/tr.gif" width="28" height="28"></td>
+  </tr>
+</table>
+
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tr>
+    <td background="l.gif" tppabs="http://www.owlei.com/DancingWind/Pic/l.gif"><img src="l.gif" tppabs="http://www.owlei.com/DancingWind/Pic/l.gif" width="28" height="28"></td>
+    <td width="100%" valign="top">首先我们做的事物是检查粒子是否活跃.如果不活跃,则不被更新.在这个程序中,它们始终活跃.但是在你自己的程序中,你可能想要使某粒子不活跃 
+    </td>
+    <td background="r.gif" tppabs="http://www.owlei.com/DancingWind/Pic/r.gif"><img src="r.gif" tppabs="http://www.owlei.com/DancingWind/Pic/r.gif" width="28" height="28"></td>
+  </tr>
+</table>
+
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tr>
+    <td><img src="bl.gif" tppabs="http://www.owlei.com/DancingWind/Pic/bl.gif" width="28" height="28"></td>
+    <td width="100%"><img src="bc.gif" tppabs="http://www.owlei.com/DancingWind/Pic/bc.gif" width="100%" height="28"></td>
+    <td><img src="br.gif" tppabs="http://www.owlei.com/DancingWind/Pic/br.gif" width="28" height="28"></td>
+  </tr>
+</table>
+<font color="#aaffaa" size="3">
+
+<pre>
+		if (particle[loop].active)					<font color="#ffffaa">// 如果粒子为激活的</font>
+		{
+</pre>
+</font>
+
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tr>
+    <td><img src="tl.jpg" tppabs="http://www.owlei.com/DancingWind/Pic/tl.jpg" width="28" height="28"></td>
+    <td width="100%"><img src="tc.gif" tppabs="http://www.owlei.com/DancingWind/Pic/tc.gif" width="100%" height="28"></td>
+    <td><img src="tr.gif" tppabs="http://www.owlei.com/DancingWind/Pic/tr.gif" width="28" height="28"></td>
+  </tr>
+</table>
+
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tr>
+    <td background="l.gif" tppabs="http://www.owlei.com/DancingWind/Pic/l.gif"><img src="l.gif" tppabs="http://www.owlei.com/DancingWind/Pic/l.gif" width="28" height="28"></td>
+    <td width="100%" valign="top">下面三个变量是我们确定x,y和z位置的暂时变量.注意:在z的位置上我们加上zoom以便我们的场景在以前的基础上再移入zoom个位置.particle[loop].x告诉我们要画的x的位置.particle[loop].y告诉我们要画的y的位置.particle[loop].z告诉我们要画的z的位置 
+    </td>
+    <td background="r.gif" tppabs="http://www.owlei.com/DancingWind/Pic/r.gif"><img src="r.gif" tppabs="http://www.owlei.com/DancingWind/Pic/r.gif" width="28" height="28"></td>
+  </tr>
+</table>
+
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tr>
+    <td><img src="bl.gif" tppabs="http://www.owlei.com/DancingWind/Pic/bl.gif" width="28" height="28"></td>
+    <td width="100%"><img src="bc.gif" tppabs="http://www.owlei.com/DancingWind/Pic/bc.gif" width="100%" height="28"></td>
+    <td><img src="br.gif" tppabs="http://www.owlei.com/DancingWind/Pic/br.gif" width="28" height="28"></td>
+  </tr>
+</table>
+<font color="#aaffaa" size="3">
+
+<pre>
+			float x=particle[loop].x;				<font color="#ffffaa">// 返回X轴的位置</font>
+			float y=particle[loop].y;				<font
+color="#ffffaa">// 返回Y轴的位置</font>
+			float z=particle[loop].z+zoom;			<font
+color="#ffffaa">// 返回Z轴的位置</font>
+</pre>
+</font>
+
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tr>
+    <td><img src="tl.jpg" tppabs="http://www.owlei.com/DancingWind/Pic/tl.jpg" width="28" height="28"></td>
+    <td width="100%"><img src="tc.gif" tppabs="http://www.owlei.com/DancingWind/Pic/tc.gif" width="100%" height="28"></td>
+    <td><img src="tr.gif" tppabs="http://www.owlei.com/DancingWind/Pic/tr.gif" width="28" height="28"></td>
+  </tr>
+</table>
+
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tr>
+    <td background="l.gif" tppabs="http://www.owlei.com/DancingWind/Pic/l.gif"><img src="l.gif" tppabs="http://www.owlei.com/DancingWind/Pic/l.gif" width="28" height="28"></td>
+    <td width="100%" valign="top"> 既然知道粒子位置,就能给粒子上色.particle[loop].r保存粒子的亮红,particle[loop].g保存粒子的亮绿,particle[loop].b保存粒子的亮蓝.注意我用alpha为粒子生命.当粒子要燃尽时,它会越来越透明直到它最后消失.这就是为什么粒子的生命不应该超过1.0f.如果你想粒子燃烧时间长,可降低fade减小的速度 
+      <br></td>
+    <td background="r.gif" tppabs="http://www.owlei.com/DancingWind/Pic/r.gif"><img src="r.gif" tppabs="http://www.owlei.com/DancingWind/Pic/r.gif" width="28" height="28"></td>
+  </tr>
+</table>
+
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tr>
+    <td><img src="bl.gif" tppabs="http://www.owlei.com/DancingWind/Pic/bl.gif" width="28" height="28"></td>
+    <td width="100%"><img src="bc.gif" tppabs="http://www.owlei.com/DancingWind/Pic/bc.gif" width="100%" height="28"></td>
+    <td><img src="br.gif" tppabs="http://www.owlei.com/DancingWind/Pic/br.gif" width="28" height="28"></td>
+  </tr>
+</table>
+<font color="#aaffaa" size="3">
+
+<pre>
+			<font color="#ffffaa">// 设置粒子颜色</font>
+			glColor4f(particle[loop].r,particle[loop].g,particle[loop].b,particle[loop].life);
+</pre>
+</font>
+
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tr>
+    <td><img src="tl.jpg" tppabs="http://www.owlei.com/DancingWind/Pic/tl.jpg" width="28" height="28"></td>
+    <td width="100%"><img src="tc.gif" tppabs="http://www.owlei.com/DancingWind/Pic/tc.gif" width="100%" height="28"></td>
+    <td><img src="tr.gif" tppabs="http://www.owlei.com/DancingWind/Pic/tr.gif" width="28" height="28"></td>
+  </tr>
+</table>
+
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tr>
+    <td background="l.gif" tppabs="http://www.owlei.com/DancingWind/Pic/l.gif"><img src="l.gif" tppabs="http://www.owlei.com/DancingWind/Pic/l.gif" width="28" height="28"></td>
+    <td width="100%" valign="top"> 我们有粒子的位置,并设置颜色了.所以现在我们来画我们的粒子.我们用一个三角形带来代替一个四边形这样使程序运行快一点.很多3D 
+      card画三角形带比画四边形要快的多.有些3D card将四边形分成两个三角形,而有些不.所以我们按照我们自己的想法来,所以我们来画一个生动的三角形带 
+      <br></td>
+    <td background="r.gif" tppabs="http://www.owlei.com/DancingWind/Pic/r.gif"><img src="r.gif" tppabs="http://www.owlei.com/DancingWind/Pic/r.gif" width="28" height="28"></td>
+  </tr>
+</table>
+
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tr>
+    <td><img src="bl.gif" tppabs="http://www.owlei.com/DancingWind/Pic/bl.gif" width="28" height="28"></td>
+    <td width="100%"><img src="bc.gif" tppabs="http://www.owlei.com/DancingWind/Pic/bc.gif" width="100%" height="28"></td>
+    <td><img src="br.gif" tppabs="http://www.owlei.com/DancingWind/Pic/br.gif" width="28" height="28"></td>
+  </tr>
+</table>
+<font color="#aaffaa" size="3">
+
+<pre>
+			glBegin(GL_TRIANGLE_STRIP);				<font color="#ffffaa">// 绘制三角形带</font>
+</pre>
+</font>
+
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tr>
+    <td><img src="tl.jpg" tppabs="http://www.owlei.com/DancingWind/Pic/tl.jpg" width="28" height="28"></td>
+    <td width="100%"><img src="tc.gif" tppabs="http://www.owlei.com/DancingWind/Pic/tc.gif" width="100%" height="28"></td>
+    <td><img src="tr.gif" tppabs="http://www.owlei.com/DancingWind/Pic/tr.gif" width="28" height="28"></td>
+  </tr>
+</table>
+
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tr>
+    <td background="l.gif" tppabs="http://www.owlei.com/DancingWind/Pic/l.gif"><img src="l.gif" tppabs="http://www.owlei.com/DancingWind/Pic/l.gif" width="28" height="28"></td>
+    <td width="100%" valign="top"><font face="arial" size="-1"><img src="lesson19-1.jpg" tppabs="http://www.owlei.com/DancingWind/Pic/lesson19-1.jpg"
+    align="left" width="128" height="128" hspace="20" vspace="10"> </font><font face="arial">从红宝书引述:三角形带就是画一连续的三角形(三个边的多角形)使用vertices 
+      V0,V1,V2,然后V2,V1,V3(注意顺序),然后V2,V3,V4等等.画三角形的顺序一样才能保证三角形带为相同的表面.要求方向是很重要的,例如:剔除,最少用三点来画当第一个三角形使用vertices0,1和2被画.如果你看图片你将会理解用顶点0,1和2构造第一个三角形(顶端右边,顶端左边,底部的右边).第二个三角形用点vertices2,1和3构造.再一次,如果你注意图片,点vertices2,1和3构造第二个三角形(底部右边,顶端左边,底部左边).注意:两个三角形画点顺序相同.我看到很多的网站要求第二个三角形反方向画.这是不对的.Opengl从新整理顶点来保证所有的三角形为同一方向!注意:你在屏幕上看见的三角形个数是你叙述的顶点的个数减2.在程序中在我们有4个顶点,所以我们看见二个三角形 
+      </font><font face="arial" size="-1"><br>
+      </font></td>
+    <td background="r.gif" tppabs="http://www.owlei.com/DancingWind/Pic/r.gif"><img src="r.gif" tppabs="http://www.owlei.com/DancingWind/Pic/r.gif" width="28" height="28"></td>
+  </tr>
+</table>
+
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tr>
+    <td><img src="bl.gif" tppabs="http://www.owlei.com/DancingWind/Pic/bl.gif" width="28" height="28"></td>
+    <td width="100%"><img src="bc.gif" tppabs="http://www.owlei.com/DancingWind/Pic/bc.gif" width="100%" height="28"></td>
+    <td><img src="br.gif" tppabs="http://www.owlei.com/DancingWind/Pic/br.gif" width="28" height="28"></td>
+  </tr>
+</table>
+<font color="#aaffaa" size="3">
+
+<pre>
+				glTexCoord2d(1,1); glVertex3f(x+0.5f,y+0.5f,z); 
+				glTexCoord2d(0,1); glVertex3f(x-0.5f,y+0.5f,z); 
+				glTexCoord2d(1,0); glVertex3f(x+0.5f,y-0.5f,z); 
+				glTexCoord2d(0,0); glVertex3f(x-0.5f,y-0.5f,z); </pre>
+</font>
+
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tr>
+    <td><img src="tl.jpg" tppabs="http://www.owlei.com/DancingWind/Pic/tl.jpg" width="28" height="28"></td>
+    <td width="100%"><img src="tc.gif" tppabs="http://www.owlei.com/DancingWind/Pic/tc.gif" width="100%" height="28"></td>
+    <td><img src="tr.gif" tppabs="http://www.owlei.com/DancingWind/Pic/tr.gif" width="28" height="28"></td>
+  </tr>
+</table>
+
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tr>
+    <td background="l.gif" tppabs="http://www.owlei.com/DancingWind/Pic/l.gif"><img src="l.gif" tppabs="http://www.owlei.com/DancingWind/Pic/l.gif" width="28" height="28"></td>
+    <td width="100%" valign="top">最后我们告诉Opengl我们画完三角形带<br></td>
+    <td background="r.gif" tppabs="http://www.owlei.com/DancingWind/Pic/r.gif"><img src="r.gif" tppabs="http://www.owlei.com/DancingWind/Pic/r.gif" width="28" height="28"></td>
+  </tr>
+</table>
+
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tr>
+    <td><img src="bl.gif" tppabs="http://www.owlei.com/DancingWind/Pic/bl.gif" width="28" height="28"></td>
+    <td width="100%"><img src="bc.gif" tppabs="http://www.owlei.com/DancingWind/Pic/bc.gif" width="100%" height="28"></td>
+    <td><img src="br.gif" tppabs="http://www.owlei.com/DancingWind/Pic/br.gif" width="28" height="28"></td>
+  </tr>
+</table>
+<font color="#aaffaa" size="3">
+
+<pre>
+			glEnd();
+</pre>
+</font>
+
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tr>
+    <td><img src="tl.jpg" tppabs="http://www.owlei.com/DancingWind/Pic/tl.jpg" width="28" height="28"></td>
+    <td width="100%"><img src="tc.gif" tppabs="http://www.owlei.com/DancingWind/Pic/tc.gif" width="100%" height="28"></td>
+    <td><img src="tr.gif" tppabs="http://www.owlei.com/DancingWind/Pic/tr.gif" width="28" height="28"></td>
+  </tr>
+</table>
+
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tr>
+    <td background="l.gif" tppabs="http://www.owlei.com/DancingWind/Pic/l.gif"><img src="l.gif" tppabs="http://www.owlei.com/DancingWind/Pic/l.gif" width="28" height="28"></td>
+    <td width="100%" valign="top">现在我们能移动粒子.下面公式可能看起来很奇怪,其实很简单.首先我们取得当前粒子的x位置.然后把x运动速度加上粒子被减速1000倍后的值.所以如果粒子在x轴(0)上屏幕中心的位置,运动值(xi)为x轴方向+10(移动我们为右),而slowdown等于1,我们移向右边以10/(1*1000)或 
+      0.01f速度.如果增加slowdown值到2我们只移动0.005f.希望能帮助你了解slowdown如何工作.那也是为什么用10.0f乘开始值来叫象素移动快速,创造一个爆发效果.y和z轴用相同的公式来计算附近移动粒子<br></td>
+    <td background="r.gif" tppabs="http://www.owlei.com/DancingWind/Pic/r.gif"><img src="r.gif" tppabs="http://www.owlei.com/DancingWind/Pic/r.gif" width="28" height="28"></td>
+  </tr>
+</table>
+
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tr>
+    <td><img src="bl.gif" tppabs="http://www.owlei.com/DancingWind/Pic/bl.gif" width="28" height="28"></td>
+    <td width="100%"><img src="bc.gif" tppabs="http://www.owlei.com/DancingWind/Pic/bc.gif" width="100%" height="28"></td>
+    <td><img src="br.gif" tppabs="http://www.owlei.com/DancingWind/Pic/br.gif" width="28" height="28"></td>
+  </tr>
+</table>
+<font color="#aaffaa" size="3">
+
+<pre>
+			particle[loop].x+=particle[loop].xi/(slowdown*1000);	<font color="#ffffaa">// 更新X坐标的位置</font>
+			particle[loop].y+=particle[loop].yi/(slowdown*1000);	<font
+color="#ffffaa">// 更新Y坐标的位置</font>
+			particle[loop].z+=particle[loop].zi/(slowdown*1000);	<font
+color="#ffffaa">// 更新Z坐标的位置</font>
+</pre>
+</font>
+
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tr>
+    <td><img src="tl.jpg" tppabs="http://www.owlei.com/DancingWind/Pic/tl.jpg" width="28" height="28"></td>
+    <td width="100%"><img src="tc.gif" tppabs="http://www.owlei.com/DancingWind/Pic/tc.gif" width="100%" height="28"></td>
+    <td><img src="tr.gif" tppabs="http://www.owlei.com/DancingWind/Pic/tr.gif" width="28" height="28"></td>
+  </tr>
+</table>
+
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tr>
+    <td background="l.gif" tppabs="http://www.owlei.com/DancingWind/Pic/l.gif"><img src="l.gif" tppabs="http://www.owlei.com/DancingWind/Pic/l.gif" width="28" height="28"></td>
+    <td width="100%" valign="top"> 在计算出下一步粒子移到那里,开始考虑重力和阻力.在下面的第一行,将阻力(xg)和移动速度(xi)相加.我们的移动速度是10和阻力是1.每时每刻粒子都在抵抗阻力.第二次画粒子时,阻力开始作用,移动速度将会从10掉到9.第三次画粒子时,阻力再一次作用,移动速度降低到8.如果粒子燃烧为超过10次重画,它将会最后结束,并向相反方向移动.因为移动速度会变成负值.阻力同样使用于y和z移动速度 
+    </td>
+    <td background="r.gif" tppabs="http://www.owlei.com/DancingWind/Pic/r.gif"><img src="r.gif" tppabs="http://www.owlei.com/DancingWind/Pic/r.gif" width="28" height="28"></td>
+  </tr>
+</table>
+
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tr>
+    <td><img src="bl.gif" tppabs="http://www.owlei.com/DancingWind/Pic/bl.gif" width="28" height="28"></td>
+    <td width="100%"><img src="bc.gif" tppabs="http://www.owlei.com/DancingWind/Pic/bc.gif" width="100%" height="28"></td>
+    <td><img src="br.gif" tppabs="http://www.owlei.com/DancingWind/Pic/br.gif" width="28" height="28"></td>
+  </tr>
+</table>
+<font color="#aaffaa" size="3">
+
+<pre>
+			particle[loop].xi+=particle[loop].xg;			<font color="#ffffaa">// 更新X轴方向速度大小</font>
+			particle[loop].yi+=particle[loop].yg;			<font
+color="#ffffaa">// 更新Y轴方向速度大小</font>
+			particle[loop].zi+=particle[loop].zg;			<font
+color="#ffffaa">// 更新Z轴方向速度大小</font>
+</pre>
+</font>
+
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tr>
+    <td><img src="tl.jpg" tppabs="http://www.owlei.com/DancingWind/Pic/tl.jpg" width="28" height="28"></td>
+    <td width="100%"><img src="tc.gif" tppabs="http://www.owlei.com/DancingWind/Pic/tc.gif" width="100%" height="28"></td>
+    <td><img src="tr.gif" tppabs="http://www.owlei.com/DancingWind/Pic/tr.gif" width="28" height="28"></td>
+  </tr>
+</table>
+
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tr>
+    <td background="l.gif" tppabs="http://www.owlei.com/DancingWind/Pic/l.gif"><img src="l.gif" tppabs="http://www.owlei.com/DancingWind/Pic/l.gif" width="28" height="28"></td>
+    <td width="100%" valign="top">下行将粒子的生命减少.如果我们不这么做,粒子无法烧尽.我们用粒子当前的life减去当前的fade值.每粒子都有不同的fade值,因此他们全部将会以不同的速度烧尽 
+      <br></td>
+    <td background="r.gif" tppabs="http://www.owlei.com/DancingWind/Pic/r.gif"><img src="r.gif" tppabs="http://www.owlei.com/DancingWind/Pic/r.gif" width="28" height="28"></td>
+  </tr>
+</table>
+
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tr>
+    <td><img src="bl.gif" tppabs="http://www.owlei.com/DancingWind/Pic/bl.gif" width="28" height="28"></td>
+    <td width="100%"><img src="bc.gif" tppabs="http://www.owlei.com/DancingWind/Pic/bc.gif" width="100%" height="28"></td>
+    <td><img src="br.gif" tppabs="http://www.owlei.com/DancingWind/Pic/br.gif" width="28" height="28"></td>
+  </tr>
+</table>
+<font color="#aaffaa" size="3">
+
+<pre>
+			particle[loop].life-=particle[loop].fade;		<font color="#ffffaa">// 减少粒子的生命值</font>
+</pre>
+</font>
+
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tr>
+    <td><img src="tl.jpg" tppabs="http://www.owlei.com/DancingWind/Pic/tl.jpg" width="28" height="28"></td>
+    <td width="100%"><img src="tc.gif" tppabs="http://www.owlei.com/DancingWind/Pic/tc.gif" width="100%" height="28"></td>
+    <td><img src="tr.gif" tppabs="http://www.owlei.com/DancingWind/Pic/tr.gif" width="28" height="28"></td>
+  </tr>
+</table>
+
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tr>
+    <td background="l.gif" tppabs="http://www.owlei.com/DancingWind/Pic/l.gif"><img src="l.gif" tppabs="http://www.owlei.com/DancingWind/Pic/l.gif" width="28" height="28"></td>
+    <td width="100%" valign="top">现在我们检查当生命为零的话粒子是否活着 </td>
+    <td background="r.gif" tppabs="http://www.owlei.com/DancingWind/Pic/r.gif"><img src="r.gif" tppabs="http://www.owlei.com/DancingWind/Pic/r.gif" width="28" height="28"></td>
+  </tr>
+</table>
+
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tr>
+    <td><img src="bl.gif" tppabs="http://www.owlei.com/DancingWind/Pic/bl.gif" width="28" height="28"></td>
+    <td width="100%"><img src="bc.gif" tppabs="http://www.owlei.com/DancingWind/Pic/bc.gif" width="100%" height="28"></td>
+    <td><img src="br.gif" tppabs="http://www.owlei.com/DancingWind/Pic/br.gif" width="28" height="28"></td>
+  </tr>
+</table>
+<font color="#aaffaa" size="3">
+
+<pre>
+			if (particle[loop].life&lt;0.0f)					<font color="#ffffaa">// 如果粒子生命值小于0</font>
+			{
+</pre>
+</font>
+
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tr>
+    <td><img src="tl.jpg" tppabs="http://www.owlei.com/DancingWind/Pic/tl.jpg" width="28" height="28"></td>
+    <td width="100%"><img src="tc.gif" tppabs="http://www.owlei.com/DancingWind/Pic/tc.gif" width="100%" height="28"></td>
+    <td><img src="tr.gif" tppabs="http://www.owlei.com/DancingWind/Pic/tr.gif" width="28" height="28"></td>
+  </tr>
+</table>
+
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tr>
+    <td background="l.gif" tppabs="http://www.owlei.com/DancingWind/Pic/l.gif"><img src="l.gif" tppabs="http://www.owlei.com/DancingWind/Pic/l.gif" width="28" height="28"></td>
+    <td width="100%" valign="top">如果粒子是小时(烧尽),我们将会使它复原.我们给它全值生命和新的衰弱速度.</td>
+    <td background="r.gif" tppabs="http://www.owlei.com/DancingWind/Pic/r.gif"><img src="r.gif" tppabs="http://www.owlei.com/DancingWind/Pic/r.gif" width="28" height="28"></td>
+  </tr>
+</table>
+
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tr>
+    <td><img src="bl.gif" tppabs="http://www.owlei.com/DancingWind/Pic/bl.gif" width="28" height="28"></td>
+    <td width="100%"><img src="bc.gif" tppabs="http://www.owlei.com/DancingWind/Pic/bc.gif" width="100%" height="28"></td>
+    <td><img src="br.gif" tppabs="http://www.owlei.com/DancingWind/Pic/br.gif" width="28" height="28"></td>
+  </tr>
+</table>
+<font color="#aaffaa" size="3">
+
+<pre>
+				particle[loop].life=1.0f;				<font color="#ffffaa">// 产生一个新的粒子</font>
+				particle[loop].fade=float(rand()%100)/1000.0f+0.003f;	<font
+color="#ffffaa">// 随机生成衰减速率</font>
+</pre>
+</font>
+
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tr>
+    <td><img src="tl.jpg" tppabs="http://www.owlei.com/DancingWind/Pic/tl.jpg" width="28" height="28"></td>
+    <td width="100%"><img src="tc.gif" tppabs="http://www.owlei.com/DancingWind/Pic/tc.gif" width="100%" height="28"></td>
+    <td><img src="tr.gif" tppabs="http://www.owlei.com/DancingWind/Pic/tr.gif" width="28" height="28"></td>
+  </tr>
+</table>
+
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tr>
+    <td background="l.gif" tppabs="http://www.owlei.com/DancingWind/Pic/l.gif"><img src="l.gif" tppabs="http://www.owlei.com/DancingWind/Pic/l.gif" width="28" height="28"></td>
+    <td width="100%" valign="top">我们也重新设定粒子在屏幕中心放置.我们重新设定粒子的x,y和z位置为零</td>
+    <td background="r.gif" tppabs="http://www.owlei.com/DancingWind/Pic/r.gif"><img src="r.gif" tppabs="http://www.owlei.com/DancingWind/Pic/r.gif" width="28" height="28"></td>
+  </tr>
+</table>
+
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tr>
+    <td><img src="bl.gif" tppabs="http://www.owlei.com/DancingWind/Pic/bl.gif" width="28" height="28"></td>
+    <td width="100%"><img src="bc.gif" tppabs="http://www.owlei.com/DancingWind/Pic/bc.gif" width="100%" height="28"></td>
+    <td><img src="br.gif" tppabs="http://www.owlei.com/DancingWind/Pic/br.gif" width="28" height="28"></td>
+  </tr>
+</table>
+<font color="#aaffaa" size="3">
+
+<pre>
+				particle[loop].x=0.0f;					<font color="#ffffaa">// 新粒子出现在屏幕的中央</font>
+				particle[loop].y=0.0f;					
+				particle[loop].z=0.0f;					</pre>
+</font>
+
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tr>
+    <td><img src="tl.jpg" tppabs="http://www.owlei.com/DancingWind/Pic/tl.jpg" width="28" height="28"></td>
+    <td width="100%"><img src="tc.gif" tppabs="http://www.owlei.com/DancingWind/Pic/tc.gif" width="100%" height="28"></td>
+    <td><img src="tr.gif" tppabs="http://www.owlei.com/DancingWind/Pic/tr.gif" width="28" height="28"></td>
+  </tr>
+</table>
+
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tr>
+    <td background="l.gif" tppabs="http://www.owlei.com/DancingWind/Pic/l.gif"><img src="l.gif" tppabs="http://www.owlei.com/DancingWind/Pic/l.gif" width="28" height="28"></td>
+    <td width="100%" valign="top">在粒子从新设置之后,将给它新的移动速度/方向.注意:我增加最大和最小值,粒子移动速度为从50到60的任意值,但是这次我们没将移动速度乘10.我们这次不想要一个爆发的效果,而要比较慢地移动粒子.也注意我把xspeed和x轴移动速度相加,y轴移动速度和yspeed相加.这个控制粒子的移动方向.</td>
+    <td background="r.gif" tppabs="http://www.owlei.com/DancingWind/Pic/r.gif"><img src="r.gif" tppabs="http://www.owlei.com/DancingWind/Pic/r.gif" width="28" height="28"></td>
+  </tr>
+</table>
+
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tr>
+    <td><img src="bl.gif" tppabs="http://www.owlei.com/DancingWind/Pic/bl.gif" width="28" height="28"></td>
+    <td width="100%"><img src="bc.gif" tppabs="http://www.owlei.com/DancingWind/Pic/bc.gif" width="100%" height="28"></td>
+    <td><img src="br.gif" tppabs="http://www.owlei.com/DancingWind/Pic/br.gif" width="28" height="28"></td>
+  </tr>
+</table>
+<font color="#aaffaa" size="3">
+
+<pre>
+				particle[loop].xi=xspeed+float((rand()%60)-32.0f);	<font color="#ffffaa">// 随机生成粒子速度</font>
+				particle[loop].yi=yspeed+float((rand()%60)-30.0f);	
+				particle[loop].zi=float((rand()%60)-30.0f);		</pre>
+</font>
+
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tr>
+    <td><img src="tl.jpg" tppabs="http://www.owlei.com/DancingWind/Pic/tl.jpg" width="28" height="28"></td>
+    <td width="100%"><img src="tc.gif" tppabs="http://www.owlei.com/DancingWind/Pic/tc.gif" width="100%" height="28"></td>
+    <td><img src="tr.gif" tppabs="http://www.owlei.com/DancingWind/Pic/tr.gif" width="28" height="28"></td>
+  </tr>
+</table>
+
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tr>
+    <td background="l.gif" tppabs="http://www.owlei.com/DancingWind/Pic/l.gif"><img src="l.gif" tppabs="http://www.owlei.com/DancingWind/Pic/l.gif" width="28" height="28"></td>
+    <td width="100%" valign="top"> 最后我们分配粒子一种新的颜色.变量col保存一个数字从1到11(12种颜色),我们用这个变量去找红,绿,蓝亮度在颜色箱里面.下面第一行表示红色的强度,数值保存在colors[col][0].所以如果col是0,红色的亮度就是1.0f.绿色的和蓝色的值用相同的方法读取.如果你不了解为什么红色亮度为1.0f那col就为0.我将一点点的解释.看着程序的最前面.找到那行:static 
+      GLfloat colors[12][3].注意:12行3列.三个数字的第一行是红色强度.第二行是绿色强度而且第三行是蓝色强度.[0],[1]和[2]下面描述的1st,2nd和3rd就是我刚提及的.如果col等于0,我们要看第一个组.11 
+      是最後一个组(第12种颜色).<br></td>
+    <td background="r.gif" tppabs="http://www.owlei.com/DancingWind/Pic/r.gif"><img src="r.gif" tppabs="http://www.owlei.com/DancingWind/Pic/r.gif" width="28" height="28"></td>
+  </tr>
+</table>
+
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tr>
+    <td><img src="bl.gif" tppabs="http://www.owlei.com/DancingWind/Pic/bl.gif" width="28" height="28"></td>
+    <td width="100%"><img src="bc.gif" tppabs="http://www.owlei.com/DancingWind/Pic/bc.gif" width="100%" height="28"></td>
+    <td><img src="br.gif" tppabs="http://www.owlei.com/DancingWind/Pic/br.gif" width="28" height="28"></td>
+  </tr>
+</table>
+<font color="#aaffaa" size="3">
+
+<pre>
+				particle[loop].r=colors[col][0];			<font color="#ffffaa">// 设置粒子颜色</font>
+				particle[loop].g=colors[col][1];			
+				particle[loop].b=colors[col][2];			
+			}
+</pre>
+</font>
+
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tr>
+    <td><img src="tl.jpg" tppabs="http://www.owlei.com/DancingWind/Pic/tl.jpg" width="28" height="28"></td>
+    <td width="100%"><img src="tc.gif" tppabs="http://www.owlei.com/DancingWind/Pic/tc.gif" width="100%" height="28"></td>
+    <td><img src="tr.gif" tppabs="http://www.owlei.com/DancingWind/Pic/tr.gif" width="28" height="28"></td>
+  </tr>
+</table>
+
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tr>
+    <td background="l.gif" tppabs="http://www.owlei.com/DancingWind/Pic/l.gif"><img src="l.gif" tppabs="http://www.owlei.com/DancingWind/Pic/l.gif" width="28" height="28"></td>
+    <td width="100%" valign="top">下行描述加速度的数值是多少.通过小键盘8号键,我们增加yg(y 地心引力)值.这引起向上的力.如果这个程序在循环外面,那么我们必须生成另一个循环做相同的工作,因此我们最好放在这里<br></td>
+    <td background="r.gif" tppabs="http://www.owlei.com/DancingWind/Pic/r.gif"><img src="r.gif" tppabs="http://www.owlei.com/DancingWind/Pic/r.gif" width="28" height="28"></td>
+  </tr>
+</table>
+
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tr>
+    <td><img src="bl.gif" tppabs="http://www.owlei.com/DancingWind/Pic/bl.gif" width="28" height="28"></td>
+    <td width="100%"><img src="bc.gif" tppabs="http://www.owlei.com/DancingWind/Pic/bc.gif" width="100%" height="28"></td>
+    <td><img src="br.gif" tppabs="http://www.owlei.com/DancingWind/Pic/br.gif" width="28" height="28"></td>
+  </tr>
+</table>
+<font color="#aaffaa" size="3">
+
+<pre>
+			<font color="#ffffaa">// 如果小键盘8被按住，增加Y轴方向的加速度</font>
+			if (keys[VK_NUMPAD8] &amp;&amp; (particle[loop].yg&lt;1.5f)) particle[loop].yg+=0.01f;
+</pre>
+</font>
+
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tr>
+    <td><img src="tl.jpg" tppabs="http://www.owlei.com/DancingWind/Pic/tl.jpg" width="28" height="28"></td>
+    <td width="100%"><img src="tc.gif" tppabs="http://www.owlei.com/DancingWind/Pic/tc.gif" width="100%" height="28"></td>
+    <td><img src="tr.gif" tppabs="http://www.owlei.com/DancingWind/Pic/tr.gif" width="28" height="28"></td>
+  </tr>
+</table>
+
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tr>
+    <td background="l.gif" tppabs="http://www.owlei.com/DancingWind/Pic/l.gif"><img src="l.gif" tppabs="http://www.owlei.com/DancingWind/Pic/l.gif" width="28" height="28"></td>
+    <td width="100%" valign="top">这行是产生相反的效果.通过2号键,减小yg值,引起向下的力<br></td>
+    <td background="r.gif" tppabs="http://www.owlei.com/DancingWind/Pic/r.gif"><img src="r.gif" tppabs="http://www.owlei.com/DancingWind/Pic/r.gif" width="28" height="28"></td>
+  </tr>
+</table>
+
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tr>
+    <td><img src="bl.gif" tppabs="http://www.owlei.com/DancingWind/Pic/bl.gif" width="28" height="28"></td>
+    <td width="100%"><img src="bc.gif" tppabs="http://www.owlei.com/DancingWind/Pic/bc.gif" width="100%" height="28"></td>
+    <td><img src="br.gif" tppabs="http://www.owlei.com/DancingWind/Pic/br.gif" width="28" height="28"></td>
+  </tr>
+</table>
+<font color="#aaffaa" size="3">
+
+<pre>
+			<font color="#ffffaa">// 如果小键盘2被按住，减少Y轴方向的加速度</font>
+			if (keys[VK_NUMPAD2] &amp;&amp; (particle[loop].yg&gt;-1.5f)) particle[loop].yg-=0.01f;
+</pre>
+</font>
+
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tr>
+    <td><img src="tl.jpg" tppabs="http://www.owlei.com/DancingWind/Pic/tl.jpg" width="28" height="28"></td>
+    <td width="100%"><img src="tc.gif" tppabs="http://www.owlei.com/DancingWind/Pic/tc.gif" width="100%" height="28"></td>
+    <td><img src="tr.gif" tppabs="http://www.owlei.com/DancingWind/Pic/tr.gif" width="28" height="28"></td>
+  </tr>
+</table>
+
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tr>
+    <td background="l.gif" tppabs="http://www.owlei.com/DancingWind/Pic/l.gif"><img src="l.gif" tppabs="http://www.owlei.com/DancingWind/Pic/l.gif" width="28" height="28"></td>
+    <td width="100%" valign="top">现在更改向右的拉力.如果按下6号键时增加向右的拉力.<br></td>
+    <td background="r.gif" tppabs="http://www.owlei.com/DancingWind/Pic/r.gif"><img src="r.gif" tppabs="http://www.owlei.com/DancingWind/Pic/r.gif" width="28" height="28"></td>
+  </tr>
+</table>
+
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tr>
+    <td><img src="bl.gif" tppabs="http://www.owlei.com/DancingWind/Pic/bl.gif" width="28" height="28"></td>
+    <td width="100%"><img src="bc.gif" tppabs="http://www.owlei.com/DancingWind/Pic/bc.gif" width="100%" height="28"></td>
+    <td><img src="br.gif" tppabs="http://www.owlei.com/DancingWind/Pic/br.gif" width="28" height="28"></td>
+  </tr>
+</table>
+<font color="#aaffaa" size="3">
+
+<pre>
+			<font color="#ffffaa">// 如果小键盘6被按住，增加X轴方向的加速度</font>
+			if (keys[VK_NUMPAD6] &amp;&amp; (particle[loop].xg&lt;1.5f)) particle[loop].xg+=0.01f;
+</pre>
+</font>
+
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tr>
+    <td><img src="tl.jpg" tppabs="http://www.owlei.com/DancingWind/Pic/tl.jpg" width="28" height="28"></td>
+    <td width="100%"><img src="tc.gif" tppabs="http://www.owlei.com/DancingWind/Pic/tc.gif" width="100%" height="28"></td>
+    <td><img src="tr.gif" tppabs="http://www.owlei.com/DancingWind/Pic/tr.gif" width="28" height="28"></td>
+  </tr>
+</table>
+
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tr>
+    <td background="l.gif" tppabs="http://www.owlei.com/DancingWind/Pic/l.gif"><img src="l.gif" tppabs="http://www.owlei.com/DancingWind/Pic/l.gif" width="28" height="28"></td>
+    <td width="100%" valign="top">最后如果4号键被按下则增加向左的拉力.这些按键给了我们很酷的结果.举例来说:你可以用粒子造一条向上设的水流.通过增加向下的引力可以形成泉水<br></td>
+    <td background="r.gif" tppabs="http://www.owlei.com/DancingWind/Pic/r.gif"><img src="r.gif" tppabs="http://www.owlei.com/DancingWind/Pic/r.gif" width="28" height="28"></td>
+  </tr>
+</table>
+
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tr>
+    <td><img src="bl.gif" tppabs="http://www.owlei.com/DancingWind/Pic/bl.gif" width="28" height="28"></td>
+    <td width="100%"><img src="bc.gif" tppabs="http://www.owlei.com/DancingWind/Pic/bc.gif" width="100%" height="28"></td>
+    <td><img src="br.gif" tppabs="http://www.owlei.com/DancingWind/Pic/br.gif" width="28" height="28"></td>
+  </tr>
+</table>
+<font color="#aaffaa" size="3">
+
+<pre>
+			<font color="#ffffaa">// 如果小键盘4被按住，减少X轴方向的加速度</font>
+			if (keys[VK_NUMPAD4] &amp;&amp; (particle[loop].xg&gt;-1.5f)) particle[loop].xg-=0.01f;
+</pre>
+</font>
+
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tr>
+    <td><img src="tl.jpg" tppabs="http://www.owlei.com/DancingWind/Pic/tl.jpg" width="28" height="28"></td>
+    <td width="100%"><img src="tc.gif" tppabs="http://www.owlei.com/DancingWind/Pic/tc.gif" width="100%" height="28"></td>
+    <td><img src="tr.gif" tppabs="http://www.owlei.com/DancingWind/Pic/tr.gif" width="28" height="28"></td>
+  </tr>
+</table>
+
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tr>
+    <td background="l.gif" tppabs="http://www.owlei.com/DancingWind/Pic/l.gif"><img src="l.gif" tppabs="http://www.owlei.com/DancingWind/Pic/l.gif" width="28" height="28"></td>
+    <td width="100%" valign="top">我仅仅为乐趣增加了一些代码.我的兄弟产生很棒的效果:)通过按住tab键所有粒子都回到屏幕中心.所有的粒子在从新开始运动,再产生一个大的爆发.在粒子变弱之后,你最初的效果会再一次出现 
+      <br></td>
+    <td background="r.gif" tppabs="http://www.owlei.com/DancingWind/Pic/r.gif"><img src="r.gif" tppabs="http://www.owlei.com/DancingWind/Pic/r.gif" width="28" height="28"></td>
+  </tr>
+</table>
+
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tr>
+    <td><img src="bl.gif" tppabs="http://www.owlei.com/DancingWind/Pic/bl.gif" width="28" height="28"></td>
+    <td width="100%"><img src="bc.gif" tppabs="http://www.owlei.com/DancingWind/Pic/bc.gif" width="100%" height="28"></td>
+    <td><img src="br.gif" tppabs="http://www.owlei.com/DancingWind/Pic/br.gif" width="28" height="28"></td>
+  </tr>
+</table>
+<font color="#aaffaa" size="3">
+
+<pre>
+			if (keys[VK_TAB])						<font color="#ffffaa">// 按Tab键，使粒子回到原点</font>
+			{
+				particle[loop].x=0.0f;					
+				particle[loop].y=0.0f;					
+				particle[loop].z=0.0f;					
+				particle[loop].xi=float((rand()%50)-26.0f)*10.0f;	<font
+color="#ffffaa">// 随机生成速度</font>
+				particle[loop].yi=float((rand()%50)-25.0f)*10.0f;	
+				particle[loop].zi=float((rand()%50)-25.0f)*10.0f;	
+			}
+		}
+    }
+	return TRUE;									<font
+color="#ffffaa">// 绘制完毕成功返回</font>
+}
+</pre>
+</font>
+
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tr>
+    <td><img src="tl.jpg" tppabs="http://www.owlei.com/DancingWind/Pic/tl.jpg" width="28" height="28"></td>
+    <td width="100%"><img src="tc.gif" tppabs="http://www.owlei.com/DancingWind/Pic/tc.gif" width="100%" height="28"></td>
+    <td><img src="tr.gif" tppabs="http://www.owlei.com/DancingWind/Pic/tr.gif" width="28" height="28"></td>
+  </tr>
+</table>
+
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tr>
+    <td background="l.gif" tppabs="http://www.owlei.com/DancingWind/Pic/l.gif"><img src="l.gif" tppabs="http://www.owlei.com/DancingWind/Pic/l.gif" width="28" height="28"></td>
+    <td width="100%" valign="top">代码KillGLWindow(),CreateGLWindow()和WndProc()中没有改变,所以我们直接跳到WinMain().我将重写代码</td>
+    <td background="r.gif" tppabs="http://www.owlei.com/DancingWind/Pic/r.gif"><img src="r.gif" tppabs="http://www.owlei.com/DancingWind/Pic/r.gif" width="28" height="28"></td>
+  </tr>
+</table>
+
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tr>
+    <td><img src="bl.gif" tppabs="http://www.owlei.com/DancingWind/Pic/bl.gif" width="28" height="28"></td>
+    <td width="100%"><img src="bc.gif" tppabs="http://www.owlei.com/DancingWind/Pic/bc.gif" width="100%" height="28"></td>
+    <td><img src="br.gif" tppabs="http://www.owlei.com/DancingWind/Pic/br.gif" width="28" height="28"></td>
+  </tr>
+</table>
+<font color="#aaffaa" size="3"> </font><font color="#aaffaa" size="3"> </font> 
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tr>
+    <td><img src="tl.jpg" tppabs="http://www.owlei.com/DancingWind/Pic/tl.jpg" width="28" height="28"></td>
+    <td width="100%"><img src="tc.gif" tppabs="http://www.owlei.com/DancingWind/Pic/tc.gif" width="100%" height="28"></td>
+    <td><img src="tr.gif" tppabs="http://www.owlei.com/DancingWind/Pic/tr.gif" width="28" height="28"></td>
+  </tr>
+</table>
+
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tr>
+    <td background="l.gif" tppabs="http://www.owlei.com/DancingWind/Pic/l.gif"><img src="l.gif" tppabs="http://www.owlei.com/DancingWind/Pic/l.gif" width="28" height="28"></td>
+    <td width="100%" valign="top">我喜欢简单的代码.在一行上不想包含很多东西,所以使代码象一个清洁工:)下面的代码检查&quot;+&quot;是否被按下.如果它和slowdown一起实现则slowdown减少0.01f.粒子就可以较快速地移动.<br></td>
+    <td background="r.gif" tppabs="http://www.owlei.com/DancingWind/Pic/r.gif"><img src="r.gif" tppabs="http://www.owlei.com/DancingWind/Pic/r.gif" width="28" height="28"></td>
+  </tr>
+</table>
+
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tr>
+    <td><img src="bl.gif" tppabs="http://www.owlei.com/DancingWind/Pic/bl.gif" width="28" height="28"></td>
+    <td width="100%"><img src="bc.gif" tppabs="http://www.owlei.com/DancingWind/Pic/bc.gif" width="100%" height="28"></td>
+    <td><img src="br.gif" tppabs="http://www.owlei.com/DancingWind/Pic/br.gif" width="28" height="28"></td>
+  </tr>
+</table>
+<font color="#aaffaa" size="3">
+
+<pre>
+				if (keys[VK_ADD] &amp;&amp; (slowdown&gt;1.0f)) slowdown-=0.01f;		<font
+color="#ffffaa">// 按+号，加速粒子</font>
+</pre>
+</font>
+
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tr>
+    <td><img src="tl.jpg" tppabs="http://www.owlei.com/DancingWind/Pic/tl.jpg" width="28" height="28"></td>
+    <td width="100%"><img src="tc.gif" tppabs="http://www.owlei.com/DancingWind/Pic/tc.gif" width="100%" height="28"></td>
+    <td><img src="tr.gif" tppabs="http://www.owlei.com/DancingWind/Pic/tr.gif" width="28" height="28"></td>
+  </tr>
+</table>
+
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tr>
+    <td background="l.gif" tppabs="http://www.owlei.com/DancingWind/Pic/l.gif"><img src="l.gif" tppabs="http://www.owlei.com/DancingWind/Pic/l.gif" width="28" height="28"></td>
+    <td width="100%" valign="top">下面的代码检查&quot;-&quot;是否被按下.如果它和slowdown一起实现则slowdown增加0.01f.粒子就可以较慢速地移动.我实质的极限是4.0f,我不想它太慢的运动,你可以随你的要求改变最大最小值</td>
+    <td background="r.gif" tppabs="http://www.owlei.com/DancingWind/Pic/r.gif"><img src="r.gif" tppabs="http://www.owlei.com/DancingWind/Pic/r.gif" width="28" height="28"></td>
+  </tr>
+</table>
+
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tr>
+    <td><img src="bl.gif" tppabs="http://www.owlei.com/DancingWind/Pic/bl.gif" width="28" height="28"></td>
+    <td width="100%"><img src="bc.gif" tppabs="http://www.owlei.com/DancingWind/Pic/bc.gif" width="100%" height="28"></td>
+    <td><img src="br.gif" tppabs="http://www.owlei.com/DancingWind/Pic/br.gif" width="28" height="28"></td>
+  </tr>
+</table>
+<font color="#aaffaa" size="3">
+
+<pre>
+				if (keys[VK_SUBTRACT] &amp;&amp; (slowdown&lt;4.0f)) slowdown+=0.01f;	<font
+color="#ffffaa">// 按-号，减速粒子</font>
+</pre>
+</font>
+
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tr>
+    <td><img src="tl.jpg" tppabs="http://www.owlei.com/DancingWind/Pic/tl.jpg" width="28" height="28"></td>
+    <td width="100%"><img src="tc.gif" tppabs="http://www.owlei.com/DancingWind/Pic/tc.gif" width="100%" height="28"></td>
+    <td><img src="tr.gif" tppabs="http://www.owlei.com/DancingWind/Pic/tr.gif" width="28" height="28"></td>
+  </tr>
+</table>
+
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tr>
+    <td background="l.gif" tppabs="http://www.owlei.com/DancingWind/Pic/l.gif"><img src="l.gif" tppabs="http://www.owlei.com/DancingWind/Pic/l.gif" width="28" height="28"></td>
+    <td width="100%" valign="top"> 下面的代码检测Page Up是否被按下.如果是,则zoom增加.从而导致粒子靠近我们</td>
+    <td background="r.gif" tppabs="http://www.owlei.com/DancingWind/Pic/r.gif"><img src="r.gif" tppabs="http://www.owlei.com/DancingWind/Pic/r.gif" width="28" height="28"></td>
+  </tr>
+</table>
+
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tr>
+    <td><img src="bl.gif" tppabs="http://www.owlei.com/DancingWind/Pic/bl.gif" width="28" height="28"></td>
+    <td width="100%"><img src="bc.gif" tppabs="http://www.owlei.com/DancingWind/Pic/bc.gif" width="100%" height="28"></td>
+    <td><img src="br.gif" tppabs="http://www.owlei.com/DancingWind/Pic/br.gif" width="28" height="28"></td>
+  </tr>
+</table>
+<font color="#aaffaa" size="3">
+
+<pre>
+				if (keys[VK_PRIOR]) zoom+=0.1f;		<font color="#ffffaa">// 按Page Up键，让粒子靠近视点</font>
+</pre>
+</font>
+
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tr>
+    <td><img src="tl.jpg" tppabs="http://www.owlei.com/DancingWind/Pic/tl.jpg" width="28" height="28"></td>
+    <td width="100%"><img src="tc.gif" tppabs="http://www.owlei.com/DancingWind/Pic/tc.gif" width="100%" height="28"></td>
+    <td><img src="tr.gif" tppabs="http://www.owlei.com/DancingWind/Pic/tr.gif" width="28" height="28"></td>
+  </tr>
+</table>
+
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tr>
+    <td background="l.gif" tppabs="http://www.owlei.com/DancingWind/Pic/l.gif"><img src="l.gif" tppabs="http://www.owlei.com/DancingWind/Pic/l.gif" width="28" height="28"></td>
+    <td width="100%" valign="top">下行代码检测Page Down是否别按下,如果是,则zoom减小.从而导师粒子离开我们<br></td>
+    <td background="r.gif" tppabs="http://www.owlei.com/DancingWind/Pic/r.gif"><img src="r.gif" tppabs="http://www.owlei.com/DancingWind/Pic/r.gif" width="28" height="28"></td>
+  </tr>
+</table>
+
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tr>
+    <td><img src="bl.gif" tppabs="http://www.owlei.com/DancingWind/Pic/bl.gif" width="28" height="28"></td>
+    <td width="100%"><img src="bc.gif" tppabs="http://www.owlei.com/DancingWind/Pic/bc.gif" width="100%" height="28"></td>
+    <td><img src="br.gif" tppabs="http://www.owlei.com/DancingWind/Pic/br.gif" width="28" height="28"></td>
+  </tr>
+</table>
+<font color="#aaffaa" size="3">
+
+<pre>
+				if (keys[VK_NEXT]) zoom-=0.1f;		<font color="#ffffaa">// 按Page Down，让粒子远离视点</font>
+</pre>
+</font>
+
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tr>
+    <td><img src="tl.jpg" tppabs="http://www.owlei.com/DancingWind/Pic/tl.jpg" width="28" height="28"></td>
+    <td width="100%"><img src="tc.gif" tppabs="http://www.owlei.com/DancingWind/Pic/tc.gif" width="100%" height="28"></td>
+    <td><img src="tr.gif" tppabs="http://www.owlei.com/DancingWind/Pic/tr.gif" width="28" height="28"></td>
+  </tr>
+</table>
+
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tr>
+    <td background="l.gif" tppabs="http://www.owlei.com/DancingWind/Pic/l.gif"><img src="l.gif" tppabs="http://www.owlei.com/DancingWind/Pic/l.gif" width="28" height="28"></td>
+    <td width="100%" valign="top">下面的代码检验enter键是否被按下.如果是,并且没有被一直按着,我们将让计算机把rp变为true,然后我们固定彩虹模式.如果彩虹模式为true,将其变成false.如果为false,将其变成true.最后一行检测enter是否被释放,如果释放rp为false并告诉计算机该键不被按下<br></td>
+    <td background="r.gif" tppabs="http://www.owlei.com/DancingWind/Pic/r.gif"><img src="r.gif" tppabs="http://www.owlei.com/DancingWind/Pic/r.gif" width="28" height="28"></td>
+  </tr>
+</table>
+
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tr>
+    <td><img src="bl.gif" tppabs="http://www.owlei.com/DancingWind/Pic/bl.gif" width="28" height="28"></td>
+    <td width="100%"><img src="bc.gif" tppabs="http://www.owlei.com/DancingWind/Pic/bc.gif" width="100%" height="28"></td>
+    <td><img src="br.gif" tppabs="http://www.owlei.com/DancingWind/Pic/br.gif" width="28" height="28"></td>
+  </tr>
+</table>
+<font color="#aaffaa" size="3">
+
+<pre>
+				if (keys[VK_RETURN] &amp;&amp; !rp)		<font color="#ffffaa">// 按住回车键，切换彩虹模式</font>
+				{
+					rp=true;			
+					rainbow=!rainbow;		
+				}
+				if (!keys[VK_RETURN]) rp=false;		</pre>
+</font>
+
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tr>
+    <td><img src="tl.jpg" tppabs="http://www.owlei.com/DancingWind/Pic/tl.jpg" width="28" height="28"></td>
+    <td width="100%"><img src="tc.gif" tppabs="http://www.owlei.com/DancingWind/Pic/tc.gif" width="100%" height="28"></td>
+    <td><img src="tr.gif" tppabs="http://www.owlei.com/DancingWind/Pic/tr.gif" width="28" height="28"></td>
+  </tr>
+</table>
+
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tr>
+    <td background="l.gif" tppabs="http://www.owlei.com/DancingWind/Pic/l.gif"><img src="l.gif" tppabs="http://www.owlei.com/DancingWind/Pic/l.gif" width="28" height="28"></td>
+    <td width="100%" valign="top">下面程序有点乱.第一行检查space键是否被按下并没有没一直按着.并检查彩虹模式是否开始运行,如果是,检查delay是否大于25.delay是我创建的显示彩虹效果的数值.如果你曾经改变颜色结构,粒子将显示不同颜色.通过创建一个delay,在颜色改变之前,一组粒子将是一种颜色.如果space按下,彩虹运行,delay值大于25则颜色改变<br></td>
+    <td background="r.gif" tppabs="http://www.owlei.com/DancingWind/Pic/r.gif"><img src="r.gif" tppabs="http://www.owlei.com/DancingWind/Pic/r.gif" width="28" height="28"></td>
+  </tr>
+</table>
+
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tr>
+    <td><img src="bl.gif" tppabs="http://www.owlei.com/DancingWind/Pic/bl.gif" width="28" height="28"></td>
+    <td width="100%"><img src="bc.gif" tppabs="http://www.owlei.com/DancingWind/Pic/bc.gif" width="100%" height="28"></td>
+    <td><img src="br.gif" tppabs="http://www.owlei.com/DancingWind/Pic/br.gif" width="28" height="28"></td>
+  </tr>
+</table>
+<font color="#aaffaa" size="3">
+
+<pre>
+				if ((keys[' '] &amp;&amp; !sp) || (rainbow &amp;&amp; (delay&gt;25)))	<font
+color="#ffffaa">// 空格键，变换颜色</font>
+				{
+</pre>
+</font>
+
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tr>
+    <td><img src="tl.jpg" tppabs="http://www.owlei.com/DancingWind/Pic/tl.jpg" width="28" height="28"></td>
+    <td width="100%"><img src="tc.gif" tppabs="http://www.owlei.com/DancingWind/Pic/tc.gif" width="100%" height="28"></td>
+    <td><img src="tr.gif" tppabs="http://www.owlei.com/DancingWind/Pic/tr.gif" width="28" height="28"></td>
+  </tr>
+</table>
+
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tr>
+    <td background="l.gif" tppabs="http://www.owlei.com/DancingWind/Pic/l.gif"><img src="l.gif" tppabs="http://www.owlei.com/DancingWind/Pic/l.gif" width="28" height="28"></td>
+    <td width="100%" valign="top">下面行是为了当space按下则彩虹关掉而设置的.如果我们不关掉彩虹模式,颜色会继续变化直到enter再被按下.也就是说人们按下space来代替enter是想叫粒子颜色自己变化</td>
+    <td background="r.gif" tppabs="http://www.owlei.com/DancingWind/Pic/r.gif"><img src="r.gif" tppabs="http://www.owlei.com/DancingWind/Pic/r.gif" width="28" height="28"></td>
+  </tr>
+</table>
+
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tr>
+    <td><img src="bl.gif" tppabs="http://www.owlei.com/DancingWind/Pic/bl.gif" width="28" height="28"></td>
+    <td width="100%"><img src="bc.gif" tppabs="http://www.owlei.com/DancingWind/Pic/bc.gif" width="100%" height="28"></td>
+    <td><img src="br.gif" tppabs="http://www.owlei.com/DancingWind/Pic/br.gif" width="28" height="28"></td>
+  </tr>
+</table>
+<font color="#aaffaa" size="3">
+
+<pre>
+					if (keys[' ']) rainbow=false;	
+</pre>
+</font>
+
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tr>
+    <td><img src="tl.jpg" tppabs="http://www.owlei.com/DancingWind/Pic/tl.jpg" width="28" height="28"></td>
+    <td width="100%"><img src="tc.gif" tppabs="http://www.owlei.com/DancingWind/Pic/tc.gif" width="100%" height="28"></td>
+    <td><img src="tr.gif" tppabs="http://www.owlei.com/DancingWind/Pic/tr.gif" width="28" height="28"></td>
+  </tr>
+</table>
+
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tr>
+    <td background="l.gif" tppabs="http://www.owlei.com/DancingWind/Pic/l.gif"><img src="l.gif" tppabs="http://www.owlei.com/DancingWind/Pic/l.gif" width="28" height="28"></td>
+    <td width="100%" valign="top"> 如果space键被按下,或者彩虹模式已开始,并且delay大于25,我们叫计算机知道space键被按下通过叫sp为true.然后我们将delay设定回0以便它能在到25.最后我们增加col的值以便它通过颜色箱里面改变成另一个颜色.</td>
+    <td background="r.gif" tppabs="http://www.owlei.com/DancingWind/Pic/r.gif"><img src="r.gif" tppabs="http://www.owlei.com/DancingWind/Pic/r.gif" width="28" height="28"></td>
+  </tr>
+</table>
+
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tr>
+    <td><img src="bl.gif" tppabs="http://www.owlei.com/DancingWind/Pic/bl.gif" width="28" height="28"></td>
+    <td width="100%"><img src="bc.gif" tppabs="http://www.owlei.com/DancingWind/Pic/bc.gif" width="100%" height="28"></td>
+    <td><img src="br.gif" tppabs="http://www.owlei.com/DancingWind/Pic/br.gif" width="28" height="28"></td>
+  </tr>
+</table>
+<font color="#aaffaa" size="3">
+
+<pre>
+					sp=true;			
+					delay=0;			
+					col++;				</pre>
+</font>
+
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tr>
+    <td><img src="tl.jpg" tppabs="http://www.owlei.com/DancingWind/Pic/tl.jpg" width="28" height="28"></td>
+    <td width="100%"><img src="tc.gif" tppabs="http://www.owlei.com/DancingWind/Pic/tc.gif" width="100%" height="28"></td>
+    <td><img src="tr.gif" tppabs="http://www.owlei.com/DancingWind/Pic/tr.gif" width="28" height="28"></td>
+  </tr>
+</table>
+
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tr>
+    <td background="l.gif" tppabs="http://www.owlei.com/DancingWind/Pic/l.gif"><img src="l.gif" tppabs="http://www.owlei.com/DancingWind/Pic/l.gif" width="28" height="28"></td>
+    <td width="100%" valign="top">如果颜色值大于11,我们把它重新设为零.如果我们不重新设定为零,程序将去找第13颜色.而我们只有12种颜色!寻找不存在的颜色将会导致程序瘫痪</td>
+    <td background="r.gif" tppabs="http://www.owlei.com/DancingWind/Pic/r.gif"><img src="r.gif" tppabs="http://www.owlei.com/DancingWind/Pic/r.gif" width="28" height="28"></td>
+  </tr>
+</table>
+
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tr>
+    <td><img src="bl.gif" tppabs="http://www.owlei.com/DancingWind/Pic/bl.gif" width="28" height="28"></td>
+    <td width="100%"><img src="bc.gif" tppabs="http://www.owlei.com/DancingWind/Pic/bc.gif" width="100%" height="28"></td>
+    <td><img src="br.gif" tppabs="http://www.owlei.com/DancingWind/Pic/br.gif" width="28" height="28"></td>
+  </tr>
+</table>
+<font color="#aaffaa" size="3">
+
+<pre>
+					if (col&gt;11) col=0;
+				}
+</pre>
+</font>
+
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tr>
+    <td><img src="tl.jpg" tppabs="http://www.owlei.com/DancingWind/Pic/tl.jpg" width="28" height="28"></td>
+    <td width="100%"><img src="tc.gif" tppabs="http://www.owlei.com/DancingWind/Pic/tc.gif" width="100%" height="28"></td>
+    <td><img src="tr.gif" tppabs="http://www.owlei.com/DancingWind/Pic/tr.gif" width="28" height="28"></td>
+  </tr>
+</table>
+
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tr>
+    <td background="l.gif" tppabs="http://www.owlei.com/DancingWind/Pic/l.gif"><img src="l.gif" tppabs="http://www.owlei.com/DancingWind/Pic/l.gif" width="28" height="28"></td>
+    <td width="100%" valign="top">最后如果space键不被按下,我们将sp设为false。</td>
+    <td background="r.gif" tppabs="http://www.owlei.com/DancingWind/Pic/r.gif"><img src="r.gif" tppabs="http://www.owlei.com/DancingWind/Pic/r.gif" width="28" height="28"></td>
+  </tr>
+</table>
+
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tr>
+    <td><img src="bl.gif" tppabs="http://www.owlei.com/DancingWind/Pic/bl.gif" width="28" height="28"></td>
+    <td width="100%"><img src="bc.gif" tppabs="http://www.owlei.com/DancingWind/Pic/bc.gif" width="100%" height="28"></td>
+    <td><img src="br.gif" tppabs="http://www.owlei.com/DancingWind/Pic/br.gif" width="28" height="28"></td>
+  </tr>
+</table>
+<font color="#aaffaa" size="3">
+
+<pre>
+				if (!keys[' '])	sp=false;		<font color="#ffffaa">// 如果释放空格键，记录这个状态</font>
+</pre>
+</font>
+
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tr>
+    <td><img src="tl.jpg" tppabs="http://www.owlei.com/DancingWind/Pic/tl.jpg" width="28" height="28"></td>
+    <td width="100%"><img src="tc.gif" tppabs="http://www.owlei.com/DancingWind/Pic/tc.gif" width="100%" height="28"></td>
+    <td><img src="tr.gif" tppabs="http://www.owlei.com/DancingWind/Pic/tr.gif" width="28" height="28"></td>
+  </tr>
+</table>
+
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tr>
+    <td background="l.gif" tppabs="http://www.owlei.com/DancingWind/Pic/l.gif"><img src="l.gif" tppabs="http://www.owlei.com/DancingWind/Pic/l.gif" width="28" height="28"></td>
+    <td width="100%" valign="top"> 现在对粒子增加一些控制.还记得我们从开始定义的2变量么?一个xspeed,一个yspeed.在粒子燃尽之后,我们给它新的移动速度且把新的速度加入到xspeed和yspeed中.这样当粒子被创建时将影响粒子的速度. 
+      举例来说:粒子在x轴上的速度为5在y轴上的速度为0.当我们减少xspeed到-10,我们将以-10(xspeed)+5(最初的移动速度)的速度移动.这样我们将以5的速度向左移动.明白了么??无论如何,下面的代码检测UP是否被按下.如果它,yspeed将增加这将引起粒子向上运动.最大速度不超过200.速度在快就不好看了<br></td>
+    <td background="r.gif" tppabs="http://www.owlei.com/DancingWind/Pic/r.gif"><img src="r.gif" tppabs="http://www.owlei.com/DancingWind/Pic/r.gif" width="28" height="28"></td>
+  </tr>
+</table>
+
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tr>
+    <td><img src="bl.gif" tppabs="http://www.owlei.com/DancingWind/Pic/bl.gif" width="28" height="28"></td>
+    <td width="100%"><img src="bc.gif" tppabs="http://www.owlei.com/DancingWind/Pic/bc.gif" width="100%" height="28"></td>
+    <td><img src="br.gif" tppabs="http://www.owlei.com/DancingWind/Pic/br.gif" width="28" height="28"></td>
+  </tr>
+</table>
+<font color="#aaffaa" size="3">
+
+<pre>
+				<font color="#ffffaa">// 按上增加粒子Y轴正方向的速度</font>
+				if (keys[VK_UP] &amp;&amp; (yspeed&lt;200)) yspeed+=1.0f;
+</pre>
+</font>
+
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tr>
+    <td><img src="tl.jpg" tppabs="http://www.owlei.com/DancingWind/Pic/tl.jpg" width="28" height="28"></td>
+    <td width="100%"><img src="tc.gif" tppabs="http://www.owlei.com/DancingWind/Pic/tc.gif" width="100%" height="28"></td>
+    <td><img src="tr.gif" tppabs="http://www.owlei.com/DancingWind/Pic/tr.gif" width="28" height="28"></td>
+  </tr>
+</table>
+
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tr>
+    <td background="l.gif" tppabs="http://www.owlei.com/DancingWind/Pic/l.gif"><img src="l.gif" tppabs="http://www.owlei.com/DancingWind/Pic/l.gif" width="28" height="28"></td>
+    <td width="100%" valign="top">这行检查Down键是否被按下,如果它是,yspeed将减少.这将引起粒子向下运动.再一次,最大速度为200</td>
+    <td background="r.gif" tppabs="http://www.owlei.com/DancingWind/Pic/r.gif"><img src="r.gif" tppabs="http://www.owlei.com/DancingWind/Pic/r.gif" width="28" height="28"></td>
+  </tr>
+</table>
+
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tr>
+    <td><img src="bl.gif" tppabs="http://www.owlei.com/DancingWind/Pic/bl.gif" width="28" height="28"></td>
+    <td width="100%"><img src="bc.gif" tppabs="http://www.owlei.com/DancingWind/Pic/bc.gif" width="100%" height="28"></td>
+    <td><img src="br.gif" tppabs="http://www.owlei.com/DancingWind/Pic/br.gif" width="28" height="28"></td>
+  </tr>
+</table>
+<font color="#aaffaa" size="3">
+
+<pre>
+				<font color="#ffffaa">// 按下减少粒子Y轴正方向的速度</font>
+				if (keys[VK_DOWN] &amp;&amp; (yspeed&gt;-200)) yspeed-=1.0f;
+</pre>
+</font>
+
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tr>
+    <td><img src="tl.jpg" tppabs="http://www.owlei.com/DancingWind/Pic/tl.jpg" width="28" height="28"></td>
+    <td width="100%"><img src="tc.gif" tppabs="http://www.owlei.com/DancingWind/Pic/tc.gif" width="100%" height="28"></td>
+    <td><img src="tr.gif" tppabs="http://www.owlei.com/DancingWind/Pic/tr.gif" width="28" height="28"></td>
+  </tr>
+</table>
+
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tr>
+    <td background="l.gif" tppabs="http://www.owlei.com/DancingWind/Pic/l.gif"><img src="l.gif" tppabs="http://www.owlei.com/DancingWind/Pic/l.gif" width="28" height="28"></td>
+    <td width="100%" valign="top">现在我们检查Right键是否被按下.如果它是..xspeed将被增加.粒子将移到右边.最大速度为200</td>
+    <td background="r.gif" tppabs="http://www.owlei.com/DancingWind/Pic/r.gif"><img src="r.gif" tppabs="http://www.owlei.com/DancingWind/Pic/r.gif" width="28" height="28"></td>
+  </tr>
+</table>
+
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tr>
+    <td><img src="bl.gif" tppabs="http://www.owlei.com/DancingWind/Pic/bl.gif" width="28" height="28"></td>
+    <td width="100%"><img src="bc.gif" tppabs="http://www.owlei.com/DancingWind/Pic/bc.gif" width="100%" height="28"></td>
+    <td><img src="br.gif" tppabs="http://www.owlei.com/DancingWind/Pic/br.gif" width="28" height="28"></td>
+  </tr>
+</table>
+<font color="#aaffaa" size="3">
+
+<pre>
+				<font color="#ffffaa">// 按右增加粒子X轴正方向的速度</font>
+				if (keys[VK_RIGHT] &amp;&amp; (xspeed&lt;200)) xspeed+=1.0f;
+</pre>
+</font>
+
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tr>
+    <td><img src="tl.jpg" tppabs="http://www.owlei.com/DancingWind/Pic/tl.jpg" width="28" height="28"></td>
+    <td width="100%"><img src="tc.gif" tppabs="http://www.owlei.com/DancingWind/Pic/tc.gif" width="100%" height="28"></td>
+    <td><img src="tr.gif" tppabs="http://www.owlei.com/DancingWind/Pic/tr.gif" width="28" height="28"></td>
+  </tr>
+</table>
+
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tr>
+    <td background="l.gif" tppabs="http://www.owlei.com/DancingWind/Pic/l.gif"><img src="l.gif" tppabs="http://www.owlei.com/DancingWind/Pic/l.gif" width="28" height="28"></td>
+    <td width="100%" valign="top">最后我们检查Left键是否被按下.如果是...你猜....xspeed被减小,粒子开始向左移动.最大速度为200</td>
+    <td background="r.gif" tppabs="http://www.owlei.com/DancingWind/Pic/r.gif"><img src="r.gif" tppabs="http://www.owlei.com/DancingWind/Pic/r.gif" width="28" height="28"></td>
+  </tr>
+</table>
+
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tr>
+    <td><img src="bl.gif" tppabs="http://www.owlei.com/DancingWind/Pic/bl.gif" width="28" height="28"></td>
+    <td width="100%"><img src="bc.gif" tppabs="http://www.owlei.com/DancingWind/Pic/bc.gif" width="100%" height="28"></td>
+    <td><img src="br.gif" tppabs="http://www.owlei.com/DancingWind/Pic/br.gif" width="28" height="28"></td>
+  </tr>
+</table>
+<font color="#aaffaa" size="3">
+
+<pre>
+				<font color="#ffffaa">// 按左减少粒子X轴正方向的速度</font>
+				if (keys[VK_LEFT] &amp;&amp; (xspeed&gt;-200)) xspeed-=1.0f;
+</pre>
+</font>
+
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tr>
+    <td><img src="tl.jpg" tppabs="http://www.owlei.com/DancingWind/Pic/tl.jpg" width="28" height="28"></td>
+    <td width="100%"><img src="tc.gif" tppabs="http://www.owlei.com/DancingWind/Pic/tc.gif" width="100%" height="28"></td>
+    <td><img src="tr.gif" tppabs="http://www.owlei.com/DancingWind/Pic/tr.gif" width="28" height="28"></td>
+  </tr>
+</table>
+
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tr>
+    <td background="l.gif" tppabs="http://www.owlei.com/DancingWind/Pic/l.gif"><img src="l.gif" tppabs="http://www.owlei.com/DancingWind/Pic/l.gif" width="28" height="28"></td>
+    <td width="100%" valign="top">最后我们要增加delay的数值.像我在前面所说,delay是控制彩色变化的</td>
+    <td background="r.gif" tppabs="http://www.owlei.com/DancingWind/Pic/r.gif"><img src="r.gif" tppabs="http://www.owlei.com/DancingWind/Pic/r.gif" width="28" height="28"></td>
+  </tr>
+</table>
+
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tr>
+    <td><img src="bl.gif" tppabs="http://www.owlei.com/DancingWind/Pic/bl.gif" width="28" height="28"></td>
+    <td width="100%"><img src="bc.gif" tppabs="http://www.owlei.com/DancingWind/Pic/bc.gif" width="100%" height="28"></td>
+    <td><img src="br.gif" tppabs="http://www.owlei.com/DancingWind/Pic/br.gif" width="28" height="28"></td>
+  </tr>
+</table>
+<font color="#aaffaa" size="3">
+
+<pre>
+				delay++;			<font color="#ffffaa">// 增加彩虹模式的颜色切换延迟</font>
+</pre>
+</font> <font color="#aaffaa" size="3"> </font> 
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tr>
+    <td><img src="tl.jpg" tppabs="http://www.owlei.com/DancingWind/Pic/tl.jpg" width="28" height="28"></td>
+    <td width="100%"><img src="tc.gif" tppabs="http://www.owlei.com/DancingWind/Pic/tc.gif" width="100%" height="28"></td>
+    <td><img src="tr.gif" tppabs="http://www.owlei.com/DancingWind/Pic/tr.gif" width="28" height="28"></td>
+  </tr>
+</table>
+
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tr>
+    <td background="l.gif" tppabs="http://www.owlei.com/DancingWind/Pic/l.gif"><img src="l.gif" tppabs="http://www.owlei.com/DancingWind/Pic/l.gif" width="28" height="28"></td>
+    <td width="100%" valign="top"><p>在课程中,我试着把所有细节都讲清楚,并且简单的了解粒子系统.这个粒子系统能在游戏产生例如火,水,雪,爆炸,流行等效果.程序能简单的修改参数来实现新的效果(例:烟花效果) 
+      </p>
+<table width="100%" border="1">
+  <tr>
+    <td width="27%"><img src="logo 3.jpg" tppabs="http://www.owlei.com/DancingWind/images/logo%203.jpg" width="209" height="200" align="middle"></td>
+    <td width="73%">版权与使用声明:<br>
+      我是个对学习和生活充满激情的普通男孩,在网络上我以DancingWind为昵称，我的联系方式是zhouwei02@mails.tsinghua.edu.cn，如果你有任何问题，都可以联系我。
+      <p>引子<br>
+        网络是一个共享的资源，但我在自己的学习生涯中浪费大量的时间去搜索可用的资料，在现实生活中花费了大量的金钱和时间在书店中寻找资料，于是我给自己起了个昵称DancingWind，其意义是想风一样从各个知识的站点中吸取成长的养料。在飘荡了多年之后，我决定把自己收集的资料整理为一个统一的资源库。</p>
+      <p>版权声明<br>
+        所有DancingWind发表的内容，大多都来自共享的资源，所以我没有资格把它们据为己有，或声称自己为这些资源作出了一点贡献。故任何人都可以复制，修改，重新发表，甚至以自己的名义发表，我都不会追究，但你在做以上事情的时候必须保证内容的完整性，给后来的人一个完整的教程。最后，任何人不能以这些资料的任何部分，谋取任何形式的报酬。</p>
+      <p>发展计划<br>
+        在国外，很多资料都是很多人花费几年的时间慢慢积累起来的。如果任何人有兴趣与别人共享你的知识，我很欢迎你与我联系，但你必须同意我上面的声明。</p>
+            <p>感谢<br>
+              感谢我的母亲一直以来对我的支持和在生活上的照顾。<br>
+              感谢我深爱的女友田芹，一直以来默默的在精神上和生活中对我的支持，她甚至把买衣服的钱都用来给我买书了，她真的是我见过的最好的女孩，希望我能带给她幸福。</p>
+            <p>资源下载: <br>
+              文档 <a href="javascript:if(confirm('http://www.owlei.com/DancingWind/Res/mht/NeHe%20OpenGL%20Chinese%20Course%2019.mht  \n\nThis file was not retrieved by Teleport Pro, because the server reports that this file cannot be found.  \n\nDo you want to open it from the server?'))window.location='http://www.owlei.com/DancingWind/Res/mht/NeHe%20OpenGL%20Chinese%20Course%2019.mht'" tppabs="http://www.owlei.com/DancingWind/Res/mht/NeHe%20OpenGL%20Chinese%20Course%2019.mht">网页格式</a> 
+              <a href="javascript:if(confirm('http://www.owlei.com/DancingWind/Res/pdf/OpenGL_Nehe_Course_Tutorial_19.pdf  \n\nThis file was not retrieved by Teleport Pro, because the server reports that this file cannot be found.  \n\nDo you want to open it from the server?'))window.location='http://www.owlei.com/DancingWind/Res/pdf/OpenGL_Nehe_Course_Tutorial_19.pdf'" tppabs="http://www.owlei.com/DancingWind/Res/pdf/OpenGL_Nehe_Course_Tutorial_19.pdf">PDF格式</a><br>
+              源码 <a href="javascript:if(confirm('http://www.owlei.com/DancingWind/Res/Src/19_Particles.rar  \n\nThis file was not retrieved by Teleport Pro, because the server reports that this file cannot be found.  \n\nDo you want to open it from the server?'))window.location='http://www.owlei.com/DancingWind/Res/Src/19_Particles.rar'" tppabs="http://www.owlei.com/DancingWind/Res/Src/19_Particles.rar">RAR格式</a></p></td>
+  </tr>
+</table>
+      <table border="0" width="100%">
+      <tr>
+          <td width="50%" align="left"><a href="Tutorial_18.htm" tppabs="http://www.owlei.com/DancingWind/Course/Tutorial_18.htm"><b><font size="-1">&lt; 第18课</font></b></a></td>
+          <td width="50%" align="right"><a href="Tutorial_20.htm" tppabs="http://www.owlei.com/DancingWind/Course/Tutorial_20.htm"><b><font size="-1">第20课 
+            &gt;</font></b></a></td>
+      </tr>
+    </table>
+    </td>
+    <td background="r.gif" tppabs="http://www.owlei.com/DancingWind/Pic/r.gif"><img src="r.gif" tppabs="http://www.owlei.com/DancingWind/Pic/r.gif" width="28" height="28"></td>
+  </tr>
+</table>
+
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tr>
+    <td><img src="bl.gif" tppabs="http://www.owlei.com/DancingWind/Pic/bl.gif" width="28" height="28"></td>
+    <td width="100%"><img src="bc.gif" tppabs="http://www.owlei.com/DancingWind/Pic/bc.gif" width="100%" height="28"></td>
+    <td><img src="br.gif" tppabs="http://www.owlei.com/DancingWind/Pic/br.gif" width="28" height="28"></td>
+  </tr>
+</table>
+
+</body>
+</html>

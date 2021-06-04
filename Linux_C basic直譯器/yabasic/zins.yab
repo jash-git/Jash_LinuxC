@@ -1,0 +1,702 @@
+
+if (!peek("isbound")) bind "zins.exe"
+
+clear screen
+istbreite=peek("screenwidth")
+sollbreite=80
+	
+if (istbreite<sollbreite) then
+	print 
+	print " Fuer eine gut lesbare Darstellung, sollten Sie die"
+	print " Breite dieses Fensters auf mindestens ",sollbreite," Zeichen"
+	print " aendern (derzeit ",istbreite,") !"
+	print
+	print " Klicken Sie dazu mit der rechten Maustaste auf die"
+	print " Titelleiste dieses Programmes und waehlen Sie"
+	print " 'Eigenschaften'; aendern Sie dann unter Fenstergroesse"
+	print " die Breite auf ",sollbreite," und bestaetigen Sie mit 'OK'."
+	print
+	print " In der anschliessenden Abfrage waehlen Sie dann\n"
+	print "    'Eigenschaften gelten fuer alle Fenster mit gleichem Namen'\n"	
+	print " und bestaetigen wieder mit 'OK'."
+	print 
+	print " Druecken Sie eine beliebige Taste, um fortzufahren: ";
+	inkey$
+endif
+
+zuletztrt=r
+zuletzt_gespeichert=0
+
+j=1:s=2:r=3:t=4:z=5
+dim datensatz(10,9),kommentar$(10)
+zdata$="zins.data"
+lese_datensaetze(zdata$)
+dim was$(5):was$(j)="Jahre":was$(r)="Rate":was$(s)="Schuld":was$(t)="Tilgung":was$(z)="Zins"
+zeige=1
+
+do
+	if (zeige=1) print "---------------------------------------------------"
+	print "\nBerechnet wird:             ",right$("       "+was$(was),8)
+	jmt$=j2jmt$(monate/12,1)
+	if (was<>s) print "  Schuld hat den Wert:  ",str$(schuld,"#,###,###.##",".,")
+	if (was<>j) print "  Jahre hat den Wert:       ",right$("                    ",11-len(jmt$)),jmt$
+	print "  Zins hat den Wert:       ",str$(zins,"##,###.##",".,")," %"
+	if (was<>r and was<>t) then
+		if (zuletztrt=t) then
+			rate=tilgung2rate(schuld,tilgung,zins/12)
+		else
+			tilgung=rate2tilgung(rate,schuld,zins/12)
+		endif
+		print "  Rate hat den Wert:       ",str$(rate,"##,###.##",".,")
+		print "  Tilgung hat den Wert:       ",str$(tilgung,"###.##",".,")," %"
+	else
+		rate=rate(monate,schuld,zins/12)
+		tilgung=rate2tilgung(rate,schuld,zins/12)
+	endif
+	if (was=j) monate=monate(schuld,rate,zins/12)
+	if (was=s) schuld=schuld(monate,rate,zins/12)
+	gesamtzinsen=schuld(monate-int(monate),rate,zins/12)-schuld+int(monate)*rate
+	schreibe_datensaetze(zdata$)		
+	if (zeige=1) then
+		print "\nDaraus ergibt sich:"
+		print left$("  "+was$(was)+" hat den Wert:            ",23);
+	  	if (monate<0) then
+	    		print "    Die Schuld wird nie getilgt"
+	  	else
+	    		if (was=r) then
+				print "    ",str$(rate,"##,###.##",".,")
+				print "  Tilgung hat den Wert:       ",str$(tilgung,"###.##",".,")," %"
+		    	endif
+		    	if (was=t) then
+				print "       ",str$(tilgung,"###.##",".,")," %"
+				print "  Rate hat den Wert:       ",str$(rate,"##,###.##",".,")
+		    	endif
+		endif
+		if (monate<0) goto eingabe
+    		if (was=j) print "     ",j2jmt$(monate/12,1)
+		if (was=s) print str$(schuld,"##,###,###.##",".,")
+		print "\n Jahr      Restschuld      Zinsen      Jahr      Restschuld      Zinsen"
+		print "======================================================================="
+		for mo=0 to monate step 12
+			print "  ",str$(mo/12,"###"),"   ",str$(schuld(monate-mo,rate,zins/12),"##,###,###.##",".,");
+		    	print "  ",str$(schuld(monate-mo,rate,zins/12)-schuld+mo*rate,"###,###.##",".,")," ";
+		    	if (mod(mo/12,2)=0) then
+		      		print "    ";
+		    	else
+		      		print
+		    	endif
+		next mo
+		if (mod(mo/12,2)=1) print
+		print "\nLetzte Rate (nach ",j2jmt$(monate/12,0),"): ",str$(schuld(monate-int(monate),rate,zins/12),"##,###,###.##",".,")
+		print "           Zinsen bis dahin: ";
+		print str$(gesamtzinsen,"##,###,###.##",".,")
+	endif
+
+label eingabe
+	print "\nIhre Eingabe ('h' fuer Hilfe): ";
+	i$=lower$(inkey$)
+	zeige=0
+	switch i$
+	case "q"
+		print "Quit\n\nbye.":exit
+	case "j"
+		print "Jahre":monate=lese(j,monate,"",1):break
+	case "t"
+		print "Tilgung":tilgung=lese(t,tilgung,"###.##",1):rate=tilgung2rate(schuld,tilgung,zins/12):zuletztrt=t:break
+	case "s"
+		print "Schuld":schuld=lese(s,schuld,"###,###,###.##",1):break
+	case "r"
+		print "Rate":rate=lese(r,rate,"###,###.##",1):tilgung=rate2tilgung(rate,schuld,zins/12):zuletztrt=r:break
+	case "z"
+		print "Zins":zins=lese(z,zins,"###.##",1):break
+	case "d"
+		print "Datensaetze":datensaetze():break
+	case "h"
+	   	print "Hilfe\n\nDieses Programm berechnet die Kenngroessen einer Schuld mit fester"
+	 	print "Rueckzahlungsrate (die Zinsberechnung erfolgt dabei monatlich).\n"
+		print "Wichtig sind dabei:"
+		print "  -- die monatliche Rueckzahlungsrate     r"
+		print "  -- die anfaengliche Schuld              s"
+		print "  -- die Laufzeit in Jahren               j"
+		print "  -- die anfaengliche jaehrliche Tilgung  t"
+		print "  -- der zinssatz in Prozent              z\n"
+		print "wenn nun drei dieser Groessen vorgegeben werden, berechnet"
+		print "das Programm die vierte, also entweder r,s,j,t oder z\n"
+		print "     Druecken Sie eine Taste um weiterzulesen ...";:inkey$:print "\n"
+	 	print "Welche Groesse berechnet werden soll, kann man durch druecken"
+		print "der Taste 'w' aendern.\n"
+		print "Um weiter die aktuelle Groesse zu berechnen, aber einen der Werte"
+		print "Jahre, Schuld, Tilgung, Rate oder Zins zu aendern, geben sie bitte den"	
+		print "Buchstaben 'j','s','t','r' oder 'z' ein und danach den neuen Wert.\n"
+		print "Geben sie 'u' ein, um nach einigen Jahren den Zinssatz zu aendern,"
+		print "d.h. die Schuld umzuschulden.\n"
+	      	print "Die eigentliche Berechnung wird aber erst durchgefuehrt, wenn Sie"
+		print "die LEERTASTE druecken.\n"
+	      	print "Wenn Sie die Rate berechnen, wird dabei immer auch die Tilgung"
+		print "berechnet, d.h. die Tilgung kann dann nicht vorgegeben werden;"
+		print "das gleiche gilt auch umgekehrt.\n"
+		print "     Druecken Sie eine Taste um weiterzulesen ...";:inkey$:print "\n"
+		print "Statt einer Zahl koennen Sie auch immer eine EINFACHE FORMEL"
+		print "(z.B. 12+4*3) angeben; 'a' steht dabei fuer den alten Wert"
+		print "'t' oder 'k' fuer '000' und 'm' fuer '000000'."
+		print "Mit 'b' koennen Sie eine Formel berechnen, auch wenn"
+		print "gerade keine Zahleneingabe erwartet wird.\n"
+		print "Wenn Sie 'd' eingeben, gelangen Sie in ein Untermenue,"
+		print "in dem Datensatze gespeichert und zurueckgeholt werden koennen."
+		print "Die dort gespeicherten Datensaetze koennen in allen Formeln"
+		print "verwendet werden. So steht z.B. 'd5z' fuer den in Datensatz 5"
+		print "gespeicherten Zinssatz, oder 'd3s' fuer die Schuld aus Satz 3,"
+		print "oder 'd7r' fuer die Rate aus Datensatz 7."
+		print "Der Datensatz 0 enthaelt immer die aktuellen Werte.\n"
+		print "Geben sie schliesslich 'q' ein, um das Programm zu beenden.\n"
+		print "     Druecken Sie eine Taste um weiterzulesen ...";:inkey$:print "\n"
+		print "Dieses Programm liegt in der Version 2.41 vom 7. Juli 2004 vor,"
+		print "weitere Informationen finden sich unter www.yabasic.de/zinsen.htm\n"
+		print "Diese Programm unterliegt den Bedingungen der GPL (Gnu Public License),"
+		print "kann also frei kopiert werden. Der Autor ist Marc-Oliver Ihm.\n"
+		print "     Druecken Sie eine Taste um fortzufahren ...";:inkey$:print "\n"
+		break
+  	case "u"
+		print "Umschulden"
+		if (was<>j) then
+			print "Es kann nur umgeschuldet werden, wenn die Jahre berechner werden !"
+			break
+		endif
+	      	input "\nNach wie vielen Jahren soll umgeschuldet werden: " ja
+	      	if (ja>monate/12) then
+	        	print "das ist laenger als die Laufzeit des Kredits !"
+	      	elsif (ja<=0) then
+	        	print "Die Zahl der Jahre sollte groesser als 0 sein !"
+	      	else
+			altschuld=schuld
+			altzins=zins
+	        	schuld=schuld(monate-ja*12,rate,zins/12)
+	        	print "\ndie neue Schuld betraegt ",trim$(str$(schuld,"###,###,###.##",".,")),"\n"
+	        	zins=lese(z,zins,"###.##")
+			if (zuletzt_gespeichert>0) then
+				datensatz(zuletzt_gespeichert,7)=schuld
+				datensatz(zuletzt_gespeichert,8)=ja
+				datensatz(zuletzt_gespeichert,9)=schuld(monate-ja*12,rate,altzins/12)-altschuld+ja*12*rate
+			endif
+	      	endif
+	      	break
+	case "w"
+		print "Was\nBitte geben Sie ein, was berechnet werden soll (derzeit: ",was$(was),")\n(j=jahre, s=schuld, t=tilgung oder r=rate)"
+		print "Ihre Eingabe: ";
+		w$=lower$(inkey$)
+		print w$
+		if (w$="j") then was=j
+		elsif (w$="s") then was=s
+		elsif (w$="r") then was=r
+		elsif (w$="t") then was=t
+		elsif (w$="z") then print "Zins kann nicht berechnet werden !"
+		else print "Ungueltige Eingabe: '",w$,"'"
+		endif
+		print "berechnet wird: ",was$(was)
+		break
+	case "b"
+		print "Berechnung\n"
+		zeige_datensaetze()
+		print 
+		print "Bitte geben Sie eine Berechnung (mit +,-,*,/ und Klammern) ein."
+		print "Verwenden Sie z.B. 'd1s' um auf die Schuld des gespeicherten"
+		print "Datensatzes 1 zurueckzugreifen."
+		input "\nBerechnung: " b$
+		print "Das Ergebnis lautet: ",trim$(str$(taschenrechner(b$,0),"###,###,###,###.##",".,"))
+		break
+	case " "
+	      	print "Leertaste":zeige=1:break
+	default
+	      	print "'",i$,"' ist keine gueltige Eingabe !"
+	end switch
+loop
+
+// Hilfsfunktion zur Eingabe
+sub lese(w,n,format$,reset)
+		local p$,nn,nn$,i,derzeit$
+	if (w=was) then
+		print "\nSie koennen ",was$(was)," nicht eingeben; dieser Wert wird berechnet !\n"
+		return n
+	endif
+	if (w=r and was=t) then
+		print "\nRate kann nicht eingegeben werden, da die Tilgung schon berechnet wird !\n"
+		return
+	endif
+	if (w=t and was=r) then
+		print "\nTilgung kann nicht eingegeben werden, da die Rate schon berechnet wird !\n"
+		return
+	endif
+	if (w=j) then
+		print "Neuer Wert fuer "+was$(w)+" (derzeit: "+j2jmt$(n/12,0)+") ?"
+		input "Ihre Eingabe (Format: jahr-monat-tag oder jahr.bruchteil): " nn$
+		nn=12*jmt2j(nn$)
+	else	
+		print "Neuer Wert fuer "+was$(w)+" (derzeit: "+trim$(str$(n,format$,".,"))+") ?"
+		input "Ihre Eingabe: " nn$
+		nn=taschenrechner(nn$,n)
+	endif
+	if (nn<=0) then
+		print "Negativer Wert oder gleich null fuer ",was$(w),": ",nn$
+		print "Wollen Sie diesen Wert trotzdem uebernehmen (j oder n) ? ";
+		jn$=lower$(inkey$)
+		if (jn$="j") then
+			print "Ja"
+			n=nn
+			if (reset) zuletzt_gespeichert=0
+		else
+			print "Nein"
+		endif
+	else
+		n=nn
+		if (reset) zuletzt_gespeichert=0
+	endif
+	return n
+end sub
+
+// Hilfsfunktion zur Umrechnung von (Jahre,Monate,Tage) in Jahre (mit Bruchteil)
+sub jmt2j(jmt$)
+	local j,m,t
+	local x,y
+	if (!glob(jmt$,"*-*-*")) return val(jmt$)
+	x=instr(jmt$,"-")
+	y=rinstr(jmt$,"-")
+	j=val(left$(jmt$,x-1))
+	m=val(mid$(jmt$,x+1,y-x))
+	t=val(mid$(jmt$,y+1))
+	return j+(m*365/12+t)/365
+end sub
+
+// Hilfsfunktion zur Umrechnung von Jahren (mit Bruchteil) in (Jahre,Monate,Tage) 
+sub j2jmt$(jj,long)
+	local j,m,t,jj$
+	jj=jj+0.1/365
+	j=int(jj)
+	t=365*(jj-j)
+	m=t*12/365
+	t=int(0.5+frac(m)*365/12)
+	m=int(m)
+	jj$=right$("   "+str$(j)+"-"+str$(m)+"-"+str$(t),8)
+	if (long) then
+		return jj$+" ("+trim$(str$(jj,"###.##",".,"))+")"
+	else
+		return jj$
+	endif
+end sub
+
+// Die beiden folgenden Funktionen rechnen Rate und Tilgung ineinander um;
+// in diesem Programm werden Rate und Tilgung gewissermassen als verschiedene
+// "Einheiten" derselben Groesse behandelt.
+// Hilfsfunktion zur Berechnung der Rate aus der abgeleiteten Groesse Tilgung
+//
+sub tilgung2rate(schuld,tilgung,zins)
+	return schuld*(zins*12+tilgung)/100/12
+end sub
+
+// Hilfsfunktion zur Berechnung der abgeleiteten Groesse Tilgung aus der Rate
+sub rate2tilgung(rate,schuld,zins)
+	return 12*(100*rate/schuld-zins)
+end sub
+
+//
+// Jetzt folgen die Funktionen, die die eigentlichen interessanten finanzmathematisch 
+// Formeln kapseln.
+// Dabei sind:
+//   schuld : Die Schuld (trivial)
+//   monate : Die Monate (trivial)
+//   rate   : Die monatliche Rate (fast trivial)
+//   zins   : Der Jahreszins DURCH ZWOELF (nicht trivial)
+//
+sub monate(schuld,rate,zins)
+	local t,q
+	q=1+zins/100
+	t=1-schuld*(q-1)/rate
+	if (t<0) return -1
+	return -log(t)/log(q)
+end sub
+
+sub schuld(monate,rate,zins)
+	local q
+	q=1+zins/100
+	return rate*(q**monate-1)/(q-1)/q**monate
+end sub
+
+sub rate(monate,schuld,zins)
+		local q
+		q=1+zins/100
+	return schuld*q**monate*(q-1)/(q**monate-1)
+end sub
+
+//
+// Wieder eine Hilfsfunktion; fuer die Berechnung von Formeln
+// 
+sub taschenrechner(fo$,old)
+	local f$,ff$,c$,a,v(100),pv,v1,v2,v3,num$,b,op$,o1$,o2$,o,x,y,z,done
+
+	op$="*/+-"
+	datensatz(0,1)=monate
+	datensatz(0,2)=schuld
+	datensatz(0,3)=rate
+	datensatz(0,4)=zins
+	datensatz(0,5)=tilgung
+	datensatz(0,6)=gesamtzinsen
+	datensatz(0,0)=1
+	for a=1 to len(fo$)
+		c$=mid$(fo$,a,1)
+		switch c$
+		case "t":case "k"
+			f$=f$+"000":break
+		case "m"
+			f$=f$+"000000":break
+		case "a"
+			f$=f$+trim$(str$(old,"############.###")):break
+		case "d"
+			x=instr("0123456789",mid$(fo$,a+1,1))-1	
+			y=instr("jsrztgu",mid$(fo$,a+2,1))
+			z=instr("sjg",mid$(fo$,a+3,1))
+			if (x>=0 and y>0) then
+				if (datensatz(x,0)>0) then
+					if (y=7) then
+						z=datensatz(x,6+z)
+						a=a+1
+					else
+						z=datensatz(x,y)
+						if (y=1) z=z/12
+					endif
+					f$=f$+trim$(str$(z,"############.###"))
+				else
+					print "\nDatensatz ",x," ist leer !\n"
+				endif
+				a=a+2
+			endif
+			break
+		case "1":case "2":case "3":case "4":case "5":case "6":case "7":case "8":case "9":case "0"
+			f$=f$+c$:break
+		case ",":case "."
+			f$=f$+".":break
+		case " "
+			break
+		case "+":case "-":case "*":case "/":case "(":case ")"
+			f$=f$+c$:break
+		default
+			print "Falsche Eingabe: '",fo$,"', (",c$," ist nicht erlaubt) !"
+			return old
+		end switch
+	next a
+	for a=1 to len(f$)
+		c$=mid$(f$,a,1)
+		if (instr("1234567890.",c$) or (c$="-" and a=1)) then
+			num$=num$+c$
+		else
+			if (num$<>"") then
+				pv=pv+1
+				v(pv)=val(num$)
+				num$=""
+				ff$=ff$+"["+str$(pv,"##")+"]"
+			endif
+			ff$=ff$+c$
+		endif
+	next a
+	if (num$<>"") then
+		pv=pv+1
+		v(pv)=val(num$)
+		ff$=ff$+"["+str$(pv,"##")+"]"
+	endif
+	repeat
+		done=0
+		for o=1 to 2
+			o1$=mid$(op$,o*2-1,1)
+			o2$=mid$(op$,o*2,1)
+			f$=""
+			for a=1 to len(ff$)
+				if (done>0) then
+					f$=f$+mid$(ff$,a,1)
+				elsif (mid$(ff$,a,1)="(" and mid$(ff$,a+1,1)="[" and mid$(ff$,a+5,1)=")") then
+					f$=f$+mid$(ff$,a+1,4)
+					a=a+5
+					done=1
+				elsif (mid$(ff$,a,1)="[" and mid$(ff$,a+5,1)="[" and (mid$(ff$,a+4,1)=o1$ or mid$(ff$,a+4,1)=o2$)) then
+					v1=v(val(mid$(ff$,a+1,2)))
+					v2=v(val(mid$(ff$,a+6,2)))
+					switch mid$(ff$,a+4,1)
+					case "*"
+						v3=v1*v2:break
+					case "/"
+						v3=v1/v2:break
+					case "+"
+						v3=v1+v2:break
+					case "-"
+						v3=v1-v2:break
+					end switch
+					pv=pv+1
+					v(pv)=v3
+					f$=f$+"["+str$(pv,"##")+"]"
+					a=a+8
+					done=1
+				else
+					f$=f$+mid$(ff$,a,1)
+				endif
+			next a
+			ff$=f$
+		next o
+		if (done=0 and len(f$)>4) then
+			print "Falsche Eingabe: '",fo$,"' ! "
+			return old
+		endif
+	until(len(ff$)<=4)
+	return v(val(mid$(ff$,2,2)))
+end sub
+
+// Untermenue zur Verwaltung der Datensaetze
+sub datensaetze()
+	local i$,m$,m
+
+	zeige_datensaetze()
+	print "\nDruecken Sie:"
+	print "  s -- um die aktuellen Daten zu speichern"
+	print "  l -- um frueher gespeicherte Datensaetze zu laden"
+	print "  x -- um gespeicherte Datensaetze zu loeschen"
+	print "  X -- um alle gespeicherten Datensaetze zu loeschen"
+	print "  8 -- um die aktuellen Datensaetze in einer anderen"
+	print "       Datei als '",zdata$,"' zu speichern"
+	print "  9 -- um die Datensaetze aus einer anderen Datei"
+        print "       als '",zdata$,"' zu lesen.\n"
+	print "Ihre Eingabe: ";
+	i$=inkey$
+	switch(i$)
+	case "s"
+		print "Speichern"
+		if (monate<0) then
+			print "\nDie aktuellen Daten sind nicht sinnvoll und"
+			print "koennen nicht gespeichert werden."
+			break
+		endif
+		print "\nAuf welchem Platz sollen die aktuellen Daten"
+		print "gespeichert werden (1 bis 9) ?"
+		print "Ihre Eingabe: ";
+		m$=inkey$:m=int(val(m$))
+		print m$
+		if (instr("0123456789",m$)>0 and m<=9) then
+			if (m=0) then
+				print "In Datensatz 0 kann nichts gespeichert werden,"
+				print "er enthaelt immer die aktuellen Werte !"
+			else 
+				line input "Sie koennen Hier noch einen Kommentar eingeben: " kommentar$
+				kommentar$(m)=trim$(kommentar$)
+				if (kommentar$="") kommentar$(m)="ohne Kommentar"
+				datensatz(m,1)=monate
+				datensatz(m,2)=schuld
+				datensatz(m,3)=rate
+				datensatz(m,4)=zins
+				datensatz(m,5)=tilgung
+				datensatz(m,6)=gesamtzinsen
+				datensatz(m,7)=0
+				datensatz(m,8)=0
+				datensatz(m,9)=0
+				datensatz(m,0)=1
+				print "Werte wurden gespeichert."
+				zuletzt_gespeichert=m
+
+			endif
+		else
+		      	print "'",i$,"' ist keine gueltige Eingabe !"
+		endif
+		break
+	case "l"
+		print "Laden"
+		print "\nWelcher Datensatz soll geladen werden"
+		print "werden (1 bis 9) ?"
+		print "Ihre Eingabe: ";
+		m$=inkey$:m=int(val(m$))
+		print m$
+		if (instr("0123456789",m$)>0 and m<=9) then
+			if (datensatz(m,0)=0) then
+				print "Auf diesem Platz ist nichts gespeichert !"
+			else
+				monate=datensatz(m,1)
+				schuld=datensatz(m,2)
+				rate=datensatz(m,3)
+				zins=datensatz(m,4)
+				tilgung=datensatz(m,5)
+				gesamtzinsen=datensatz(m,6)
+				print "Werte wurden zurueckgeholt."
+				zuletzt_gespeichert=m
+			endif
+		else
+			print "Ungueltige Eingabe !"
+		endif
+		break
+	case "x"
+		print "Loeschen"
+		print "\nWelcher Datensatz soll geloescht"
+		print "werden (1 bis 9) ?"
+		print "Ihre Eingabe: ";
+		m$=inkey$:m=int(val(m$))
+		print m$
+		if (instr("0123456789",m$)>0 and m<=9) then
+			datensatz(m,0)=0
+		else
+			print "Ungueltige Eingabe !"
+		endif
+		break
+	case "X"
+		print "Alle loeschen"
+		print "Sind Sie sicher, dass Sie alle Datensaetze"
+		print "Loeschen wollen (j oder n) ?"
+		print "Ihre Eingabe: ";
+		m$=lower$(inkey$)
+		if (m$="j") then
+			print "Ja"
+			for a=1 to 9:datensatz(a,0)=0:next a
+			zuletzt_gespeichert=0
+		else
+			print "Nein"
+		endif
+		break
+	case "8"
+		print "In andere Datei Schreiben"
+		print "Bitte geben Sie den Namen der neuen Datei an (OHNE die Endung .data)."
+		input "Ihre Eingabe: " zd$
+		zd$=lower$(zd$)
+		if (zd$="" or instr(zd$,".")>0) then
+			print "Ungueltige Eingabe: '",zd$,"'"
+			return
+		endif
+		zdata$=zd$+".data"
+		schreibe_datensaetze(zdata$)
+		return
+	case "9"
+		print "Aus anderer Datei Lesen"
+		schreibe_datensaetze(zdata$)
+		print "Bitte geben Sie den Namen der neuen Datei an."
+		print "(Die aktuellen Datensaetze bleiben in ",zdata$," gespeichert)"
+		input "Ihre Eingabe: " zd$
+		zd$=lower$(zd$)
+		if (zd$="" or instr(zd$,".")>0) then
+			print "Ungueltige Eingabe: '",zd$,"'"
+			return
+		endif
+		zdata$=zd$+".data"
+		lese_datensaetze(zdata$)
+	case " "
+		return
+	default
+	      	print "'",i$,"' ist keine gueltige Eingabe !"
+		return
+	end switch
+end sub
+
+// Anzeige der Datensaetze
+sub zeige_datensaetze()
+	local a,leer,f$
+
+	kommentar$(0)="Die aktuellen Werte"
+	datensatz(0,1)=monate
+	datensatz(0,2)=schuld
+	datensatz(0,3)=rate
+	datensatz(0,4)=zins
+	datensatz(0,5)=tilgung
+	datensatz(0,6)=gesamtzinsen
+	datensatz(0,0)=1
+	f$="###,###,###,###.##"
+	print
+	for a=0 to 9
+		if (datensatz(a,0)>0) then
+			print "DATENSATZ ",a,": (",kommentar$(a),")"
+			if (datensatz(a,1)<0) then
+				print "  Dieser Datensatz ist nicht sinnvoll.\n"
+			else 
+				print "    ",datenfeld$("Jahre","j",a,0,j2jmt$(datensatz(a,1)/12),26);
+				print datenfeld$("Schuld","s",a,datensatz(a,2),"",22);
+				print
+				print "    ",datenfeld$("Rate","r",a,datensatz(a,3),"",26);
+				print datenfeld$("Zins","z",a,datensatz(a,4),"",22);
+				print
+				print "    ",datenfeld$("Tilgung","t",a,datensatz(a,5),"",26);
+				print datenfeld$("Gesamtzins","g",a,datensatz(a,6),"",22);
+				print
+				if (datensatz(a,7)>0) then
+					print "  Umschuldung:                        ";
+					print datenfeld$("Nach Jahren","uj",a,0,j2jmt$(datensatz(a,8)),26);
+					print
+					print "    ",datenfeld$("Zinsen bis dahin","ug",a,datensatz(a,9),"",26);
+					print datenfeld$("Restschuld","us",a,datensatz(a,7),"",22)
+				endif
+			endif
+			print
+		else
+			leer=leer+1
+		endif
+	next a
+	if (leer=10) then
+		print "Alle Datensaetze sind leer."
+	else
+		print "(Die restlichen ",leer," Datensaetze sind leer.)"
+	endif
+end sub
+
+sub datenfeld$(name$,n$,num,wert,wert$,llen)
+	local r$,f$,s$
+	
+	rlen=12
+	s$="                                    "
+	r$=right$(s$+name$+" (d"+str$(num)+n$+")"+" = ",llen)
+	if (wert$<>"") then
+		r$=r$+right$(s$+wert$+"  ",rlen)
+	else
+		if (wert<1000000) then
+			f$="###,###.##"
+		else
+			f$="###,###,###.##"
+		endif
+		r$=r$+left$(str$(wert,f$,".,")+s$,rlen)
+	endif
+	return r$
+end sub
+
+// Datensaetze speichern
+sub schreibe_datensaetze(zdata$)
+	local a,f
+
+	f=open(zdata$,"w")
+	if (f) then
+		print #f was,monate,schuld,rate,zins
+		for a=0 to 9
+			if (datensatz(a,0)=0) then
+				print #f 0,0,0,0,0,0,0,0,0,0," Datensatz ist leer"
+			else
+				print #f datensatz(a,0),datensatz(a,1),datensatz(a,2),datensatz(a,3),datensatz(a,4),datensatz(a,5),datensatz(a,6),datensatz(a,7),datensatz(a,8),datensatz(a,9)," ",kommentar$(a)
+			endif
+		next a
+	  	close f
+	else
+		if (zdata$<>"zins.data") then
+			print "Kann die Datei '",zdata$,"' nicht schreiben: ",peek$("error")
+			end
+		endif
+	endif
+end sub
+
+// Datensaetze lesen
+sub lese_datensaetze(zdata$)
+	f=open(zdata$)
+	if (f) then
+		input #f was,monate,schuld,rate,zins
+		for a=0 to 9
+			input #f datensatz(a,0),datensatz(a,1),datensatz(a,2),datensatz(a,3),datensatz(a,4),datensatz(a,5),datensatz(a,6),datensatz(a,7),datensatz(a,8),datensatz(a,9)
+			line input #f kommentar$(a)
+			kommentar$(a)=trim$(kommentar$(a))
+		next a
+		close f
+	else
+		if (zdata$<>"zins.data") then
+			print "Kann die Datei '",zdata$,"' nicht lesen: ",peek$("error")
+			end
+		endif
+		zins=8
+		schuld=100000
+		monate=15*12
+		rate=rate(monate,schuld,zins/12)
+		was=j
+	endif
+	tilgung=rate2tilgung(rate,schuld,zins/12)
+end sub

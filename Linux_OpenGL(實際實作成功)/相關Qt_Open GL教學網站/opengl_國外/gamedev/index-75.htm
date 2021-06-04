@@ -1,0 +1,608 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+    dir="ltr"
+    xml:lang="en"
+    lang="en">
+  <head>
+    <title>NeHe Productions: Playing AVI Files In OpenGL</title>
+
+    <link rel="stylesheet" type="text/css" href="public_base.css" tppabs="http://nehe.gamedev.net/static/css/public_base.css" />
+    <link type="text/css" rel="stylesheet" href="shThemeMidnight.css" tppabs="http://nehe.gamedev.net/static/css/syntax_highlighter/shThemeMidnight.css"/>
+    
+    <link rel="alternate" type="application/atom+xml" title="Atom feed" href="index-1.htm" tppabs="http://nehe.gamedev.net/atom/" />
+    <link rel="alternate" type="application/rss+xml" title="RSS feed" href="index-2.htm" tppabs="http://nehe.gamedev.net/rss/" />
+    
+    <meta name="author" content="Luke Benstead + Carsten Haubold" />
+    <meta name="description" content="OpenGL Tutorials, Demos, Games and More..." />
+    <meta name="keywords" content="opengl, tutorial, article, demo, game, blend, texturemap, lighting, contest, 3D" />
+
+    
+    
+
+    
+
+</script>
+
+
+    
+    
+    
+    
+        
+        <script type='text/javascript'>
+        var googletag = googletag || {};
+        googletag.cmd = googletag.cmd || [];
+        (function() {
+        var gads = document.createElement('script');
+        gads.async = true;
+        gads.type = 'text/javascript';
+        var useSSL = 'https:' == document.location.protocol;
+        gads.src = (useSSL ? 'https:' : 'http:') + 
+        '//www.googletagservices.com/tag/js/gpt.js';
+        var node = document.getElementsByTagName('script')[0];
+        node.parentNode.insertBefore(gads, node);
+        })();
+        </script>
+
+        <script type='text/javascript'>
+        googletag.cmd.push(function() {
+        googletag.defineSlot('/1004699/Leaderboard_NeHe', [728, 90], 'div-gpt-ad-1327940144417-0').addService(googletag.pubads());
+        googletag.defineSlot('/1004699/Skyscraper_NeHe', [160, 600], 'div-gpt-ad-1327940144417-1').addService(googletag.pubads());
+        googletag.pubads().enableSingleRequest();
+        googletag.enableServices();
+        });
+        </script>
+    
+    
+
+    
+  </head>
+
+  <body>
+    
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "all.js#xfbml=1"/*tpa=http://connect.facebook.net/en_GB/all.js#xfbml=1*/;
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+
+
+    <table cellpadding="0" cellspacing="0" border="0" id="layout_table">
+    <tr><td>
+        <div id="header">
+                <a href="index.htm" tppabs="http://nehe.gamedev.net/"><img class="logo" class="logo" src="nehe.png" tppabs="http://nehe.gamedev.net/static/images/nehe.png" border="0" alt="Nehe" /></a>
+        </div>            
+    </td></tr>
+    <tr><td colspan="2">
+            
+<div class="navbar">
+    <a href="index.htm" tppabs="http://nehe.gamedev.net/">HOME</a>
+    <a href="javascript:if(confirm('http://twitter.com/  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://twitter.com/#!/nehegl'" tppabs="http://twitter.com/#!/nehegl">TWITTER</a>  
+    <a href="javascript:if(confirm('http://www.facebook.com/pages/NeHe/300582493323181  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://www.facebook.com/pages/NeHe/300582493323181'" tppabs="http://www.facebook.com/pages/NeHe/300582493323181">FACEBOOK</a>     
+    <a href="index-2.htm" tppabs="http://nehe.gamedev.net/rss/">RSS</a>    
+    <a href="index-1.htm" tppabs="http://nehe.gamedev.net/atom/">ATOM</a>    
+    <a href="javascript:if(confirm('http://www.gamedev.net/forum/27-nehe-productions/page__forum_title__NeHe+Productions  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://www.gamedev.net/forum/27-nehe-productions/page__forum_title__NeHe+Productions'" tppabs="http://www.gamedev.net/forum/27-nehe-productions/page__forum_title__NeHe+Productions">FORUM</a>    
+</div>
+    
+    </td></tr>
+    <tr>
+        <td class="col1">
+
+            
+<div id="article_container">
+
+
+<h1 class="article-header">Playing AVI Files In OpenGL</h1>
+<div class="social-media">
+<!-- Place this tag where you want the +1 button to render -->
+<div class="g-plusone" data-size="medium" data-width="120" data-annotation="inline"></div>
+<div class="fb-like" data-send="false" data-layout="button_count" data-width="60" data-show-faces="false" data-colorscheme="dark" data-font="arial"></div>
+</div>
+<div style="clear:both;"></div>
+<p>I would like to start off by saying that I am very proud of this tutorial. When I first got the idea to code an AVI player in OpenGL thanks to Jonathan de Blok, I had no idea how to open an AVI let alone code an AVI player. I started off by flipping through my collection of programming books. Not one book talked about AVI files. I then read everything there was to read about the AVI format in the MSDN. Lots of useful information in the MSDN, but I needed more information.</p>
+<p>After browsing the net for hours searching for AVI examples, I had just two sites bookmarked. I'm not going to say my search engine skills are amazing, but 99.9% of the time I have no problems finding what I'm looking for. I was absolutely shocked when I realized just how few AVI examples there were! Most the examples I found wouldn't compile... A handful of them were way to complex (for me at least), and the rest did the job, but they were coded in VB, Delphi, etc. (not VC++).</p>
+<p>The first page I book marked was an article written by Jonathan Nix titled "AVI Files". You can visit it at http://www.gamedev.net/reference/programming/features/avifile/. Huge respect to Jonathan for writing an extremely brilliant document on the AVI format. Although I decided to do things differently, his example code snippets, and clear comments made the learning process alot easier! The second site is titled "The AVI Overview" by John F. McGowan, Ph.D.. I could go on and on about how amazing John's page is, but it's easier if you check it out yourself! The URL is http://www.jmcgowan.com/avi.html. His site pretty much covers everything there is to know about the AVI format! Thanks to John for making such a valuable page available to the public.</p>
+<p>The last thing I wanted to mention is that NONE of the code has been borrowed, and none of the code has been copied. It was written during a 3 day coding spree, using information from the above mentioned sites and articles. With that said, I feel it is important to note that my code may not be the BEST way to play an AVI file. It may not even be the correct way to play an AVI file, but it does work, and it's easy to use! If you dislike the code, my coding style, or if you feel I'm hurting the programming community by releasing this tut, you have a few options: 1) search the net for alternate resources 2) write your own AVI player OR 3) write a better tutorial! Everyone visiting this site should know by now that I'm an average programmer with average skills (I've stated that on numerous pages throughout the site)! I code for FUN! The goal of this site is to make life easier for the non-elite coder to get started with OpenGL. The tutorials are merely examples on how 'I' managed to accomplish a specific effect... Nothing more, nothing less!</p>
+<p>On to the code...</p>
+<p>The first thing you will notice is that we include and link to the Video For Windows header / library. Big thanks to Microsoft (I can't believe I just said that!). This library makes opening and playing AVI files a SNAP! For now... All you need to know is that you MUST include the vfw.h header file and you must link to the vfw32.lib library file if you want the code to compile :)</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">#include &lt;windows.h&gt;							// Header File For Windows
+#include &lt;gl\gl.h&gt;							// Header File For The OpenGL32 Library
+#include &lt;gl\glu.h&gt;							// Header File For The GLu32 Library
+#include &lt;vfw.h&gt;							// Header File For Video For Windows
+#include "NeHeGL.h"							// Header File For NeHeGL
+
+#pragma comment( lib, "opengl32.lib" )					// Search For OpenGL32.lib While Linking
+#pragma comment( lib, "glu32.lib" )					// Search For GLu32.lib While Linking
+#pragma comment( lib, "vfw32.lib" )					// Search For VFW32.lib While Linking
+
+#ifndef CDS_FULLSCREEN							// CDS_FULLSCREEN Is Not Defined By Some
+#define CDS_FULLSCREEN 4						// Compilers. By Defining It This Way,
+#endif									// We Can Avoid Errors
+
+GL_Window*	g_window;
+Keys*		g_keys;
+</pre>
+<p>Now we define our variables. angle is used to rotate our objects around based on the amount of time that has passed. We will use angle for all rotations just to keep things simple.</p>
+<p>next is an integer variable that will be used to count how much time has passed (in milliseconds). It will be used to keep the framerate at a descent speed. More about this later!</p>
+<p>frame is of course the current frame we want to display from the animation. We start off at 0 (first frame). I think it's safe to assume that if we managed to open the video, it HAS to have at least one frame of animation :)</p>
+<p>effect is the current effect seen on the screen (object: Cube, Sphere, Cylinder, Nothing). env is a boolean value. If it's true, then environment mapping is enabled, if it's false, the object will NOT be environment mapped. If bg is true, you will see the video playing fullscreen behind the object. If it's false, you will only see the object (there will be no background).</p>
+<p>sp, ep and bp are used to make sure the user isn't holding a key down.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">// User Defined Variables
+float		angle;							// Used For Rotation
+int		next;							// Used For Animation
+int		frame=0;						// Frame Counter
+int		effect;							// Current Effect
+bool		sp;							// Space Bar Pressed?
+bool		env=TRUE;						// Environment Mapping (Default On)
+bool		ep;							// 'E' Pressed?
+bool		bg=TRUE;						// Background (Default On)
+bool		bp;							// 'B' Pressed?
+</pre>
+<p>The psi structure will hold information about our AVI file later in the code. pavi is a pointer to a buffer that receives the new stream handle once the AVI file has been opened. pgf is a pointer to our GetFrame object. bmih will be used later in the code to convert the frame of animation to a format we want (holds the bitmap header info describing what we want). lastframe will hold the number of the last frame in the AVI animation. width and height will hold the dimensions of the AVI stream and finally.... pdata is a pointer to the image data returned after we get a frame of animation from the AVI! mpf will be used to calculate how many milliseconds each frame is displayed for. More on this later.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">AVISTREAMINFO		psi;						// Pointer To A Structure Containing Stream Info
+PAVISTREAM		pavi;						// Handle To An Open Stream
+PGETFRAME		pgf;						// Pointer To A GetFrame Object
+BITMAPINFOHEADER	bmih;						// Header Information For DrawDibDraw Decoding
+long			lastframe;					// Last Frame Of The Stream
+int			width;						// Video Width
+int			height;						// Video Height
+char			*pdata;						// Pointer To Texture Data
+int			mpf;						// Will Hold Rough Milliseconds Per Frame
+</pre>
+<p>In this tutorial we will create 2 different quadratic shapes (a sphere and a cylinder) using the GLU library. quadratic is a pointer to our quadric object.</p>
+<p>hdd is a handle to a DrawDib device context. hdc is handle to a device context.</p>
+<p>hBitmap is a handle to a device dependant bitmap (used in the bitmap conversion process later).</p>
+<p>data is a pointer that will eventually point to our converted bitmap image data. Will make sense later in the code. Keep reading :)</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">GLUquadricObj *quadratic;						// Storage For Our Quadratic Objects
+
+HDRAWDIB hdd;								// Handle For Our Dib
+HBITMAP hBitmap;							// Handle To A Device Dependant Bitmap
+HDC hdc = CreateCompatibleDC(0);					// Creates A Compatible Device Context
+unsigned char* data = 0;						// Pointer To Our Resized Image
+</pre>
+<p>Now for some assembly language. For those of you that have never used assembly before, don't be intimidated. It might look cryptic, but it's actually pretty simple!</p>
+<p>While writing this tutorial I discovered something very odd. The first video I actually got working with this code was playing fine but the colors were messed up. Everything that was supposed to be red was blue and everything that was supposed to be blue was red. I went absolutely NUTS! I was convinced that I made a mistake somewhere in the code. After looking at all the code, I was unable to find the bug! So I started reading through the MSDN again. Why would the red and blue bytes be swapped!?! It says right in the MSDN that 24 bit bitmaps are RGB!!! After some more reading I discovered the problem. In WINDOWS (figures), RGB data is actually store backwards (BGR). In OpenGL, RGB is exactly that... RGB!</p>
+<p>After a few complaints from fans of Microsoft :) I decided to add a quick note! I am not trashing Microsoft because their RGB data is stored backwards. I just find it very frustrating that it's called RGB when it's actually BGR in the file!</p>
+<p>Blue Adds: It's more to do with "little endian" and "big endian". Intel and Intel compatibles use little endian where the least significant byte (LSB) is stored first. OpenGL came from Silicon Graphics machines, which are probably big endian, and thus the OpenGL standard required the bitmap format to be in big endian format. I think this is how it works.</p>
+<p>Wonderful! So here I am with a player, that looks like absolute crap! My first solution was to swap the bytes manually with a for next loop. It worked, but it was very slow. Completely fed up, I modified the texture generation code to use GL_BGR_EXT instead of GL_RGB. A huge speed increase, and the colors looked great! So my problem was solved... or so I thought! It turns out, some OpenGL drivers have problems with GL_BGR_EXT.... Back to the drawing board :(</p>
+<p>After talking with my good friend Maxwell Sayles, he recommended that I swap the bytes using asm code. A minute later, he had icq'd me the code below! It may not be optimized, but it's fast and it does the job!</p>
+<p>Each frame of animation is stored in a buffer. The image will always be 256 pixels wide, 256 pixels tall and 1 byte per color (3 bytes per pixel). The code below will go through the buffer and swap the Red and Blue bytes. Red is stored at ebx+0 and blue is stored at ebx+2. We move through the buffer 3 bytes at a time (because one pixel is made up of 3 bytes). We loop through the data until all of the byte have been swapped.</p>
+<p>A few of you were unhappy with the use of ASM code, so I figured I would explain why it's used in this tutorial. Originally I had planned to use GL_BGR_EXT as I stated, it works. But not on all cards! I then decided to use the swap method from the last tut (very tidy XOR swap code). The swap code works on all machines, but it's not extremely fast. In the last tut, yeah, it works GREAT. In this tutorial we are dealing with REAL-TIME video. You want the fastest swap you can get. Weighing the options, ASM in my opinion is the best choice! If you have a better way to do the job, please ... USE IT! I'm not telling you how you HAVE to do things. I'm showing you how I did it. I also explain in detail what the code does. That way if you want to replace the code with something better, you know exactly what this code is doing, making it easier to find an alternate solution if you want to write your own code!</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">void flipIt(void* buffer)						// Flips The Red And Blue Bytes (256x256)
+{
+	void* b = buffer;						// Pointer To The Buffer
+	__asm								// Assembler Code To Follow
+	{
+		mov ecx, 256*256					// Set Up A Counter (Dimensions Of Memory Block)
+		mov ebx, b						// Points ebx To Our Data (b)
+		label:							// Label Used For Looping
+			mov al,[ebx+0]					// Loads Value At ebx Into al
+			mov ah,[ebx+2]					// Loads Value At ebx+2 Into ah
+			mov [ebx+2],al					// Stores Value In al At ebx+2
+			mov [ebx+0],ah					// Stores Value In ah At ebx
+			
+			add ebx,3					// Moves Through The Data By 3 Bytes
+			dec ecx						// Decreases Our Loop Counter
+			jnz label					// If Not Zero Jump Back To Label
+	}
+}
+</pre>
+<p>The code below opens the AVI file in read mode. szFile is the name of the file we want to open. title[100] will be used to modify the title of the window (to show information about the AVI file).</p>
+<p>The first thing we need to do is call AVIFileInit(). This initializes the AVI file library (gets things ready for us).</p>
+<p>There are many ways to open an AVI file. I decided to use AVIStreamOpenFromFile(...). This opens a single stream from an AVI file (AVI files can contain multiple streams).</p>
+<p>The parameters are as follows: pavi is a pointer to a buffer that receives the new stream handle. szFile is of course, the name of the file we wish to open (complete with path). The third parameter is the type of stream we wish to open. In this project, we are only interested in the VIDEO stream (streamtypeVIDEO). The fourth parameter is 0. This means we want the first occurance of streamtypeVIDEO (there can be multiple video streams in a single AVI file... we want the first stream). OF_READ means that we want to open the file for reading ONLY. The last parameter is a pointer to a class identifier of the handler you want to use. To be honest, I have no idea what it does. I let windows select it for me by passing NULL as the last parameter!</p>
+<p>If there are any errors while opening the file, a message box pops up letting you know that the stream could not be opened. I don't pass a PASS or FAIL back to the calling section of code, so if this fails, the program will try to keep running. Adding some type of error checking shouldn't take alot of effort, I was too lazy :)</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">void OpenAVI(LPCSTR szFile)						// Opens An AVI File (szFile)
+{
+	TCHAR	title[100];						// Will Hold The Modified Window Title
+
+	AVIFileInit();							// Opens The AVIFile Library
+
+	// Opens The AVI Stream
+	if (AVIStreamOpenFromFile(&amp;pavi, szFile, streamtypeVIDEO, 0, OF_READ, NULL) !=0)
+	{
+		// An Error Occurred Opening The Stream
+		MessageBox (HWND_DESKTOP, "Failed To Open The AVI Stream", "Error", MB_OK | MB_ICONEXCLAMATION);
+	}
+</pre>
+<p>If we made it this far, it's safe to assume that the file was opened and a stream was located! Next we grab a bit of information from the AVI file with AVIStreamInfo(...).</p>
+<p>Earlier we created a structure called psi that will hold information about our AVI stream. We will fill this structure with information about the AVI with the first line of code below. Everything from the width of the stream (in pixels) to the framerate of the animation is stored in psi. For those of you that want accurate playback speeds, make a note of what I just said. For more information look up AVIStreamInfo in the MSDN.</p>
+<p>We can calculate the width of a frame by subtracting the left border from the right border. The result should be an accurate width in pixels. For the height, we subtract the top of the frame from the bottom of the frame. This gives us the height in pixels.</p>
+<p>We then grab the last frame number from the AVI file using AVIStreamLength(...). This returns the number of frames of animation in the AVI file. The result is stored in lastframe.</p>
+<p>Calculating the framerate is fairly easy. Frames per second = psi.dwRate / psi.dwScale. The value returned should match the frame rate displayed when you right click on the AVI and check its properties. So what does this have to do with mpf you ask? When I first wrote the animation code, I tried using the frames per second to select the correct frame of animation. I ran into a problem... All of the videos played too fast! So I had a look at the video properties. The face2.avi file is 3.36 seconds long. The frame rate is 29.974 frames per second. The video has 91 frames of animation. If you multiply 3.36 by 29.974 you get 100 frames of animation. Very Odd!</p>
+<p>So, I decided to do things a little different. Instead of calculating the frames per second, I calculate how long each frame should be displayed. AVIStreamSampleToTime() converts a position in the animation to how many milliseconds it would take to get to that position. So we calculate how many milliseconds the entire video is by grabbing the time (in milliseconds) of the last frame (lastframe). We then divide the result by the total number of frames in the animation (lastframe). This gives us the amount of time each frame is displayed for in milliseconds. We store the result in mpf (milliseconds per frame). You could also calculate the milliseconds per frame by grabbing the amount of time for just 1 frame of animation with the following code: AVIStreamSampleToTime(pavi,1). Either way should work fine! Big thanks to Albert Chaulk for the idea!</p>
+<p>The reason I say rough milliseconds per frame is because mpf is an integer so any floating values will be rounded off.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	AVIStreamInfo(pavi, &amp;psi, sizeof(psi));				// Reads Information About The Stream Into psi
+	width=psi.rcFrame.right-psi.rcFrame.left;			// Width Is Right Side Of Frame Minus Left
+	height=psi.rcFrame.bottom-psi.rcFrame.top;			// Height Is Bottom Of Frame Minus Top
+
+	lastframe=AVIStreamLength(pavi);				// The Last Frame Of The Stream
+
+	mpf=AVIStreamSampleToTime(pavi,lastframe)/lastframe;		// Calculate Rough Milliseconds Per Frame
+</pre>
+<p>Because OpenGL requires texture data to be a power of 2, and because most videos are 160x120, 320x240 or some other odd dimensions we need a fast way to resize the video on the fly to a format that we can use as a texture. To do this, we take advantage of specific Windows Dib functions.</p>
+<p>The first thing we need to do is describe the type of image we want. To do this, we fill the bmih BitmapInfoHeader structure with our requested parameters. We start off by setting the size of the structure. We then set the bitplanes to 1. Three bytes of data works out to 24 bits (RGB). We want the image to be 256 pixels wide and 256 pixels tall and finally we want the data returned as UNCOMPRESSED RGB data (BI_RGB).</p>
+<p>CreateDIBSection creates a dib that we can directly write to. If everything goes well, hBitmap will point to the dib's bit values. hdc is a handle to a device context (DC). The second parameter is a pointer to our BitmapInfo structure. The structure contains information about the dib file as mentioned above. The third parameter (DIB_RGB_COLORS) specifies that the data is RGB values. data is a pointer to a variable that receives a pointer to the location of the DIB's bit values (whew, that was a mouthful). By setting the 5th value to NULL, memory is allocated for our DIB. Finally, the last parameter can be ignored (set to NULL).</p>
+<p>Quoted from the MSDN: The SelectObject function selects an object into the specified device context (DC).</p>
+<p>We have now created a DIB that we can directly draw to. Yay :)</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	bmih.biSize		= sizeof (BITMAPINFOHEADER);		// Size Of The BitmapInfoHeader
+	bmih.biPlanes		= 1;					// Bitplanes
+	bmih.biBitCount		= 24;					// Bits Format We Want (24 Bit, 3 Bytes)
+	bmih.biWidth		= 256;					// Width We Want (256 Pixels)
+	bmih.biHeight		= 256;					// Height We Want (256 Pixels)
+	bmih.biCompression	= BI_RGB;				// Requested Mode = RGB
+
+	hBitmap = CreateDIBSection (hdc, (BITMAPINFO*)(&amp;bmih), DIB_RGB_COLORS, (void**)(&amp;data), NULL, NULL);
+	SelectObject (hdc, hBitmap);					// Select hBitmap Into Our Device Context (hdc)
+</pre>
+<p>A few more things to do before we're ready to read frames from the AVI. The next thing we have to do is prepare our program to decompress video frames from the AVI file. We do this with the AVIStreamGetFrameOpen(...) function.</p>
+<p>You can pass a structure similar to the one above as the second parameter to have a specific video format returned. Unfortunately, the only thing you can alter is the width and height of the returned image. The MSDN also mentions that you can pass AVIGETFRAMEF_BESTDISPLAYFMT to select the best display format. Oddly enough, my compiler had no definition for it.</p>
+<p>If everything goes well, a GETFRAME object is returned (which we need to read frames of data). If there are any problems, a message box will pop onto the screen telling you there was an error!</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	pgf=AVIStreamGetFrameOpen(pavi, NULL);				// Create The PGETFRAME Using Our Request Mode
+	if (pgf==NULL)
+	{
+		// An Error Occurred Opening The Frame
+		MessageBox (HWND_DESKTOP, "Failed To Open The AVI Frame", "Error", MB_OK | MB_ICONEXCLAMATION);
+	}
+</pre>
+<p>The code below prints the videos width, height and frames to title. We display title at the top of the window with the command SetWindowText(...). Run the program in windowed mode to see what the code below does.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	// Information For The Title Bar (Width / Height / Last Frame)
+	wsprintf (title, "NeHe's AVI Player: Width: %d, Height: %d, Frames: %d", width, height, lastframe);
+	SetWindowText(g_window-&gt;hWnd, title);				// Modify The Title Bar
+}
+</pre>
+<p>Now for the fun stuff... we grab a frame from the AVI and then convert it to a usable image size / color depth. lpbi will hold the BitmapInfoHeader information for the frame of animation. We accomplish a few things at once in the second line of code below. First we grab a frame of animation ... The frame we want is specified by frame. This will pull in the frame of animation and will fill lpbi with the header information for that frame.</p>
+<p>Now for the fun stuff... we need to point to the image data. To do this we need to skip over the header information (lpbi-&gt;biSize). One thing I didn't realize until I started writing this tut was that we also have to skip over any color information. To do this we also add colors used multiplied by the size of RGBQUAD (biClrUsed*sizeof(RGBQUAD)). After doing ALL of that :) we are left with a pointer to the image data (pdata).</p>
+<p>Now we need to convert the frame of animation to a usable texture size as well, we need to convert the data to RGB data. To do this, we use DrawDibDraw(...).</p>
+<p>A quick explanation. We can draw directly to our custom DIB. That's what DrawDibDraw(...) does. The first parameter is a handle to our DrawDib DC. The second parameter is a handle to the DC. Next we have the upper left corner (0,0) and the lower right corner (256,256) of the destination rectangle.</p>
+<p>lpbi is a pointer to the bitmapinfoheader information for the frame we just read. pdata is a pointer to the image data for the frame we just read.</p>
+<p>Then we have the upper left corner (0,0) of the source image (frame we just read) and the lower right corner of the frame we just read (width of the frame, height of the frame). The last parameter should be left at 0.</p>
+<p>This will convert an image of any size / color depth to a 256*256*24bit image.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">void GrabAVIFrame(int frame)						// Grabs A Frame From The Stream
+{
+	LPBITMAPINFOHEADER lpbi;					// Holds The Bitmap Header Information
+	lpbi = (LPBITMAPINFOHEADER)AVIStreamGetFrame(pgf, frame);	// Grab Data From The AVI Stream
+	pdata=(char *)lpbi+lpbi-&gt;biSize+lpbi-&gt;biClrUsed * sizeof(RGBQUAD);	// Pointer To Data Returned By AVIStreamGetFrame
+										// (Skip The Header Info To Get To The Data)
+	// Convert Data To Requested Bitmap Format
+	DrawDibDraw (hdd, hdc, 0, 0, 256, 256, lpbi, pdata, 0, 0, width, height, 0);
+</pre>
+<p>We have our frame of animation but the red and blue bytes are swapped. To solve this problem, we jump to our speedy flipIt(...) code. Remember, data is a pointer to a variable that receives a pointer to the location of the DIB's bit values. What that means is that after we call DrawDibDraw, data will point to the resized (256*256) / modified (24 bit) bitmap data.</p>
+<p>Originally I was updating the texture by recreating it for each frame of animation. I received a few emails suggesting that I use glTexSubImage2D(). After flipping through the OpenGL Red Book, I stumbled across the following quote: "Creating a texture may be more computationally expensive than modifying an existing one. In OpenGL Release 1.1, there are new routines to replace all or part of a texture image with new information. This can be helpful for certain applications, such as using real-time, captured video images as texture images. For that application, it makes sense to create a single texture and use glTexSubImage2D() to repeatedly replace the texture data with new video images".</p>
+<p>I personally didn't notice a huge speed increase, but on slower cards you might! The parameters for glTexSubImage2D() are as follows: Our target, which is a 2D texture (GL_TEXTURE_2D). The detail level (0), used for mipmapping. The x (0) and y (0) offset which tells OpenGL where to start copying to (0,0 is the lower left corner of the texture). Then we have the width of the image we wish to copy which is 256 pixels wide and 256 pixels tall. GL_RGB is the format of our data. We are copying unsigned bytes. Finally... The pointer to our data which is represented by data. Very simple!</p>
+<p>Kevin Rogers Adds: I just wanted to point out another important reason to use glTexSubImage2D. Not only is it faster on many OpenGL implementations, but the target area does not need to be a power of 2. This is especially handy for video playback since the typical dimensions for a frame are rarely powers of 2 (often something like 320 x 200). This gives you the flexibility to play the video stream at its original aspect, rather than distorting / clipping each frame to fit your texture dimensions.</p>
+<p>It's important to note that you can NOT update a texture if you have not created the texture in the first place! We create the texture in the Initialize() code!</p>
+<p>I also wanted to mention... If you planned to use more than one texture in your project, make sure you bind the texture you want to update. If you don't bind the texture you may end up updating textures you didn't want updated!</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	flipIt(data);							// Swap The Red And Blue Bytes (GL Compatability)
+
+	// Update The Texture
+	glTexSubImage2D (GL_TEXTURE_2D, 0, 0, 0, 256, 256, GL_RGB, GL_UNSIGNED_BYTE, data);
+}
+</pre>
+<p>The following section of code is called when the program exits. We close our DrawDib DC, and free allocated resources. We then release the AVI GetFrame resources. Finally we release the stream and then the file.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">void CloseAVI(void)							// Properly Closes The Avi File
+{
+	DeleteObject(hBitmap);						// Delete The Device Dependant Bitmap Object
+	DrawDibClose(hdd);						// Closes The DrawDib Device Context
+	AVIStreamGetFrameClose(pgf);					// Deallocates The GetFrame Resources
+	AVIStreamRelease(pavi);						// Release The Stream
+	AVIFileExit();							// Release The File
+}
+</pre>
+<p>Initialization is pretty straight forward. We set the starting angle to 0. We then open the DrawDib library (which grabs a DC). If everything goes well, hdd becomes a handle to the newly created device context.</p>
+<p>Our clear screen color is black, depth testing is enabled, etc.</p>
+<p>We then create a new quadric. quadratic is the pointer to our new object. We set up smooth normals, and enable texture coordinate generation for our quadric.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">BOOL Initialize (GL_Window* window, Keys* keys)				// Any GL Init Code &amp; User Initialiazation Goes Here
+{
+	g_window	= window;
+	g_keys		= keys;
+
+	// Start Of User Initialization
+	angle = 0.0f;							// Set Starting Angle To Zero
+	hdd = DrawDibOpen();						// Grab A Device Context For Our Dib
+	glClearColor (0.0f, 0.0f, 0.0f, 0.5f);				// Black Background
+	glClearDepth (1.0f);						// Depth Buffer Setup
+	glDepthFunc (GL_LEQUAL);					// The Type Of Depth Testing (Less Or Equal)
+	glEnable(GL_DEPTH_TEST);					// Enable Depth Testing
+	glShadeModel (GL_SMOOTH);					// Select Smooth Shading
+	glHint (GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);		// Set Perspective Calculations To Most Accurate
+
+	quadratic=gluNewQuadric();					// Create A Pointer To The Quadric Object
+	gluQuadricNormals(quadratic, GLU_SMOOTH);			// Create Smooth Normals
+	gluQuadricTexture(quadratic, GL_TRUE);				// Create Texture Coords
+</pre>
+<p>In the next bit of code, we enable 2D texture mapping, we set the texture filters to GL_NEAREST (fast, but rough looking) and we set up sphere mapping (to create the environment mapping effect). Play around with the filters. If you have the power, try out GL_LINEAR for a smoother looking animation.</p>
+<p>After setting up our texture and sphere mapping, we open the .AVI file. I tried to keep things simple... can you tell :) The file we are going to open is called face2.avi... it's located in the data directory.</p>
+<p>The last thing we have to do is create our initial texture. We need to do this in order to use glTexSubImage2D() to update our texture in GrabAVIFrame().</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	glEnable(GL_TEXTURE_2D);					// Enable Texture Mapping
+	glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_NEAREST);// Set Texture Max Filter
+	glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_NEAREST);// Set Texture Min Filter
+
+	glTexGeni(GL_S, GL_TEXTURE_GEN_MODE, GL_SPHERE_MAP);		// Set The Texture Generation Mode For S To Sphere Mapping
+	glTexGeni(GL_T, GL_TEXTURE_GEN_MODE, GL_SPHERE_MAP);		// Set The Texture Generation Mode For T To Sphere Mapping
+
+	OpenAVI("data/face2.avi");					// Open The AVI File
+
+	// Create The Texture
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, 256, 256, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+
+	return TRUE;							// Return TRUE (Initialization Successful)
+}
+</pre>
+<p>When shutting down, we call CloseAVI(). This properly closes the AVI file, and releases any used resources.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">void Deinitialize (void)						// Any User DeInitialization Goes Here
+{
+	CloseAVI();							// Close The AVI File
+}
+</pre>
+<p>This is where we check for key presses and update our rotation (angle) based on time passed. By now I shouldn't have to explain the code in detail. We check to see if the space bar is pressed. If it is, we increase the effect. We have three effect (cube, sphere, cylinder) and when the 4th effect is selected (effect=3) nothing is drawn... showing just the background scene! If we are on the 4th effect and space is pressed, we reset back to the first effect (effect=0). Yeah, I know I should have called it OBJECT :)</p>
+<p>We then check to see if the 'B' key is pressed if it is, we toggle the background (bg) from ON to OFF or from OFF to ON.</p>
+<p>Environment mapping is done the same way. We check to see if 'E' is pressed. If it is, we toggle env from TRUE to FALSE or from FALSE to TRUE. Turning environment mapping off or on!</p>
+<p>The angle is increased by a tiny fraction each time Update() is called. I divide the time passed by 60.0f to slow things down a little.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">void Update (DWORD milliseconds)					// Perform Motion Updates Here
+{
+	if (g_keys-&gt;keyDown [VK_ESCAPE] == TRUE)			// Is ESC Being Pressed?
+	{
+		TerminateApplication (g_window);			// Terminate The Program
+	}
+
+	if (g_keys-&gt;keyDown [VK_F1] == TRUE)				// Is F1 Being Pressed?
+	{
+		ToggleFullscreen (g_window);				// Toggle Fullscreen Mode
+	}
+
+	if ((g_keys-&gt;keyDown [' ']) &amp;&amp; !sp)				// Is Space Being Pressed And Not Held?
+	{
+		sp=TRUE;						// Set sp To True
+		effect++;						// Change Effects (Increase effect)
+		if (effect&gt;3)						// Over Our Limit?
+			effect=0;					// Reset Back To 0
+	}
+
+	if (!g_keys-&gt;keyDown[' '])					// Is Space Released?
+		sp=FALSE;						// Set sp To False
+
+	if ((g_keys-&gt;keyDown ['B']) &amp;&amp; !bp)				// Is 'B' Being Pressed And Not Held?
+	{
+		bp=TRUE;						// Set bp To True
+		bg=!bg;							// Toggle Background Off/On
+	}
+
+	if (!g_keys-&gt;keyDown['B'])					// Is 'B' Released?
+		bp=FALSE;						// Set bp To False
+
+	if ((g_keys-&gt;keyDown ['E']) &amp;&amp;amp !ep)				// Is 'E' Being Pressed And Not Held?
+	{
+		ep=TRUE;						// Set ep To True
+		env=!env;						// Toggle Environment Mapping Off/On
+	}
+
+	if (!g_keys-&gt;keyDown['E'])					// Is 'E' Released?
+		ep=FALSE;						// Set ep To False
+
+	angle += (float)(milliseconds) / 60.0f;				// Update angle Based On The Timer
+</pre>
+<p>In the original tutorial, all AVI files were played at the same speed. Since then, the tutorial has been rewritten to play the video at the correct speed. next is increased by the number of milliseconds that have passed since this section of code was last called. If you remember earlier in the tutorial, we calculated how long each frame should be displayed in milliseconds (mpf). To calculate the current frame, we take the amount of time that has passed (next) and divide it by the time each frame is displayed for (mpf).</p>
+<p>After that, we check to make sure that the current frame of animation hasn't passed the last frame of the video. If it has, frame is reset to zero, the animation timer (next) is reset to 0, and the animation starts over.</p>
+<p>The code below will drop frames if your computer is running to slow, or another application is hogging the CPU. If you want every frame to be displayed no matter how slow the users computer is, you could check to see if next is greater than mpf if it is, you would reset next to 0 and increase frame by one. Either way will work, although the code below is better for faster machines.</p>
+<p>If you feel energetic, try adding rewind, fast forward, pause or reverse play!</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	next+= milliseconds;						// Increase next Based On Timer (Milliseconds)
+	frame=next/mpf;							// Calculate The Current Frame
+
+	if (frame&gt;=lastframe)						// Have We Gone Past The Last Frame?
+	{
+		frame=0;						// Reset The Frame Back To Zero (Start Of Video)
+		next=0;							// Reset The Animation Timer (next)
+	}
+}
+</pre>
+<p>Now for the drawing code :) We clear the screen and depth buffer. We then grab a frame of animation. Again, I tried to keep it simple! You pass the requested frame (frame) to GrabAVIFrame(). Pretty simple! Of course, if you wanted multiple AVI's, you would have to pass a texture ID. (More for you to do).</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">void Draw (void)							// Draw Our Scene
+{
+	glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);		// Clear Screen And Depth Buffer
+
+	GrabAVIFrame(frame);						// Grab A Frame From The AVI
+</pre>
+<p>The code below checks to see if we want to draw a background image. If bg is TRUE, we reset the modelview matrix and draw a single texture mapped quad (mapped with a frame from the AVI video) large enough to fill the entire screen. The quad is drawn 20 units into the screen so it appears behind the object (futher in the distance).</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	if (bg)								// Is Background Visible?
+	{
+		glLoadIdentity();					// Reset The Modelview Matrix
+		glBegin(GL_QUADS);					// Begin Drawing The Background (One Quad)
+			// Front Face
+			glTexCoord2f(1.0f, 1.0f); glVertex3f( 11.0f,  8.3f, -20.0f);
+			glTexCoord2f(0.0f, 1.0f); glVertex3f(-11.0f,  8.3f, -20.0f);
+			glTexCoord2f(0.0f, 0.0f); glVertex3f(-11.0f, -8.3f, -20.0f);
+			glTexCoord2f(1.0f, 0.0f); glVertex3f( 11.0f, -8.3f, -20.0f);
+		glEnd();						// Done Drawing The Background
+	}
+</pre>
+<p>After drawing the background (or not), we reset the modelview matrix (starting us back at the center of the screen). We then translate 10 units into the screen.</p>
+<p>After that, we check to see if env is TRUE. If it is, we enable sphere mapping to create the environment mapping effect.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	glLoadIdentity ();						// Reset The Modelview Matrix
+	glTranslatef (0.0f, 0.0f, -10.0f);				// Translate 10 Units Into The Screen
+
+	if (env)							// Is Environment Mapping On?
+	{
+		glEnable(GL_TEXTURE_GEN_S);				// Enable Texture Coord Generation For S (NEW)
+		glEnable(GL_TEXTURE_GEN_T);				// Enable Texture Coord Generation For T (NEW)
+	}
+</pre>
+<p>I added the code below at the last minute. It rotates on the x-axis and y-axis (based on the value of angle) and then translates 2 units on the z-axis. This move us away from the center of the screen. If you remove the three lines of code below, the object will spin in the center of the screen. With the three lines of code, the objects move around a bit as they spin :)</p>
+<p>If you don't understand rotations and translations... you shouldn't be reading this tutorial :)</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	glRotatef(angle*2.3f,1.0f,0.0f,0.0f);				// Throw In Some Rotations To Move Things Around A Bit
+	glRotatef(angle*1.8f,0.0f,1.0f,0.0f);				// Throw In Some Rotations To Move Things Around A Bit
+	glTranslatef(0.0f,0.0f,2.0f);					// After Rotating Translate To New Position
+</pre>
+<p>The code below checks to see which effect (object) we want to draw. If the value of effect is 0, we do a few rotations and then draw a cube. The rotations keep the cube spinning on the x-axis, y-axis and z-axis. By now, you should have the code to create a cube burned into your head :)</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	switch (effect)							// Which Effect?
+	{
+	case 0:								// Effect 0 - Cube
+		glRotatef (angle*1.3f, 1.0f, 0.0f, 0.0f);		// Rotate On The X-Axis By angle
+		glRotatef (angle*1.1f, 0.0f, 1.0f, 0.0f);		// Rotate On The Y-Axis By angle
+		glRotatef (angle*1.2f, 0.0f, 0.0f, 1.0f);		// Rotate On The Z-Axis By angle
+		glBegin(GL_QUADS);					// Begin Drawing A Cube
+			// Front Face
+			glNormal3f( 0.0f, 0.0f, 0.5f);
+			glTexCoord2f(0.0f, 0.0f); glVertex3f(-1.0f, -1.0f,  1.0f);
+			glTexCoord2f(1.0f, 0.0f); glVertex3f( 1.0f, -1.0f,  1.0f);
+			glTexCoord2f(1.0f, 1.0f); glVertex3f( 1.0f,  1.0f,  1.0f);
+			glTexCoord2f(0.0f, 1.0f); glVertex3f(-1.0f,  1.0f,  1.0f);
+			// Back Face
+			glNormal3f( 0.0f, 0.0f,-0.5f);
+			glTexCoord2f(1.0f, 0.0f); glVertex3f(-1.0f, -1.0f, -1.0f);
+			glTexCoord2f(1.0f, 1.0f); glVertex3f(-1.0f,  1.0f, -1.0f);
+			glTexCoord2f(0.0f, 1.0f); glVertex3f( 1.0f,  1.0f, -1.0f);
+			glTexCoord2f(0.0f, 0.0f); glVertex3f( 1.0f, -1.0f, -1.0f);
+			// Top Face
+			glNormal3f( 0.0f, 0.5f, 0.0f);
+			glTexCoord2f(0.0f, 1.0f); glVertex3f(-1.0f,  1.0f, -1.0f);
+			glTexCoord2f(0.0f, 0.0f); glVertex3f(-1.0f,  1.0f,  1.0f);
+			glTexCoord2f(1.0f, 0.0f); glVertex3f( 1.0f,  1.0f,  1.0f);
+			glTexCoord2f(1.0f, 1.0f); glVertex3f( 1.0f,  1.0f, -1.0f);
+			// Bottom Face
+			glNormal3f( 0.0f,-0.5f, 0.0f);
+			glTexCoord2f(1.0f, 1.0f); glVertex3f(-1.0f, -1.0f, -1.0f);
+			glTexCoord2f(0.0f, 1.0f); glVertex3f( 1.0f, -1.0f, -1.0f);
+			glTexCoord2f(0.0f, 0.0f); glVertex3f( 1.0f, -1.0f,  1.0f);
+			glTexCoord2f(1.0f, 0.0f); glVertex3f(-1.0f, -1.0f,  1.0f);
+			// Right Face
+			glNormal3f( 0.5f, 0.0f, 0.0f);
+			glTexCoord2f(1.0f, 0.0f); glVertex3f( 1.0f, -1.0f, -1.0f);
+			glTexCoord2f(1.0f, 1.0f); glVertex3f( 1.0f,  1.0f, -1.0f);
+			glTexCoord2f(0.0f, 1.0f); glVertex3f( 1.0f,  1.0f,  1.0f);
+			glTexCoord2f(0.0f, 0.0f); glVertex3f( 1.0f, -1.0f,  1.0f);
+			// Left Face
+			glNormal3f(-0.5f, 0.0f, 0.0f);
+			glTexCoord2f(0.0f, 0.0f); glVertex3f(-1.0f, -1.0f, -1.0f);
+			glTexCoord2f(1.0f, 0.0f); glVertex3f(-1.0f, -1.0f,  1.0f);
+			glTexCoord2f(1.0f, 1.0f); glVertex3f(-1.0f,  1.0f,  1.0f);
+			glTexCoord2f(0.0f, 1.0f); glVertex3f(-1.0f,  1.0f, -1.0f);
+		glEnd();						// Done Drawing Our Cube
+		break;							// Done Effect 0
+</pre>
+<p>This is where we draw the sphere. We start off with a few quick rotations on the x-axis, y-axis and z-axis. We then draw the sphere. The sphere will have a radius of 1.3f, with 20 slices and 20 stacks. I decided to use 20 because I didn't want the sphere to be perfectly smooth. Using fewer slices and stacks gives the sphere a rougher look (less smooth), making it semi obvious that the sphere is actually rotating when sphere mapping is enabled. Try playing around with the values! It's important to note that more slices or stacks requires more processing power!</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	case 1:								// Effect 1 - Sphere
+		glRotatef (angle*1.3f, 1.0f, 0.0f, 0.0f);		// Rotate On The X-Axis By angle
+		glRotatef (angle*1.1f, 0.0f, 1.0f, 0.0f);		// Rotate On The Y-Axis By angle
+		glRotatef (angle*1.2f, 0.0f, 0.0f, 1.0f);		// Rotate On The Z-Axis By angle
+		gluSphere(quadratic,1.3f,20,20);			// Draw A Sphere
+		break;							// Done Drawing Sphere
+</pre>
+<p>This is where we draw the cylinder. We start off with some simple rotations on the x-axis, y-axis and z-axis. Our cylinder has a base and top radius of 1.0f units. It's 3.0f units high, and is composed of 32 slices and 32 stacks. If you decrease the slices or stacks, the cylinder will be made up of less polygons and will appear less rounded.</p>
+<p>Before we draw the cylinder, we translate -1.5f units on the z-axis. By doing this, our cylinder will rotate around it's center point. The general rule to centering a cylinder is to divide it's height by 2 and translate by the result in a negative direction on the z-axis. If you have no idea what I'm talking about, take out the tranlatef(...) line below. The cylinder will rotate around it's base, instead of a center point.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	case 2:								// Effect 2 - Cylinder
+		glRotatef (angle*1.3f, 1.0f, 0.0f, 0.0f);		// Rotate On The X-Axis By angle
+		glRotatef (angle*1.1f, 0.0f, 1.0f, 0.0f);		// Rotate On The Y-Axis By angle
+		glRotatef (angle*1.2f, 0.0f, 0.0f, 1.0f);		// Rotate On The Z-Axis By angle
+		glTranslatef(0.0f,0.0f,-1.5f);				// Center The Cylinder
+		gluCylinder(quadratic,1.0f,1.0f,3.0f,32,32);		// Draw A Cylinder
+		break;							// Done Drawing Cylinder
+	}
+</pre>
+<p>Next we check to see if env is TRUE. If it is, we disable sphere mapping. We call glFlush() to flush out the rendering pipeline (makes sure everything gets rendered before we draw the next frame).</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	if (env)							// Environment Mapping Enabled?
+	{
+		glDisable(GL_TEXTURE_GEN_S);				// Disable Texture Coord Generation For S (NEW)
+		glDisable(GL_TEXTURE_GEN_T);				// Disable Texture Coord Generation For T (NEW)
+	}
+	
+	glFlush ();							// Flush The GL Rendering Pipeline
+}
+</pre>
+<p>I hope you enjoyed this tutorial. It's 2:00am at the moment... I've been working on this tut for the last 6 hours. Sounds crazy, but writing things so that they actually make sense is not an easy task. I have read the tut 3 times now and I'm still trying to make things easier to understand. Believe it or not, it's important to me that you understand how things work and why they work. That's why I babble endlessly, why I over-comment, etc.</p>
+<p>Anyways... I would love to hear some feedback about this tut. If you find mistakes or you would like to help make the tut better, please contact me. As I said, this is my first attempt at AVI. Normally I wouldn't write a tut on a subject I just learned, but my excitement got the best of me, plus the fact that there's very little information on the subject bothered me. What I'm hoping is that I'll open the door to a flood of higher quality AVI demos and example code! Might happen... might not. Either way, the code is here for you to use however you want!</p>
+<p>Huge thanks to Fredster for the face AVI file. Face was one of about 6 AVI animations he sent to me for use in my tutorial. No questions asked, no conditions. I emailed him and he went out of his way to help me out... Huge respect!</p>
+<p>An even bigger thanks to Jonathan de Blok. If it wasn't for him, this tutorial would not exist. He got me interested in the AVI format by sending me bits of code from his own personal AVI player. He also went out of his way to answer any questions that I had in regards to his code. It's important to note that nothing was borrowed or taken from his code, it was used only to understand how an AVI player works. My player opens, decodes and plays AVI files using very different code!</p>
+<p>Thanks to everyone for the great support! This site would be nothing without it's visitors!!!</p>
+<p><strong>Jeff Molofee</strong> (<strong>NeHe</strong>)</p>
+<p>* DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/vc/lesson35.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/vc/lesson35.zip'" tppabs="http://nehe.gamedev.net/data/lessons/vc/lesson35.zip">Visual C++</a> Code For This Lesson.</p>
+<p>* DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/bcb6/lesson35_bcb6.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/bcb6/lesson35_bcb6.zip'" tppabs="http://nehe.gamedev.net/data/lessons/bcb6/lesson35_bcb6.zip">Borland C++ Builder 6</a> Code For This Lesson. ( Conversion by <a href="mailto:christian@tugzip.com">Christian Kindahl</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/cwarrior/lesson35.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/cwarrior/lesson35.zip'" tppabs="http://nehe.gamedev.net/data/lessons/cwarrior/lesson35.zip">Code Warrior 5.3</a> Code For This Lesson. ( Conversion by <a href="mailto:DelusionalBeing@hotmail.com">Scott Lupton</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/delphi/lesson35.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/delphi/lesson35.zip'" tppabs="http://nehe.gamedev.net/data/lessons/delphi/lesson35.zip">Delphi</a> Code For This Lesson. ( Conversion by <a href="mailto:michal_praha@seznam.cz">Michal Tucek</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/devc/lesson35.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/devc/lesson35.zip'" tppabs="http://nehe.gamedev.net/data/lessons/devc/lesson35.zip">Dev C++</a> Code For This Lesson. ( Conversion by <a href="mailto:zealouselixir@mchsi.com">Warren Moore</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/linux/lesson35.tar.gz  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/linux/lesson35.tar.gz'" tppabs="http://nehe.gamedev.net/data/lessons/linux/lesson35.tar.gz">Linux</a> Code For This Lesson. ( Conversion by <a href="mailto:matthias.haack@epost.de">Matthias Haack</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/vs_net/lesson35.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/vs_net/lesson35.zip'" tppabs="http://nehe.gamedev.net/data/lessons/vs_net/lesson35.zip">Visual Studio .NET</a> Code For This Lesson. ( Conversion by <a href="mailto:ultimatezeus@hotmail.com">Grant James</a> )</p>
+<p>&nbsp;</p>
+<p><strong><span><a href="index-74.htm" tppabs="http://nehe.gamedev.net/data/lessons/lesson.asp?lesson=34">&lt; Lesson 34</a></span></strong><strong><span><a href="index-76.htm" tppabs="http://nehe.gamedev.net/data/lessons/lesson.asp?lesson=36">Lesson 36 &gt;</a></span></strong></p>
+
+
+</div>
+</div>
+
+
+
+            <div style="width:728px;padding:0px;margin:auto; margin-top: 10px;">
+            
+
+    
+                <!-- Leaderboard_NeHe -->
+                <div id='div-gpt-ad-1327940144417-0' style='width:728px; height:90px;'>
+                <script type='text/javascript'>
+                googletag.cmd.push(function() { googletag.display('div-gpt-ad-1327940144417-0'); });
+                </script>
+                </div>
+            
+
+                           
+            </div>   
+        </td>
+        <td class="col2">
+            
+
+
+
+
+<div style="text-align: center; padding:10px;">
+
+<script type='text/javascript'>
+    GA_googleFillSlot("Skyscraper_NeHe");
+</script>
+
+</div>
+            
+        </td>
+    </table>
+    <div id="footer">
+        <p>
+            
+    
+    © 1997-2012 Gamedev . All rights reserved.<br/>
+
+			NeHe™ and NeHe Productions™ are trademarks of GameDev.net, LLC<br/>
+			OpenGL® is a registered trademark of Silicon Graphics Inc.<br/>
+		</p>        
+		<br/>
+    </div>
+
+    
+    
+	    <script type="text/javascript" src="shCore.js" tppabs="http://nehe.gamedev.net/static/js/syntax_highlighter/shCore.js"></script>
+        <script type="text/javascript" src="shBrushCpp.js" tppabs="http://nehe.gamedev.net/static/js/syntax_highlighter/shBrushCpp.js"></script>
+	    <script type="text/javascript" src="shBrushJScript.js" tppabs="http://nehe.gamedev.net/static/js/syntax_highlighter/shBrushJScript.js"></script>
+	    <script type="text/javascript">SyntaxHighlighter.all();</script>
+    
+
+    <!-- Place this render call where appropriate -->
+    <script type="text/javascript">
+      (function() {
+        var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+        po.src = 'plusone.js'/*tpa=https://apis.google.com/js/plusone.js*/;
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+      })();
+    </script>    
+
+    
+<!-- GoogleAnalytics code -->
+<script src="urchin.js" tppabs="http://www.google-analytics.com/urchin.js" type="text/javascript">
+</script>
+<script type="text/javascript">
+_uacct = "UA-279474-2"; // Gamedev
+urchinTracker();
+_uff = 0; // Reset for second account
+_uacct = "UA-24180731-1"; // Non-GD
+urchinTracker();
+</script> 
+  </body>
+</html>

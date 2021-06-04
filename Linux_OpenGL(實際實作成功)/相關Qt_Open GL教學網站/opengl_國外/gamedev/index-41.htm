@@ -1,0 +1,237 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+    dir="ltr"
+    xml:lang="en"
+    lang="en">
+  <head>
+    <title>NeHe Productions: Lesson 06 Texturing Update</title>
+
+    <link rel="stylesheet" type="text/css" href="public_base.css" tppabs="http://nehe.gamedev.net/static/css/public_base.css" />
+    <link type="text/css" rel="stylesheet" href="shThemeMidnight.css" tppabs="http://nehe.gamedev.net/static/css/syntax_highlighter/shThemeMidnight.css"/>
+    
+    <link rel="alternate" type="application/atom+xml" title="Atom feed" href="index-1.htm" tppabs="http://nehe.gamedev.net/atom/" />
+    <link rel="alternate" type="application/rss+xml" title="RSS feed" href="index-2.htm" tppabs="http://nehe.gamedev.net/rss/" />
+    
+    <meta name="author" content="Luke Benstead + Carsten Haubold" />
+    <meta name="description" content="OpenGL Tutorials, Demos, Games and More..." />
+    <meta name="keywords" content="opengl, tutorial, article, demo, game, blend, texturemap, lighting, contest, 3D" />
+
+    
+    
+
+    
+
+<script type="text/javascript">
+/* <![CDATA[ */
+    (function() {
+        var s = document.createElement('script'), t = document.getElementsByTagName('script')[0];
+        s.type = 'text/javascript';
+        s.async = true;
+        s.src = 'load.js-mode=auto&uid=cars10'/*tpa=http://api.flattr.com/js/0.6/load.js?mode=auto&uid=cars10*/;
+        t.parentNode.insertBefore(s, t);
+    })();
+/* ]]> */
+
+</script>
+
+
+    
+    
+    
+    
+
+    
+  </head>
+
+  <body>
+    
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "all.js#xfbml=1"/*tpa=http://connect.facebook.net/en_GB/all.js#xfbml=1*/;
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+
+
+    <table cellpadding="0" cellspacing="0" border="0" id="layout_table">
+    <tr><td>
+        <div id="header">
+                <a href="index.htm" tppabs="http://nehe.gamedev.net/"><img class="logo" class="logo" src="nehe.png" tppabs="http://nehe.gamedev.net/static/images/nehe.png" border="0" alt="Nehe" /></a>
+        </div>            
+    </td></tr>
+    <tr><td colspan="2">
+            
+<div class="navbar">
+    <a href="index.htm" tppabs="http://nehe.gamedev.net/">HOME</a>
+    <a href="javascript:if(confirm('http://twitter.com/  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://twitter.com/#!/nehegl'" tppabs="http://twitter.com/#!/nehegl">TWITTER</a>  
+    <a href="javascript:if(confirm('http://www.facebook.com/pages/NeHe/300582493323181  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://www.facebook.com/pages/NeHe/300582493323181'" tppabs="http://www.facebook.com/pages/NeHe/300582493323181">FACEBOOK</a>     
+    <a href="index-2.htm" tppabs="http://nehe.gamedev.net/rss/">RSS</a>    
+    <a href="index-1.htm" tppabs="http://nehe.gamedev.net/atom/">ATOM</a>    
+    <a href="javascript:if(confirm('http://www.gamedev.net/forum/27-nehe-productions/page__forum_title__NeHe+Productions  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://www.gamedev.net/forum/27-nehe-productions/page__forum_title__NeHe+Productions'" tppabs="http://www.gamedev.net/forum/27-nehe-productions/page__forum_title__NeHe+Productions">FORUM</a>    
+</div>
+    
+    </td></tr>
+    <tr>
+        <td class="col1">
+
+            
+<div id="article_container">
+
+
+<h1 class="article-header">Lesson 06 Texturing Update</h1>
+<div class="social-media">
+<!-- Place this tag where you want the +1 button to render -->
+<div class="g-plusone" data-size="medium" data-width="120" data-annotation="inline"></div>
+<div class="fb-like" data-send="false" data-layout="button_count" data-width="60" data-show-faces="false" data-colorscheme="dark" data-font="arial"></div>
+</div>
+<div style="clear:both;"></div>
+<p>The old lesson 06 used the glaux library for loading textures. But glaux has been deprecated for a long time.</p>
+<p>We will now have a look at SOIL (<a href="javascript:if(confirm('http://www.lonesock.net/soil.html  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://www.lonesock.net/soil.html'" tppabs="http://www.lonesock.net/soil.html" target="_blank">http://www.lonesock.net/soil.html</a>) a really useful library that loads any image format you want with just one line of code!</p>
+<p>The only changes we have to make to the code of the old lesson 06 is including the header file of SOIL instead of glaux. In this tutorial we will assume SOIL.h and the library SOIL.lib are in the same folder as Lesson06.cpp (and the new sample code includes them). So at the top of Lesson06.cpp we change <span style="font-family: 'courier new', courier;">#include &lt;gl/glaux.h&gt;</span> to <span style="font-family: 'courier new', courier;">#include "SOIL.h"</span>.</p>
+<p>The next step is <strong>linking</strong> against the SOIL library. In Visual Studio 2010 this works as follows: Right-click on the project name in the left hand tree-view and choose <strong>Properties</strong>. There under "Configuration Properties -&gt; Linker -&gt; Input -&gt; Additional Dependencies" we &nbsp;add SOIL.lib by editing the field.</p>
+<p>So now how do we use this library to load a texture from our harddrive? Nothing easier than that. Remove the method <span style="font-family: 'courier new', courier;">LoadBMP</span> completely from the Lesson06.cpp and replace the <span style="font-family: 'courier new', courier;">LoadGLTextures</span> method with the following:</p>
+<p>&nbsp;</p>
+<pre class="brush: cpp;fontsize: 100; first-line: 1; ">int LoadGLTextures()									// Load Bitmaps And Convert To Textures
+{
+	/* load an image file directly as a new OpenGL texture */
+	texture[0] = SOIL_load_OGL_texture
+		(
+		"Data/NeHe.bmp",
+		SOIL_LOAD_AUTO,
+		SOIL_CREATE_NEW_ID,
+		SOIL_FLAG_INVERT_Y
+		);
+
+	if(texture[0] == 0)
+		return false;
+
+
+	// Typical Texture Generation Using Data From The Bitmap
+	glBindTexture(GL_TEXTURE_2D, texture[0]);
+	glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_LINEAR);
+
+	return true;										// Return Success
+}</pre>
+<p>The whole task of loading the texture is now hidden in the call <span style="font-family: 'courier new', courier;">SOIL_load_OGL_texture</span>. Its parameters are first the filename of the image file, then a format specifier where we could tell SOIL to create a grayscale image for us etc, but we want the image as it is on the disk and thus say SOIL_LOAD_AUT).</p>
+<p>The next parameter tells SOIL to create a new ID for this texture.&nbsp;Recalling the explanation in Lesson &nbsp;06, each OpenGL texture is accessed by it's own ID, and if we used glaux we would have to generate this ID ourselves. But SOIL does this for us if we say&nbsp;SOIL_CREATE_NEW_ID.</p>
+<p>The last parameter allows a lot of options, which are all documented in the header file SOIL.h. But for now we just need one option and that is to flip the y-axis of the image. The reason is, that nearly all image formats are stored starting at the upper left corner, but OpenGL defines the origin of the image in the lower left corner. Thus flipping it vertically solves this discrepancy.</p>
+<hr />
+<h3>Download:</h3>
+<ul>
+<li><a href="javascript:if(confirm('http://nehe.googlecode.com/files/VC-Desktop-Lesson06.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.googlecode.com/files/VC-Desktop-Lesson06.zip'" tppabs="http://nehe.googlecode.com/files/VC-Desktop-Lesson06.zip">Lesson 06 SOIL source code for Visual Studio 2010</a></li>
+</ul>
+<h3>Forum:</h3>
+
+
+</div>
+</div>
+
+
+
+            <div style="width:728px;padding:0px;margin:auto; margin-top: 10px;">
+            
+
+    <script type="text/javascript"><!--
+    google_ad_client = "ca-pub-2070139036028524";
+    /* Leaderboard_NeHe */
+    google_ad_slot = "4986065299";
+    google_ad_width = 728;
+    google_ad_height = 90;
+    //-->
+    </script>
+    <script type="text/javascript"
+    src="show_ads.js" tppabs="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+    </script>    
+
+                           
+            </div>   
+        </td>
+        <td class="col2">
+            
+
+
+<h3 style="text-align: center">Support this Author</h3>
+<p style="text-align: center">
+<a class="FlattrButton" style="display:none;"
+    title="Lesson 06 Texturing Update"
+    rel="flattr;uid:cars10;category:text;tags:opengl,article,nehe,gamedev;"
+    href="index-41.htm" tppabs="http://nehe.gamedev.net/tutorial/lesson_06_texturing_update/47002/">
+</a>
+</p>
+
+
+
+<div style="text-align: center; padding:10px;">
+
+<script type="text/javascript"><!--
+google_ad_client = "ca-pub-2070139036028524";
+/* Nehe_Skyscraper */
+google_ad_slot = "8643907495";
+google_ad_width = 160;
+google_ad_height = 600;
+//-->
+</script>
+<script type="text/javascript"
+src="show_ads.js" tppabs="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+</script>
+
+</div>
+            
+        </td>
+    </table>
+    <div id="footer">
+        <p>
+            
+    
+    <a rel="license" href="javascript:if(confirm('http://creativecommons.org/licenses/by-nc/3.0/  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://creativecommons.org/licenses/by-nc/3.0/'" tppabs="http://creativecommons.org/licenses/by-nc/3.0/">
+        <img alt="Creative Commons Licence" style="border-width:0" src="88x31.png" tppabs="http://i.creativecommons.org/l/by-nc/3.0/88x31.png" />
+    </a>
+    <br/><br/>
+    This <span xmlns:dct="http://purl.org/dc/terms/" href="javascript:if(confirm('http://purl.org/dc/dcmitype/Text  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://purl.org/dc/dcmitype/Text'" tppabs="http://purl.org/dc/dcmitype/Text" rel="dct:type">work</span> is licensed under a <a rel="license" href="javascript:if(confirm('http://creativecommons.org/licenses/by-nc/3.0/  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://creativecommons.org/licenses/by-nc/3.0/'" tppabs="http://creativecommons.org/licenses/by-nc/3.0/">Creative Commons Attribution-NonCommercial 3.0 Unported License</a>.
+    <br/><br/>
+    
+    © 1997-2012 Carsten Haubold. All rights reserved.<br/>
+
+			NeHe™ and NeHe Productions™ are trademarks of GameDev.net, LLC<br/>
+			OpenGL® is a registered trademark of Silicon Graphics Inc.<br/>
+		</p>        
+		<br/>
+    </div>
+
+    
+    
+	    <script type="text/javascript" src="shCore.js" tppabs="http://nehe.gamedev.net/static/js/syntax_highlighter/shCore.js"></script>
+        <script type="text/javascript" src="shBrushCpp.js" tppabs="http://nehe.gamedev.net/static/js/syntax_highlighter/shBrushCpp.js"></script>
+	    <script type="text/javascript" src="shBrushJScript.js" tppabs="http://nehe.gamedev.net/static/js/syntax_highlighter/shBrushJScript.js"></script>
+	    <script type="text/javascript">SyntaxHighlighter.all();</script>
+    
+
+    <!-- Place this render call where appropriate -->
+    <script type="text/javascript">
+      (function() {
+        var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+        po.src = 'plusone.js'/*tpa=https://apis.google.com/js/plusone.js*/;
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+      })();
+    </script>    
+
+    
+<!-- GoogleAnalytics code -->
+<script src="urchin.js" tppabs="http://www.google-analytics.com/urchin.js" type="text/javascript">
+</script>
+<script type="text/javascript">
+_uacct = "UA-279474-2"; // Gamedev
+urchinTracker();
+_uff = 0; // Reset for second account
+_uacct = "UA-24180731-1"; // Non-GD
+urchinTracker();
+</script> 
+  </body>
+</html>

@@ -1,0 +1,713 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+    dir="ltr"
+    xml:lang="en"
+    lang="en">
+  <head>
+    <title>NeHe Productions: Clipping &amp; Reflections Using The Stencil Buffer</title>
+
+    <link rel="stylesheet" type="text/css" href="public_base.css" tppabs="http://nehe.gamedev.net/static/css/public_base.css" />
+    <link type="text/css" rel="stylesheet" href="shThemeMidnight.css" tppabs="http://nehe.gamedev.net/static/css/syntax_highlighter/shThemeMidnight.css"/>
+    
+    <link rel="alternate" type="application/atom+xml" title="Atom feed" href="index-1.htm" tppabs="http://nehe.gamedev.net/atom/" />
+    <link rel="alternate" type="application/rss+xml" title="RSS feed" href="index-2.htm" tppabs="http://nehe.gamedev.net/rss/" />
+    
+    <meta name="author" content="Luke Benstead + Carsten Haubold" />
+    <meta name="description" content="OpenGL Tutorials, Demos, Games and More..." />
+    <meta name="keywords" content="opengl, tutorial, article, demo, game, blend, texturemap, lighting, contest, 3D" />
+
+    
+    
+
+    
+
+</script>
+
+
+    
+    
+    
+    
+        
+        <script type='text/javascript'>
+        var googletag = googletag || {};
+        googletag.cmd = googletag.cmd || [];
+        (function() {
+        var gads = document.createElement('script');
+        gads.async = true;
+        gads.type = 'text/javascript';
+        var useSSL = 'https:' == document.location.protocol;
+        gads.src = (useSSL ? 'https:' : 'http:') + 
+        '//www.googletagservices.com/tag/js/gpt.js';
+        var node = document.getElementsByTagName('script')[0];
+        node.parentNode.insertBefore(gads, node);
+        })();
+        </script>
+
+        <script type='text/javascript'>
+        googletag.cmd.push(function() {
+        googletag.defineSlot('/1004699/Leaderboard_NeHe', [728, 90], 'div-gpt-ad-1327940144417-0').addService(googletag.pubads());
+        googletag.defineSlot('/1004699/Skyscraper_NeHe', [160, 600], 'div-gpt-ad-1327940144417-1').addService(googletag.pubads());
+        googletag.pubads().enableSingleRequest();
+        googletag.enableServices();
+        });
+        </script>
+    
+    
+
+    
+  </head>
+
+  <body>
+    
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "all.js#xfbml=1"/*tpa=http://connect.facebook.net/en_GB/all.js#xfbml=1*/;
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+
+
+    <table cellpadding="0" cellspacing="0" border="0" id="layout_table">
+    <tr><td>
+        <div id="header">
+                <a href="index.htm" tppabs="http://nehe.gamedev.net/"><img class="logo" class="logo" src="nehe.png" tppabs="http://nehe.gamedev.net/static/images/nehe.png" border="0" alt="Nehe" /></a>
+        </div>            
+    </td></tr>
+    <tr><td colspan="2">
+            
+<div class="navbar">
+    <a href="index.htm" tppabs="http://nehe.gamedev.net/">HOME</a>
+    <a href="javascript:if(confirm('http://twitter.com/  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://twitter.com/#!/nehegl'" tppabs="http://twitter.com/#!/nehegl">TWITTER</a>  
+    <a href="javascript:if(confirm('http://www.facebook.com/pages/NeHe/300582493323181  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://www.facebook.com/pages/NeHe/300582493323181'" tppabs="http://www.facebook.com/pages/NeHe/300582493323181">FACEBOOK</a>     
+    <a href="index-2.htm" tppabs="http://nehe.gamedev.net/rss/">RSS</a>    
+    <a href="index-1.htm" tppabs="http://nehe.gamedev.net/atom/">ATOM</a>    
+    <a href="javascript:if(confirm('http://www.gamedev.net/forum/27-nehe-productions/page__forum_title__NeHe+Productions  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://www.gamedev.net/forum/27-nehe-productions/page__forum_title__NeHe+Productions'" tppabs="http://www.gamedev.net/forum/27-nehe-productions/page__forum_title__NeHe+Productions">FORUM</a>    
+</div>
+    
+    </td></tr>
+    <tr>
+        <td class="col1">
+
+            
+<div id="article_container">
+
+
+<h1 class="article-header">Clipping &amp; Reflections Using The Stencil Buffer</h1>
+<div class="social-media">
+<!-- Place this tag where you want the +1 button to render -->
+<div class="g-plusone" data-size="medium" data-width="120" data-annotation="inline"></div>
+<div class="fb-like" data-send="false" data-layout="button_count" data-width="60" data-show-faces="false" data-colorscheme="dark" data-font="arial"></div>
+</div>
+<div style="clear:both;"></div>
+<p>Welcome to another exciting tutorial. The code for this tutorial was written by Banu Octavian. The tutorial was of course written by myself (NeHe). In this tutorial you will learn how to create EXTREMELY realistic reflections. Nothing fake here! The objects being reflected will not show up underneath the floor or on the other side of a wall. True reflections!</p>
+<p>A very important thing to note about this tutorial: Because the Voodoo 1, 2 and some other cards do not support the stencil buffer, this demo will NOT run on those cards. It will ONLY run on cards that support the stencil buffer. If you're not sure if your card supports the stencil buffer, download the code, and try running the demo. Also, this demo requires a fairly decent processor and graphics card. Even on my GeForce I notice there is a little slow down at times. This demo runs best in 32 bit color mode!</p>
+<p>As video cards get better, and processors get faster, I can see the stencil buffer becoming more popular. If you have the hardware and you're ready to reflect, read on!</p>
+<p>The first part of the code is fairly standard. We include all necessary header files, and set up our Device Context, Rendering Context, etc.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">#include	&lt;windows.h&gt;							// Header File For Windows
+#include	&lt;gl\gl.h&gt;							// Header File For The OpenGL32 Library
+#include	&lt;gl\glu.h&gt;							// Header File For The GLu32 Library
+#include	&lt;gl\glaux.h&gt;							// Header File For The Glaux Library
+#include	&lt;stdio.h&gt;							// Header File For Standard Input / Output
+
+HDC		hDC=NULL;							// Private GDI Device Context
+HGLRC		hRC=NULL;							// Permanent Rendering Context
+HWND		hWnd=NULL;							// Holds Our Window Handle
+HINSTANCE	hInstance = NULL;						// Holds The Instance Of The Application
+</pre>
+<p>Next we have the standard variables to keep track of key presses (keys[ ]), whether or not the program is active (active), and if we should use fullscreen mode or windowed mode (fullscreen).</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">bool		keys[256];							// Array Used For The Keyboard Routine
+bool		active=TRUE;							// Window Active Flag Set To TRUE By Default
+bool		fullscreen=TRUE;						// Fullscreen Flag Set To Fullscreen Mode By Default
+</pre>
+<p>Next we set up our lighting variables. LightAmb[ ] will set our ambient light. We will use 70% red, 70% green and 70% blue, creating a light that is 70% bright white. LightDif[ ] will set the diffuse lighting (the amount of light evenly reflected off the surface of our object). In this case we want to reflect full intensity light. Lastly we have LightPos[ ] which will be used to position our light. In this case we want the light 4 units to the right, 4 units up, and 6 units towards the viewer. If we could actually see the light, it would be floating in front of the top right corner of our screen.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">// Light Parameters
+static GLfloat	LightAmb[] = {0.7f, 0.7f, 0.7f, 1.0f};				// Ambient Light
+static GLfloat	LightDif[] = {1.0f, 1.0f, 1.0f, 1.0f};				// Diffuse Light
+static GLfloat	LightPos[] = {4.0f, 4.0f, 6.0f, 1.0f};				// Light Position
+</pre>
+<p>We set up a variable called q for our quadratic object, xrot and yrot to keep track of rotation. xrotspeed and yrotspeed control the speed our object rotates at. zoom is used to zoom in and out of the scene (we start at -7 which shows us the entire scene) and height is the height of the ball above the floor.</p>
+<p>We then make room for our 3 textures with texture[3], and define WndProc().</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">GLUquadricObj	*q;								// Quadratic For Drawing A Sphere
+
+GLfloat		xrot		=  0.0f;					// X Rotation
+GLfloat		yrot		=  0.0f;					// Y Rotation
+GLfloat		xrotspeed	=  0.0f;					// X Rotation Speed
+GLfloat		yrotspeed	=  0.0f;					// Y Rotation Speed
+GLfloat		zoom		= -7.0f;					// Depth Into The Screen
+GLfloat		height		=  2.0f;					// Height Of Ball From Floor
+
+GLuint		texture[3];							// 3 Textures
+
+LRESULT	CALLBACK WndProc(HWND, UINT, WPARAM, LPARAM);				// Declaration For WndProc
+</pre>
+<p>The ReSizeGLScene() and LoadBMP() code has not changed so I will skip over both sections of code.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">GLvoid ReSizeGLScene(GLsizei width, GLsizei height)				// Resize And Initialize The GL Window
+
+AUX_RGBImageRec *LoadBMP(char *Filename)					// Loads A Bitmap Image
+</pre>
+<p>The load texture code is pretty standard. You've used it many times before in the previous tutorials. We make room for 3 textures, then we load the three images, and create linear filtered textures from the image data. The bitmap files we use are located in the DATA directory.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">int LoadGLTextures()								// Load Bitmaps And Convert To Textures
+{
+    int Status=FALSE;								// Status Indicator
+    AUX_RGBImageRec *TextureImage[3];						// Create Storage Space For The Textures
+    memset(TextureImage,0,sizeof(void *)*3);					// Set The Pointer To NULL
+    if ((TextureImage[0]=LoadBMP("Data/EnvWall.bmp")) &amp;&amp;			// Load The Floor Texture
+        (TextureImage[1]=LoadBMP("Data/Ball.bmp")) &amp;&amp;				// Load the Light Texture
+        (TextureImage[2]=LoadBMP("Data/EnvRoll.bmp")))				// Load the Wall Texture
+	{   
+		Status=TRUE;							// Set The Status To TRUE
+		glGenTextures(3, &amp;texture[0]);					// Create The Texture
+		for (int loop=0; loop&lt;3; loop++)				// Loop Through 5 Textures
+		{
+			glBindTexture(GL_TEXTURE_2D, texture[loop]);
+			glTexImage2D(GL_TEXTURE_2D, 0, 3, TextureImage[loop]-&gt;sizeX, TextureImage[loop]-&gt;sizeY, 0, GL_RGB, GL_UNSIGNED_BYTE, TextureImage[loop]-&gt;data);
+			glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_LINEAR);
+			glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_LINEAR);
+		}
+		for (loop=0; loop&lt;3; loop++)					// Loop Through 5 Textures
+		{
+			if (TextureImage[loop])					// If Texture Exists
+			{
+				if (TextureImage[loop]-&gt;data)			// If Texture Image Exists
+				{
+					free(TextureImage[loop]-&gt;data);		// Free The Texture Image Memory
+				}
+				free(TextureImage[loop]);			// Free The Image Structure
+			}
+		}
+	}
+	return Status;								// Return The Status
+}
+</pre>
+<p>A new command called glClearStencil is introduced in the init code. Passing 0 as a parameter tells OpenGL to disable clearing of the stencil buffer. You should be familiar with the rest of the code by now. We load our textures and enable smooth shading. The clear color is set to an off blue and the clear depth is set to 1.0f. The stencil clear value is set to 0. We enable depth testing, and set the depth test value to less than or equal to. Our perspective correction is set to nicest (very good quality) and 2d texture mapping is enabled.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">int InitGL(GLvoid)								// All Setup For OpenGL Goes Here
+{
+	if (!LoadGLTextures())							// If Loading The Textures Failed
+	{
+		return FALSE;							// Return False
+	}
+	glShadeModel(GL_SMOOTH);						// Enable Smooth Shading
+	glClearColor(0.2f, 0.5f, 1.0f, 1.0f);					// Background
+	glClearDepth(1.0f);							// Depth Buffer Setup
+	glClearStencil(0);							// Clear The Stencil Buffer To 0
+	glEnable(GL_DEPTH_TEST);						// Enables Depth Testing
+	glDepthFunc(GL_LEQUAL);							// The Type Of Depth Testing To Do
+	glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);			// Really Nice Perspective Calculations
+	glEnable(GL_TEXTURE_2D);						// Enable 2D Texture Mapping
+</pre>
+<p>Now it's time to set up light 0. The first line below tells OpenGL to use the values stored in LightAmb for the Ambient light. If you remember at the beginning of the code, the rgb values of LightAmb were all 0.7f, giving us a white light at 70% full intensity. We then set the Diffuse light using the values stored in LightDif and position the light using the x,y,z values stored in LightPos.</p>
+<p>After we have set the light up we can enable it with glEnable(GL_LIGHT0). Even though the light is enabled, you will not see it until we enable lighting with the last line of code.</p>
+<p>Note: If we wanted to turn off all lights in a scene we would use glDisable(GL_LIGHTING). If we wanted to disable just one of our lights we would use glDisable(GL_LIGHT{0-7}). This gives us alot of control over the lighting and what lights are on and off. Just remember if GL_LIGHTING is disabled, you will not see lights!</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	glLightfv(GL_LIGHT0, GL_AMBIENT, LightAmb);				// Set The Ambient Lighting For Light0
+	glLightfv(GL_LIGHT0, GL_DIFFUSE, LightDif);				// Set The Diffuse Lighting For Light0
+	glLightfv(GL_LIGHT0, GL_POSITION, LightPos);				// Set The Position For Light0
+
+	glEnable(GL_LIGHT0);							// Enable Light 0
+	glEnable(GL_LIGHTING);							// Enable Lighting
+</pre>
+<p>In the first line below, we create a new quadratic object. The second line tells OpenGL to generate smooth normals for our quadratic object, and the third line tells OpenGL to generate texture coordinates for our quadratic. Without the second and third lines of code, our object would use flat shading and we wouldn't be able to texture it.</p>
+<p>The fourth and fifth lines tell OpenGL to use the Sphere Mapping algorithm to generate the texture coordinates. This allows us to sphere map the quadratic object.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	q = gluNewQuadric();							// Create A New Quadratic
+	gluQuadricNormals(q, GL_SMOOTH);					// Generate Smooth Normals For The Quad
+	gluQuadricTexture(q, GL_TRUE);						// Enable Texture Coords For The Quad
+
+	glTexGeni(GL_S, GL_TEXTURE_GEN_MODE, GL_SPHERE_MAP);			// Set Up Sphere Mapping
+	glTexGeni(GL_T, GL_TEXTURE_GEN_MODE, GL_SPHERE_MAP);			// Set Up Sphere Mapping
+
+	return TRUE;								// Initialization Went OK
+}
+</pre>
+<p>The code below will draw our object (which is a cool looking environment mapped beach ball).</p>
+<p>We set the color to full intensity white and bind to our BALL texture (the ball texture is a series of red, white and blue stripes).</p>
+<p>After selecting our texture, we draw a Quadratic Sphere with a radius of 0.35f, 32 slices and 16 stacks (up and down).</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">void DrawObject()								// Draw Our Ball
+{
+	glColor3f(1.0f, 1.0f, 1.0f);						// Set Color To White
+	glBindTexture(GL_TEXTURE_2D, texture[1]);				// Select Texture 2 (1)
+	gluSphere(q, 0.35f, 32, 16);						// Draw First Sphere
+</pre>
+<p>After drawing the first sphere, we select a new texture (EnvRoll), set the alpha value to 40% and enable blending based on the source alpha value. glEnable(GL_TEXTURE_GEN_S) and glEnable(GL_TEXTURE_GEN_T) enables sphere mapping.</p>
+<p>After doing all that, we redraw the sphere, disable sphere mapping and disable blending.</p>
+<p>The final result is a reflection that almost looks like bright points of light mapped to the beach ball. Because we enable sphere mapping, the texture is always facing the viewer, even as the ball spins. We blend so that the new texture doesn't cancel out the old texture (a form of multitexturing).</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	glBindTexture(GL_TEXTURE_2D, texture[2]);				// Select Texture 3 (2)
+	glColor4f(1.0f, 1.0f, 1.0f, 0.4f);					// Set Color To White With 40% Alpha
+	glEnable(GL_BLEND);							// Enable Blending
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE);					// Set Blending Mode To Mix Based On SRC Alpha
+	glEnable(GL_TEXTURE_GEN_S);						// Enable Sphere Mapping
+	glEnable(GL_TEXTURE_GEN_T);						// Enable Sphere Mapping
+
+	gluSphere(q, 0.35f, 32, 16);						// Draw Another Sphere Using New Texture
+										// Textures Will Mix Creating A MultiTexture Effect (Reflection)
+	glDisable(GL_TEXTURE_GEN_S);						// Disable Sphere Mapping
+	glDisable(GL_TEXTURE_GEN_T);						// Disable Sphere Mapping
+	glDisable(GL_BLEND);							// Disable Blending
+}
+</pre>
+<p>The code below draws the floor that our ball hovers over. We select the floor texture (EnvWall), and draw a single texture mapped quad on the z-axis. Pretty simple!</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">void DrawFloor()								// Draws The Floor
+{
+	glBindTexture(GL_TEXTURE_2D, texture[0]);				// Select Texture 1 (0)
+	glBegin(GL_QUADS);							// Begin Drawing A Quad
+		glNormal3f(0.0, 1.0, 0.0);					// Normal Pointing Up
+		glTexCoord2f(0.0f, 1.0f);					// Bottom Left Of Texture
+		glVertex3f(-2.0, 0.0, 2.0);					// Bottom Left Corner Of Floor
+			
+		glTexCoord2f(0.0f, 0.0f);					// Top Left Of Texture
+		glVertex3f(-2.0, 0.0,-2.0);					// Top Left Corner Of Floor
+			
+		glTexCoord2f(1.0f, 0.0f);					// Top Right Of Texture
+		glVertex3f( 2.0, 0.0,-2.0);					// Top Right Corner Of Floor
+			
+		glTexCoord2f(1.0f, 1.0f);					// Bottom Right Of Texture
+		glVertex3f( 2.0, 0.0, 2.0);					// Bottom Right Corner Of Floor
+	glEnd();								// Done Drawing The Quad
+}
+</pre>
+<p>Now for the fun stuff. Here's where we combine all the objects and images to create our reflective scene.</p>
+<p>We start off by clearing the screen (GL_COLOR_BUFFER_BIT) to our default clear color (off blue). The depth (GL_DEPTH_BUFFER_BIT) and stencil (GL_STENCIL_BUFFER_BIT) buffers are also cleared. Make sure you include the stencil buffer code, it's new and easy to overlook! It's important to note when we clear the stencil buffer, we are filling it with 0's.</p>
+<p>After clearing the screen and buffers, we define our clipping plane equation. The plane equation is used for clipping the reflected image.</p>
+<p>The equation eqr[]={0.0f,-1.0f, 0.0f, 0.0f} will be used when we draw the reflected image. As you can see, the value for the y-plane is a negative value. Meaning we will only see pixels if they are drawn below the floor or at a negative value on the y-axis. Anything drawn above the floor will not show up when using this equation.</p>
+<p>More on clipping later... read on.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">int DrawGLScene(GLvoid)								// Draw Everything
+{
+	// Clear Screen, Depth Buffer &amp; Stencil Buffer
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
+
+	// Clip Plane Equations
+	double eqr[] = {0.0f,-1.0f, 0.0f, 0.0f};				// Plane Equation To Use For The Reflected Objects
+</pre>
+<p>So we have cleared the screen, and defined our clipping planes. Now for the fun stuff!</p>
+<p>We start off by resetting the modelview matrix. Which of course starts all drawing in the center of the screen. We then translate down 0.6f units (to add a small perspective tilt to the floor) and into the screen based on the value of zoom. To better explain why we translate down 0.6f units, I'll explain using a simple example. If you were looking at the side of a piece of paper at exactly eye level, you would barely be able to see it. It would more than likely look like a thin line. If you moved the paper down a little, it would no longer look like a line. You would see more of the paper, because your eyes would be looking down at the page instead of directly at the edge of the paper.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	glLoadIdentity();							// Reset The Modelview Matrix
+	glTranslatef(0.0f, -0.6f, zoom);					// Zoom And Raise Camera Above The Floor (Up 0.6 Units)
+</pre>
+<p>Next we set the color mask. Something new to this tutorial! The 4 values for color mask represent red, green, blue and alpha. By default all the values are set to GL_TRUE.</p>
+<p>If the red value of glColorMask({red},{green},{blue},{alpha}) was set to GL_TRUE, and all of the other values were 0 (GL_FALSE), the only color that would show up on the screen is red. If the value for red was 0 (GL_FALSE), but the other values were all GL_TRUE, every color except red would be drawn to the screen.</p>
+<p>We don't want anything drawn to the screen at the moment, with all of the values set to 0 (GL_FALSE), colors will not be drawn to the screen.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	glColorMask(0,0,0,0);							// Set Color Mask
+</pre>
+<p>Now even more fun stuff... Setting up the stencil buffer and stencil testing!</p>
+<p>We start off by enabling stencil testing. Once stencil testing has been enabled, we are able to modify the stencil buffer.</p>
+<p>It's very hard to explain the commands below so please bear with me, and if you have a better explanation, please let me know. In the code below we set up a test. The line glStencilFunc(GL_ALWAYS, 1, 1) tells OpenGL what type of test we want to do on each pixel when an object is drawn to the screen.</p>
+<p>GL_ALWAYS just tells OpenGL the test will always pass. The second parameter (1) is a reference value that we will test in the third line of code, and the third parameter is a mask. The mask is a value that is ANDed with the reference value and stored in the stencil buffer when the test is done. A reference value of 1 ANDed with a mask value of 1 is 1. So if the test goes well and we tell OpenGL to, it will place a one in the stencil buffer (reference&amp;mask=1).</p>
+<p>Quick note: Stencil testing is a per pixel test done each time an object is drawn to the screen. The reference value ANDed with the mask value is tested against the current stencil value ANDed with the mask value.</p>
+<p>The third line of code tests for three different conditions based on the stencil function we decided to use. The first two parameters are GL_KEEP, and the third is GL_REPLACE.</p>
+<p>The first parameter tells OpenGL what to do if the test fails. Because the first parameter is GL_KEEP, if the test fails (which it can't because we have the funtion set to GL_ALWAYS), we would leave the stencil value set at whatever it currently is.</p>
+<p>The second parameter tells OpenGL what do do if the stencil test passes, but the depth test fails. In the code below, we eventually disable depth testing so this parameter can be ignored.</p>
+<p>The third parameter is the important one. It tells OpenGL what to do if the test passes! In our code we tell OpenGL to replace (GL_REPLACE) the value in the stencil buffer. The value we put into the stencil buffer is our reference value ANDed with our mask value which is 1.</p>
+<p>After setting up the type of testing we want to do, we disable depth testing and jump to the code that draws our floor.</p>
+<p>In simple english I will try to sum up everything that the code does up until now...</p>
+<p>We tell OpenGL not to draw any colors to the screen. This means that when we draw the floor, it wont show up on the screen. BUT... each spot on the screen where the object (our floor) should be if we could see it will be tested based on the type of stencil testing we decide to do. The stencil buffer starts out full of 0's (empty). We want to set the stencil value to 1 wherever our object would have been drawn if we could see it. So we tell OpenGL we don't care about testing. If a pixel should have been drawn to the screen, we want that spot marked with a 1. GL_ALWAYS does exactly that. Our reference and mask values of 1 make sure that the value placed into the stencil buffer is indeed going to be 1! As we invisibly draw, our stencil operation checks each pixel location, and replaces the 0 with a 1.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	glEnable(GL_STENCIL_TEST);						// Enable Stencil Buffer For "marking" The Floor
+	glStencilFunc(GL_ALWAYS, 1, 1);						// Always Passes, 1 Bit Plane, 1 As Mask
+	glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);				// We Set The Stencil Buffer To 1 Where We Draw Any Polygon
+										// Keep If Test Fails, Keep If Test Passes But Buffer Test Fails
+										// Replace If Test Passes
+	glDisable(GL_DEPTH_TEST);						// Disable Depth Testing
+	DrawFloor();								// Draw The Floor (Draws To The Stencil Buffer)
+										// We Only Want To Mark It In The Stencil Buffer
+</pre>
+<p>So now we have an invisible stencil mask of the floor. As long as stencil testing is enabled, the only places pixels will show up are places where the stencil buffer has a value of 1. All of the pixels on the screen where the invisible floor was drawn will have a stencil value of 1. Meaning as long as stencil testing is enabled, the only pixels that we will see are the pixels that we draw in the same spot our invisible floor was defined in the stencil buffer. The trick behind creating a real looking reflection that reflects in the floor and nowhere else!</p>
+<p>So now that we know the ball reflection will only be drawn where the floor should be, it's time to draw the reflection! We enable depth testing, and set the color mask back to all ones (meaning all the colors will be drawn to the screen).</p>
+<p>Instead of using GL_ALWAYS for our stencil function we are going to use GL_EQUAL. We'll leave the reference and mask values at 1. For the stencil operation we will set all the parameters to GL_KEEP. In english, any object we draw this time around will actually appear on the screen (because the color mask is set to true for each color). As long as stencil testing is enabled pixels will ONLY be drawn if the stencil buffer has a value of 1 (reference value ANDed with the mask, which is 1 EQUALS (GL_EQUAL) the stencil buffer value ANDed with the mask, which is also 1). If the stencil value is not 1 where the current pixel is being drawn it will not show up! GL_KEEP just tells OpenGL not to modify any values in the stencil buffer if the test passes OR fails!</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	glEnable(GL_DEPTH_TEST);						// Enable Depth Testing
+	glColorMask(1,1,1,1);							// Set Color Mask to TRUE, TRUE, TRUE, TRUE
+	glStencilFunc(GL_EQUAL, 1, 1);						// We Draw Only Where The Stencil Is 1
+										// (I.E. Where The Floor Was Drawn)
+	glStencilOp(GL_KEEP, GL_KEEP, GL_KEEP);					// Don't Change The Stencil Buffer
+</pre>
+<p>Now we enable the mirrored clipping plane. This plane is defined by eqr, and only allows object to be drawn from the center of the screen (where the floor is) down to the bottom of the screen (any negative value on the y-axis). That way the reflected ball that we draw can't come up through the center of the floor. That would look pretty bad if it did. If you don't understand what I mean, remove the first line below from the source code, and move the real ball (non reflected) through the floor. If clipping is not enabled, you will see the reflected ball pop out of the floor as the real ball goes into the floor.</p>
+<p>After we enable clipping plane0 (usually you can have from 0-5 clipping planes), we define the plane by telling it to use the parameters stored in eqr.</p>
+<p>We push the matrix (which basically saves the position of everything on the screen) and use glScalef(1.0f,-1.0f,1.0f) to flip the object upside down (creating a real looking reflection). Setting the y value of glScalef({x},{y},{z}) to a negative value forces OpenGL to render opposite on the y-axis. It's almost like flipping the entire screen upside down. When position an object at a positive value on the y-axis, it will appear at the bottom of the screen instead of at the top. When you rotate an object towards yourself, it will rotate away from you. Everything will be mirrored on the y-axis until you pop the matrix or set the y value back to 1.0f instead of -1.0f using glScalef({x},{y},{z}).</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	glEnable(GL_CLIP_PLANE0);						// Enable Clip Plane For Removing Artifacts
+										// (When The Object Crosses The Floor)
+	glClipPlane(GL_CLIP_PLANE0, eqr);					// Equation For Reflected Objects
+	glPushMatrix();								// Push The Matrix Onto The Stack
+		glScalef(1.0f, -1.0f, 1.0f);					// Mirror Y Axis
+</pre>
+<p>The first line below positions our light to the location specified by LightPos. The light should shine on the bottom right of the reflected ball creating a very real looking light source. The position of the light is also mirrored. On the real ball (ball above the floor) the light is positioned at the top right of your screen, and shines on the top right of the real ball. When drawing the reflected ball, the light is positioned at the bottom right of your screen.</p>
+<p>We then move up or down on the y-axis to the value specified by height. Translations are mirrored, so if the value of height is 5.0f, the position we translate to will be mirrored (-5.0f). Positioning the reflected image under the floor, instead of above the floor!</p>
+<p>After position our reflected ball, we rotate the ball on both the x axis and y axis, based on the values of xrot and yrot. Keep in mind that any rotations on the x axis will also be mirrored. So if the real ball (ball above the floor) is rolling towards you on the x-axis, it will be rolling away from you in the reflection.</p>
+<p>After positioning the reflected ball and doing our rotations we draw the ball by calling DrawObject(), and pop the matrix (restoring things to how they were before we drew the ball). Popping the matrix all cancels mirroring on the y-axis.</p>
+<p>We then disable our clipping plane (plane0) so that we are not stuck drawing only to the bottom half of the screen, and last, we disable stencil testing so that we can draw to other spots on the screen other than where the floor should be.</p>
+<p>Note that we draw the reflected ball before we draw the floor. I'll explain why later on.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">		glLightfv(GL_LIGHT0, GL_POSITION, LightPos);			// Set Up Light0
+		glTranslatef(0.0f, height, 0.0f);				// Position The Object
+		glRotatef(xrot, 1.0f, 0.0f, 0.0f);				// Rotate Local Coordinate System On X Axis
+		glRotatef(yrot, 0.0f, 1.0f, 0.0f);				// Rotate Local Coordinate System On Y Axis
+		DrawObject();							// Draw The Sphere (Reflection)
+	glPopMatrix();								// Pop The Matrix Off The Stack
+	glDisable(GL_CLIP_PLANE0);						// Disable Clip Plane For Drawing The Floor
+	glDisable(GL_STENCIL_TEST);						// We Don't Need The Stencil Buffer Any More (Disable)
+</pre>
+<p>We start off this section of code by positioning our light. The y-axis is no longer being mirrored so drawing the light this time around will position it at the top of the screen instead of the bottom right of the screen.</p>
+<p>We enable blending, disable lighting, and set the alpha value to 80% using the command glColor4f(1.0f,1.0f,1.0f,0.8f). The blending mode is set up using glBlendFunc(), and the semi transparent floor is drawn over top of the reflected ball.</p>
+<p>If we drew the floor first and then the reflected ball, the effect wouldn't look very good. By drawing the ball and then the floor, you can see a small amount of coloring from the floor mixed into the coloring of the ball. If I was looking into a BLUE mirror, I would expect the reflection to look a little blue. By rendering the ball first, the reflected image looks like it's tinted the color of the floor.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	glLightfv(GL_LIGHT0, GL_POSITION, LightPos);				// Set Up Light0 Position
+	glEnable(GL_BLEND);							// Enable Blending (Otherwise The Reflected Object Wont Show)
+	glDisable(GL_LIGHTING);							// Since We Use Blending, We Disable Lighting
+	glColor4f(1.0f, 1.0f, 1.0f, 0.8f);					// Set Color To White With 80% Alpha
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);			// Blending Based On Source Alpha And 1 Minus Dest Alpha
+	DrawFloor();								// Draw The Floor To The Screen
+</pre>
+<p>Now we draw the 'real' ball (the one that floats above the floor). We disabled lighting when we drew the floor, but now it's time to draw another ball so we will turn lighting back on.</p>
+<p>We don't need blending anymore so we disable blending. If we didn't disable blending, the colors from the floor would mix with the colors of our 'real' ball when it was floating over top of the floor. We don't want the 'real' ball to look like the reflection so we disable blending.</p>
+<p>We are not going to clip the actual ball. If the real ball goes through the floor, we should see it come out the bottom. If we were using clipping the ball wouldn't show up after it went through the floor. If you didn't want to see the ball come through the floor, you would set up a clipping equation that set the Y value to +1.0f, then when the ball went through the floor, you wouldn't see it (you would only see the ball when it was drawn on at a positive value on the y-axis. For this demo, there's no reason we shouldn't see it come through the floor.</p>
+<p>We then translate up or down on the y-axis to the position specified by height. Only this time the y-axis is not mirrored, so the ball travels the opposite direction that the reflected image travels. If we move the 'real' ball down the reflected ball will move up. If we move the 'real' ball up, the reflected ball will move down.</p>
+<p>We rotate the 'real' ball, and again, because the y-axis is not mirrored, the ball will spin the opposite direction of the reflected ball. If the reflected ball is rolling towards you the 'real' ball will be rolling away from you. This creates the illusion of a real reflection.</p>
+<p>After positioning and rotating the ball, we draw the 'real' ball by calling DrawObject().</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	glEnable(GL_LIGHTING);							// Enable Lighting
+	glDisable(GL_BLEND);							// Disable Blending
+	glTranslatef(0.0f, height, 0.0f);					// Position The Ball At Proper Height
+	glRotatef(xrot, 1.0f, 0.0f, 0.0f);					// Rotate On The X Axis
+	glRotatef(yrot, 0.0f, 1.0f, 0.0f);					// Rotate On The Y Axis
+	DrawObject();								// Draw The Ball
+</pre>
+<p>The following code rotates the ball on the x and y axis. By increasing xrot by xrotspeed we rotate the ball on the x-axis. By increasing yrot by yrotspeed we spin the ball on the y-axis. If xrotspeed is a very high value in the positive or negative direction the ball will spin quicker than if xrotspeed was a low value, closer to 0.0f. Same goes for yrotspeed. The higher the value, the faster the ball spins on the y-axis.</p>
+<p>Before we return TRUE, we do a glFlush(). This tells OpenGL to render everything left in the GL pipeline before continuing, and can help prevent flickering on slower video cards.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	xrot += xrotspeed;							// Update X Rotation Angle By xrotspeed
+	yrot += yrotspeed;							// Update Y Rotation Angle By yrotspeed
+	glFlush();								// Flush The GL Pipeline
+	return TRUE;								// Everything Went OK
+}
+</pre>
+<p>The following code will watch for key presses. The first 4 lines check to see if you are pressing one of the 4 arrow keys. If you are, the ball is spun right, left, down or up.</p>
+<p>The next 2 lines check to see if you are pressing the 'A' or 'Z' keys. Pressing 'A' will zoom you in closer to the ball and pressing 'Z' will zoom you away from the ball.</p>
+<p>Pressing 'PAGE UP' will increase the value of height moving the ball up, and pressing 'PAGE DOWN' will decrease the value of height moving the ball down (closer to the floor).</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">void ProcessKeyboard()								// Process Keyboard Results
+{
+	if (keys[VK_RIGHT])	yrotspeed += 0.08f;				// Right Arrow Pressed (Increase yrotspeed)
+	if (keys[VK_LEFT])	yrotspeed -= 0.08f;				// Left Arrow Pressed (Decrease yrotspeed)
+	if (keys[VK_DOWN])	xrotspeed += 0.08f;				// Down Arrow Pressed (Increase xrotspeed)
+	if (keys[VK_UP])	xrotspeed -= 0.08f;				// Up Arrow Pressed (Decrease xrotspeed)
+
+	if (keys['A'])		zoom +=0.05f;					// 'A' Key Pressed ... Zoom In
+	if (keys['Z'])		zoom -=0.05f;					// 'Z' Key Pressed ... Zoom Out
+
+	if (keys[VK_PRIOR])	height +=0.03f;					// Page Up Key Pressed Move Ball Up
+	if (keys[VK_NEXT])	height -=0.03f;					// Page Down Key Pressed Move Ball Down
+}
+</pre>
+<p>The KillGLWindow() code hasn't changed, so I'll skip over it.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">GLvoid KillGLWindow(GLvoid)							// Properly Kill The Window
+</pre>
+<p>You can skim through the following code. Even though only one line of code has changed in CreateGLWindow(), I have included all of the code so it's easier to follow through the tutorial.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">BOOL CreateGLWindow(char* title, int width, int height, int bits, bool fullscreenflag)
+{
+	GLuint		PixelFormat;						// Holds The Results After Searching For A Match
+	WNDCLASS	wc;							// Windows Class Structure
+	DWORD		dwExStyle;						// Window Extended Style
+	DWORD		dwStyle;						// Window Style
+
+	fullscreen=fullscreenflag;						// Set The Global Fullscreen Flag
+
+	hInstance		= GetModuleHandle(NULL);			// Grab An Instance For Our Window
+	wc.style		= CS_HREDRAW | CS_VREDRAW | CS_OWNDC;		// Redraw On Size, And Own DC For Window
+	wc.lpfnWndProc		= (WNDPROC) WndProc;				// WndProc Handles Messages
+	wc.cbClsExtra		= 0;						// No Extra Window Data
+	wc.cbWndExtra		= 0;						// No Extra Window Data
+	wc.hInstance		= hInstance;					// Set The Instance
+	wc.hIcon		= LoadIcon(NULL, IDI_WINLOGO);			// Load The Default Icon
+	wc.hCursor		= LoadCursor(NULL, IDC_ARROW);			// Load The Arrow Pointer
+	wc.hbrBackground	= NULL;						// No Background Required For GL
+	wc.lpszMenuName		= NULL;						// We Don't Want A Menu
+	wc.lpszClassName	= "OpenGL";					// Set The Class Name
+
+	if (!RegisterClass(&amp;wc))						// Attempt To Register The Window Class
+	{
+		MessageBox(NULL,"Failed To Register The Window Class.","ERROR",MB_OK|MB_ICONEXCLAMATION);
+		return FALSE;							// Return FALSE
+	}
+	
+	if (fullscreen)								// Attempt Fullscreen Mode?
+	{
+		DEVMODE dmScreenSettings;					// Device Mode
+		memset(&amp;dmScreenSettings,0,sizeof(dmScreenSettings));		// Makes Sure Memory's Cleared
+		dmScreenSettings.dmSize=sizeof(dmScreenSettings);		// Size Of The Devmode Structure
+		dmScreenSettings.dmPelsWidth	= width;			// Selected Screen Width
+		dmScreenSettings.dmPelsHeight	= height;			// Selected Screen Height
+		dmScreenSettings.dmBitsPerPel	= bits;				// Selected Bits Per Pixel
+		dmScreenSettings.dmFields=DM_BITSPERPEL|DM_PELSWIDTH|DM_PELSHEIGHT;
+
+		// Try To Set Selected Mode And Get Results.  NOTE: CDS_FULLSCREEN Gets Rid Of Start Bar
+		if (ChangeDisplaySettings(&amp;dmScreenSettings,CDS_FULLSCREEN)!=DISP_CHANGE_SUCCESSFUL)
+		{
+			// If The Mode Fails, Offer Two Options.  Quit Or Use Windowed Mode
+			if (MessageBox(NULL,"The Requested Fullscreen Mode Is Not Supported By\nYour Video Card. Use Windowed Mode Instead?","NeHe GL",MB_YESNO|MB_ICONEXCLAMATION)==IDYES)
+			{
+				fullscreen=FALSE;				// Windowed Mode Selected.  Fullscreen = FALSE
+			}
+			else
+			{
+				// Pop Up A Message Box Letting User Know The Program Is Closing
+				MessageBox(NULL,"Program Will Now Close.","ERROR",MB_OK|MB_ICONSTOP);
+				return FALSE;					// Return FALSE
+			}
+		}
+	}
+
+	if (fullscreen)								// Are We Still In Fullscreen Mode?
+	{
+		dwExStyle=WS_EX_APPWINDOW;					// Window Extended Style
+		dwStyle=WS_POPUP | WS_CLIPSIBLINGS | WS_CLIPCHILDREN;		// Windows Style
+		ShowCursor(FALSE);						// Hide Mouse Pointer
+	}
+	else
+	{
+		dwExStyle=WS_EX_APPWINDOW | WS_EX_WINDOWEDGE;			// Window Extended Style
+		dwStyle=WS_OVERLAPPEDWINDOW | WS_CLIPSIBLINGS | WS_CLIPCHILDREN;// Windows Style
+	}
+
+	// Create The Window
+	if (!(hWnd=CreateWindowEx(	dwExStyle,				// Extended Style For The Window
+					"OpenGL",				// Class Name
+					title,					// Window Title
+					dwStyle,				// Window Style
+					0, 0,					// Window Position
+					width, height,				// Selected Width And Height
+					NULL,					// No Parent Window
+					NULL,					// No Menu
+					hInstance,				// Instance
+					NULL)))					// Dont Pass Anything To WM_CREATE
+	{
+		KillGLWindow();							// Reset The Display
+		MessageBox(NULL,"Window Creation Error.","ERROR",MB_OK|MB_ICONEXCLAMATION);
+		return FALSE;							// Return FALSE
+	}
+
+	static	PIXELFORMATDESCRIPTOR pfd=					// pfd Tells Windows How We Want Things To Be
+	{
+		sizeof(PIXELFORMATDESCRIPTOR),					// Size Of This Pixel Format Descriptor
+		1,								// Version Number
+		PFD_DRAW_TO_WINDOW |						// Format Must Support Window
+		PFD_SUPPORT_OPENGL |						// Format Must Support OpenGL
+		PFD_DOUBLEBUFFER,						// Must Support Double Buffering
+		PFD_TYPE_RGBA,							// Request An RGBA Format
+		bits,								// Select Our Color Depth
+		0, 0, 0, 0, 0, 0,						// Color Bits Ignored
+		0,								// No Alpha Buffer
+		0,								// Shift Bit Ignored
+		0,								// No Accumulation Buffer
+		0, 0, 0, 0,							// Accumulation Bits Ignored
+		16,								// 16Bit Z-Buffer (Depth Buffer)
+</pre>
+<p>The only change in this section of code is the line below. It is *VERY IMPORTANT* you change the value from 0 to 1 or some other non zero value. In all of the previous tutorials the value of the line below was 0. In order to use Stencil Buffering this value HAS to be greater than or equal to 1. This value is the number of bits you want to use for the stencil buffer.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">		1,								// Use Stencil Buffer ( * Important * )
+		0,								// No Auxiliary Buffer
+		PFD_MAIN_PLANE,							// Main Drawing Layer
+		0,								// Reserved
+		0, 0, 0								// Layer Masks Ignored
+	};
+	
+	if (!(hDC=GetDC(hWnd)))							// Did We Get A Device Context?
+	{
+		KillGLWindow();							// Reset The Display
+		MessageBox(NULL,"Can't Create A GL Device Context.","ERROR",MB_OK|MB_ICONEXCLAMATION);
+		return FALSE;							// Return FALSE
+	}
+
+	if (!(PixelFormat=ChoosePixelFormat(hDC,&amp;pfd)))				// Did Windows Find A Matching Pixel Format?
+	{
+		KillGLWindow();							// Reset The Display
+		MessageBox(NULL,"Can't Find A Suitable PixelFormat.","ERROR",MB_OK|MB_ICONEXCLAMATION);
+		return FALSE;							// Return FALSE
+	}
+
+	if(!SetPixelFormat(hDC,PixelFormat,&amp;pfd))				// Are We Able To Set The Pixel Format?
+	{
+		KillGLWindow();							// Reset The Display
+		MessageBox(NULL,"Can't Set The PixelFormat.","ERROR",MB_OK|MB_ICONEXCLAMATION);
+		return FALSE;							// Return FALSE
+	}
+
+	if (!(hRC=wglCreateContext(hDC)))					// Are We Able To Get A Rendering Context?
+	{
+		KillGLWindow();							// Reset The Display
+		MessageBox(NULL,"Can't Create A GL Rendering Context.","ERROR",MB_OK|MB_ICONEXCLAMATION);
+		return FALSE;							// Return FALSE
+	}
+
+	if(!wglMakeCurrent(hDC,hRC))						// Try To Activate The Rendering Context
+	{
+		KillGLWindow();							// Reset The Display
+		MessageBox(NULL,"Can't Activate The GL Rendering Context.","ERROR",MB_OK|MB_ICONEXCLAMATION);
+		return FALSE;							// Return FALSE
+	}
+
+	ShowWindow(hWnd,SW_SHOW);						// Show The Window
+	SetForegroundWindow(hWnd);						// Slightly Higher Priority
+	SetFocus(hWnd);								// Sets Keyboard Focus To The Window
+	ReSizeGLScene(width, height);						// Set Up Our Perspective GL Screen
+
+	if (!InitGL())								// Initialize Our Newly Created GL Window
+	{
+		KillGLWindow();							// Reset The Display
+		MessageBox(NULL,"Initialization Failed.","ERROR",MB_OK|MB_ICONEXCLAMATION);
+		return FALSE;							// Return FALSE
+	}
+
+	return TRUE;								// Success
+}
+</pre>
+<p>WndProc() has not changed, so we will skip over it.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">LRESULT CALLBACK WndProc(	HWND	hWnd,					// Handle For This Window
+				UINT	uMsg,					// Message For This Window
+				WPARAM	wParam,					// Additional Message Information
+				LPARAM	lParam)					// Additional Message Information
+</pre>
+<p>Nothing new here. Typical start to WinMain().</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">int WINAPI WinMain(	HINSTANCE	hInstance,				// Instance
+			HINSTANCE	hPrevInstance,				// Previous Instance
+			LPSTR		lpCmdLine,				// Command Line Parameters
+			int		nCmdShow)				// Window Show State
+{
+	MSG	msg;								// Windows Message Structure
+	BOOL	done=FALSE;							// Bool Variable To Exit Loop
+
+	// Ask The User Which Screen Mode They Prefer
+	if (MessageBox(NULL,"Would You Like To Run In Fullscreen Mode?", "Start FullScreen?",MB_YESNO|MB_ICONQUESTION)==IDNO)
+	{
+		fullscreen=FALSE;						// Windowed Mode
+	}
+</pre>
+<p>The only real big change in this section of the code is the new window title to let everyone know the tutorial is about reflections using the stencil buffer. Also notice that we pass the resx, resy and resbpp variables to our window creation procedure instead of the usual 640, 480 and 16.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	// Create Our OpenGL Window
+	if (!CreateGLWindow("Banu Octavian &amp; NeHe's Stencil &amp; Reflection Tutorial", resx, resy, resbpp, fullscreen))
+	{
+		return 0;							// Quit If Window Was Not Created
+	}
+
+	while(!done)								// Loop That Runs While done=FALSE
+	{
+		if (PeekMessage(&amp;msg,NULL,0,0,PM_REMOVE))			// Is There A Message Waiting?
+		{
+			if (msg.message==WM_QUIT)				// Have We Received A Quit Message?
+			{
+				done=TRUE;					// If So done=TRUE
+			}
+			else							// If Not, Deal With Window Messages
+			{
+				TranslateMessage(&amp;msg);				// Translate The Message
+				DispatchMessage(&amp;msg);				// Dispatch The Message
+			}
+		}
+		else								// If There Are No Messages
+		{
+			// Draw The Scene.  Watch For ESC Key And Quit Messages From DrawGLScene()
+			if (active)						// Program Active?
+			{
+				if (keys[VK_ESCAPE])				// Was Escape Pressed?
+				{
+					done=TRUE;				// ESC Signalled A Quit
+				}
+				else						// Not Time To Quit, Update Screen
+				{
+					DrawGLScene();				// Draw The Scene
+					SwapBuffers(hDC);			// Swap Buffers (Double Buffering)
+</pre>
+<p>Instead of checking for key presses in WinMain(), we jump to our keyboard handling routine called ProcessKeyboard(). Notice the ProcessKeyboard() routine is only called if the program is active!</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">					ProcessKeyboard();			// Processed Keyboard Presses
+				}
+			}
+		}
+	}
+
+	// Shutdown
+	KillGLWindow();								// Kill The Window
+	return (msg.wParam);							// Exit The Program
+}
+</pre>
+<p>I really hope you've enjoyed this tutorial. I know it could use a little more work. It was one of the more difficult tutorials that I have written. It's easy for me to understand what everything is doing, and what commands I need to use to create cool effects, but when you sit down and actually try to explain things keeping in mind that most people have never even heard of the stencil buffer, it's tough! If you notice anything that could be made clearer or if you find any mistakes in the tutorial please let me know. As always, I want this tutorial to be the best it can possibly be, your feedback is greatly appreciated.</p>
+<p><strong>Banu Octavian</strong> (<strong>Choko</strong>)</p>
+<p><strong>Jeff Molofee</strong> (<strong>NeHe</strong>)</p>
+<p>* DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/vc/lesson26.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/vc/lesson26.zip'" tppabs="http://nehe.gamedev.net/data/lessons/vc/lesson26.zip">Visual C++</a> Code For This Lesson.</p>
+<p>* DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/bcb6/lesson26_bcb6.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/bcb6/lesson26_bcb6.zip'" tppabs="http://nehe.gamedev.net/data/lessons/bcb6/lesson26_bcb6.zip">Borland C++ Builder 6</a> Code For This Lesson. ( Conversion by <a href="mailto:christian@tugzip.com">Christian Kindahl</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/cwarrior/lesson26.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/cwarrior/lesson26.zip'" tppabs="http://nehe.gamedev.net/data/lessons/cwarrior/lesson26.zip">Code Warrior 5.3</a> Code For This Lesson. ( Conversion by <a href="mailto:DelusionalBeing@hotmail.com">Scott Lupton</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/delphi/lesson26.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/delphi/lesson26.zip'" tppabs="http://nehe.gamedev.net/data/lessons/delphi/lesson26.zip">Delphi</a> Code For This Lesson. ( Conversion by <a href="mailto:michal_praha@seznam.cz">Michal Tucek</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/devc/lesson26.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/devc/lesson26.zip'" tppabs="http://nehe.gamedev.net/data/lessons/devc/lesson26.zip">Dev C++</a> Code For This Lesson. ( Conversion by <a href="mailto:danprogram@hotmail.com">Dan</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/euphoria/lesson26.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/euphoria/lesson26.zip'" tppabs="http://nehe.gamedev.net/data/lessons/euphoria/lesson26.zip">Euphoria</a> Code For This Lesson. ( Conversion by <a href="mailto:1evan@sbcglobal.net">Evan Marshall</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/lccwin32/lccwin32_lesson26.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/lccwin32/lccwin32_lesson26.zip'" tppabs="http://nehe.gamedev.net/data/lessons/lccwin32/lccwin32_lesson26.zip">LCC Win32</a> Code For This Lesson. ( Conversion by <a href="mailto:rwishlaw@shaw.ca">Robert Wishlaw</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/linux/lesson26.tar.gz  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/linux/lesson26.tar.gz'" tppabs="http://nehe.gamedev.net/data/lessons/linux/lesson26.tar.gz">Linux</a> Code For This Lesson. ( Conversion by <a href="mailto:grayfox@pobox.sk">Gray Fox</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/lwjgl/lesson26.jar  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/lwjgl/lesson26.jar'" tppabs="http://nehe.gamedev.net/data/lessons/lwjgl/lesson26.jar">LWJGL</a> Code For This Lesson. ( Conversion by <a href="mailto:mark.bernard@rogers.com">Mark Bernard</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/macosxcocoa/lesson26.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/macosxcocoa/lesson26.zip'" tppabs="http://nehe.gamedev.net/data/lessons/macosxcocoa/lesson26.zip">Mac OS X/Cocoa</a> Code For This Lesson. ( Conversion by <a href="mailto:blb@pobox.com">Bryan Blackburn</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/vs_net/lesson26.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/vs_net/lesson26.zip'" tppabs="http://nehe.gamedev.net/data/lessons/vs_net/lesson26.zip">Visual Studio .NET</a> Code For This Lesson. ( Conversion by <a href="mailto:ultimatezeus@hotmail.com">Grant James</a> )</p>
+<p>&nbsp;</p>
+<p><strong><span><a href="index-65.htm" tppabs="http://nehe.gamedev.net/data/lessons/lesson.asp?lesson=25">&lt; Lesson 25</a></span></strong><strong><span><a href="index-67.htm" tppabs="http://nehe.gamedev.net/data/lessons/lesson.asp?lesson=27">Lesson 27 &gt;</a></span></strong></p>
+
+
+</div>
+</div>
+
+
+
+            <div style="width:728px;padding:0px;margin:auto; margin-top: 10px;">
+            
+
+    
+                <!-- Leaderboard_NeHe -->
+                <div id='div-gpt-ad-1327940144417-0' style='width:728px; height:90px;'>
+                <script type='text/javascript'>
+                googletag.cmd.push(function() { googletag.display('div-gpt-ad-1327940144417-0'); });
+                </script>
+                </div>
+            
+
+                           
+            </div>   
+        </td>
+        <td class="col2">
+            
+
+
+
+
+<div style="text-align: center; padding:10px;">
+
+<script type='text/javascript'>
+    GA_googleFillSlot("Skyscraper_NeHe");
+</script>
+
+</div>
+            
+        </td>
+    </table>
+    <div id="footer">
+        <p>
+            
+    
+    © 1997-2012 Gamedev . All rights reserved.<br/>
+
+			NeHe™ and NeHe Productions™ are trademarks of GameDev.net, LLC<br/>
+			OpenGL® is a registered trademark of Silicon Graphics Inc.<br/>
+		</p>        
+		<br/>
+    </div>
+
+    
+    
+	    <script type="text/javascript" src="shCore.js" tppabs="http://nehe.gamedev.net/static/js/syntax_highlighter/shCore.js"></script>
+        <script type="text/javascript" src="shBrushCpp.js" tppabs="http://nehe.gamedev.net/static/js/syntax_highlighter/shBrushCpp.js"></script>
+	    <script type="text/javascript" src="shBrushJScript.js" tppabs="http://nehe.gamedev.net/static/js/syntax_highlighter/shBrushJScript.js"></script>
+	    <script type="text/javascript">SyntaxHighlighter.all();</script>
+    
+
+    <!-- Place this render call where appropriate -->
+    <script type="text/javascript">
+      (function() {
+        var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+        po.src = 'plusone.js'/*tpa=https://apis.google.com/js/plusone.js*/;
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+      })();
+    </script>    
+
+    
+<!-- GoogleAnalytics code -->
+<script src="urchin.js" tppabs="http://www.google-analytics.com/urchin.js" type="text/javascript">
+</script>
+<script type="text/javascript">
+_uacct = "UA-279474-2"; // Gamedev
+urchinTracker();
+_uff = 0; // Reset for second account
+_uacct = "UA-24180731-1"; // Non-GD
+urchinTracker();
+</script> 
+  </body>
+</html>

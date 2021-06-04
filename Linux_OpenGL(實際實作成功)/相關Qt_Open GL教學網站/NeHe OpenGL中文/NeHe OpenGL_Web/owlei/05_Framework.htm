@@ -1,0 +1,989 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<title>创建一个空白的OpenGL程序框架</title>
+<style type=text/css>
+.theme {
+	BACKGROUND: none transparent scroll repeat 0% 0%; COLOR: #bbccff
+}
+.code{
+COLOR: #aaffaa
+}
+.comment{
+color:#ffffaa
+}
+.header
+{
+color:#eeee77
+}
+</style>
+</head>
+
+<body bgcolor=#000000 text=#ffffff>
+
+<h1 align="center" class="header">5、创建一个空白的OpenGL程序框架</h1>
+<!-- 上边框-->
+<table border="0" cellPadding="0" cellSpacing="0" width="100%">
+  <TBODY>
+    <tr> 
+      <td><img height="28" src="tl-1.jpg" tppabs="http://www.owlei.com/DancingWind/SDK/Pic/tl.jpg" width="28"></td>
+      <td width="100%"><img height="28" src="tc-1.gif" tppabs="http://www.owlei.com/DancingWind/SDK/Pic/tc.gif" width="100%"></td>
+      <td><img height="28" src="tr-1.gif" tppabs="http://www.owlei.com/DancingWind/SDK/Pic/tr.gif" width="28"></td>
+    </tr>
+  </TBODY>
+</table>
+<!-- 中部-->
+<table border="0" cellPadding="0" cellSpacing="0" width="100%">
+  <TBODY>
+    <tr> 
+      <!-- 中部左边框-->
+      <td  background="l-1.gif" tppabs="http://www.owlei.com/DancingWind/SDK/Pic/l.gif"><img src="l-1.gif" tppabs="http://www.owlei.com/DancingWind/SDK/Pic/l.gif" width="28" height="28"></td>
+      <!-- 中部文字部分-->
+      <td vAlign="top" width="100%"> <table width="100%" border="0">
+          <tr> 
+            <td><div align="center"><img src="05_Framework.jpg" tppabs="http://www.owlei.com/DancingWind/SDK/Pic/05_Framework.jpg" width="642" height="478"></div></td>
+          </tr>
+        </table></td>
+      <!-- 中部右边框-->
+      <td background="r-1.gif" tppabs="http://www.owlei.com/DancingWind/SDK/Pic/r.gif"><img src="r-1.gif" tppabs="http://www.owlei.com/DancingWind/SDK/Pic/r.gif" width="28" height="28"></td>
+    </tr>
+  </TBODY>
+</table>
+<!-- 下边框-->
+<table border="0" cellPadding="0" cellSpacing="0" width="100%">
+  <TBODY>
+    <tr> 
+      <td><img height="28" src="bl-1.gif" tppabs="http://www.owlei.com/DancingWind/SDK/Pic/bl.gif" width="28"></td>
+      <td width="100%"><img height="28" src="bc-1.gif" tppabs="http://www.owlei.com/DancingWind/SDK/Pic/bc.gif" width="100%"></td>
+      <td><img height="28" src="br-1.gif" tppabs="http://www.owlei.com/DancingWind/SDK/Pic/br.gif" width="28"></td>
+    </tr>
+  </TBODY>
+</table>
+<!-- 上边框-->
+<table border="0" cellPadding="0" cellSpacing="0" width="100%">
+  <TBODY>
+    <tr> 
+      <td><img height="28" src="tl-1.jpg" tppabs="http://www.owlei.com/DancingWind/SDK/Pic/tl.jpg" width="28"></td>
+      <td width="100%"><img height="28" src="tc-1.gif" tppabs="http://www.owlei.com/DancingWind/SDK/Pic/tc.gif" width="100%"></td>
+      <td><img height="28" src="tr-1.gif" tppabs="http://www.owlei.com/DancingWind/SDK/Pic/tr.gif" width="28"></td>
+    </tr>
+  </TBODY>
+</table>
+<!-- 中部-->
+<table border="0" cellPadding="0" cellSpacing="0" width="100%">
+  <TBODY>
+    <tr> 
+      <!-- 中部左边框-->
+      <td  background="l-1.gif" tppabs="http://www.owlei.com/DancingWind/SDK/Pic/l.gif"><img src="l-1.gif" tppabs="http://www.owlei.com/DancingWind/SDK/Pic/l.gif" width="28" height="28"></td>
+      <!-- 中部文字部分-->
+      <td vAlign="top" width="100%"> <table width="100%" border="0">
+          <tr> 
+            <td><p class="theme">NeHe SDK是把Nehe的教程中所介绍的所有功能，以面向对象的形式，提供给编程人员快速开发的一套编程接口。在下面的教程中，我将按NeHe 
+                SDK源码的功能分类，一步一步把这套api介绍给大家。如果你觉得有更好的学习方法，或者有其他有益的建议，请联系我。zhouwei02@mails.tsinghua.edu.cn，zhouwei506@mails.gucas.ac.cn</p>
+              <p class="theme">我在第四课的基础上，把公共的功能提取出来，并删除了特定的绘制函数，就完成了这个空白的程序框架，它可以使用基本的OpenGL绘制命令，并提供视口，文本，纹理类的接口，实用他们可以快速创建你想要的效果。</p>
+              <p class="theme">这个框架分为两个部分，启用main.cpp文件完成创建窗口，提供必需的全局变量和执行程序循环等固定的功能。在以后的演示程序中一般不在改变。draw.cpp文件完成具体的绘制操作，它随你的应用而变化。</p>
+              <p class="theme">main.cpp的所有功能在前面的课程中都详细讲解过，这里只是把整个程序结构在说明一下，让你有一个清晰的认识。下面是它的七大结构</p>
+              <ol>
+                <li class="theme">头文件和全局变量</li>
+                <li class="theme">Windows主函数</li>
+                <li class="theme">根据用户设置配置OpenGL的窗口</li>
+                <li class="theme">创建OpenGL运行的窗口，并返回窗口的句柄</li>
+                <li class="theme">设置绘制字体的参数</li>
+                <li class="theme">程序循环</li>
+                <li class="theme">退出程序</li>
+              </ol>
+              <p class="theme">我们一一介绍如下：</p>
+              <p class="theme">1、头文件和全局变量</p></td>
+          </tr>
+        </table></td>
+      <!-- 中部右边框-->
+      <td background="r-1.gif" tppabs="http://www.owlei.com/DancingWind/SDK/Pic/r.gif"><img src="r-1.gif" tppabs="http://www.owlei.com/DancingWind/SDK/Pic/r.gif" width="28" height="28"></td>
+    </tr>
+  </TBODY>
+</table>
+<!-- 下边框-->
+<table border="0" cellPadding="0" cellSpacing="0" width="100%">
+  <TBODY>
+    <tr> 
+      <td><img height="28" src="bl-1.gif" tppabs="http://www.owlei.com/DancingWind/SDK/Pic/bl.gif" width="28"></td>
+      <td width="100%"><img height="28" src="bc-1.gif" tppabs="http://www.owlei.com/DancingWind/SDK/Pic/bc.gif" width="100%"></td>
+      <td><img height="28" src="br-1.gif" tppabs="http://www.owlei.com/DancingWind/SDK/Pic/br.gif" width="28"></td>
+    </tr>
+  </TBODY>
+</table>
+<pre class="code">#include "opengl.h"						<span class="comment">// 包含创建OpenGL程序的框架类</span>
+#include "splash.h"						<span class="comment">// 创建配置对话框</span>
+#include "view.h"							<span class="comment">// 包含视口类的声明</span>
+#include "text.h"							<span class="comment">// 包含2D文字类的声明</span>		
+#include "texture.h"						<span class="comment">// 包含纹理类的声明</span>
+
+#pragma comment( lib, "NeheSDK.lib" )				<span class="comment">// 包含NeheSDK.lib库</span>
+
+using namespace NeHe;						<span class="comment">// 使用NeHe名字空间</span>
+
+View	view;							<span class="comment">// 创建视口类</span>
+Text2D	text2D;							<span class="comment">// 2D文字类</span>
+Texture	tex;							<span class="comment">// 使用全局变量Texture类的实例</span>
+int	texID;							<span class="comment">// 使用全局变量texID，保存加载的纹理ID</span></pre>
+<!-- 上边框-->
+<table border="0" cellPadding="0" cellSpacing="0" width="100%">
+  <TBODY>
+    <tr> 
+      <td><img height="28" src="tl-1.jpg" tppabs="http://www.owlei.com/DancingWind/SDK/Pic/tl.jpg" width="28"></td>
+      <td width="100%"><img height="28" src="tc-1.gif" tppabs="http://www.owlei.com/DancingWind/SDK/Pic/tc.gif" width="100%"></td>
+      <td><img height="28" src="tr-1.gif" tppabs="http://www.owlei.com/DancingWind/SDK/Pic/tr.gif" width="28"></td>
+    </tr>
+  </TBODY>
+</table>
+<!-- 中部-->
+<table border="0" cellPadding="0" cellSpacing="0" width="100%">
+  <TBODY>
+    <tr> 
+      <!-- 中部左边框-->
+      <td  background="l-1.gif" tppabs="http://www.owlei.com/DancingWind/SDK/Pic/l.gif"><img src="l-1.gif" tppabs="http://www.owlei.com/DancingWind/SDK/Pic/l.gif" width="28" height="28"></td>
+      <!-- 中部文字部分-->
+      <td vAlign="top" width="100%"> <table width="100%" border="0">
+          <tr> 
+            <td><p class="theme">2、Windows主函数</p>
+              </td>
+          </tr>
+        </table></td>
+      <!-- 中部右边框-->
+      <td background="r-1.gif" tppabs="http://www.owlei.com/DancingWind/SDK/Pic/r.gif"><img src="r-1.gif" tppabs="http://www.owlei.com/DancingWind/SDK/Pic/r.gif" width="28" height="28"></td>
+    </tr>
+  </TBODY>
+</table>
+<!-- 下边框-->
+<table border="0" cellPadding="0" cellSpacing="0" width="100%">
+  <TBODY>
+    <tr> 
+      <td><img height="28" src="bl-1.gif" tppabs="http://www.owlei.com/DancingWind/SDK/Pic/bl.gif" width="28"></td>
+      <td width="100%"><img height="28" src="bc-1.gif" tppabs="http://www.owlei.com/DancingWind/SDK/Pic/bc.gif" width="100%"></td>
+      <td><img height="28" src="br-1.gif" tppabs="http://www.owlei.com/DancingWind/SDK/Pic/br.gif" width="28"></td>
+    </tr>
+  </TBODY>
+</table>
+<pre class="code">int WINAPI WinMain(HINSTANCE hInstance,     <span class="comment">// 程序实例句柄</span>
+                   HINSTANCE hPrevInstance, <span class="comment">// 前一个程序实例句柄</span>
+                   LPSTR     lpCmdLine,    <span class="comment"> // 命令行参数</span>
+                   int       nCmdShow)      <span class="comment">// Window 显示状态</span>
+{
+	OpenGL  WinOpenGL;		<span class="comment">// OpenGL类</span></pre>
+<!-- 上边框-->
+<table border="0" cellPadding="0" cellSpacing="0" width="100%">
+  <TBODY>
+    <tr> 
+      <td><img height="28" src="tl-1.jpg" tppabs="http://www.owlei.com/DancingWind/SDK/Pic/tl.jpg" width="28"></td>
+      <td width="100%"><img height="28" src="tc-1.gif" tppabs="http://www.owlei.com/DancingWind/SDK/Pic/tc.gif" width="100%"></td>
+      <td><img height="28" src="tr-1.gif" tppabs="http://www.owlei.com/DancingWind/SDK/Pic/tr.gif" width="28"></td>
+    </tr>
+  </TBODY>
+</table>
+<!-- 中部-->
+<table border="0" cellPadding="0" cellSpacing="0" width="100%">
+  <TBODY>
+    <tr> 
+      <!-- 中部左边框-->
+      <td  background="l-1.gif" tppabs="http://www.owlei.com/DancingWind/SDK/Pic/l.gif"><img src="l-1.gif" tppabs="http://www.owlei.com/DancingWind/SDK/Pic/l.gif" width="28" height="28"></td>
+      <!-- 中部文字部分-->
+      <td vAlign="top" width="100%"> <table width="100%" border="0">
+          <tr> 
+            <td><p class="theme">3、根据用户设置配置OpenGL的窗口</p>
+              </td>
+          </tr>
+        </table></td>
+      <!-- 中部右边框-->
+      <td background="r-1.gif" tppabs="http://www.owlei.com/DancingWind/SDK/Pic/r.gif"><img src="r-1.gif" tppabs="http://www.owlei.com/DancingWind/SDK/Pic/r.gif" width="28" height="28"></td>
+    </tr>
+  </TBODY>
+</table>
+<!-- 下边框-->
+<table border="0" cellPadding="0" cellSpacing="0" width="100%">
+  <TBODY>
+    <tr> 
+      <td><img height="28" src="bl-1.gif" tppabs="http://www.owlei.com/DancingWind/SDK/Pic/bl.gif" width="28"></td>
+      <td width="100%"><img height="28" src="bc-1.gif" tppabs="http://www.owlei.com/DancingWind/SDK/Pic/bc.gif" width="100%"></td>
+      <td><img height="28" src="br-1.gif" tppabs="http://www.owlei.com/DancingWind/SDK/Pic/br.gif" width="28"></td>
+    </tr>
+  </TBODY>
+</table>
+<pre class="code"><span class="comment">/******************************************************根据用户设置配置OpenGL的窗口********************************************************/
+	// 显示配置对话框</span>
+    	SplashResolution	res;				<span class="comment">// 记录分辨率</span>
+	SplashDepth			depth;		<span class="comment">// 记录颜色深度</span>
+	bool				fs;		<span class="comment">// 是否全屏</span>
+    	if(!DoSplash("setup.cfg",&res,&depth,&fs))
+		return 1;
+
+	int width,height;			<span class="comment">// 窗口的大小</span>
+	int bpp;				<span class="comment">// 颜色位深</span>
+
+	<span class="comment">// 设置分辨率</span>
+	switch(res)
+	{
+		case sr640x480:		width=640;	height=480; break;
+		case sr800x600:		width=800;	height=600; break;
+		case sr1024x768:		width=1024; 	height=768; break;
+		default:
+			width=800; height=600;
+	};
+
+	<span class="comment">// 设置颜色位深</span>
+	switch(depth)
+	{
+		case sd8bit:	bpp=8;	break;
+		case sd16bit:	bpp=16;	break;
+		case sd32bit:	bpp=32;	break;
+		default:
+			bpp=32;
+	};
+
+<span class="comment">	// 设置是否全屏</span>
+	WinOpenGL.SetFullScreen((fs==true) ? true : false); 
+<span class="comment">/*****************************************************根据用户设置配置OpenGL的窗口：结束***************************************************/</span></pre>
+<!-- 上边框-->
+<table border="0" cellPadding="0" cellSpacing="0" width="100%">
+  <TBODY>
+    <tr> 
+      <td><img height="28" src="tl-1.jpg" tppabs="http://www.owlei.com/DancingWind/SDK/Pic/tl.jpg" width="28"></td>
+      <td width="100%"><img height="28" src="tc-1.gif" tppabs="http://www.owlei.com/DancingWind/SDK/Pic/tc.gif" width="100%"></td>
+      <td><img height="28" src="tr-1.gif" tppabs="http://www.owlei.com/DancingWind/SDK/Pic/tr.gif" width="28"></td>
+    </tr>
+  </TBODY>
+</table>
+<!-- 中部-->
+<table border="0" cellPadding="0" cellSpacing="0" width="100%">
+  <TBODY>
+    <tr> 
+      <!-- 中部左边框-->
+      <td  background="l-1.gif" tppabs="http://www.owlei.com/DancingWind/SDK/Pic/l.gif"><img src="l-1.gif" tppabs="http://www.owlei.com/DancingWind/SDK/Pic/l.gif" width="28" height="28"></td>
+      <!-- 中部文字部分-->
+      <td vAlign="top" width="100%"> <table width="100%" border="0">
+          <tr> 
+            <td class="theme">4、创建OpenGL运行的窗口，并返回窗口的句柄</td>
+          </tr>
+        </table></td>
+      <!-- 中部右边框-->
+      <td background="r-1.gif" tppabs="http://www.owlei.com/DancingWind/SDK/Pic/r.gif"><img src="r-1.gif" tppabs="http://www.owlei.com/DancingWind/SDK/Pic/r.gif" width="28" height="28"></td>
+    </tr>
+  </TBODY>
+</table>
+<!-- 下边框-->
+<table border="0" cellPadding="0" cellSpacing="0" width="100%">
+  <TBODY>
+    <tr> 
+      <td><img height="28" src="bl-1.gif" tppabs="http://www.owlei.com/DancingWind/SDK/Pic/bl.gif" width="28"></td>
+      <td width="100%"><img height="28" src="bc-1.gif" tppabs="http://www.owlei.com/DancingWind/SDK/Pic/bc.gif" width="100%"></td>
+      <td><img height="28" src="br-1.gif" tppabs="http://www.owlei.com/DancingWind/SDK/Pic/br.gif" width="28"></td>
+    </tr>
+  </TBODY>
+</table>
+<pre class="code"><span class="comment">/****************************************************创建OpenGL运行的窗口，并返回窗口的句柄************************************************/
+	// 创建我们的OpenGL窗口</span>
+	if (!WinOpenGL.CreateGLWindow("DancingWind's OpenGL Framework", width, height, bpp, WinOpenGL.GetFullScreen()))
+	{
+		return 0; <span class="comment">// 失败，则退出</span>
+	}
+
+<span class="comment">	// 返回窗口类</span>
+	Window *win=WinOpenGL.GetWindow();
+<span class="comment">/*************************************************创建OpenGL运行的窗口，并返回窗口的句柄：结束*********************************************/</span></pre>
+<!-- 上边框-->
+<table border="0" cellPadding="0" cellSpacing="0" width="100%">
+  <TBODY>
+    <tr> 
+      <td><img height="28" src="tl-1.jpg" tppabs="http://www.owlei.com/DancingWind/SDK/Pic/tl.jpg" width="28"></td>
+      <td width="100%"><img height="28" src="tc-1.gif" tppabs="http://www.owlei.com/DancingWind/SDK/Pic/tc.gif" width="100%"></td>
+      <td><img height="28" src="tr-1.gif" tppabs="http://www.owlei.com/DancingWind/SDK/Pic/tr.gif" width="28"></td>
+    </tr>
+  </TBODY>
+</table>
+<!-- 中部-->
+<table border="0" cellPadding="0" cellSpacing="0" width="100%">
+  <TBODY>
+    <tr> 
+      <!-- 中部左边框-->
+      <td  background="l-1.gif" tppabs="http://www.owlei.com/DancingWind/SDK/Pic/l.gif"><img src="l-1.gif" tppabs="http://www.owlei.com/DancingWind/SDK/Pic/l.gif" width="28" height="28"></td>
+      <!-- 中部文字部分-->
+      <td vAlign="top" width="100%"> <table width="100%" border="0">
+          <tr> 
+            <td class="theme">5、设置绘制字体的参数</td>
+          </tr>
+        </table></td>
+      <!-- 中部右边框-->
+      <td background="r-1.gif" tppabs="http://www.owlei.com/DancingWind/SDK/Pic/r.gif"><img src="r-1.gif" tppabs="http://www.owlei.com/DancingWind/SDK/Pic/r.gif" width="28" height="28"></td>
+    </tr>
+  </TBODY>
+</table>
+<!-- 下边框-->
+<table border="0" cellPadding="0" cellSpacing="0" width="100%">
+  <TBODY>
+    <tr> 
+      <td><img height="28" src="bl-1.gif" tppabs="http://www.owlei.com/DancingWind/SDK/Pic/bl.gif" width="28"></td>
+      <td width="100%"><img height="28" src="bc-1.gif" tppabs="http://www.owlei.com/DancingWind/SDK/Pic/bc.gif" width="100%"></td>
+      <td><img height="28" src="br-1.gif" tppabs="http://www.owlei.com/DancingWind/SDK/Pic/br.gif" width="28"></td>
+    </tr>
+  </TBODY>
+</table>
+<pre class="code"><span class="comment">/******************************************************设置绘制字体的参数******************************************************************/</span>
+	TextType ttype;					<span class="comment">// 设置字体结构</span>
+	ttype.name="Courier New";				<span class="comment">// 字体名称为"Courier New"</span>
+	ttype.size=24;					<span class="comment">// 字体大小为24</span>
+	ttype.bold=false;					<span class="comment">// 不使用粗体</span>
+	ttype.italic=false;				<span class="comment">// 不使用斜体</span>
+	ttype.underline=false;				<span class="comment">// 不使用下划线</span>
+	text2D.Setup(&WinOpenGL,ttype);			<span class="comment">// 设置字体</span>
+<span class="comment">/******************************************************设置绘制字体的参数：结束************************************************************/</span></pre>
+  <!-- 上边框-->
+<table border="0" cellPadding="0" cellSpacing="0" width="100%">
+  <TBODY>
+    <tr> 
+      <td><img height="28" src="tl-1.jpg" tppabs="http://www.owlei.com/DancingWind/SDK/Pic/tl.jpg" width="28"></td>
+      <td width="100%"><img height="28" src="tc-1.gif" tppabs="http://www.owlei.com/DancingWind/SDK/Pic/tc.gif" width="100%"></td>
+      <td><img height="28" src="tr-1.gif" tppabs="http://www.owlei.com/DancingWind/SDK/Pic/tr.gif" width="28"></td>
+    </tr>
+  </TBODY>
+</table>
+<!-- 中部-->
+<table border="0" cellPadding="0" cellSpacing="0" width="100%">
+  <TBODY>
+    <tr> 
+      <!-- 中部左边框-->
+      <td  background="l-1.gif" tppabs="http://www.owlei.com/DancingWind/SDK/Pic/l.gif"><img src="l-1.gif" tppabs="http://www.owlei.com/DancingWind/SDK/Pic/l.gif" width="28" height="28"></td>
+      <!-- 中部文字部分-->
+      <td vAlign="top" width="100%"> <table width="100%" border="0">
+          <tr> 
+            <td class="theme">6、程序循环</td>
+          </tr>
+        </table></td>
+      <!-- 中部右边框-->
+      <td background="r-1.gif" tppabs="http://www.owlei.com/DancingWind/SDK/Pic/r.gif"><img src="r-1.gif" tppabs="http://www.owlei.com/DancingWind/SDK/Pic/r.gif" width="28" height="28"></td>
+    </tr>
+  </TBODY>
+</table>
+<!-- 下边框-->
+<table border="0" cellPadding="0" cellSpacing="0" width="100%">
+  <TBODY>
+    <tr> 
+      <td><img height="28" src="bl-1.gif" tppabs="http://www.owlei.com/DancingWind/SDK/Pic/bl.gif" width="28"></td>
+      <td width="100%"><img height="28" src="bc-1.gif" tppabs="http://www.owlei.com/DancingWind/SDK/Pic/bc.gif" width="100%"></td>
+      <td><img height="28" src="br-1.gif" tppabs="http://www.owlei.com/DancingWind/SDK/Pic/br.gif" width="28"></td>
+    </tr>
+  </TBODY>
+</table>
+<pre class="code"><span class="comment">/*************************************************************程序循环*********************************************************************/</span>
+	bool finish=false;
+
+<span class="comment">	// 执行程序循环</span>
+	while(!finish)
+	{
+		<span class="comment">// 绘制场景</span>
+		finish=!WinOpenGL.DrawGLScene();
+
+		<span class="comment">// 按ESC退出</span>
+		if(!finish)
+			finish=win->GetKey(VK_ESCAPE);
+	}
+<span class="comment">/***********************************************************程序循环：结束*****************************************************************/</span>
+</pre>
+<!-- 上边框-->
+<table border="0" cellPadding="0" cellSpacing="0" width="100%">
+  <TBODY>
+    <tr> 
+      <td><img height="28" src="tl-1.jpg" tppabs="http://www.owlei.com/DancingWind/SDK/Pic/tl.jpg" width="28"></td>
+      <td width="100%"><img height="28" src="tc-1.gif" tppabs="http://www.owlei.com/DancingWind/SDK/Pic/tc.gif" width="100%"></td>
+      <td><img height="28" src="tr-1.gif" tppabs="http://www.owlei.com/DancingWind/SDK/Pic/tr.gif" width="28"></td>
+    </tr>
+  </TBODY>
+</table>
+<!-- 中部-->
+<table border="0" cellPadding="0" cellSpacing="0" width="100%">
+  <TBODY>
+    <tr> 
+      <!-- 中部左边框-->
+      <td  background="l-1.gif" tppabs="http://www.owlei.com/DancingWind/SDK/Pic/l.gif"><img src="l-1.gif" tppabs="http://www.owlei.com/DancingWind/SDK/Pic/l.gif" width="28" height="28"></td>
+      <!-- 中部文字部分-->
+      <td vAlign="top" width="100%"> <table width="100%" border="0">
+          <tr> 
+            <td class="theme">7、退出程序</td>
+          </tr>
+        </table></td>
+      <!-- 中部右边框-->
+      <td background="r-1.gif" tppabs="http://www.owlei.com/DancingWind/SDK/Pic/r.gif"><img src="r-1.gif" tppabs="http://www.owlei.com/DancingWind/SDK/Pic/r.gif" width="28" height="28"></td>
+    </tr>
+  </TBODY>
+</table>
+<!-- 下边框-->
+<table border="0" cellPadding="0" cellSpacing="0" width="100%">
+  <TBODY>
+    <tr> 
+      <td><img height="28" src="bl-1.gif" tppabs="http://www.owlei.com/DancingWind/SDK/Pic/bl.gif" width="28"></td>
+      <td width="100%"><img height="28" src="bc-1.gif" tppabs="http://www.owlei.com/DancingWind/SDK/Pic/bc.gif" width="100%"></td>
+      <td><img height="28" src="br-1.gif" tppabs="http://www.owlei.com/DancingWind/SDK/Pic/br.gif" width="28"></td>
+    </tr>
+  </TBODY>
+</table>
+<pre class="code"><span class="comment">/*************************************************************退出程序*********************************************************************/
+    // 关闭</span>
+    WinOpenGL.KillGLWindow(); 
+
+    return 0;  <span class="comment">// 退出程序</span>
+<span class="comment">/************************************************************退出程序：结束****************************************************************/</span>
+}
+</pre>
+<!-- 上边框-->
+<table border="0" cellPadding="0" cellSpacing="0" width="100%">
+  <TBODY>
+    <tr> 
+      <td><img height="28" src="tl-1.jpg" tppabs="http://www.owlei.com/DancingWind/SDK/Pic/tl.jpg" width="28"></td>
+      <td width="100%"><img height="28" src="tc-1.gif" tppabs="http://www.owlei.com/DancingWind/SDK/Pic/tc.gif" width="100%"></td>
+      <td><img height="28" src="tr-1.gif" tppabs="http://www.owlei.com/DancingWind/SDK/Pic/tr.gif" width="28"></td>
+    </tr>
+  </TBODY>
+</table>
+<!-- 中部-->
+<table border="0" cellPadding="0" cellSpacing="0" width="100%">
+  <TBODY>
+    <tr> 
+      <!-- 中部左边框-->
+      <td  background="l-1.gif" tppabs="http://www.owlei.com/DancingWind/SDK/Pic/l.gif"><img src="l-1.gif" tppabs="http://www.owlei.com/DancingWind/SDK/Pic/l.gif" width="28" height="28"></td>
+      <!-- 中部文字部分-->
+      <td vAlign="top" width="100%"> <table width="100%" border="0">
+          <tr> 
+            <td><p class="theme">到这里框架结构就完成了，下面我们进入到draw.cpp文件中。这个文件主要完成你特定功能的绘制操作，为了以后的演示方便，我们定义了一些默认函数，当你熟悉了以后，完全可以使用自己的函数替代这些功能简单的“玩具函数:)”。它主要提供了绘制函数的接口，完成以下四个功能：</p>
+              <ol>
+                <li class="theme">头文件和全局变量</li>
+                <li class="theme">绘制三棱锥</li>
+                <li class="theme">初始化场景</li>
+                <li class="theme">设置默认的视口棱台体</li>
+                <li class="theme">绘制场景</li>
+              </ol>
+              <p class="theme">我们一一介绍如下：</p>
+              <p class="theme">1、头文件和全局变量</p></td>
+          </tr>
+        </table></td>
+      <!-- 中部右边框-->
+      <td background="r-1.gif" tppabs="http://www.owlei.com/DancingWind/SDK/Pic/r.gif"><img src="r-1.gif" tppabs="http://www.owlei.com/DancingWind/SDK/Pic/r.gif" width="28" height="28"></td>
+    </tr>
+  </TBODY>
+</table>
+<!-- 下边框-->
+<table border="0" cellPadding="0" cellSpacing="0" width="100%">
+  <TBODY>
+    <tr> 
+      <td><img height="28" src="bl-1.gif" tppabs="http://www.owlei.com/DancingWind/SDK/Pic/bl.gif" width="28"></td>
+      <td width="100%"><img height="28" src="bc-1.gif" tppabs="http://www.owlei.com/DancingWind/SDK/Pic/bc.gif" width="100%"></td>
+      <td><img height="28" src="br-1.gif" tppabs="http://www.owlei.com/DancingWind/SDK/Pic/br.gif" width="28"></td>
+    </tr>
+  </TBODY>
+</table>
+<pre class="code">#include "opengl.h"						<span class="comment">// 包含创建OpenGL程序的框架类</span>
+#include "view.h"						<span class="comment">	// 包含视口类的声明</span>
+#include "text.h"							<span class="comment">// 包含2D文字类的声明	</span>	
+#include "texture.h"						<span class="comment">// 包含纹理类的声明</span>
+
+#pragma comment( lib, "NeheSDK.lib" )		<span class="comment">// 包含NeheSDK.lib库</span>
+
+using namespace NeHe;						<span class="comment">// 使用NeHe名字空间</span>
+
+extern View	view;					<span class="comment">	// 使用全局变量View类的实例</span>
+extern Text2D	text2D;					<span class="comment">	// 使用全局变量Text2D类实例</span>
+extern Texture	tex;						<span class="comment">// 使用全局变量Texture类的实例</span>
+extern int	texID;						<span class="comment">// 使用全局变量texID，保存加载的纹理ID</span>
+
+static bool initialize = true;				<span class="comment">	// 记录是否初始化</span>
+</pre>
+<!-- 上边框-->
+<table border="0" cellPadding="0" cellSpacing="0" width="100%">
+  <TBODY>
+    <tr> 
+      <td><img height="28" src="tl-1.jpg" tppabs="http://www.owlei.com/DancingWind/SDK/Pic/tl.jpg" width="28"></td>
+      <td width="100%"><img height="28" src="tc-1.gif" tppabs="http://www.owlei.com/DancingWind/SDK/Pic/tc.gif" width="100%"></td>
+      <td><img height="28" src="tr-1.gif" tppabs="http://www.owlei.com/DancingWind/SDK/Pic/tr.gif" width="28"></td>
+    </tr>
+  </TBODY>
+</table>
+<!-- 中部-->
+<table border="0" cellPadding="0" cellSpacing="0" width="100%">
+  <TBODY>
+    <tr> 
+      <!-- 中部左边框-->
+      <td  background="l-1.gif" tppabs="http://www.owlei.com/DancingWind/SDK/Pic/l.gif"><img src="l-1.gif" tppabs="http://www.owlei.com/DancingWind/SDK/Pic/l.gif" width="28" height="28"></td>
+      <!-- 中部文字部分-->
+      <td vAlign="top" width="100%"> <table width="100%" border="0">
+          <tr> 
+            <td><p class="theme">在上面的声明中，extern说明使用外部的全局变量，这里指的是实用main.cpp文件中声明的全局变量。</p>
+              <p class="theme">initialize变量用来记录是否在绘制过程中调用初始化函数，如果为true，则需要调用初始化函数一次。</p>
+              <p class="theme">2、绘制三棱锥函数</p>
+              <p class="theme">为了说明方便，我们定义两个绘制三棱锥的函数，DrawTri是实用固定颜色绘制三棱锥，DrawTexTri是使用纹理坐标绘制三棱锥。三棱锥在模型空间中的范围是：</p>
+              <p class="theme">X方向：-1到1<br>
+                Y方向：-1到1<br>
+                Z方向：0到1</p>
+              <p class="theme">记得让这个范围位于你的视口棱台体内，否则你将什么也看不到。</p>
+              <p class="theme">下面我们来看看具体的代码： </p>
+              </td>
+          </tr>
+        </table></td>
+      <!-- 中部右边框-->
+      <td background="r-1.gif" tppabs="http://www.owlei.com/DancingWind/SDK/Pic/r.gif"><img src="r-1.gif" tppabs="http://www.owlei.com/DancingWind/SDK/Pic/r.gif" width="28" height="28"></td>
+    </tr>
+  </TBODY>
+</table>
+<!-- 下边框-->
+<table border="0" cellPadding="0" cellSpacing="0" width="100%">
+  <TBODY>
+    <tr> 
+      <td><img height="28" src="bl-1.gif" tppabs="http://www.owlei.com/DancingWind/SDK/Pic/bl.gif" width="28"></td>
+      <td width="100%"><img height="28" src="bc-1.gif" tppabs="http://www.owlei.com/DancingWind/SDK/Pic/bc.gif" width="100%"></td>
+      <td><img height="28" src="br-1.gif" tppabs="http://www.owlei.com/DancingWind/SDK/Pic/br.gif" width="28"></td>
+    </tr>
+  </TBODY>
+</table>
+<pre class="code"><span class="comment">/******************************************************绘制三棱锥***************************************************************************/
+// 绘制三棱锥</span>
+void DrawTri(void)
+{
+	glPushAttrib(GL_CURRENT_BIT);			<span class="comment">// 保存当前的绘制属性</span>
+	glBegin(GL_TRIANGLES);
+		<span class="comment">// 前面</span>
+		glColor3f(1.0f,0.0f,0.0f);						
+		glVertex3f( 0.0f, 1.0f, 0.0f);					
+		glColor3f(0.0f,1.0f,0.0f);						
+		glVertex3f(-1.0f,-1.0f, 1.0f);					
+		glColor3f(0.0f,0.0f,1.0f);						
+		glVertex3f( 1.0f,-1.0f, 1.0f);	
+
+		<span class="comment">// 右面</span>
+		glColor3f(1.0f,0.0f,0.0f);						
+		glVertex3f( 0.0f, 1.0f, 0.0f);					
+		glColor3f(0.0f,0.0f,1.0f);						
+		glVertex3f( 1.0f,-1.0f, 1.0f);					
+		glColor3f(0.0f,1.0f,0.0f);						
+		glVertex3f( 1.0f,-1.0f, -1.0f);		
+
+		<span class="comment">// 后面</span>
+		glColor3f(1.0f,0.0f,0.0f);						
+		glVertex3f( 0.0f, 1.0f, 0.0f);					
+		glColor3f(0.0f,1.0f,0.0f);						
+		glVertex3f( 1.0f,-1.0f, -1.0f);					
+		glColor3f(0.0f,0.0f,1.0f);						
+		glVertex3f(-1.0f,-1.0f, -1.0f);		
+
+		<span class="comment">// 左面</span>
+		glColor3f(1.0f,0.0f,0.0f);						
+		glVertex3f( 0.0f, 1.0f, 0.0f);					
+		glColor3f(0.0f,0.0f,1.0f);						
+		glVertex3f(-1.0f,-1.0f,-1.0f);					
+		glColor3f(0.0f,1.0f,0.0f);						
+		glVertex3f(-1.0f,-1.0f, 1.0f);					
+	glEnd();		
+	glPopAttrib();					<span class="comment">// 弹出保存的绘制属性</span>
+}
+
+<span class="comment">// 绘制带纹理坐标的三棱锥</span>
+void DrawTexTri(void)
+{
+	glPushAttrib(GL_CURRENT_BIT);			<span class="comment">// 保存当前的绘制属性</span>
+	glBegin(GL_TRIANGLES);
+		<span class="comment">// 前面</span>
+		glTexCoord2f(0.5f,0.5f);						
+		glVertex3f( 0.0f, 1.0f, 0.0f);					
+		glTexCoord2f(0.0f,0.0f);						
+		glVertex3f(-1.0f,-1.0f, 1.0f);					
+		glTexCoord2f(1.0f,0.0f);						
+		glVertex3f( 1.0f,-1.0f, 1.0f);	
+
+		<span class="comment">// 右面</span>
+		glTexCoord2f(0.5f,0.5f);						
+		glVertex3f( 0.0f, 1.0f, 0.0f);					
+		glTexCoord2f(1.0f,0.0f);						
+		glVertex3f( 1.0f,-1.0f, 1.0f);					
+		glTexCoord2f(1.0f,1.0f);						
+		glVertex3f( 1.0f,-1.0f, -1.0f);		
+
+		<span class="comment">// 后面</span>
+		glTexCoord2f(0.5f,0.5f);						
+		glVertex3f( 0.0f, 1.0f, 0.0f);					
+		glTexCoord2f(1.0f,1.0f);						
+		glVertex3f( 1.0f,-1.0f, -1.0f);					
+		glTexCoord2f(0.0f,1.0f);						
+		glVertex3f(-1.0f,-1.0f, -1.0f);		
+
+		<span class="comment">// 左面</span>
+		glTexCoord2f(0.5f,0.5f);					
+		glVertex3f( 0.0f, 1.0f, 0.0f);					
+		glTexCoord2f(1.0f,1.0f);						
+		glVertex3f(-1.0f,-1.0f,-1.0f);					
+		glTexCoord2f(0.0f,0.0f);						
+		glVertex3f(-1.0f,-1.0f, 1.0f);					
+	glEnd();		
+	glPopAttrib();					<span class="comment">// 弹出保存的绘制属性</span>
+}
+<span class="comment">/****************************************************绘制三棱锥:结束************************************************************************/</span>
+</pre>
+<table border="0" cellPadding="0" cellSpacing="0" width="100%">
+  <TBODY>
+    <tr> 
+      <td><img height="28" src="tl-1.jpg" tppabs="http://www.owlei.com/DancingWind/SDK/Pic/tl.jpg" width="28"></td>
+      <td width="100%"><img height="28" src="tc-1.gif" tppabs="http://www.owlei.com/DancingWind/SDK/Pic/tc.gif" width="100%"></td>
+      <td><img height="28" src="tr-1.gif" tppabs="http://www.owlei.com/DancingWind/SDK/Pic/tr.gif" width="28"></td>
+    </tr>
+  </TBODY>
+</table>
+<!-- 中部-->
+<table border="0" cellPadding="0" cellSpacing="0" width="100%">
+  <TBODY>
+    <tr> 
+      <!-- 中部左边框-->
+      <td  background="l-1.gif" tppabs="http://www.owlei.com/DancingWind/SDK/Pic/l.gif"><img src="l-1.gif" tppabs="http://www.owlei.com/DancingWind/SDK/Pic/l.gif" width="28" height="28"></td>
+      <!-- 中部文字部分-->
+      <td vAlign="top" width="100%"> <table width="100%" border="0">
+          <tr> 
+            <td><p class="theme">3、初始化场景</p>
+              <p class="theme">我们创建一个空的初始化函数，在你的应用中可以把那些在绘制开始时需要做的工作添加到这里面来。</p></td>
+          </tr>
+        </table></td>
+      <!-- 中部右边框-->
+      <td background="r-1.gif" tppabs="http://www.owlei.com/DancingWind/SDK/Pic/r.gif"><img src="r-1.gif" tppabs="http://www.owlei.com/DancingWind/SDK/Pic/r.gif" width="28" height="28"></td>
+    </tr>
+  </TBODY>
+</table>
+<!-- 下边框-->
+<table border="0" cellPadding="0" cellSpacing="0" width="100%">
+  <TBODY>
+    <tr> 
+      <td><img height="28" src="bl-1.gif" tppabs="http://www.owlei.com/DancingWind/SDK/Pic/bl.gif" width="28"></td>
+      <td width="100%"><img height="28" src="bc-1.gif" tppabs="http://www.owlei.com/DancingWind/SDK/Pic/bc.gif" width="100%"></td>
+      <td><img height="28" src="br-1.gif" tppabs="http://www.owlei.com/DancingWind/SDK/Pic/br.gif" width="28"></td>
+    </tr>
+  </TBODY>
+</table>
+<pre class="code"><span class="comment">/******************************************************初始化场景***************************************************************************/</span>
+void IniScene(OpenGL* gl, ControlData* cont)
+{
+
+}
+<span class="comment">/****************************************************初始化场景:结束************************************************************************/</span>
+</pre>
+<!-- 上边框-->
+<table border="0" cellPadding="0" cellSpacing="0" width="100%">
+  <TBODY>
+    <tr> 
+      <td><img height="28" src="tl-1.jpg" tppabs="http://www.owlei.com/DancingWind/SDK/Pic/tl.jpg" width="28"></td>
+      <td width="100%"><img height="28" src="tc-1.gif" tppabs="http://www.owlei.com/DancingWind/SDK/Pic/tc.gif" width="100%"></td>
+      <td><img height="28" src="tr-1.gif" tppabs="http://www.owlei.com/DancingWind/SDK/Pic/tr.gif" width="28"></td>
+    </tr>
+  </TBODY>
+</table>
+<!-- 中部-->
+<table border="0" cellPadding="0" cellSpacing="0" width="100%">
+  <TBODY>
+    <tr> 
+      <!-- 中部左边框-->
+      <td  background="l-1.gif" tppabs="http://www.owlei.com/DancingWind/SDK/Pic/l.gif"><img src="l-1.gif" tppabs="http://www.owlei.com/DancingWind/SDK/Pic/l.gif" width="28" height="28"></td>
+      <!-- 中部文字部分-->
+      <td vAlign="top" width="100%"> <table width="100%" border="0">
+          <tr> 
+            <td><p class="theme">4、设置默认的视口棱台体</p>
+              <p class="theme">一般在绘制场景的开始，都要把模型变换矩阵和投影变换矩阵设置为单位矩阵。为了简化这个工程我们创建了这个函数。它创建的视口棱台体的范围如下：</p>
+              <ul>
+                <li class="theme">默认的视口棱台体的范围是，视角45度，近切面距离视点0.1，远切面距离视点100。</li>
+                <li class="theme">默认在z=0的平面上的可见范围是，Y轴方向(-2,+2),X轴方向(-2,+2)*宽高比</li>
+                <li class="theme">视点位于(0,0,5),朝向-Z轴，上方向量为Y轴</li>
+                <li class="theme">宽高比由窗口大小决定，如果窗口大小为800x600，则宽高比为4/3，X轴的可见范围是(-2.67,+2.67) 
+                </li>
+              </ul></td>
+          </tr>
+        </table></td>
+      <!-- 中部右边框-->
+      <td background="r-1.gif" tppabs="http://www.owlei.com/DancingWind/SDK/Pic/r.gif"><img src="r-1.gif" tppabs="http://www.owlei.com/DancingWind/SDK/Pic/r.gif" width="28" height="28"></td>
+    </tr>
+  </TBODY>
+</table>
+<!-- 下边框-->
+<table border="0" cellPadding="0" cellSpacing="0" width="100%">
+  <TBODY>
+    <tr> 
+      <td><img height="28" src="bl-1.gif" tppabs="http://www.owlei.com/DancingWind/SDK/Pic/bl.gif" width="28"></td>
+      <td width="100%"><img height="28" src="bc-1.gif" tppabs="http://www.owlei.com/DancingWind/SDK/Pic/bc.gif" width="100%"></td>
+      <td><img height="28" src="br-1.gif" tppabs="http://www.owlei.com/DancingWind/SDK/Pic/br.gif" width="28"></td>
+    </tr>
+  </TBODY>
+</table>
+<pre class="code"><span class="comment">/******************************************************设置默认视口棱台体*******************************************************************/</span>
+void SetDefaultView()
+{
+<span class="comment">	// 默认的视口棱台体的范围是，视角45度，近切面距离视点0.1，远切面距离视点100。
+	// 默认在z=0的平面上的可见范围是，Y轴方向(-2,+2),X轴方向(-2,+2)*宽高比
+	// 宽高比由窗口大小决定，如果窗口大小为800x600，则宽高比为4/3，X轴的可见范围是(-2.67,+2.67)</span>
+	view.Reset();							<span class="comment">// 重置视口</span>
+	view.LookAt(Vector(0,0,5),Vector(0,0,0),Vector(0,1,0));		<span class="comment">// 设定视口在(0,0,5),朝向-Z轴，上方向量为Y轴</span>
+}
+<span class="comment">/******************************************************设置默认视口棱台体：结束*************************************************************/</span>
+</pre>
+<!-- 上边框-->
+<table border="0" cellPadding="0" cellSpacing="0" width="100%">
+  <TBODY>
+    <tr> 
+      <td><img height="28" src="tl-1.jpg" tppabs="http://www.owlei.com/DancingWind/SDK/Pic/tl.jpg" width="28"></td>
+      <td width="100%"><img height="28" src="tc-1.gif" tppabs="http://www.owlei.com/DancingWind/SDK/Pic/tc.gif" width="100%"></td>
+      <td><img height="28" src="tr-1.gif" tppabs="http://www.owlei.com/DancingWind/SDK/Pic/tr.gif" width="28"></td>
+    </tr>
+  </TBODY>
+</table>
+<!-- 中部-->
+<table border="0" cellPadding="0" cellSpacing="0" width="100%">
+  <TBODY>
+    <tr> 
+      <!-- 中部左边框-->
+      <td  background="l-1.gif" tppabs="http://www.owlei.com/DancingWind/SDK/Pic/l.gif"><img src="l-1.gif" tppabs="http://www.owlei.com/DancingWind/SDK/Pic/l.gif" width="28" height="28"></td>
+      <!-- 中部文字部分-->
+      <td vAlign="top" width="100%"> <table width="100%" border="0">
+          <tr> 
+            <td><p class="theme">5、绘制场景</p>
+              <p class="theme">在创建第一个场景时，需要调用初始化场景的操作，每绘制一次场景都要把视口重新设定一下。故把这个功能加入到了绘制场景函数的开始部分，代码如下：</p></td>
+          </tr>
+        </table></td>
+      <!-- 中部右边框-->
+      <td background="r-1.gif" tppabs="http://www.owlei.com/DancingWind/SDK/Pic/r.gif"><img src="r-1.gif" tppabs="http://www.owlei.com/DancingWind/SDK/Pic/r.gif" width="28" height="28"></td>
+    </tr>
+  </TBODY>
+</table>
+<!-- 下边框-->
+<table border="0" cellPadding="0" cellSpacing="0" width="100%">
+  <TBODY>
+    <tr> 
+      <td><img height="28" src="bl-1.gif" tppabs="http://www.owlei.com/DancingWind/SDK/Pic/bl.gif" width="28"></td>
+      <td width="100%"><img height="28" src="bc-1.gif" tppabs="http://www.owlei.com/DancingWind/SDK/Pic/bc.gif" width="100%"></td>
+      <td><img height="28" src="br-1.gif" tppabs="http://www.owlei.com/DancingWind/SDK/Pic/br.gif" width="28"></td>
+    </tr>
+  </TBODY>
+</table>
+<pre class="code"><span class="comment">/******************************************************绘制场景*****************************************************************************/</span>
+void DrawScene(OpenGL *gl,ControlData *cont)
+{
+<span class="comment">	// 初始化</span>
+	if(initialize)
+	{
+		IniScene(gl,cont);
+		initialize = false;
+	}
+	SetDefaultView();							<span class="comment">// 设置默认的视口</span>
+}
+<span class="comment">/****************************************************绘制场景:结束**************************************************************************/</span>	
+</pre>
+<!-- 上边框-->
+<table border="0" cellPadding="0" cellSpacing="0" width="100%">
+  <TBODY>
+    <tr> 
+      <td><img height="28" src="tl-1.jpg" tppabs="http://www.owlei.com/DancingWind/SDK/Pic/tl.jpg" width="28"></td>
+      <td width="100%"><img height="28" src="tc-1.gif" tppabs="http://www.owlei.com/DancingWind/SDK/Pic/tc.gif" width="100%"></td>
+      <td><img height="28" src="tr-1.gif" tppabs="http://www.owlei.com/DancingWind/SDK/Pic/tr.gif" width="28"></td>
+    </tr>
+  </TBODY>
+</table>
+<!-- 中部-->
+<table border="0" cellPadding="0" cellSpacing="0" width="100%">
+  <TBODY>
+    <tr> 
+      <!-- 中部左边框-->
+      <td  background="l-1.gif" tppabs="http://www.owlei.com/DancingWind/SDK/Pic/l.gif"><img src="l-1.gif" tppabs="http://www.owlei.com/DancingWind/SDK/Pic/l.gif" width="28" height="28"></td>
+      <!-- 中部文字部分-->
+      <td vAlign="top" width="100%"> <table width="100%" border="0">
+          <tr> 
+            <td><p class="theme">好了上面就是整个程序框架了，下面我们简单的回顾一下如何快速实用各个类提供的功能，主要包括以下三个功能：</p>
+              <ol>
+                <li class="theme">设置视口</li>
+                <li class="theme">绘制文本</li>
+                <li class="theme">设置纹理</li>
+              </ol>
+			  
+                
+              <span class="theme">1、设置视口 </span> 
+              <p class="theme">在程序中重新设置视口只需要下面两个步骤，重置视口，设置视点的位置和方向，不要忘了我们的视口棱台体的范围是：</p>
+              <ul>
+                <li class="theme">默认的视口棱台体的范围是，视角45度，近切面距离视点0.1，远切面距离视点100。</li>
+                <li class="theme">默认在z=0的平面上的可见范围是，Y轴方向(-2,+2),X轴方向(-2,+2)*宽高比</li>
+              </ul>
+              <p class="theme">下面是一个示例代码</p></td>
+          </tr>
+        </table></td>
+      <!-- 中部右边框-->
+      <td background="r-1.gif" tppabs="http://www.owlei.com/DancingWind/SDK/Pic/r.gif"><img src="r-1.gif" tppabs="http://www.owlei.com/DancingWind/SDK/Pic/r.gif" width="28" height="28"></td>
+    </tr>
+  </TBODY>
+</table>
+<!-- 下边框-->
+<table border="0" cellPadding="0" cellSpacing="0" width="100%">
+  <TBODY>
+    <tr> 
+      <td><img height="28" src="bl-1.gif" tppabs="http://www.owlei.com/DancingWind/SDK/Pic/bl.gif" width="28"></td>
+      <td width="100%"><img height="28" src="bc-1.gif" tppabs="http://www.owlei.com/DancingWind/SDK/Pic/bc.gif" width="100%"></td>
+      <td><img height="28" src="br-1.gif" tppabs="http://www.owlei.com/DancingWind/SDK/Pic/br.gif" width="28"></td>
+    </tr>
+  </TBODY>
+</table>
+<pre class="code">	view.Reset();							<span class="comment">// 重置视口</span>
+	view.LookAt(Vector(0,0,5),Vector(0,0,0),Vector(0,1,0));		<span class="comment">// 设定视口在(0,0,5),朝向-Z轴，上方向量为Y轴</span></pre> 
+  <!-- 上边框-->
+<table border="0" cellPadding="0" cellSpacing="0" width="100%">
+  <TBODY>
+    <tr> 
+      <td><img height="28" src="tl-1.jpg" tppabs="http://www.owlei.com/DancingWind/SDK/Pic/tl.jpg" width="28"></td>
+      <td width="100%"><img height="28" src="tc-1.gif" tppabs="http://www.owlei.com/DancingWind/SDK/Pic/tc.gif" width="100%"></td>
+      <td><img height="28" src="tr-1.gif" tppabs="http://www.owlei.com/DancingWind/SDK/Pic/tr.gif" width="28"></td>
+    </tr>
+  </TBODY>
+</table>
+<!-- 中部-->
+<table border="0" cellPadding="0" cellSpacing="0" width="100%">
+  <TBODY>
+    <tr> 
+      <!-- 中部左边框-->
+      <td  background="l-1.gif" tppabs="http://www.owlei.com/DancingWind/SDK/Pic/l.gif"><img src="l-1.gif" tppabs="http://www.owlei.com/DancingWind/SDK/Pic/l.gif" width="28" height="28"></td>
+      <!-- 中部文字部分-->
+      <td vAlign="top" width="100%"> <table width="100%" border="0">
+          <tr> 
+            <td class="theme"><p>2、绘制文本</p>
+              <p>下面的代码告诉你如何在窗口的顶层绘制文本，默认文本在三维空间中位于z=0的平面，当然你可以使用Translate函数来改变它在空间中的位置。2D文本一直面对视点，Rotate函数对它不起作用。</p></td>
+          </tr>
+        </table></td>
+      <!-- 中部右边框-->
+      <td background="r-1.gif" tppabs="http://www.owlei.com/DancingWind/SDK/Pic/r.gif"><img src="r-1.gif" tppabs="http://www.owlei.com/DancingWind/SDK/Pic/r.gif" width="28" height="28"></td>
+    </tr>
+  </TBODY>
+</table>
+<!-- 下边框-->
+<table border="0" cellPadding="0" cellSpacing="0" width="100%">
+  <TBODY>
+    <tr> 
+      <td><img height="28" src="bl-1.gif" tppabs="http://www.owlei.com/DancingWind/SDK/Pic/bl.gif" width="28"></td>
+      <td width="100%"><img height="28" src="bc-1.gif" tppabs="http://www.owlei.com/DancingWind/SDK/Pic/bc.gif" width="100%"></td>
+      <td><img height="28" src="br-1.gif" tppabs="http://www.owlei.com/DancingWind/SDK/Pic/br.gif" width="28"></td>
+    </tr>
+  </TBODY>
+</table>
+<pre class="code">	view.Save();									<span class="comment">// 保存当前的视口矩阵</span>
+	view.Reset();									<span class="comment">// 重置视口矩阵</span>
+	view.Translate(0.0f,0.0f,-5.0f);							<span class="comment">// 把绘制的模型坐标向-Z轴移动5个单位</span>
+	view.Pos2D(-2.5f,1.0f);								<span class="comment">// 设置在z=0平面，绘制点的位置</span>
+	glPushAttrib(GL_DEPTH_BUFFER_BIT);							<span class="comment">// 保存深度缓存的属性</span>
+	glDisable(GL_DEPTH_TEST);								<span class="comment">// 禁用深度测试，可以让我们的文本始终显示在最上层</span>
+	text2D<<"Draw a pyramid with texture";						<span class="comment">// 绘制文本</span>
+	glPopAttrib();									<span class="comment">// 弹出保存的深度缓存属性</span>
+	view.Restore();									<span class="comment">// 弹出保存的视口矩阵</span>
+</pre>
+<!-- 上边框-->
+<table border="0" cellPadding="0" cellSpacing="0" width="100%">
+  <TBODY>
+    <tr> 
+      <td><img height="28" src="tl-1.jpg" tppabs="http://www.owlei.com/DancingWind/SDK/Pic/tl.jpg" width="28"></td>
+      <td width="100%"><img height="28" src="tc-1.gif" tppabs="http://www.owlei.com/DancingWind/SDK/Pic/tc.gif" width="100%"></td>
+      <td><img height="28" src="tr-1.gif" tppabs="http://www.owlei.com/DancingWind/SDK/Pic/tr.gif" width="28"></td>
+    </tr>
+  </TBODY>
+</table>
+<!-- 中部-->
+<table border="0" cellPadding="0" cellSpacing="0" width="100%">
+  <TBODY>
+    <tr> 
+      <!-- 中部左边框-->
+      <td  background="l-1.gif" tppabs="http://www.owlei.com/DancingWind/SDK/Pic/l.gif"><img src="l-1.gif" tppabs="http://www.owlei.com/DancingWind/SDK/Pic/l.gif" width="28" height="28"></td>
+      <!-- 中部文字部分-->
+      <td vAlign="top" width="100%"> <table width="100%" border="0">
+          <tr> 
+            <td><p class="theme">3、设置纹理</p>
+              <p class="theme">在OpenGL中使用纹理需要从文件中加载，并启用它，如果你不考虑效率的话，可以如下设置：</p></td>
+          </tr>
+        </table></td>
+      <!-- 中部右边框-->
+      <td background="r-1.gif" tppabs="http://www.owlei.com/DancingWind/SDK/Pic/r.gif"><img src="r-1.gif" tppabs="http://www.owlei.com/DancingWind/SDK/Pic/r.gif" width="28" height="28"></td>
+    </tr>
+  </TBODY>
+</table>
+<!-- 下边框-->
+<table border="0" cellPadding="0" cellSpacing="0" width="100%">
+  <TBODY>
+    <tr> 
+      <td><img height="28" src="bl-1.gif" tppabs="http://www.owlei.com/DancingWind/SDK/Pic/bl.gif" width="28"></td>
+      <td width="100%"><img height="28" src="bc-1.gif" tppabs="http://www.owlei.com/DancingWind/SDK/Pic/bc.gif" width="100%"></td>
+      <td><img height="28" src="br-1.gif" tppabs="http://www.owlei.com/DancingWind/SDK/Pic/br.gif" width="28"></td>
+    </tr>
+  </TBODY>
+</table>
+<pre class="code"><span class="comment">	//载入base.bmp纹理</span>
+	texID = tex.Load("base.bmp");
+	if(texID==0)
+	{
+		MessageBox(NULL,"不能加载base.bmp图像","Error",MB_OK| MB_ICONEXCLAMATION);
+		cont->quit=true;
+		return;
+	}
+<span class="comment">	//启用纹理并绘制带纹理坐标的模型
+	// 启用纹理												</span>
+	tex.Set(texID);
+	cont->state->SetTexturing(true);
+<span class="comment">	// 绘制纹理多边形</span>
+	DrawTexTri();
+</pre>
+<!-- 上边框-->
+<table border="0" cellPadding="0" cellSpacing="0" width="100%">
+  <TBODY>
+    <tr> 
+      <td><img height="28" src="tl-1.jpg" tppabs="http://www.owlei.com/DancingWind/SDK/Pic/tl.jpg" width="28"></td>
+      <td width="100%"><img height="28" src="tc-1.gif" tppabs="http://www.owlei.com/DancingWind/SDK/Pic/tc.gif" width="100%"></td>
+      <td><img height="28" src="tr-1.gif" tppabs="http://www.owlei.com/DancingWind/SDK/Pic/tr.gif" width="28"></td>
+    </tr>
+  </TBODY>
+</table>
+<!-- 中部-->
+<table border="0" cellPadding="0" cellSpacing="0" width="100%">
+  <TBODY>
+    <tr> 
+      <!-- 中部左边框-->
+      <td  background="l-1.gif" tppabs="http://www.owlei.com/DancingWind/SDK/Pic/l.gif"><img src="l-1.gif" tppabs="http://www.owlei.com/DancingWind/SDK/Pic/l.gif" width="28" height="28"></td>
+      <!-- 中部文字部分-->
+      <td vAlign="top" width="100%"> <table width="100%" border="0">
+          <tr> 
+            <td class="theme"><p>好了，这就使这一课的全部了，怎么样，现在对整个程序比较清楚了吧。最后在说一句，最好在初始化时载入纹理，这样你不用在绘制时反复载入文件，这样可以提高效率。</p>
+              <p>后面的演示实例都是建立在这一课代码的基础上了，并且都在draw.cpp中添加新的代码，所以这一课很关键，希望你能读懂它。</p>
+              <table width="100%" border="1">
+  <tr>
+    <td width="27%"><img src="logo 3.jpg" tppabs="http://www.owlei.com/DancingWind/images/logo%203.jpg" width="209" height="200" align="middle"></td>
+    <td width="73%">版权与使用声明:<br>
+      我是个对学习和生活充满激情的普通男孩,在网络上我以DancingWind为昵称，我的联系方式是zhouwei02@mails.tsinghua.edu.cn，zhouwei506@mails.gucas.ac.cn 
+      如果你有任何问题，都可以联系我。 
+      <p>引子<br>
+        网络是一个共享的资源，但我在自己的学习生涯中浪费大量的时间去搜索可用的资料，在现实生活中花费了大量的金钱和时间在书店中寻找资料，于是我给自己起了个昵称DancingWind，其意义是想风一样从各个知识的站点中吸取成长的养料。在飘荡了多年之后，我决定把自己收集的资料整理为一个统一的资源库。</p>
+      <p>版权声明<br>
+        所有DancingWind发表的内容，大多都来自共享的资源，所以我没有资格把它们据为己有，或声称自己为这些资源作出了一点贡献。故任何人都可以复制，修改，重新发表，甚至以自己的名义发表，我都不会追究，但你在做以上事情的时候必须保证内容的完整性，给后来的人一个完整的教程。最后，任何人不能以这些资料的任何部分，谋取任何形式的报酬。</p>
+      <p>发展计划<br>
+        在国外，很多资料都是很多人花费几年的时间慢慢积累起来的。如果任何人有兴趣与别人共享你的知识，我很欢迎你与我联系，但你必须同意我上面的声明。</p>
+      <p>感谢<br>
+        感谢我的母亲一直以来对我的支持和在生活上的照顾。<br>
+        感谢我深爱的女友田芹，一直以来默默的在精神上和生活中对我的支持，她甚至把买衣服的钱都用来给我买书了，她真的是我见过的最好的女孩，希望我能带给她幸福。</p>
+      <p>资源下载: <br>
+                      文档 <a href="05_Framework.pdf" tppabs="http://www.owlei.com/DancingWind/SDK/Res/05_Framework.pdf">PDF格式</a><br>
+                      源码 <a href="05_Framework.rar" tppabs="http://www.owlei.com/DancingWind/SDK/Res/05_Framework.rar">RAR格式</a></p></td>
+  </tr>
+</table></td>
+          </tr>
+        </table></td>
+      <!-- 中部右边框-->
+      <td background="r-1.gif" tppabs="http://www.owlei.com/DancingWind/SDK/Pic/r.gif"><img src="r-1.gif" tppabs="http://www.owlei.com/DancingWind/SDK/Pic/r.gif" width="28" height="28"></td>
+    </tr>
+  </TBODY>
+</table>
+<!-- 下边框-->
+<table border="0" cellPadding="0" cellSpacing="0" width="100%">
+  <TBODY>
+    <tr> 
+      <td><img height="28" src="bl-1.gif" tppabs="http://www.owlei.com/DancingWind/SDK/Pic/bl.gif" width="28"></td>
+      <td width="100%"><img height="28" src="bc-1.gif" tppabs="http://www.owlei.com/DancingWind/SDK/Pic/bc.gif" width="100%"></td>
+      <td><img height="28" src="br-1.gif" tppabs="http://www.owlei.com/DancingWind/SDK/Pic/br.gif" width="28"></td>
+    </tr>
+  </TBODY>
+</table>
+</body>
+</html>

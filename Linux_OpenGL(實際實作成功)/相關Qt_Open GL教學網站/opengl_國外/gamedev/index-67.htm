@@ -1,0 +1,638 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+    dir="ltr"
+    xml:lang="en"
+    lang="en">
+  <head>
+    <title>NeHe Productions: Shadows</title>
+
+    <link rel="stylesheet" type="text/css" href="public_base.css" tppabs="http://nehe.gamedev.net/static/css/public_base.css" />
+    <link type="text/css" rel="stylesheet" href="shThemeMidnight.css" tppabs="http://nehe.gamedev.net/static/css/syntax_highlighter/shThemeMidnight.css"/>
+    
+    <link rel="alternate" type="application/atom+xml" title="Atom feed" href="index-1.htm" tppabs="http://nehe.gamedev.net/atom/" />
+    <link rel="alternate" type="application/rss+xml" title="RSS feed" href="index-2.htm" tppabs="http://nehe.gamedev.net/rss/" />
+    
+    <meta name="author" content="Luke Benstead + Carsten Haubold" />
+    <meta name="description" content="OpenGL Tutorials, Demos, Games and More..." />
+    <meta name="keywords" content="opengl, tutorial, article, demo, game, blend, texturemap, lighting, contest, 3D" />
+
+    
+    
+
+    
+
+</script>
+
+
+    
+    
+    
+    
+        
+        <script type='text/javascript'>
+        var googletag = googletag || {};
+        googletag.cmd = googletag.cmd || [];
+        (function() {
+        var gads = document.createElement('script');
+        gads.async = true;
+        gads.type = 'text/javascript';
+        var useSSL = 'https:' == document.location.protocol;
+        gads.src = (useSSL ? 'https:' : 'http:') + 
+        '//www.googletagservices.com/tag/js/gpt.js';
+        var node = document.getElementsByTagName('script')[0];
+        node.parentNode.insertBefore(gads, node);
+        })();
+        </script>
+
+        <script type='text/javascript'>
+        googletag.cmd.push(function() {
+        googletag.defineSlot('/1004699/Leaderboard_NeHe', [728, 90], 'div-gpt-ad-1327940144417-0').addService(googletag.pubads());
+        googletag.defineSlot('/1004699/Skyscraper_NeHe', [160, 600], 'div-gpt-ad-1327940144417-1').addService(googletag.pubads());
+        googletag.pubads().enableSingleRequest();
+        googletag.enableServices();
+        });
+        </script>
+    
+    
+
+    
+  </head>
+
+  <body>
+    
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "all.js#xfbml=1"/*tpa=http://connect.facebook.net/en_GB/all.js#xfbml=1*/;
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+
+
+    <table cellpadding="0" cellspacing="0" border="0" id="layout_table">
+    <tr><td>
+        <div id="header">
+                <a href="index.htm" tppabs="http://nehe.gamedev.net/"><img class="logo" class="logo" src="nehe.png" tppabs="http://nehe.gamedev.net/static/images/nehe.png" border="0" alt="Nehe" /></a>
+        </div>            
+    </td></tr>
+    <tr><td colspan="2">
+            
+<div class="navbar">
+    <a href="index.htm" tppabs="http://nehe.gamedev.net/">HOME</a>
+    <a href="javascript:if(confirm('http://twitter.com/  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://twitter.com/#!/nehegl'" tppabs="http://twitter.com/#!/nehegl">TWITTER</a>  
+    <a href="javascript:if(confirm('http://www.facebook.com/pages/NeHe/300582493323181  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://www.facebook.com/pages/NeHe/300582493323181'" tppabs="http://www.facebook.com/pages/NeHe/300582493323181">FACEBOOK</a>     
+    <a href="index-2.htm" tppabs="http://nehe.gamedev.net/rss/">RSS</a>    
+    <a href="index-1.htm" tppabs="http://nehe.gamedev.net/atom/">ATOM</a>    
+    <a href="javascript:if(confirm('http://www.gamedev.net/forum/27-nehe-productions/page__forum_title__NeHe+Productions  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://www.gamedev.net/forum/27-nehe-productions/page__forum_title__NeHe+Productions'" tppabs="http://www.gamedev.net/forum/27-nehe-productions/page__forum_title__NeHe+Productions">FORUM</a>    
+</div>
+    
+    </td></tr>
+    <tr>
+        <td class="col1">
+
+            
+<div id="article_container">
+
+
+<h1 class="article-header">Shadows</h1>
+<div class="social-media">
+<!-- Place this tag where you want the +1 button to render -->
+<div class="g-plusone" data-size="medium" data-width="120" data-annotation="inline"></div>
+<div class="fb-like" data-send="false" data-layout="button_count" data-width="60" data-show-faces="false" data-colorscheme="dark" data-font="arial"></div>
+</div>
+<div style="clear:both;"></div>
+<p>Welcome to a fairly complex tutorial on shadow casting. The effect this demo creates is literally incredible. Shadows that stretch, bend and wrap around other objects and across walls. Everything in the scene can be moved around in 3D space using keys on the keyboard.</p>
+<p>This tutorial takes a fairly different approach - It assumes you have a lot of OpenGL knowledge. You should already understand the stencil buffer, and basic OpenGL setup. If you need to brush up, go back and read the earlier tutorials. Functions such as CreateGLWindow and WinMain will <span style="text-decoration: underline;">NOT</span> be explained in this tutorial. Additionally, some fundamental 3D math is assumed, so keep a good textbook handy! (I used my 1st year maths lecture notes from University - I knew they'd come in handy later on! :)</p>
+<p>First we have the definition of INFINITY, which represents how far to extend the shadow volume polygons (this will be explained more later on). If you are using a larger or smaller coordinate system, adjust this value accordingly.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">// Definition Of "INFINITY" For Calculating The Extension Vector For The Shadow Volume
+#define INFINITY	100
+</pre>
+<p>Next is the definition of the object structures.</p>
+<p>The Point3f structure holds a coordinate in 3D space. This can be used for vertices or vectors.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">// Structure Describing A Vertex In An Object
+struct Point3f
+{
+	GLfloat x, y, z;
+};
+</pre>
+<p>The Plane structure holds the 4 values that form the equation of a plane. These planes will represent the faces of the object.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">// Structure Describing A Plane, In The Format: ax + by + cz + d = 0
+struct Plane
+{
+	GLfloat a, b, c, d;
+};
+</pre>
+<p>The Face structure contains all the information necessary about a triangle to cast a shadow.</p>
+<ul>
+<li>The indices specified are from the object's array of vertices.</li>
+<li>The vertex normals are used to calculate the orientation of the face in 3D space, so you can determine which are facing the light source when casting the shadows.</li>
+<li>The plane equation describes the plane that this triangle lies in, in 3D space.</li>
+<li>The neighbour indices are indices into the array of faces in the object. This allows you to specify which face joins this face at each edge of the triangle.</li>
+<li>The visible parameter is used to specify whether the face is "visible" to the light source which is casting the shadows.</li>
+</ul>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">// Structure Describing An Object's Face
+struct Face
+{
+	int vertexIndices[3];			// Index Of Each Vertex Within An Object That Makes Up The Triangle Of This Face
+	Point3f normals[3];			// Normals To Each Vertex
+	Plane planeEquation;			// Equation Of A Plane That Contains This Triangle
+	int neighbourIndices[3];		// Index Of Each Face That Neighbours This One Within The Object
+	bool visible;				// Is The Face Visible By The Light?
+};
+</pre>
+<p>Finally, the ShadowedObject structure contains all the vertices and faces in the object. The memory for each of the arrays is dynamically created when it is loaded.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">struct ShadowedObject
+{
+	int nVertices;
+	Point3f *pVertices;			// Will Be Dynamically Allocated
+
+	int nFaces;
+	Face *pFaces;				// Will Be Dynamically Allocated
+};
+</pre>
+<p>The readObject function is fairly self explanatory. It will fill in the given object structure with the values read from the file, allocating memory for the vertices and faces. It also initializes the neighbours to -1, which means there isn't one (yet). They will be calculated later.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">bool readObject( const char *filename, ShadowedObject&amp; object )
+{
+	FILE *pInputFile;
+	int i;
+
+	pInputFile = fopen( filename, "r" );
+	if ( pInputFile == NULL )
+	{
+		cerr &lt;&lt; "Unable to open the object file: " &lt;&lt; filename &lt;&lt; endl;
+		return false;
+	}
+
+	// Read Vertices
+	fscanf( pInputFile, "%d", &amp;object.nVertices );
+	object.pVertices = new Point3f[object.nVertices];
+	for ( i = 0; i &lt; object.nVertices; i++ )
+	{
+		fscanf( pInputFile, "%f", &amp;object.pVertices[i].x );
+		fscanf( pInputFile, "%f", &amp;object.pVertices[i].y );
+		fscanf( pInputFile, "%f", &amp;object.pVertices[i].z );
+	}
+
+	// Read Faces
+	fscanf( pInputFile, "%d", &amp;object.nFaces );
+	object.pFaces = new Face[object.nFaces];
+	for ( i = 0; i &lt; object.nFaces; i++ )
+	{
+		int j;
+		Face *pFace = &amp;object.pFaces[i];
+
+		for ( j = 0; j &lt; 3; j++ )
+			pFace-&gt;neighbourIndices[j] = -1;	// No Neigbours Set Up Yet
+
+		for ( j = 0; j &lt; 3; j++ )
+		{
+			fscanf( pInputFile, "%d", &amp;pFace-&gt;vertexIndices[j] );
+			pFace-&gt;vertexIndices[j]--;		// Files Specify Them With A 1 Array Base, But We Use A 0 Array Base
+		}
+
+		for ( j = 0; j &lt; 3; j++ )
+		{
+			fscanf( pInputFile, "%f", &amp;pFace-&gt;normals[j].x );
+			fscanf( pInputFile, "%f", &amp;pFace-&gt;normals[j].y );
+			fscanf( pInputFile, "%f", &amp;pFace-&gt;normals[j].z );
+		}
+	}
+	return true;
+}
+</pre>
+<p>Likewise, killObject is self-explanatory - just delete all those dynamically allocated arrays inside the object when you are done with them. Note that a line was added to KillGLWindow to call this function for the object in question.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">void killObject( ShadowedObject&amp; object )
+{
+	delete[] object.pFaces;
+	object.pFaces = NULL;
+	object.nFaces = 0;
+
+	delete[] object.pVertices;
+	object.pVertices = NULL;
+	object.nVertices = 0;
+}
+</pre>
+<p>Now, with setConnectivity it starts to get interesting. This function is used to find out what neighbours there are to each face of the object given. Here's some pseudo code:</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">for each face (A) in the object
+	for each edge in A
+		if we don't know this edges neighbour yet
+			for each face (B) in the object (except A)
+				for each edge in B
+					if A's edge is the same as B's edge, then they are neighbouring each other on that edge
+						set the neighbour property for each face A and B, then move onto next edge in A
+</pre>
+<p>The last two lines are accomplished with the following code. By finding the two vertices that mark the ends of an edge and comparing them, you can discover if it is the same edge. The part (edgeA+1)%3 gets a vertex next to the one you are considering. Then you check if the vertices match (the order may be different, hence the second case of the if statement).</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	int vertA1 = pFaceA-&gt;vertexIndices[edgeA];
+	int vertA2 = pFaceA-&gt;vertexIndices[( edgeA+1 )%3];
+
+	int vertB1 = pFaceB-&gt;vertexIndices[edgeB];
+	int vertB2 = pFaceB-&gt;vertexIndices[( edgeB+1 )%3];
+
+	// Check If They Are Neighbours - IE, The Edges Are The Same
+	if (( vertA1 == vertB1 &amp;&amp; vertA2 == vertB2 ) || ( vertA1 == vertB2 &amp;&amp; vertA2 == vertB1 ))
+	{
+		pFaceA-&gt;neighbourIndices[edgeA] = faceB;
+		pFaceB-&gt;neighbourIndices[edgeB] = faceA;
+		edgeFound = true;
+		break;
+	}
+</pre>
+<p>Luckily, another easy function while you take a breath. drawObject renders each face one by one.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">// Draw An Object - Simply Draw Each Triangular Face.
+void drawObject( const ShadowedObject&amp; object )
+{
+	glBegin( GL_TRIANGLES );
+	for ( int i = 0; i &lt; object.nFaces; i++ )
+	{
+		const Face&amp; face = object.pFaces[i];
+
+		for ( int j = 0; j &lt; 3; j++ )
+		{
+			const Point3f&amp; vertex = object.pVertices[face.vertexIndices[j]];
+
+			glNormal3f( face.normals[j].x, face.normals[j].y, face.normals[j].z );
+			glVertex3f( vertex.x, vertex.y, vertex.z );
+		}
+	}
+	glEnd();
+}
+</pre>
+<p>Calculating the equation of a plane looks ugly, but it is just a simple mathematical formula that you grab from a textbook when you need it.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">void calculatePlane( const ShadowedObject&amp; object, Face&amp; face )
+{
+	// Get Shortened Names For The Vertices Of The Face
+	const Point3f&amp; v1 = object.pVertices[face.vertexIndices[0]];
+	const Point3f&amp; v2 = object.pVertices[face.vertexIndices[1]];
+	const Point3f&amp; v3 = object.pVertices[face.vertexIndices[2]];
+
+	face.planeEquation.a = v1.y*(v2.z-v3.z) + v2.y*(v3.z-v1.z) + v3.y*(v1.z-v2.z);
+	face.planeEquation.b = v1.z*(v2.x-v3.x) + v2.z*(v3.x-v1.x) + v3.z*(v1.x-v2.x);
+	face.planeEquation.c = v1.x*(v2.y-v3.y) + v2.x*(v3.y-v1.y) + v3.x*(v1.y-v2.y);
+	face.planeEquation.d = -( v1.x*( v2.y*v3.z - v3.y*v2.z ) +
+				v2.x*(v3.y*v1.z - v1.y*v3.z) +
+				v3.x*(v1.y*v2.z - v2.y*v1.z) );
+}
+</pre>
+<p>Have you caught your breath yet? Good, because you are about to learn how to cast a shadow! The castShadow function does all of the GL specifics, and passes it on to doShadowPass to render the shadow in two passes.</p>
+<p>First up, we determine which surfaces are facing the light. We do this by seeing which side of the plane the light is on. This is done by substituting the light's position into the equation for the plane. If this is larger than 0, then it is in the same direction as the normal to the plane and visible by the light. If not, then it is not visible by the light. (Again, refer to a good Math textbook for a better explanation of geometry in 3D).</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">void castShadow( ShadowedObject&amp; object, GLfloat *lightPosition )
+{
+	// Determine Which Faces Are Visible By The Light.
+	for ( int i = 0; i &lt; object.nFaces; i++ )
+	{
+		const Plane&amp; plane = object.pFaces[i].planeEquation;
+
+		GLfloat side = plane.a*lightPosition[0]+
+			plane.b*lightPosition[1]+
+			plane.c*lightPosition[2]+
+			plane.d;
+
+		if ( side &gt; 0 )
+			object.pFaces[i].visible = true;
+		else
+			object.pFaces[i].visible = false;
+	}
+</pre>
+<p>The next section sets up the necessary OpenGL states for rendering the shadows.</p>
+<p>First, we push all the attributes onto the stack that will be modified. This makes changing them back a lot easier.</p>
+<p>Lighting is disabled because we will not be rendering to the color (output) buffer, just the stencil buffer. For the same reason, the color mask turns off all color components (so drawing a polygon won't get through to the output buffer).</p>
+<p>Although depth testing is still used, we don't want the shadows to appear as solid objects in the depth buffer, so the depth mask prevents this from happening.</p>
+<p>The stencil buffer is turned on as that is what is going to be used to draw the shadows into.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	glPushAttrib( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_ENABLE_BIT | GL_POLYGON_BIT | GL_STENCIL_BUFFER_BIT );
+	glDisable( GL_LIGHTING );					// Turn Off Lighting
+	glDepthMask( GL_FALSE );					// Turn Off Writing To The Depth-Buffer
+	glDepthFunc( GL_LEQUAL );
+	glEnable( GL_STENCIL_TEST );					// Turn On Stencil Buffer Testing
+	glColorMask( GL_FALSE, GL_FALSE, GL_FALSE, GL_FALSE );		// Don't Draw Into The Colour Buffer
+	glStencilFunc( GL_ALWAYS, 1, 0xFFFFFFFFL );
+</pre>
+<p>Ok, now the shadows are actually rendered. We'll come back to that in a moment when we look at the doShadowPass function. They are rendered in two passes as you can see, one incrementing the stencil buffer with the front faces (casting the shadow), the second decrementing the stencil buffer with the backfaces ("turning off" the shadow between the object and any other surfaces).</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	// First Pass. Increase Stencil Value In The Shadow
+	glFrontFace( GL_CCW );
+	glStencilOp( GL_KEEP, GL_KEEP, GL_INCR );
+	doShadowPass( object, lightPosition );
+	// Second Pass. Decrease Stencil Value In The Shadow
+	glFrontFace( GL_CW );
+	glStencilOp( GL_KEEP, GL_KEEP, GL_DECR );
+	doShadowPass( object, lightPosition );
+</pre>
+<p>To understand how the second pass works, my best advise is to comment it out and run the tutorial again. To save you the trouble, I have done it here:</p>
+<table border="0" align="center">
+<tbody>
+<tr align="center" valign="top">
+<td><img src="pass1.jpg" tppabs="http://nehe.gamedev.net/_admin/article/edit/16010/extras/lesson27/pass1.jpg" alt="" width="200" height="150" /></td>
+<td><img src="pass2.jpg" tppabs="http://nehe.gamedev.net/_admin/article/edit/16010/extras/lesson27/pass2.jpg" alt="" width="200" height="150" /></td>
+</tr>
+<tr align="center" valign="top">
+<td>Figure 1: First Pass</td>
+<td>Figure 2: Second Pass</td>
+</tr>
+</tbody>
+</table>
+<p>The final section of this function draws one blended rectangle over the whole screen, to cast a shadow. The darker you make this rectangle, the darker the shadows will be. So to change the properties of the shadow, change the glColor4f statement. Higher alpha will make it more black. Or you can make it red, green, purple, ...!</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	glFrontFace( GL_CCW );
+	glColorMask( GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE );	// Enable Rendering To Colour Buffer For All Components
+
+	// Draw A Shadowing Rectangle Covering The Entire Screen
+	glColor4f( 0.0f, 0.0f, 0.0f, 0.4f );
+	glEnable( GL_BLEND );
+	glBlendFunc( GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA );
+	glStencilFunc( GL_NOTEQUAL, 0, 0xFFFFFFFFL );
+	glStencilOp( GL_KEEP, GL_KEEP, GL_KEEP );
+	glPushMatrix();
+	glLoadIdentity();
+	glBegin( GL_TRIANGLE_STRIP );
+		glVertex3f(-0.1f, 0.1f,-0.10f);
+		glVertex3f(-0.1f,-0.1f,-0.10f);
+		glVertex3f( 0.1f, 0.1f,-0.10f);
+		glVertex3f( 0.1f,-0.1f,-0.10f);
+	glEnd();
+	glPopMatrix();
+	glPopAttrib();
+}
+</pre>
+<p>Ok, the next part draws the shadowed quads. How does that work? What happens is that you go through every face, and if it is visible, then you check all of its edges. If at the edge, there is no neighbouring face, or the neighbouring face is not visible, the edge casts a shadow. If you think about the two cases clearly, then you'll see this is true. By drawing a quadrilateral (as two triangles) comprising of the points of the edge, and the edge projected backwards through the scene you get the shadow cast by it.</p>
+<p>The brute force approach used here just draws to "infinity", and the shadow polygon is clipped against all the polygons it encounters. This causes piercing, which will stress the video hardware. For a high-performance modification to this algorithm, you should clip the polygon to the objects behind it. This is much trickier and has problems of its own, but if that's what you want to do, you should refer to <a href="javascript:if(confirm('http://nehe.gamedev.net/data/lessons/http://www.gamasutra.com/features/19991115/bestimt_freitag_02.htm  \n\nThis file was not retrieved by Teleport Pro, because the server reports that this file cannot be found.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev.net/data/lessons/http://www.gamasutra.com/features/19991115/bestimt_freitag_02.htm'" tppabs="http://nehe.gamedev.net/data/lessons/http://www.gamasutra.com/features/19991115/bestimt_freitag_02.htm">this Gamasutra article</a>.</p>
+<p>The code to do all of that is not as tricky as it sounds. To start with, here is a snippet that loops through the objects. By the end of it, we have an edge, <em>j</em>, and its neighbouring face, specified by <em>neighbourIndex</em>.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">void doShadowPass( ShadowedObject&amp; object, GLfloat *lightPosition )
+{
+	for ( int i = 0; i &lt; object.nFaces; i++ )
+	{
+		const Face&amp; face = object.pFaces[i];
+
+		if ( face.visible )
+		{
+			// Go Through Each Edge
+			for ( int j = 0; j &lt; 3; j++ )
+			{
+				int neighbourIndex = face.neighbourIndices[j];
+</pre>
+<p>Next, check if there is a visible neighbouring face to this object. If not, then this edge casts a shadow.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">				// If There Is No Neighbour, Or Its Neighbouring Face Is Not Visible, Then This Edge Casts A Shadow
+				if ( neighbourIndex == -1 || object.pFaces[neighbourIndex].visible == false )
+				{
+</pre>
+<p>The next segment of code will retrieve the two vertices from the current edge, <em>v1</em> and <em>v2</em>. Then, it calculates <em>v3</em> and <em>v4</em>, which are projected along the vector between the light source and the first edge. They are scaled to INFINITY, which was set to a very large value.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">					// Get The Points On The Edge
+					const Point3f&amp; v1 = object.pVertices[face.vertexIndices[j]];
+					const Point3f&amp; v2 = object.pVertices[face.vertexIndices[( j+1 )%3]];
+
+					// Calculate The Two Vertices In Distance
+					Point3f v3, v4;
+
+					v3.x = ( v1.x-lightPosition[0] )*INFINITY;
+					v3.y = ( v1.y-lightPosition[1] )*INFINITY;
+					v3.z = ( v1.z-lightPosition[2] )*INFINITY;
+
+					v4.x = ( v2.x-lightPosition[0] )*INFINITY;
+					v4.y = ( v2.y-lightPosition[1] )*INFINITY;
+					v4.z = ( v2.z-lightPosition[2] )*INFINITY;
+</pre>
+<p>I think you'll understand the next section, it justs draws the quadrilateral defined by those four points:</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">					// Draw The Quadrilateral (As A Triangle Strip)
+					glBegin( GL_TRIANGLE_STRIP );
+						glVertex3f( v1.x, v1.y, v1.z );
+						glVertex3f( v1.x+v3.x, v1.y+v3.y, v1.z+v3.z );
+						glVertex3f( v2.x, v2.y, v2.z );
+						glVertex3f( v2.x+v4.x, v2.y+v4.y, v2.z+v4.z );
+					glEnd();
+				}
+			}
+		}
+	}
+}
+</pre>
+<p>With that, the shadow casting section is completed. But we are not finished yet! What about drawGLScene? Lets start with the simple bits: clearing the buffers, positioning the light source, and drawing a sphere:</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">bool drawGLScene()
+{
+	GLmatrix16f Minv;
+	GLvector4f wlp, lp;
+
+	// Clear Color Buffer, Depth Buffer, Stencil Buffer
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
+	
+	glLoadIdentity();						// Reset Modelview Matrix
+	glTranslatef(0.0f, 0.0f, -20.0f);				// Zoom Into Screen 20 Units
+	glLightfv(GL_LIGHT1, GL_POSITION, LightPos);			// Position Light1
+	glTranslatef(SpherePos[0], SpherePos[1], SpherePos[2]);		// Position The Sphere
+	gluSphere(q, 1.5f, 32, 16);					// Draw A Sphere
+</pre>
+<p>Next, we have to calculate the light's position relative to the local coordinate system of the object. The comments explain each step in detail. <em>Minv</em> stores the object's transformation matrix, however it is done in reverse, and with negative arguments, so it is actually the inverse of the transformation matrix. Then <em>lp</em> is created as a copy of the light's position, and multiplied by the matrix. Thus, <em>lp</em> is the light's position in the object's coordinate system.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	glLoadIdentity();						// Reset Matrix
+	glRotatef(-yrot, 0.0f, 1.0f, 0.0f);				// Rotate By -yrot On Y Axis
+	glRotatef(-xrot, 1.0f, 0.0f, 0.0f);				// Rotate By -xrot On X Axis
+	glTranslatef(-ObjPos[0], -ObjPos[1], -ObjPos[2]);		// Move Negative On All Axis Based On ObjPos[] Values (X, Y, Z)
+	glGetFloatv(GL_MODELVIEW_MATRIX,Minv);				// Retrieve ModelView Matrix (Stores In Minv)
+	lp[0] = LightPos[0];						// Store Light Position X In lp[0]
+	lp[1] = LightPos[1];						// Store Light Position Y In lp[1]
+	lp[2] = LightPos[2];						// Store Light Position Z In lp[2]
+	lp[3] = LightPos[3];						// Store Light Direction In lp[3]
+	VMatMult(Minv, lp);						// We Store Rotated Light Vector In 'lp' Array
+</pre>
+<p>Now, palm off some of the work to draw the room, and the object. Calling castShadow draws the shadow of the object.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	glLoadIdentity();						// Reset Modelview Matrix
+	glTranslatef(0.0f, 0.0f, -20.0f);				// Zoom Into The Screen 20 Units
+	DrawGLRoom();							// Draw The Room
+	glTranslatef(ObjPos[0], ObjPos[1], ObjPos[2]);			// Position The Object
+	glRotatef(xrot, 1.0f, 0.0f, 0.0f);				// Spin It On The X Axis By xrot
+	glRotatef(yrot, 0.0f, 1.0f, 0.0f);				// Spin It On The Y Axis By yrot
+	drawObject(obj);						// Procedure For Drawing The Loaded Object
+	castShadow(obj, lp);						// Procedure For Casting The Shadow Based On The Silhouette
+</pre>
+<p>The following few lines draw a little orange circle where the light is:</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	glColor4f(0.7f, 0.4f, 0.0f, 1.0f);				// Set Color To An Orange
+	glDisable(GL_LIGHTING);						// Disable Lighting
+	glDepthMask(GL_FALSE);						// Disable Depth Mask
+	glTranslatef(lp[0], lp[1], lp[2]);				// Translate To Light's Position
+									// Notice We're Still In Local Coordinate System
+	gluSphere(q, 0.2f, 16, 8);					// Draw A Little Yellow Sphere (Represents Light)
+	glEnable(GL_LIGHTING);						// Enable Lighting
+	glDepthMask(GL_TRUE);						// Enable Depth Mask
+</pre>
+<p>The last part updates the object's position and returns.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	xrot += xspeed;							// Increase xrot By xspeed
+	yrot += yspeed;							// Increase yrot By yspeed
+
+	glFlush();							// Flush The OpenGL Pipeline
+	return TRUE;							// Everything Went OK
+}
+</pre>
+<p>We did specify a DrawGLRoom function, and here it is - a bunch of rectangles to cast shadows against:</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">void DrawGLRoom()							// Draw The Room (Box)
+{
+	glBegin(GL_QUADS);						// Begin Drawing Quads
+		// Floor
+		glNormal3f(0.0f, 1.0f, 0.0f);				// Normal Pointing Up
+		glVertex3f(-10.0f,-10.0f,-20.0f);			// Back Left
+		glVertex3f(-10.0f,-10.0f, 20.0f);			// Front Left
+		glVertex3f( 10.0f,-10.0f, 20.0f);			// Front Right
+		glVertex3f( 10.0f,-10.0f,-20.0f);			// Back Right
+		// Ceiling
+		glNormal3f(0.0f,-1.0f, 0.0f);				// Normal Point Down
+		glVertex3f(-10.0f, 10.0f, 20.0f);			// Front Left
+		glVertex3f(-10.0f, 10.0f,-20.0f);			// Back Left
+		glVertex3f( 10.0f, 10.0f,-20.0f);			// Back Right
+		glVertex3f( 10.0f, 10.0f, 20.0f);			// Front Right
+		// Front Wall
+		glNormal3f(0.0f, 0.0f, 1.0f);				// Normal Pointing Away From Viewer
+		glVertex3f(-10.0f, 10.0f,-20.0f);			// Top Left
+		glVertex3f(-10.0f,-10.0f,-20.0f);			// Bottom Left
+		glVertex3f( 10.0f,-10.0f,-20.0f);			// Bottom Right
+		glVertex3f( 10.0f, 10.0f,-20.0f);			// Top Right
+		// Back Wall
+		glNormal3f(0.0f, 0.0f,-1.0f);				// Normal Pointing Towards Viewer
+		glVertex3f( 10.0f, 10.0f, 20.0f);			// Top Right
+		glVertex3f( 10.0f,-10.0f, 20.0f);			// Bottom Right
+		glVertex3f(-10.0f,-10.0f, 20.0f);			// Bottom Left
+		glVertex3f(-10.0f, 10.0f, 20.0f);			// Top Left
+		// Left Wall
+		glNormal3f(1.0f, 0.0f, 0.0f);				// Normal Pointing Right
+		glVertex3f(-10.0f, 10.0f, 20.0f);			// Top Front
+		glVertex3f(-10.0f,-10.0f, 20.0f);			// Bottom Front
+		glVertex3f(-10.0f,-10.0f,-20.0f);			// Bottom Back
+		glVertex3f(-10.0f, 10.0f,-20.0f);			// Top Back
+		// Right Wall
+		glNormal3f(-1.0f, 0.0f, 0.0f);				// Normal Pointing Left
+		glVertex3f( 10.0f, 10.0f,-20.0f);			// Top Back
+		glVertex3f( 10.0f,-10.0f,-20.0f);			// Bottom Back
+		glVertex3f( 10.0f,-10.0f, 20.0f);			// Bottom Front
+		glVertex3f( 10.0f, 10.0f, 20.0f);			// Top Front
+	glEnd();							// Done Drawing Quads
+}
+</pre>
+<p>And before I forget, here is the VMatMult function which multiplies a vector by a matrix (get that Math textbook out again!):</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">void VMatMult(GLmatrix16f M, GLvector4f v)
+{
+	GLfloat res[4];							// Hold Calculated Results
+	res[0]=M[ 0]*v[0]+M[ 4]*v[1]+M[ 8]*v[2]+M[12]*v[3];
+	res[1]=M[ 1]*v[0]+M[ 5]*v[1]+M[ 9]*v[2]+M[13]*v[3];
+	res[2]=M[ 2]*v[0]+M[ 6]*v[1]+M[10]*v[2]+M[14]*v[3];
+	res[3]=M[ 3]*v[0]+M[ 7]*v[1]+M[11]*v[2]+M[15]*v[3];
+	v[0]=res[0];							// Results Are Stored Back In v[]
+	v[1]=res[1];
+	v[2]=res[2];
+	v[3]=res[3];							// Homogenous Coordinate
+}
+</pre>
+<p>The function to load the object is simple, just calling readObject, and then setting up the connectivity and the plane equations for each face.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">int InitGLObjects()							// Initialize Objects
+{
+	if (!readObject("Data/Object2.txt", obj))			// Read Object2 Into obj
+	{
+		return FALSE;						// If Failed Return False
+	}
+
+	setConnectivity(obj);						// Set Face To Face Connectivity
+
+	for ( int i=0;i &lt; obj.nFaces;i++)				// Loop Through All Object Faces
+		calculatePlane(obj, obj.pFaces[i]);			// Compute Plane Equations For All Faces
+
+	return TRUE;							// Return True
+}
+</pre>
+<p>Finally, KillGLObjects is a convenience function so that if you add more objects, you can add them in a central place.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">void KillGLObjects()
+{
+	killObject( obj );	
+}
+</pre>
+<p>All of the other functions don't require any further explanantion. I have left out the standard NeHe tutorial code, as well as all of the variable definitions and the keyboard processing function. The commenting alone explains these sufficiently.</p>
+<p>Some things to note about the tutorial:</p>
+<ul>
+<li>The sphere doesn't stop shadows being projected on the wall. In reality, the sphere should also be casting a shadow, so seeing the one on the wall won't matter, it's hidden. It's just there to see what happens on curved surfaces :)</li>
+<li>If you are noticing extremely slow frame rates, try switching to fullscreen mode, or setting your desktop colour depth to 32bpp.</li>
+<li>Arseny L. writes: If you are having problems with a TNT2 in Windowed mode, make sure your desktop color depth is not set to 16bit. In 16bit color mode, the stencil buffer is emulated, resulting in sluggish performance. There are no problems in 32bit mode (I have a TNT2 Ultra and I checked it).</li>
+</ul>
+<p>I've got to admit this was a lengthy task to write out this tutorial. It gives you full appreciation for the work that Jeff puts in! I hope you enjoy it, and give a huge thanks to Banu who wrote the original code! IF there is anything that needs further explaining in here, you are welcome to contact me (Brett), at <a href="mailto:brettporter@yahoo.com">brettporter@yahoo.com</a>.</p>
+<p>* Randy Ridge adds: In order to see shadows on my particular card the near clipping plane needs to be set to 0.001f rather than 0.1f in the ReSizeGLScene( ) section of code. The code has been modified in this tutorial and should work on all cards!</p>
+<p><strong>Banu Octavian</strong> (<strong>Choko</strong>) &amp; <strong>Brett Porter</strong></p>
+<p><strong>Jeff Molofee</strong> (<strong>NeHe</strong>)</p>
+<p>* DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/vc/lesson27.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/vc/lesson27.zip'" tppabs="http://nehe.gamedev.net/data/lessons/vc/lesson27.zip">Visual C++</a> Code For This Lesson.</p>
+<p>* DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/bcb6/lesson27_bcb6.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/bcb6/lesson27_bcb6.zip'" tppabs="http://nehe.gamedev.net/data/lessons/bcb6/lesson27_bcb6.zip">Borland C++ Builder 6</a> Code For This Lesson. ( Conversion by <a href="mailto:christian@tugzip.com">Christian Kindahl</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/cwarrior/lesson27.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/cwarrior/lesson27.zip'" tppabs="http://nehe.gamedev.net/data/lessons/cwarrior/lesson27.zip">Code Warrior 5.3</a> Code For This Lesson. ( Conversion by <a href="mailto:DelusionalBeing@hotmail.com">Scott Lupton</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/delphi/lesson27.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/delphi/lesson27.zip'" tppabs="http://nehe.gamedev.net/data/lessons/delphi/lesson27.zip">Delphi</a> Code For This Lesson. ( Conversion by <a href="mailto:michal_praha@seznam.cz">Michal Tucek</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/devc/lesson27.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/devc/lesson27.zip'" tppabs="http://nehe.gamedev.net/data/lessons/devc/lesson27.zip">Dev C++</a> Code For This Lesson. ( Conversion by <a href="mailto:danprogram@hotmail.com">Dan</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/euphoria/lesson27.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/euphoria/lesson27.zip'" tppabs="http://nehe.gamedev.net/data/lessons/euphoria/lesson27.zip">Euphoria</a> Code For This Lesson. ( Conversion by <a href="mailto:1evan@sbcglobal.net">Evan Marshall</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/jogl/lesson27.jar  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/jogl/lesson27.jar'" tppabs="http://nehe.gamedev.net/data/lessons/jogl/lesson27.jar">JoGL</a> Code For This Lesson. ( Conversion by <a href="mailto:abezrati@hotmail.com">Abdul Bezrati</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/kde/lesson27.tar.gz  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/kde/lesson27.tar.gz'" tppabs="http://nehe.gamedev.net/data/lessons/kde/lesson27.tar.gz">KDE/QT</a> Code For This Lesson. ( Conversion by <a href="mailto:zhajdu@socal.rr.com">Zsolt Hajdu</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/linux/lesson27.tar.gz  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/linux/lesson27.tar.gz'" tppabs="http://nehe.gamedev.net/data/lessons/linux/lesson27.tar.gz">Linux</a> Code For This Lesson. ( Conversion by <a href="mailto:jpound@shaw.ca">Jeff Pound</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/lwjgl/lesson27.jar  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/lwjgl/lesson27.jar'" tppabs="http://nehe.gamedev.net/data/lessons/lwjgl/lesson27.jar">LWJGL</a> Code For This Lesson. ( Conversion by <a href="mailto:mark.bernard@rogers.com">Mark Bernard</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/macosxcocoa/lesson27.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/macosxcocoa/lesson27.zip'" tppabs="http://nehe.gamedev.net/data/lessons/macosxcocoa/lesson27.zip">Mac OS X/Cocoa</a> Code For This Lesson. ( Conversion by <a href="mailto:blb@pobox.com">Bryan Blackburn</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/vs_net/lesson27.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/vs_net/lesson27.zip'" tppabs="http://nehe.gamedev.net/data/lessons/vs_net/lesson27.zip">Visual Studio .NET</a> Code For This Lesson. ( Conversion by <a href="mailto:ultimatezeus@hotmail.com">Grant James</a> )</p>
+<p>&nbsp;</p>
+<p><strong><span><a href="index-66.htm" tppabs="http://nehe.gamedev.net/data/lessons/lesson.asp?lesson=26">&lt; Lesson 26</a></span></strong><strong><span><a href="index-68.htm" tppabs="http://nehe.gamedev.net/data/lessons/lesson.asp?lesson=28">Lesson 28 &gt;</a></span></strong></p>
+
+
+</div>
+</div>
+
+
+
+            <div style="width:728px;padding:0px;margin:auto; margin-top: 10px;">
+            
+
+    
+                <!-- Leaderboard_NeHe -->
+                <div id='div-gpt-ad-1327940144417-0' style='width:728px; height:90px;'>
+                <script type='text/javascript'>
+                googletag.cmd.push(function() { googletag.display('div-gpt-ad-1327940144417-0'); });
+                </script>
+                </div>
+            
+
+                           
+            </div>   
+        </td>
+        <td class="col2">
+            
+
+
+
+
+<div style="text-align: center; padding:10px;">
+
+<script type='text/javascript'>
+    GA_googleFillSlot("Skyscraper_NeHe");
+</script>
+
+</div>
+            
+        </td>
+    </table>
+    <div id="footer">
+        <p>
+            
+    
+    © 1997-2012 Gamedev . All rights reserved.<br/>
+
+			NeHe™ and NeHe Productions™ are trademarks of GameDev.net, LLC<br/>
+			OpenGL® is a registered trademark of Silicon Graphics Inc.<br/>
+		</p>        
+		<br/>
+    </div>
+
+    
+    
+	    <script type="text/javascript" src="shCore.js" tppabs="http://nehe.gamedev.net/static/js/syntax_highlighter/shCore.js"></script>
+        <script type="text/javascript" src="shBrushCpp.js" tppabs="http://nehe.gamedev.net/static/js/syntax_highlighter/shBrushCpp.js"></script>
+	    <script type="text/javascript" src="shBrushJScript.js" tppabs="http://nehe.gamedev.net/static/js/syntax_highlighter/shBrushJScript.js"></script>
+	    <script type="text/javascript">SyntaxHighlighter.all();</script>
+    
+
+    <!-- Place this render call where appropriate -->
+    <script type="text/javascript">
+      (function() {
+        var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+        po.src = 'plusone.js'/*tpa=https://apis.google.com/js/plusone.js*/;
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+      })();
+    </script>    
+
+    
+<!-- GoogleAnalytics code -->
+<script src="urchin.js" tppabs="http://www.google-analytics.com/urchin.js" type="text/javascript">
+</script>
+<script type="text/javascript">
+_uacct = "UA-279474-2"; // Gamedev
+urchinTracker();
+_uff = 0; // Reset for second account
+_uacct = "UA-24180731-1"; // Non-GD
+urchinTracker();
+</script> 
+  </body>
+</html>

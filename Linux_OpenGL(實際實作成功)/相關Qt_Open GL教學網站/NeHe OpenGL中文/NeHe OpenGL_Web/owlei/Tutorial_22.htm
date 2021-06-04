@@ -1,0 +1,1315 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<!-- 这篇文章由Dancingwind翻译，作者的联系方式zhouwei02@mails.tsinghua.edu.cn -->
+
+<html>
+<head>
+<title>NeHe OpenGL教程第二十二课，DancingWind翻译</title>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<style type=text/css>
+A:link {COLOR: #ccaaff; TEXT-DECORATION: none}
+A:visited {COLOR: #ccaaff; TEXT-DECORATION: none}
+A:active {COLOR: #ccaaff; TEXT-DECORATION: none}
+A:hover {COLOR: #ffccaa; TEXT-DECORATION: none}
+</style>
+</head>
+
+<br><br>
+
+<body bgcolor=#000000 text=#ffffff><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td width=326 height=130><img src="logo.png" tppabs="http://www.owlei.com/DancingWind/Pic/logo.png" width=326 height=130></td>
+    <td valign=middle align=center width="75%"><font color=#ffccaa size=+3><b><i>第22课</i></b></font></td>
+  </tr></table>
+  <!-- 上边框-->
+<table border="0" cellPadding="0" cellSpacing="0" width="100%">
+<TBODY>
+  <tr>
+    <td><img height="28" src="tl.jpg" tppabs="http://www.owlei.com/DancingWind/Pic/tl.jpg" width="28"></td>
+    <td width="100%"><img height="28" src="tc.gif" tppabs="http://www.owlei.com/DancingWind/Pic/tc.gif" width="100%"></td>
+    <td><img height="28" src="tr.gif" tppabs="http://www.owlei.com/DancingWind/Pic/tr.gif" width="28"></td>
+  </tr>
+</TBODY>
+</table>
+
+<!-- 中部-->
+<table border="0" cellPadding="0" cellSpacing="0" width="100%">
+<TBODY>
+  <tr>
+  	<!-- 中部左边框-->
+    <td  background="l.gif" tppabs="http://www.owlei.com/DancingWind/Pic/l.gif"><img src="l.gif" tppabs="http://www.owlei.com/DancingWind/Pic/l.gif" width="28" height="28"></td>
+	<!-- 中部文字部分-->
+    <td vAlign="top" width="100%">
+	<table width="100%" border="0">
+          <tr>
+            <td width="31%"><img src="lesson22.jpg" tppabs="http://www.owlei.com/DancingWind/Pic/lesson22.jpg" width="240" height="180"></td>
+            <td width="69%"><p><FONT class=head>凹凸映射，多重纹理扩展:</FONT></p>
+              <p><font size="3">这是一课高级教程，请确信你对基本知识已经非常了解了。这一课是基于第六课的代码的，它将建立一个非常酷的立体纹理效果。</FONT></p></td>
+          </tr>
+     </table>
+      </td>
+	<!-- 中部右边框-->
+    <td background="r.gif" tppabs="http://www.owlei.com/DancingWind/Pic/r.gif"><img src="r.gif" tppabs="http://www.owlei.com/DancingWind/Pic/r.gif" width="28" height="28"></td>
+  </tr>
+</TBODY>
+</table>
+
+<!-- 下边框-->
+<table border="0" cellPadding="0" cellSpacing="0" width="100%">
+<TBODY>
+  <tr>
+    <td><img height="28" src="bl.gif" tppabs="http://www.owlei.com/DancingWind/Pic/bl.gif" width="28"></td>
+    <td width="100%"><img height="28" src="bc.gif" tppabs="http://www.owlei.com/DancingWind/Pic/bc.gif" width="100%"></td>
+    <td><img height="28" src="br.gif" tppabs="http://www.owlei.com/DancingWind/Pic/br.gif" width="28"></td>
+  </tr>
+</TBODY>
+</table>
+  <table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>这一课由Jens Schneider所写，它基本上是由第6课改写而来的，在这一课里，你将学习：
+<ul>
+        <li>怎样控制多重纹理</li>
+        <li>怎样创建一个“假”的凹凸映射</li>
+        <li>怎样做一个标志，它看起来在你的场景上方</li>
+        <li>怎样使矩阵变化更有效率</li>
+        <li>基本的多通道渲染</li>
+      </ul>
+      因为上面提到的很多方面是高级渲染得内容，我们在讲述的时候会先说明理论，接着在分析代码 。如果你已经熟悉了这些理论，你可以跳过他们，直接看代码。当你遇到什么问题的时候，不妨回过头来看看这些理论。<br>
+      最后这份代码超过了1200行，大部分我们在前面的教程中遇到过了。我不会解释每一行代码，只在重要的地方做些提示，好了，让我们开始吧。</td>
+    <td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table><font color=#aaffaa size=3>
+<pre>#include &lt;string.h&gt;							<font color=#ffffaa>// 字符串处理函数</font></pre>
+</font><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>MAX_EMBOSS常量定义了突起的最大值</td>
+    <td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table><font color=#aaffaa size=3><pre>
+#define MAX_EMBOSS (GLfloat)0.01f						<font color=#ffffaa>// 定义了突起的最大值</font>
+</pre></font><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>好了，现在我们准备使用GL_ARB_multitexture这个扩展，它非常简单。
+      <p>大部分图形卡不止一个纹理单元，为了利用这个功能，你必须检查GL_ARB_multitexture是否被支持，它可以使你同时把2个或多个不同的纹理映射到OpenGL图元上。开起来这个功能好像没有太大的作用，但当你使用多个纹理时，如果能同时把这些纹理值混合，而不使用费时的乘法运算，你将会得到很高的速度提高。</p>
+      <p>现在回到我们的代码，__ARB_ENABLE用来设置是否使用ARB扩展。如果你想看你的OpenGL扩展，只要把#define EXT_INFO前的注释去掉就行了。接着，我们在运行检查我们的扩展，以保证我们的程序可以在不同的系统上运行。所以我们需要一些内存保存扩展名的字符串，他们是下面两行。接着我们用一个变量multitextureSupported来标志当前系统是否能使用multitexture扩展，并用maxTexelUnits记录运行系统的纹理单元，这个值最少是1。</p></td><td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table><font color=#aaffaa size=3>
+<pre>#define __ARB_ENABLE true							<font color=#ffffaa>// 使用它设置是否使用ARB扩展</font>
+<font color=#ffffaa>// #define EXT_INFO							// 把注释去掉,可以在启动时查看你的扩展</font>
+#define MAX_EXTENSION_SPACE 10240						<font color=#ffffaa>// 保存扩展字符</font>
+#define MAX_EXTENSION_LENGTH 256						<font color=#ffffaa>// 每个扩展字符串最大的长度</font>
+bool multitextureSupported=false;						<font color=#ffffaa>// 标志是否支持多重渲染</font>
+bool useMultitexture=true;							<font color=#ffffaa>// 如果支持,是否使用它</font>
+GLint maxTexelUnits=1;							<font color=#ffffaa>// 纹理处理单元的个数</font>
+</pre>
+</font><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>下面的函数定义用来使用OpenGL的扩展函数，你可以把PFN-who-ever-reads-this看成是预先定义的函数类型，因为我们不清楚是否能得到这些函数的实体，所以先把他们都设置为NULL。glMultiTexCoordifARB函数是glTexCoordif函数的扩展，它门的功能相似，其中i为纹理坐标的维数，f为数据的类型。最后两个函数用来激活纹理处理单元，可以使用特定的纹理单元来邦定纹理。<br>
+      顺便说一句，ARB是&quot;Architectural Review Board&quot;的缩写，用来定义这个组织提出的对OpenGL的扩展，并不强制OpenGL的实现必须包含这个功能，但他们希望这个功能得到广泛的支持。当前，只有multitexture被加入到ARB中，这从另一个方面支持multitexture的扩展将大大的提高渲染速度。</td>
+    <td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table><font color=#aaffaa size=3><pre>
+PFNGLMULTITEXCOORD1FARBPROC	glMultiTexCoord1fARB	= NULL;
+PFNGLMULTITEXCOORD2FARBPROC	glMultiTexCoord2fARB	= NULL;
+PFNGLMULTITEXCOORD3FARBPROC	glMultiTexCoord3fARB	= NULL;
+PFNGLMULTITEXCOORD4FARBPROC	glMultiTexCoord4fARB	= NULL;
+PFNGLACTIVETEXTUREARBPROC	glActiveTextureARB	= NULL;
+PFNGLCLIENTACTIVETEXTUREARBPROC	glClientActiveTextureARB= NULL;
+</pre></font><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>下面我们来定义一些全局变量：<FONT size=-1>&nbsp; </font> <ul>
+        <li>filter定义过滤器类型 
+        <li>texture[3]保存三个纹理 
+        <li>bump[3]保存三个凹凸纹理 
+        <li>invbump[3]保存三个反转了的凹凸纹理 
+        <li>glLogo保存标志 
+        <li>multiLogo保存多重纹理标志 
+      </ul>
+      </td>
+    <td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table><font color=#aaffaa size=3>
+	
+<pre>GLuint  filter=1;								<font color=#ffffaa>	// 定义过滤器类型</font>
+GLuint  texture[3];								<font color=#ffffaa>// 保存三个纹理</font>
+GLuint  bump[3];								<font color=#ffffaa>	//保存三个凹凸纹理</font>
+GLuint  invbump[3];								<font color=#ffffaa>// 保存三个反转了的凹凸纹理</font>
+GLuint  glLogo;									<font color=#ffffaa>// glLogo保存标志</font>
+GLuint  multiLogo;								<font color=#ffffaa>	// multiLogo保存多重纹理标志</font>
+GLfloat LightAmbient[]	= { 0.2f, 0.2f, 0.2f};					<font color=#ffffaa>// 环境光</font>
+GLfloat LightDiffuse[]	= { 1.0f, 1.0f, 1.0f};					<font color=#ffffaa>// 漫射光</font>
+GLfloat LightPosition[]	= { 0.0f, 0.0f, 2.0f};					<font color=#ffffaa>// 光源位置</font>
+GLfloat Gray[]		= { 0.5f, 0.5f, 0.5f, 1.0f};
+</pre>
+</font><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>下面一块代码用来保存立方体的纹理和坐标，每5个数字描述一个顶点，包含2D的纹理坐标和3D的顶点坐标。</td>
+    <td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table><font color=#aaffaa size=3>
+<pre>
+<font color=#ffffaa>// 立方体的纹理和坐标</font>
+
+GLfloat data[]= {
+	<font color=#ffffaa>// 前面</font>
+	0.0f, 0.0f,		-1.0f, -1.0f, +1.0f,
+	1.0f, 0.0f,		+1.0f, -1.0f, +1.0f,
+	1.0f, 1.0f,		+1.0f, +1.0f, +1.0f,
+	0.0f, 1.0f,		-1.0f, +1.0f, +1.0f,
+	<font color=#ffffaa>// 背面</font>
+	1.0f, 0.0f,		-1.0f, -1.0f, -1.0f,
+	1.0f, 1.0f,		-1.0f, +1.0f, -1.0f,
+	0.0f, 1.0f,		+1.0f, +1.0f, -1.0f,
+	0.0f, 0.0f,		+1.0f, -1.0f, -1.0f,
+	<font color=#ffffaa>// 上面</font>
+	0.0f, 1.0f,		-1.0f, +1.0f, -1.0f,
+	0.0f, 0.0f,		-1.0f, +1.0f, +1.0f,
+	1.0f, 0.0f,		+1.0f, +1.0f, +1.0f,
+	1.0f, 1.0f,		+1.0f, +1.0f, -1.0f,
+	<font color=#ffffaa>// 下面</font>
+	1.0f, 1.0f,		-1.0f, -1.0f, -1.0f,
+	0.0f, 1.0f,		+1.0f, -1.0f, -1.0f,
+	0.0f, 0.0f,		+1.0f, -1.0f, +1.0f,
+	1.0f, 0.0f,		-1.0f, -1.0f, +1.0f,
+	<font color=#ffffaa>// 右面</font>
+	1.0f, 0.0f,		+1.0f, -1.0f, -1.0f,
+	1.0f, 1.0f,		+1.0f, +1.0f, -1.0f,
+	0.0f, 1.0f,		+1.0f, +1.0f, +1.0f,
+	0.0f, 0.0f,		+1.0f, -1.0f, +1.0f,
+	<font color=#ffffaa>// 左面</font>
+	0.0f, 0.0f,		-1.0f, -1.0f, -1.0f,
+	1.0f, 0.0f,		-1.0f, -1.0f, +1.0f,
+	1.0f, 1.0f,		-1.0f, +1.0f, +1.0f,
+	0.0f, 1.0f,		-1.0f, +1.0f, -1.0f
+};
+</pre>
+</font><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>下一部分代码，用来这运行时确定是否支持多重纹理的扩展。
+      <p>首先，我们假定一个字符串包含了所有的扩展名，各个扩展名之间用'\n'分开。我们所要做的就是在其中查找是否有我们需要的扩展。如果成功找到则返回TRUE，否则返回FALSE。</p></td><td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table><font color=#aaffaa size=3>
+<pre>
+bool isInString(char *string, const char *search) {
+	int pos=0;
+	int maxpos=strlen(search)-1;
+	int len=strlen(string);
+	char *other;
+	for (int i=0; i&lt;len; i++) {
+		if ((i==0) || ((i&gt;1) &amp;&amp; string[i-1]=='\n')) {			<font color=#ffffaa>	// 新的扩展名开始与这里</font>
+			other=&amp;string[i];
+			pos=0;							<font color=#ffffaa>// 开始新的比较</font>
+			while (string[i]!='\n') {					<font color=#ffffaa>// 比较整个扩展名</font>
+				if (string[i]==search[pos]) pos++;			<font color=#ffffaa>// 下一个字符</font>
+				if ((pos&gt;maxpos) &amp;&amp; string[i+1]=='\n') return true;	<font color=#ffffaa>// 如果整个扩展名相同则成功返回</font>
+				i++;
+			}
+		}
+	}
+	return false;								<font color=#ffffaa>// 没找到</font>
+}
+</pre>
+</font><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>现在我们需要先取得扩展名字符串，并把它转换为以'\n'分割的字符串，接着调用以上定义的函数看看是否包含我们需要的扩展。如果定义了__ARB_ENABLE则使用多重纹理扩展，接下来我们检查是否支持GL_EXT_texture_env_combine扩展，这个扩展提供各个纹理单元复杂的交互方式，利用它可以完成复杂的混合方程。如果所有的扩展都被支持，我们首先取得纹理单元的个数，把它保存到变量maxTexelUnits中，接着通过函数wglGetProcAdress把各个函数定义连接到各自的实体上，这样在后面的程序中就可以使用这些函数了。</td>
+    <td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table><font color=#aaffaa size=3>
+<pre>
+bool initMultitexture(void) {
+	char *extensions;
+	extensions=strdup((char *) glGetString(GL_EXTENSIONS));			<font color=#ffffaa>// 返回扩展名字符串</font>
+	int len=strlen(extensions);
+	for (int i=0; i&lt;len; i++)							<font color=#ffffaa>// 使用'\n'分割各个扩展名</font>
+		if (extensions[i]==' ') extensions[i]='\n';
+
+#ifdef EXT_INFO
+	MessageBox(hWnd,extensions,&quot;supported GL extensions&quot;,MB_OK | MB_ICONINFORMATION);
+#endif
+
+	if (isInString(extensions,&quot;GL_ARB_multitexture&quot;)				<font color=#ffffaa>// 是否支持多重纹理扩展？</font>
+		&amp;&amp; __ARB_ENABLE							<font color=#ffffaa>// 是否使用多重纹理扩展？</font>
+		&amp;&amp; isInString(extensions,&quot;GL_EXT_texture_env_combine&quot;))		<font color=#ffffaa>// 是否支持纹理环境混合</font>
+	{
+		glGetIntegerv(GL_MAX_TEXTURE_UNITS_ARB,&amp;maxTexelUnits);
+		glMultiTexCoord1fARB = (PFNGLMULTITEXCOORD1FARBPROC) wglGetProcAddress(&quot;glMultiTexCoord1fARB&quot;);
+		glMultiTexCoord2fARB = (PFNGLMULTITEXCOORD2FARBPROC) wglGetProcAddress(&quot;glMultiTexCoord2fARB&quot;);
+		glMultiTexCoord3fARB = (PFNGLMULTITEXCOORD3FARBPROC) wglGetProcAddress(&quot;glMultiTexCoord3fARB&quot;);
+		glMultiTexCoord4fARB = (PFNGLMULTITEXCOORD4FARBPROC) wglGetProcAddress(&quot;glMultiTexCoord4fARB&quot;);
+		glActiveTextureARB   = (PFNGLACTIVETEXTUREARBPROC) wglGetProcAddress(&quot;glActiveTextureARB&quot;);
+		glClientActiveTextureARB= (PFNGLCLIENTACTIVETEXTUREARBPROC) wglGetProcAddress(&quot;glClientActiveTextureARB&quot;);
+
+#ifdef EXT_INFO
+		MessageBox(hWnd,&quot;The GL_ARB_multitexture 扩展被使用.&quot;,&quot;支持多重纹理&quot;,MB_OK | MB_ICONINFORMATION);
+#endif
+
+		return true;
+	}
+	useMultitexture=false;							<font color=#ffffaa>// 如果不支持多重纹理则返回false</font>
+	return false;
+}
+</pre>
+</font><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>初始化灯光</td>
+    <td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table><font color=#aaffaa size=3>
+<pre>
+void initLights(void) {
+	glLightfv(GL_LIGHT1, GL_AMBIENT, LightAmbient);				
+	glLightfv(GL_LIGHT1, GL_DIFFUSE, LightDiffuse);
+	glLightfv(GL_LIGHT1, GL_POSITION, LightPosition);
+	glEnable(GL_LIGHT1);
+}
+</pre>
+</font><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>下面我们加载许多纹理，这和前面的教程很像</td>
+    <td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table>
+<font color=#aaffaa size=3> 
+<pre>
+int LoadGLTextures() {								<font color=#ffffaa>// 载入*.bmp图像，并转换为纹理</font>
+	bool status=true;		
+	AUX_RGBImageRec *Image=NULL;						
+	char *alpha=NULL;
+
+	<font color=#ffffaa>// 加载基础纹理</font>
+	if (Image=auxDIBImageLoad(&quot;Data/Base.bmp&quot;)) {
+		glGenTextures(3, texture);						<font color=#ffffaa>// 创建3个纹理</font>
+
+		<font color=#ffffaa>// 创建使用临近过滤器过滤得纹理</font>
+		glBindTexture(GL_TEXTURE_2D, texture[0]);
+		glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_NEAREST);
+		glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_NEAREST);
+		glTexImage2D(GL_TEXTURE_2D, 0, <font color="#ffaa55">GL_RGB8</font>, Image-&gt;sizeX, Image-&gt;sizeY, 0, GL_RGB, GL_UNSIGNED_BYTE, Image-&gt;data);
+
+		<font color=#ffffaa>// </font><font color=#aaffaa size=3><font color=#ffffaa>创建使用线形过滤器过滤得纹理</font></font>
+		glBindTexture(GL_TEXTURE_2D, texture[1]);
+		glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_LINEAR);
+		glTexImage2D(GL_TEXTURE_2D, 0, <font color="#ffaa55">GL_RGB8</font>, Image-&gt;sizeX, Image-&gt;sizeY, 0, GL_RGB, GL_UNSIGNED_BYTE, Image-&gt;data);
+
+		<font color=#ffffaa>// 创建使用线形Mipmap过滤器过滤得纹理</font>
+		glBindTexture(GL_TEXTURE_2D, texture[2]);
+		glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_LINEAR_MIPMAP_NEAREST);
+		gluBuild2DMipmaps(GL_TEXTURE_2D, <font color="#ffaa5">GL_RGB8</font>, Image-&gt;sizeX, Image-&gt;sizeY, GL_RGB, GL_UNSIGNED_BYTE, Image-&gt;data);
+	}
+	else status=false;
+
+	if (Image) {								<font color=#ffffaa>// 如果图像句柄存在，则释放图像回收资源</font>
+		if (Image-&gt;data) delete Image-&gt;data;				
+		delete Image;
+		Image=NULL;
+	}
+</pre>
+</font>
+<table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>现在我们加载凹凸映射纹理。这个纹理必须使用50%的亮度（原因我们在后面介绍），我们使用glPixelTransferf函数完成这个功能。<br>
+      另一个限制是我们不希望纹理重复贴图，只希望它粘贴一次，从纹理坐标(0,0)-(1,1)，所有大于它的纹理坐标都被映射到边缘，为了完成这个功能，我们使用glTexParameteri函数。</td>
+    <td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table>
+<font color=#aaffaa size=3> 
+<pre>
+	<font color=#ffffaa>// 载入凹凸贴图</font>
+	if (Image=auxDIBImageLoad(&quot;Data/Bump.bmp&quot;)) {
+		glPixelTransferf(GL_RED_SCALE,0.5f);					<font color=#ffffaa>// 把颜色值变为原来的50%</font>
+		glPixelTransferf(GL_GREEN_SCALE,0.5f);				
+		glPixelTransferf(GL_BLUE_SCALE,0.5f);
+		glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_WRAP_S,GL_CLAMP);	<font color=#ffffaa>	//不使用重复贴图</font>
+		glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_WRAP_T,GL_CLAMP);
+		glGenTextures(3, bump);						<font color=#ffffaa>//创建凹凸贴图纹理</font>
+
+		<font color=#ffffaa>// </font><font color=#aaffaa size=3><font color=#ffffaa>创建使用临近过滤器过滤得纹理</font></font>
+		&gt;…&lt;</pre>
+</font> <font color=#aaffaa size=3> 
+<pre><font color=#ffffaa>	// </font><font color=#aaffaa size=3><font color=#ffffaa></font><font color=#aaffaa size=3><font color=#ffffaa>创建使用线形过滤器过滤得纹理</font></font></font>
+		&gt;…&lt;<br><font color=#ffffaa>	// </font><font color=#aaffaa size=3><font color=#ffffaa>创建使用线形Mipmap过滤器过滤得纹理</font></font>
+		>…<
+</pre>
+</font> 
+<table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>反转凹凸贴图数据，创建三个反转的凹凸贴图纹理</td>
+    <td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table><font color=#aaffaa size=3>
+<pre>		for (int i=0; i&lt;3*Image-&gt;sizeX*Image-&gt;sizeY; i++)			<font color=#ffffaa>// 反转凹凸贴图数据</font>
+			Image-&gt;data[i]=255-Image-&gt;data[i];
+
+		glGenTextures(3, invbump);					<font color=#ffffaa>	// 创建三个反转了凹凸贴图</font>
+
+<font color=#aaffaa size=3><pre>		<font color=#ffffaa>// </font><font color=#aaffaa size=3><font color=#ffffaa>创建使用临近过滤器过滤得纹理</font></font>
+		&gt;…&lt;<font color=#aaffaa size=3></font></pre></font><font color=#aaffaa size=3><pre><font color=#ffffaa>	// </font><font color=#aaffaa size=3><font color=#ffffaa></font><font color=#aaffaa size=3><font color=#ffffaa>创建使用线形过滤器过滤得纹理</font></font></font>
+		&gt;…&lt;<br><font color=#ffffaa>	// </font><font color=#aaffaa size=3><font color=#ffffaa>创建使用线形Mipmap过滤器过滤得纹理</font></font>
+		>…<
+	}
+	else status=false;
+	if (Image) {								<font color=#ffffaa>// 如果图像存在，则删除</font>
+		if (Image-&gt;data) delete Image-&gt;data;	
+		delete Image;
+		Image=NULL;
+	}
+</pre></font></pre>
+</font><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>载入标志图像，图像是把颜色和alpha通道存为两张不同的bmp位图的，所以在处理的时候需要注意以下各个分量的位置。</td>
+    <td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table>
+<font color=#aaffaa size=3> 
+<pre>
+	if (Image=auxDIBImageLoad("Data/OpenGL_ALPHA.bmp")) {
+		alpha=new char[4*Image-&gt;sizeX*Image-&gt;sizeY];
+		for (int a=0; a&lt;Image-&gt;sizeX*Image-&gt;sizeY; a++)
+			alpha[4*a+3]=Image-&gt;data[a*3];				
+		if (!(Image=auxDIBImageLoad("Data/OpenGL.bmp"))) status=false;
+		for (a=0; a&lt;Image-&gt;sizeX*Image-&gt;sizeY; a++) {
+			alpha[4*a]=Image-&gt;data[a*3];				
+			alpha[4*a+1]=Image-&gt;data[a*3+1];		
+			alpha[4*a+2]=Image-&gt;data[a*3+2];			
+		}
+
+		glGenTextures(1, &amp;glLogo);						<font color=#ffffaa>// 创建标志纹理</font>
+
+		<font color=#ffffaa>// 使用线形过滤器</font>
+		glBindTexture(GL_TEXTURE_2D, glLogo);
+		glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_LINEAR);
+		glTexImage2D(GL_TEXTURE_2D, 0, <font color="#ffaa55">GL_RGBA8</font>, Image-&gt;sizeX, Image-&gt;sizeY, 0, GL_RGBA, GL_UNSIGNED_BYTE, <font color="#ffaa55">alpha</font>);
+		delete alpha;
+	}
+	else status=false;
+
+	if (Image) {								<font color=#ffffaa>// </font><font color=#aaffaa size=3><font color=#aaffaa size=3><font color=#ffffaa>如果图像存在，则删除</font></font></font>
+		if (Image-&gt;data) delete Image-&gt;data;				
+		delete Image;
+		Image=NULL;
+	}
+
+	<font color=#ffffaa>// 载入扩展标志纹理</font>
+	if (Image=auxDIBImageLoad("Data/multi_on_alpha.bmp")) {
+		alpha=new char[4*Image-&gt;sizeX*Image-&gt;sizeY];			
+		&gt;...&lt;
+		glGenTextures(1, &amp;multiLogo);					
+		&gt;...&lt;
+		delete alpha;
+	}
+	else status=false;
+
+	if (Image) {								<font color=#ffffaa>// </font><font color=#aaffaa size=3><font color=#aaffaa size=3><font color=#aaffaa size=3><font color=#ffffaa>如果图像存在，则删除</font></font></font></font>
+		if (Image-&gt;data) delete Image-&gt;data;				
+		delete Image;
+		Image=NULL;
+	}
+	return status;								
+}
+</pre>
+</font> 
+<table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>下面是窗口大小变化函数，没有任何改变。
+      <p>接下来是绘制一个立方体的函数，它使用常规的方法绘制。</p></td><td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table>
+<font color=#aaffaa size=3> 
+<pre>
+void doCube (void) {
+	int i;
+	glBegin(GL_QUADS);
+		<font color=#ffffaa>// 前面</font>
+		glNormal3f( 0.0f, 0.0f, +1.0f);
+		for (i=0; i&lt;4; i++) {
+			glTexCoord2f(data[5*i],data[5*i+1]);
+			glVertex3f(data[5*i+2],data[5*i+3],data[5*i+4]);
+		}
+		<font color=#ffffaa>// 后面</font>
+		glNormal3f( 0.0f, 0.0f,-1.0f);
+		for (i=4; i&lt;8; i++) {
+			glTexCoord2f(data[5*i],data[5*i+1]);
+			glVertex3f(data[5*i+2],data[5*i+3],data[5*i+4]);
+		}
+		<font color=#ffffaa>// 上面</font>
+		glNormal3f( 0.0f, 1.0f, 0.0f);
+		for (i=8; i&lt;12; i++) {
+			glTexCoord2f(data[5*i],data[5*i+1]);
+			glVertex3f(data[5*i+2],data[5*i+3],data[5*i+4]);
+		}
+		<font color=#ffffaa>// 下面</font>
+		glNormal3f( 0.0f,-1.0f, 0.0f);
+		for (i=12; i&lt;16; i++) {
+			glTexCoord2f(data[5*i],data[5*i+1]);
+			glVertex3f(data[5*i+2],data[5*i+3],data[5*i+4]);
+		}
+		<font color=#ffffaa>// 右面</font>
+		glNormal3f( 1.0f, 0.0f, 0.0f);
+		for (i=16; i&lt;20; i++) {
+			glTexCoord2f(data[5*i],data[5*i+1]);
+			glVertex3f(data[5*i+2],data[5*i+3],data[5*i+4]);
+		}
+		<font color=#ffffaa>// 左面</font>
+		glNormal3f(-1.0f, 0.0f, 0.0f);
+		for (i=20; i&lt;24; i++) {
+			glTexCoord2f(data[5*i],data[5*i+1]);
+			glVertex3f(data[5*i+2],data[5*i+3],data[5*i+4]);
+		}
+	glEnd();
+}
+</pre>
+</font><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>现在到了OpenGL的初始化函数，它和前面的教程基本相同，只是添加了以下代码：</td>
+    <td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table><font color=#aaffaa size=3>
+<pre>
+	multitextureSupported=initMultitexture();
+
+	initLights();	
+</pre>
+</font><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>这里我们完成了95%的工作，下面我们来解释上面提到的原理。 <p>开始理论讲解（凹凸映射）<br>
+        如果你安装了Powerpoint-viewer,下面是一个讲解凹凸映射原理的PPT，你可以下载后慢慢研究：<br>
+        <a href="javascript:if(confirm('http://www.owlei.com/DancingWind/Res/EmbossBumpMapping.ppt  \n\nThis file was not retrieved by Teleport Pro, because the server reports that this file cannot be found.  \n\nDo you want to open it from the server?'))window.location='http://www.owlei.com/DancingWind/Res/EmbossBumpMapping.ppt'" tppabs="http://www.owlei.com/DancingWind/Res/EmbossBumpMapping.ppt">凹凸映射 作者Michael I. Gold, nVidia 公司</a><br>
+        如果你没有安装Powerpoint-viewer，我把它转换为Html格式，现讲解如下：</p>
+      <p><strong><u>凹凸贴图</u></strong><br>
+        Michael I. Gold<br>
+        NVIDIA 公司</p>
+      <p><strong><u>凹凸贴图 </u></strong> 
+      <p>真实的凹凸贴图是逐像素计算的 
+      <ul>
+        <li>光照计算是按每个象素点的法向量计算的 
+        <li>巨大的计算量 
+        <li>更多的信息可以看: Blinn, J. Simulation of Wrinkled Surfaces. Computer Graphics. 
+          12, 3 (August 1978), 286-292 
+      </ul>
+      <p>凹凸贴图是在效果和精度之间的一个折中 
+      <ul>
+        <li>只能对漫射光计算，不能使用反射光 
+        <li>欺骗视觉的采样 
+        <li>可能运行于当前的硬件上 
+        <li>如果它看起来很好，就干吧 
+      </ul>
+      <p><strong><u>漫射光的计算</u></strong> </p>
+      <p>C = (L*N)*Dl*Dm 
+      <ul>
+        <li>L 顶点到灯之间的单位向量 
+        <li>N 顶点的单位法向量 
+        <li>Dl 灯光的漫射光颜色 
+        <li>Dm 顶点材质的漫射属性 
+        <li>凸值 逐像素改变N值 
+        <li>凹凸映射 改变（L*N）的值 
+      </ul>
+      <p><strong><u>近似的漫射因子 L*N</u></strong></p>
+      <p>纹理图代表高度场 
+      <ul>
+        <li>[0,1] 之间的高度代表凹凸方程 
+        <li>首先导出偏离度m 
+        <li>m 增加/减少基础的漫射因子Fd 
+        <li>(Fd+m) 在每一像素上近似等于 (L*N) 
+      </ul>
+      <p><strong><u>偏移量m的导出</u></strong></p>
+      <p>偏移量m的近似导出 
+      <ul>
+        <li>查找(s,t)纹理的高度H0 
+        <li>查找(s+ds, t+dt)纹理的高度H1 
+        <li>M近似等于H1-H0 
+      </ul>
+      <p><u><strong>计算凹凸量</strong></u><FONT size=-1><br>
+        <img border="0" width="140" height="48" src="image002.jpg" tppabs="http://www.owlei.com/DancingWind/Pic/image002.jpg"> <br>
+        <br>
+        1) 原始凸起(H0). <br>
+        <br>
+        <img border="0" width="216" height="91" src="image004.jpg" tppabs="http://www.owlei.com/DancingWind/Pic/image004.jpg"> <br>
+        <br>
+        2) 原始的凸起(H0)向光源移动一小段距离形成第二个凸起(H1)<br>
+        <br>
+        <img border="0" width="173" height="48" src="image006.jpg" tppabs="http://www.owlei.com/DancingWind/Pic/image006.jpg"> <br>
+        <br>
+        3) 用H1凸起减去H0凸起 (H1-H0)<br>
+        <br>
+        </font><b><u>计算灯光亮度</u></b><FONT size=-1><br>
+        <br>
+        </font>计算片断的颜色Cf</p>
+      <ul type="disc">
+        <li>Cf = (L*N) x Dl x Dm</li>
+        <li>(L*N) ~ (Fd + (H1-H0))</li>
+        <li>Ct= Dm x Dl </li>
+        <li>Cf = (Fd + (H0-H1) x Ct</li>
+        <li>Fd等于顶点法线与灯光的向量的乘积</li>
+      </ul>
+      <b><u>上面就是全部么? 太简单了!</u></b><br> <br>
+      我们还没有完成所有的任务，还必须做以下内容: 
+      <ul type="disc">
+        <li>创建一个纹理</li>
+        <li>计算纹理坐标偏移量ds, dt</li>
+        <li>计算漫射因子Fd</li>
+        <li>ds, dt ，Fd都从N和L导出</li>
+        <li>现在我们开始做一些数学计算</li>
+      </ul>
+      <b><u>创建纹理</u></b><br> <br>
+      保存纹理! 
+      <ul type="disc">
+        <li>当前的多重纹理硬件只支持两个纹理</li>
+        <li>偏移值保存在alpha通道里</li>
+        <li>最大凸起值为 = 1.0</li>
+        <li>水平面值为 = 0.5</li>
+        <li>最小值为= 0.0</li>
+        <li>颜色存储在RGB通道中</li>
+        <li>设置内部颜色格式为RGBA8 !!</li>
+      </ul>
+      <b><u>计算纹理偏移量</u></b> <br> <br>
+      把灯光方向向量变换到一个笛卡尔坐标系中 
+      <ul type="disc">
+        <li>顶点法线为z轴</li>
+        <li>从法线和视口的“上”向量导出坐标系</li>
+        <li>顶点法线为z轴</li>
+        <li>叉乘得到X轴</li>
+        <li>丢弃“上”向量，利用z，y轴导出x轴</li>
+        <li>创建3x3变换矩阵Mn</li>
+        <li>变换灯光方向向量到这个坐标系中</li>
+      </ul>
+      计算纹理偏移量<br> <br>
+      使用法向坐标系中的向量作为偏移量 
+      <ul type="disc">
+        <li>L'= Mn x L</li>
+        <li>使用L’.x, L’.y 作为 ds, dt</li>
+        <li>使用 L’.z 作为漫射因子!</li>
+        <li>如果灯光方向接近垂直，则L’.x, L’.y 非常小</li>
+        <li>如果灯光方向接近水平，则L’.x, L’.y 非常大</li>
+        <li>L’.z小于零的含义?</li>
+        <li>灯光在法线的对面</li>
+      </ul>
+      在TNT上的实现<br> <br>
+      计算向量，纹理坐标 
+      <ul type="disc">
+        <li>设置漫射因子</li>
+        <li>从纹理单元0取出表面颜色和H0值</li>
+        <li>从纹理单元1取出H1值</li>
+        <li>ARB_multitexture 扩展</li>
+        <li>混合纹理扩展 (TBD)<FONT size=-1><br>
+          </font></li>
+        <li>混合0 alpha设置:</li>
+      </ul>
+      <ul type="disc">
+        <li>(1-T0a) + T1a - 0.5 </li>
+        <li>T1a-T0a 映射到[-1,1],但硬件把它映射到[0，1]</li>
+        <li>T1a为H1的值，T0a为H0的值</li>
+        <li>0.5 平衡损失的掐除值</li>
+        <li>使用漫射光颜色调制（相乘）片断颜色T0c</li>
+        <li>混合1 颜色设置：</li>
+        <li>(T0c * C0a + T0c * Fda - 0.5 )*2</li>
+        <li>0.5 平衡损失的掐除值</li>
+        <li>乘以2加亮图像颜色</li>
+      </ul>
+      结束理论讲解（凹凸映射）<FONT size=-1><br>
+      <br>
+      </font>虽然我们做了一些改动，使得这个程序的实现与TNT的实现不一样，但它能工作与各种不同的显卡上。在这里我们将学到两三件事，凹凸映射在大多数显卡上是一个多通道算法（在TNT系列，可以使用一个2纹理通道实现），现在你应该能想到多重纹理的好处了吧。我们将使用一个三通道非多重纹理的算法实现，这个算法可以被改写为使用一个2纹理通道实现的算法。 
+      <p>现在必须告诉你，我们将要做一些矩阵和向量的乘法，但那没有什么可担心的，所有的矩阵和向量都使用齐次坐标。</p></td>
+    <td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table><font color=#aaffaa size=3>
+	
+<pre><font color=#ffffaa>// 计算向量v=v*M（左乘）</font>
+void VMatMult(GLfloat *M, GLfloat *v) {
+	GLfloat res[3];
+	res[0]=M[ 0]*v[0]+M[ 1]*v[1]+M[ 2]*v[2]+M[ 3]*v[3];
+	res[1]=M[ 4]*v[0]+M[ 5]*v[1]+M[ 6]*v[2]+M[ 7]*v[3];
+	res[2]=M[ 8]*v[0]+M[ 9]*v[1]+M[10]*v[2]+M[11]*v[3];
+	v[0]=res[0];
+	v[1]=res[1];
+	v[2]=res[2];
+	v[3]=M[15];								
+}
+</pre>
+</font><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top><p>开始理论讲解（凹凸映射）</p>
+      <p>开始，让我们看看它的算法</p>
+      <ol>
+        <li>所有的向量必须在物体空间或则世界空间中</li>
+        <li>计算向量v，由灯的位置减去当前顶点的位置</li>
+        <li>归一化向量v</li>
+        <li>把向量v投影到切空间中</li>
+        <li>安向量v在切空间中的投影偏移纹理坐标</li>
+      </ol>
+      这看起来不错，它基本上和Michael I. Gold介绍的方法差不多。但它有一个缺点，它只对xy平面进行投影，这对我们的应用还是不够的。 <p>但这个实现在计算漫射光的方法和我们是一样的，我们不能存储漫射因子，所以我们不能使用Michael 
+        I. Gold介绍的方法，因为我们想让它在任何显卡上运行而不仅仅是TNT系列。为什么不光照计算留到最后呢？这在简单的几何体绘制上是可行的，如果你需要渲染几千个具有凹凸贴图的三角形，你会感到绘制的速度不够快，到那时你需要改变这种渲染过程，寻找其它的方法。</p>
+      <p>在我们的实现里，它看起来和上面的实现差不多，除了投影部分，我们将使用我们自己的近似。</p>
+      <ul type="disc">
+        <li>我们使用模型坐标，这种设定可以使得灯光位置相对于物体不变。</li>
+        <li>我们计算当前的顶点坐标</li>
+        <li>接着计算法线，并使它单位化</li>
+        <li>创建一个正投影矩阵，把灯光方向变为切空间</li>
+        <li>计算纹理坐标的偏移量，ds = s点乘v*MAX_EMBOSS, dt=t点乘v*MAX_EMBOSS</li>
+        <li>在通道2中，把偏移量添加到纹理坐标</li>
+      </ul>
+      <b><u>为什么更好:</u></b> <ul type="disc">
+        <li>更快</li>
+        <li>看起来好看</li>
+        <li>这个方法可以工作与各种表面</li>
+        <li>可以运行于各种显卡</li>
+        <li>最大化的兼容</li>
+      </ul>
+      <b><u>缺陷:</u></b> <ul type="disc">
+        <li>并不是完全的物理模拟</li>
+        <li>残留一些人为的假相</li>
+      </ul>
+      <FONT size=-1><img border="0" width="412" height="243" src="image008.jpg" tppabs="http://www.owlei.com/DancingWind/Pic/image008.jpg"> 
+      <br>
+      <br>
+      </font>这个示意图显示了我们坐标系统，你可以通过相减相邻的坐标来获得s，t向量，但必须保证他们构成右手系和归一化。<FONT size=-1><br>
+      <br>
+      </font>结束理论讲解（凹凸映射）<FONT size=-1>&nbsp;<br>
+      <br>
+      </font>下面让我们看看如何生成偏移量，首先创建一个函数创建凹凸映射： 
+      <p></p></td>
+    <td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table>
+<font color=#aaffaa size=3> 
+<pre><font color=#ffffaa>// 设置纹理偏移，都为单位长度</font>
+<font color=#ffffaa>// n : 表面的法向量</font>
+<font color=#ffffaa>// c : 当前的顶点纹理坐标，返回纹理坐标的偏移量</font>
+<font color=#ffffaa>// l : 灯光的位置</font>
+<font color=#ffffaa>// s : s方向</font>
+<font color=#ffffaa>// t : t方向</font>
+void SetUpBumps(GLfloat *n, GLfloat *c, GLfloat *l, GLfloat *s, GLfloat *t) {
+	GLfloat v[3];								<font color=#ffffaa>// 灯光方向</font>
+	GLfloat lenQ;								<font color=#ffffaa>// 灯光方向向量的长度，使用它来单位化</font>
+	<font color=#ffffaa>// 计算灯光方向</font>
+	v[0]=l[0]-c[0];
+	v[1]=l[1]-c[1];
+	v[2]=l[2]-c[2];
+	lenQ=(GLfloat) sqrt(v[0]*v[0]+v[1]*v[1]+v[2]*v[2]);
+	v[0]/=lenQ;
+	v[1]/=lenQ;
+	v[2]/=lenQ;
+	<font color=#ffffaa>// 把方向向量投影到s,t方向 </font>
+	c[0]=(s[0]*v[0]+s[1]*v[1]+s[2]*v[2])*MAX_EMBOSS;
+	c[1]=(t[0]*v[0]+t[1]*v[1]+t[2]*v[2])*MAX_EMBOSS;<br>}</pre>
+</font> 
+<table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>那看起来复杂么，但为了理解这个效果理论是必须的。（我在写这篇教程的时候也学习了它）。
+      <p>我在程序运行的时候，总喜欢在屏幕上显示标志，现在我们有了两个，使用doLogo函数创建它。</p>
+      <p>下面的函数显示两个标志：一个OpenGL的标志，一个多重纹理的标志，如果可以使用多重纹理，则标志使用alpha混合，并看起来半透明。为了让它在屏幕的边沿显示我们使用混合并禁用光照和深度测试。</p>
+      <p></p>
+      <p></p></td><td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table>
+<font color=#aaffaa size=3> 
+<pre>
+void doLogo(void) {
+	<font color=#ffffaa>// 必须最后在调用这个函数，以公告板的形式显示两个标志</font>
+	glDepthFunc(GL_ALWAYS);
+	glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
+	glEnable(GL_BLEND);
+	glDisable(GL_LIGHTING);
+	glLoadIdentity();
+	glBindTexture(GL_TEXTURE_2D,glLogo);
+	glBegin(GL_QUADS);
+		glTexCoord2f(0.0f,0.0f);	glVertex3f(0.23f, -0.4f,-1.0f);
+		glTexCoord2f(1.0f,0.0f);	glVertex3f(0.53f, -0.4f,-1.0f);
+		glTexCoord2f(1.0f,1.0f);	glVertex3f(0.53f, -0.25f,-1.0f);
+		glTexCoord2f(0.0f,1.0f);	glVertex3f(0.23f, -0.25f,-1.0f);
+	glEnd();
+	if (useMultitexture) {
+		glBindTexture(GL_TEXTURE_2D,multiLogo);
+		glBegin(GL_QUADS);
+			glTexCoord2f(0.0f,0.0f);	glVertex3f(-0.53f, -0.25f,-1.0f);
+			glTexCoord2f(1.0f,0.0f);	glVertex3f(-0.33f, -0.25f,-1.0f);
+			glTexCoord2f(1.0f,1.0f);	glVertex3f(-0.33f, -0.15f,-1.0f);
+			glTexCoord2f(0.0f,1.0f);	glVertex3f(-0.53f, -0.15f,-1.0f);
+		glEnd();
+	}
+	glDepthFunc(GL_LEQUAL);
+}
+</pre>
+</font>
+<table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>现在到了绘制凹凸贴图的函数了，我们先来看看不使用多重映射的方法，它通过三个通道实现。在第一步，我们先取得模型变换矩阵的逆矩阵！</td>
+    <td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table>
+<font color=#aaffaa size=3> 
+<pre>
+bool doMesh1TexelUnits(void) {
+	GLfloat c[4]={0.0f,0.0f,0.0f,1.0f};					<font color=#ffffaa>// 保存当前的顶点</font>
+	GLfloat n[4]={0.0f,0.0f,0.0f,1.0f};					<font color=#ffffaa>// 保存法线</font>
+	GLfloat s[4]={0.0f,0.0f,0.0f,1.0f};					<font color=#ffffaa>// s纹理坐标方向</font>
+	GLfloat t[4]={0.0f,0.0f,0.0f,1.0f};					<font color=#ffffaa>// t</font><font color=#aaffaa size=3><font color=#ffffaa>纹理坐标方向</font></font>
+	GLfloat l[4];							<font color=#ffffaa>// 保存灯光方向</font>
+	GLfloat Minv[16];							<font color=#ffffaa>// 保存模型变换矩阵的逆</font>
+	int i;
+
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);			<font color=#ffffaa>// 清空背景颜色和深度缓存</font>
+
+	<font color=#ffffaa>// 创建模型变换矩阵的逆</font>
+	glLoadIdentity();
+	glRotatef(-yrot,0.0f,1.0f,0.0f);
+	glRotatef(-xrot,1.0f,0.0f,0.0f);
+	glTranslatef(0.0f,0.0f,-z);
+	glGetFloatv(GL_MODELVIEW_MATRIX,Minv);
+	glLoadIdentity();
+	glTranslatef(0.0f,0.0f,z);
+	glRotatef(xrot,1.0f,0.0f,0.0f);
+	glRotatef(yrot,0.0f,1.0f,0.0f);
+
+	<font color=#ffffaa>// 设置灯光的位置</font>
+	l[0]=LightPosition[0];
+	l[1]=LightPosition[1];
+	l[2]=LightPosition[2];
+	l[3]=1.0f;								
+	VMatMult(Minv,l);
+</pre>
+</font>
+<table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top><u>通道1:</u> <ul type="disc">
+        <li>使用凹凸纹理</li>
+        <li>禁止混合</li>
+        <li>禁止光照</li>
+        <li>使用无偏移的纹理坐标</li>
+        <li>绘制几何体</li>
+      </ul>
+      这将渲染一个无凹凸贴图的几何体</td>
+    <td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table><font color=#aaffaa size=3><pre>
+	glBindTexture(GL_TEXTURE_2D, bump[filter]);
+	glDisable(GL_BLEND);
+	glDisable(GL_LIGHTING);
+	doCube();
+</pre></font><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top><u>通道2:</u> <ul type="disc">
+        <li>使用反转的纹理凹凸贴图</li>
+        <li>设置混合因子为1，1</li>
+        <li>使用光照</li>
+        <li>使用偏移纹理坐标</li>
+        <li>绘制几何体</li>
+      </ul>
+      这将绘制一个具有凹凸贴图的几何体，但没有颜色&nbsp;<FONT size=-1>&nbsp;</font><FONT face=Tahoma,Verdana,sans-serif size=-1><br>
+      <br>
+      </font></td>
+    <td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table><font color=#aaffaa size=3>
+<pre>
+	glBindTexture(GL_TEXTURE_2D,invbump[filter]);
+	glBlendFunc(GL_ONE,GL_ONE);
+	glDepthFunc(GL_LEQUAL);
+	glEnable(GL_BLEND);
+
+	glBegin(GL_QUADS);
+		<font color=#ffffaa>// 前面</font>
+		n[0]=0.0f;
+		n[1]=0.0f;
+		n[2]=1.0f;
+		s[0]=1.0f;
+		s[1]=0.0f;
+		s[2]=0.0f;
+		t[0]=0.0f;
+		t[1]=1.0f;
+		t[2]=0.0f;
+		for (i=0; i&lt;4; i++) {
+			c[0]=data[5*i+2];
+			c[1]=data[5*i+3];
+			c[2]=data[5*i+4];
+			SetUpBumps(n,c,l,s,t);
+			<font color=#ffffaa>// 设置纹理坐标为偏移后的纹理坐标</font>
+			glTexCoord2f(data[5*i]+c[0], data[5*i+1]+c[1]);
+			glVertex3f(data[5*i+2], data[5*i+3], data[5*i+4]);
+		}
+		<font color=#ffffaa>// 后面</font>
+		n[0]=0.0f;
+		n[1]=0.0f;
+		n[2]=-1.0f;
+		s[0]=-1.0f;
+		s[1]=0.0f;
+		s[2]=0.0f;
+		t[0]=0.0f;
+		t[1]=1.0f;
+		t[2]=0.0f;
+		for (i=4; i&lt;8; i++) {
+			c[0]=data[5*i+2];
+			c[1]=data[5*i+3];
+			c[2]=data[5*i+4];
+			SetUpBumps(n,c,l,s,t);
+			glTexCoord2f(data[5*i]+c[0], data[5*i+1]+c[1]);
+			glVertex3f(data[5*i+2], data[5*i+3], data[5*i+4]);
+		}
+		<font color=#ffffaa>// 上面</font>
+		n[0]=0.0f;
+		n[1]=1.0f;
+		n[2]=0.0f;
+		s[0]=1.0f;
+		s[1]=0.0f;
+		s[2]=0.0f;
+		t[0]=0.0f;
+		t[1]=0.0f;
+		t[2]=-1.0f;
+		for (i=8; i&lt;12; i++) {
+			c[0]=data[5*i+2];
+			c[1]=data[5*i+3];
+			c[2]=data[5*i+4];
+			SetUpBumps(n,c,l,s,t);
+			glTexCoord2f(data[5*i]+c[0], data[5*i+1]+c[1]);
+			glVertex3f(data[5*i+2], data[5*i+3], data[5*i+4]);
+		}
+		<font color=#ffffaa>// 下面</font>
+		n[0]=0.0f;
+		n[1]=-1.0f;
+		n[2]=0.0f;
+		s[0]=-1.0f;
+		s[1]=0.0f;
+		s[2]=0.0f;
+		t[0]=0.0f;
+		t[1]=0.0f;
+		t[2]=-1.0f;
+		for (i=12; i&lt;16; i++) {
+			c[0]=data[5*i+2];
+			c[1]=data[5*i+3];
+			c[2]=data[5*i+4];
+			SetUpBumps(n,c,l,s,t);
+			glTexCoord2f(data[5*i]+c[0], data[5*i+1]+c[1]);
+			glVertex3f(data[5*i+2], data[5*i+3], data[5*i+4]);
+		}
+		<font color=#ffffaa>// 右面</font>
+		n[0]=1.0f;
+		n[1]=0.0f;
+		n[2]=0.0f;
+		s[0]=0.0f;
+		s[1]=0.0f;
+		s[2]=-1.0f;
+		t[0]=0.0f;
+		t[1]=1.0f;
+		t[2]=0.0f;
+		for (i=16; i&lt;20; i++) {
+			c[0]=data[5*i+2];
+			c[1]=data[5*i+3];
+			c[2]=data[5*i+4];
+			SetUpBumps(n,c,l,s,t);
+			glTexCoord2f(data[5*i]+c[0], data[5*i+1]+c[1]);
+			glVertex3f(data[5*i+2], data[5*i+3], data[5*i+4]);
+		}
+		<font color=#ffffaa>// 左面</font>
+		n[0]=-1.0f;
+		n[1]=0.0f;
+		n[2]=0.0f;
+		s[0]=0.0f;
+		s[1]=0.0f;
+		s[2]=1.0f;
+		t[0]=0.0f;
+		t[1]=1.0f;
+		t[2]=0.0f;
+		for (i=20; i&lt;24; i++) {
+			c[0]=data[5*i+2];
+			c[1]=data[5*i+3];
+			c[2]=data[5*i+4];
+			SetUpBumps(n,c,l,s,t);
+			glTexCoord2f(data[5*i]+c[0], data[5*i+1]+c[1]);
+			glVertex3f(data[5*i+2], data[5*i+3], data[5*i+4]);
+		}
+	glEnd();
+</pre>
+</font><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top><u>通道3:</u> <ul type="disc">
+        <li>使用颜色纹理Use (colored) base-texture</li>
+        <li>使用混合因子GL_DST_COLOR, GL_SRC_COLOR</li>
+        <li>这个混合等于把颜色值乘以2</li>
+        <li>使用光照</li>
+        <li>绘制几何体</li>
+      </ul>
+      这个过程将结束立方体的渲染，因为我们可以在是否使用多重渲染之间切换，所以必须把纹理环境参数设为GL_MODULATE，这是默认的值。</td>
+    <td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table><font color=#aaffaa size=3><pre>
+	if (!emboss) {
+		glTexEnvf (GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
+		glBindTexture(GL_TEXTURE_2D,texture[filter]);
+		glBlendFunc(GL_DST_COLOR,GL_SRC_COLOR);
+		glEnable(GL_LIGHTING);
+		doCube();
+	}
+</pre></font><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top><u>最后的通道:</u> <ul type="disc">
+        <li>更新几何体</li>
+        <li>绘制标志</li>
+      </ul>
+</td><td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table><font color=#aaffaa size=3>
+<pre>
+	xrot+=xspeed;
+	yrot+=yspeed;
+	if (xrot&gt;360.0f) xrot-=360.0f;
+	if (xrot&lt;0.0f) xrot+=360.0f;
+	if (yrot&gt;360.0f) yrot-=360.0f;
+	if (yrot&lt;0.0f) yrot+=360.0f;
+
+	<font color=#ffffaa>//绘制标志</font>
+	doLogo();
+	return true;							<font color=#ffffaa>// 成功返回</font>
+}
+</pre>
+</font><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>这个函数将在多重纹理功能的支持下载两个通道中完成凹凸贴图的绘制，我们支持两个纹理单元，与一个纹理单元不同的是，我们给一个顶点设置两个纹理坐标。</td>
+    <td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table>
+<font color=#aaffaa size=3> 
+<pre>
+bool doMesh2TexelUnits(void) {
+	GLfloat c[4]={0.0f,0.0f,0.0f,1.0f};					<font color=#ffffaa>// 保存当前的顶点</font>
+	GLfloat n[4]={0.0f,0.0f,0.0f,1.0f};					<font color=#ffffaa>// 保存法线</font>
+	GLfloat s[4]={0.0f,0.0f,0.0f,1.0f};					<font color=#ffffaa>// s纹理坐标方向</font>
+	GLfloat t[4]={0.0f,0.0f,0.0f,1.0f};					<font color=#ffffaa>// t纹理坐标方向</font>
+	GLfloat l[4];							<font color=#ffffaa>// 保存灯光方向</font>
+	GLfloat Minv[16];							<font color=#ffffaa>// 保存模型变换矩阵的逆</font>
+	int i;
+
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);			<font color=#ffffaa>// 清空背景颜色和深度缓存</font>
+
+	<font color=#ffffaa>// 创建模型变换矩阵的逆</font>
+	glLoadIdentity();
+	glRotatef(-yrot,0.0f,1.0f,0.0f);
+	glRotatef(-xrot,1.0f,0.0f,0.0f);
+	glTranslatef(0.0f,0.0f,-z);
+	glGetFloatv(GL_MODELVIEW_MATRIX,Minv);
+	glLoadIdentity();
+	glTranslatef(0.0f,0.0f,z);
+
+	glRotatef(xrot,1.0f,0.0f,0.0f);
+	glRotatef(yrot,0.0f,1.0f,0.0f);
+
+	<font color=#ffffaa>// 设置灯光的位置</font>
+	l[0]=LightPosition[0];
+	l[1]=LightPosition[1];
+	l[2]=LightPosition[2];
+	l[3]=1.0f;								
+	VMatMult(Minv,l);
+</pre>
+</font> 
+<table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top><u>通道1:</u> <ul type="disc">
+        <li>无凹凸贴图</li>
+        <li>无光照</li>
+      </ul>
+      设置纹理混合器0 
+      <ul type="disc">
+        <li>使用凹凸纹理</li>
+        <li>使用无偏移的纹理坐标</li>
+        <li>使用替换方式粘贴纹理</li>
+      </ul>
+      设置纹理混合器1 
+      <ul type="disc">
+        <li>偏移纹理坐标</li>
+        <li>使用相加的纹理操作</li>
+      </ul>
+      这将绘制一个灰度的立方体</td>
+    <td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table><font color=#aaffaa size=3>
+<pre>
+	<font color=#ffffaa>// 纹理单元 #0</font>
+	glActiveTextureARB(GL_TEXTURE0_ARB);
+	glEnable(GL_TEXTURE_2D);
+	glBindTexture(GL_TEXTURE_2D, bump[filter]);
+	glTexEnvf (GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_COMBINE_EXT);
+	glTexEnvf (GL_TEXTURE_ENV, GL_COMBINE_RGB_EXT, GL_REPLACE);
+
+	<font color=#ffffaa>// 纹理单元 #1</font>
+	glActiveTextureARB(GL_TEXTURE1_ARB);
+	glEnable(GL_TEXTURE_2D);
+	glBindTexture(GL_TEXTURE_2D, invbump[filter]);
+	glTexEnvf (GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_COMBINE_EXT);
+	glTexEnvf (GL_TEXTURE_ENV, GL_COMBINE_RGB_EXT, GL_ADD);
+
+	<font color=#ffffaa>// 禁用混合和光照</font>
+	glDisable(GL_BLEND);
+	glDisable(GL_LIGHTING);
+</pre>
+</font><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>现在按面一个一个的渲染立方体，和doMesh1TexelUnits函数中所作的操作差不多，只是用glMultiTexCoor2fARB替换glTexCoord2f，在这个函数中，你必须把纹理坐标发向不同的纹理处理单元，可用的参数值为GL_TEXTUREi_ARB0到GL_TEXTUREi_ARB31。</td>
+    <td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table><font color=#aaffaa size=3>
+<pre>
+	glBegin(GL_QUADS);
+		<font color=#ffffaa>// 前面</font>
+		n[0]=0.0f;
+		n[1]=0.0f;
+		n[2]=1.0f;
+		s[0]=1.0f;
+		s[1]=0.0f;
+		s[2]=0.0f;
+		t[0]=0.0f;
+		t[1]=1.0f;
+		t[2]=0.0f;
+		for (i=0; i&lt;4; i++) {
+			c[0]=data[5*i+2];
+			c[1]=data[5*i+3];
+			c[2]=data[5*i+4];
+			SetUpBumps(n,c,l,s,t);
+			glMultiTexCoord2fARB(GL_TEXTURE0_ARB,data[5*i], data[5*i+1]);
+			glMultiTexCoord2fARB(GL_TEXTURE1_ARB,data[5*i]+c[0], data[5*i+1]+c[1]);
+			glVertex3f(data[5*i+2], data[5*i+3], data[5*i+4]);
+		}
+		<font color=#ffffaa>// 后面</font>
+		n[0]=0.0f;
+		n[1]=0.0f;
+		n[2]=-1.0f;
+		s[0]=-1.0f;
+		s[1]=0.0f;
+		s[2]=0.0f;
+		t[0]=0.0f;
+		t[1]=1.0f;
+		t[2]=0.0f;
+		for (i=4; i&lt;8; i++) {
+			c[0]=data[5*i+2];
+			c[1]=data[5*i+3];
+			c[2]=data[5*i+4];
+			SetUpBumps(n,c,l,s,t);
+			glMultiTexCoord2fARB(GL_TEXTURE0_ARB,data[5*i], data[5*i+1]);
+			glMultiTexCoord2fARB(GL_TEXTURE1_ARB,data[5*i]+c[0], data[5*i+1]+c[1]);
+			glVertex3f(data[5*i+2], data[5*i+3], data[5*i+4]);
+		}
+		<font color=#ffffaa>// 上面</font>
+		n[0]=0.0f;
+		n[1]=1.0f;
+		n[2]=0.0f;
+		s[0]=1.0f;
+		s[1]=0.0f;
+		s[2]=0.0f;
+		t[0]=0.0f;
+		t[1]=0.0f;
+		t[2]=-1.0f;
+		for (i=8; i&lt;12; i++) {
+			c[0]=data[5*i+2];
+			c[1]=data[5*i+3];
+			c[2]=data[5*i+4];
+			SetUpBumps(n,c,l,s,t);
+			glMultiTexCoord2fARB(GL_TEXTURE0_ARB,data[5*i], data[5*i+1]);
+			glMultiTexCoord2fARB(GL_TEXTURE1_ARB,data[5*i]+c[0], data[5*i+1]+c[1]);
+			glVertex3f(data[5*i+2], data[5*i+3], data[5*i+4]);
+		}
+		<font color=#ffffaa>// 下面</font>
+		n[0]=0.0f;
+		n[1]=-1.0f;
+		n[2]=0.0f;
+		s[0]=-1.0f;
+		s[1]=0.0f;
+		s[2]=0.0f;
+		t[0]=0.0f;
+		t[1]=0.0f;
+		t[2]=-1.0f;
+		for (i=12; i&lt;16; i++) {
+			c[0]=data[5*i+2];
+			c[1]=data[5*i+3];
+			c[2]=data[5*i+4];
+			SetUpBumps(n,c,l,s,t);
+			glMultiTexCoord2fARB(GL_TEXTURE0_ARB,data[5*i], data[5*i+1]);
+			glMultiTexCoord2fARB(GL_TEXTURE1_ARB,data[5*i]+c[0], data[5*i+1]+c[1]);
+			glVertex3f(data[5*i+2], data[5*i+3], data[5*i+4]);
+		}
+		<font color=#ffffaa>// 右面</font>
+		n[0]=1.0f;
+		n[1]=0.0f;
+		n[2]=0.0f;
+		s[0]=0.0f;
+		s[1]=0.0f;
+		s[2]=-1.0f;
+		t[0]=0.0f;
+		t[1]=1.0f;
+		t[2]=0.0f;
+		for (i=16; i&lt;20; i++) {
+			c[0]=data[5*i+2];
+			c[1]=data[5*i+3];
+			c[2]=data[5*i+4];
+			SetUpBumps(n,c,l,s,t);
+			glMultiTexCoord2fARB(GL_TEXTURE0_ARB,data[5*i], data[5*i+1]);
+			glMultiTexCoord2fARB(GL_TEXTURE1_ARB,data[5*i]+c[0], data[5*i+1]+c[1]);
+			glVertex3f(data[5*i+2], data[5*i+3], data[5*i+4]);
+		}
+		<font color=#ffffaa>// 左面</font>
+		n[0]=-1.0f;
+		n[1]=0.0f;
+		n[2]=0.0f;
+		s[0]=0.0f;
+		s[1]=0.0f;
+		s[2]=1.0f;
+		t[0]=0.0f;
+		t[1]=1.0f;
+		t[2]=0.0f;
+		for (i=20; i&lt;24; i++) {
+			c[0]=data[5*i+2];
+			c[1]=data[5*i+3];
+			c[2]=data[5*i+4];
+			SetUpBumps(n,c,l,s,t);
+			glMultiTexCoord2fARB(GL_TEXTURE0_ARB,data[5*i], data[5*i+1]);
+			glMultiTexCoord2fARB(GL_TEXTURE1_ARB,data[5*i]+c[0], data[5*i+1]+c[1]);
+			glVertex3f(data[5*i+2], data[5*i+3], data[5*i+4]);
+		}
+	glEnd();
+</pre>
+</font><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>通道2： <ul type="disc">
+        <li>使用基本纹理</li>
+        <li>使用光照</li>
+        <li>使用普通的纹理混合操作</li>
+      </ul>
+      这将完成最后的凹凸贴图</td>
+    <td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table><font color=#aaffaa size=3><pre>
+	glActiveTextureARB(GL_TEXTURE1_ARB);
+	glDisable(GL_TEXTURE_2D);
+	glActiveTextureARB(GL_TEXTURE0_ARB);
+	if (!emboss) {
+		glTexEnvf (GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
+		glBindTexture(GL_TEXTURE_2D,texture[filter]);
+		glBlendFunc(GL_DST_COLOR,GL_SRC_COLOR);
+		glEnable(GL_BLEND);
+		glEnable(GL_LIGHTING);
+		doCube();
+	}
+</pre></font><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top><u>最后的通道：</u> <ul type="disc">
+        <li>更新几何体</li>
+        <li>绘制标志</li>
+      </ul>
+</td><td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table><font color=#aaffaa size=3>
+<pre>
+	xrot+=xspeed;
+	yrot+=yspeed;
+	if (xrot&gt;360.0f) xrot-=360.0f;
+	if (xrot&lt;0.0f) xrot+=360.0f;
+	if (yrot&gt;360.0f) yrot-=360.0f;
+	if (yrot&lt;0.0f) yrot+=360.0f;
+
+	doLogo();
+	return true;								
+}
+</pre>
+</font><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>最后绘制一个无凹凸贴图的立方体，用来观察两者之间的效果</td>
+    <td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table><font color=#aaffaa size=3>
+<pre>
+bool doMeshNoBumps(void) {
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);			
+	glLoadIdentity();							
+	glTranslatef(0.0f,0.0f,z);
+
+	glRotatef(xrot,1.0f,0.0f,0.0f);
+	glRotatef(yrot,0.0f,1.0f,0.0f);
+
+	if (useMultitexture) {
+		glActiveTextureARB(GL_TEXTURE1_ARB);
+		glDisable(GL_TEXTURE_2D);
+		glActiveTextureARB(GL_TEXTURE0_ARB);
+	}
+
+	glDisable(GL_BLEND);
+	glBindTexture(GL_TEXTURE_2D,texture[filter]);
+	glBlendFunc(GL_DST_COLOR,GL_SRC_COLOR);
+	glEnable(GL_LIGHTING);
+	doCube();
+
+	xrot+=xspeed;
+	yrot+=yspeed;
+	if (xrot&gt;360.0f) xrot-=360.0f;
+	if (xrot&lt;0.0f) xrot+=360.0f;
+	if (yrot&gt;360.0f) yrot-=360.0f;
+	if (yrot&lt;0.0f) yrot+=360.0f;
+
+	doLogo();
+	return true;								
+}
+</pre>
+</font><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>所有的绘制函数都已经完成，接下来只要在绘制函数中调用即可</td>
+    <td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table><font color=#aaffaa size=3><pre>
+bool DrawGLScene(GLvoid)	
+{
+	if (bumps) {
+		if (useMultitexture &amp;&amp; maxTexelUnits&gt;1)
+			return doMesh2TexelUnits();
+		else return doMesh1TexelUnits(); 	}
+	else return doMeshNoBumps();
+}
+</pre></font><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>删除OpenGL窗口</td>
+    <td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table>
+<font color=#aaffaa size=3> </font> 
+<table border=0 cellpadding=0 cellspacing=0 width="100%">
+  <tr>
+    <td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td>
+    <td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td>
+    <td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td>
+  </tr>
+</table>
+<font color=#aaffaa size=3>
+<pre>GLvoid KillGLWindow(GLvoid)		</pre>
+</font>
+<table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>创建OpenGL窗口</td>
+    <td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table><font color=#aaffaa size=3>
+<pre>
+BOOL CreateGLWindow(char* title, int width, int height, int bits, bool fullscreenflag)
+</pre>
+</font><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>Windows循环</td>
+    <td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table><font color=#aaffaa size=3>
+<pre>
+LRESULT CALLBACK WndProc(	HWND hWnd,
+				UINT uMsg,					
+				WPARAM wParam,					
+				LPARAM lParam)					</pre>
+</font><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>在Windows主函数中加入一些控制键 : 
+      <ul type="disc">
+        <li>E: 切换凹凸贴图模式中是否带有彩色纹理</li>
+        <li>M: 切换多重纹理模式</li>
+        <li>B: 切换是否使用凹凸贴图</li>
+        <li>F: 切换纹理过滤器模式</li>
+        <li>方向键: 旋转立方体</li>
+      </ul>
+</td><td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table><font color=#aaffaa size=3>
+<pre>
+				if (keys['E'])
+				{
+					keys['E']=false;
+					emboss=!emboss;
+				}
+
+				if (keys['M'])
+				{
+					keys['M']=false;
+					useMultitexture=((!useMultitexture) &amp;&amp; multitextureSupported);
+				}
+
+				if (keys['B'])
+				{
+					keys['B']=false;
+					bumps=!bumps;
+				}
+
+				if (keys['F'])
+				{
+					keys['F']=false;
+					filter++;
+					filter%=3;
+				}
+
+				if (keys[VK_PRIOR])
+				{
+					z-=0.02f;
+				}
+
+				if (keys[VK_NEXT])
+				{
+					z+=0.02f;
+				}
+
+				if (keys[VK_UP])
+				{
+					xspeed-=0.01f;
+				}
+
+				if (keys[VK_DOWN])
+				{
+					xspeed+=0.01f;
+				}
+
+				if (keys[VK_RIGHT])
+				{
+					yspeed+=0.01f;
+				}
+
+				if (keys[VK_LEFT])
+				{
+					yspeed-=0.01f;
+				}
+</pre>
+</font><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>现在你应该可以熟练的使用凹凸贴图了，如果你想让你的具有凹凸贴图的程序跑起来更快，你应该注意以下几点： 
+      <ul type="disc">
+        <li>你不应该使用256x256的纹理，这会让处理变得缓慢。 </li>
+        <li>一个具有凹凸贴图的立方体是不常见的，这和你的视角有关，因为三角面过于大了，如果要获得很好的视觉效果，你需要很大的纹理贴图，这必然会降低渲染速度。你可以把模型 
+          创建为一些小的三角形，从而使用小的纹理，来获得好的效果。</li>
+        <li>你应该先创建颜色纹理，接着把它转换为具有深度的凹凸纹理</li>
+        <li>凹凸纹理应该锐化，这可以取得更好的效果，在你的图像处理程序中可以完成这个操作。</li>
+        <li>凹凸贴图的值因该在50%灰度图上波动(RGB=127,127,127), 亮的值代表凸起，暗的值代表凹陷。</li>
+        <li>凹凸贴图可以为纹理图大小的1/4，而不会影响外观效果。</li>
+      </ul>
+      现在你应该对这篇文章中内容的大慨有了一个基本的认识，希望你读的愉快。<br>
+      如果你有任何纹理，请联系我或访问我的网站http://www.glhint.de <p>我必须感谢以下的人：</p>
+      <ul type="disc">
+        <li>Michael I. Gold ，它写出了凹凸贴图的原理</li>
+        <li>Diego Tártara ，它写出了示例代码</li>
+        <li>NVidia 公司，他在Internet发布了大量的源码</li>
+        <li>最后感谢Nehe，它对我的OpenGL学习起了很大的帮助</li>
+      </ul>
+<table width="100%" border="1">
+  <tr>
+    <td width="27%"><img src="logo 3.jpg" tppabs="http://www.owlei.com/DancingWind/images/logo%203.jpg" width="209" height="200" align="middle"></td>
+    <td width="73%">版权与使用声明:<br>
+      我是个对学习和生活充满激情的普通男孩,在网络上我以DancingWind为昵称，我的联系方式是zhouwei02@mails.tsinghua.edu.cn，如果你有任何问题，都可以联系我。
+      <p>引子<br>
+        网络是一个共享的资源，但我在自己的学习生涯中浪费大量的时间去搜索可用的资料，在现实生活中花费了大量的金钱和时间在书店中寻找资料，于是我给自己起了个昵称DancingWind，其意义是想风一样从各个知识的站点中吸取成长的养料。在飘荡了多年之后，我决定把自己收集的资料整理为一个统一的资源库。</p>
+      <p>版权声明<br>
+        所有DancingWind发表的内容，大多都来自共享的资源，所以我没有资格把它们据为己有，或声称自己为这些资源作出了一点贡献。故任何人都可以复制，修改，重新发表，甚至以自己的名义发表，我都不会追究，但你在做以上事情的时候必须保证内容的完整性，给后来的人一个完整的教程。最后，任何人不能以这些资料的任何部分，谋取任何形式的报酬。</p>
+      <p>发展计划<br>
+        在国外，很多资料都是很多人花费几年的时间慢慢积累起来的。如果任何人有兴趣与别人共享你的知识，我很欢迎你与我联系，但你必须同意我上面的声明。</p>
+            <p>感谢<br>
+              感谢我的母亲一直以来对我的支持和在生活上的照顾。<br>
+              感谢我深爱的女友田芹，一直以来默默的在精神上和生活中对我的支持，她甚至把买衣服的钱都用来给我买书了，她真的是我见过的最好的女孩，希望我能带给她幸福。</p>
+            <p>资源下载: <br>
+              文档 <a href="javascript:if(confirm('http://www.owlei.com/DancingWind/Res/mht/NeHe%20OpenGL%20Chinese%20Course%2022.mht  \n\nThis file was not retrieved by Teleport Pro, because the server reports that this file cannot be found.  \n\nDo you want to open it from the server?'))window.location='http://www.owlei.com/DancingWind/Res/mht/NeHe%20OpenGL%20Chinese%20Course%2022.mht'" tppabs="http://www.owlei.com/DancingWind/Res/mht/NeHe%20OpenGL%20Chinese%20Course%2022.mht">网页格式</a> 
+              <a href="javascript:if(confirm('http://www.owlei.com/DancingWind/Res/pdf/OpenGL_Nehe_Course_Tutorial_22.pdf  \n\nThis file was not retrieved by Teleport Pro, because the server reports that this file cannot be found.  \n\nDo you want to open it from the server?'))window.location='http://www.owlei.com/DancingWind/Res/pdf/OpenGL_Nehe_Course_Tutorial_22.pdf'" tppabs="http://www.owlei.com/DancingWind/Res/pdf/OpenGL_Nehe_Course_Tutorial_22.pdf">PDF格式</a><br>
+              源码 <a href="javascript:if(confirm('http://www.owlei.com/DancingWind/Res/Src/22_MultiTexture.rar  \n\nThis file was not retrieved by Teleport Pro, because the server reports that this file cannot be found.  \n\nDo you want to open it from the server?'))window.location='http://www.owlei.com/DancingWind/Res/Src/22_MultiTexture.rar'" tppabs="http://www.owlei.com/DancingWind/Res/Src/22_MultiTexture.rar">RAR格式</a></p></td>
+  </tr>
+</table>
+      <FONT face=Tahoma,Verdana,sans-serif size=-1>
+      <table border="0" width="100%">
+          <td width="50%" align="left"><b><font size="-1"><a href="Tutorial_21.htm" tppabs="http://www.owlei.com/DancingWind/Course/Tutorial_21.htm">< 
+            第21课</a></font></b></td>
+          <td width="50%" align="right"><b><font size="-1"><a href="Tutorial_23.htm" tppabs="http://www.owlei.com/DancingWind/Course/Tutorial_23.htm">第23课 
+            &gt;</a></font><font size="-1" face="Tahoma,Verdana,sans-serif"> </font></b></td>
+      </table>
+      </font></td>
+    <td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table>
+
+</body>
+</html>

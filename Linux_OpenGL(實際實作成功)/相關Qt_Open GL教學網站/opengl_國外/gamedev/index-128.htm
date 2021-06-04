@@ -1,0 +1,511 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+    dir="ltr"
+    xml:lang="en"
+    lang="en">
+  <head>
+    <title>NeHe Productions: Texture Filters, Lighting &amp; Keyboard Control</title>
+
+    <link rel="stylesheet" type="text/css" href="public_base.css" tppabs="http://nehe.gamedev.net/static/css/public_base.css" />
+    <link type="text/css" rel="stylesheet" href="shThemeMidnight.css" tppabs="http://nehe.gamedev.net/static/css/syntax_highlighter/shThemeMidnight.css"/>
+    
+    <link rel="alternate" type="application/atom+xml" title="Atom feed" href="index-1.htm" tppabs="http://nehe.gamedev.net/atom/" />
+    <link rel="alternate" type="application/rss+xml" title="RSS feed" href="index-2.htm" tppabs="http://nehe.gamedev.net/rss/" />
+    
+    <meta name="author" content="Luke Benstead + Carsten Haubold" />
+    <meta name="description" content="OpenGL Tutorials, Demos, Games and More..." />
+    <meta name="keywords" content="opengl, tutorial, article, demo, game, blend, texturemap, lighting, contest, 3D" />
+
+    
+    
+
+    
+
+</script>
+
+
+    
+    
+    
+    
+        
+        <script type='text/javascript'>
+        var googletag = googletag || {};
+        googletag.cmd = googletag.cmd || [];
+        (function() {
+        var gads = document.createElement('script');
+        gads.async = true;
+        gads.type = 'text/javascript';
+        var useSSL = 'https:' == document.location.protocol;
+        gads.src = (useSSL ? 'https:' : 'http:') + 
+        '//www.googletagservices.com/tag/js/gpt.js';
+        var node = document.getElementsByTagName('script')[0];
+        node.parentNode.insertBefore(gads, node);
+        })();
+        </script>
+
+        <script type='text/javascript'>
+        googletag.cmd.push(function() {
+        googletag.defineSlot('/1004699/Leaderboard_NeHe', [728, 90], 'div-gpt-ad-1327940144417-0').addService(googletag.pubads());
+        googletag.defineSlot('/1004699/Skyscraper_NeHe', [160, 600], 'div-gpt-ad-1327940144417-1').addService(googletag.pubads());
+        googletag.pubads().enableSingleRequest();
+        googletag.enableServices();
+        });
+        </script>
+    
+    
+
+    
+  </head>
+
+  <body>
+    
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "all.js#xfbml=1"/*tpa=http://connect.facebook.net/en_GB/all.js#xfbml=1*/;
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+
+
+    <table cellpadding="0" cellspacing="0" border="0" id="layout_table">
+    <tr><td>
+        <div id="header">
+                <a href="index.htm" tppabs="http://nehe.gamedev.net/"><img class="logo" class="logo" src="nehe.png" tppabs="http://nehe.gamedev.net/static/images/nehe.png" border="0" alt="Nehe" /></a>
+        </div>            
+    </td></tr>
+    <tr><td colspan="2">
+            
+<div class="navbar">
+    <a href="index.htm" tppabs="http://nehe.gamedev.net/">HOME</a>
+    <a href="javascript:if(confirm('http://twitter.com/  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://twitter.com/#!/nehegl'" tppabs="http://twitter.com/#!/nehegl">TWITTER</a>  
+    <a href="javascript:if(confirm('http://www.facebook.com/pages/NeHe/300582493323181  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://www.facebook.com/pages/NeHe/300582493323181'" tppabs="http://www.facebook.com/pages/NeHe/300582493323181">FACEBOOK</a>     
+    <a href="index-2.htm" tppabs="http://nehe.gamedev.net/rss/">RSS</a>    
+    <a href="index-1.htm" tppabs="http://nehe.gamedev.net/atom/">ATOM</a>    
+    <a href="javascript:if(confirm('http://www.gamedev.net/forum/27-nehe-productions/page__forum_title__NeHe+Productions  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://www.gamedev.net/forum/27-nehe-productions/page__forum_title__NeHe+Productions'" tppabs="http://www.gamedev.net/forum/27-nehe-productions/page__forum_title__NeHe+Productions">FORUM</a>    
+</div>
+    
+    </td></tr>
+    <tr>
+        <td class="col1">
+
+            
+<div id="article_container">
+
+
+<h1 class="article-header">Texture Filters, Lighting &amp; Keyboard Control</h1>
+<div class="social-media">
+<!-- Place this tag where you want the +1 button to render -->
+<div class="g-plusone" data-size="medium" data-width="120" data-annotation="inline"></div>
+<div class="fb-like" data-send="false" data-layout="button_count" data-width="60" data-show-faces="false" data-colorscheme="dark" data-font="arial"></div>
+</div>
+<div style="clear:both;"></div>
+<p>In this tutorial I'll teach you how to use three different texture filters. I'll teach you how to move an object using keys on the keyboard, and I'll also teach you how to apply simple lighting to your OpenGL scene. Lots covered in this tutorial, so if the previous tutorials are giving you problems, go back and review. It's important to have a good understanding of the basics before you jump into the following code.</p>
+<p>We're going to be modifying the code from lesson one again. As usual, if there are any major changes, I will write out the entire section of code that has been modified. We'll start off by adding a few new variables to the program.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">#include	&lt;windows.h&gt;							// Header File For Windows
+#include	&lt;stdio.h&gt;							// Header File For Standard Input/Output ( ADD )
+#include	&lt;gl\gl.h&gt;							// Header File For The OpenGL32 Library
+#include	&lt;gl\glu.h&gt;							// Header File For The GLu32 Library
+#include	&lt;gl\glaux.h&gt;							// Header File For The GLaux Library
+
+HDC		hDC=NULL;							// Private GDI Device Context
+HGLRC		hRC=NULL;							// Permanent Rendering Context
+HWND		hWnd=NULL;							// Holds Our Window Handle
+HINSTANCE	hInstance;							// Holds The Instance Of The Application
+
+bool		keys[256];							// Array Used For The Keyboard Routine
+bool		active=TRUE;							// Window Active Flag
+bool		fullscreen=TRUE;						// Fullscreen Flag
+</pre>
+<p>The lines below are new. We're going to add three boolean variables. BOOL means the variable can only be TRUE or FALSE. We create a variable called light to keep track of whether or not the lighting is on or off. The variables lp and fp are used to store whether or not the 'L' or 'F' key has been pressed. I'll explain why we need these variables later on in the code. For now, just know that they are important.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">BOOL	light;									// Lighting ON / OFF
+BOOL	lp;									// L Pressed?
+BOOL	fp;									// F Pressed?
+</pre>
+<p>Now we're going to set up five variables that will control the angle on the x axis (xrot), the angle on the y axis (yrot), the speed the crate is spinning at on the x axis (xspeed), and the speed the crate is spinning at on the y axis (yspeed). We'll also create a variable called z that will control how deep into the screen (on the z axis) the crate is.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">GLfloat	xrot;									// X Rotation
+GLfloat	yrot;									// Y Rotation
+GLfloat xspeed;									// X Rotation Speed
+GLfloat yspeed;									// Y Rotation Speed
+GLfloat	z=-5.0f;								// Depth Into The Screen
+</pre>
+<p>Now we set up the arrays that will be used to create the lighting. We'll use two different types of light. The first type of light is called ambient light. Ambient light is light that doesn't come from any particular direction. All the objects in your scene will be lit up by the ambient light. The second type of light is called diffuse light. Diffuse light is created by your light source and is reflected off the surface of an object in your scene. Any surface of an object that the light hits directly will be very bright, and areas the light barely gets to will be darker. This creates a nice shading effect on the sides of our crate.</p>
+<p>Light is created the same way color is created. If the first number is 1.0f, and the next two are 0.0f, we will end up with a bright red light. If the third number is 1.0f, and the first two are 0.0f, we will have a bright blue light. The last number is an alpha value. We'll leave it at 1.0f for now.</p>
+<p>So in the line below, we are storing the values for a white ambient light at half intensity (0.5f). Because all the numbers are 0.5f, we will end up with a light that's halfway between off (black) and full brightness (white). Red, blue and green mixed at the same value will create a shade from black(0.0f) to white(1.0f). Without an ambient light, spots where there is no diffuse light will appear very dark.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">GLfloat LightAmbient[]= { 0.5f, 0.5f, 0.5f, 1.0f }; 				// Ambient Light Values ( NEW )
+</pre>
+<p>In the next line we're storing the values for a super bright, full intensity diffuse light. All the values are 1.0f. This means the light is as bright as we can get it. A diffuse light this bright lights up the front of the crate nicely.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">GLfloat LightDiffuse[]= { 1.0f, 1.0f, 1.0f, 1.0f };				 // Diffuse Light Values ( NEW )
+</pre>
+<p>Finally we store the position of the light. The first three numbers are the same as glTranslate's three numbers. The first number is for moving left and right on the x plane, the second number is for moving up and down on the y plane, and the third number is for moving into and out of the screen on the z plane. Because we want our light hitting directly on the front of the crate, we don't move left or right so the first value is 0.0f (no movement on x), we don't want to move up and down, so the second value is 0.0f as well. For the third value we want to make sure the light is always in front of the crate. So we'll position the light off the screen, towards the viewer. Lets say the glass on your monitor is at 0.0f on the z plane. We'll position the light at 2.0f on the z plane. If you could actually see the light, it would be floating in front of the glass on your monitor. By doing this, the only way the light would be behind the crate is if the crate was also in front of the glass on your monitor. Of course if the crate was no longer behind the glass on your monitor, you would no longer see the crate, so it doesn't matter where the light is. Does that make sense?</p>
+<p>There's no real easy way to explain the third parameter. You should know that -2.0f is going to be closer to you than -5.0f. and -100.0f would be WAY into the screen. Once you get to 0.0f, the image is so big, it fills the entire monitor. Once you start going into positive values, the image no longer appears on the screen cause it has "gone past the screen". That's what I mean when I say out of the screen. The object is still there, you just can't see it anymore.</p>
+<p>Leave the last number at 1.0f. This tells OpenGL the designated coordinates are the position of the light source. More about this in a later tutorial.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">GLfloat LightPosition[]= { 0.0f, 0.0f, 2.0f, 1.0f };				 // Light Position ( NEW )
+</pre>
+<p>The filter variable below is to keep track of which texture to display. The first texture (texture 0) is made using gl_nearest (no smoothing). The second texture (texture 1) uses gl_linear filtering which smooths the image out quite a bit. The third texture (texture 2) uses mipmapped textures, creating a very nice looking texture. The variable filter will equal 0, 1 or 2 depending on the texture we want to use. We start off with the first texture.</p>
+<p>GLuint texture[3] creates storage space for the three different textures. The textures will be stored at texture[0], texture[1] and texture[2].</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">GLuint	filter;									// Which Filter To Use
+GLuint	texture[3];								// Storage for 3 textures
+
+LRESULT	CALLBACK WndProc(HWND, UINT, WPARAM, LPARAM);				// Declaration For WndProc
+</pre>
+<p>Now we load in a bitmap, and create three different textures from it. This tutorial uses the glaux library to load in the bitmap, so make sure you have the glaux library included before you try compiling the code. I know Delphi, and Visual C++ both have glaux libraries. I'm not sure about other languages. I'm only going to explain what the new lines of code do, if you see a line I haven't commented on, and you're wondering what it does, check tutorial six. It explains loading, and building texture maps from bitmap images in great detail.</p>
+<p>Immediately after the above code, and before ReSizeGLScene(), we want to add the following section of code. This is the same code we used in lesson 6 to load in a bitmap file. Nothing has changed. If you're not sure what any of the following lines do, read tutorial six. It explains the code below in detail.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">AUX_RGBImageRec *LoadBMP(char *Filename)					// Loads A Bitmap Image
+{
+	FILE *File=NULL;							// File Handle
+
+	if (!Filename)								// Make Sure A Filename Was Given
+	{
+		return NULL;							// If Not Return NULL
+	}
+
+	File=fopen(Filename,"r");						// Check To See If The File Exists
+
+	if (File)								// Does The File Exist?
+	{
+		fclose(File);							// Close The Handle
+		return auxDIBImageLoad(Filename);				// Load The Bitmap And Return A Pointer
+	}
+	return NULL;								// If Load Failed Return NULL
+}
+</pre>
+<p>This is the section of code that loads the bitmap (calling the code above) and converts it into 3 textures. Status is used to keep track of whether or not the texture was loaded and created.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">int LoadGLTextures()								// Load Bitmaps And Convert To Textures
+{
+	int Status=FALSE;							// Status Indicator
+
+	AUX_RGBImageRec *TextureImage[1];					// Create Storage Space For The Texture
+
+	memset(TextureImage,0,sizeof(void *)*1);				// Set The Pointer To NULL
+</pre>
+<p>Now we load the bitmap and convert it to a texture. TextureImage[0]=LoadBMP("Data/Crate.bmp") will jump to our LoadBMP() code. The file named Crate.bmp in the Data directory will be loaded. If everything goes well, the image data is stored in TextureImage[0], Status is set to TRUE, and we start to build our texture.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	// Load The Bitmap, Check For Errors, If Bitmap's Not Found Quit
+	if (TextureImage[0]=LoadBMP("Data/Crate.bmp"))
+	{
+		Status=TRUE;							// Set The Status To TRUE
+</pre>
+<p>Now that we've loaded the image data into TextureImage[0], we'll use the data to build 3 textures. The line below tells OpenGL we want to build three textures, and we want the texture to be stored in texture[0], texture[1] and texture[2].</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">		glGenTextures(3, &amp;texture[0]);					// Create Three Textures
+</pre>
+<p>In tutorial six, we used linear filtered texture maps. They require a hefty amount of processing power, but they look real nice. The first type of texture we're going to create in this tutorial uses GL_NEAREST. Basically this type of texture has no filtering at all. It takes very little processing power, and it looks real bad. If you've ever played a game where the textures look all blocky, it's probably using this type of texture. The only benefit of this type of texture is that projects made using this type of texture will usually run pretty good on slow computers.</p>
+<p>You'll notice we're using GL_NEAREST for both the MIN and MAG. You can mix GL_NEAREST with GL_LINEAR, and the texture will look a bit better, but we're intested in speed, so we'll use low quality for both. The MIN_FILTER is the filter used when an image is drawn smaller than the original texture size. The MAG_FILTER is used when the image is bigger than the original texture size.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">		// Create Nearest Filtered Texture
+		glBindTexture(GL_TEXTURE_2D, texture[0]);
+		glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_NEAREST); // ( NEW )
+		glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_NEAREST); // ( NEW )
+		glTexImage2D(GL_TEXTURE_2D, 0, 3, TextureImage[0]-&gt;sizeX, TextureImage[0]-&gt;sizeY, 0, GL_RGB, GL_UNSIGNED_BYTE, TextureImage[0]-&gt;data);
+</pre>
+<p>The next texture we build is the same type of texture we used in tutorial six. Linear filtered. The only thing that has changed is that we are storing this texture in texture[1] instead of texture[0] because it's our second texture. If we stored it in texture[0] like above, it would overwrite the GL_NEAREST texture (the first texture).</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">		// Create Linear Filtered Texture
+		glBindTexture(GL_TEXTURE_2D, texture[1]);
+		glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_LINEAR);
+		glTexImage2D(GL_TEXTURE_2D, 0, 3, TextureImage[0]-&gt;sizeX, TextureImage[0]-&gt;sizeY, 0, GL_RGB, GL_UNSIGNED_BYTE, TextureImage[0]-&gt;data);
+</pre>
+<p>Now for a new way to make textures. Mipmapping! You may have noticed that when you make an image very tiny on the screen, alot of the fine details disappear. Patterns that used to look nice start looking real bad. When you tell OpenGL to build a mipmapped texture OpenGL tries to build different sized high quality textures. When you draw a mipmapped texture to the screen OpenGL will select the BEST looking texture from the ones it built (texture with the most detail) and draw it to the screen instead of resizing the original image (which causes detail loss).</p>
+<p>I had said in tutorial six there was a way around the 64,128,256,etc limit that OpenGL puts on texture width and height. gluBuild2DMipmaps is it. From what I've found, you can use any bitmap image you want (any width and height) when building mipmapped textures. OpenGL will automatically size it to the proper width and height.</p>
+<p>Because this is texture number three, we're going to store this texture in texture[2]. So now we have texture[0] which has no filtering, texture[1] which uses linear filtering, and texture[2] which uses mipmapped textures. We're done building the textures for this tutorial.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">		// Create MipMapped Texture
+		glBindTexture(GL_TEXTURE_2D, texture[2]);
+		glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_LINEAR_MIPMAP_NEAREST); // ( NEW )
+</pre>
+<p>The following line builds the mipmapped texture. We're creating a 2D texture using three colors (red, green, blue). TextureImage[0]-&gt;sizeX is the bitmaps width, TextureImage[0]-&gt;sizeY is the bitmaps height, GL_RGB means we're using Red, Green, Blue colors in that order. GL_UNSIGNED_BYTE means the data that makes the texture is made up of bytes, and TextureImage[0]-&gt;data points to the bitmap data that we're building the texture from.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">		gluBuild2DMipmaps(GL_TEXTURE_2D, 3, TextureImage[0]-&gt;sizeX, TextureImage[0]-&gt;sizeY, GL_RGB, GL_UNSIGNED_BYTE, TextureImage[0]-&gt;data); // ( NEW )
+	}
+</pre>
+<p>Now we free up any ram that we may have used to store the bitmap data. We check to see if the bitmap data was stored in TextureImage[0]. If it was we check to see if the data has been stored. If data was stored, we erase it. Then we free the image structure making sure any used memory is freed up.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	if (TextureImage[0])							// If Texture Exists
+	{
+		if (TextureImage[0]-&gt;data)					// If Texture Image Exists
+		{
+			free(TextureImage[0]-&gt;data);				// Free The Texture Image Memory
+		}
+
+		free(TextureImage[0]);						// Free The Image Structure
+	}
+</pre>
+<p>Finally we return the status. If everything went OK, the variable Status will be TRUE. If anything went wrong, Status will be FALSE.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	return Status;								// Return The Status
+}
+</pre>
+<p>Now we load the textures, and initialize the OpenGL settings. The first line of InitGL loads the textures using the code above. After the textures have been created, we enable 2D texture mapping with glEnable(GL_TEXTURE_2D). The shade mode is set to smooth shading, The background color is set to black, we enable depth testing, then we enable nice perspective calculations.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">int InitGL(GLvoid)								// All Setup For OpenGL Goes Here
+{
+	if (!LoadGLTextures())							// Jump To Texture Loading Routine
+	{
+		return FALSE;							// If Texture Didn't Load Return FALSE
+	}
+
+	glEnable(GL_TEXTURE_2D);						// Enable Texture Mapping
+	glShadeModel(GL_SMOOTH);						// Enable Smooth Shading
+	glClearColor(0.0f, 0.0f, 0.0f, 0.5f);					// Black Background
+	glClearDepth(1.0f);							// Depth Buffer Setup
+	glEnable(GL_DEPTH_TEST);						// Enables Depth Testing
+	glDepthFunc(GL_LEQUAL);							// The Type Of Depth Testing To Do
+	glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);			// Really Nice Perspective Calculations
+</pre>
+<p>Now we set up the lighting. The line below will set the amount of ambient light that light1 will give off. At the beginning of this tutorial we stored the amount of ambient light in LightAmbient. The values we stored in the array will be used (half intensity ambient light).</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	glLightfv(GL_LIGHT1, GL_AMBIENT, LightAmbient);				// Setup The Ambient Light
+</pre>
+<p>Next we set up the amount of diffuse light that light number one will give off. We stored the amount of diffuse light in LightDiffuse. The values we stored in this array will be used (full intensity white light).</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	glLightfv(GL_LIGHT1, GL_DIFFUSE, LightDiffuse);				// Setup The Diffuse Light
+</pre>
+<p>Now we set the position of the light. We stored the position in LightPosition. The values we stored in this array will be used (right in the center of the front face, 0.0f on x, 0.0f on y, and 2 unit towards the viewer {coming out of the screen} on the z plane).</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	glLightfv(GL_LIGHT1, GL_POSITION,LightPosition);			// Position The Light
+</pre>
+<p>Finally, we enable light number one. We haven't enabled GL_LIGHTING though, so you wont see any lighting just yet. The light is set up, and positioned, it's even enabled, but until we enable GL_LIGHTING, the light will not work.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	glEnable(GL_LIGHT1);							// Enable Light One
+	return TRUE;								// Initialization Went OK
+}
+</pre>
+<p>In the next section of code, we're going to draw the texture mapped cube. I will comment a few of the line only because they are new. If you're not sure what the uncommented lines do, check tutorial number six.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">int DrawGLScene(GLvoid)								// Here's Where We Do All The Drawing
+{
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);			// Clear The Screen And The Depth Buffer
+	glLoadIdentity();							// Reset The View
+</pre>
+<p>The next three lines of code position and rotate the texture mapped cube. glTranslatef(0.0f,0.0f,z) moves the cube to the value of z on the z plane (away from and towards the viewer). glRotatef(xrot,1.0f,0.0f,0.0f) uses the variable xrot to rotate the cube on the x axis. glRotatef(yrot,0.0f,1.0f,0.0f) uses the variable yrot to rotate the cube on the y axis.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	glTranslatef(0.0f,0.0f,z);						// Translate Into/Out Of The Screen By z
+
+	glRotatef(xrot,1.0f,0.0f,0.0f);						// Rotate On The X Axis By xrot
+	glRotatef(yrot,0.0f,1.0f,0.0f);						// Rotate On The Y Axis By yrot
+</pre>
+<p>The next line is similar to the line we used in tutorial six, but instead of binding texture[0], we are binding texture[filter]. Any time we press the 'F' key, the value in filter will increase. If this value is higher than two, the variable filter is set back to zero. When the program starts the filter will be set to zero. This is the same as saying glBindTexture(GL_TEXTURE_2D, texture[0]). If we press 'F' once more, the variable filter will equal one, which is the same as saying glBindTexture(GL_TEXTURE_2D, texture[1]). By using the variable filter we can select any of the three textures we've made.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	glBindTexture(GL_TEXTURE_2D, texture[filter]);				// Select A Texture Based On filter
+
+	glBegin(GL_QUADS);							// Start Drawing Quads
+</pre>
+<p>glNormal3f is new to my tutorials. A normal is a line pointing straight out of the middle of a polygon at a 90 degree angle. When you use lighting, you need to specify a normal. The normal tells OpenGL which direction the polygon is facing... which way is up. If you don't specify normals, all kinds of weird things happen. Faces that shouldn't light up will light up, the wrong side of a polygon will light up, etc. The normal should point outwards from the polygon.</p>
+<p>Looking at the front face you'll notice that the normal is positive on the z axis. This means the normal is pointing at the viewer. Exactly the direction we want it pointing. On the back face, the normal is pointing away from the viewer, into the screen. Again exactly what we want. If the cube is spun 180 degrees on either the x or y axis, the front will be facing into the screen and the back will be facing towards the viewer. No matter what face is facing the viewer, the normal of that face will also be pointing towards the viewer. Because the light is close to the viewer, any time the normal is pointing towards the viewer it's also pointing towards the light. When it does, the face will light up. The more a normal points towards the light, the brighter that face is. If you move into the center of the cube you'll notice it's dark. The normals are point out, not in, so there's no light inside the box, exactly as it should be.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">		// Front Face
+		glNormal3f( 0.0f, 0.0f, 1.0f);					// Normal Pointing Towards Viewer
+		glTexCoord2f(0.0f, 0.0f); glVertex3f(-1.0f, -1.0f,  1.0f);	// Point 1 (Front)
+		glTexCoord2f(1.0f, 0.0f); glVertex3f( 1.0f, -1.0f,  1.0f);	// Point 2 (Front)
+		glTexCoord2f(1.0f, 1.0f); glVertex3f( 1.0f,  1.0f,  1.0f);	// Point 3 (Front)
+		glTexCoord2f(0.0f, 1.0f); glVertex3f(-1.0f,  1.0f,  1.0f);	// Point 4 (Front)
+		// Back Face
+		glNormal3f( 0.0f, 0.0f,-1.0f);					// Normal Pointing Away From Viewer
+		glTexCoord2f(1.0f, 0.0f); glVertex3f(-1.0f, -1.0f, -1.0f);	// Point 1 (Back)
+		glTexCoord2f(1.0f, 1.0f); glVertex3f(-1.0f,  1.0f, -1.0f);	// Point 2 (Back)
+		glTexCoord2f(0.0f, 1.0f); glVertex3f( 1.0f,  1.0f, -1.0f);	// Point 3 (Back)
+		glTexCoord2f(0.0f, 0.0f); glVertex3f( 1.0f, -1.0f, -1.0f);	// Point 4 (Back)
+		// Top Face
+		glNormal3f( 0.0f, 1.0f, 0.0f);					// Normal Pointing Up
+		glTexCoord2f(0.0f, 1.0f); glVertex3f(-1.0f,  1.0f, -1.0f);	// Point 1 (Top)
+		glTexCoord2f(0.0f, 0.0f); glVertex3f(-1.0f,  1.0f,  1.0f);	// Point 2 (Top)
+		glTexCoord2f(1.0f, 0.0f); glVertex3f( 1.0f,  1.0f,  1.0f);	// Point 3 (Top)
+		glTexCoord2f(1.0f, 1.0f); glVertex3f( 1.0f,  1.0f, -1.0f);	// Point 4 (Top)
+		// Bottom Face
+		glNormal3f( 0.0f,-1.0f, 0.0f);					// Normal Pointing Down
+		glTexCoord2f(1.0f, 1.0f); glVertex3f(-1.0f, -1.0f, -1.0f);	// Point 1 (Bottom)
+		glTexCoord2f(0.0f, 1.0f); glVertex3f( 1.0f, -1.0f, -1.0f);	// Point 2 (Bottom)
+		glTexCoord2f(0.0f, 0.0f); glVertex3f( 1.0f, -1.0f,  1.0f);	// Point 3 (Bottom)
+		glTexCoord2f(1.0f, 0.0f); glVertex3f(-1.0f, -1.0f,  1.0f);	// Point 4 (Bottom)
+		// Right face
+		glNormal3f( 1.0f, 0.0f, 0.0f);					// Normal Pointing Right
+		glTexCoord2f(1.0f, 0.0f); glVertex3f( 1.0f, -1.0f, -1.0f);	// Point 1 (Right)
+		glTexCoord2f(1.0f, 1.0f); glVertex3f( 1.0f,  1.0f, -1.0f);	// Point 2 (Right)
+		glTexCoord2f(0.0f, 1.0f); glVertex3f( 1.0f,  1.0f,  1.0f);	// Point 3 (Right)
+		glTexCoord2f(0.0f, 0.0f); glVertex3f( 1.0f, -1.0f,  1.0f);	// Point 4 (Right)
+		// Left Face
+		glNormal3f(-1.0f, 0.0f, 0.0f);					// Normal Pointing Left
+		glTexCoord2f(0.0f, 0.0f); glVertex3f(-1.0f, -1.0f, -1.0f);	// Point 1 (Left)
+		glTexCoord2f(1.0f, 0.0f); glVertex3f(-1.0f, -1.0f,  1.0f);	// Point 2 (Left)
+		glTexCoord2f(1.0f, 1.0f); glVertex3f(-1.0f,  1.0f,  1.0f);	// Point 3 (Left)
+		glTexCoord2f(0.0f, 1.0f); glVertex3f(-1.0f,  1.0f, -1.0f);	// Point 4 (Left)
+	glEnd();								// Done Drawing Quads
+</pre>
+<p>The next two lines increase xrot and yrot by the amount stored in xspeed, and yspeed. If the value in xspeed or yspeed is high, xrot and yrot will increase quickly. The faster xrot, or yrot increases, the faster the cube spins on that axis.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	xrot+=xspeed;								// Add xspeed To xrot
+	yrot+=yspeed;								// Add yspeed To yrot
+	return TRUE;								// Keep Going
+}
+</pre>
+<p>Now we move down to WinMain(). Were going to add code to turn lighting on and off, spin the crate, change the filter and move the crate into and out of the screen. Closer to the bottom of WinMain() you will see the command SwapBuffers(hDC). Immediately after this line, add the following code.</p>
+<p>This code checks to see if the letter 'L' has been pressed on the keyboard. The first line checks to see if 'L' is being pressed. If 'L' is being pressed, but lp isn't false, meaning 'L' has already been pressed once or it's being held down, nothing will happen.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">				SwapBuffers(hDC);				// Swap Buffers (Double Buffering)
+				if (keys['L'] &amp;&amp; !lp)				// L Key Being Pressed Not Held?
+				{
+</pre>
+<p>If lp was false, meaning the 'L' key hasn't been pressed yet, or it's been released, lp becomes true. This forces the person to let go of the 'L' key before this code will run again. If we didn't check to see if the key was being held down, the lighting would flicker off and on over and over, because the program would think you were pressing the 'L' key over and over again each time it came to this section of code.</p>
+<p>Once lp has been set to true, telling the computer that 'L' is being held down, we toggle lighting off and on. The variable light can only be true of false. So if we say light=!light, what we are actually saying is light equals NOT light. Which in english translates to if light equals true make light not true (false), and if light equals false, make light not false (true). So if light was true, it becomes false, and if light was false it becomes true.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">					lp=TRUE;				// lp Becomes TRUE
+					light=!light;				// Toggle Light TRUE/FALSE
+</pre>
+<p>Now we check to see what light ended up being. The first line translated to english means: If light equals false. So if you put it all together, the lines do the following: If light equals false, disable lighting. This turns all lighting off. The command 'else' translates to: if it wasn't false. So if light wasn't false, it must have been true, so we turn lighting on.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">					if (!light)				// If Not Light
+					{
+						glDisable(GL_LIGHTING);		// Disable Lighting
+					}
+					else					// Otherwise
+					{
+						glEnable(GL_LIGHTING);		// Enable Lighting
+					}
+				}
+</pre>
+<p>The following line checks to see if we stopped pressing the 'L' key. If we did, it makes the variable lp equal false, meaning the 'L' key isn't pressed. If we didn't check to see if the key was released, we'd be able to turn lighting on once, but because the computer would always think 'L' was being held down so it wouldn't let us turn it back off.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">				if (!keys['L'])					// Has L Key Been Released?
+				{
+					lp=FALSE;				// If So, lp Becomes FALSE
+				}
+</pre>
+<p>Now we do something similar with the 'F' key. If the key is being pressed, and it's not being held down or it's never been pressed before, it will make the variable fp equal true meaning the key is now being held down. It will then increase the variable called filter. If filter is greater than 2 (which would be texture[3], and that texture doesn't exist), we reset the variable filter back to zero.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">				if (keys['F'] &amp;&amp; !fp)				// Is F Key Being Pressed?
+				{
+					fp=TRUE;				// fp Becomes TRUE
+					filter+=1;				// filter Value Increases By One
+					if (filter&gt;2)				// Is Value Greater Than 2?
+					{
+						filter=0;			// If So, Set filter To 0
+					}
+				}
+				if (!keys['F'])					// Has F Key Been Released?
+				{
+					fp=FALSE;				// If So, fp Becomes FALSE
+				}
+</pre>
+<p>The next four lines check to see if we are pressing the 'Page Up' key. If we are it decreases the variable z. If this variable decreases, the cube will move into the distance because of the glTranslatef(0.0f,0.0f,z) command used in the DrawGLScene procedure.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">				if (keys[VK_PRIOR])				// Is Page Up Being Pressed?
+				{
+					z-=0.02f;				// If So, Move Into The Screen
+				}
+</pre>
+<p>These four lines check to see if we are pressing the 'Page Down' key. If we are it increases the variable z and moves the cube towards the viewer because of the glTranslatef(0.0f,0.0f,z) command used in the DrawGLScene procedure.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">				if (keys[VK_NEXT])				// Is Page Down Being Pressed?
+				{
+					z+=0.02f;				// If So, Move Towards The Viewer
+				}
+</pre>
+<p>Now all we have to check for is the arrow keys. By pressing left or right, xspeed is increased or decreased. By pressing up or down, yspeed is increased or decreased. Remember further up in the tutorial I said that if the value in xspeed or yspeed was high, the cube would spin faster. The longer you hold down an arrow key, the faster the cube will spin in that direction.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">				if (keys[VK_UP])				// Is Up Arrow Being Pressed?
+				{
+					xspeed-=0.01f;				// If So, Decrease xspeed
+				}
+				if (keys[VK_DOWN])				// Is Down Arrow Being Pressed?
+				{
+					xspeed+=0.01f;				// If So, Increase xspeed
+				}
+				if (keys[VK_RIGHT])				// Is Right Arrow Being Pressed?
+				{
+					yspeed+=0.01f;				// If So, Increase yspeed
+				}
+				if (keys[VK_LEFT])				// Is Left Arrow Being Pressed?
+				{
+					yspeed-=0.01f;				// If So, Decrease yspeed
+				}
+</pre>
+<p>Like all the previous tutorials, make sure the title at the top of the window is correct.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">				if (keys[VK_F1])				// Is F1 Being Pressed?
+				{
+					keys[VK_F1]=FALSE;			// If So Make Key FALSE
+					KillGLWindow();				// Kill Our Current Window
+					fullscreen=!fullscreen;			// Toggle Fullscreen / Windowed Mode
+					// Recreate Our OpenGL Window
+					if (!CreateGLWindow("NeHe's Textures, Lighting &amp; Keyboard Tutorial",640,480,16,fullscreen))
+					{
+						return 0;			// Quit If Window Was Not Created
+					}
+				}
+			}
+		}
+	}
+
+	// Shutdown
+	KillGLWindow();								// Kill The Window
+	return (msg.wParam);							// Exit The Program
+}
+</pre>
+<p>By the end of this tutorial you should be able to create and interact with high quality, realistic looking, textured mapped objects made up of quads. You should understand the benefits of each of the three filters used in this tutorial. By pressing specific keys on the keyboard you should be able to interact with the object(s) on the screen, and finally, you should know how to apply simple lighting to a scene making the scene appear more realistic.</p>
+<p><strong>Jeff Molofee</strong> (<strong>NeHe</strong>)</p>
+<p>* DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/vc/lesson07.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/vc/lesson07.zip'" tppabs="http://nehe.gamedev.net/data/lessons/vc/lesson07.zip">Visual C++</a> Code For This Lesson.</p>
+<p>* DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/bcb6/lesson07_bcb6.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/bcb6/lesson07_bcb6.zip'" tppabs="http://nehe.gamedev.net/data/lessons/bcb6/lesson07_bcb6.zip">Borland C++ Builder 6</a> Code For This Lesson. ( Conversion by <a href="mailto:christian@tugzip.com">Christian Kindahl</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/c_sharp/lesson07.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/c_sharp/lesson07.zip'" tppabs="http://nehe.gamedev.net/data/lessons/c_sharp/lesson07.zip">C#</a> Code For This Lesson. ( Conversion by <a href="mailto:bholley@unlnotes.unl.edu">Brian Holley</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/cwarrior/lesson07.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/cwarrior/lesson07.zip'" tppabs="http://nehe.gamedev.net/data/lessons/cwarrior/lesson07.zip">Code Warrior 5.3</a> Code For This Lesson. ( Conversion by <a href="mailto:DelusionalBeing@hotmail.com">Scott Lupton</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/cygwin/lesson07.tar.gz  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/cygwin/lesson07.tar.gz'" tppabs="http://nehe.gamedev.net/data/lessons/cygwin/lesson07.tar.gz">Cygwin</a> Code For This Lesson. ( Conversion by <a href="mailto:stephan@lazyfellow.com">Stephan Ferraro</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/d/lesson07.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/d/lesson07.zip'" tppabs="http://nehe.gamedev.net/data/lessons/d/lesson07.zip">D Language</a> Code For This Lesson. ( Conversion by <a href="mailto:gpineda2013@yahoo.com.mx">Familia Pineda Garcia</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/delphi/lesson07.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/delphi/lesson07.zip'" tppabs="http://nehe.gamedev.net/data/lessons/delphi/lesson07.zip">Delphi</a> Code For This Lesson. ( Conversion by <a href="mailto:michal_praha@seznam.cz">Michal Tucek</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/devc/lesson07.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/devc/lesson07.zip'" tppabs="http://nehe.gamedev.net/data/lessons/devc/lesson07.zip">Dev C++</a> Code For This Lesson. ( Conversion by <a href="mailto:danprogram@hotmail.com">Dan</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/euphoria/lesson07.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/euphoria/lesson07.zip'" tppabs="http://nehe.gamedev.net/data/lessons/euphoria/lesson07.zip">Euphoria</a> Code For This Lesson. ( Conversion by <a href="mailto:1evan@sbcglobal.net">Evan Marshall</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/game/data/lessons/glut/lesson07.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/game/data/lessons/glut/lesson07.zip'" tppabs="http://nehe.gamedev.net/data/lessons/game/data/lessons/glut/lesson07.zip">Game GLUT</a> Code For This Lesson. ( Conversion by <a href="mailto:milix_gr@hotmail.com">Milikas Anastasios</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/glut/lesson07.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/glut/lesson07.zip'" tppabs="http://nehe.gamedev.net/data/lessons/glut/lesson07.zip">GLUT</a> Code For This Lesson. ( Conversion by <a href="mailto:lordrustad@hotmail.com">Andy Restad</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/irix/lesson07.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/irix/lesson07.zip'" tppabs="http://nehe.gamedev.net/data/lessons/irix/lesson07.zip">Irix</a> Code For This Lesson. ( Conversion by <a href="mailto:lakmal@gunasekara.de">Lakmal Gunasekara</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/java/lesson07.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/java/lesson07.zip'" tppabs="http://nehe.gamedev.net/data/lessons/java/lesson07.zip">Java</a> Code For This Lesson. ( Conversion by <a href="mailto:jeff@consunet.com.au">Jeff Kirby</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/jedisdl/lesson07.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/jedisdl/lesson07.zip'" tppabs="http://nehe.gamedev.net/data/lessons/jedisdl/lesson07.zip">Jedi-SDL</a> Code For This Lesson. ( Conversion by <a href="mailto:Dominique@SavageSoftware.com.au">Dominique Louis</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/jogl/lesson07.jar  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/jogl/lesson07.jar'" tppabs="http://nehe.gamedev.net/data/lessons/jogl/lesson07.jar">JoGL</a> Code For This Lesson. ( Conversion by <a href="mailto:jattier@hotmail.com">Kevin J. Duling</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/lccwin32/lccwin32_lesson07.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/lccwin32/lccwin32_lesson07.zip'" tppabs="http://nehe.gamedev.net/data/lessons/lccwin32/lccwin32_lesson07.zip">LCC Win32</a> Code For This Lesson. ( Conversion by <a href="mailto:rwishlaw@shaw.ca">Robert Wishlaw</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/linux/lesson07.tar.gz  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/linux/lesson07.tar.gz'" tppabs="http://nehe.gamedev.net/data/lessons/linux/lesson07.tar.gz">Linux</a> Code For This Lesson. ( Conversion by <a href="mailto:ulmont@bellsouth.net">Richard Campbell</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/linuxglx/lesson07.tar.gz  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/linuxglx/lesson07.tar.gz'" tppabs="http://nehe.gamedev.net/data/lessons/linuxglx/lesson07.tar.gz">Linux/GLX</a> Code For This Lesson. ( Conversion by <a href="mailto:Mihael.Vrbanec@stud.uni-karlsruhe.de">Mihael Vrbanec</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/linuxsdl/lesson07.tar.gz  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/linuxsdl/lesson07.tar.gz'" tppabs="http://nehe.gamedev.net/data/lessons/linuxsdl/lesson07.tar.gz">Linux/SDL</a> Code For This Lesson. ( Conversion by <a href="mailto:leggett@eecs.tulane.edu">Ti Leggett</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/lwjgl/lesson07.jar  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/lwjgl/lesson07.jar'" tppabs="http://nehe.gamedev.net/data/lessons/lwjgl/lesson07.jar">LWJGL</a> Code For This Lesson. ( Conversion by <a href="mailto:mark.bernard@rogers.com">Mark Bernard</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev.net/data/lessons/mac/lesson07.sit  \n\nThis file was not retrieved by Teleport Pro, because the server reports that this file cannot be found.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev.net/data/lessons/mac/lesson07.sit'" tppabs="http://nehe.gamedev.net/data/lessons/mac/lesson07.sit">Mac OS</a> Code For This Lesson. ( Conversion by <a href="mailto:asp@usc.edu">Anthony Parker</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/macosxcocoa/lesson07.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/macosxcocoa/lesson07.zip'" tppabs="http://nehe.gamedev.net/data/lessons/macosxcocoa/lesson07.zip">Mac OS X/Cocoa</a> Code For This Lesson. ( Conversion by <a href="mailto:blb@pobox.com">Bryan Blackburn</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/masm/lesson07.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/masm/lesson07.zip'" tppabs="http://nehe.gamedev.net/data/lessons/masm/lesson07.zip">MASM</a> Code For This Lesson. ( Conversion by <a href="mailto:scalp@bigfoot.com">Nico (Scalp)</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/openil/lesson07.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/openil/lesson07.zip'" tppabs="http://nehe.gamedev.net/data/lessons/openil/lesson07.zip">Visual C++ / OpenIL</a> Code For This Lesson. ( Conversion by <a href="mailto:doomwiz@ticnet.com">Denton Woods</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/pbasic/lesson07.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/pbasic/lesson07.zip'" tppabs="http://nehe.gamedev.net/data/lessons/pbasic/lesson07.zip">Power Basic</a> Code For This Lesson. ( Conversion by <a href="mailto:anguslaw@net.ntl.com">Angus Law</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/pelles_c/lesson07.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/pelles_c/lesson07.zip'" tppabs="http://nehe.gamedev.net/data/lessons/pelles_c/lesson07.zip">Pelles C</a> Code For This Lesson. ( Conversion by <a href="mailto:pelle@smorgasbordet.com">Pelle Orinius</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/scheme/lesson07.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/scheme/lesson07.zip'" tppabs="http://nehe.gamedev.net/data/lessons/scheme/lesson07.zip">Scheme</a> Code For This Lesson. ( Conversion by <a href="mailto:bburns@cs.umass.edu">Brendan Burns</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/solaris/lesson07.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/solaris/lesson07.zip'" tppabs="http://nehe.gamedev.net/data/lessons/solaris/lesson07.zip">Solaris</a> Code For This Lesson. ( Conversion by <a href="mailto:lakmal@gunasekara.de">Lakmal Gunasekara</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/vb/lesson07.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/vb/lesson07.zip'" tppabs="http://nehe.gamedev.net/data/lessons/vb/lesson07.zip">Visual Basic</a> Code For This Lesson. ( Conversion by <a href="mailto:pdetagyos@cox.net">Peter De Tagyos</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/vfortran/lesson07.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/vfortran/lesson07.zip'" tppabs="http://nehe.gamedev.net/data/lessons/vfortran/lesson07.zip">Visual Fortran</a> Code For This Lesson. ( Conversion by <a href="mailto:Jean-Philippe.Perois@wanadoo.fr">Jean-Philippe Perois</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/vs_net/lesson07.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/vs_net/lesson07.zip'" tppabs="http://nehe.gamedev.net/data/lessons/vs_net/lesson07.zip">Visual Studio .NET</a> Code For This Lesson. ( Conversion by <a href="mailto:ultimatezeus@hotmail.com">Grant James</a> )</p>
+<p>&nbsp;</p>
+<p><strong><span><a href="index-46.htm" tppabs="http://nehe.gamedev.net/data/lessons/lesson.asp?lesson=06">&lt; Lesson 06</a></span></strong><strong><span><a href="index-48.htm" tppabs="http://nehe.gamedev.net/data/lessons/lesson.asp?lesson=08">Lesson 08 &gt;</a></span></strong></p>
+
+
+</div>
+</div>
+
+
+
+            <div style="width:728px;padding:0px;margin:auto; margin-top: 10px;">
+            
+
+    
+                <!-- Leaderboard_NeHe -->
+                <div id='div-gpt-ad-1327940144417-0' style='width:728px; height:90px;'>
+                <script type='text/javascript'>
+                googletag.cmd.push(function() { googletag.display('div-gpt-ad-1327940144417-0'); });
+                </script>
+                </div>
+            
+
+                           
+            </div>   
+        </td>
+        <td class="col2">
+            
+
+
+
+
+<div style="text-align: center; padding:10px;">
+
+<script type='text/javascript'>
+    GA_googleFillSlot("Skyscraper_NeHe");
+</script>
+
+</div>
+            
+        </td>
+    </table>
+    <div id="footer">
+        <p>
+            
+    
+    © 1997-2012 Gamedev . All rights reserved.<br/>
+
+			NeHe™ and NeHe Productions™ are trademarks of GameDev.net, LLC<br/>
+			OpenGL® is a registered trademark of Silicon Graphics Inc.<br/>
+		</p>        
+		<br/>
+    </div>
+
+    
+    
+	    <script type="text/javascript" src="shCore.js" tppabs="http://nehe.gamedev.net/static/js/syntax_highlighter/shCore.js"></script>
+        <script type="text/javascript" src="shBrushCpp.js" tppabs="http://nehe.gamedev.net/static/js/syntax_highlighter/shBrushCpp.js"></script>
+	    <script type="text/javascript" src="shBrushJScript.js" tppabs="http://nehe.gamedev.net/static/js/syntax_highlighter/shBrushJScript.js"></script>
+	    <script type="text/javascript">SyntaxHighlighter.all();</script>
+    
+
+    <!-- Place this render call where appropriate -->
+    <script type="text/javascript">
+      (function() {
+        var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+        po.src = 'plusone.js'/*tpa=https://apis.google.com/js/plusone.js*/;
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+      })();
+    </script>    
+
+    
+<!-- GoogleAnalytics code -->
+<script src="urchin.js" tppabs="http://www.google-analytics.com/urchin.js" type="text/javascript">
+</script>
+<script type="text/javascript">
+_uacct = "UA-279474-2"; // Gamedev
+urchinTracker();
+_uff = 0; // Reset for second account
+_uacct = "UA-24180731-1"; // Non-GD
+urchinTracker();
+</script> 
+  </body>
+</html>

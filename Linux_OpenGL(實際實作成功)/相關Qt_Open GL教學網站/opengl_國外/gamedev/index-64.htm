@@ -1,0 +1,689 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+    dir="ltr"
+    xml:lang="en"
+    lang="en">
+  <head>
+    <title>NeHe Productions: Tokens, Extensions, Scissor Testing And TGA Loading</title>
+
+    <link rel="stylesheet" type="text/css" href="public_base.css" tppabs="http://nehe.gamedev.net/static/css/public_base.css" />
+    <link type="text/css" rel="stylesheet" href="shThemeMidnight.css" tppabs="http://nehe.gamedev.net/static/css/syntax_highlighter/shThemeMidnight.css"/>
+    
+    <link rel="alternate" type="application/atom+xml" title="Atom feed" href="index-1.htm" tppabs="http://nehe.gamedev.net/atom/" />
+    <link rel="alternate" type="application/rss+xml" title="RSS feed" href="index-2.htm" tppabs="http://nehe.gamedev.net/rss/" />
+    
+    <meta name="author" content="Luke Benstead + Carsten Haubold" />
+    <meta name="description" content="OpenGL Tutorials, Demos, Games and More..." />
+    <meta name="keywords" content="opengl, tutorial, article, demo, game, blend, texturemap, lighting, contest, 3D" />
+
+    
+    
+
+    
+
+</script>
+
+
+    
+    
+    
+    
+        
+        <script type='text/javascript'>
+        var googletag = googletag || {};
+        googletag.cmd = googletag.cmd || [];
+        (function() {
+        var gads = document.createElement('script');
+        gads.async = true;
+        gads.type = 'text/javascript';
+        var useSSL = 'https:' == document.location.protocol;
+        gads.src = (useSSL ? 'https:' : 'http:') + 
+        '//www.googletagservices.com/tag/js/gpt.js';
+        var node = document.getElementsByTagName('script')[0];
+        node.parentNode.insertBefore(gads, node);
+        })();
+        </script>
+
+        <script type='text/javascript'>
+        googletag.cmd.push(function() {
+        googletag.defineSlot('/1004699/Leaderboard_NeHe', [728, 90], 'div-gpt-ad-1327940144417-0').addService(googletag.pubads());
+        googletag.defineSlot('/1004699/Skyscraper_NeHe', [160, 600], 'div-gpt-ad-1327940144417-1').addService(googletag.pubads());
+        googletag.pubads().enableSingleRequest();
+        googletag.enableServices();
+        });
+        </script>
+    
+    
+
+    
+  </head>
+
+  <body>
+    
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "all.js#xfbml=1"/*tpa=http://connect.facebook.net/en_GB/all.js#xfbml=1*/;
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+
+
+    <table cellpadding="0" cellspacing="0" border="0" id="layout_table">
+    <tr><td>
+        <div id="header">
+                <a href="index.htm" tppabs="http://nehe.gamedev.net/"><img class="logo" class="logo" src="nehe.png" tppabs="http://nehe.gamedev.net/static/images/nehe.png" border="0" alt="Nehe" /></a>
+        </div>            
+    </td></tr>
+    <tr><td colspan="2">
+            
+<div class="navbar">
+    <a href="index.htm" tppabs="http://nehe.gamedev.net/">HOME</a>
+    <a href="javascript:if(confirm('http://twitter.com/  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://twitter.com/#!/nehegl'" tppabs="http://twitter.com/#!/nehegl">TWITTER</a>  
+    <a href="javascript:if(confirm('http://www.facebook.com/pages/NeHe/300582493323181  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://www.facebook.com/pages/NeHe/300582493323181'" tppabs="http://www.facebook.com/pages/NeHe/300582493323181">FACEBOOK</a>     
+    <a href="index-2.htm" tppabs="http://nehe.gamedev.net/rss/">RSS</a>    
+    <a href="index-1.htm" tppabs="http://nehe.gamedev.net/atom/">ATOM</a>    
+    <a href="javascript:if(confirm('http://www.gamedev.net/forum/27-nehe-productions/page__forum_title__NeHe+Productions  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://www.gamedev.net/forum/27-nehe-productions/page__forum_title__NeHe+Productions'" tppabs="http://www.gamedev.net/forum/27-nehe-productions/page__forum_title__NeHe+Productions">FORUM</a>    
+</div>
+    
+    </td></tr>
+    <tr>
+        <td class="col1">
+
+            
+<div id="article_container">
+
+
+<h1 class="article-header">Tokens, Extensions, Scissor Testing And TGA Loading</h1>
+<div class="social-media">
+<!-- Place this tag where you want the +1 button to render -->
+<div class="g-plusone" data-size="medium" data-width="120" data-annotation="inline"></div>
+<div class="fb-like" data-send="false" data-layout="button_count" data-width="60" data-show-faces="false" data-colorscheme="dark" data-font="arial"></div>
+</div>
+<div style="clear:both;"></div>
+<p>This tutorial is far from visually stunning, but you will definitely learn a few new things by reading through it. I have had quite a few people ask me about extensions, and how to find out what extensions are supported on a particular brand of video card. This tutorial will teach you how to find out what OpenGL extensions are supported on any type of 3D video card.</p>
+<p>I will also teach you how to scroll a portion of the screen without affecting any of the graphics around it using scissor testing. You will also learn how to draw line strips, and most importantly, in this tutorial we will drop the AUX library completely, along with Bitmap images. I will show you how to use Targa (TGA) images as textures. Not only are Targa files easy to work with and create, they support the ALPHA channel, which will allow you to create some pretty cool effects in future projects!</p>
+<p>The first thing you should notice in the code below is that we no longer include the glaux header file (glaux.h). It is also important to note that the glaux.lib file can also be left out! We're not working with bitmaps anymore, so there's no need to include either of these files in our project.</p>
+<p>Also, using glaux, I always received one warning message. Without glaux there should be zero errors, zero warnings.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">#include	&lt;windows.h&gt;								// Header File For Windows
+#include	&lt;stdio.h&gt;								// Header File For Standard Input / Output
+#include	&lt;stdarg.h&gt;								// Header File For Variable Argument Routines
+#include	&lt;string.h&gt;								// Header File For String Management
+#include	&lt;gl\gl.h&gt;								// Header File For The OpenGL32 Library
+#include	&lt;gl\glu.h&gt;								// Header File For The GLu32 Library
+
+HDC		hDC=NULL;								// Private GDI Device Context
+HGLRC		hRC=NULL;								// Permanent Rendering Context
+HWND		hWnd=NULL;								// Holds Our Window Handle
+HINSTANCE	hInstance;								// Holds The Instance Of The Application
+
+bool		keys[256];								// Array Used For The Keyboard Routine
+bool		active=TRUE;								// Window Active Flag Set To TRUE By Default
+bool		fullscreen=TRUE;							// Fullscreen Flag Set To Fullscreen Mode By Default
+</pre>
+<p>The first thing we need to do is add some variables. The first variable scroll will be used to scroll a portion of the screen up and down. The second variable maxtokens will be used to keep track of how many tokens (extensions) are supported by the video card.</p>
+<p>base is used to hold the font display list.</p>
+<p>swidth and sheight are used to grab the current window size. We use these two variable to help us calculate the scissor coordinates later in the code.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">int		scroll;									// Used For Scrolling The Screen
+int		maxtokens;								// Keeps Track Of The Number Of Extensions Supported
+int		swidth;									// Scissor Width
+int		sheight;								// Scissor Height
+
+GLuint		base;									// Base Display List For The Font
+</pre>
+<p>Now we create a structure to hold the TGA information once we load it in. The first variable imageData will hold a pointer to the data that makes up the image. bpp will hold the bits per pixel used in the TGA file (this value should be 24 or 32 bits depending on whether or not there is an alpha channel). The third variable width will hold the width of the TGA image. height will hold the height of the image, and texID will be used to keep track of the textures once they are built. The structure will be called TextureImage.</p>
+<p>The line just after the structure (TextureImage textures[1]) sets aside storage for the one texture that we will be using in this program.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">typedef	struct										// Create A Structure
+{
+	GLubyte	*imageData;								// Image Data (Up To 32 Bits)
+	GLuint	bpp;									// Image Color Depth In Bits Per Pixel
+	GLuint	width;									// Image Width
+	GLuint	height;									// Image Height
+	GLuint	texID;									// Texture ID Used To Select A Texture
+} TextureImage;										// Structure Name
+
+TextureImage	textures[1];								// Storage For One Texture
+
+LRESULT	CALLBACK WndProc(HWND, UINT, WPARAM, LPARAM);					// Declaration For WndProc
+</pre>
+<p>Now for the fun stuff! This section of code will load in a TGA file and convert it into a texture for use in the program. One thing to note is that this code will only load 24 or 32 bit uncompressed TGA files. I had a hard enough time making the code work with both 24 and 32 bit TGA's :) I never said I was a genious. I'd like to point out that I did not write all of this code on my own. Alot of the really good ideas I got from reading through random sites on the net. I just took all the good ideas and combined them into code that works well with OpenGL. Not easy, not extremely difficult!</p>
+<p>We pass two parameters to this section of code. The first parameter points to memory that we can store the texture in (*texture). The second parameter is the name of the file that we want to load (*filename).</p>
+<p>The first variable TGAheader[ ] holds 12 bytes. We'll compare these bytes with the first 12 bytes we read from the TGA file to make sure that the file is indeed a Targa file, and not some other type of image.</p>
+<p>TGAcompare will be used to hold the first 12 bytes we read in from the TGA file. The bytes in TGAcompare will then be compared with the bytes in TGAheader to make sure everything matches.</p>
+<p>header[ ] will hold the first 6 IMPORTANT bytes from the header file (width, height, and bits per pixel).</p>
+<p>The variable bytesPerPixel will store the result after we divide bits per pixel by 8, leaving us with the number of bytes used per pixel.</p>
+<p>imageSize will store the number of bytes required to make up the image (width * height * bytes per pixel).</p>
+<p>temp is a temporary variable that we will use to swap bytes later in the program.</p>
+<p>The last variable type is a variable that I use to select the proper texture building params depending on whether or not the TGA is 24 or 32 bit. If the texture is 24 bit we need to use GL_RGB mode when we build the texture. If the TGA is 32 bit we need to add the Alpha component, meaning we have to use GL_RGBA (By default I assume the image is 32 bit by default that is why type is GL_RGBA).</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">bool LoadTGA(TextureImage *texture, char *filename)					// Loads A TGA File Into Memory
+{    
+	GLubyte		TGAheader[12]={0,0,2,0,0,0,0,0,0,0,0,0};			// Uncompressed TGA Header
+	GLubyte		TGAcompare[12];							// Used To Compare TGA Header
+	GLubyte		header[6];							// First 6 Useful Bytes From The Header
+	GLuint		bytesPerPixel;							// Holds Number Of Bytes Per Pixel Used In The TGA File
+	GLuint		imageSize;							// Used To Store The Image Size When Setting Aside Ram
+	GLuint		temp;								// Temporary Variable
+	GLuint		type=GL_RGBA;							// Set The Default GL Mode To RBGA (32 BPP)
+</pre>
+<p>The first line below opens the TGA file for reading. file is the handle we will use to point to the data within the file. the command fopen(filename, "rb") will open the file filename, and "rb" tells our program to open it for [r]eading in [b]inary mode!</p>
+<p>The if statement has a few jobs. First off it checks to see if the file contains any data. If there is no data, NULL will be returned, the file will be closed with fclose(file), and we return false.</p>
+<p>If the file contains information, we attempt to read the first 12 bytes of the file into TGAcompare. We break the line down like this: fread will read sizeof(TGAcompare) (12 bytes) from file into TGAcompare. Then we check to see if the number of bytes read is equal to sizeof(TGAcompare) which should be 12 bytes. If we were unable to read the 12 bytes into TGAcompare the file will close and false will be returned.</p>
+<p>If everything has gone good so far, we then compare the 12 bytes we read into TGAcompare with the 12 bytes we have stored in TGAheader. If the bytes do not match, the file will close, and false will be returned.</p>
+<p>Lastly, if everything has gone great, we attempt to read 6 more bytes into header (the important bytes). If 6 bytes are not available, again, the file will close and the program will return false.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	FILE *file = fopen(filename, "rb");						// Open The TGA File
+
+	if(	file==NULL ||								// Does File Even Exist?
+		fread(TGAcompare,1,sizeof(TGAcompare),file)!=sizeof(TGAcompare) ||	// Are There 12 Bytes To Read?
+		memcmp(TGAheader,TGAcompare,sizeof(TGAheader))!=0		||	// Does The Header Match What We Want?
+		fread(header,1,sizeof(header),file)!=sizeof(header))			// If So Read Next 6 Header Bytes
+	{
+		if (file == NULL)							// Did The File Even Exist? *Added Jim Strong*
+			return false;							// Return False
+		else
+		{
+			fclose(file);							// If Anything Failed, Close The File
+			return false;							// Return False
+		}
+	}
+</pre>
+<p>If everything went ok, we now have enough information to define some important variables. The first variable we want to define is width. We want width to equal the width of the TGA file. We can find out the TGA width by multiplying the value stored in header[1] by 256. We then add the lowbyte which is stored in header[0].</p>
+<p>The height is calculated the same way but instead of using the values stored in header[0] and header[1] we use the values stored in header[2] and header[3].</p>
+<p>After we have calculated the width and height we check to see if either the width or height is less than or equal to 0. If either of the two variables is less than or equal to zero, the file will be closed, and false will be returned.</p>
+<p>We also check to see if the TGA is a 24 or 32 bit image. We do this by checking the value stored at header[4]. If the value is not 24 or 32 (bit), the file will be closed, and false will be returned.</p>
+<p>In case you have not realized. A return of false will cause the program to fail with the message "Initialization Failed". Make sure your TGA is an uncompressed 24 or 32 bit image!</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	texture-&gt;width  = header[1] * 256 + header[0];					// Determine The TGA Width	(highbyte*256+lowbyte)
+	texture-&gt;height = header[3] * 256 + header[2];					// Determine The TGA Height	(highbyte*256+lowbyte)
+    
+ 	if(	texture-&gt;width	&lt;=0	||						// Is The Width Less Than Or Equal To Zero
+		texture-&gt;height	&lt;=0	||						// Is The Height Less Than Or Equal To Zero
+		(header[4]!=24 &amp;&amp; header[4]!=32))					// Is The TGA 24 or 32 Bit?
+	{
+		fclose(file);								// If Anything Failed, Close The File
+		return false;								// Return False
+	}
+</pre>
+<p>Now that we have calculated the image width and height we need to calculate the bits per pixel, bytes per pixel and image size.</p>
+<p>The value in header[4] is the bits per pixel. So we set bpp to equal header[4].</p>
+<p>If you know anything about bits and bytes, you know that 8 bits makes a byte. To figure out how many bytes per pixel the TGA uses, all we have to do is divide bits per pixel by 8. If the image is 32 bit, bytesPerPixel will equal 4. If the image is 24 bit, bytesPerPixel will equal 3.</p>
+<p>To calculate the image size, we multiply width * height * bytesPerPixel. The result is stored in imageSize. If the image was 100x100x32 bit our image size would be 100 * 100 * 32/8 which equals 10000 * 4 or 40000 bytes!</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	texture-&gt;bpp	= header[4];							// Grab The TGA's Bits Per Pixel (24 or 32)
+	bytesPerPixel	= texture-&gt;bpp/8;						// Divide By 8 To Get The Bytes Per Pixel
+	imageSize	= texture-&gt;width*texture-&gt;height*bytesPerPixel;			// Calculate The Memory Required For The TGA Data
+</pre>
+<p>Now that we know how many bytes our image is going to take, we need to allocate some memory. The first line below does the trick. imageData will point to a section of ram big enough to hold our image. malloc(imagesize) allocates the memory (sets memory aside for us to use) based on the amount of ram we request (imageSize).</p>
+<p>The "if" statement has a few tasks. First it checks to see if the memory was allocated properly. If not, imageData will equal NULL, the file will be closed, and false will be returned.</p>
+<p>If the memory was allocated, we attempt to read the image data from the file into the allocated memory. The line fread(texture-&gt;imageData, 1, imageSize, file) does the trick. fread means file read. imageData points to the memory we want to store the data in. 1 is the size of data we want to read in bytes (we want to read 1 byte at a time). imageSize is the total number of bytes we want to read. Because imageSize is equal to the total amount of ram required to hold the image, we end up reading in the entire image. file is the handle for our open file.</p>
+<p>After reading in the data, we check to see if the amount of data we read in is the same as the value stored in imageSize. If the amount of data read and the value of imageSize is not the same, something went wrong. If any data was loaded, we will free it. (release the memory we allocated). The file will be closed, and false will be returned.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	texture-&gt;imageData=(GLubyte *)malloc(imageSize);				// Reserve Memory To Hold The TGA Data
+
+	if(	texture-&gt;imageData==NULL ||						// Does The Storage Memory Exist?
+		fread(texture-&gt;imageData, 1, imageSize, file)!=imageSize)		// Does The Image Size Match The Memory Reserved?
+	{
+		if(texture-&gt;imageData!=NULL)						// Was Image Data Loaded
+			free(texture-&gt;imageData);					// If So, Release The Image Data
+
+		fclose(file);								// Close The File
+		return false;								// Return False
+	} 
+</pre>
+<p>If the data was loaded properly, things are going good :) All we have to do now is swap the Red and Blue bytes. In OpenGL we use RGB (red, green, blue). The data in a TGA file is stored BGR (blue, green, red). If we didn't swap the red and blue bytes, anything in the picture that should be red would be blue and anything that should be blue would be red.</p>
+<p>The first thing we do is create a loop (i) that goes from 0 to imageSize. By doing this, we can loop through all of the image data. Our loop will increase by steps of 3 (0, 3, 6, 9, etc) if the TGA file is 24 bit, and 4 (0, 4, 8, 12, etc) if the image is 32 bit. The reason we increase by steps is so that the value at i is always going to be the first byte ([b]lue byte) in our group of 3 or 4 bytes.</p>
+<p>Inside the loop, we store the [b]lue byte in our temp variable. We then grab the red byte which is stored at texture-&gt;imageData[i+2] (Remember that TGAs store the colors as BGR[A]. B is i+0, G is i+1 and R is i+2) and store it where the [b]lue byte used to be.</p>
+<p>Lastly we move the [b]lue byte that we stored in the temp variable to the location where the [r]ed byte used to be (i+2), and we close the file with fclose(file).</p>
+<p>If everything went ok, the TGA should now be stored in memory as usable OpenGL texture data!</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	for(GLuint i=0; i&lt;int(imageSize); i+=bytesPerPixel)				// Loop Through The Image Data
+	{										// Swaps The 1st And 3rd Bytes ('R'ed and 'B'lue)
+		temp=texture-&gt;imageData[i];						// Temporarily Store The Value At Image Data 'i'
+		texture-&gt;imageData[i] = texture-&gt;imageData[i + 2];			// Set The 1st Byte To The Value Of The 3rd Byte
+		texture-&gt;imageData[i + 2] = temp;					// Set The 3rd Byte To The Value In 'temp' (1st Byte Value)
+	}
+
+	fclose (file);									// Close The File
+</pre>
+<p>Now that we have usable data, it's time to make a texture from it. We start off by telling OpenGL we want to create a texture in the memory pointed to by &amp;texture[0].texID.</p>
+<p>It's important that you understand a few things before we go on. In the InitGL() code, when we call LoadTGA() we pass it two parameters. The first parameter is &amp;textures[0]. In LoadTGA() we don't make reference to &amp;textures[0]. We make reference to &amp;texture[0] (no 's' at the end). When we modify &amp;texture[0] we are actually modifying textures[0]. texture[0] assumes the identity of textures[0]. I hope that makes sense.</p>
+<p>So if we wanted to create a second texture, we would pass the parameter &amp;textures[1]. In LoadTGA() any time we modified texture[0] we would be modifying textures[1]. If we passed &amp;textures[2], texture[0] would assume the identity of &amp;textures[2], etc.</p>
+<p>Hard to explain, easy to understand. Of course I wont be happy until I make it really clear :) Last example in english using an example. Say I had a box. I called it box #10. I gave it to my friend and asked him to fill it up. My friend could care less what number it is. To him it's just a box. So he fills what he calls "just a box". He gives it back to me. To me he just filled Box #10 for me. To him he just filled a box. If I give him another box called box #11 and say hey, can you fill this. He'll again think of it as just "box". He'll fill it and give it back to me full. To me he's just filled box #11 for me.</p>
+<p>When I give LoadTGA &amp;textures[1] it thinks of it as &amp;texture[0]. It fills it with texture information, and once it's done I am left with a working textures[1]. If I give LoadTGA &amp;textures[2] it again thinks of it as &amp;texture[0]. It fills it with data, and I'm left with a working textures[2]. Make sense :)</p>
+<p>Anyways... On to the code! We tell LoadTGA() to build our texture. We bind the texture, and tell OpenGL we want it to be linear filtered.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	// Build A Texture From The Data
+	glGenTextures(1, &amp;texture[0].texID);						// Generate OpenGL texture IDs
+
+	glBindTexture(GL_TEXTURE_2D, texture[0].texID);					// Bind Our Texture
+	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);		// Linear Filtered
+	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);		// Linear Filtered
+</pre>
+<p>Now we check to see if the TGA file was 24 or 32 bit. If the TGA was 24 bit, we set the type to GL_RGB. (no alpha channel). If we didn't do this, OpenGL would try to build a texture with an alpha channel. The alpha information wouldn't be there, and the program would probably crash or give an error message.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	if (texture[0].bpp==24)								// Was The TGA 24 Bits
+	{
+		type=GL_RGB;								// If So Set The 'type' To GL_RGB
+	}
+</pre>
+<p>Now we build our texture, the same way we've always done it. But instead of putting the type in ourselves (GL_RGB or GL_RGBA), we substitute the variable type. That way if the program detected that the TGA was 24 bit, the type will be GL_RGB. If our program detected that the TGA was 32 bit, the type would be GL_RGBA.</p>
+<p>After the texture has been built, we return true. This lets the InitGL() code know that everything went ok.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	glTexImage2D(GL_TEXTURE_2D, 0, type, texture[0].width, texture[0].height, 0, type, GL_UNSIGNED_BYTE, texture[0].imageData);
+
+	return true;									// Texture Building Went Ok, Return True
+}
+</pre>
+<p>The code below is our standard build a font from a texture code. You've all seen this code before if you've gone through all the tutorials up until now. Nothing really new here, but I figured I'd include the code to make following through the program a little easier.</p>
+<p>Only real difference is that I bind to textures[0].texID. Which points to the font texture. Only real difference is that .texID has been added.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">GLvoid BuildFont(GLvoid)								// Build Our Font Display List
+{
+	base=glGenLists(256);								// Creating 256 Display Lists
+	glBindTexture(GL_TEXTURE_2D, textures[0].texID);				// Select Our Font Texture
+	for (int loop1=0; loop1&lt;256; loop1++)						// Loop Through All 256 Lists
+	{
+		float cx=float(loop1%16)/16.0f;						// X Position Of Current Character
+		float cy=float(loop1/16)/16.0f;						// Y Position Of Current Character
+
+		glNewList(base+loop1,GL_COMPILE);					// Start Building A List
+			glBegin(GL_QUADS);						// Use A Quad For Each Character
+				glTexCoord2f(cx,1.0f-cy-0.0625f);			// Texture Coord (Bottom Left)
+				glVertex2d(0,16);					// Vertex Coord (Bottom Left)
+				glTexCoord2f(cx+0.0625f,1.0f-cy-0.0625f);		// Texture Coord (Bottom Right)
+				glVertex2i(16,16);					// Vertex Coord (Bottom Right)
+				glTexCoord2f(cx+0.0625f,1.0f-cy-0.001f);		// Texture Coord (Top Right)
+				glVertex2i(16,0);					// Vertex Coord (Top Right)
+				glTexCoord2f(cx,1.0f-cy-0.001f);			// Texture Coord (Top Left)
+				glVertex2i(0,0);					// Vertex Coord (Top Left)
+			glEnd();							// Done Building Our Quad (Character)
+			glTranslated(14,0,0);						// Move To The Right Of The Character
+		glEndList();								// Done Building The Display List
+	}										// Loop Until All 256 Are Built
+}
+</pre>
+<p>KillFont is still the same. We created 256 display lists, so we need to destroy 256 display lists when the program closes.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">GLvoid KillFont(GLvoid)									// Delete The Font From Memory
+{
+	glDeleteLists(base,256);							// Delete All 256 Display Lists
+}
+</pre>
+<p>The glPrint() code has only changed a bit. The letters are all stretched on the y axis. Making the letters very tall. I've explained the rest of the code in other tutorials. The stretching is accomplished with the glScalef(x,y,z) command. We leave the ratio at 1.0 on the x axis, we double the size on the y axis (2.0), and we leave it at 1.0 on the z axis.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">GLvoid glPrint(GLint x, GLint y, int set, const char *fmt, ...)				// Where The Printing Happens
+{
+	char	text[1024];								// Holds Our String
+	va_list	ap;									// Pointer To List Of Arguments
+
+	if (fmt == NULL)								// If There's No Text
+		return;									// Do Nothing
+
+	va_start(ap, fmt);								// Parses The String For Variables
+	    vsprintf(text, fmt, ap);							// And Converts Symbols To Actual Numbers
+	va_end(ap);									// Results Are Stored In Text
+
+	if (set&gt;1)									// Did User Choose An Invalid Character Set?
+	{
+		set=1;									// If So, Select Set 1 (Italic)
+	}
+
+	glEnable(GL_TEXTURE_2D);							// Enable Texture Mapping
+	glLoadIdentity();								// Reset The Modelview Matrix
+	glTranslated(x,y,0);								// Position The Text (0,0 - Top Left)
+	glListBase(base-32+(128*set));							// Choose The Font Set (0 or 1)
+
+	glScalef(1.0f,2.0f,1.0f);							// Make The Text 2X Taller
+
+	glCallLists(strlen(text),GL_UNSIGNED_BYTE, text);				// Write The Text To The Screen
+	glDisable(GL_TEXTURE_2D);							// Disable Texture Mapping
+}
+</pre>
+<p>ReSizeGLScene() sets up an ortho view. Nothing really new. 0,1 is the top left of the screen. 639,480 is the bottom right. This gives us exact screen coordinates in 640 x 480 resolution. Notice that we set the value of swidth to equal the windows current width, and we set the value of sheight to equal the windows current height. Whenever the window is resized or moved, sheight and swidth will be updated.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">GLvoid ReSizeGLScene(GLsizei width, GLsizei height)					// Resize And Initialize The GL Window
+{
+	swidth=width;									// Set Scissor Width To Window Width
+	sheight=height;									// Set Scissor Height To Window Height
+	if (height==0)									// Prevent A Divide By Zero By
+	{
+		height=1;								// Making Height Equal One
+	}
+	glViewport(0,0,width,height);							// Reset The Current Viewport
+	glMatrixMode(GL_PROJECTION);							// Select The Projection Matrix
+	glLoadIdentity();								// Reset The Projection Matrix
+	glOrtho(0.0f,640,480,0.0f,-1.0f,1.0f);						// Create Ortho 640x480 View (0,0 At Top Left)
+	glMatrixMode(GL_MODELVIEW);							// Select The Modelview Matrix
+	glLoadIdentity();								// Reset The Modelview Matrix
+}
+</pre>
+<p>The init code is very minimal. We load our TGA file. Notice that the first parameter passed is &amp;textures[0]. The second parameter is the name of the file we want to load. In this case, we want to load the Font.TGA file. If LoadTGA() returns false for any reason, the if statement will also return false, causing the program to quit with an "initialization failed" message.</p>
+<p>If you wanted to load a second texture you could use the following code: if ((!LoadTGA(&amp;textures[0],"image1.tga")) || (!LoadTGA(&amp;textures[1],"image2.tga"))) { }</p>
+<p>After we load the TGA (creating our texture), we build our font, set shading to smooth, set the background color to black, enable clearing of the depth buffer, and select our font texture (bind to it).</p>
+<p>Lastly we return true so that our program knows that initialization went ok.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">int InitGL(GLvoid)									// All Setup For OpenGL Goes Here
+{
+	if (!LoadTGA(&amp;textures[0],"Data/Font.TGA"))					// Load The Font Texture
+	{
+		return false;								// If Loading Failed, Return False
+	}
+
+	BuildFont();									// Build The Font
+
+	glShadeModel(GL_SMOOTH);							// Enable Smooth Shading
+	glClearColor(0.0f, 0.0f, 0.0f, 0.5f);						// Black Background
+	glClearDepth(1.0f);								// Depth Buffer Setup
+	glBindTexture(GL_TEXTURE_2D, textures[0].texID);				// Select Our Font Texture
+
+	return TRUE;									// Initialization Went OK
+}
+</pre>
+<p>The draw code is completely new :) we start off by creating a variable of type char called token. Token will hold parsed text later on in the code.</p>
+<p>We have another variable called cnt. I use this variable both for counting the number of extensions supported, and for positioning the text on the screen. cnt is reset to zero every time we call DrawGLScene.</p>
+<p>We clear the screen and depth buffer and then set the color to bright red (full red intensity, 50% green, 50% blue). at 50 on the x axis and 16 on the y axis we write teh word "Renderer". We also write "Vendor" and "Version" at the top of the screen. The reason each word does not start at 50 on the x axis is because I right justify the words (they all line up on the right side).</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">int DrawGLScene(GLvoid)									// Here's Where We Do All The Drawing
+{
+	char	*token;									// Storage For Our Token
+	int	cnt=0;									// Local Counter Variable
+
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);				// Clear Screen And Depth Buffer
+
+	glColor3f(1.0f,0.5f,0.5f);							// Set Color To Bright Red
+	glPrint(50,16,1,"Renderer");							// Display Renderer
+	glPrint(80,48,1,"Vendor");							// Display Vendor Name
+	glPrint(66,80,1,"Version");							// Display Version
+</pre>
+<p>Now that we have text on the screen, we change the color to orange, and grab the renderer, vendor name and version number from the video card. We do this by passing GL_RENDERER, GL_VENDOR &amp; GL_VERSION to glGetString(). glGetString will return the requested renderer name, vendor name and version number. The information returned will be text so we need to cast the return information from glGetString as char. All this means is that we tell the program we want the information returned to be characters (text). If you don't include the (char *) you will get an error message. We're printing text, so we need text returned. We grab all three pieces of information and write the information we've grabbed to the right of the previous text.</p>
+<p>The information we get from glGetString(GL_RENDERER) will be written beside the red text "Renderer", the information we get from glGetString(GL_VENDOR) will be written to the right of "Vendor", etc.</p>
+<p>I'd like to explain casting in more detail, but I'm not really sure of a good way to explain it. If anyone has a good explanation, send it in, and I'll modify my explanation.</p>
+<p>After we have the renderer information, vendor information and version number written to the screen, we change the color to a bright blue, and write "NeHe Productions" at the bottom of the screen :) Of course you can change this to anything you want.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	glColor3f(1.0f,0.7f,0.4f);							// Set Color To Orange
+	glPrint(200,16,1,(char *)glGetString(GL_RENDERER));				// Display Renderer
+	glPrint(200,48,1,(char *)glGetString(GL_VENDOR));				// Display Vendor Name
+	glPrint(200,80,1,(char *)glGetString(GL_VERSION));				// Display Version
+
+	glColor3f(0.5f,0.5f,1.0f);							// Set Color To Bright Blue
+	glPrint(192,432,1,"NeHe Productions");						// Write NeHe Productions At The Bottom Of The Screen
+</pre>
+<p>Now we draw a nice white border around the screen, and around the text. We start off by resetting the modelview matrix. Because we've been printing text to the screen, and we might not be at 0,0 on the screen, it's a safe thing to do.</p>
+<p>We then set the color to white, and start drawing our borders. A line strip is actually pretty easy to use. You tell OpenGL you want to draw a line strip with glBegin(GL_LINE_STRIP). Then we set the first vertex. Our first vertex will be on the far right side of the screen, and about 63 pixels up from the bottom of the screen (639 on the x axis, 417 on the y axis). Then we set the second vertex. We stay at the same location on the y axis (417), but we move to the far left side of the screen on the x axis (0). A line will be drawn from the right side of the screen (639,417) to the left side of the screen (0,417).</p>
+<p>You need to have at least two vertices in order to draw a line (common sense). From the left side of the screen, we move down, right, and then straight up (128 on the y axis).</p>
+<p>We then start another line strip, and draw a second box at the top of the screen. If you need to draw ALOT of connected lines, line strips can definitely cut down on the amount of code required as opposed to using regular lines (GL_LINES).</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	glLoadIdentity();								// Reset The ModelView Matrix
+	glColor3f(1.0f,1.0f,1.0f);							// Set The Color To White
+	glBegin(GL_LINE_STRIP);								// Start Drawing Line Strips (Something New)
+		glVertex2d(639,417);							// Top Right Of Bottom Box
+		glVertex2d(  0,417);							// Top Left Of Bottom Box
+		glVertex2d(  0,480);							// Lower Left Of Bottom Box
+		glVertex2d(639,480);							// Lower Right Of Bottom Box
+		glVertex2d(639,128);							// Up To Bottom Right Of Top Box
+	glEnd();									// Done First Line Strip
+	glBegin(GL_LINE_STRIP);								// Start Drawing Another Line Strip
+		glVertex2d(  0,128);							// Bottom Left Of Top Box
+		glVertex2d(639,128);							// Bottom Right Of Top Box		
+		glVertex2d(639,  1);							// Top Right Of Top Box
+		glVertex2d(  0,  1);							// Top Left Of Top Box
+		glVertex2d(  0,417);							// Down To Top Left Of Bottom Box
+	glEnd();									// Done Second Line Strip
+</pre>
+<p>Now for something new. A wonderful GL command called glScissor(x,y,w,h). What this command does is creates almost what you would call a window. When GL_SCISSOR_TEST is enabled, the only portion of the screen that you can alter is the portion inside the scissor window. The first line below creates a scissor window starting at 1 on the x axis, and 13.5% (0.135...f) of the way from the bottom of the screen on the y axis. The scissor window will be 638 pixels wide (swidth-2), and 59.7% (0.597...f) of the screen tall.</p>
+<p>In the next line we enable scissor testing. Anything we draw OUTSIDE the scissor window will not show up. You could draw a HUGE quad on the screen from 0,0 to 639,480, and you would only see the quad inside the scissor window, the rest of the screen would be unaffected. Very nice command!</p>
+<p>The third line of code creates a variable called text that will hold the characters returned by glGetString(GL_EXTENSIONS). malloc(strlen((char *)glGetString(GL_EXTENSIONS))+1) allocates enough memory to hold the entire string returned +1 (so if the string was 50 characters, text would be able to hold all 50 characters).</p>
+<p>The next line copies the GL_EXTENSIONS information to text. If we modify the GL_EXTENSIONS information directly, big problems will occur, so instead we copy the information into text, and then manipulate the information stored in text. Basically we're just taking a copy, and storing it in the variable text.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	glScissor(1	,int(0.135416f*sheight),swidth-2,int(0.597916f*sheight));	// Define Scissor Region
+	glEnable(GL_SCISSOR_TEST);							// Enable Scissor Testing
+
+	char* text=(char*)malloc(strlen((char *)glGetString(GL_EXTENSIONS))+1);		// Allocate Memory For Our Extension String
+	strcpy (text,(char *)glGetString(GL_EXTENSIONS));				// Grab The Extension List, Store In Text
+</pre>
+<p>Now for something new. Lets pretend that after grabbing the extension information from the video card, the variable text had the following string of text stored in it... "GL_ARB_multitexture GL_EXT_abgr GL_EXT_bgra". strtok(TextToAnalyze,TextToFind) will scan through the variable text until it finds a " " (space). Once it finds a space, it will copy the text UP TO the space into the variable token. So in our little example, token would be equal to "GL_ARB_multitexture". The space is then replaced with a <span style="text-decoration: underline;">marker</span>. More about this in a minute.</p>
+<p>Next we create a loop that stops once there is no more information left in text. If there is no information in text, token will be equal to nothing (NULL) and the loop will stop.</p>
+<p>We increase the counter variable (cnt) by one, and then check to see if the value in cnt is higher than the value of maxtokens. If cnt is higher than maxtokens we make maxtokens equal to cnt. That way if the counter hits 20, maxtokens will also equal 20. It's an easy way to keep track of the maximum value of cnt.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	token=strtok(text," ");								// Parse 'text' For Words, Seperated By " " (spaces)
+	while(token!=NULL)								// While The Token Isn't NULL
+	{
+		cnt++;									// Increase The Counter
+		if (cnt&gt;maxtokens)							// Is 'maxtokens' Less Than 'cnt'
+		{
+			maxtokens=cnt;							// If So, Set 'maxtokens' Equal To 'cnt'
+		}
+</pre>
+<p>So we have stored the first extension from our list of extensions in the variable token. Next thing to do is set the color to bright green. We then print the variable cnt on the left side of the screen. Notice that we print at 0 on the x axis. This should erase the left (white) border that we drew, but because scissor testing is on, pixels drawn at 0 on the x axis wont be modified. The border can't be drawn over.</p>
+<p>The variable is drawn on the far left side of the screen (0 on the x axis). We start drawing at 96 on the y axis. To keep all the text from drawing to the same spot on the screen, we add (cnt*32) to 96. So if we are displaying the first extension, cnt will equal 1, and the text will be drawn at 96+(32*1) (128) on the y axis. If we display the second extension, cnt will equal 2, and the text will be drawn at 96+(32*2) (160) on the y axis.</p>
+<p>Notice I also subtract scroll. When the program first runs, scroll will be equal to 0. So our first line of text is drawn at 96+(32*1)-0. If you press the DOWN ARROW, scroll is increased by 2. If scroll was 4, the text would be drawn at 96+(32*1)-4. That means the text would be drawn at 124 instead of 128 on the y axis because of scroll being equal to 4. The top of our scissor window ends at 128 on the y axis. Any part of the text drawn from lines 124-127 on the y axis will not appear on the screen.</p>
+<p>Same thing with the bottom of the screen. If cnt was equal to 11 and scroll was equal to 0, the text would be drawn at 96+(32*11)-0 which is 448 on the y axis. Because the scissor window only allows us to draw as far as line 416 on the y axis, the text wouldn't show up at all.</p>
+<p>The final result is that we end up with a scrollable window that only allows us to look at 288/32 (9) lines of text. 288 is the height of our scissor window. 32 is the height of the text. By changing the value of scroll we can move the text up or down (offset the text).</p>
+<p>The effect is similar to a movie projector. The film rolls by the lens, and all you see is the current frame. You don't see the area above or below the frame. The lens acts as a window similar to the window created by the scissor test.</p>
+<p>After we have drawn the current count (cnt) to the screen, we change the color to yellow, move 50 pixels to the right on the x axis, and we write the text stored in the variable token to the screen.</p>
+<p>Using our example above, the first line of text displayed on the screen should look like this:</p>
+<p>1 GL_ARB_multitexture</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">		glColor3f(0.5f,1.0f,0.5f);						// Set Color To Bright Green
+		glPrint(0,96+(cnt*32)-scroll,0,"%i",cnt);				// Print Current Extension Number
+</pre>
+<p>After we have drawn the current count to the screen, we change the color to yellow, move 50 pixels to the right on the x axis, and we write the text stored in the variable token to the screen.</p>
+<p>Using our example above, the first line of text displayed on the screen should look like this:</p>
+<p>1&nbsp;&nbsp;&nbsp;GL_ARB_multitexture</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">		glColor3f(1.0f,1.0f,0.5f);						// Set Color To Yellow
+		glPrint(50,96+(cnt*32)-scroll,0,token);					// Print The Current Token (Parsed Extension Name)
+</pre>
+<p>After we have displayed the value of token on the screen, we need to check through the variable text tosee if any more extensions are supported. Instead of using token=strtok(text," ") like we did above, we replace text with NULL. This tells the command strtok to search from the last <span style="text-decoration: underline;">marker</span> to the NEXT space in the string of text (text).</p>
+<p>In our example above ("GL_ARB_multitexture<span style="text-decoration: underline;">marker</span>GL_EXT_abgr GL_EXT_bgra") there will now be a marker after the text "GL_ARB_multitexture". The line below will start search FROM the marker to the next space. Everything from the marker to the next space will be stored in token. token should end up being "GL_EXT_abgr", and text will end up being "GL_ARB_multitexture<span style="text-decoration: underline;">marker</span>GL_EXT_abgr<span style="text-decoration: underline;">marker</span>GL_EXT_bgra".</p>
+<p>Once strtok() has run out of text to store in token, token will become NULL and the loop will stop.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">		token=strtok(NULL," ");							// Search For The Next Token
+	}
+</pre>
+<p>After all of the extensions have been parsed from the variable text we can disable scissor testing, and free the variable text. This releases the ram we were using to hold the information we got from glGetString(GL_EXTENSIONS).</p>
+<p>The next time DrawGLScene() is called, new memory will be allocated. A fresh copy of the information returned by glGetStrings(GL_EXTENSIONS) will be copied into the variable text and the entire process will start over.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	glDisable(GL_SCISSOR_TEST);							// Disable Scissor Testing
+
+	free (text);									// Free Allocated Memory
+</pre>
+<p>The first line below isn't necessary, but I thought it might be a good idea to talk about it, just so everyone knows that it exists. The command glFlush() basically tells OpenGL to finish up what it's doing. If you ever notice flickering in your program (quads disappearing, etc). Try adding the flush command to the end of DrawGLScene. It flushes out the rendering pipeline. You may notice flickering if you're program doesn't have enough time to finish rendering the scene.</p>
+<p>Last thing we do is return true to show that everything went ok.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	glFlush();									// Flush The Rendering Pipeline
+	return TRUE;									// Everything Went OK
+}
+</pre>
+<p>The only thing to note in KillGLWindow() is that I have added KillFont() at the end. That way whenever the window is killed, the font is also killed.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">GLvoid KillGLWindow(GLvoid)								// Properly Kill The Window
+{
+	if (fullscreen)									// Are We In Fullscreen Mode?
+	{
+		ChangeDisplaySettings(NULL,0);						// If So Switch Back To The Desktop
+		ShowCursor(TRUE);							// Show Mouse Pointer
+	}
+
+	if (hRC)									// Do We Have A Rendering Context?
+	{
+		if (!wglMakeCurrent(NULL,NULL))						// Are We Able To Release The DC And RC Contexts?
+		{
+			MessageBox(NULL,"Release Of DC And RC Failed.","SHUTDOWN ERROR",MB_OK | MB_ICONINFORMATION);
+		}
+
+		if (!wglDeleteContext(hRC))						// Are We Able To Delete The RC?
+		{
+			MessageBox(NULL,"Release Rendering Context Failed.","SHUTDOWN ERROR",MB_OK | MB_ICONINFORMATION);
+		}
+		hRC=NULL;								// Set RC To NULL
+	}
+
+	if (hDC &amp;&amp; !ReleaseDC(hWnd,hDC))						// Are We Able To Release The DC
+	{
+		MessageBox(NULL,"Release Device Context Failed.","SHUTDOWN ERROR",MB_OK | MB_ICONINFORMATION);
+		hDC=NULL;								// Set DC To NULL
+	}
+
+	if (hWnd &amp;&amp; !DestroyWindow(hWnd))						// Are We Able To Destroy The Window?
+	{
+		MessageBox(NULL,"Could Not Release hWnd.","SHUTDOWN ERROR",MB_OK | MB_ICONINFORMATION);
+		hWnd=NULL;								// Set hWnd To NULL
+	}
+
+	if (!UnregisterClass("OpenGL",hInstance))					// Are We Able To Unregister Class
+	{
+		MessageBox(NULL,"Could Not Unregister Class.","SHUTDOWN ERROR",MB_OK | MB_ICONINFORMATION);
+		hInstance=NULL;								// Set hInstance To NULL
+	}
+
+	KillFont();									// Kill The Font
+}
+</pre>
+<p>CreateGLWindow(), and WndProc() are the same.</p>
+<p>The first change in WinMain() is the title that appears at the top of the window. It should now read "NeHe's Extensions, Scissoring, Token &amp; TGA Loading Tutorial"</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">int WINAPI WinMain(	HINSTANCE	hInstance,					// Instance
+			HINSTANCE	hPrevInstance,					// Previous Instance
+			LPSTR		lpCmdLine,					// Command Line Parameters
+			int		nCmdShow)					// Window Show State
+{
+	MSG	msg;									// Windows Message Structure
+	BOOL	done=FALSE;								// Bool Variable To Exit Loop
+
+	// Ask The User Which Screen Mode They Prefer
+	if (MessageBox(NULL,"Would You Like To Run In Fullscreen Mode?", "Start FullScreen?",MB_YESNO|MB_ICONQUESTION)==IDNO)
+	{
+		fullscreen=FALSE;							// Windowed Mode
+	}
+
+	// Create Our OpenGL Window
+	if (!CreateGLWindow("NeHe's Token, Extensions, Scissoring &amp; TGA Loading Tutorial",640,480,16,fullscreen))
+	{
+		return 0;								// Quit If Window Was Not Created
+	}
+
+	while(!done)									// Loop That Runs While done=FALSE
+	{
+		if (PeekMessage(&amp;msg,NULL,0,0,PM_REMOVE))				// Is There A Message Waiting?
+		{
+			if (msg.message==WM_QUIT)					// Have We Received A Quit Message?
+			{
+				done=TRUE;						// If So done=TRUE
+			}
+			else								// If Not, Deal With Window Messages
+			{
+				DispatchMessage(&amp;msg);					// Dispatch The Message
+			}
+		}
+		else									// If There Are No Messages
+		{
+			// Draw The Scene.  Watch For ESC Key And Quit Messages From DrawGLScene()
+			if ((active &amp;&amp; !DrawGLScene()) || keys[VK_ESCAPE])		// Active?  Was There A Quit Received?
+			{
+				done=TRUE;						// ESC or DrawGLScene Signalled A Quit
+			}
+			else								// Not Time To Quit, Update Screen
+			{
+				SwapBuffers(hDC);					// Swap Buffers (Double Buffering)
+
+				if (keys[VK_F1])					// Is F1 Being Pressed?
+				{
+					keys[VK_F1]=FALSE;				// If So Make Key FALSE
+					KillGLWindow();					// Kill Our Current Window
+					fullscreen=!fullscreen;				// Toggle Fullscreen / Windowed Mode
+					// Recreate Our OpenGL Window
+					if (!CreateGLWindow("NeHe's Token, Extensions, Scissoring &amp; TGA Loading Tutorial",640,480,16,fullscreen))
+					{
+						return 0;				// Quit If Window Was Not Created
+					}
+				}
+</pre>
+<p>The code below checks to see if the up arrow is being pressed if it is, and scroll is greater than 0, we decrease scroll by 2. This causes the text to move down the screen.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">				if (keys[VK_UP] &amp;&amp; (scroll&gt;0))				// Is Up Arrow Being Pressed?
+				{
+					scroll-=2;					// If So, Decrease 'scroll' Moving Screen Down
+				}
+</pre>
+<p>If the down arrow is being pressed and scroll is less than (32*(maxtokens-9)) scroll will be increased by 2, andd the text on the screen will scroll upwards.</p>
+<p>32 is the number of lines that each letter takes up. Maxtokens is the total amount of extensions that your video card supports. We subtract 9, because 9 lines can be shown on the screen at once. If we did not subtract 9, we could scroll past the end of the list, causing the list to scroll completely off the screen. Try leaving the -9 out if you're not sure what I mean.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">				if (keys[VK_DOWN] &amp;&amp; (scroll&lt;32*(maxtokens-9)))		// Is Down Arrow Being Pressed?
+				{
+					scroll+=2;					// If So, Increase 'scroll' Moving Screen Up
+				}
+			}
+		}
+	}
+
+	// Shutdown
+	KillGLWindow();									// Kill The Window
+	return (msg.wParam);								// Exit The Program
+}
+</pre>
+<p>I hope that you found this tutorial interesting. By the end of this tutorial you should know how to read the vendor name, renderer and version number from your video card. You should also know how to find out what extensions are supported on any video card that supports OpenGL. You should know what scissor testing is, and how it can be used in OpenGL projects of your own, and lastly, you should know how to load TGA Images instead of Bitmap Images for use as textures.</p>
+<p>If you find any problems with the tutorial, or you find the information to hard to understand, let me know. I want the tutorials to be the best they can be. Your feedback is important!</p>
+<p><strong>Jeff Molofee</strong> (<strong>NeHe</strong>)</p>
+<p>* DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/vc/lesson24.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/vc/lesson24.zip'" tppabs="http://nehe.gamedev.net/data/lessons/vc/lesson24.zip">Visual C++</a> Code For This Lesson.</p>
+<p>* DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/bcb6/lesson24_bcb6.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/bcb6/lesson24_bcb6.zip'" tppabs="http://nehe.gamedev.net/data/lessons/bcb6/lesson24_bcb6.zip">Borland C++ Builder 6</a> Code For This Lesson. ( Conversion by <a href="mailto:christian@tugzip.com">Christian Kindahl</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/cwarrior/lesson24.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/cwarrior/lesson24.zip'" tppabs="http://nehe.gamedev.net/data/lessons/cwarrior/lesson24.zip">Code Warrior 5.3</a> Code For This Lesson. ( Conversion by <a href="mailto:DelusionalBeing@hotmail.com">Scott Lupton</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/delphi/lesson24.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/delphi/lesson24.zip'" tppabs="http://nehe.gamedev.net/data/lessons/delphi/lesson24.zip">Delphi</a> Code For This Lesson. ( Conversion by <a href="mailto:michal_praha@seznam.cz">Michal Tucek</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/devc/lesson24.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/devc/lesson24.zip'" tppabs="http://nehe.gamedev.net/data/lessons/devc/lesson24.zip">Dev C++</a> Code For This Lesson. ( Conversion by <a href="mailto:danprogram@hotmail.com">Dan</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/euphoria/lesson24.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/euphoria/lesson24.zip'" tppabs="http://nehe.gamedev.net/data/lessons/euphoria/lesson24.zip">Euphoria</a> Code For This Lesson. ( Conversion by <a href="mailto:1evan@sbcglobal.net">Evan Marshall</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/glut/lesson24.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/glut/lesson24.zip'" tppabs="http://nehe.gamedev.net/data/lessons/glut/lesson24.zip">GLut</a> Code For This Lesson. ( Conversion by <a href="mailto:harvey_a@shaw.ca">Ashley Harvey</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/jogl/lesson24.jar  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/jogl/lesson24.jar'" tppabs="http://nehe.gamedev.net/data/lessons/jogl/lesson24.jar">JoGL</a> Code For This Lesson. ( Conversion by <a href="mailto:abezrati@hotmail.com">Abdul Bezrati</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/lccwin32/lccwin32_lesson24.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/lccwin32/lccwin32_lesson24.zip'" tppabs="http://nehe.gamedev.net/data/lessons/lccwin32/lccwin32_lesson24.zip">LCC Win32</a> Code For This Lesson. ( Conversion by <a href="mailto:rwishlaw@shaw.ca">Robert Wishlaw</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/linux/lesson24.tar.gz  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/linux/lesson24.tar.gz'" tppabs="http://nehe.gamedev.net/data/lessons/linux/lesson24.tar.gz">Linux</a> Code For This Lesson. ( Conversion by <a href="mailto:jay@remotepoint.com">Jay Groven</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/linuxsdl/lesson24.tar.gz  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/linuxsdl/lesson24.tar.gz'" tppabs="http://nehe.gamedev.net/data/lessons/linuxsdl/lesson24.tar.gz">Linux/SDL</a> Code For This Lesson. ( Conversion by <a href="mailto:scarab@egyptian.net">DarkAlloy</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/lwjgl/lesson24.jar  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/lwjgl/lesson24.jar'" tppabs="http://nehe.gamedev.net/data/lessons/lwjgl/lesson24.jar">LWJGL</a> Code For This Lesson. ( Conversion by <a href="mailto:mark.bernard@rogers.com">Mark Bernard</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/macosxcocoa/lesson24.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/macosxcocoa/lesson24.zip'" tppabs="http://nehe.gamedev.net/data/lessons/macosxcocoa/lesson24.zip">Mac OS X/Cocoa</a> Code For This Lesson. ( Conversion by <a href="mailto:blb@pobox.com">Bryan Blackburn</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/vs_net/lesson24.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/vs_net/lesson24.zip'" tppabs="http://nehe.gamedev.net/data/lessons/vs_net/lesson24.zip">Visual Studio .NET</a> Code For This Lesson. ( Conversion by <a href="mailto:ultimatezeus@hotmail.com">Grant James</a> )</p>
+<p>&nbsp;</p>
+<p><strong><span><a href="index-63.htm" tppabs="http://nehe.gamedev.net/data/lessons/lesson.asp?lesson=23">&lt; Lesson 23</a></span></strong><strong><span><a href="index-65.htm" tppabs="http://nehe.gamedev.net/data/lessons/lesson.asp?lesson=25">Lesson 25 &gt;</a></span></strong></p>
+
+
+</div>
+</div>
+
+
+
+            <div style="width:728px;padding:0px;margin:auto; margin-top: 10px;">
+            
+
+    
+                <!-- Leaderboard_NeHe -->
+                <div id='div-gpt-ad-1327940144417-0' style='width:728px; height:90px;'>
+                <script type='text/javascript'>
+                googletag.cmd.push(function() { googletag.display('div-gpt-ad-1327940144417-0'); });
+                </script>
+                </div>
+            
+
+                           
+            </div>   
+        </td>
+        <td class="col2">
+            
+
+
+
+
+<div style="text-align: center; padding:10px;">
+
+<script type='text/javascript'>
+    GA_googleFillSlot("Skyscraper_NeHe");
+</script>
+
+</div>
+            
+        </td>
+    </table>
+    <div id="footer">
+        <p>
+            
+    
+    © 1997-2012 Gamedev . All rights reserved.<br/>
+
+			NeHe™ and NeHe Productions™ are trademarks of GameDev.net, LLC<br/>
+			OpenGL® is a registered trademark of Silicon Graphics Inc.<br/>
+		</p>        
+		<br/>
+    </div>
+
+    
+    
+	    <script type="text/javascript" src="shCore.js" tppabs="http://nehe.gamedev.net/static/js/syntax_highlighter/shCore.js"></script>
+        <script type="text/javascript" src="shBrushCpp.js" tppabs="http://nehe.gamedev.net/static/js/syntax_highlighter/shBrushCpp.js"></script>
+	    <script type="text/javascript" src="shBrushJScript.js" tppabs="http://nehe.gamedev.net/static/js/syntax_highlighter/shBrushJScript.js"></script>
+	    <script type="text/javascript">SyntaxHighlighter.all();</script>
+    
+
+    <!-- Place this render call where appropriate -->
+    <script type="text/javascript">
+      (function() {
+        var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+        po.src = 'plusone.js'/*tpa=https://apis.google.com/js/plusone.js*/;
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+      })();
+    </script>    
+
+    
+<!-- GoogleAnalytics code -->
+<script src="urchin.js" tppabs="http://www.google-analytics.com/urchin.js" type="text/javascript">
+</script>
+<script type="text/javascript">
+_uacct = "UA-279474-2"; // Gamedev
+urchinTracker();
+_uff = 0; // Reset for second account
+_uacct = "UA-24180731-1"; // Non-GD
+urchinTracker();
+</script> 
+  </body>
+</html>

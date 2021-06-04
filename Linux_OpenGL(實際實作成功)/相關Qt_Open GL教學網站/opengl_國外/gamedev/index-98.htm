@@ -1,0 +1,243 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+    dir="ltr"
+    xml:lang="en"
+    lang="en">
+  <head>
+    <title>NeHe Productions: How to Determine if a Point is in a Triangle Plane</title>
+
+    <link rel="stylesheet" type="text/css" href="public_base.css" tppabs="http://nehe.gamedev.net/static/css/public_base.css" />
+    <link type="text/css" rel="stylesheet" href="shThemeMidnight.css" tppabs="http://nehe.gamedev.net/static/css/syntax_highlighter/shThemeMidnight.css"/>
+    
+    <link rel="alternate" type="application/atom+xml" title="Atom feed" href="index-1.htm" tppabs="http://nehe.gamedev.net/atom/" />
+    <link rel="alternate" type="application/rss+xml" title="RSS feed" href="index-2.htm" tppabs="http://nehe.gamedev.net/rss/" />
+    
+    <meta name="author" content="Luke Benstead + Carsten Haubold" />
+    <meta name="description" content="OpenGL Tutorials, Demos, Games and More..." />
+    <meta name="keywords" content="opengl, tutorial, article, demo, game, blend, texturemap, lighting, contest, 3D" />
+
+    
+    
+
+    
+
+</script>
+
+
+    
+    
+    
+    
+        
+        <script type='text/javascript'>
+        var googletag = googletag || {};
+        googletag.cmd = googletag.cmd || [];
+        (function() {
+        var gads = document.createElement('script');
+        gads.async = true;
+        gads.type = 'text/javascript';
+        var useSSL = 'https:' == document.location.protocol;
+        gads.src = (useSSL ? 'https:' : 'http:') + 
+        '//www.googletagservices.com/tag/js/gpt.js';
+        var node = document.getElementsByTagName('script')[0];
+        node.parentNode.insertBefore(gads, node);
+        })();
+        </script>
+
+        <script type='text/javascript'>
+        googletag.cmd.push(function() {
+        googletag.defineSlot('/1004699/Leaderboard_NeHe', [728, 90], 'div-gpt-ad-1327940144417-0').addService(googletag.pubads());
+        googletag.defineSlot('/1004699/Skyscraper_NeHe', [160, 600], 'div-gpt-ad-1327940144417-1').addService(googletag.pubads());
+        googletag.pubads().enableSingleRequest();
+        googletag.enableServices();
+        });
+        </script>
+    
+    
+
+    
+  </head>
+
+  <body>
+    
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "all.js#xfbml=1"/*tpa=http://connect.facebook.net/en_GB/all.js#xfbml=1*/;
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+
+
+    <table cellpadding="0" cellspacing="0" border="0" id="layout_table">
+    <tr><td>
+        <div id="header">
+                <a href="index.htm" tppabs="http://nehe.gamedev.net/"><img class="logo" class="logo" src="nehe.png" tppabs="http://nehe.gamedev.net/static/images/nehe.png" border="0" alt="Nehe" /></a>
+        </div>            
+    </td></tr>
+    <tr><td colspan="2">
+            
+<div class="navbar">
+    <a href="index.htm" tppabs="http://nehe.gamedev.net/">HOME</a>
+    <a href="javascript:if(confirm('http://twitter.com/  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://twitter.com/#!/nehegl'" tppabs="http://twitter.com/#!/nehegl">TWITTER</a>  
+    <a href="javascript:if(confirm('http://www.facebook.com/pages/NeHe/300582493323181  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://www.facebook.com/pages/NeHe/300582493323181'" tppabs="http://www.facebook.com/pages/NeHe/300582493323181">FACEBOOK</a>     
+    <a href="index-2.htm" tppabs="http://nehe.gamedev.net/rss/">RSS</a>    
+    <a href="index-1.htm" tppabs="http://nehe.gamedev.net/atom/">ATOM</a>    
+    <a href="javascript:if(confirm('http://www.gamedev.net/forum/27-nehe-productions/page__forum_title__NeHe+Productions  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://www.gamedev.net/forum/27-nehe-productions/page__forum_title__NeHe+Productions'" tppabs="http://www.gamedev.net/forum/27-nehe-productions/page__forum_title__NeHe+Productions">FORUM</a>    
+</div>
+    
+    </td></tr>
+    <tr>
+        <td class="col1">
+
+            
+<div id="article_container">
+
+
+<h1 class="article-header">How to Determine if a Point is in a Triangle Plane</h1>
+<div class="social-media">
+<!-- Place this tag where you want the +1 button to render -->
+<div class="g-plusone" data-size="medium" data-width="120" data-annotation="inline"></div>
+<div class="fb-like" data-send="false" data-layout="button_count" data-width="60" data-show-faces="false" data-colorscheme="dark" data-font="arial"></div>
+</div>
+<div style="clear:both;"></div>
+<p>First off we have a triangle below with a point in it.</p>
+<p>We all see that the point is in the plane but how do we make the computer realize this?</p>
+<p><img src="image001.gif" tppabs="http://nehe.gamedev5.net/data/articles/extras/article10/image001.gif" alt="" width="602" height="268" /></p>
+<p>At this point we only use the x and y coordinates to determine if the point is in the plane.<br /> We can create three new triangles using the point as in the picture below.<br /> I have given each corner of the original triangle coordinates as have I given the point one.<br /> The triangle could have z coordinates too but we ignore these right now.<br /> I have named the sides of our first sub triangle to a, b, c as have I named the angle between b and c to A.</p>
+<p><img src="image002.gif" tppabs="http://nehe.gamedev5.net/data/articles/extras/article10/image002.gif" alt="" width="651" height="335" /></p>
+<p>This could be called the XY plane.<br /> As we all know a complete circle is 360 degrees or 2p.<br /> The angle A is represented by the segment of the dotted circle thats inside the sub triangle.<br /> The goal is to calculate the angle A for each sub triangle and if the point actually is in the triangle plane the sum of all the angles A should be 360 degrees or 2p</p>
+<p>But how to calculate the length of the sides <strong>a</strong>, <strong>b</strong>, <strong>c</strong>?</p>
+<p>To calculate the distance between two point you use the formula</p>
+<p><img src="image004.gif" tppabs="http://nehe.gamedev.net/_admin/article/edit/25004/extras/article10/image004.gif" alt="" /></p>
+<p>So to determine the length of side <strong>a</strong> it would go like this</p>
+<p><img src="image006.gif" tppabs="http://nehe.gamedev.net/_admin/article/edit/25004/extras/article10/image006.gif" alt="" /></p>
+<p>and side <strong>b</strong></p>
+<p><img src="image008.gif" tppabs="http://nehe.gamedev.net/_admin/article/edit/25004/extras/article10/image008.gif" alt="" /></p>
+<p>side <strong>c</strong></p>
+<p><img src="image010.gif" tppabs="http://nehe.gamedev.net/_admin/article/edit/25004/extras/article10/image010.gif" alt="" /></p>
+<p>And now how to finally determine the angle <strong>A</strong> we use the formula</p>
+<p><img src="image012.gif" tppabs="http://nehe.gamedev.net/_admin/article/edit/25004/extras/article10/image012.gif" alt="" /></p>
+<p>We have the length of all the sides in the sub triangle so we just put them in there.</p>
+<p><img src="image014.gif" tppabs="http://nehe.gamedev.net/_admin/article/edit/25004/extras/article10/image014.gif" alt="" /></p>
+<p>So now we have the angle of the first sub triangle and we just repeat the calculations for all the sub triangles.<br /> If we add them all together the result should be 360 degrees if the point actually is in the triangle plane.</p>
+<p>Now you may ask, but I wanna test in 3D so what about the <strong>z</strong> axis? Look at the picture below. It is the same triangle as before but now where looking at it from above.</p>
+<p><img src="image015.gif" tppabs="http://nehe.gamedev.net/_admin/article/edit/25004/extras/article10/image015.gif" alt="" /></p>
+<p>We use the same calculations but now we put in the <strong>z</strong> coordinate instead of the <strong>y</strong> coordinate.</p>
+<p><img src="image016.gif" tppabs="http://nehe.gamedev.net/_admin/article/edit/25004/extras/article10/image016.gif" alt="" /></p>
+<p>This could be called the <strong>XZ</strong> plane and calculate it just like the <strong>XY</strong> plane.</p>
+<p>The same goes for the <strong>ZY</strong> plane that could look like this looking at the triangle from the side as you may suspect we use the z and y coordinates to make up our triangle.</p>
+<p><img src="image017.gif" tppabs="http://nehe.gamedev.net/_admin/article/edit/25004/extras/article10/image017.gif" alt="" /></p>
+<p><strong><span style="text-decoration: underline;">Finally</span></strong></p>
+<p>If you calculate all of the angles in each plane and if the sum off the angles in each plane is 360 degrees then the point is actually in the triangle plane.<br /> <strong>Remember:</strong> treat each plane as a simple triangle.</p>
+<p>&nbsp;</p>
+<center><span style="font-size: x-small;"><span style="text-decoration: underline;">Additional Information</span></span></center>
+<p>&nbsp;</p>
+<center><span style="font-size: xx-small;">By: Alex Bijamov</span></center>
+<p>I beleive the author's aim is to determine if the point is in "triangle's plane", while it can be both "inside and outside of the triangle". In this case, I don't think there is a need to use such time-consuming operations as: sqr() sqrt() and cos(), which are actually used.</p>
+<p>Using the notation used in the article, let me introduce the slightly different method, that is used in analytical geometry. It is pretty simple and deals only with some multiplications: Say, the triangle is given by the three points:</p>
+<pre>A ( xA, yA, zA)
+B ( xB, yB, zB)
+C ( xC, yC, zC)
+</pre>
+<p>and we want to determine if the point</p>
+<pre>M ( x, y, z)
+</pre>
+<p>is inside that triangle.</p>
+<p>It is necessary (and more than enough) for the three vectors "MA", "MB" and "MC" to be co-planar. That is - one of them is a certain linear combination of others.</p>
+<p>From analytical geometry we know, that 3 vectors are co-planar if:</p>
+<pre>|x-xA     y-yA     z-zA|
+|x-xB     y-yB     z-zB| = 0
+|x-xC     y-yC     z-zC|
+</pre>
+<p>(that is: det((MA)...,(MB)...,(MC)...)=0)</p>
+<p>But to calculate a 3x3 determinant very few calculations are needed! Something like 12 multiplications and 6 sumations. After that we have to calculate the deviation of the result from 0 (like in the article we calculate the deviation of the total angle from 360 deg) to find out if the point is inside the triangle plane!</p>
+<p>That's all about it! So instead of calculating the unnecessary information about triangles, sides, lengths, angle sizes, etc for 4 triangles, we only calculate a 3x3 determinant!</p>
+<p>This can also be used to determine if the point is "inside" the triangle and so on...</p>
+<p>- <a href="mailto:creamdog@chello.se">Christian Westman</a></p>
+<p>&nbsp;</p>
+
+
+</div>
+</div>
+
+
+
+            <div style="width:728px;padding:0px;margin:auto; margin-top: 10px;">
+            
+
+    
+                <!-- Leaderboard_NeHe -->
+                <div id='div-gpt-ad-1327940144417-0' style='width:728px; height:90px;'>
+                <script type='text/javascript'>
+                googletag.cmd.push(function() { googletag.display('div-gpt-ad-1327940144417-0'); });
+                </script>
+                </div>
+            
+
+                           
+            </div>   
+        </td>
+        <td class="col2">
+            
+
+
+
+
+<div style="text-align: center; padding:10px;">
+
+<script type='text/javascript'>
+    GA_googleFillSlot("Skyscraper_NeHe");
+</script>
+
+</div>
+            
+        </td>
+    </table>
+    <div id="footer">
+        <p>
+            
+    
+    © 1997-2012 Gamedev . All rights reserved.<br/>
+
+			NeHe™ and NeHe Productions™ are trademarks of GameDev.net, LLC<br/>
+			OpenGL® is a registered trademark of Silicon Graphics Inc.<br/>
+		</p>        
+		<br/>
+    </div>
+
+    
+    
+	    <script type="text/javascript" src="shCore.js" tppabs="http://nehe.gamedev.net/static/js/syntax_highlighter/shCore.js"></script>
+        <script type="text/javascript" src="shBrushCpp.js" tppabs="http://nehe.gamedev.net/static/js/syntax_highlighter/shBrushCpp.js"></script>
+	    <script type="text/javascript" src="shBrushJScript.js" tppabs="http://nehe.gamedev.net/static/js/syntax_highlighter/shBrushJScript.js"></script>
+	    <script type="text/javascript">SyntaxHighlighter.all();</script>
+    
+
+    <!-- Place this render call where appropriate -->
+    <script type="text/javascript">
+      (function() {
+        var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+        po.src = 'plusone.js'/*tpa=https://apis.google.com/js/plusone.js*/;
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+      })();
+    </script>    
+
+    
+<!-- GoogleAnalytics code -->
+<script src="urchin.js" tppabs="http://www.google-analytics.com/urchin.js" type="text/javascript">
+</script>
+<script type="text/javascript">
+_uacct = "UA-279474-2"; // Gamedev
+urchinTracker();
+_uff = 0; // Reset for second account
+_uacct = "UA-24180731-1"; // Non-GD
+urchinTracker();
+</script> 
+  </body>
+</html>

@@ -1,0 +1,1103 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<!-- 这篇文章由Dancingwind翻译，作者的联系方式zhouwei02@mails.tsinghua.edu.cn -->
+
+<html>
+<head>
+<title>NeHe OpenGL教程第二十一课，DancingWind翻译</title>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<style type=text/css>
+A:link {COLOR: #ccaaff; TEXT-DECORATION: none}
+A:visited {COLOR: #ccaaff; TEXT-DECORATION: none}
+A:active {COLOR: #ccaaff; TEXT-DECORATION: none}
+A:hover {COLOR: #ffccaa; TEXT-DECORATION: none}
+</style>
+</head>
+
+<br><br>
+
+<body bgcolor=#000000 text=#ffffff><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td width=326 height=130><img src="logo.png" tppabs="http://www.owlei.com/DancingWind/Pic/logo.png" width=326 height=130></td>
+    <td valign=middle align=center width="75%"><font color=#ffccaa size=+3><b><i>第21课</i></b></font></td>
+  </tr></table>
+  <!-- 上边框-->
+<table border="0" cellPadding="0" cellSpacing="0" width="100%">
+<TBODY>
+  <tr>
+    <td><img height="28" src="tl.jpg" tppabs="http://www.owlei.com/DancingWind/Pic/tl.jpg" width="28"></td>
+    <td width="100%"><img height="28" src="tc.gif" tppabs="http://www.owlei.com/DancingWind/Pic/tc.gif" width="100%"></td>
+    <td><img height="28" src="tr.gif" tppabs="http://www.owlei.com/DancingWind/Pic/tr.gif" width="28"></td>
+  </tr>
+</TBODY>
+</table>
+
+<!-- 中部-->
+<table border="0" cellPadding="0" cellSpacing="0" width="100%">
+<TBODY>
+  <tr>
+  	<!-- 中部左边框-->
+    <td  background="l.gif" tppabs="http://www.owlei.com/DancingWind/Pic/l.gif"><img src="l.gif" tppabs="http://www.owlei.com/DancingWind/Pic/l.gif" width="28" height="28"></td>
+	<!-- 中部文字部分-->
+    <td vAlign="top" width="100%">
+	<table width="100%" border="0">
+          <tr>
+            <td width="29%"><img src="lesson21.jpg" tppabs="http://www.owlei.com/DancingWind/Pic/lesson21.jpg" width="240" height="180"></td>
+            <td width="71%"><p><FONT class=head>线，反走样，计时，正投影和简单的声音:</FONT></p>
+              <p><font size="3">这是我第一个大的教程，它将包括线，反走样，计时，正投影和简单的声音。希望这一课中的东西能让每个人感到高兴。</FONT></p></td>
+          </tr>
+     </table>
+      </td>
+	<!-- 中部右边框-->
+    <td background="r.gif" tppabs="http://www.owlei.com/DancingWind/Pic/r.gif"><img src="r.gif" tppabs="http://www.owlei.com/DancingWind/Pic/r.gif" width="28" height="28"></td>
+  </tr>
+</TBODY>
+</table>
+
+<!-- 下边框-->
+<table border="0" cellPadding="0" cellSpacing="0" width="100%">
+<TBODY>
+  <tr>
+    <td><img height="28" src="bl.gif" tppabs="http://www.owlei.com/DancingWind/Pic/bl.gif" width="28"></td>
+    <td width="100%"><img height="28" src="bc.gif" tppabs="http://www.owlei.com/DancingWind/Pic/bc.gif" width="100%"></td>
+    <td><img height="28" src="br.gif" tppabs="http://www.owlei.com/DancingWind/Pic/br.gif" width="28"></td>
+  </tr>
+</TBODY>
+</table>
+  <table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>欢迎来到第21课，在这一课里，你将学会直线，反走样，正投影，计时，基本的音效和一个简单的游戏逻辑。希望这里的东西可以让你高兴。我花了两天的时间写代码，并用了两周的时间写这份HTML文件，希望你能享受我的劳动。
+      <p>在这课的结尾你将获得一个叫&quot;amidar&quot;的游戏，你的任务是走完所有的直线。这个程序有了一个基本游戏的一切要素，关卡，生命值，声音和一个游戏道具。</p>
+      <p>我们从第一课的程序来逐步完整这个程序，按照惯例，我们只介绍改动的部分。</p></td><td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table>
+<font color=#aaffaa size=3> 
+<pre>
+#include	&lt;windows.h&gt;							
+#include	&lt;stdio.h&gt;							
+#include	&lt;stdarg.h&gt;						
+#include	&lt;gl\gl.h&gt;							
+#include	&lt;gl\glu.h&gt;							
+#include	&lt;gl\glaux.h&gt;							
+
+HDC		hDC=NULL;							
+HGLRC		hRC=NULL;							
+HWND		hWnd=NULL;							
+HINSTANCE	hInstance;							</pre>
+</font><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>bool类型的变量，vline保存了组成我们游戏网格垂直方向上的121条线，上下水平各11条。hline保存了水平方向上的 
+      121条线，用ap来检查A键是否已经按下。
+      <p>当网格被填满时， filled被设置为TRUE而反之则为FALSE。gameover这个变量的作用显而易见，当他的值为TRUE时，游戏结束。anti指出抗锯齿功能是否打开，当设置为TRUE时，该功能是打开着的。active 
+        和 fullscreen 指出窗口是否被最小化以及游戏窗口是窗口模式还是全屏模式。</p></td><td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table>
+<font color=#aaffaa size=3> 
+<pre>
+bool		keys[256];							
+bool		vline[11][10];							<font color=#ffffaa>// 保存垂直方向的11根线条中，每根线条中的10段是否被走过</font>
+bool		hline[10][11];							<font color=#ffffaa>//保存水平方向的11根线条中，每根线条中的10段是否被走过</font>
+bool		ap;								<font color=#ffffaa>// A键是否已经按下</font>
+bool		filled;								<font color=#ffffaa>// 网格是否被填满?</font>
+bool		gameover;							<font color=#ffffaa>// 游戏是否结束?</font>
+bool		anti=TRUE;							<font color=#ffffaa>// 是否启用反走样?</font>
+bool		active=TRUE;							
+bool		fullscreen=TRUE;						</pre>
+</font> 
+<table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>接着设置整型变量。loop1 和 loop2 被用来检查网格，查看是否有敌人攻击我们，以及在网格上给对象一个随机的位置。你将看到loop1 
+      / loop2在后面的程序得到使用。delay 是一个计数器，我用他来减慢那些坏蛋的动作。当delay的值大于某一个馈值的时候，敌人才可以行动，此时delay将被重置。<br>
+      adjust是一个非常特殊的变量，即使我们的程序拥有一个定时器，他也仅仅用来检查你的计算机是否运行地太快。如果是，则需要暂停一下以减慢运行速度。在我地GeForce显卡上，程序的运行平滑地简直变态，并且非常非常快。但是在我的PIII/450＋Voodoo 
+      3500TV上测试的时候，我注意到程序运行地非常缓慢。我发现问题在于关于时间控制那部分代码只能够用来减慢游戏进行而并不能加速之。因此我引入了一个叫做adjust 
+      的变量。它可以是0到5之间的任何值。游戏中的对象移动速度的不同依赖于这个变量的值。值越小，运动越平滑；而值越大，则运动速度越快。这是在比较慢的机器上运行这个程序最简单有效的解决方案了。但是请注意，不管对象移动的速度有多快，游戏的速度都不会比我期望的更快。我们推荐把adjust值设置为3，这样在大部分机器上都有比较满意的效果。<br>
+      我们把lives的值设置成5，这样我们的英雄一出场就拥有5条命。level是一个内部变量，用来指出当前游戏的难度。当然，这并不是你在屏幕上所看到的那个Level。变量level2开始的时候和Level拥有相同的值，但是随着你技能的提高，这个值也会增加。当你成功通过难度3之后，这个值也将在难度3上停止增加。level 
+      是一个用来表示游戏难度的内部变量，stage才是用来记录当前游戏关卡的变量。</td>
+    <td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table><font color=#aaffaa size=3>
+<pre>
+int		loop1;								<font color=#ffffaa>// 通用循环变量</font>
+int		loop2;								<font color=#ffffaa>// 通用循环变量</font>
+int		delay;								<font color=#ffffaa>// 敌人的暂停时间</font>
+int		adjust=3;							<font color=#ffffaa>// 调整显示的速度</font>
+int		lives=5;							<font color=#ffffaa>// 玩家的生命</font>
+int		level=1;							<font color=#ffffaa>// 内部游戏的等级</font>
+int		level2=level;							<font color=#ffffaa>// 显示的游戏的等级</font>
+int		stage=1;							<font color=#ffffaa>// 游戏的关卡</font>
+</pre>
+</font><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>接下来我们需要一个结构来记录游戏中的对象。fx和fy每次在网格上移动我们的英雄和敌人一些较小的象素，以创建一个平滑的动画效果。x和y则记录着对象处于网格的那个交点上。<br>
+      上下左右各有11个点，因此x和y可以是0到10之间的任意值。这也是我们为什么需要fx和fy的原因。考虑如果我们只能够在上下和左右方向的11个点间移动的话，我们的英雄不得不<br>
+      在各个点间跳跃前进。这样显然是不够平滑美观的。<br>
+      最后一个变量spin用来使对象在Z轴上旋转。</td>
+    <td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table><font color=#aaffaa size=3>
+<pre>
+struct		object								<font color=#ffffaa>// 记录游戏中的对象</font>
+{
+	int	fx, fy;								<font color=#ffffaa>// 使移动变得平滑</font>
+	int	x, y;								<font color=#ffffaa>// 当前游戏者的位置</font>
+	float	spin;								<font color=#ffffaa>// 旋转方向</font>
+};
+</pre>
+</font><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top><br>
+      既然我们已经为我们的玩家，敌人，甚至是秘密武器。设置了结构体，那么同样的，为了表现刚刚创设的结构体的功能和特性，我们也可以为此设置新的结构体。<br>
+      为我们的玩家创设结构体之下的第一条直线。基本上我们将会为玩家提供fx，fy，x，y和spin值几种不同的结构体。通过增加这些直线，仅需查看玩家的x值我们就很容易取得玩家的位置，同时我们也可以通过增加玩家的旋转度来改变玩家的spin值。<br>
+      第二条直线略有不同。因为同一屏幕我们可以同时拥有至多15个敌人。我们需要为每个敌人创造上面所提到的可变量。我们通过设置一个有15个敌人的组来实现这个目标，如第一个敌人的位置被设定为敌人（0）.x.第二个敌人的位置为（1），x等等<br>
+      第三条直线使得为宝物创设结构体实现了可能。宝物是一个会时不时在屏幕上出现的沙漏。我们需要通过沙漏来追踪x和y值。但是因为沙漏的位置是固定的所以我们不需要寻找最佳位置，而通过为程序后面的其他物品寻找好的可变量来实现（如fx和fy）</td>
+    <td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table><font color=#aaffaa size=3><pre>
+struct	object	player;								<font color=#ffffaa>// 玩家信息</font>
+struct	object	enemy[9];							<font color=#ffffaa>// 最多9个敌人的信息</font>
+struct	object	hourglass;							<font color=#ffffaa>// 宝物信息</font>
+</pre></font><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>现在我们创建一个描述时间的结构，使用这个结构我们可以很轻松的跟踪时间变量。
+      <p>接下来的第一步，就是创建一个64位的频率变量，它记录时间的频率。</p>
+      <p>resolution变量用来记录最小的时间间隔。</p>
+      <p>mm_timer_start和mm_timer_elapsed保存计时器开始时的时间和计时器开始后流失的时间。这两个变量只有当计算机不拥有performance 
+        counter时才启用。</p>
+      <p>变量performance_timer用来标识计算机是否有performance counter</p>
+      <p>如果performance counter启用，最后两个变量用来保存计时器开始时的时间和计时器开始后流失的时间，它们比普通的根据精确。</p></td><td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table>
+<font color=#aaffaa size=3> 
+<pre>
+struct			 							<font color=#ffffaa>// 保存时间信息的结构</font>
+{
+  __int64       frequency;							<font color=#ffffaa>// 频率</font>
+  float         resolution;							<font color=#ffffaa>// 时间间隔</font>
+  unsigned long mm_timer_start;							<font color=#ffffaa>// 多媒体计时器的开始时间</font>
+  unsigned long mm_timer_elapsed;						<font color=#ffffaa>// 多媒体</font><font color=#aaffaa size=3><font color=#ffffaa>计时器的开始时间</font></font>
+  bool		performance_timer;						<font color=#ffffaa>// 使用Performance Timer?</font>
+  __int64       performance_timer_start;					<font color=#ffffaa>// Performance Timer</font><font color=#aaffaa size=3><font color=#ffffaa>计时器的开始时间</font></font>
+  __int64       performance_timer_elapsed;					<font color=#ffffaa>// Performance Timer</font><font color=#aaffaa size=3><font color=#ffffaa>计时器的开始时间</font></font>
+} timer;									
+</pre>
+</font> 
+<table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>下一行代码定义了速度表。如前所说，对象移动的速度依赖于值adjust，而以adjust为下标去检索速度表，就可以获得对象的移动速度。</td>
+    <td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table><font color=#aaffaa size=3><pre>
+int		steps[6]={ 1, 2, 4, 5, 10, 20 };				<font color=#ffffaa>// 用来调整显示的速度</font>
+</pre></font><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>接下来我们将为纹理分配空间。纹理一共2张，一张是背景而另外一张是一张字体纹理。如本系列教程中的其他课程一样，base用来指出字符显示列表的基，同样的我们在最后声明了窗口过程WndProc()。</td>
+    <td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table><font color=#aaffaa size=3>
+<pre>
+GLuint		texture[2];							<font color=#ffffaa>// 字符纹理</font>
+GLuint		base;								<font color=#ffffaa>// 字符显示列表的开始值</font>
+
+LRESULT	CALLBACK WndProc(HWND, UINT, WPARAM, LPARAM);				
+</pre>
+</font><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>接下来会是很有趣的工作。接下来的一段代码会初始化我们的计时器。代码会检查performance 
+      counter(非常精确的计数器)是否可用，如果不可用，则使用多媒体计时器。这段代码是可以移植的。</td>
+    <td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table><font color=#aaffaa size=3>
+<pre>
+void TimerInit(void)								<font color=#ffffaa>// 初始化我们的计时器</font>
+{
+	memset(&timer, 0, sizeof(timer));					<font color=#ffffaa>// 清空计时器结构</font>
+
+	<font color=#ffffaa>// 检测Performance Counter是否可用，可用则创建</font>
+	if (!QueryPerformanceFrequency((LARGE_INTEGER *) &timer.frequency))
+	{
+		<font color=#ffffaa>// 如果不可用</font>
+		timer.performance_timer	= FALSE;				<font color=#ffffaa>// 设置Performance Timer为false</font>
+		timer.mm_timer_start	= timeGetTime();			<font color=#ffffaa>// 使用普通的计时器</font>
+		timer.resolution	= 1.0f/1000.0f;				<font color=#ffffaa>// 设置单位为毫秒</font>
+		timer.frequency		= 1000;					<font color=#ffffaa>// 设置频率为1000</font>
+		timer.mm_timer_elapsed	= timer.mm_timer_start;			<font color=#ffffaa>// 设置流失的时间为当前的时间</font>
+	}
+</pre>
+</font><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>如果performance counter 可用，则执行下面的代码：</td>
+    <td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table>
+<font color=#aaffaa size=3> 
+<pre>
+	else
+	{
+		<font color=#ffffaa>// 使用Performance Counter计时器</font>
+		QueryPerformanceCounter((LARGE_INTEGER *) &timer.performance_timer_start);
+		timer.performance_timer		= TRUE;				<font color=#ffffaa>// 设置Performance Timer为TRUE</font>
+		<font color=#ffffaa>// 计算计时的精确度</font>
+		timer.resolution		= (float) (((double)1.0f)/((double)timer.frequency));
+		<font color=#ffffaa>// </font><font color=#aaffaa size=3><font color=#ffffaa>设置流失的时间为当前的时间</font></font>
+		timer.performance_timer_elapsed	= timer.performance_timer_start;
+	}
+}
+</pre>
+</font>
+<table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>上面的代码设置了计时器，而下面的代码则读出计时器并返回已经经过的时间，以毫秒计。代码很简单，首先检查是否支持performance 
+      counter，若支持，则调用其相关函数；否则调用多媒体函数。</td>
+    <td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table><font color=#aaffaa size=3>
+<pre>
+float TimerGetTime()								<font color=#ffffaa>// 返回经过的时间，以毫秒为单位</font>
+{
+	__int64 time;								<font color=#ffffaa>// 使用64位的整数</font>
+
+	if (timer.performance_timer)						<font color=#ffffaa>// 是否使用Performance Timer计时器?</font>
+	{
+		QueryPerformanceCounter((LARGE_INTEGER *) &time);		<font color=#ffffaa>// 返回当前的时间</font>
+		<font color=#ffffaa>// 返回时间差</font>
+		return ( (float) ( time - timer.performance_timer_start) * timer.resolution)*1000.0f;
+	}
+	else
+	{
+		<font color=#ffffaa>// 使用普通的计时器，返回时间差</font>
+		return( (float) ( timeGetTime() - timer.mm_timer_start) * timer.resolution)*1000.0f;
+	}
+}
+</pre>
+</font><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>在下面的代码里，我们把玩家重置在屏幕的左上角，而给敌人设置一个随机的位置。</td>
+    <td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table><font color=#aaffaa size=3>
+<pre>
+void ResetObjects(void)								<font color=#ffffaa>// 重置玩家和敌人</font>
+{
+	player.x=0;								<font color=#ffffaa>// 把玩家置于左上角</font>
+	player.y=0;								
+	player.fx=0;								
+	player.fy=0;								
+</pre>
+</font><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>接着我们给敌人一个随机的开始位置，敌人的数量等于难度乘上当前关卡号。记着，难度最大是3，而最多有3关。因此敌人最多有9个。</td>
+    <td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table><font color=#aaffaa size=3>
+<pre>
+	for (loop1=0; loop1&lt;(stage*level); loop1++)				<font color=#ffffaa>// 循环随即放置所有的敌人</font>
+	{
+		enemy[loop1].x=5+rand()%6;					
+		enemy[loop1].y=rand()%11;					
+		enemy[loop1].fx=enemy[loop1].x*60;				
+		enemy[loop1].fy=enemy[loop1].y*40;				
+	}
+}
+</pre>
+</font><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>并没有做任何改动，因此我将跳过它。在LoadGLTextures函数里我将载入那两个纹理－－背景和字体。并且我会把这两副图都转化成纹理，这样我们就可以在游戏中使用他们。纹理创建好之后，象素数据就可以删除了。没有什么新东西，你可以阅读以前的课程以获得更多信息。<br></td><td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table><font color=#aaffaa size=3>
+<pre>
+int LoadGLTextures()								
+{
+	int Status=FALSE;							
+	AUX_RGBImageRec *TextureImage[2];					
+	memset(TextureImage,0,sizeof(void *)*2);				
+	if 	((TextureImage[0]=LoadBMP("Data/Font.bmp")) &&			<font color=#ffffaa>// 载入字体纹理</font>
+		 (TextureImage[1]=LoadBMP("Data/Image.bmp")))			<font color=#ffffaa>// 载入图像纹理</font>
+	{
+		Status=TRUE;							
+
+		glGenTextures(2, &texture[0]);					
+
+		for (loop1=0; loop1&lt;2; loop1++)					
+		{
+			glBindTexture(GL_TEXTURE_2D, texture[loop1]);
+			glTexImage2D(GL_TEXTURE_2D, 0, 3, TextureImage[loop1]-&gt;sizeX, TextureImage[loop1]-&gt;sizeY,
+				0, GL_RGB, GL_UNSIGNED_BYTE, TextureImage[loop1]-&gt;data);
+			glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_LINEAR);
+			glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_LINEAR);
+		}
+
+		for (loop1=0; loop1&lt;2; loop1++)					
+		{
+			if (TextureImage[loop1])				
+			{
+				if (TextureImage[loop1]-&gt;data)			
+				{
+					free(TextureImage[loop1]-&gt;data);	
+				}
+				free(TextureImage[loop1]);			
+			}
+		}
+	}
+	return Status;							
+}
+</pre>
+</font><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>下面的代码建立了显示列表。对于字体的显示，我已经写过教程。在这里我把字体图象分成16×16个单元共256个字符。如果你有什么不明白，请参阅前面的教程</td>
+    <td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table><font color=#aaffaa size=3>
+<pre>
+GLvoid BuildFont(GLvoid)							
+{
+	base=glGenLists(256);							
+	glBindTexture(GL_TEXTURE_2D, texture[0]);				
+	for (loop1=0; loop1&lt;256; loop1++)					
+	{
+		float cx=float(loop1%16)/16.0f;					
+		float cy=float(loop1/16)/16.0f;					
+
+		glNewList(base+loop1,GL_COMPILE);				
+			glBegin(GL_QUADS);					
+				glTexCoord2f(cx,1.0f-cy-0.0625f);		
+				glVertex2d(0,16);				
+				glTexCoord2f(cx+0.0625f,1.0f-cy-0.0625f);	
+				glVertex2i(16,16);				
+				glTexCoord2f(cx+0.0625f,1.0f-cy);		
+				glVertex2i(16,0);				
+				glTexCoord2f(cx,1.0f-cy);			
+				glVertex2i(0,0);				
+			glEnd();						
+			glTranslated(15,0,0);					
+		glEndList();							
+	}									
+}
+</pre>
+</font><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>当我们不再需要显示列表的时候，销毁它是一个好主意。在这里我仍然把代码加上了，虽然没有什么新东西。</td>
+    <td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table><font color=#aaffaa size=3>
+<pre>
+GLvoid KillFont(GLvoid)		
+{
+	glDeleteLists(base,256);						
+}
+</pre>
+</font><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>函数没有做太多改变。唯一的改动是它可以打印变量了。我把代码列出这样你可以容易看到改动的地方。<br>
+      请注意，在这里我激活了纹理并且重置了视图矩阵。如果set被置1的话，字体将被放大。我这样做是希望可以在屏幕上显示大一点的字符。在一切结束后，我会禁用纹理。</td>
+    <td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table><font color=#aaffaa size=3>
+<pre>
+GLvoid glPrint(GLint x, GLint y, int set, const char *fmt, ...)
+{
+	char		text[256];						
+	va_list		ap;							
+
+	if (fmt == NULL)		
+		return;								
+
+	va_start(ap, fmt);							
+	    vsprintf(text, fmt, ap);						
+	va_end(ap);								
+
+	if (set&gt;1)								
+	{
+		set=1;							
+	}
+	glEnable(GL_TEXTURE_2D);						
+	glLoadIdentity();							
+	glTranslated(x,y,0);							
+	glListBase(base-32+(128*set));						
+
+	if (set==0)								
+	{
+		glScalef(1.5f,2.0f,1.0f);					
+	}
+
+	glCallLists(strlen(text),GL_UNSIGNED_BYTE, text);			
+	glDisable(GL_TEXTURE_2D);						
+}
+</pre>
+</font><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>下面的代码基本没有变化，只是把透视投影变为了正投影</td>
+    <td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table><font color=#aaffaa size=3>
+<pre>
+GLvoid ReSizeGLScene(GLsizei width, GLsizei height)				 
+{
+	if (height==0)							
+	{
+		height=1;							
+	}
+
+	glViewport(0,0,width,height);						
+
+	glMatrixMode(GL_PROJECTION);						
+	glLoadIdentity();							
+
+	glOrtho(0.0f,width,height,0.0f,-1.0f,1.0f);
+
+	glMatrixMode(GL_MODELVIEW);						
+	glLoadIdentity();							
+}
+</pre>
+</font><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>初始化的代码和前面的代码相比没有什么改变</td>
+    <td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table><font color=#aaffaa size=3><pre>
+int InitGL(GLvoid)
+{
+	if (!LoadGLTextures())							
+	{
+		return FALSE;							
+	}
+
+	BuildFont();								
+
+	glShadeModel(GL_SMOOTH);						
+	glClearColor(0.0f, 0.0f, 0.0f, 0.5f);					
+	glClearDepth(1.0f);							
+	glHint(GL_LINE_SMOOTH_HINT, GL_NICEST);					
+	glEnable(GL_BLEND);							
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	return TRUE;								
+}
+</pre></font><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>下面是我们的绘制代码。
+      <p>首先我们清空缓存，接着绑定字体的纹理，绘制游戏的提示字符串</p></td><td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table><font color=#aaffaa size=3>
+<pre>
+int DrawGLScene(GLvoid)								
+{
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);			
+	glBindTexture(GL_TEXTURE_2D, texture[0]);				<font color=#ffffaa>// 选择字符纹理</font>
+	glColor3f(1.0f,0.5f,1.0f);						
+	glPrint(207,24,0,"GRID CRAZY");						<font color=#ffffaa>// 绘制游戏名称&quot;GRID CRAZY&quot;</font>
+	glColor3f(1.0f,1.0f,0.0f);						
+	glPrint(20,20,1,"Level:%2i",level2);					<font color=#ffffaa>// 绘制当前的级别</font>
+	glPrint(20,40,1,"Stage:%2i",stage);					<font color=#ffffaa>// 绘制当前级别的关卡</font>
+</pre>
+</font><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>现在我们检测游戏是否结束，如果游戏结束绘制&quot;Gmae over&quot;并提示玩家按空格键重新开始</td>
+    <td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table>
+<font color=#aaffaa size=3> 
+<pre>
+	if (gameover)								<font color=#ffffaa>// 游戏是否结束?</font>
+	{
+		glColor3ub(rand()%255,rand()%255,rand()%255);			<font color=#ffffaa>// 随机选择一种颜色</font>
+		glPrint(472,20,1,"GAME OVER");					<font color=#ffffaa>// 绘制 GAME OVER 字符串到屏幕</font>
+		glPrint(456,40,1,"PRESS SPACE");				<font color=#ffffaa>// 提示玩家按空格键重新开始</font>
+	}
+</pre>
+</font>
+<table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>在屏幕的右上角绘制玩家的剩余生命</td>
+    <td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table><font color=#aaffaa size=3>
+<pre>
+	for (loop1=0; loop1&lt;lives-1; loop1++)					<font color=#ffffaa>//循环绘制玩家的剩余生命</font>
+	{
+		glLoadIdentity();						
+		glTranslatef(490+(loop1*40.0f),40.0f,0.0f);			<font color=#ffffaa>// 移动到屏幕右上角</font>
+		glRotatef(-player.spin,0.0f,0.0f,1.0f);				<font color=#ffffaa>// 旋转绘制的生命图标</font>
+		glColor3f(0.0f,1.0f,0.0f);					<font color=#ffffaa>// 绘制玩家生命</font>
+		glBegin(GL_LINES);						<font color=#ffffaa>// 绘制玩家图标</font>
+			glVertex2d(-5,-5);					
+			glVertex2d( 5, 5);					
+			glVertex2d( 5,-5);					
+			glVertex2d(-5, 5);					
+		glEnd();							
+		glRotatef(-player.spin*0.5f,0.0f,0.0f,1.0f);			
+		glColor3f(0.0f,0.75f,0.0f);					
+		glBegin(GL_LINES);						
+			glVertex2d(-7, 0);					
+			glVertex2d( 7, 0);					
+			glVertex2d( 0,-7);					
+			glVertex2d( 0, 7);					
+		glEnd();							
+	}
+</pre>
+</font><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>下面我们来绘制网格，我们设置变量filled为TRUE，这告诉程序填充网格。
+      <p>接着我们把线的宽度设置为2，并把线的颜色设置为蓝色，接着我们检测线断是否被走过，如果走过我们设置颜色为白色。</p>
+      <p></p></td><td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table><font color=#aaffaa size=3>
+<pre>
+	filled=TRUE;								<font color=#ffffaa>// 在测试前，把填充变量设置为TRUE</font>
+	glLineWidth(2.0f);							<font color=#ffffaa>// 设置线宽为2.0f</font>
+	glDisable(GL_LINE_SMOOTH);						<font color=#ffffaa>// 禁用反走样</font>
+	glLoadIdentity();							
+	for (loop1=0; loop1&lt;11; loop1++)					<font color=#ffffaa>// 循环11根线</font>
+	{
+		for (loop2=0; loop2&lt;11; loop2++)				<font color=#ffffaa>// 循环每根线的线段</font>
+		{
+			glColor3f(0.0f,0.5f,1.0f);				<font color=#ffffaa>// 设置线为蓝色</font>
+			if (hline[loop1][loop2])				<font color=#ffffaa>// 是否走过？</font>
+			{
+				glColor3f(1.0f,1.0f,1.0f);			<font color=#ffffaa>// 是，设线为白色</font>
+			}
+			if (loop1&lt;10)						<font color=#ffffaa>// 绘制水平线</font>
+			{
+				if (!hline[loop1][loop2])			<font color=#ffffaa>// 如果当前线段没有走过，则不填充</font>
+				{
+					filled=FALSE;				
+				}
+				glBegin(GL_LINES);				<font color=#ffffaa>// 绘制当前的线段</font>
+					glVertex2d(20+(loop1*60),70+(loop2*40));	
+					glVertex2d(80+(loop1*60),70+(loop2*40));	
+				glEnd();					
+			}
+</pre>
+</font><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top> 下面的代码绘制垂直的线段</td>
+    <td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table>
+<font color=#aaffaa size=3> 
+<pre>
+			glColor3f(0.0f,0.5f,1.0f);				<font color=#ffffaa>// <font color=#aaffaa size=3><font color=#ffffaa>设置线为蓝色</font></font></font>
+			if (vline[loop1][loop2])				<font color=#ffffaa>// </font><font color=#aaffaa size=3><font color=#ffffaa>是否走过</font></font>
+			{
+				glColor3f(1.0f,1.0f,1.0f);			<font color=#ffffaa>// </font><font color=#aaffaa size=3><font color=#ffffaa>是，设线为白色</font></font>
+			}
+			if (loop2&lt;10)						<font color=#ffffaa>// 绘制垂直线</font>
+			{
+				if (!vline[loop1][loop2])			<font color=#ffffaa>// </font><font color=#aaffaa size=3><font color=#ffffaa>如果当前线段没有走过，则不填充</font></font>
+				{
+					filled=FALSE;				
+				}
+				glBegin(GL_LINES);				<font color=#ffffaa>// </font><font color=#aaffaa size=3><font color=#ffffaa>绘制当前的线段</font></font>
+					glVertex2d(20+(loop1*60),70+(loop2*40));	
+					glVertex2d(20+(loop1*60),110+(loop2*40));	
+				glEnd();					
+			}
+</pre>
+</font> 
+<table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>接下来我们检测长方形的四个边是否都被走过，如果被走过我们就绘制一个带纹理的四边形。 <p>我们用下图来解释这个检测过程</p>
+      <br> <br> <center>
+        <img src="lesson21-1.jpg" tppabs="http://www.owlei.com/DancingWind/Pic/lesson21-1.jpg"> 
+      </center>
+      <br>
+      如果对于垂直线vline的相邻两个边都被走过，并且水平线hline的相邻两个边也被走过，那么我们就可以绘制这个四边形了。我们可以使用循环检测每一个四边形，代码如下：</td>
+    <td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table><font color=#aaffaa size=3>
+<pre>
+			glEnable(GL_TEXTURE_2D);				<font color=#ffffaa>// 使用纹理映射</font>
+			glColor3f(1.0f,1.0f,1.0f);				<font color=#ffffaa>// 设置为白色</font>
+			glBindTexture(GL_TEXTURE_2D, texture[1]);		<font color=#ffffaa>// 绑定纹理</font>
+			if ((loop1&lt;10) && (loop2&lt;10))				<font color=#ffffaa>// 绘制走过的四边形</font>
+			{
+				<font color=#ffffaa>// 这个四边形是否被走过?</font>
+				if (hline[loop1][loop2] && hline[loop1][loop2+1] && vline[loop1][loop2] && vline[loop1+1][loop2])
+				{
+					glBegin(GL_QUADS);			<font color=#ffffaa>// 是，则绘制它</font>
+						glTexCoord2f(float(loop1/10.0f)+0.1f,1.0f-(float(loop2/10.0f)));
+						glVertex2d(20+(loop1*60)+59,(70+loop2*40+1));	
+						glTexCoord2f(float(loop1/10.0f),1.0f-(float(loop2/10.0f)));
+						glVertex2d(20+(loop1*60)+1,(70+loop2*40+1));	
+						glTexCoord2f(float(loop1/10.0f),1.0f-(float(loop2/10.0f)+0.1f));
+						glVertex2d(20+(loop1*60)+1,(70+loop2*40)+39);	
+						glTexCoord2f(float(loop1/10.0f)+0.1f,1.0f-(float(loop2/10.0f)+0.1f));
+						glVertex2d(20+(loop1*60)+59,(70+loop2*40)+39);	
+					glEnd();				
+				}
+			}
+			glDisable(GL_TEXTURE_2D);				
+		}
+	}
+	glLineWidth(1.0f);							
+</pre>
+</font><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>下面的代码用来设置是否启用直线反走样</td>
+    <td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table><font color=#aaffaa size=3>
+<pre>
+	if (anti)								<font color=#ffffaa>// 是否启用反走样?</font>
+	{
+		glEnable(GL_LINE_SMOOTH);					
+	}
+</pre>
+</font><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>为了使游戏变得简单些，我添加了一个时间停止器，当你吃掉它时，可以让追击的你的敌人停下来。
+      <p>下面的代码用来绘制一个时间停止器。</p></td><td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table><font color=#aaffaa size=3>
+<pre>
+	if (hourglass.fx==1)							
+	{
+		glLoadIdentity();						
+		glTranslatef(20.0f+(hourglass.x*60),70.0f+(hourglass.y*40),0.0f);	
+		glRotatef(hourglass.spin,0.0f,0.0f,1.0f);			
+		glColor3ub(rand()%255,rand()%255,rand()%255);			</pre>
+</font><font color=#aaffaa size=3>
+<pre>
+		glBegin(GL_LINES);
+			glVertex2d(-5,-5);					
+			glVertex2d( 5, 5);					
+			glVertex2d( 5,-5);					
+			glVertex2d(-5, 5);					
+			glVertex2d(-5, 5);					
+			glVertex2d( 5, 5);					
+			glVertex2d(-5,-5);					
+			glVertex2d( 5,-5);					
+		glEnd();							
+	}
+</pre>
+</font><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>接下来绘制我们玩家</td>
+    <td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table><font color=#aaffaa size=3>
+<pre>
+	glLoadIdentity();
+	glTranslatef(player.fx+20.0f,player.fy+70.0f,0.0f);			<font color=#ffffaa>// 设置玩家的位置</font>
+	glRotatef(player.spin,0.0f,0.0f,1.0f);					<font color=#ffffaa>// 旋转动画</font>
+	glColor3f(0.0f,1.0f,0.0f);						
+	glBegin(GL_LINES);							
+		glVertex2d(-5,-5);						
+		glVertex2d( 5, 5);						
+		glVertex2d( 5,-5);						
+		glVertex2d(-5, 5);						
+	glEnd();								</pre>
+</font><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top> 绘制玩家的显示效果，让它看起来更好看些（其实没用）</td>
+    <td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table><font color=#aaffaa size=3>
+<pre>
+	glRotatef(player.spin*0.5f,0.0f,0.0f,1.0f);
+	glColor3f(0.0f,0.75f,0.0f);						
+	glBegin(GL_LINES);							
+		glVertex2d(-7, 0);						
+		glVertex2d( 7, 0);						
+		glVertex2d( 0,-7);						
+		glVertex2d( 0, 7);						
+	glEnd();							</pre>
+</font><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>接下来绘制追击玩家的敌人</td>
+    <td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table><font color=#aaffaa size=3>
+<pre>
+	for (loop1=0; loop1&lt;(stage*level); loop1++)
+	{
+		glLoadIdentity();						
+		glTranslatef(enemy[loop1].fx+20.0f,enemy[loop1].fy+70.0f,0.0f);
+		glColor3f(1.0f,0.5f,0.5f);					
+		glBegin(GL_LINES);						
+			glVertex2d( 0,-7);					
+			glVertex2d(-7, 0);					
+			glVertex2d(-7, 0);					
+			glVertex2d( 0, 7);					
+			glVertex2d( 0, 7);					
+			glVertex2d( 7, 0);					
+			glVertex2d( 7, 0);					
+			glVertex2d( 0,-7);					
+		glEnd();							</pre>
+</font><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top> 下面的代码绘制敌人的显示效果，让其更好看。</td>
+    <td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table><font color=#aaffaa size=3>
+<pre>
+		glRotatef(enemy[loop1].spin,0.0f,0.0f,1.0f);			
+		glColor3f(1.0f,0.0f,0.0f);					
+		glBegin(GL_LINES);						
+			glVertex2d(-7,-7);					
+			glVertex2d( 7, 7);					
+			glVertex2d(-7, 7);					
+			glVertex2d( 7,-7);					
+		glEnd();							
+	}
+	return TRUE;								
+}
+</pre>
+</font><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>KillGLWindow函数基本没有变化，只在最后一行添加KillFont函数</td>
+    <td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table><font color=#aaffaa size=3>
+<pre>
+GLvoid KillGLWindow(GLvoid)							
+{
+	if (fullscreen)							
+	{
+		ChangeDisplaySettings(NULL,0);					
+		ShowCursor(TRUE);						
+	}
+
+	if (hRC)								
+	{
+		if (!wglMakeCurrent(NULL,NULL))					
+		{
+			MessageBox(NULL,"Release Of DC And RC Failed.","SHUTDOWN ERROR",MB_OK | MB_ICONINFORMATION);
+		}
+
+		if (!wglDeleteContext(hRC))					
+		{
+			MessageBox(NULL,"Release Rendering Context Failed.","SHUTDOWN ERROR",MB_OK | MB_ICONINFORMATION);
+		}
+		hRC=NULL;							
+	}
+
+	if (hDC && !ReleaseDC(hWnd,hDC))					
+	{
+		MessageBox(NULL,"Release Device Context Failed.","SHUTDOWN ERROR",MB_OK | MB_ICONINFORMATION);
+		hDC=NULL;							
+	}
+
+	if (hWnd && !DestroyWindow(hWnd))					
+	{
+		MessageBox(NULL,"Could Not Release hWnd.","SHUTDOWN ERROR",MB_OK | MB_ICONINFORMATION);
+		hWnd=NULL;							
+	}
+
+	if (!UnregisterClass("OpenGL",hInstance))				
+	{
+		MessageBox(NULL,"Could Not Unregister Class.","SHUTDOWN ERROR",MB_OK | MB_ICONINFORMATION);
+		hInstance=NULL;							
+	}
+
+	KillFont();								<font color=#ffffaa>// 删除创建的字体</font>
+}
+</pre>
+</font><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top> <p>函数CreateGLWindow() and WndProc() 没有变化。</p>
+      <p>游戏控制在WinMain中完成的</p></td>
+    <td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table><font color=#aaffaa size=3>
+<pre>
+int WINAPI WinMain(	HINSTANCE	hInstance,				
+			HINSTANCE	hPrevInstance,				
+			LPSTR		lpCmdLine,				
+			int		nCmdShow)				
+{
+	MSG	msg;								
+	BOOL	done=FALSE;							
+
+	
+	if (MessageBox(NULL,"Would You Like To Run In Fullscreen Mode?", "Start FullScreen?",MB_YESNO|MB_ICONQUESTION)==IDNO)
+	{
+		fullscreen=FALSE;						
+	}
+</pre>
+</font><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top> 在创建完OpenGL窗口后，我们添加如下的代码，它用来创建玩家和敌人，并初始化时间计时器</td>
+    <td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table><font color=#aaffaa size=3>
+<pre>
+	if (!CreateGLWindow("NeHe's Line Tutorial",640,480,16,fullscreen))	
+	{
+		return 0;							
+	}
+
+	ResetObjects();								<font color=#ffffaa>// 重置玩家和敌人</font>
+	TimerInit();								<font color=#ffffaa>// 初始化时间计时器</font>
+
+	while(!done)								
+	{
+		if (PeekMessage(&msg,NULL,0,0,PM_REMOVE))			
+		{
+			if (msg.message==WM_QUIT)				
+			{
+				done=TRUE;					
+			}
+			else							
+			{
+				TranslateMessage(&msg);				
+				DispatchMessage(&msg);				
+			}
+		}
+		else								
+		{
+</pre>
+</font><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>接下来取得当前的时间，并在速度快的机器上让其空循环，使得程序在所有的机器上都拥有同样的帧率</td>
+    <td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table>
+<font color=#aaffaa size=3> 
+<pre>
+			float start=TimerGetTime();				<font color=#ffffaa>// 返回当前的时间</font>
+
+			if ((active && !DrawGLScene()) || keys[VK_ESCAPE])	
+			{
+				done=TRUE;					
+			}
+			else							
+			{
+				SwapBuffers(hDC);				
+			}
+
+			while(TimerGetTime()&lt;start+float(steps[adjust]*2.0f)) {}<font color=#ffffaa>// 速度快的机器上让其空循环</font>
+</pre>
+</font>
+<table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top> 下面的部分没有改变，按F1执行窗口和全屏的切换</td>
+    <td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table><font color=#aaffaa size=3><pre>
+			if (keys[VK_F1])
+			{
+				keys[VK_F1]=FALSE;				
+				KillGLWindow();					
+				fullscreen=!fullscreen;				
+				if (!CreateGLWindow("NeHe's Line Tutorial",640,480,16,fullscreen))
+				{
+					return 0;				
+				}
+			}
+</pre></font><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top> 按A键切换是否启用反走样</td>
+    <td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table><font color=#aaffaa size=3>
+<pre>
+			if (keys['A'] && !ap)					<font color=#ffffaa>// 如果'A' 键被按下，启用反走样</font>
+			{
+				ap=TRUE;					
+				anti=!anti;					
+			}
+			if (!keys['A'])						
+			{
+				ap=FALSE;					
+			}
+</pre>
+</font><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top> 如果游戏没有结束，执行游戏循环</td>
+    <td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table><font color=#aaffaa size=3>
+<pre>
+			if (!gameover && active)				<font color=#ffffaa>// 如果游戏没有结束，则进行游戏循环</font>
+			{
+				for (loop1=0; loop1&lt;(stage*level); loop1++)	<font color=#ffffaa>// 循环不同的难度等级</font>
+				{
+</pre>
+</font><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>根据玩家的位置，让敌人追击玩家</td>
+    <td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table><font color=#aaffaa size=3>
+<pre>
+					if ((enemy[loop1].x&lt;player.x) && (enemy[loop1].fy==enemy[loop1].y*40))
+					{
+						enemy[loop1].x++;		
+					}
+
+					if ((enemy[loop1].x&gt;player.x) && (enemy[loop1].fy==enemy[loop1].y*40))
+					{
+						enemy[loop1].x--;		
+					}
+
+					if ((enemy[loop1].y&lt;player.y) && (enemy[loop1].fx==enemy[loop1].x*60))
+					{
+						enemy[loop1].y++;		
+					}
+
+					if ((enemy[loop1].y&gt;player.y) && (enemy[loop1].fx==enemy[loop1].x*60))
+					{
+						enemy[loop1].y--;		
+					}
+</pre>
+</font><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top> 如果时间停止器的显示时间结束，而玩家又没有吃到，那么重置计时计算器。</td>
+    <td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table>
+<font color=#aaffaa size=3> 
+<pre>
+					if (delay&gt;(3-level) && (hourglass.fx!=2))		<font color=#ffffaa>// 如果没有吃到时间停止器</font>
+					{
+						delay=0;					<font color=#ffffaa>// 重置时间停止器</font>
+						for (loop2=0; loop2&lt;(stage*level); loop2++)	<font color=#ffffaa>// 循环设置每个敌人的位置</font>
+						{
+</pre>
+</font>
+<table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>下面的代码调整每个敌人的位置，并绘制它们的显示效果</td>
+    <td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table><font color=#aaffaa size=3>
+<pre>
+							if (enemy[loop2].fx&lt;enemy[loop2].x*60)	
+							{
+								enemy[loop2].fx+=steps[adjust];	
+								enemy[loop2].spin+=steps[adjust];	
+							}
+							if (enemy[loop2].fx&gt;enemy[loop2].x*60)	
+							{
+								enemy[loop2].fx-=steps[adjust];	
+								enemy[loop2].spin-=steps[adjust];	
+							}
+							if (enemy[loop2].fy&lt;enemy[loop2].y*40)	
+							{
+								enemy[loop2].fy+=steps[adjust];	
+								enemy[loop2].spin+=steps[adjust];	
+							}
+							if (enemy[loop2].fy&gt;enemy[loop2].y*40)	
+							{
+								enemy[loop2].fy-=steps[adjust];	
+								enemy[loop2].spin-=steps[adjust];	
+							}
+						}
+					}
+</pre>
+</font><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>如果敌人的位置和玩家的位置相遇，这玩家死亡，开始新的一局</td>
+    <td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table><font color=#aaffaa size=3>
+<pre>
+					<font color=#ffffaa>// 敌人的位置和玩家的位置相遇?</font>
+					if ((enemy[loop1].fx==player.fx) && (enemy[loop1].fy==player.fy))
+					{
+						lives--;			<font color=#ffffaa>// 如果是，生命值减1</font>
+
+						if (lives==0)			<font color=#ffffaa>// 如果生命值为0，则游戏结束</font>
+						{
+							gameover=TRUE;		
+						}
+
+						ResetObjects();			<font color=#ffffaa>// 重置所有的游戏变量</font>
+						PlaySound("Data/Die.wav", NULL, SND_SYNC);	<font color=#ffffaa>// 播放死亡的音乐</font>
+					}
+				}
+</pre>
+</font><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>使用上，下，左，右控制玩家的位置</td>
+    <td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table><font color=#aaffaa size=3>
+<pre>
+				if (keys[VK_RIGHT] && (player.x&lt;10) && (player.fx==player.x*60) && (player.fy==player.y*40))
+				{
+					hline[player.x][player.y]=TRUE;		
+					player.x++;				
+				}
+				if (keys[VK_LEFT] && (player.x&gt;0) && (player.fx==player.x*60) && (player.fy==player.y*40))
+				{
+					player.x--;				
+					hline[player.x][player.y]=TRUE;		
+				}
+				if (keys[VK_DOWN] && (player.y&lt;10) && (player.fx==player.x*60) && (player.fy==player.y*40))
+				{
+					vline[player.x][player.y]=TRUE;		
+					player.y++;				
+				}
+				if (keys[VK_UP] && (player.y&gt;0) && (player.fx==player.x*60) && (player.fy==player.y*40))
+				{
+					player.y--;				
+					vline[player.x][player.y]=TRUE;		
+				}
+</pre>
+</font><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>调整玩家的位置，让动画看起来跟自然</td>
+    <td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table><font color=#aaffaa size=3>
+<pre>
+				if (player.fx&lt;player.x*60)			
+				{
+					player.fx+=steps[adjust];		
+				}
+				if (player.fx&gt;player.x*60)			
+				{
+					player.fx-=steps[adjust];		
+				}
+				if (player.fy&lt;player.y*40)			
+				{
+					player.fy+=steps[adjust];		
+				}
+				if (player.fy&gt;player.y*40)			
+				{
+					player.fy-=steps[adjust];		
+				}
+			}
+</pre>
+</font><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>如果游戏结束，按空格开始新的一局游戏</td>
+    <td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table><font color=#aaffaa size=3>
+<pre>
+			else							<font color=#ffffaa>// 如果游戏结束</font>
+			{
+				if (keys[' '])					<font color=#ffffaa>// 按下空格？</font>
+				{
+					gameover=FALSE;				<font color=#ffffaa>// 开始新的一局</font>
+					filled=TRUE;				<font color=#ffffaa>// 重置所有的变量</font>
+					level=1;				
+					level2=1;			
+					stage=0;				
+					lives=5;				
+				}
+			}
+</pre>
+</font><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>如果顺利通过本关，播放通关音乐，并提高游戏难度，开始新的一局</td>
+    <td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table><font color=#aaffaa size=3>
+<pre>
+			if (filled)						<font color=#ffffaa>// 所有网格是否填满</font>
+			{
+				PlaySound("Data/Complete.wav", NULL, SND_SYNC);	<font color=#ffffaa>// 播放过关音乐</font>
+				stage++;					<font color=#ffffaa>// 增加游戏难度</font>
+				if (stage&gt;3)					<font color=#ffffaa>// 如果当前的关卡大于3，则进入到下一个大的关卡?</font>
+				{
+					stage=1;				<font color=#ffffaa>// 重置当前的关卡</font>
+					level++;				<font color=#ffffaa>// 增加大关卡的值</font>
+					level2++;				
+					if (level&gt;3)				
+					{
+						level=3;			<font color=#ffffaa>// 如果大关卡大于3，则不再增加</font>
+						lives++;			<font color=#ffffaa>// 完成一局给玩家奖励一条生命</font>
+						if (lives&gt;5)			<font color=#ffffaa>// 如果玩家有5条生命，则不再增加</font>
+						{
+							lives=5;		
+						}
+					}
+				}
+</pre>
+</font><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top> 进入到下一关卡，重置所有的游戏变量</td>
+    <td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table><font color=#aaffaa size=3>
+<pre>
+				ResetObjects();					
+
+				for (loop1=0; loop1&lt;11; loop1++)
+				{
+					for (loop2=0; loop2&lt;11; loop2++)	
+					{
+						if (loop1&lt;10)			
+						{
+							hline[loop1][loop2]=FALSE;	
+						}
+						if (loop2&lt;10)			
+						{
+							vline[loop1][loop2]=FALSE;	
+						}
+					}
+				}
+			}
+</pre>
+</font><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top> 如果玩家吃到时间停止器，记录这一信息</td>
+    <td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table><font color=#aaffaa size=3>
+<pre>
+			if ((player.fx==hourglass.x*60) && (player.fy==hourglass.y*40) && (hourglass.fx==1))
+			{
+				<font color=#ffffaa>// 播放一段声音</font>
+				PlaySound("Data/freeze.wav", NULL, SND_ASYNC | SND_LOOP);
+				hourglass.fx=2;					<font color=#ffffaa>// 设置fx为2，表示吃到时间停止器</font>
+				hourglass.fy=0;					<font color=#ffffaa>// 设置fy为0</font>
+			}
+</pre>
+</font><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>显示玩家的动画效果</td>
+    <td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table><font color=#aaffaa size=3>
+<pre>
+			player.spin+=0.5f*steps[adjust];			<font color=#ffffaa>// 旋转动画</font>
+			if (player.spin&gt;360.0f)					
+			{
+				player.spin-=360;				
+			}
+</pre>
+</font><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>显示时间停止器的动画</td>
+    <td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table><font color=#aaffaa size=3>
+<pre>
+			hourglass.spin-=0.25f*steps[adjust];			<font color=#ffffaa>// 旋转动画</font>
+			if (hourglass.spin&lt;0.0f)				
+			{
+				hourglass.spin+=360.0f;				
+			}
+</pre>
+</font><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>下面的代码计算何时出现一个时间停止计数器</td>
+    <td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table><font color=#aaffaa size=3>
+<pre>
+			hourglass.fy+=steps[adjust];				<font color=#ffffaa>// 增加fy的值，当他大于一定的时候，产生时间停止计数器</font>
+			if ((hourglass.fx==0) && (hourglass.fy&gt;6000/level))	
+			{							
+				PlaySound("Data/hourglass.wav", NULL, SND_ASYNC);	
+				hourglass.x=rand()%10+1;			
+				hourglass.y=rand()%11;				
+				hourglass.fx=1;					<font color=#ffffaa>//fx=1表示时间停止器出现</font>					
+				hourglass.fy=0;					
+			}
+</pre>
+</font><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>如果玩家没有拾取时间停止器，则过一段时间后，它自动消失</td>
+    <td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table><font color=#aaffaa size=3>
+<pre>
+			if ((hourglass.fx==1) && (hourglass.fy&gt;6000/level))	
+			{				
+				hourglass.fx=0;					<font color=#ffffaa>// 消失后重置时间停止器</font>
+				hourglass.fy=0;					
+			}
+</pre>
+</font><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>如果玩家吃到时间停止器，在时间停止停止阶段播放一段音乐，过一段时间停止播放音乐</td>
+    <td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table><font color=#aaffaa size=3>
+<pre>
+			if ((hourglass.fx==2) && (hourglass.fy&gt;500+(500*level)))
+			{							
+				PlaySound(NULL, NULL, 0);			<font color=#ffffaa>// 停止播放音乐</font>
+				hourglass.fx=0;					<font color=#ffffaa>// 重置变量</font>
+				hourglass.fy=0;					
+			}
+</pre>
+</font><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td><td width=100% valign=top><p>增加敌人的延迟计数器的值，这个值用来更新敌人的运动</p>
+      </td><td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table><font color=#aaffaa size=3>
+<pre>
+			delay++;						<font color=#ffffaa>// 增加敌人的延迟计数器的值</font>
+		}
+	}
+
+	<font color=#ffffaa>// 关闭</font>
+	KillGLWindow();								<font color=#ffffaa>// 删除窗口</font>
+	return (msg.wParam);							<font color=#ffffaa>// 退出程序</font>
+}
+</pre>
+</font><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top><FONT face=Tahoma,Verdana,sans-serif>我花了很长时间写这份教程，它开始于一个简单的直线教程，结束与一个小型的游戏。希望它能给你一些有用的信息，我知道你们中大部分喜欢那些基于“贴图”的游戏，但我觉得这些将教会你关于游戏更多的东西。如果你不同意我的看法，请让我知道，因为我想写最好的OpenGL教程。</font> 
+      <p>请注意，这是一个很大的程序了。我尽量去注释每一行代码，我知道程序运行的一切细节，但把它表达出来又是另一回事。如果你有更好的表达能力，请告诉我如何更好的表达。我希望通过我们的努力，这份教程越来越好。谢谢</p>
+<table width="100%" border="1">
+  <tr>
+    <td width="27%"><img src="logo 3.jpg" tppabs="http://www.owlei.com/DancingWind/images/logo%203.jpg" width="209" height="200" align="middle"></td>
+    <td width="73%">版权与使用声明:<br>
+      我是个对学习和生活充满激情的普通男孩,在网络上我以DancingWind为昵称，我的联系方式是zhouwei02@mails.tsinghua.edu.cn，如果你有任何问题，都可以联系我。
+      <p>引子<br>
+        网络是一个共享的资源，但我在自己的学习生涯中浪费大量的时间去搜索可用的资料，在现实生活中花费了大量的金钱和时间在书店中寻找资料，于是我给自己起了个昵称DancingWind，其意义是想风一样从各个知识的站点中吸取成长的养料。在飘荡了多年之后，我决定把自己收集的资料整理为一个统一的资源库。</p>
+      <p>版权声明<br>
+        所有DancingWind发表的内容，大多都来自共享的资源，所以我没有资格把它们据为己有，或声称自己为这些资源作出了一点贡献。故任何人都可以复制，修改，重新发表，甚至以自己的名义发表，我都不会追究，但你在做以上事情的时候必须保证内容的完整性，给后来的人一个完整的教程。最后，任何人不能以这些资料的任何部分，谋取任何形式的报酬。</p>
+      <p>发展计划<br>
+        在国外，很多资料都是很多人花费几年的时间慢慢积累起来的。如果任何人有兴趣与别人共享你的知识，我很欢迎你与我联系，但你必须同意我上面的声明。</p>
+            <p>感谢<br>
+              感谢我的母亲一直以来对我的支持和在生活上的照顾。<br>
+              感谢我深爱的女友田芹，一直以来默默的在精神上和生活中对我的支持，她甚至把买衣服的钱都用来给我买书了，她真的是我见过的最好的女孩，希望我能带给她幸福。</p>
+            <p>资源下载: <br>
+              文档 <a href="javascript:if(confirm('http://www.owlei.com/DancingWind/Res/mht/NeHe%20OpenGL%20Chinese%20Course%2021.mht  \n\nThis file was not retrieved by Teleport Pro, because the server reports that this file cannot be found.  \n\nDo you want to open it from the server?'))window.location='http://www.owlei.com/DancingWind/Res/mht/NeHe%20OpenGL%20Chinese%20Course%2021.mht'" tppabs="http://www.owlei.com/DancingWind/Res/mht/NeHe%20OpenGL%20Chinese%20Course%2021.mht">网页格式</a> 
+              <a href="javascript:if(confirm('http://www.owlei.com/DancingWind/Res/pdf/OpenGL_Nehe_Course_Tutorial_21.pdf  \n\nThis file was not retrieved by Teleport Pro, because the server reports that this file cannot be found.  \n\nDo you want to open it from the server?'))window.location='http://www.owlei.com/DancingWind/Res/pdf/OpenGL_Nehe_Course_Tutorial_21.pdf'" tppabs="http://www.owlei.com/DancingWind/Res/pdf/OpenGL_Nehe_Course_Tutorial_21.pdf">PDF格式</a><br>
+              源码 <a href="javascript:if(confirm('http://www.owlei.com/DancingWind/Res/Src/21_Lines.rar  \n\nThis file was not retrieved by Teleport Pro, because the server reports that this file cannot be found.  \n\nDo you want to open it from the server?'))window.location='http://www.owlei.com/DancingWind/Res/Src/21_Lines.rar'" tppabs="http://www.owlei.com/DancingWind/Res/Src/21_Lines.rar">RAR格式</a></p></td>
+  </tr>
+</table>
+      <FONT face=Tahoma,Verdana,sans-serif size=-1>
+      <table border="0" width="100%">
+        <td width="50%" align="left"><b><font size="-1"><a href="Tutorial_20.htm" tppabs="http://www.owlei.com/DancingWind/Course/Tutorial_20.htm">< 
+          <font face="Tahoma,Verdana,sans-serif">第</font>20<font face="Tahoma,Verdana,sans-serif">课</font></a></font></b></td>
+        <td width="50%" align="right"><b><font size="-1"><a href="Tutorial_22.htm" tppabs="http://www.owlei.com/DancingWind/Course/Tutorial_22.htm"><font face="Tahoma,Verdana,sans-serif">第</font>22<font face="Tahoma,Verdana,sans-serif">课</font> 
+          ></a></font></b></td>
+      </table>
+      </font></td>
+    <td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table>
+
+</body>
+</html>

@@ -1,0 +1,487 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+    dir="ltr"
+    xml:lang="en"
+    lang="en">
+  <head>
+    <title>NeHe Productions: Vertex Buffer Objects</title>
+
+    <link rel="stylesheet" type="text/css" href="public_base.css" tppabs="http://nehe.gamedev.net/static/css/public_base.css" />
+    <link type="text/css" rel="stylesheet" href="shThemeMidnight.css" tppabs="http://nehe.gamedev.net/static/css/syntax_highlighter/shThemeMidnight.css"/>
+    
+    <link rel="alternate" type="application/atom+xml" title="Atom feed" href="index-1.htm" tppabs="http://nehe.gamedev.net/atom/" />
+    <link rel="alternate" type="application/rss+xml" title="RSS feed" href="index-2.htm" tppabs="http://nehe.gamedev.net/rss/" />
+    
+    <meta name="author" content="Luke Benstead + Carsten Haubold" />
+    <meta name="description" content="OpenGL Tutorials, Demos, Games and More..." />
+    <meta name="keywords" content="opengl, tutorial, article, demo, game, blend, texturemap, lighting, contest, 3D" />
+
+    
+    
+
+    
+
+</script>
+
+
+    
+    
+    
+    
+        
+        <script type='text/javascript'>
+        var googletag = googletag || {};
+        googletag.cmd = googletag.cmd || [];
+        (function() {
+        var gads = document.createElement('script');
+        gads.async = true;
+        gads.type = 'text/javascript';
+        var useSSL = 'https:' == document.location.protocol;
+        gads.src = (useSSL ? 'https:' : 'http:') + 
+        '//www.googletagservices.com/tag/js/gpt.js';
+        var node = document.getElementsByTagName('script')[0];
+        node.parentNode.insertBefore(gads, node);
+        })();
+        </script>
+
+        <script type='text/javascript'>
+        googletag.cmd.push(function() {
+        googletag.defineSlot('/1004699/Leaderboard_NeHe', [728, 90], 'div-gpt-ad-1327940144417-0').addService(googletag.pubads());
+        googletag.defineSlot('/1004699/Skyscraper_NeHe', [160, 600], 'div-gpt-ad-1327940144417-1').addService(googletag.pubads());
+        googletag.pubads().enableSingleRequest();
+        googletag.enableServices();
+        });
+        </script>
+    
+    
+
+    
+  </head>
+
+  <body>
+    
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "all.js#xfbml=1"/*tpa=http://connect.facebook.net/en_GB/all.js#xfbml=1*/;
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+
+
+    <table cellpadding="0" cellspacing="0" border="0" id="layout_table">
+    <tr><td>
+        <div id="header">
+                <a href="index.htm" tppabs="http://nehe.gamedev.net/"><img class="logo" class="logo" src="nehe.png" tppabs="http://nehe.gamedev.net/static/images/nehe.png" border="0" alt="Nehe" /></a>
+        </div>            
+    </td></tr>
+    <tr><td colspan="2">
+            
+<div class="navbar">
+    <a href="index.htm" tppabs="http://nehe.gamedev.net/">HOME</a>
+    <a href="javascript:if(confirm('http://twitter.com/  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://twitter.com/#!/nehegl'" tppabs="http://twitter.com/#!/nehegl">TWITTER</a>  
+    <a href="javascript:if(confirm('http://www.facebook.com/pages/NeHe/300582493323181  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://www.facebook.com/pages/NeHe/300582493323181'" tppabs="http://www.facebook.com/pages/NeHe/300582493323181">FACEBOOK</a>     
+    <a href="index-2.htm" tppabs="http://nehe.gamedev.net/rss/">RSS</a>    
+    <a href="index-1.htm" tppabs="http://nehe.gamedev.net/atom/">ATOM</a>    
+    <a href="javascript:if(confirm('http://www.gamedev.net/forum/27-nehe-productions/page__forum_title__NeHe+Productions  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://www.gamedev.net/forum/27-nehe-productions/page__forum_title__NeHe+Productions'" tppabs="http://www.gamedev.net/forum/27-nehe-productions/page__forum_title__NeHe+Productions">FORUM</a>    
+</div>
+    
+    </td></tr>
+    <tr>
+        <td class="col1">
+
+            
+<div id="article_container">
+
+
+<h1 class="article-header">Vertex Buffer Objects</h1>
+<div class="social-media">
+<!-- Place this tag where you want the +1 button to render -->
+<div class="g-plusone" data-size="medium" data-width="120" data-annotation="inline"></div>
+<div class="fb-like" data-send="false" data-layout="button_count" data-width="60" data-show-faces="false" data-colorscheme="dark" data-font="arial"></div>
+</div>
+<div style="clear:both;"></div>
+<p>One of the largest goals of any 3d application is speed. You should always limit the amount of polygons actually rendered, whether by sorting, culling, or level-of-detail algorithms. However, when all else fails and you simply need raw polygon-pushing power, you can always utilize the optimizations provided by OpenGL. Vertex Arrays are one good way to do that, plus a recent extension to graphics cards named Vertex Buffer Objects adds the FPS boost everybody dreams of. The extension, ARB_vertex_buffer_object, works just like vertex arrays, except that it loads the data into the graphics card's high-performance memory, significantly lowering rendering time. Of course, the extension being relatively new, not all cards will support it, so we will have to write in some technology scaling.</p>
+<p>In this tutorial, we will</p>
+<ul>
+<li>Load data from a heightmap</li>
+<li>Use Vertex Arrays to send mesh data to OpenGL more efficiently</li>
+<li>Load data into high-performance memory via the VBO extension</li>
+</ul>
+<p>So let's get started! First we are going to define a few application parameters.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">#define MESH_RESOLUTION 4.0f							// Pixels Per Vertex
+#define MESH_HEIGHTSCALE 1.0f							// Mesh Height Scale
+//#define NO_VBOS								// If Defined, VBOs Will Be Forced Off
+</pre>
+<p>The first two constants are standard heightmap fare - the former sets the resolution at which the heightmap will be generated per pixel, and the latter sets the vertical scaling of the data retrieved from the heightmap. The third constant, when defined, will force VBOs off - a provision I added so that those with bleeding-edge cards can easily see the difference.</p>
+<p>Next we have the VBO extension constant, data type, and function pointer definitions.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">// VBO Extension Definitions, From glext.h
+#define GL_ARRAY_BUFFER_ARB 0x8892
+#define GL_STATIC_DRAW_ARB 0x88E4
+typedef void (APIENTRY * PFNGLBINDBUFFERARBPROC) (GLenum target, GLuint buffer);
+typedef void (APIENTRY * PFNGLDELETEBUFFERSARBPROC) (GLsizei n, const GLuint *buffers);
+typedef void (APIENTRY * PFNGLGENBUFFERSARBPROC) (GLsizei n, GLuint *buffers);
+typedef void (APIENTRY * PFNGLBUFFERDATAARBPROC) (GLenum target, int size, const GLvoid *data, GLenum usage);
+
+// VBO Extension Function Pointers
+PFNGLGENBUFFERSARBPROC glGenBuffersARB = NULL;					// VBO Name Generation Procedure
+PFNGLBINDBUFFERARBPROC glBindBufferARB = NULL;					// VBO Bind Procedure
+PFNGLBUFFERDATAARBPROC glBufferDataARB = NULL;					// VBO Data Loading Procedure
+PFNGLDELETEBUFFERSARBPROC glDeleteBuffersARB = NULL;				// VBO Deletion Procedure
+</pre>
+<p>I have only included what will be necessary for the demo. If you need any more of the functionality, I recommend downloading the latest glext.h from <a href="javascript:if(confirm('http://nehe.gamedev.net/data/lessons/http://www.opengl.org  \n\nThis file was not retrieved by Teleport Pro, because the server reports that this file cannot be found.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev.net/data/lessons/http://www.opengl.org'" tppabs="http://nehe.gamedev.net/data/lessons/http://www.opengl.org" target="_blank">/data/lessons/http://www.opengl.org</a> and using the definitions there (it will be much cleaner for your code, anyway). We will get into the specifics of those functions as we use them.</p>
+<p>Now we find the standard mathematical definitions, plus our mesh class. All of them are very bare-bones, designed specifically for the demo. As always, I recommend developing your own math library.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">class CVert									// Vertex Class
+{
+public:
+	float x;								// X Component
+	float y;								// Y Component
+	float z;								// Z Component
+};
+typedef CVert CVec;								// The Definitions Are Synonymous
+
+class CTexCoord									// Texture Coordinate Class
+{
+public:
+	float u;								// U Component
+	float v;								// V Component
+};
+
+class CMesh
+{
+public:
+	// Mesh Data
+	int		m_nVertexCount;						// Vertex Count
+	CVert*		m_pVertices;						// Vertex Data
+	CTexCoord*	m_pTexCoords;						// Texture Coordinates
+	unsigned int	m_nTextureId;						// Texture ID
+
+	// Vertex Buffer Object Names
+	unsigned int	m_nVBOVertices;						// Vertex VBO Name
+	unsigned int	m_nVBOTexCoords;					// Texture Coordinate VBO Name
+
+	// Temporary Data
+	AUX_RGBImageRec* m_pTextureImage;					// Heightmap Data
+
+public:
+	CMesh();								// Mesh Constructor
+	~CMesh();								// Mesh Deconstructor
+
+	// Heightmap Loader
+	bool LoadHeightmap( char* szPath, float flHeightScale, float flResolution );
+	// Single Point Height
+	float PtHeight( int nX, int nY );
+	// VBO Build Function
+	void BuildVBOs();
+};
+</pre>
+<p>Most of that code is relatively self-explanatory. Note that while I do keep the Vertex and Texture Coordinate data seperate, that is not wholly necessary, as will be indicated later.</p>
+<p>Here we have our global variables. First we have a VBO extension validity flag, which will be set in the initialization code. Then we have our mesh, followed by our Y rotation counter. Leading up the rear are the FPS monitoring variables. I decided to write in a FPS gauge to help display the optimization provided by this code.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">bool		g_fVBOSupported = false;					// ARB_vertex_buffer_object supported?
+CMesh*		g_pMesh = NULL;							// Mesh Data
+float		g_flYRot = 0.0f;						// Rotation
+int		g_nFPS = 0, g_nFrames = 0;					// FPS and FPS Counter
+DWORD		g_dwLastFPS = 0;						// Last FPS Check Time	
+</pre>
+<p>Let's skip over to the CMesh function definitions, starting with LoadHeightmap. For those of you who live under a rock, a heightmap is a two-dimensional dataset, commonly an image, which specifies the terrain mesh's vertical data. There are many ways to implement a heightmap, and certainly no one right way. My implementation reads a three channel bitmap and uses the luminosity algorithm to determine the height from the data. The resulting data would be exactly the same if the image was in color or in grayscale, which allows the heightmap to be in color. Personally, I recommend using a four channel image, such as a targa, and using the alpha channel for the heights. However, for the purpose of this tutorial, I decided that a simple bitmap would be best.</p>
+<p>First, we make sure that the heightmap exists, and if so, we load it using GLaux's bitmap loader. Yes yes, it probably is better to write your own image loading routines, but that is not in the scope of this tutorial.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">bool CMesh :: LoadHeightmap( char* szPath, float flHeightScale, float flResolution )
+{
+	// Error-Checking
+	FILE* fTest = fopen( szPath, "r" );					// Open The Image
+	if( !fTest )								// Make Sure It Was Found
+		return false;							// If Not, The File Is Missing
+	fclose( fTest );							// Done With The Handle
+
+	// Load Texture Data
+	m_pTextureImage = auxDIBImageLoad( szPath );				// Utilize GLaux's Bitmap Load Routine
+</pre>
+<p>Now things start getting a little more interesting. First of all, I would like to point out that my heightmap generates three vertices for every triangle - vertices are not shared. I will explain why I chose to do that later, but I figured you should know before looking at this code.</p>
+<p>I start by calculating the amount of vertices in the mesh. The algorithm is essentially ( ( Terrain Width / Resolution ) * ( Terrain Length / Resolution ) * 3 Vertices in a Triangle * 2 Triangles in a Square ). Then I allocate my data, and start working my way through the vertex field, setting data.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	// Generate Vertex Field
+	m_nVertexCount = (int) ( m_pTextureImage-&gt;sizeX * m_pTextureImage-&gt;sizeY * 6 / ( flResolution * flResolution ) );
+	m_pVertices = new CVec[m_nVertexCount];					// Allocate Vertex Data
+	m_pTexCoords = new CTexCoord[m_nVertexCount];				// Allocate Tex Coord Data
+	int nX, nZ, nTri, nIndex=0;						// Create Variables
+	float flX, flZ;
+	for( nZ = 0; nZ &lt; m_pTextureImage-&gt;sizeY; nZ += (int) flResolution )
+	{
+		for( nX = 0; nX &lt; m_pTextureImage-&gt;sizeX; nX += (int) flResolution )
+		{
+			for( nTri = 0; nTri &lt; 6; nTri++ )
+			{
+				// Using This Quick Hack, Figure The X,Z Position Of The Point
+				flX = (float) nX + ( ( nTri == 1 || nTri == 2 || nTri == 5 ) ? flResolution : 0.0f );
+				flZ = (float) nZ + ( ( nTri == 2 || nTri == 4 || nTri == 5 ) ? flResolution : 0.0f );
+
+				// Set The Data, Using PtHeight To Obtain The Y Value
+				m_pVertices[nIndex].x = flX - ( m_pTextureImage-&gt;sizeX / 2 );
+				m_pVertices[nIndex].y = PtHeight( (int) flX, (int) flZ ) *  flHeightScale;
+				m_pVertices[nIndex].z = flZ - ( m_pTextureImage-&gt;sizeY / 2 );
+
+				// Stretch The Texture Across The Entire Mesh
+				m_pTexCoords[nIndex].u = flX / m_pTextureImage-&gt;sizeX;
+				m_pTexCoords[nIndex].v = flZ / m_pTextureImage-&gt;sizeY;
+
+				// Increment Our Index
+				nIndex++;
+			}
+		}
+	}
+</pre>
+<p>I finish off the function by loading the heightmap texture into OpenGL, and freeing our copy of the data. This should be fairly familiar from past tutorials.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	// Load The Texture Into OpenGL
+	glGenTextures( 1, &amp;m_nTextureId );					// Get An Open ID
+	glBindTexture( GL_TEXTURE_2D, m_nTextureId );				// Bind The Texture
+	glTexImage2D( GL_TEXTURE_2D, 0, 3, m_pTextureImage-&gt;sizeX, m_pTextureImage-&gt;sizeY, 0, GL_RGB, GL_UNSIGNED_BYTE, m_pTextureImage-&gt;data );
+	glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_LINEAR);
+
+	// Free The Texture Data
+	if( m_pTextureImage )
+	{
+		if( m_pTextureImage-&gt;data )
+			free( m_pTextureImage-&gt;data );
+		free( m_pTextureImage );
+	}
+	return true;
+}
+</pre>
+<p>PtHeight is relatively simple. It calculates the index of the data in question, wrapping any overflows to avoid error, and calculates the height. The luminance formula is very simple, as you can see, so don't sweat it too much.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">float CMesh :: PtHeight( int nX, int nY )
+{
+	// Calculate The Position In The Texture, Careful Not To Overflow
+	int nPos = ( ( nX % m_pTextureImage-&gt;sizeX )  + ( ( nY % m_pTextureImage-&gt;sizeY ) * m_pTextureImage-&gt;sizeX ) ) * 3;
+	float flR = (float) m_pTextureImage-&gt;data[ nPos ];			// Get The Red Component
+	float flG = (float) m_pTextureImage-&gt;data[ nPos + 1 ];			// Get The Green Component
+	float flB = (float) m_pTextureImage-&gt;data[ nPos + 2 ];			// Get The Blue Component
+	return ( 0.299f * flR + 0.587f * flG + 0.114f * flB );			// Calculate The Height Using The Luminance Algorithm
+}
+</pre>
+<p>Hurray, time to get dirty with Vertex Arrays and VBOs. So what are Vertex Arrays? Essentially, it is a system by which you can point OpenGL to your geometric data, and then subsequently render data in relatively few calls. The resulting cut down on function calls (glVertex, etc) adds a significant boost in speed. What are VBOs? Well, Vertex Buffer Objects use high-performance graphics card memory instead of your standard, ram-allocated memory. Not only does that lower the memory operations every frame, but it shortens the bus distance for your data to travel. On my specs, VBOs actually triple my framerate, which is something not to be taken lightly.</p>
+<p>So now we are going to build the Vertex Buffer Objects. There are really a couple of ways to go about this, one of which is called "mapping" the memory. I think the simplist way is best here. The process is as follows: first, use glGenBuffersARB to get a valid VBO "name". Essentially, a name is an ID number which OpenGL will associate with your data. We want to generate a name because the same ones won't always be available. Next, we make that VBO the active one by binding it with glBindBufferARB. Finally, we load the data into our gfx card's data with a call to glBufferDataARB, passing the size and the pointer to the data. glBufferDataARB will copy that data into your gfx card memory, which means that we will not have any reason to maintain it anymore, so we can delete it.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">void CMesh :: BuildVBOs()
+{
+	// Generate And Bind The Vertex Buffer
+	glGenBuffersARB( 1, &amp;m_nVBOVertices );					// Get A Valid Name
+	glBindBufferARB( GL_ARRAY_BUFFER_ARB, m_nVBOVertices );			// Bind The Buffer
+	// Load The Data
+	glBufferDataARB( GL_ARRAY_BUFFER_ARB, m_nVertexCount*3*sizeof(float), m_pVertices, GL_STATIC_DRAW_ARB );
+
+	// Generate And Bind The Texture Coordinate Buffer
+	glGenBuffersARB( 1, &amp;m_nVBOTexCoords );					// Get A Valid Name
+	glBindBufferARB( GL_ARRAY_BUFFER_ARB, m_nVBOTexCoords );		// Bind The Buffer
+	// Load The Data
+	glBufferDataARB( GL_ARRAY_BUFFER_ARB, m_nVertexCount*2*sizeof(float), m_pTexCoords, GL_STATIC_DRAW_ARB );
+
+	// Our Copy Of The Data Is No Longer Necessary, It Is Safe In The Graphics Card
+	delete [] m_pVertices; m_pVertices = NULL;
+	delete [] m_pTexCoords; m_pTexCoords = NULL;
+}
+</pre>
+<p>Ok, time to initialize. First we will allocate and load our mesh data. Then we will check for GL_ARB_vertex_buffer_object support. If we have it, we will grab the function pointers with wglGetProcAddress, and build our VBOs. Note that if VBOs aren't supported, we will retain the data as usual. Also note the provision for forced no VBOs.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	// Load The Mesh Data
+	g_pMesh = new CMesh();							// Instantiate Our Mesh
+	if( !g_pMesh-&gt;LoadHeightmap( "terrain.bmp",				// Load Our Heightmap
+				MESH_HEIGHTSCALE, MESH_RESOLUTION ) )
+	{
+		MessageBox( NULL, "Error Loading Heightmap", "Error", MB_OK );
+		return false;
+	}
+
+	// Check For VBOs Supported
+#ifndef NO_VBOS
+	g_fVBOSupported = IsExtensionSupported( "GL_ARB_vertex_buffer_object" );
+	if( g_fVBOSupported )
+	{
+		// Get Pointers To The GL Functions
+		glGenBuffersARB = (PFNGLGENBUFFERSARBPROC) wglGetProcAddress("glGenBuffersARB");
+		glBindBufferARB = (PFNGLBINDBUFFERARBPROC) wglGetProcAddress("glBindBufferARB");
+		glBufferDataARB = (PFNGLBUFFERDATAARBPROC) wglGetProcAddress("glBufferDataARB");
+		glDeleteBuffersARB = (PFNGLDELETEBUFFERSARBPROC) wglGetProcAddress("glDeleteBuffersARB");
+		// Load Vertex Data Into The Graphics Card Memory
+		g_pMesh-&gt;BuildVBOs();						// Build The VBOs
+	}
+#else /* NO_VBOS */
+	g_fVBOSupported = false;
+#endif
+</pre>
+<p>IsExtensionSupported is a function you can get from OpenGL.org. My variation is, in my humble opinion, a little cleaner.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">bool IsExtensionSupported( char* szTargetExtension )
+{
+	const unsigned char *pszExtensions = NULL;
+	const unsigned char *pszStart;
+	unsigned char *pszWhere, *pszTerminator;
+
+	// Extension names should not have spaces
+	pszWhere = (unsigned char *) strchr( szTargetExtension, ' ' );
+	if( pszWhere || *szTargetExtension == '\0' )
+		return false;
+
+	// Get Extensions String
+	pszExtensions = glGetString( GL_EXTENSIONS );
+
+	// Search The Extensions String For An Exact Copy
+	pszStart = pszExtensions;
+	for(;;)
+	{
+		pszWhere = (unsigned char *) strstr( (const char *) pszStart, szTargetExtension );
+		if( !pszWhere )
+			break;
+		pszTerminator = pszWhere + strlen( szTargetExtension );
+		if( pszWhere == pszStart || *( pszWhere - 1 ) == ' ' )
+			if( *pszTerminator == ' ' || *pszTerminator == '\0' )
+				return true;
+		pszStart = pszTerminator;
+	}
+	return false;
+}
+</pre>
+<p>It is relatively simple. Some people simply use a sub-string search with strstr, but apparently OpenGL.org doesn't trust the consistancy of the extension string enough to accept that as proof. And hey, I am not about to argue with those guys.</p>
+<p>Almost finished now! All we gotta do is render the data.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">void Draw (void)
+{
+	glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);			// Clear Screen And Depth Buffer
+	glLoadIdentity ();							// Reset The Modelview Matrix
+
+	// Get FPS
+	if( GetTickCount() - g_dwLastFPS &gt;= 1000 )				// When A Second Has Passed...
+	{
+		g_dwLastFPS = GetTickCount();					// Update Our Time Variable
+		g_nFPS = g_nFrames;						// Save The FPS
+		g_nFrames = 0;							// Reset The FPS Counter
+
+		char szTitle[256]={0};						// Build The Title String
+		sprintf( szTitle, "Lesson 45: NeHe &amp; Paul Frazee's VBO Tut - %d Triangles, %d FPS", g_pMesh-&gt;m_nVertexCount / 3, g_nFPS );
+		if( g_fVBOSupported )						// Include A Notice About VBOs
+			strcat( szTitle, ", Using VBOs" );
+		else
+			strcat( szTitle, ", Not Using VBOs" );
+		SetWindowText( g_window-&gt;hWnd, szTitle );			// Set The Title
+	}
+	g_nFrames++;								// Increment Our FPS Counter
+
+	// Move The Camera
+	glTranslatef( 0.0f, -220.0f, 0.0f );					// Move Above The Terrain
+	glRotatef( 10.0f, 1.0f, 0.0f, 0.0f );					// Look Down Slightly
+	glRotatef( g_flYRot, 0.0f, 1.0f, 0.0f );				// Rotate The Camera
+</pre>
+<p>Pretty simple - every second, save the frame counter as the FPS and reset the frame counter. I decided to throw in poly count for impact. Then we move the camera above the terrain (you may need to adjust that if you change the heightmap), and do a few rotations. g_flYRot is incremented in the Update function.</p>
+<p>To use Vertex Arrays (and VBOs), you need to tell OpenGL what data you are going to be specifying with your memory. So the first step is to enable the client states GL_VERTEX_ARRAY and GL_TEXTURE_COORD_ARRAY. Then we are going to want to set our pointers. I doubt you have to do this every frame unless you have multiple meshes, but it doesn't hurt us cycle-wise, so I don't see a problem.</p>
+<p>To set a pointer for a certain data type, you have to use the appropriate function - glVertexPointer and glTexCoordPointer, in our case. The usage is pretty easy - pass the amount of variables in a point (three for a vertex, two for a texcoord), the data cast (float), the stride between the desired data (in the event that the vertices are not stored alone in their structure), and the pointer to the data. You can actually use glInterleavedArrays and store all of your data in one big memory buffer, but I chose to keep it seperate to show you how to use multiple VBOs.</p>
+<p>Speaking of VBOs, implementing them isn't much different. The only real change is that instead of providing a pointer to the data, we bind the VBO we want and set the pointer to zero. Take a look.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	// Set Pointers To Our Data
+	if( g_fVBOSupported )
+	{
+		glBindBufferARB( GL_ARRAY_BUFFER_ARB, g_pMesh-&gt;m_nVBOVertices );
+		glVertexPointer( 3, GL_FLOAT, 0, (char *) NULL );		// Set The Vertex Pointer To The Vertex Buffer
+		glBindBufferARB( GL_ARRAY_BUFFER_ARB, g_pMesh-&gt;m_nVBOTexCoords );
+		glTexCoordPointer( 2, GL_FLOAT, 0, (char *) NULL );		// Set The TexCoord Pointer To The TexCoord Buffer
+	} else
+	{
+		glVertexPointer( 3, GL_FLOAT, 0, g_pMesh-&gt;m_pVertices );	// Set The Vertex Pointer To Our Vertex Data
+		glTexCoordPointer( 2, GL_FLOAT, 0, g_pMesh-&gt;m_pTexCoords );	// Set The Vertex Pointer To Our TexCoord Data
+	}
+</pre>
+<p>Guess what? Rendering is even easier.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	// Render
+	glDrawArrays( GL_TRIANGLES, 0, g_pMesh-&gt;m_nVertexCount );		// Draw All Of The Triangles At Once
+</pre>
+<p>Here we use glDrawArrays to send our data to OpenGL. glDrawArrays checks which client states are enabled, and then uses their pointers to render. We tell it the geometric type, the index we want to start from, and how many vertices to render. There are many other ways we can send the data for rendering, such as glArrayElement, but this is the fastest way to do it. You will notice that glDrawArrays is not within glBegin / glEnd statements. That isn't necessary here.</p>
+<p>glDrawArrays is why I chose not to share my vertex data between triangles - it isn't possible. As far as I know, the best way to optimize memory usage is to use triangle strips, which is, again, out of this tutorial's scope. Also you should be aware that normals operate "one for one" with vertices, meaning that if you are using normals, each vertex should have an accompanying normal. Consider that an opportunity to calculate your normals per-vertex, which will greatly increase visual accuracy.</p>
+<p>Now all we have left is to disable vertex arrays, and we are finished.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	// Disable Pointers
+	glDisableClientState( GL_VERTEX_ARRAY );				// Disable Vertex Arrays
+	glDisableClientState( GL_TEXTURE_COORD_ARRAY );				// Disable Texture Coord Arrays
+}
+</pre>
+<p>If you want more information on Vertex Buffer Objects, I recommend reading the documentation in SGI's extension registry - <a href="javascript:if(confirm('http://nehe.gamedev.net/data/lessons/http://oss.sgi.com/projects/ogl-sample/registry/  \n\nThis file was not retrieved by Teleport Pro, because the server reports that this file cannot be found.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev.net/data/lessons/http://oss.sgi.com/projects/ogl-sample/registry/'" tppabs="http://nehe.gamedev.net/data/lessons/http://oss.sgi.com/projects/ogl-sample/registry/" target="_blank">http://oss.sgi.com/projects/ogl-sample/registry</a>. It is a little more tedious to read through than a tutorial, but it will give you much more detailed information.</p>
+<p>Well that does it for the tutorial. If you find any mistakes or misinformation, or simply have questions, you can contact me at <a href="mailto:paulfrazee@cox.net">paulfrazee@cox.net</a>.</p>
+<p>* DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/vc/lesson45.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/vc/lesson45.zip'" tppabs="http://nehe.gamedev.net/data/lessons/vc/lesson45.zip">Visual C++</a> Code For This Lesson.</p>
+<p>* DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/bcb6/lesson45_bcb6.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/bcb6/lesson45_bcb6.zip'" tppabs="http://nehe.gamedev.net/data/lessons/bcb6/lesson45_bcb6.zip">Borland C++ Builder 6</a> Code For This Lesson. ( Conversion by <a href="mailto:conglth@hotmail.com">Le Thanh Cong</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/cwarrior/lesson45.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/cwarrior/lesson45.zip'" tppabs="http://nehe.gamedev.net/data/lessons/cwarrior/lesson45.zip">Code Warrior 5.3</a> Code For This Lesson. ( Conversion by <a href="mailto:DelusionalBeing@hotmail.com">Scott Lupton</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/delphi/lesson45.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/delphi/lesson45.zip'" tppabs="http://nehe.gamedev.net/data/lessons/delphi/lesson45.zip">Delphi</a> Code For This Lesson. ( Conversion by <a href="mailto:michal_praha@seznam.cz">Michal Tucek</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/devc/lesson45.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/devc/lesson45.zip'" tppabs="http://nehe.gamedev.net/data/lessons/devc/lesson45.zip">Dev C++</a> Code For This Lesson. ( Conversion by <a href="mailto:gery.buchgraber@gmx.de">Gerald Buchgraber</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/linuxsdl/lesson45.tar.gz  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/linuxsdl/lesson45.tar.gz'" tppabs="http://nehe.gamedev.net/data/lessons/linuxsdl/lesson45.tar.gz">Linux/SDL</a> Code For This Lesson. ( Conversion by <a href="mailto:enumarator@hotmail.com">Ilias Maratos</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/python/lesson45.tar.gz  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/python/lesson45.tar.gz'" tppabs="http://nehe.gamedev.net/data/lessons/python/lesson45.tar.gz">Python</a> Code For This Lesson. ( Conversion by <a href="mailto:bleair@comcast.net">Brian Leair</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/vs_net/lesson45.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/vs_net/lesson45.zip'" tppabs="http://nehe.gamedev.net/data/lessons/vs_net/lesson45.zip">Visual Studio .NET</a> Code For This Lesson. ( Conversion by <a href="mailto:webmaster@joachimrohde.de">Joachim Rohde</a> )</p>
+<p><strong><span><a href="index-84.htm" tppabs="http://nehe.gamedev.net/data/lessons/lesson.asp?lesson=44">&lt; Lesson 44</a></span></strong><strong><span><a href="index-86.htm" tppabs="http://nehe.gamedev.net/data/lessons/lesson.asp?lesson=46">Lesson 46 &gt;</a></span></strong></p>
+
+
+</div>
+</div>
+
+
+
+            <div style="width:728px;padding:0px;margin:auto; margin-top: 10px;">
+            
+
+    
+                <!-- Leaderboard_NeHe -->
+                <div id='div-gpt-ad-1327940144417-0' style='width:728px; height:90px;'>
+                <script type='text/javascript'>
+                googletag.cmd.push(function() { googletag.display('div-gpt-ad-1327940144417-0'); });
+                </script>
+                </div>
+            
+
+                           
+            </div>   
+        </td>
+        <td class="col2">
+            
+
+
+
+
+<div style="text-align: center; padding:10px;">
+
+<script type='text/javascript'>
+    GA_googleFillSlot("Skyscraper_NeHe");
+</script>
+
+</div>
+            
+        </td>
+    </table>
+    <div id="footer">
+        <p>
+            
+    
+    © 1997-2012 Gamedev . All rights reserved.<br/>
+
+			NeHe™ and NeHe Productions™ are trademarks of GameDev.net, LLC<br/>
+			OpenGL® is a registered trademark of Silicon Graphics Inc.<br/>
+		</p>        
+		<br/>
+    </div>
+
+    
+    
+	    <script type="text/javascript" src="shCore.js" tppabs="http://nehe.gamedev.net/static/js/syntax_highlighter/shCore.js"></script>
+        <script type="text/javascript" src="shBrushCpp.js" tppabs="http://nehe.gamedev.net/static/js/syntax_highlighter/shBrushCpp.js"></script>
+	    <script type="text/javascript" src="shBrushJScript.js" tppabs="http://nehe.gamedev.net/static/js/syntax_highlighter/shBrushJScript.js"></script>
+	    <script type="text/javascript">SyntaxHighlighter.all();</script>
+    
+
+    <!-- Place this render call where appropriate -->
+    <script type="text/javascript">
+      (function() {
+        var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+        po.src = 'plusone.js'/*tpa=https://apis.google.com/js/plusone.js*/;
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+      })();
+    </script>    
+
+    
+<!-- GoogleAnalytics code -->
+<script src="urchin.js" tppabs="http://www.google-analytics.com/urchin.js" type="text/javascript">
+</script>
+<script type="text/javascript">
+_uacct = "UA-279474-2"; // Gamedev
+urchinTracker();
+_uff = 0; // Reset for second account
+_uacct = "UA-24180731-1"; // Non-GD
+urchinTracker();
+</script> 
+  </body>
+</html>

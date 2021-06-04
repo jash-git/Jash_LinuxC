@@ -1,0 +1,332 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<meta name="Author" content="Qi Liang">
+<meta name="Qt OpenGL Tutorial" content="http://www.qiliang.net/nehe_qt">
+<title>看起来很棒的雾</title>
+<style type="text/css"><!--
+h3.fn,span.fn { margin-left: 1cm; text-indent: -1cm; }
+a:link { color: #004faf; text-decoration: none }
+a:visited { color: #672967; text-decoration: none }
+body { background: #ffffff; color: black; font-family: "Times New Roman" }
+--></style>
+</head>
+<body>
+<p align="right">[<a href="index.html" tppabs="http://www.qiliang.net/nehe_qt/index.html">Qt OpenGL教程主页</a>]</p>
+
+<h2 align=center>看起来很棒的雾</h2>
+
+<p> <center><img src="lesson16.png" tppabs="http://www.qiliang.net/nehe_qt/lesson16.png"></center> 
+<p> 难道你不想把“雾”加入到你的OpenGL程序中吗？那么在这课里我将要为您展现如何实现这项功能。这是我第一次写教程，而且相对来说我也是OpenGL/C++程序设计新手，所以如果您发现有什么错误的话，请让我知道。这课的代码是基于第七课的。
+
+<h3><a name="1"></a>NeHeWidget类</h3>
+<p> （由<tt>nehewidget.h</tt>展开。）
+<pre>
+class NeHeWidget : public QGLWidget
+{
+    Q_OBJECT
+
+public:
+    
+  NeHeWidget( QWidget* parent = 0, const char* name = 0, bool fs = false );
+  ~NeHeWidget();
+
+protected:
+
+  void initializeGL();
+  void paintGL();
+  void resizeGL( int width, int height );
+
+  void keyPressEvent( QKeyEvent *e );
+  void loadGLTextures();
+
+protected:
+
+  bool fullscreen;
+  
+  GLfloat xRot, yRot, zRot;
+  GLfloat zoom;
+  GLfloat xSpeed, ySpeed;
+  GLuint texture[3];
+  GLuint filter;
+
+  bool light;
+  
+  GLuint fogFilter;
+
+};
+</pre>
+<p> 变量fogfilter，将被用做记录您所选择的雾的类型的索引。
+<p>
+<p> （由<tt>nehewidget.cpp</tt>展开。）
+<pre>
+GLfloat lightAmbient[4] = { 0.5, 0.5, 0.5, 1.0 };
+GLfloat lightDiffuse[4] = { 1.0, 1.0, 1.0, 1.0 };
+GLfloat lightPosition[4] = { 0.0, 0.0, 2.0, 1.0 };
+
+GLuint fogMode[3] = { GL_EXP, GL_EXP2, GL_LINEAR };
+GLfloat fogColor[4] = { 0.5, 0.5, 0.5, 1.0 };
+</pre>
+<p> 数据设定
+<p> 我们将要设定我们用来保存关于雾的信息的所有变量。变量fogMode，用来保存3种有关雾的类型：GL_EXP，GL_EXP2，GL_LINEAR。稍后我会解释这三种类型间的差别。这个变量将在代码的开头声明。变量fogColor会保存任何您想要的雾的颜色。
+
+<pre>
+NeHeWidget::NeHeWidget( QWidget* parent, const char* name, bool fs )
+    : QGLWidget( parent, name )
+{
+  xRot = yRot = zRot = 0.0;
+  zoom = -5.0;
+  xSpeed = ySpeed = 0.0;
+
+  filter = 0;
+  
+  light = false;
+  
+  fogFilter = 0;
+
+  fullscreen = fs;
+  setGeometry( 0, 0, 640, 480 );
+  setCaption( "Chris Aliotta & NeHe's Fog Tutorial" );
+
+  if ( fullscreen )
+    showFullScreen();
+}
+</pre>
+<p> 我们需要在构造函数中给各个变量赋初值。
+<pre>
+void NeHeWidget::loadGLTextures()
+{
+  QImage tex, buf;
+  if ( !buf.load( "./data/Crate.bmp" ) )
+  {
+    qWarning( "Could not read image file, using single-color instead." );
+    QImage dummy( 128, 128, 32 );
+    dummy.fill( Qt::green.rgb() );
+    buf = dummy;
+  }
+  tex = QGLWidget::convertToGLFormat( buf );
+  
+  glGenTextures( 3, &texture[0] );
+
+  glBindTexture( GL_TEXTURE_2D, texture[0] );
+  glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST );
+  glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST );
+  glTexImage2D( GL_TEXTURE_2D, 0, 3, tex.width(), tex.height(), 0,
+      GL_RGBA, GL_UNSIGNED_BYTE, tex.bits() );
+
+  glBindTexture( GL_TEXTURE_2D, texture[1] );
+  glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR );
+  glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR );
+  glTexImage2D( GL_TEXTURE_2D, 0, 3, tex.width(), tex.height(), 0,
+      GL_RGBA, GL_UNSIGNED_BYTE, tex.bits() );
+
+  glBindTexture( GL_TEXTURE_2D, texture[2] );
+  glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR );
+  gluBuild2DMipmaps( GL_TEXTURE_2D, GL_RGB, tex.width(), tex.height(),
+      GL_RGBA, GL_UNSIGNED_BYTE, tex.bits() );
+
+}
+</pre>
+<p> loadGLTextures()函数就是用来载入纹理的。
+<pre>
+void NeHeWidget::initializeGL()
+{
+  loadGLTextures();
+
+  glEnable( GL_TEXTURE_2D );
+  glShadeModel( GL_SMOOTH );
+  glClearColor( 0.5, 0.5, 0.5, 1.0 );
+</pre>
+<p> 场景绘制设定
+<p> 上面我们进行初始化OpenGL了。glClearColor()将会稍做改变以用来将屏幕颜色清除为雾的颜色以获得更好的视觉效果。这里并没有复杂的代码用来进行雾的操作，而且您会发现，这将是非常简单的。
+<pre>
+  glClearDepth( 1.0 );
+  glEnable( GL_DEPTH_TEST );
+  glDepthFunc( GL_LEQUAL );
+  glHint( GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST );
+
+  glLightfv( GL_LIGHT1, GL_AMBIENT, lightAmbient );
+  glLightfv( GL_LIGHT1, GL_DIFFUSE, lightDiffuse );
+  glLightfv( GL_LIGHT1, GL_POSITION, lightPosition );
+
+  glEnable( GL_LIGHT1 );
+
+  glFogi( GL_FOG_MODE, fogMode[fogFilter] );
+</pre>
+<p> 确定了雾的类型。开始的时候我们声明了数组fogMode，它保存了GL_EXP，GL_EXP2，GL_LINEAR。在我们使用这些值之前，让我稍做解释：
+<p> GL_EXP：简单渲染在屏幕上显示的雾的模式。它无法给予我们非常漂亮的雾的效果，但是却可以在古老的电脑上工作的很好。
+<p> GL_EXP2：比1提高了一点，将渲染全屏幕的雾，然而她会给予场景更深的效果。
+<p> GL_LINEAR：这是最好的雾的渲染模式，对象在雾中消隐的很好。
+<pre>
+  glFogfv( GL_FOG_COLOR, fogColor );
+</pre>
+<p> 设定了雾的颜色，开始的时候我们把它设定为(0.5,0.5,0.5,1.0)，使用变量fogcolor将给予我们漂亮的灰色。
+<pre>
+  glFogf( GL_FOG_DENSITY, 0.35 );
+</pre>
+<p> 确定了雾的密度，增大这个数值雾将会变的更浓，减小它雾将会变的更淡。
+<pre>
+  glHint( GL_FOG_HINT, GL_DONT_CARE );
+</pre>
+<p> 确定了雾的渲染方式，我使用GL_DONT_CARE是因为我并不关心建议值。然而这里有一个用来解释关于这个项的不同值之间的区别： 　 
+<p> GK_DONT_CARE：让OPENGL自己来确定雾的渲染方式，每顶点或是每像素。
+<p> GL_NICEST：对每一像素进行雾的渲染，它看起来是极棒的。
+<p> GL_FASTEST：对每一顶点进行雾的渲染，它速度较快，但是不够美丽。
+<pre>
+  glFogf( GL_FOG_START, 1.0 );
+</pre>
+<p> 确定了雾的开始初离屏幕有多近。你可以将这个值改变为任意你想要的值，这个值描述了那个你想要使雾开始的位置。下一行与上行相似，它告诉OpenGL雾能离开屏幕有多远。
+<pre>
+  glFogf( GL_FOG_END, 5.0 );
+  glEnable( GL_FOG );
+</pre>
+<p> glEnable(GL_FOG)解释起来非常容易，它告诉OpenGL开始进行雾的计算。
+<pre>
+}
+</pre>
+<pre>
+void NeHeWidget::paintGL()
+{
+  glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
+  glLoadIdentity();
+  glTranslatef(  0.0,  0.0, zoom );
+  
+  glRotatef( xRot,  1.0,  0.0,  0.0 );
+  glRotatef( yRot,  0.0,  1.0,  0.0 );
+
+  glBindTexture( GL_TEXTURE_2D, texture[filter] );
+  
+  glBegin( GL_QUADS );
+    glNormal3f(  0.0,  0.0, 1.0 );
+    glTexCoord2f( 0.0, 0.0 ); glVertex3f( -1.0, -1.0,  1.0 );
+    glTexCoord2f( 1.0, 0.0 ); glVertex3f(  1.0, -1.0,  1.0 );
+    glTexCoord2f( 1.0, 1.0 ); glVertex3f(  1.0,  1.0,  1.0 );
+    glTexCoord2f( 0.0, 1.0 ); glVertex3f( -1.0,  1.0,  1.0 );
+  
+    glNormal3f(  0.0,  0.0, -1.0 );
+    glTexCoord2f( 1.0, 0.0 ); glVertex3f( -1.0, -1.0, -1.0 );
+    glTexCoord2f( 1.0, 1.0 ); glVertex3f( -1.0,  1.0, -1.0 );
+    glTexCoord2f( 0.0, 1.0 ); glVertex3f(  1.0,  1.0, -1.0 );
+    glTexCoord2f( 0.0, 0.0 ); glVertex3f(  1.0, -1.0, -1.0 );
+
+    glNormal3f(  0.0,  1.0,  0.0 );
+    glTexCoord2f( 0.0, 1.0 ); glVertex3f( -1.0,  1.0, -1.0 );
+    glTexCoord2f( 0.0, 0.0 ); glVertex3f( -1.0,  1.0,  1.0 );
+    glTexCoord2f( 1.0, 0.0 ); glVertex3f(  1.0,  1.0,  1.0 );
+    glTexCoord2f( 1.0, 1.0 ); glVertex3f(  1.0,  1.0, -1.0 );
+
+    glNormal3f(  0.0, -1.0,  0.0 );
+    glTexCoord2f( 1.0, 1.0 ); glVertex3f( -1.0, -1.0, -1.0 );
+    glTexCoord2f( 0.0, 1.0 ); glVertex3f(  1.0, -1.0, -1.0 );
+    glTexCoord2f( 0.0, 0.0 ); glVertex3f(  1.0, -1.0,  1.0 );
+    glTexCoord2f( 1.0, 0.0 ); glVertex3f( -1.0, -1.0,  1.0 );
+
+    glNormal3f(  1.0,  0.0,  0.0 );
+    glTexCoord2f( 1.0, 0.0 ); glVertex3f(  1.0, -1.0, -1.0 );
+    glTexCoord2f( 1.0, 1.0 ); glVertex3f(  1.0,  1.0, -1.0 );
+    glTexCoord2f( 0.0, 1.0 ); glVertex3f(  1.0,  1.0,  1.0 );
+    glTexCoord2f( 0.0, 0.0 ); glVertex3f(  1.0, -1.0,  1.0 );
+
+    glNormal3f( -1.0,  0.0,  0.0 );
+    glTexCoord2f( 0.0, 0.0 ); glVertex3f( -1.0, -1.0, -1.0 );
+    glTexCoord2f( 1.0, 0.0 ); glVertex3f( -1.0, -1.0,  1.0 );
+    glTexCoord2f( 1.0, 1.0 ); glVertex3f( -1.0,  1.0,  1.0 );
+    glTexCoord2f( 0.0, 1.0 ); glVertex3f( -1.0,  1.0, -1.0 );
+  glEnd();
+  
+  xRot += xSpeed;
+  yRot += ySpeed;
+}
+</pre>
+<pre>
+void NeHeWidget::keyPressEvent( QKeyEvent *e )
+{
+  switch ( e->key() )
+  {
+  case Qt::Key_L:
+    light = !light;
+    if ( !light )
+    {
+      glDisable( GL_LIGHTING );
+    }
+    else
+    {
+      glEnable( GL_LIGHTING );
+    }
+    updateGL();
+    break;
+  case Qt::Key_F:
+    filter += 1;;
+    if ( filter > 2 )
+    {
+      filter = 0;
+    }
+    updateGL();
+    break;
+  case Qt::Key_G:
+    fogFilter += 1;;
+    if ( fogFilter > 2 )
+    {
+      fogFilter = 0;
+    }
+    glFogi( GL_FOG_MODE, fogMode[fogFilter] );
+    updateGL();
+    break;
+</pre>
+<p> 按下了G键，就可以变换一下所使用的雾的类型。
+<pre>
+  case Qt::Key_Prior:
+    zoom -= 0.2;
+    updateGL();
+    break;
+  case Qt::Key_Next:
+    zoom += 0.2;
+    updateGL();
+    break;
+  case Qt::Key_Up:
+    xSpeed -= 0.01;
+    updateGL();
+    break;
+  case Qt::Key_Down:
+    xSpeed += 0.01;
+    updateGL();
+    break;
+  case Qt::Key_Right:
+    ySpeed += 0.01;
+    updateGL();
+    break;
+  case Qt::Key_Left:
+    ySpeed -= 0.01;
+    updateGL();
+    break;
+  case Qt::Key_F2:
+    fullscreen = !fullscreen;
+    if ( fullscreen )
+    {
+      showFullScreen();
+    }
+    else
+    {
+      showNormal();
+      setGeometry( 0, 0, 640, 480 );
+    }
+    update();
+    break;
+  case Qt::Key_Escape:
+    close();
+  }
+}
+</pre>
+<p> 上面就是键盘控制，用上下左右键来控制立方体的运动。
+<p> 这就是全部了！我们结束了我们的课程，现在你已经在你的OPENGL程序中有了雾。我敢说这是决不费事的。
+<p> 本课程的<a href="lesson16.tar.gz" tppabs="http://www.qiliang.net/nehe_qt/source/lesson16.tar.gz">源代码</a>。
+
+<p align="right">[<a href="index.html" tppabs="http://www.qiliang.net/nehe_qt/index.html">Qt OpenGL教程主页</a>]</p>
+
+<p><address><hr><div align=center>
+<table width=100% cellspacing=0 border=0><tr>
+<td align=left><div align=left><a href="javascript:if(confirm('http://www.qiliang.net/  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://www.qiliang.net/'" tppabs="http://www.qiliang.net/">http://www.qiliang.net</a></div>
+<td><center><a href="mailto:cavendish@qiliang.net">mailto:cavendish@qiliang.net</a></center>
+<td align=right><div align=right>2003年11月14日</div>
+</table></div></address></body>
+</html>

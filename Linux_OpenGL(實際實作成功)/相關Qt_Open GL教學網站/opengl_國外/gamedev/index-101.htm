@@ -1,0 +1,282 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+    dir="ltr"
+    xml:lang="en"
+    lang="en">
+  <head>
+    <title>NeHe Productions: Using gluUnProject</title>
+
+    <link rel="stylesheet" type="text/css" href="public_base.css" tppabs="http://nehe.gamedev.net/static/css/public_base.css" />
+    <link type="text/css" rel="stylesheet" href="shThemeMidnight.css" tppabs="http://nehe.gamedev.net/static/css/syntax_highlighter/shThemeMidnight.css"/>
+    
+    <link rel="alternate" type="application/atom+xml" title="Atom feed" href="index-1.htm" tppabs="http://nehe.gamedev.net/atom/" />
+    <link rel="alternate" type="application/rss+xml" title="RSS feed" href="index-2.htm" tppabs="http://nehe.gamedev.net/rss/" />
+    
+    <meta name="author" content="Luke Benstead + Carsten Haubold" />
+    <meta name="description" content="OpenGL Tutorials, Demos, Games and More..." />
+    <meta name="keywords" content="opengl, tutorial, article, demo, game, blend, texturemap, lighting, contest, 3D" />
+
+    
+    
+
+    
+
+</script>
+
+
+    
+    
+    
+    
+        
+        <script type='text/javascript'>
+        var googletag = googletag || {};
+        googletag.cmd = googletag.cmd || [];
+        (function() {
+        var gads = document.createElement('script');
+        gads.async = true;
+        gads.type = 'text/javascript';
+        var useSSL = 'https:' == document.location.protocol;
+        gads.src = (useSSL ? 'https:' : 'http:') + 
+        '//www.googletagservices.com/tag/js/gpt.js';
+        var node = document.getElementsByTagName('script')[0];
+        node.parentNode.insertBefore(gads, node);
+        })();
+        </script>
+
+        <script type='text/javascript'>
+        googletag.cmd.push(function() {
+        googletag.defineSlot('/1004699/Leaderboard_NeHe', [728, 90], 'div-gpt-ad-1327940144417-0').addService(googletag.pubads());
+        googletag.defineSlot('/1004699/Skyscraper_NeHe', [160, 600], 'div-gpt-ad-1327940144417-1').addService(googletag.pubads());
+        googletag.pubads().enableSingleRequest();
+        googletag.enableServices();
+        });
+        </script>
+    
+    
+
+    
+  </head>
+
+  <body>
+    
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "all.js#xfbml=1"/*tpa=http://connect.facebook.net/en_GB/all.js#xfbml=1*/;
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+
+
+    <table cellpadding="0" cellspacing="0" border="0" id="layout_table">
+    <tr><td>
+        <div id="header">
+                <a href="index.htm" tppabs="http://nehe.gamedev.net/"><img class="logo" class="logo" src="nehe.png" tppabs="http://nehe.gamedev.net/static/images/nehe.png" border="0" alt="Nehe" /></a>
+        </div>            
+    </td></tr>
+    <tr><td colspan="2">
+            
+<div class="navbar">
+    <a href="index.htm" tppabs="http://nehe.gamedev.net/">HOME</a>
+    <a href="javascript:if(confirm('http://twitter.com/  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://twitter.com/#!/nehegl'" tppabs="http://twitter.com/#!/nehegl">TWITTER</a>  
+    <a href="javascript:if(confirm('http://www.facebook.com/pages/NeHe/300582493323181  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://www.facebook.com/pages/NeHe/300582493323181'" tppabs="http://www.facebook.com/pages/NeHe/300582493323181">FACEBOOK</a>     
+    <a href="index-2.htm" tppabs="http://nehe.gamedev.net/rss/">RSS</a>    
+    <a href="index-1.htm" tppabs="http://nehe.gamedev.net/atom/">ATOM</a>    
+    <a href="javascript:if(confirm('http://www.gamedev.net/forum/27-nehe-productions/page__forum_title__NeHe+Productions  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://www.gamedev.net/forum/27-nehe-productions/page__forum_title__NeHe+Productions'" tppabs="http://www.gamedev.net/forum/27-nehe-productions/page__forum_title__NeHe+Productions">FORUM</a>    
+</div>
+    
+    </td></tr>
+    <tr>
+        <td class="col1">
+
+            
+<div id="article_container">
+
+
+<h1 class="article-header">Using gluUnProject</h1>
+<div class="social-media">
+<!-- Place this tag where you want the +1 button to render -->
+<div class="g-plusone" data-size="medium" data-width="120" data-annotation="inline"></div>
+<div class="fb-like" data-send="false" data-layout="button_count" data-width="60" data-show-faces="false" data-colorscheme="dark" data-font="arial"></div>
+</div>
+<div style="clear:both;"></div>
+<p>gluUnProject converts Windows screen coordinates to OpenGL coordinates. This means that you can get the position of your mouse on an OpenGL Window and use this method to find the x, y and z coordinate of where you clicked.</p>
+<p>You need to pass several variables to the function, these are:</p>
+<p><a href="#1">1. Viewport Origin And Extent</a><br /> <a href="#2">2. The Modelview Matrix</a><br /> <a href="#3">3. The Projection Matrix</a><br /> <a href="#4">4. The Windows Screen Coordinates</a><br /> <a href="#5">5. Variables Where The Output OpenGL Coords Will Be Stored</a></p>
+<p>So how do you get them?</p>
+<!-- break -->
+<p><a name="1"></a><strong><span style="text-decoration: underline;">1. Viewport Origin And Extent</span></strong></p>
+<p>We need to grab the current viewport. The information we need is the starting X and Y position of our GL viewport along with the viewport width and height.</p>
+<p>Once we get this information using glGetIntegerv(GL_VIEWPORT, viewport), viewport will hold the following information:</p>
+<p>viewport[0]=x<br /> viewport[1]=y<br /> viewport[2]=width<br /> viewport[3]=height</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">GLint viewport[4];					// Where The Viewport Values Will Be Stored
+glGetIntegerv(GL_VIEWPORT, viewport);			// Retrieves The Viewport Values (X, Y, Width, Height)
+</pre>
+<p><a name="2"></a><strong><span style="text-decoration: underline;">2. The Modelview Matrix</span></strong></p>
+<p>Once we have the viewport information, we can grab the Modelview information. The Modelview Matrix determines how the vertices of OpenGL primitives are transformed to eye coordinates.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">GLdouble modelview[16];					// Where The 16 Doubles Of The Modelview Matrix Are To Be Stored
+glGetDoublev(GL_MODELVIEW_MATRIX, modelview);		// Retrieve The Modelview Matrix
+</pre>
+<p><a name="3"></a><strong><span style="text-decoration: underline;">3. The Projection Matrix</span></strong></p>
+<p>After that, we need to get the Projection Matrix. The Projection Matrix transforms vertices in eye coordinates to clip coordinates.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">GLdouble projection[16];				// Where The 16 Doubles Of The Projection Matrix Are To Be Stored
+glGetDoublev(GL_PROJECTION_MATRIX, projection);		// Retrieve The Projection Matrix
+</pre>
+<p><a name="4"></a><strong><span style="text-decoration: underline;">4. The Windows Screen Coordinates</span></strong></p>
+<p>After we have done all of that, we can grab the Windows screen coordinates. We are interested in the current mouse position.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">POINT mouse;						// Stores The X And Y Coords For The Current Mouse Position
+GetCursorPos(&amp;mouse);					// Gets The Current Cursor Coordinates (Mouse Coordinates)
+ScreenToClient(hWnd, &amp;mouse);
+
+GLfloat winX, winY, winZ;				// Holds Our X, Y and Z Coordinates
+
+winX = (float)mouse.x;					// Holds The Mouse X Coordinate
+winY = (float)mouse.y;					// Holds The Mouse Y Coordinate
+</pre>
+<p>Now Windows coordinates start with (0, 0) being at the top left whereas OpenGL coords start at the lower left. To convert to OpenGL coordinates we do the following:</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">winY = (float)viewport[3] - winY;			// Subtract The Current Mouse Y Coordinate From The Screen Height.
+</pre>
+<p>You may have noticed the missing z coordinate, well here is how to get it:</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">glReadPixels(winX, winY, 1, 1, GL_DEPTH_COMPONENT, GL_FLOAT, &amp;winZ);
+</pre>
+<p><a name="5"></a><strong><span style="text-decoration: underline;">5. Variables Where The Output OpenGL Coords Will Be Stored</span></strong></p>
+<p>All that is left to do is calculate our final OpenGL coordinates.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">GLdouble posX, posY, posZ;				// Hold The Final Values
+</pre>
+<p>Now here is the completed C code that will return the correct OpenGL coordinates if you pass it the mouse coordinates:</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">CVector3 GetOGLPos(int x, int y)
+{
+	GLint viewport[4];
+	GLdouble modelview[16];
+	GLdouble projection[16];
+	GLfloat winX, winY, winZ;
+	GLdouble posX, posY, posZ;
+
+	glGetDoublev( GL_MODELVIEW_MATRIX, modelview );
+	glGetDoublev( GL_PROJECTION_MATRIX, projection );
+	glGetIntegerv( GL_VIEWPORT, viewport );
+
+	winX = (float)x;
+	winY = (float)viewport[3] - (float)y;
+	glReadPixels( x, int(winY), 1, 1, GL_DEPTH_COMPONENT, GL_FLOAT, &amp;winZ );
+
+	gluUnProject( winX, winY, winZ, modelview, projection, viewport, &amp;posX, &amp;posY, &amp;posZ);
+
+	return CVector3(posX, posY, posZ);
+}
+</pre>
+<p>Also here is the Delphi code for the same function, donated by Sander Koopmans:</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">// The Type Declaration Should Be Placed In The Header Of The .pas File
+type T3D_Point = array [1..3] of Double;
+
+function GetOGLPos(X, Y: Integer): T3D_Point;
+var
+	viewport:   array [1..4]  of Integer;
+	modelview:  array [1..16] of Double;
+	projection: array [1..16] of Double;
+	winZ: Single;
+begin
+	glGetDoublev( GL_MODELVIEW_MATRIX, @modelview );
+	glGetDoublev( GL_PROJECTION_MATRIX, @projection );
+	glGetIntegerv( GL_VIEWPORT, @viewport );
+
+	// In Delphi A Y Value Of 0 Returns An Unknown Value
+	// I Discovered This While I Was Testing A Crosshair
+	if( Y = 0 )then Y := 1;
+
+	glReadPixels(	X, -Y, 1, 1, GL_DEPTH_COMPONENT, GL_FLOAT, @winZ );
+	gluUnProject(	X, viewport[4]-Y, winZ,
+			@modelview, @projection, @viewport,
+			Result[1], Result[2], Result[3]);
+end;
+</pre>
+<p>If you are rendering to a window, use the ScreenToClient method (before passing to the method) to convert the mouse co-ordinates given by GetCursorPos to window co-ordinates. Very special thanks to Sander for pointing out and fixing some bugs in the code and the addition of a Delphi version.</p>
+<p>Additional info for Delphi users from Sander:</p>
+<p>In the Delphi example the fullscreen / window bug isn't fixed, because it will cost a lot of extra code if you don't use the normal Delphi window TForm. If you want to fix this bug your self then Delphi has the exact same command. The command is stored in the class TControl from the VCL library.</p>
+<p>* Additional Commenting By NeHe</p>
+
+
+</div>
+</div>
+
+
+
+            <div style="width:728px;padding:0px;margin:auto; margin-top: 10px;">
+            
+
+    
+                <!-- Leaderboard_NeHe -->
+                <div id='div-gpt-ad-1327940144417-0' style='width:728px; height:90px;'>
+                <script type='text/javascript'>
+                googletag.cmd.push(function() { googletag.display('div-gpt-ad-1327940144417-0'); });
+                </script>
+                </div>
+            
+
+                           
+            </div>   
+        </td>
+        <td class="col2">
+            
+
+
+
+
+<div style="text-align: center; padding:10px;">
+
+<script type='text/javascript'>
+    GA_googleFillSlot("Skyscraper_NeHe");
+</script>
+
+</div>
+            
+        </td>
+    </table>
+    <div id="footer">
+        <p>
+            
+    
+    © 1997-2012 Gamedev . All rights reserved.<br/>
+
+			NeHe™ and NeHe Productions™ are trademarks of GameDev.net, LLC<br/>
+			OpenGL® is a registered trademark of Silicon Graphics Inc.<br/>
+		</p>        
+		<br/>
+    </div>
+
+    
+    
+	    <script type="text/javascript" src="shCore.js" tppabs="http://nehe.gamedev.net/static/js/syntax_highlighter/shCore.js"></script>
+        <script type="text/javascript" src="shBrushCpp.js" tppabs="http://nehe.gamedev.net/static/js/syntax_highlighter/shBrushCpp.js"></script>
+	    <script type="text/javascript" src="shBrushJScript.js" tppabs="http://nehe.gamedev.net/static/js/syntax_highlighter/shBrushJScript.js"></script>
+	    <script type="text/javascript">SyntaxHighlighter.all();</script>
+    
+
+    <!-- Place this render call where appropriate -->
+    <script type="text/javascript">
+      (function() {
+        var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+        po.src = 'plusone.js'/*tpa=https://apis.google.com/js/plusone.js*/;
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+      })();
+    </script>    
+
+    
+<!-- GoogleAnalytics code -->
+<script src="urchin.js" tppabs="http://www.google-analytics.com/urchin.js" type="text/javascript">
+</script>
+<script type="text/javascript">
+_uacct = "UA-279474-2"; // Gamedev
+urchinTracker();
+_uff = 0; // Reset for second account
+_uacct = "UA-24180731-1"; // Non-GD
+urchinTracker();
+</script> 
+  </body>
+</html>

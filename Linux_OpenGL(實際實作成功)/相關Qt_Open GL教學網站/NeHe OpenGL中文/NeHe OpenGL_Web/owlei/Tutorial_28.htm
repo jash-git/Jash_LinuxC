@@ -1,0 +1,525 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<!-- 这篇文章由Dancingwind翻译，作者的联系方式zhouwei02@mails.tsinghua.edu.cn -->
+<html>
+<head>
+<title>NeHe OpenGL教程第二十八课，DancingWind翻译</title>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<style type=text/css>
+A:link {COLOR: #ccaaff; TEXT-DECORATION: none}
+A:visited {COLOR: #ccaaff; TEXT-DECORATION: none}
+A:active {COLOR: #ccaaff; TEXT-DECORATION: none}
+A:hover {COLOR: #ffccaa; TEXT-DECORATION: none}
+</style>
+</head>
+
+<br><br>
+
+<body bgcolor=#000000 text=#ffffff><table border=0 cellpadding=0
+cellspacing=0 width="100%"><tr><td width=326 height=130><img
+src="logo.png" tppabs="http://www.owlei.com/DancingWind/Pic/logo.png" width=326 height=130></td>
+    <td valign=middle align=center
+width="75%"><font color=#ffccaa size=+3><b><i>第28课</i></b></font></td>
+  </tr></table>
+  <!-- 上边框-->
+<table border="0" cellPadding="0" cellSpacing="0" width="100%">
+<TBODY>
+  <tr>
+    <td><img height="28" src="tl.jpg" tppabs="http://www.owlei.com/DancingWind/Pic/tl.jpg" width="28"></td>
+    <td width="100%"><img height="28" src="tc.gif" tppabs="http://www.owlei.com/DancingWind/Pic/tc.gif" width="100%"></td>
+    <td><img height="28" src="tr.gif" tppabs="http://www.owlei.com/DancingWind/Pic/tr.gif" width="28"></td>
+  </tr>
+</TBODY>
+</table>
+
+<!-- 中部-->
+<table border="0" cellPadding="0" cellSpacing="0" width="100%">
+<TBODY>
+  <tr>
+  	<!-- 中部左边框-->
+    <td  background="l.gif" tppabs="http://www.owlei.com/DancingWind/Pic/l.gif"><img src="l.gif" tppabs="http://www.owlei.com/DancingWind/Pic/l.gif" width="28" height="28"></td>
+	<!-- 中部文字部分-->
+    <td vAlign="top" width="100%">
+	<table width="100%" border="0">
+          <tr>
+            <td width="24%"><img src="lesson28.jpg" tppabs="http://www.owlei.com/DancingWind/Pic/lesson28.jpg" width="240" height="180"></td>
+            <td width="76%"><p><FONT class=head>贝塞尔曲面:</FONT></p>
+              <p><font size="3">这是一课关于数学运算的，没有别的内容了。来，有信心就看看它吧。</FONT></p></td>
+          </tr>
+     </table>
+      </td>
+	<!-- 中部右边框-->
+    <td background="r.gif" tppabs="http://www.owlei.com/DancingWind/Pic/r.gif"><img src="r.gif" tppabs="http://www.owlei.com/DancingWind/Pic/r.gif" width="28" height="28"></td>
+  </tr>
+</TBODY>
+</table>
+
+<!-- 下边框-->
+<table border="0" cellPadding="0" cellSpacing="0" width="100%">
+<TBODY>
+  <tr>
+    <td><img height="28" src="bl.gif" tppabs="http://www.owlei.com/DancingWind/Pic/bl.gif" width="28"></td>
+    <td width="100%"><img height="28" src="bc.gif" tppabs="http://www.owlei.com/DancingWind/Pic/bc.gif" width="100%"></td>
+    <td><img height="28" src="br.gif" tppabs="http://www.owlei.com/DancingWind/Pic/br.gif" width="28"></td>
+  </tr>
+</TBODY>
+</table>
+  <table border=0 cellpadding=0
+cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28
+height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100%
+height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28
+height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0
+width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td
+width=100% valign=top>贝塞尔曲面<br> <br> <b><U>作者: David Nikdel ( <a href="mailto:ogapo@ithink.net">ogapo@ithink.net</a> 
+      )</U></b> <br> <br>
+      这篇教程旨在介绍贝塞尔曲面，希望有比我更懂艺术的人能用她作出一些很COOL的东东并且展示给大家。教程不能用做一个完整的贝塞尔曲面库，而是一个展示概念的程序让你熟悉曲面怎样实现的。而且这不是一篇正规的文章，为了方便理解，我也许在有些地方术语不当；我希望大家能适应这个。最后，对那些已经熟悉贝塞尔曲面想看我写的如何的，真是丢脸；-）但你要是找到任何纰漏让我或者NeHe知道，毕竟人无完人嘛？还有，所有代码没有象我一般写程序那样做优化，这是故意的。我想每个人都能明白写的是什么。好，我想介绍到此为止，继续看下文！<br> 
+      <br>
+      数学：：恶魔之音：：（警告：内容有点长~）<br> <br>
+      好，如果想理解贝塞尔曲面没有对其数学基本的认识是很难的，如果你不愿意读这一部分或者你已经知道了关于她的数学知识你可以跳过。首先我会描述贝塞尔曲线再介绍生成贝塞尔曲面。<br>
+      奇怪的是，如果你用过一个图形程序，你就已经熟悉了贝塞尔曲线，也许你接触的是另外的名称。它们是画曲线的最基本的方法，而且通常被表示成一系列点，其中有两个点与两端点表示左右两端的切线。下图展示了一个例子。<br> 
+      <br> <img src="curve1.gif" tppabs="http://www.owlei.com/DancingWind/Pic/curve1.gif" > <br> <br>
+      这是最基础的贝塞尔曲线（长点的由很多点在一起（多到你都没发现））。这个曲线由4个点定义，有2个端点和2个中间控制点。对计算机而言这些点都是一样的，但是特意的我们通常把前后两对点分别连接，因为他们的连线与短点相切。曲线是一个参数化曲线，画的时候从曲线上平均找几点连接。这样你可以控制曲线曲面的精度（和计算量）。最通常的方法是远距离少细分近距离多细分，对视点，看上去总是很完好的曲面而对速度的影响总是最小。<br>
+      贝塞尔曲面基于一个基本方程，其他复杂的都是基于此。方程为：<br> <br>
+      t + (1 - t) = 1 <br> <br>
+      看起来很简单不是？的确是的，这是最基本的贝塞尔曲线，一个一维的曲线。你也许从术语中猜到，贝塞尔曲线是多项式形式的。从线性代数知，一个一维的多项式是一条直线，没多大意思。好，因为基本方程对所有t都成立，我们可以平方，立方两边，怎么都行，等式都是成立的，对吧？好，我们试试立方。<br> 
+      <br>
+      (t + (1-t))^3 = 1^3 <br> <br>
+      t^3 + 3*t^2*(1-t) + 3*t*(1-t)^2 + (1-t)^3 = 1 <br> <br>
+      这是我们最常用的计算贝塞尔曲面的方程，a)她是最低维的不需要在一个平面内的多项式（有4个控制点），而且b)两边的切线互相没有联系（对于2维的只有3个控制点）。那么你看到了贝塞尔曲线了吗？呵呵，我们都没有，因为我还要加一个东西。<br>
+      好，因为方程左边等于1，可以肯定如果你把所有项加起来还是等于1。这是否意味着在计算曲线上一点时可以以此决定该用每个控制点的多少呢？（答案是肯定的）你对了！当我们要计算曲线上一点的值我们只需要用控制点（表示为向量）乘以每部分再加起来。基本上我们要用0&lt;=t&lt;=1，但不是必要的。不明白了把？这里有函数：<br> 
+      <br>
+      P1*t^3 + P2*3*t^2*(1-t) + P3*3*t*(1-t)^2 + P4*(1-t)^3 = P<sub>new</sub> 
+      <br> <br>
+      因为多项式是连续的，有一个很好的办法在4个点间插值。曲线仅经过P1，P4，分别当t=1,0。<br>
+      好，一切都很好，但现在我怎么把这个用在3D里呢？其实很简单，为了做一个贝塞尔曲面，你需要16个控制点，（4*4），和2个变量t,v。你要做的是计算在分量v的沿4条平行曲线的点，再用这4个点计算在分量t的点。计算了足够的这些点，我们可以用三角带连接他们，画出贝塞尔曲面。<br> 
+      <br> <img src="curve2.jpg" tppabs="http://www.owlei.com/DancingWind/Pic/curve2.jpg" >&nbsp;&nbsp;&nbsp;<img src="curve3.jpg" tppabs="http://www.owlei.com/DancingWind/Pic/curve3.jpg"> <br> 
+      <br>
+      恩，我认为现在已经有足够的数学背景了，看代码把！</td>
+    <td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img
+src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0
+cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28
+height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100%
+height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28
+height=28></td></tr></table><font color=#aaffaa size=3>
+<pre>#include &lt;math.h&gt;							<font color=#ffffaa>// 数学库</font>
+#include &lt;stdio.h&gt;							<font color=#ffffaa>// 标准输入输出库</font>
+#include &lt;stdlib.h&gt;						<font color=#ffffaa>// 标准库</font>
+
+typedef struct point_3d {						<font color=#ffffaa>// 3D点的结构</font>
+	double x, y, z;
+} POINT_3D;
+
+typedef struct bpatch {						<font color=#ffffaa>// 贝塞尔面片结构</font>
+	POINT_3D	anchors[4][4];					<font color=#ffffaa>// 由4x4网格组成</font>
+	GLuint		dlBPatch;					<font color=#ffffaa>// 绘制面片的显示列表名称</font>
+	GLuint		texture;					<font color=#ffffaa>// 面片的纹理</font>
+} BEZIER_PATCH;
+
+BEZIER_PATCH		mybezier;					<font color=#ffffaa>// 创建一个贝塞尔曲面结构</font>
+BOOL			showCPoints=TRUE;				<font color=#ffffaa>// 是否显示控制点</font>
+int			divs = 7;					<font color=#ffffaa>// 细分精度，控制曲面的显示精度</font>
+</pre>
+</font><table border=0 cellpadding=0 cellspacing=0
+width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td
+width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img
+src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0
+cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img
+src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>以下是一些简单的向量数学的函数。如果你是C++爱好者你可以用一个顶点类（保证其为3D的）。</td>
+    <td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img
+src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0
+cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28
+height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100%
+height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28
+height=28></td></tr></table><font color=#aaffaa size=3>
+<pre>
+<font color=#ffffaa>// 两个向量相加，p=p+q</font>
+POINT_3D pointAdd(POINT_3D p, POINT_3D q) {
+	p.x += q.x;		p.y += q.y;		p.z += q.z;
+	return p;
+}
+
+<font color=#ffffaa>// 向量和标量相乘p=c*p</font>
+POINT_3D pointTimes(double c, POINT_3D p) {
+	p.x *= c;	p.y *= c;	p.z *= c;
+	return p;
+}
+
+<font color=#ffffaa>// 创建一个3D向量</font>
+POINT_3D makePoint(double a, double b, double c) {
+	POINT_3D p;
+	p.x = a;	p.y = b;	p.z = c;
+	return p;
+}
+</pre>
+</font><table border=0 cellpadding=0 cellspacing=0
+width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td
+width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img
+src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0
+cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img
+src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>这基本上是用C写的3维的基本函数，她用变量u和4个顶点的数组计算曲线上点。每次给u加上一定值，从0到1，我们可得一个很好的近似曲线。 
+      <p>求值器基于Bernstein多项式定义曲线，定义p(u&nbsp;')为：<br>
+        <font size="+2">p(u')=∑B<sup>n</sup><sub>i</sub>(u')Ri</font></p>
+      <p>这里Ri为控制点<br>
+        <font size="+2">B<sup>n</sup><sub>i</sub>(u')=[<sup>n</sup><sub>i</sub>]u'<sup>i</sup>(1-u')<sup>n-i</sup></font><br>
+        <br>
+        且0<sup>0</sup>=1,[<sup>n</sup><sub>0</sub>]=1</p>
+      <p>u'=(u-u1)/(u2-u1)</p>
+      <p>当为贝塞尔曲线时，控制点为4，相应的4个Bernstein多项式为:<br>
+        <font size="+2">1、B<sup>3</sup><sub>0</sub></font> =（1-u）<sup>3</sup><br>
+        <font size="+2">2、B<sup>3</sup><sub>1</sub></font> =3u(1-u)<sup>2</sup><br>
+        <font size="+2">3、B<sup>3</sup><sub>2</sub></font> =3u<sup>2</sup>(1-u)<br>
+        <font size="+2">4、B<sup>3</sup><sub>3</sub></font> =u<sup>3</sup><br>
+      </p>
+</td>
+    <td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img
+src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0
+cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28
+height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100%
+height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28
+height=28></td></tr></table><font color=#aaffaa size=3><pre>
+<font color=#ffffaa>// 计算贝塞尔方程的值</font>
+<font color=#ffffaa>// 变量u的范围在0-1之间</font>
+POINT_3D Bernstein(float u, POINT_3D *p) {
+	POINT_3D	a, b, c, d, r;
+
+	a = pointTimes(pow(u,3), p[0]);
+	b = pointTimes(3*pow(u,2)*(1-u), p[1]);
+	c = pointTimes(3*u*pow((1-u),2), p[2]);
+	d = pointTimes(pow((1-u),3), p[3]);
+
+	r = pointAdd(pointAdd(a, b), pointAdd(c, d));
+
+	return r;
+}
+</pre></font><table border=0 cellpadding=0 cellspacing=0
+width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td
+width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img
+src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0
+cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img
+src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>这个函数完成共享工作，生成所有三角带，保存在display list。我们这样就不需要每贞都重新计算曲面，除了当其改变时。另外，你可能想用一个很酷的效果，用MORPHING教程改变控制点位置。这可以做一个很光滑，有机的，morphing效果，只要一点点开销（你只要改变16个点，但要从新计算）。“最后”的数组元素用来保存前一行点，（因为三角带需要两行）。而且，纹理坐标由表示百分比的u,v来计算（平面映射）。<br>
+      还有一个我们没做的是计算法向量做光照。到了这一步，你基本上有2种选择。第一是找每个三角形的中心计算X，Y轴的切线，再做叉积得到垂直与两向量的向量，再归一化，得到法向量。或者（恩，这是更好的方法）你可以直接用三角形的法矢（用你最喜欢的方法计算）得到一个近似值。我喜欢后者；我认为不值得为了一点点真实感影响速度。</td>
+    <td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img
+src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0
+cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28
+height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100%
+height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28
+height=28></td></tr></table>
+<font color=#aaffaa size=3> 
+<pre>
+<font color=#ffffaa>// 生成贝塞尔曲面的显示列表</font>
+GLuint genBezier(BEZIER_PATCH patch, int divs) {
+	int		u = 0, v;
+	float		py, px, pyold;
+	GLuint		drawlist = glGenLists(1);			<font color=#ffffaa>// 创建显示列表</font>
+	POINT_3D	temp[4];
+	POINT_3D	*last = (POINT_3D*)malloc(sizeof(POINT_3D)*(divs+1));	<font color=#ffffaa>// 更具每一条曲线的细分数，分配相应的内存</font>
+
+	if (patch.dlBPatch != NULL)					<font color=#ffffaa>// 如果显示列表存在则删除</font>
+		glDeleteLists(patch.dlBPatch, 1);
+
+	temp[0] = patch.anchors[0][3];				<font color=#ffffaa>// 获得u方向的四个控制点</font>
+	temp[1] = patch.anchors[1][3];
+	temp[2] = patch.anchors[2][3];
+	temp[3] = patch.anchors[3][3];
+
+	for (v=0;v&lt;=divs;v++) {					<font color=#ffffaa>// 根据细分数，创建各个分割点额参数</font>
+		px = ((float)v)/((float)divs);				
+	<font color=#ffffaa>// 使用Bernstein函数求的分割点的坐标</font>
+		last[v] = Bernstein(px, temp);
+	}
+
+	glNewList(drawlist, GL_COMPILE);				<font color=#ffffaa>// 创建一个新的显示列表</font>
+	glBindTexture(GL_TEXTURE_2D, patch.texture);			<font color=#ffffaa>// 邦定纹理</font>
+
+	for (u=1;u&lt;=divs;u++) {
+		py    = ((float)u)/((float)divs);			<font color=#ffffaa>// 计算v方向上的细分点的参数</font>
+		pyold = ((float)u-1.0f)/((float)divs);		<font color=#ffffaa>// </font><font color=#aaffaa size=3><font color=#ffffaa>上一个v方向上的细分点的参数</font></font>
+
+		temp[0] = Bernstein(py, patch.anchors[0]);		<font color=#ffffaa>// 计算每个细分点v方向上贝塞尔曲面的控制点</font>
+		temp[1] = Bernstein(py, patch.anchors[1]);
+		temp[2] = Bernstein(py, patch.anchors[2]);
+		temp[3] = Bernstein(py, patch.anchors[3]);
+
+		glBegin(GL_TRIANGLE_STRIP);				<font color=#ffffaa>// 开始绘制三角形带</font>
+
+		for (v=0;v&lt;=divs;v++) {
+			px = ((float)v)/((float)divs);		<font color=#ffffaa>// 沿着u轴方向顺序绘制</font>
+
+			glTexCoord2f(pyold, px);			<font color=#ffffaa>// 设置纹理坐标</font>
+			glVertex3d(last[v].x, last[v].y, last[v].z);	<font color=#ffffaa>// 绘制一个顶点</font>
+
+			last[v] = Bernstein(px, temp);		<font color=#ffffaa>// 创建下一个顶点</font>
+			glTexCoord2f(py, px);			<font color=#ffffaa>// 设置纹理</font>
+			glVertex3d(last[v].x, last[v].y, last[v].z);	<font color=#ffffaa>// 绘制新的顶点</font>
+		}
+
+		glEnd();						<font color=#ffffaa>// 结束三角形带的绘制</font>
+	}
+
+	glEndList();						<font color=#ffffaa>// 显示列表绘制结束</font>
+
+	free(last);						<font color=#ffffaa>// 释放分配的内存</font>
+	return drawlist;						<font color=#ffffaa>// 返回创建的显示列表</font>
+}
+</pre>
+</font>
+<table border=0 cellpadding=0 cellspacing=0
+width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td
+width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img
+src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0
+cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img
+src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>这里我们调用一个我认为有一些很酷的值的矩阵。</td>
+    <td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img
+src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0
+cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28
+height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100%
+height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28
+height=28></td></tr></table><font color=#aaffaa size=3>
+<pre>
+void initBezier(void) {
+	mybezier.anchors[0][0] = makePoint(-0.75,	-0.75,	-0.50);	<font color=#ffffaa>// 设置贝塞尔曲面的控制点</font>
+	mybezier.anchors[0][1] = makePoint(-0.25,	-0.75,	 0.00);
+	mybezier.anchors[0][2] = makePoint( 0.25,	-0.75,	 0.00);
+	mybezier.anchors[0][3] = makePoint( 0.75,	-0.75,	-0.50);
+	mybezier.anchors[1][0] = makePoint(-0.75,	-0.25,	-0.75);
+	mybezier.anchors[1][1] = makePoint(-0.25,	-0.25,	 0.50);
+	mybezier.anchors[1][2] = makePoint( 0.25,	-0.25,	 0.50);
+	mybezier.anchors[1][3] = makePoint( 0.75,	-0.25,	-0.75);
+	mybezier.anchors[2][0] = makePoint(-0.75,	 0.25,	 0.00);
+	mybezier.anchors[2][1] = makePoint(-0.25,	 0.25,	-0.50);
+	mybezier.anchors[2][2] = makePoint( 0.25,	 0.25,	-0.50);
+	mybezier.anchors[2][3] = makePoint( 0.75,	 0.25,	 0.00);
+	mybezier.anchors[3][0] = makePoint(-0.75,	 0.75,	-0.50);
+	mybezier.anchors[3][1] = makePoint(-0.25,	 0.75,	-1.00);
+	mybezier.anchors[3][2] = makePoint( 0.25,	 0.75,	-1.00);
+	mybezier.anchors[3][3] = makePoint( 0.75,	 0.75,	-0.50);
+	mybezier.dlBPatch = NULL;					<font color=#ffffaa>// 默认的显示列表为0</font>
+}
+</pre>
+</font><table border=0 cellpadding=0 cellspacing=0
+width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td
+width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img
+src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0
+cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img
+src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>这是一个优化的调位图的函数。可以很简单的把他们放进一个简单循环里调一组。 </td>
+    <td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img
+src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0
+cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28
+height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100%
+height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28
+height=28></td></tr></table><font color=#aaffaa size=3>
+<pre>
+<font color=#ffffaa>// 加载一个*.bmp文件，并转化为纹理</font>
+
+BOOL LoadGLTexture(GLuint *texPntr, char* name)
+{
+	BOOL success = FALSE;
+	AUX_RGBImageRec *TextureImage = NULL;
+
+	glGenTextures(1, texPntr);					<font color=#ffffaa>// 生成纹理1</font>
+
+	FILE* test=NULL;
+	TextureImage = NULL;
+
+	test = fopen(name, "r");					
+	if (test != NULL) {						
+		fclose(test);						
+		TextureImage = auxDIBImageLoad(name);			
+	}
+
+	if (TextureImage != NULL) {					
+		success = TRUE;
+
+		<font color=#ffffaa>// 邦定纹理</font>
+		glBindTexture(GL_TEXTURE_2D, *texPntr);
+		glTexImage2D(GL_TEXTURE_2D, 0, 3, TextureImage->sizeX, TextureImage->sizeY, 0, GL_RGB, GL_UNSIGNED_BYTE, TextureImage->data);
+		glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_LINEAR);
+	}
+
+	if (TextureImage->data)
+		free(TextureImage->data);
+
+	return success;
+}
+</pre>
+</font><table border=0 cellpadding=0 cellspacing=0
+width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td
+width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img
+src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0
+cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img
+src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top> 仅仅加了曲面初始化在这。你每次建一个曲面时都会用这个。再一次，这里是一个用C++的好地方（贝塞尔曲面类？）。 
+      <br></td><td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img
+src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0
+cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28
+height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100%
+height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28
+height=28></td></tr></table><font color=#aaffaa size=3>
+<pre>
+int InitGL(GLvoid)							<font color=#ffffaa>// 初始化OpenGL</font>
+{
+	glEnable(GL_TEXTURE_2D);					<font color=#ffffaa>// 使用2D纹理</font>
+	glShadeModel(GL_SMOOTH);					<font color=#ffffaa>// 使用平滑着色</font>
+	glClearColor(0.05f, 0.05f, 0.05f, 0.5f);			<font color=#ffffaa>// 设置黑色背景</font>
+	glClearDepth(1.0f);					<font color=#ffffaa>// 设置深度缓存</font>
+	glEnable(GL_DEPTH_TEST);					<font color=#ffffaa>// 使用深度缓存</font>
+	glDepthFunc(GL_LEQUAL);					<font color=#ffffaa>// 设置深度方程</font>
+	glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);		
+
+	initBezier();						<font color=#ffffaa>// 初始化贝塞尔曲面</font>
+	LoadGLTexture(&(mybezier.texture), "./Data/NeHe.bmp");		<font color=#ffffaa>// 载入纹理</font>
+	mybezier.dlBPatch = genBezier(mybezier, divs);		<font color=#ffffaa>// 创建显示列表</font>
+
+	return TRUE;						<font color=#ffffaa>// 初始化成功</font>
+}
+</pre>
+</font><table border=0 cellpadding=0 cellspacing=0
+width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td
+width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img
+src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0
+cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img
+src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top> 首先调贝塞尔display list。再（如果边线要画）画连接控制点的线。你可以用SPACE键开关这个。 
+      <br></td><td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img
+src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0
+cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28
+height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100%
+height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28
+height=28></td></tr></table><font color=#aaffaa size=3>
+<pre>
+int DrawGLScene(GLvoid)	{						<font color=#ffffaa>// 绘制场景</font>
+	int i, j;
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);		
+	glLoadIdentity();						
+	glTranslatef(0.0f,0.0f,-4.0f);					<font color=#ffffaa>// 移入屏幕4个单位</font>
+	glRotatef(-75.0f,1.0f,0.0f,0.0f);
+	glRotatef(rotz,0.0f,0.0f,1.0f);					<font color=#ffffaa>// 旋转一定的角度</font>
+
+	glCallList(mybezier.dlBPatch);					<font color=#ffffaa>// 调用显示列表，绘制贝塞尔曲面</font>
+
+	if (showCPoints) {							<font color=#ffffaa>// 是否绘制控制点</font>
+		glDisable(GL_TEXTURE_2D);
+		glColor3f(1.0f,0.0f,0.0f);
+		for(i=0;i&lt;4;i++) {					<font color=#ffffaa>	// 绘制水平线</font>
+			glBegin(GL_LINE_STRIP);
+			for(j=0;j&lt;4;j++)
+				glVertex3d(mybezier.anchors[i][j].x, mybezier.anchors[i][j].y, mybezier.anchors[i][j].z);
+			glEnd();
+		}
+		for(i=0;i&lt;4;i++) {						<font color=#ffffaa>// 绘制垂直线</font>
+			glBegin(GL_LINE_STRIP);
+			for(j=0;j&lt;4;j++)
+				glVertex3d(mybezier.anchors[j][i].x, mybezier.anchors[j][i].y, mybezier.anchors[j][i].z);
+			glEnd();
+		}
+		glColor3f(1.0f,1.0f,1.0f);
+		glEnable(GL_TEXTURE_2D);
+	}
+
+	return TRUE;							<font color=#ffffaa>// 成功返回</font>
+}
+</pre>
+</font><table border=0 cellpadding=0 cellspacing=0
+width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td
+width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img
+src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0
+cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img
+src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top> KillGLWindow()函数没有改动<br></td><td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img
+src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0
+cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28
+height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100%
+height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28
+height=28></td></tr></table>
+<font color=#aaffaa size=3> </font>
+<table border=0 cellpadding=0 cellspacing=0
+width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td
+width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img
+src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0
+cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img
+src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>CreateGLWindow（）函数没有改动</td>
+    <td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img
+src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0
+cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28
+height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100%
+height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28
+height=28></td></tr></table>
+<font color=#aaffaa size=3> </font>
+<table border=0 cellpadding=0 cellspacing=0
+width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td
+width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img
+src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0
+cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img
+src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>我在这里加了旋转曲面的代码，增加/降低分辨率，显示与否控制点连线。 </td>
+    <td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img
+src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0
+cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28
+height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100%
+height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28
+height=28></td></tr></table>
+<font color=#aaffaa size=3> 
+<pre>
+			if (keys[VK_LEFT])	rotz -= 0.8f;		<font color=#ffffaa>// 按左键，向左旋转</font>
+			if (keys[VK_RIGHT])	rotz += 0.8f;	<font color=#ffffaa>// 按右键，向右旋转</font>
+			if (keys[VK_UP]) {				<font color=#ffffaa>// 按上键，加大曲面的细分数目</font>
+				divs++;
+				mybezier.dlBPatch = genBezier(mybezier, divs);	<font color=#ffffaa>// 更新贝塞尔曲面的显示列表</font>
+				keys[VK_UP] = FALSE;
+			}
+			if (keys[VK_DOWN] && divs > 1) {		<font color=#ffffaa>		// 按下键，减少曲面的细分数目</font>
+				divs--;
+				mybezier.dlBPatch = genBezier(mybezier, divs);	<font color=#ffffaa>// </font><font color=#aaffaa size=3><font color=#ffffaa>更新贝塞尔曲面的显示列表</font></font>
+				keys[VK_DOWN] = FALSE;
+			}
+			if (keys[VK_SPACE]) {					<font color=#ffffaa>// 按空格切换控制点的可见性</font>
+				showCPoints = !showCPoints;
+				keys[VK_SPACE] = FALSE;
+			}
+</pre>
+</font>
+<table border=0 cellpadding=0 cellspacing=0
+width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td
+width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img
+src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0
+cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img
+src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top><p>恩，我希望这个教程让你了然于心而且你现在象我一样喜欢上了贝塞尔曲面。；-）如果你喜欢这个教程我会继续写一篇关于NURBS的如果有人喜欢。请EMAIL我让我知道你怎么想这篇教程。 
+      </p>
+<table width="100%" border="1">
+  <tr>
+    <td width="27%"><img src="logo 3.jpg" tppabs="http://www.owlei.com/DancingWind/images/logo%203.jpg" width="209" height="200" align="middle"></td>
+    <td width="73%">版权与使用声明:<br>
+      我是个对学习和生活充满激情的普通男孩,在网络上我以DancingWind为昵称，我的联系方式是zhouwei02@mails.tsinghua.edu.cn，如果你有任何问题，都可以联系我。
+      <p>引子<br>
+        网络是一个共享的资源，但我在自己的学习生涯中浪费大量的时间去搜索可用的资料，在现实生活中花费了大量的金钱和时间在书店中寻找资料，于是我给自己起了个昵称DancingWind，其意义是想风一样从各个知识的站点中吸取成长的养料。在飘荡了多年之后，我决定把自己收集的资料整理为一个统一的资源库。</p>
+      <p>版权声明<br>
+        所有DancingWind发表的内容，大多都来自共享的资源，所以我没有资格把它们据为己有，或声称自己为这些资源作出了一点贡献。故任何人都可以复制，修改，重新发表，甚至以自己的名义发表，我都不会追究，但你在做以上事情的时候必须保证内容的完整性，给后来的人一个完整的教程。最后，任何人不能以这些资料的任何部分，谋取任何形式的报酬。</p>
+      <p>发展计划<br>
+        在国外，很多资料都是很多人花费几年的时间慢慢积累起来的。如果任何人有兴趣与别人共享你的知识，我很欢迎你与我联系，但你必须同意我上面的声明。</p>
+            <p>感谢<br>
+              感谢我的母亲一直以来对我的支持和在生活上的照顾。<br>
+              感谢我深爱的女友田芹，一直以来默默的在精神上和生活中对我的支持，她甚至把买衣服的钱都用来给我买书了，她真的是我见过的最好的女孩，希望我能带给她幸福。</p>
+            <p>资源下载: <br>
+              文档 <a href="javascript:if(confirm('http://www.owlei.com/DancingWind/Res/mht/NeHe%20OpenGL%20Chinese%20Course%2028.mht  \n\nThis file was not retrieved by Teleport Pro, because the server reports that this file cannot be found.  \n\nDo you want to open it from the server?'))window.location='http://www.owlei.com/DancingWind/Res/mht/NeHe%20OpenGL%20Chinese%20Course%2028.mht'" tppabs="http://www.owlei.com/DancingWind/Res/mht/NeHe%20OpenGL%20Chinese%20Course%2028.mht">网页格式</a> 
+              <a href="javascript:if(confirm('http://www.owlei.com/DancingWind/Res/pdf/OpenGL_Nehe_Course_Tutorial_28.pdf  \n\nThis file was not retrieved by Teleport Pro, because the server reports that this file cannot be found.  \n\nDo you want to open it from the server?'))window.location='http://www.owlei.com/DancingWind/Res/pdf/OpenGL_Nehe_Course_Tutorial_28.pdf'" tppabs="http://www.owlei.com/DancingWind/Res/pdf/OpenGL_Nehe_Course_Tutorial_28.pdf">PDF格式</a><br>
+              源码 <a href="javascript:if(confirm('http://www.owlei.com/DancingWind/Res/Src/28_Bezier.rar  \n\nThis file was not retrieved by Teleport Pro, because the server reports that this file cannot be found.  \n\nDo you want to open it from the server?'))window.location='http://www.owlei.com/DancingWind/Res/Src/28_Bezier.rar'" tppabs="http://www.owlei.com/DancingWind/Res/Src/28_Bezier.rar">RAR格式</a></p></td>
+  </tr>
+</table><table border="0" width="100%">
+        <td width="50%" align="left"><b><font size="-1"><a href="Tutorial_27.htm" tppabs="http://www.owlei.com/DancingWind/Course/Tutorial_27.htm">< 
+          <font face="Tahoma,Verdana,sans-serif">第</font>27<font face="Tahoma,Verdana,sans-serif">课</font></a></font></b></td>
+        <td width="50%" align="right"><b><font size="-1"><a href="Tutorial_29.htm" tppabs="http://www.owlei.com/DancingWind/Course/Tutorial_29.htm"><font face="Tahoma,Verdana,sans-serif">第</font>29<font face="Tahoma,Verdana,sans-serif">课</font> 
+          ></a></font></b></td>
+      </table>
+      </font></td>
+    <td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table>
+
+</body>
+</html>

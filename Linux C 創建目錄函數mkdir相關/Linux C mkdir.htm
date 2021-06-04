@@ -1,0 +1,531 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!-- saved from url=(0040)http://sharp2wing.iteye.com/blog/1280802 -->
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="zh-CN" dir="ltr" class=" clickberry-extension clickberry-extension-standalone"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+    <title>Linux C 创建目录函数mkdir相关 -  - ITeye技术网站</title>
+    <meta name="description" content="I.Linux C 创建目录函数mkdir的mode设置问题 函数原型： #include &lt;sys/stat.h&gt; int mkdir(const char *path, mode_t mode); 参数： path是目录名 mode是目录权限 返回值： 返回0 表示成功， 返回 -1表示错误，并且会设置errno值。 mode模式位： mode 表示新目录的权限，可以取以下值： S_ ...">
+    <meta name="keywords" content="linux, c Linux C 创建目录函数mkdir相关">
+    <link rel="shortcut icon" href="http://sharp2wing.iteye.com/images/favicon.ico" type="image/x-icon">
+    <link rel="search" type="application/opensearchdescription+xml" href="http://sharp2wing.iteye.com/open_search.xml" title="ITeye">
+    <link href="http://sharp2wing.iteye.com/rss" rel="alternate" title="" type="application/rss+xml">
+    <link href="./Linux C mkdir_files/blog.css" media="screen" rel="stylesheet" type="text/css">
+<link href="./Linux C mkdir_files/blue.css" media="screen" rel="stylesheet" type="text/css">
+    <script type="text/javascript" async="" src="./Linux C mkdir_files/ga.js"></script><script src="./Linux C mkdir_files/application.js" type="text/javascript"></script>
+    <script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-535605-1']);
+  _gaq.push(['_setDomainName', 'iteye.com']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+
+
+      <link href="./Linux C mkdir_files/SyntaxHighlighter.css" media="screen" rel="stylesheet" type="text/css">
+  <script src="./Linux C mkdir_files/shCoreCommon.js" type="text/javascript"></script>
+<script src="./Linux C mkdir_files/hotkey.js" type="text/javascript"></script>
+  <script src="./Linux C mkdir_files/code_favorites.js" type="text/javascript"></script>
+<script src="./Linux C mkdir_files/weiboshare.js" type="text/javascript"></script>
+  <meta content="clickberry-extension-here"><script id="clickberry-standalone-script" src="chrome-extension://lfmhcpmkbdkbgbmkjoiopeeegenkdikp/modules/clickberry/ChromeStdInjector.js?v=prod&addonType=fvd"></script></head>
+  <body>
+    <div id="header">
+      <div id="blog_site_nav">
+  <a href="http://www.iteye.com/" class="homepage">首页</a>
+  <a href="http://www.iteye.com/news">资讯</a>
+  <a href="http://www.iteye.com/magazines">精华</a>
+  <a href="http://www.iteye.com/forums">论坛</a>
+  <a href="http://www.iteye.com/ask">问答</a>
+  <a href="http://www.iteye.com/blogs">博客</a>
+  <a href="http://www.iteye.com/blogs/subjects">专栏</a>
+  <a href="http://www.iteye.com/groups">群组</a>
+  <a href="http://sharp2wing.iteye.com/blog/1280802#" onclick="return false;" id="msna"><u>更多</u> <small>▼</small></a>
+  <div class="quick_menu" style="display:none;">
+    <a target="_blank" href="http://job.iteye.com/iteye">招聘</a>
+    <a href="http://www.iteye.com/search">搜索</a>
+  </div>
+</div>
+
+      <div id="user_nav">
+      <a href="http://sharp2wing.iteye.com/login" class="welcome" title="登录">您还未登录 !</a>
+    <a href="http://sharp2wing.iteye.com/login">登录</a>
+    <a href="http://sharp2wing.iteye.com/signup" class="nobg">注册</a>
+  </div>
+
+    </div>
+
+    <div id="page">
+      <div id="branding" class="clearfix">
+        <div id="blog_name">
+          <h1><a href="http://sharp2wing.iteye.com/">sharp2wing</a></h1>
+        </div>
+        <div id="fd"></div>
+        <div id="blog_navbar">
+          <ul>
+            <li class="blog_navbar_for"><a href="http://sharp2wing.iteye.com/"><strong>博客</strong></a></li>
+            <li><a href="http://sharp2wing.iteye.com/weibo">微博</a></li>
+            <li><a href="http://sharp2wing.iteye.com/album">相册</a></li>
+            <li><a href="http://sharp2wing.iteye.com/link">收藏</a></li>
+            <li><a href="http://sharp2wing.iteye.com/blog/guest_book">留言</a></li>
+            <li><a href="http://sharp2wing.iteye.com/blog/profile">关于我</a></li>
+          </ul>
+    
+          <div class="search">
+            <form action="http://sharp2wing.iteye.com/blog/search" method="get">
+              <input class="search_text" id="query" name="query" style="margin-left: 10px;width: 110px;" type="text" value="">
+              <input class="submit_search" type="submit" value="">
+            </form>
+          </div> 
+          <div id="fd"></div>         
+        </div>
+      </div>
+      
+      <div id="content" class="clearfix">
+        <div id="main">
+          
+
+
+
+          
+
+
+<div class="h-entry" style="display:none">
+  <a href="http://sharp2wing.iteye.com/" class="p-author" target="_blank">sharp2wing</a>
+</div>
+
+
+<div class="blog_main">
+  <div class="blog_title">
+    <h3>
+      <a href="./Linux C mkdir_files/Linux C mkdir.htm">Linux C 创建目录函数mkdir相关</a>
+      <em class="actions">      </em>
+    </h3>
+    
+        <div class="news_tag"><a href="http://www.iteye.com/blogs/tag/linux">linux</a><a href="http://www.iteye.com/blogs/tag/c">c</a></div>
+  </div>
+
+  <div id="blog_content" class="blog_content">
+    I.Linux C 创建目录函数mkdir的mode设置问题
+<br>
+<br>函数原型：
+<br>
+<br>#include &lt;sys/stat.h&gt;
+<br>
+<br>int mkdir(const char *path, mode_t mode);
+<br>
+<br>参数：
+<br>
+<br>path是目录名
+<br>
+<br>mode是目录权限
+<br>
+<br>返回值：
+<br>
+<br>返回0 表示成功， 返回 -1表示错误，并且会设置errno值。
+<br>
+<br>mode模式位：
+<br>
+<br>mode 表示新目录的权限，可以取以下值：
+<br>
+<br>S_IRUSR
+<br>S_IREAD
+<br>
+<br>S_IWUSR
+<br>S_IWRITE
+<br>S_IXUSR
+<br>S_IEXEC
+<br>S_IRWXU
+<br>This is equivalent to (S_IRUSR | S_IWUSR | S_IXUSR).
+<br>S_IRGRP
+<br>Read permission bit for the group owner of the file. Usually 040.
+<br>S_IWGRP
+<br>Write permission bit for the group owner of the file. Usually 020.
+<br>S_IXGRP
+<br>Execute or search permission bit for the group owner of the file. Usually 010.
+<br>S_IRWXG
+<br>This is equivalent to (S_IRGRP | S_IWGRP | S_IXGRP).
+<br>S_IROTH
+<br>Read permission bit for other users. Usually 04.
+<br>S_IWOTH
+<br>Write permission bit for other users. Usually 02.
+<br>S_IXOTH
+<br>Execute or search permission bit for other users. Usually 01.
+<br>S_IRWXO
+<br>This is equivalent to (S_IROTH | S_IWOTH | S_IXOTH).
+<br>S_ISUID
+<br>This is the set-user-ID on execute bit, usually 04000. See How Change Persona.
+<br>S_ISGID
+<br>This is the set-group-ID on execute bit, usually 02000. See How Change Persona.
+<br>S_ISVTX
+<br>This is the sticky bit, usually 01000.
+<br>
+<br>例子：
+<br>
+<br>#include &lt;sys/types.h&gt; #include &lt;sys/stat.h&gt;
+<br>int status;
+<br>
+<br>status = mkdir("/home/newdir", S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);
+<br>
+<br>这样就创建了一个newdir目录，权限通过ls -al 查看为
+<br>
+<br>drwxr-xr-x
+<br>
+<br>跟用linux命令mkdir创建的目录权限位一致。
+<br>
+<br>
+<br>
+<br>II. linux下C语言创建多级目录
+<br>
+<br>int&nbsp;&nbsp; CreateDir(const&nbsp;&nbsp; char&nbsp;&nbsp; *sPathName)&nbsp; 
+<br>&nbsp; {&nbsp; 
+<br>&nbsp; char&nbsp;&nbsp; DirName[256];&nbsp; 
+<br>&nbsp; strcpy(DirName,&nbsp;&nbsp; sPathName);&nbsp; 
+<br>&nbsp; int&nbsp;&nbsp; i,len&nbsp;&nbsp; =&nbsp;&nbsp; strlen(DirName);&nbsp; 
+<br>&nbsp; if(DirName[len-1]!='/')&nbsp; 
+<br>&nbsp; strcat(DirName,&nbsp;&nbsp; "/");&nbsp; 
+<br>&nbsp;&nbsp; 
+<br>&nbsp; len&nbsp;&nbsp; =&nbsp;&nbsp; strlen(DirName);&nbsp; 
+<br>&nbsp;&nbsp; 
+<br>&nbsp; for(i=1;&nbsp;&nbsp; i&lt;len;&nbsp;&nbsp; i++)&nbsp; 
+<br>&nbsp; {&nbsp; 
+<br>&nbsp; if(DirName[i]=='/')&nbsp; 
+<br>&nbsp; {&nbsp; 
+<br>&nbsp; DirName[i]&nbsp;&nbsp; =&nbsp;&nbsp; 0;&nbsp; 
+<br>&nbsp; if(&nbsp;&nbsp; access(DirName,&nbsp;&nbsp; NULL)!=0&nbsp;&nbsp; )&nbsp; 
+<br>&nbsp; {&nbsp; 
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if(mkdir(DirName,&nbsp;&nbsp; 0755)==-1)&nbsp; 
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {&nbsp;&nbsp; 
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; perror("mkdir&nbsp;&nbsp; error");&nbsp;&nbsp; 
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; return&nbsp;&nbsp; -1;&nbsp;&nbsp; 
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }&nbsp; 
+<br>&nbsp; }&nbsp; 
+<br>&nbsp; DirName[i]&nbsp;&nbsp; =&nbsp;&nbsp; '/';&nbsp; 
+<br>&nbsp; }&nbsp; 
+<br>&nbsp; }&nbsp; 
+<br>&nbsp;&nbsp; 
+<br>&nbsp; return&nbsp;&nbsp; 0;&nbsp; 
+<br>&nbsp; }
+<br>
+<br>III.linux c 编程：创建一个线程，监视某个目录，一旦目录里出现新的文件，就将文件转移到指定的目录里去。
+<br>/*
+<br>头文件
+<br>*/
+<br>#define SRCPATH "srcpath/"
+<br>#define DSTPATH "dstpath/"
+<br>
+<br>int movefile()
+<br>{	
+<br>	DIR *dir; 
+<br>	struct dirent *dt; 
+<br>	FILE *fp1,*fp2;
+<br>	char filename1[256],filename2[256];
+<br>	char buf[1024];
+<br>	int readsize,writesize;
+<br>	
+<br>	if((dir = opendir(SRCPATH)) == NULL)
+<br>	{ 
+<br>		printf("opendir %s error\n",SRCPATH); 
+<br>		return -1;
+<br>	} 
+<br>	memset(filename1,0,sizeof(filename1));
+<br>	strcpy(filename1,SRCPATH);
+<br>	memset(filename2,0,sizeof(filename2));
+<br>	strcpy(filename2,DSTPATH);
+<br>	while(1)
+<br>	{
+<br>	while((dt = readdir(dir)) != NULL)
+<br>	{ 
+<br>		if(strcmp(dt-&gt;d_name,".")==0||strcmp(dt-&gt;d_name,"..")==0)
+<br>		{ 
+<br>			continue; 
+<br>		}
+<br>		//如果这个目录里 还有目录，可以在这加判断
+<br>		//这里假设初始为空目录
+<br>		strcat(filename1,dt-&gt;d_name);
+<br>		strcat(filename2,dt-&gt;d_name);
+<br>		//如果进程资源较少可以直接用linux系统命令
+<br>	
+<br>		fp1 = fopen(filename1,"rb");
+<br>		if(fp1==NULL)
+<br>		{
+<br>			printf("open %s failed /n",filename1);
+<br>			return -1;
+<br>		}	
+<br>					
+<br>		fp2 = fopen(filename2,"wb");
+<br>		if(fp2==NULL)
+<br>		{
+<br>			printf("open %s failed /n",filename2);
+<br>			fclose(fp1);
+<br>			return -1;
+<br>		}
+<br>
+<br>		while((readsize = fread(buf,sizeof(buf),1,fp1))&gt;0)
+<br>		{
+<br>			//total += readsize;
+<br>			memset(buf,0,sizeof(buf));
+<br>			writesize = fwrite(buf,sizeof(buf),1,fp2);
+<br>			if(writesize!==readsize)
+<br>			{
+<br>				printf("write error");
+<br>				return -2;
+<br>				fclose(fp1);
+<br>				fclose(fp2);
+<br>			}		
+<br>		}
+<br>		fclose(fp1);
+<br>		fclose(fp2);
+<br>		rmdir(filename2);
+<br>	}
+<br>	}
+<br>}	
+<br>
+<br>int main(int argc,char **argv)
+<br>{
+<br>	pthread_t id1;
+<br>	int ret;
+<br>	ret = pthread_create(&amp;id1, NULL, (void*)movefile, NULL);
+<br>	return ret;
+<br>}
+<br>&nbsp;&nbsp; 
+  </div>
+
+  
+
+
+  <iframe src="./Linux C mkdir_files/saved_resource.htm" scrolling="no" width="468" height="60" frameborder="0"></iframe>
+  
+  <div id="bottoms" class="clearfix">
+    
+    <div id="share_weibo">分享到：
+      <a data-type="sina" href="javascript:;" title="分享到新浪微博"><img src="./Linux C mkdir_files/sina.jpg"></a>
+      <a data-type="qq" href="javascript:;" title="分享到腾讯微博"><img src="./Linux C mkdir_files/tec.jpg"></a>
+    </div>
+  </div>
+
+  <div class="blog_nav">
+    <div class="pre_next">
+      <a href="http://sharp2wing.iteye.com/blog/1285511" class="next" title="FileInputStream/FileOutputStream的应用">FileInputStream/FileOutputStream的应用</a>
+      |
+      <a href="http://sharp2wing.iteye.com/blog/1280755" class="pre" title="Linux下的C编程实战之文件系统编程">Linux下的C编程实战之文件系统编程</a>
+    </div>
+  </div>
+  <div class="blog_bottom">
+    <ul>
+      <li>2011-11-28 14:56</li>
+      <li>浏览 6954</li>
+      <li><a href="http://sharp2wing.iteye.com/blog/1280802#comments">评论(0)</a></li>
+      
+      
+      <li>分类:<a href="http://www.iteye.com/blogs/category/language">编程语言</a></li>      
+      <li class="last"><a href="http://www.iteye.com/wiki/blog/1280802" target="_blank" class="more">相关推荐</a></li>
+    </ul>
+  </div>
+
+  <div class="blog_comment">
+    <h5>评论</h5>
+    <a id="comments" name="comments"></a>
+    
+    
+    
+  </div>
+
+  <div class="blog_comment">
+    <h5>发表评论</h5>
+            <p style="text-align:center; margin-top:30px;margin-bottom:0px;"><a href="http://sharp2wing.iteye.com/login" style="background-color:white;"> <img src="./Linux C mkdir_files/login_icon.png" style="vertical-align:middle; margin-right: 10px;"></a><a href="http://sharp2wing.iteye.com/login">  您还没有登录,请您登录后再发表评论 </a></p>
+      </div>
+</div>
+
+
+<script type="text/javascript">
+  dp.SyntaxHighlighter.HighlightAll('code', true, true);
+
+  $$('#main .blog_content pre[name=code]').each(function(pre, index){ // blog content
+    var post_id = 1280802;
+    var location = window.location;
+    source_url = location.protocol + "//" + location.host + location.pathname + location.search;
+    pre.writeAttribute('codeable_id', post_id);
+    pre.writeAttribute('codeable_type', "Blog");
+    pre.writeAttribute('source_url', source_url);
+    pre.writeAttribute('pre_index', index);
+    pre.writeAttribute('title', 'Linux C 创建目录函数mkdir相关');
+  });
+
+  fix_image_size($$('div.blog_content img'), 700);
+
+  function processComment() {
+    $$('#main .blog_comment > div').each(function(comment){// comment
+      var post_id = comment.id.substr(2);
+      $$("#"+comment.id+" pre[name=code]").each(function(pre, index){
+        var location = window.location;
+        source_url = location.protocol + "//" + location.host + location.pathname + location.search;
+        source_url += "#" + comment.id;
+        pre.writeAttribute('codeable_id', post_id);
+        pre.writeAttribute('codeable_type', "BlogComment");
+        pre.writeAttribute('source_url', source_url);
+        pre.writeAttribute('pre_index', index);
+        pre.writeAttribute('title', 'Linux C 创建目录函数mkdir相关');
+      });
+    });
+  }
+
+  function quote_comment(id) {
+    new Ajax.Request('/editor/quote', {
+      parameters: {'id':id, 'type':'BlogComment'},
+      onSuccess:function(response){editor.bbcode_editor.textarea.insertAfterSelection(response.responseText);
+        Element.scrollTo(editor.bbcode_editor.textarea.element);}
+    });
+  }
+
+  code_favorites_init();
+  processComment();
+  new WeiboShare({share_buttons: $('share_weibo'), img_scope: $('blog_content')});
+</script>
+
+
+
+
+        </div>
+
+        <div id="local">
+          <div class="local_top"></div>
+          <div id="blog_owner">
+  <div id="blog_owner_logo"><a href="http://sharp2wing.iteye.com/"><img alt="sharp2wing的博客" class="logo" src="./Linux C mkdir_files/1afaa713-1949-3f92-b6c4-5da199f02fd9.jpg" title="sharp2wing的博客: "></a></div>
+  <div id="blog_owner_name">sharp2wing</div>
+</div>
+
+          <div id="blog_actions">
+            <ul>
+              <li>浏览: 72837 次</li>
+              <li>性别: <img alt="Icon_minigender_1" src="./Linux C mkdir_files/icon_minigender_1.gif" title="男"></li>
+              <li>来自: 南京</li>
+              <li><img src="./Linux C mkdir_files/offline.gif"></li>
+              
+            </ul>
+          </div>
+          <div id="user_visits" class="clearfix">
+            <h5>最近访客 <span style="font-weight:normal;font-size:12px;padding-left:30px;"><a href="http://sharp2wing.iteye.com/blog/user_visits">更多访客&gt;&gt;</a></span></h5>
+            
+              <div class="user_visit">
+                <div class="logo"><a href="http://xiami-qiu.iteye.com/" target="_blank"><img alt="xiami_qiu的博客" class="logo" src="./Linux C mkdir_files/user-logo-thumb.gif" title="xiami_qiu的博客: "></a></div>
+                <div class="left"><a href="http://xiami-qiu.iteye.com/" target="_blank" title="xiami_qiu">xiami_qiu</a></div>
+              </div>
+            
+              <div class="user_visit">
+                <div class="logo"><a href="http://dylinshi126.iteye.com/" target="_blank"><img alt="dylinshi126的博客" class="logo" src="./Linux C mkdir_files/user-logo-thumb.gif" title="dylinshi126的博客: "></a></div>
+                <div class="left"><a href="http://dylinshi126.iteye.com/" target="_blank" title="dylinshi126">dylinshi126</a></div>
+              </div>
+            
+              <div class="user_visit">
+                <div class="logo"><a href="http://hzxswu.iteye.com/" target="_blank"><img alt="hzxswu的博客" class="logo" src="./Linux C mkdir_files/bdf98d90-a70a-3cb5-a340-f524ce9ee1d9-thumb.bmp" title="hzxswu的博客: hzxswu"></a></div>
+                <div class="left"><a href="http://hzxswu.iteye.com/" target="_blank" title="hzxswu">hzxswu</a></div>
+              </div>
+            
+              <div class="user_visit">
+                <div class="logo"><a href="http://xujifa.iteye.com/" target="_blank"><img alt="xujifa的博客" class="logo" src="./Linux C mkdir_files/user-logo-thumb.gif" title="xujifa的博客: "></a></div>
+                <div class="left"><a href="http://xujifa.iteye.com/" target="_blank" title="xujifa">xujifa</a></div>
+              </div>
+            
+          </div>
+
+          
+
+                      <div id="blog_menu">
+              <h5>文章分类</h5>
+              <ul>
+                <li><a href="http://sharp2wing.iteye.com/">全部博客 (85)</a></li>
+                
+              </ul>
+            </div>
+            <div id="month_blogs">
+              <h5>社区版块</h5>
+              <ul>
+                <li><a href="http://sharp2wing.iteye.com/blog/news">我的资讯</a> (0)</li>
+                <li>
+                  <a href="http://sharp2wing.iteye.com/blog/post">我的论坛</a> (0)
+                </li>
+                <li><a href="http://sharp2wing.iteye.com/blog/answered_problems">我的问答</a> (0)</li>
+              </ul>
+            </div>
+            <div id="month_blogs">
+              <h5>存档分类</h5>
+              <ul>
+                
+                  <li><a href="http://sharp2wing.iteye.com/blog/monthblog/2012-07">2012-07</a> (1)</li>
+                
+                  <li><a href="http://sharp2wing.iteye.com/blog/monthblog/2012-06">2012-06</a> (3)</li>
+                
+                  <li><a href="http://sharp2wing.iteye.com/blog/monthblog/2012-05">2012-05</a> (1)</li>
+                
+                <li><a href="http://sharp2wing.iteye.com/blog/monthblog_more">更多存档...</a></li>
+              </ul>
+            </div>
+            
+            
+
+            <div id="guest_books">
+              <h5>最新评论</h5>
+              <ul>
+                
+                <li>
+                  <a href="http://c30268056.iteye.com/" target="_blank" title="c30268056">c30268056</a>： 
+                  您好～有个很大的疑问～我在frameworks/base/co ...<br>
+                  <a href="http://sharp2wing.iteye.com/blog/929735#bc2335794">android sdk 编译--如何将源代码加入android.jar，以及make原理</a>
+                </li>
+                
+                <li>
+                  <a href="http://pfglovejava.iteye.com/" target="_blank" title="pfglovejava">pfglovejava</a>： 
+                  lfkabc 写道改动资源文件后，在用mmm编译的时候会出现找 ...<br>
+                  <a href="http://sharp2wing.iteye.com/blog/1420071#bc2331400">Android定制出厂默认输入法 </a>
+                </li>
+                
+                <li>
+                  <a href="http://airshiplay.iteye.com/" target="_blank" title="airshiplay">airshiplay</a>： 
+                  airshiplay 写道linearLayout 请参考 h ...<br>
+                  <a href="http://sharp2wing.iteye.com/blog/1010644#bc2312015">用LinearLayout和RelativeLayout分别实现两端对齐</a>
+                </li>
+                
+                <li>
+                  <a href="http://airshiplay.iteye.com/" target="_blank" title="airshiplay">airshiplay</a>： 
+                  linearLayout 请参考 http://airship ...<br>
+                  <a href="http://sharp2wing.iteye.com/blog/1010644#bc2309396">用LinearLayout和RelativeLayout分别实现两端对齐</a>
+                </li>
+                
+                <li>
+                  <a href="http://lfkabc.iteye.com/" target="_blank" title="lfkabc">lfkabc</a>： 
+                  改动资源文件后，在用mmm编译的时候会出现找不到资源的情况，请 ...<br>
+                  <a href="http://sharp2wing.iteye.com/blog/1420071#bc2260471">Android定制出厂默认输入法 </a>
+                </li>
+                
+              </ul>
+            </div>
+
+            <div class="local_bottom"></div>
+          
+        </div>
+      </div>
+
+      <div id="footer" class="clearfix">
+        <div id="copyright">
+          <hr>
+          声明：ITeye文章版权属于作者，受法律保护。没有作者书面许可不得转载。若作者同意转载，必须以超链接形式标明文章原始出处和作者。<br>
+          © 2003-2012 ITeye.com.   All rights reserved.  [ 京ICP证110151号  京公网安备110105010620 ]
+        </div>
+      </div>
+    </div>
+    <script type="text/javascript">
+  document.write("<img src='http://stat.iteye.com/?url="+ encodeURIComponent(document.location.href) + "&referrer=" + encodeURIComponent(document.referrer) + "&user_id=' width='0' height='0' />");
+</script><img src="./Linux C mkdir_files/saved_resource" width="0" height="0">
+
+<script src="./Linux C mkdir_files/tracking.js" type="text/javascript"></script>
+
+    
+    
+  
+
+</body></html>

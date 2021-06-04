@@ -1,0 +1,1108 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<!-- 这篇文章由Dancingwind翻译，作者的联系方式zhouwei02@mails.tsinghua.edu.cn -->
+<html>
+<head>
+<title>NeHe OpenGL教程第三十二课，DancingWind翻译</title>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<style type=text/css>
+A:link {COLOR: #ccaaff; TEXT-DECORATION: none}
+A:visited {COLOR: #ccaaff; TEXT-DECORATION: none}
+A:active {COLOR: #ccaaff; TEXT-DECORATION: none}
+A:hover {COLOR: #ffccaa; TEXT-DECORATION: none}
+</style>
+</head>
+
+<br><br>
+
+<body bgcolor=#000000 text=#ffffff><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td width=326 height=130><img src="logo.png" tppabs="http://www.owlei.com/DancingWind/Pic/logo.png" width=326 height=130></td>
+    <td valign=middle align=center width="75%"><font color=#ffccaa size=+3><b><i>第32课 
+      </i></b></font></td>
+  </tr></table>
+  <!-- 上边框-->
+<table border="0" cellPadding="0" cellSpacing="0" width="100%">
+<TBODY>
+  <tr>
+    <td><img height="28" src="tl.jpg" tppabs="http://www.owlei.com/DancingWind/Pic/tl.jpg" width="28"></td>
+    <td width="100%"><img height="28" src="tc.gif" tppabs="http://www.owlei.com/DancingWind/Pic/tc.gif" width="100%"></td>
+    <td><img height="28" src="tr.gif" tppabs="http://www.owlei.com/DancingWind/Pic/tr.gif" width="28"></td>
+  </tr>
+</TBODY>
+</table>
+
+<!-- 中部-->
+<table border="0" cellPadding="0" cellSpacing="0" width="100%">
+<TBODY>
+  <tr>
+  	<!-- 中部左边框-->
+    <td  background="l.gif" tppabs="http://www.owlei.com/DancingWind/Pic/l.gif"><img src="l.gif" tppabs="http://www.owlei.com/DancingWind/Pic/l.gif" width="28" height="28"></td>
+	<!-- 中部文字部分-->
+    <td vAlign="top" width="100%">
+	<table width="100%" border="0">
+          <tr>
+            <td width="28%"><img src="lesson32.jpg" tppabs="http://www.owlei.com/DancingWind/Pic/lesson32.jpg" width="240" height="180"></td>
+            <td width="72%"><p><FONT class=head>拾取, Alpha混合, Alpha测试, 排序:</FONT></p>
+              <p><font size="3">这又是一个小游戏，交给的东西会很多，慢慢体会吧</FONT></p></td>
+          </tr>
+     </table>
+      </td>
+	<!-- 中部右边框-->
+    <td background="r.gif" tppabs="http://www.owlei.com/DancingWind/Pic/r.gif"><img src="r.gif" tppabs="http://www.owlei.com/DancingWind/Pic/r.gif" width="28" height="28"></td>
+  </tr>
+</TBODY>
+</table>
+
+<!-- 下边框-->
+<table border="0" cellPadding="0" cellSpacing="0" width="100%">
+<TBODY>
+  <tr>
+    <td><img height="28" src="bl.gif" tppabs="http://www.owlei.com/DancingWind/Pic/bl.gif" width="28"></td>
+    <td width="100%"><img height="28" src="bc.gif" tppabs="http://www.owlei.com/DancingWind/Pic/bc.gif" width="100%"></td>
+    <td><img height="28" src="br.gif" tppabs="http://www.owlei.com/DancingWind/Pic/br.gif" width="28"></td>
+  </tr>
+</TBODY>
+</table>
+  <table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>欢迎来到32课. 这课大概是在我所写作已来最大的一课. 超过1000 行代码和约1540行的HTML. 
+      这也是第一课用到我新的NeHeGL 基本代码. 这课写了很长时间, 但我想他是值得期待的. 一些知识点用到是: Alpha 混合, Alpha 
+      测试, 读取鼠标, 同时用到Ortho 和透视, 显示客户鼠标, 按深度排列物体, 动画帧从单张材质图 和更多要点, 你将学到更多精选的内容! 
+      <p>最初的版本是在屏幕上显示三个物体，当你单击他们将改变颜色. 很有趣!?! 不怎样! 象往常一样, 我想给你们这些家伙留下一个超极好的课程. 
+        我想使课程有趣, 丰富，当然..美观. 所以, 经过几个星期的编码之后, 这课程完成了! 即使你不编码，你仍会喜欢这课. 这是个完整的游戏. 
+        游戏的目标是射击更多的靶子, 在你失去一定数的靶子后，你将不能再用鼠标单击物体. </p>
+      <p>我确信会有批评，但我非常乐观对这课! 我已在从深度里选择和排序物体这个主题里找到快乐! </p>
+      <p>一些需要注意的代码. 我仅仅会在lesson32.cpp里讨论. 有一些不成熟的改动在 NeHeGL 代码里. 最重要的改动是我加入鼠标支持在 
+        WindowProc(). 我也加入 int mouse_x, mouse_y 在存鼠标运动. 在 NeHeGL.h 以下两条代码被加入: 
+        extern int mouse_x; &amp; extern int mouse_y; </p>
+      <p>课程用到的材质是用 Adobe Photoshop 做的. 每个 .TGA 文件是32位图片有一个alpha 通道. 若你不确信自已能在一个图片加入alpha通道, 
+        找一本好书，上网，或读 Adobe Photoshop帮助. 全部的过程非常相似，我做了透明图在透明图课程. 调入你物体在 Adobe Photoshop 
+        (或一些其它图形处理程序，且支持alpha 通道). 用选择颜色工具选你图片的背景. 复制选区. 新建一个图. 粘贴生成新文件. 取消图片选择，你图的背景应是黑色. 
+        使周围是白色. 选全部图复制. 回到最初的图且建一个alpha 通道. 粘贴黑和白透明图你就完成建立alpha通道.存图片为32位t .TGA文件. 
+        使确定保存透明背景是选中的，保存! </p>
+      <p>如以往我希望你喜欢这课程. 我感兴趣你对他的想法. 若你有些问题或你发现一些问题,告诉我. 我匆忙的完成这课程 所以若你发现哪部分很难懂，给我发些邮件,然后我会用不同的方式或更详细的解释! 
+        <br>
+      </p></td><td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table><font color=#aaffaa size=3>
+<pre>#include &lt;windows.h&gt;								
+#include &lt;stdio.h&gt;								
+#include &lt;stdarg.h&gt;								
+#include &lt;time.h&gt;								
+#include "NeHeGL.h"							</pre>
+</font><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>在第1课里, 我提倡关于适当的方法连接到 OpenGL 库. 在 Visual C++ 里点击’项目’,设置，连接项. 
+      移下到 对象/库 模块 加入 OpenGL32.lib, GLu32.lib 和 GLaux.lib. 预编译一个需要的库的失败将使编译器找出所出的错误. 
+      有时你不想发生! 使事情更坏, 若你仅仅预编译库在debug 模式, 和有人试在release 模式建立你程序... 更多的错误. 有许多人看代码. 
+      他们大多数是新程序员. 他们取到你的代码, 试着编译. 他们得到错误, 删掉代码，移走. 
+      <p>下而的代码告诉编译者去连接需要的库. 一点多些的字, 但少些以后的头痛. 在这个课程, 我们将连接 OpenGL32 库,GLu32库 和 
+        WinMM库 (用来放音乐). 在这课程我们会调入 .TGA 文件，所以我们不用 GLaux库. <br>
+      </p>
+      </td><td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table><font color=#aaffaa size=3>
+	  
+<pre>
+#pragma comment( lib, "opengl32.lib" )						<font color=#ffffaa>// 在链接时连接Opengl32.lib库</font>
+#pragma comment( lib, "glu32.lib" )						<font color=#ffffaa>	// 链接glu32.lib库</font>
+#pragma comment( lib, "winmm.lib" )							<font color=#ffffaa>// 链接winmm.lib库</font>
+</pre>
+</font><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>下而的3 行检查若 CDS_FULLSCREEN 已被你的编译器定义. 若还没被定义, 我们给 
+      CDS_FULLSCREEN 为 4. 马上你完全部丢掉... 一些编译器不给 CDS_FULLSCREEN 变量，将返回一个错误，但是 CDS_FULLSCREEN 
+      是有用的! 防止出错消息, 我们检查若 CDS_FULLSCREEN 是否定义，若出错, 我们定义他. 使每人生活更简单. 
+      <p>我们再定义 DrawTargets函数, 为窗口和按键设变量. 你若不懂定义,读一遍MSDN术语表.保持清醒, 我不是教 C/C++, 买一本好书若你对非gl代码要帮助! 
+        <br>
+      </p></td><td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table><font color=#aaffaa size=3>
+<pre>
+#ifndef		CDS_FULLSCREEN							
+#define		CDS_FULLSCREEN 4						
+#endif									
+
+void DrawTargets();								
+
+GL_Window*	g_window;
+Keys*		g_keys;
+</pre>
+</font><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>下面的代码是用户设置变量. base 是将用到的字体显示列表的开始列表值. roll 是将用到的移动的大地和建立旋转的云. 
+      level 应是级别 (我们开始是 1级). miss 保留失去了多少物体. 他还用来显示用户的士气(不丢失意味着高士气). kills 保留每级打到多少靶子. 
+      score 会保存运行时打中的总数, 同时用到结束比赛! 
+      <p>最后一行是让我们通过结构比较的函数. 是等待qsort 最后参数到 type (const *void, const *void). <br>
+      </p></td><td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table>
+<font color=#aaffaa size=3> 
+<pre>
+<font color=#ffffaa>// 用户定义的变量</font>
+GLuint		base;								<font color=#ffffaa>// 字体显示列表</font>
+GLfloat		roll;								<font color=#ffffaa>// 旋转的云</font>
+GLint		level=1;							<font color=#ffffaa>	// 现在的等级</font>
+GLint		miss;								<font color=#ffffaa>// 丢失的数</font>
+GLint		kills;								<font color=#ffffaa>// 打到的数</font>
+GLint		score;								<font color=#ffffaa>// 当前的分数</font>
+bool		game;								<font color=#ffffaa>// 游戏是否结束?</font>
+
+typedef int (*compfn)(const void*, const void*);					<font color=#ffffaa>// 定义用来比较的函数</font>
+</pre>
+</font> 
+<table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>现在为我们物体的结构. 这个结构存了所有一个物体的信息. 旋转的方向, 若被打中, 在屏幕的位置, 
+      等等. 
+      <p>一个快速运动的变量... rot 我想让物体旋转特别的方向. hit 若物体没被打中将是 FALSE . 若物体给打中或飞出, 变量将是 
+        TRUE. </p>
+      <p>变量frame 是用来存我们爆炸动画的周期. 每一帧改变增加一个爆炸材质. 在这课有更多在不久. </p>
+      <p>保存单个物体的移动方向, 我们用变量 dir. 一个dir 能有4 个值: 0 - 物体左移, 1 - 物体右移, 2 - 物体上移 和最后 
+        3 - 物体下移 </p>
+      <p>texid 能是从0到4的数. 0 表示是蓝面材质, 1 是水桶材质， 2 是靶子的材质 , 3 是 可乐的材质 和 4 是 花瓶 材质. 
+        最近在调入材质的代码, 你将看到先前5种材质来自目标图片. </p>
+      <p>x 和 y 两者都用来记屏模上物体的位置. x 表示物体在 x-轴, y 表示物体在 y-轴. </p>
+      <p>物体在z-轴上的旋转是记在变量spin. 在以后的代码, 我们将加或减spin基数在旅行的方向上. </p>
+      <p>最后, distance 保存我们物体到屏幕的距离. 距离是极端重要的变量, 我们将用他来计算屏幕的左右两边, 而且在对象关闭之前排序物体，画出物体的距离. 
+      </p>
+      <p><br>
+      </p></td><td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table>
+<font color=#aaffaa size=3> 
+<pre>
+struct objects {
+	GLuint	rot;								<font color=#ffffaa>// 旋转 (0-不转, 1-顺时针转, 2-逆时针转)</font>
+	bool	hit;								<font color=#ffffaa>// 物体碰撞?</font>
+	GLuint	frame;								<font color=#ffffaa>// 当前爆炸效果的动画帧</font>
+	GLuint	dir;								<font color=#ffffaa>// 物体的方向 (0-左, 1-右, 2-上, 3-下)</font>
+	GLuint	texid;								<font color=#ffffaa>// 物体材质 ID</font>
+	GLfloat	x;								<font color=#ffffaa>// 物体 X 位置</font>
+	GLfloat y;								<font color=#ffffaa>// 物体 Y 位置</font>
+	GLfloat	spin;								<font color=#ffffaa>// 物体旋转</font>
+	GLfloat	distance;							<font color=#ffffaa>	// 物体距离</font>
+};
+</pre>
+</font> 
+<table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>解释下面的代码没有真正的结果. 我们在这课调入TGA图代替bitmaps图片. 下面的用来表示TGA图片数据的结构是尽可能好的 
+      . 若你需要详细的解释下面的代码，请读关于调入TGA 文件的课程. </td>
+    <td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table>
+<font color=#aaffaa size=3> 
+<pre>
+typedef struct									<font color=#ffffaa>// 新建一个结构</font>
+{
+	GLubyte	*imageData;							<font color=#ffffaa>// 图片数据 (最大 32 位)</font>
+	GLuint	bpp;								<font color=#ffffaa>// 图片颜色深度 每象素</font>
+	GLuint	width;								<font color=#ffffaa>// 图片宽度</font>
+	GLuint	height;								<font color=#ffffaa>// 图片高度</font>
+	GLuint	texID;								<font color=#ffffaa>// 贴图材质 ID 用来选择一个材质</font>
+} TextureImage;									<font color=#ffffaa>// 结构 名称</font>
+</pre>
+</font> 
+<table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>紧接下面的代码为们10个材质和个30物体留出空间. 若你打算在游戏里加更多物体，得增加这个变量到你想到的数</td>
+    <td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table>
+<font color=#aaffaa size=3>
+<pre>
+TextureImage textures[10];							<font color=#ffffaa>// 定义10个材质</font>
+
+objects	object[30];							<font color=#ffffaa>// 定义 30 个物体</font>
+</pre>
+</font>
+<table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>我不想限制每个物体的大小. 我想瓶子(vase)比can高, 我想水桶bucket比瓶子宽. 去改变一切是简单的, 
+      我建了一个结构存物体的宽和高. 
+      <p>我然后在最后一行代码中设每个物体的宽高. 得到这个coke cans的宽, 我将检查size[3].w. 蓝面是 0, 水桶是 1, 和靶子是 
+        2, 等. 宽度表现在 w. 使有意义? </p>
+      <p><br>
+      </p></td><td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table>
+<font color=#aaffaa size=3> 
+<pre>
+struct dimensions {								<font color=#ffffaa>// 物体维数</font>
+	GLfloat	w;								<font color=#ffffaa>// 物体宽</font>
+	GLfloat h;								<font color=#ffffaa>// 物体高</font>
+};
+
+<font color=#ffffaa>// 每个物体的大小: 蓝面, 水桶, 靶子, 可乐, 瓶子</font>
+dimensions size[5] = { {1.0f,1.0f}, {1.0f,1.0f}, {1.0f,1.0f}, {0.5f,1.0f}, {0.75f,1.5f} };
+</pre>
+</font> 
+<table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>下面是大段代码是调入我们 TGA 图片和转换他为材质. 这是同我在第25课所用的一样的代码，你可回去看一看. 
+      <p>我用TGA 图片的原因是他们是有alpha 通道的. 这个alpha 通道告诉 OpenGL 哪一部分图是透明的，哪一部分是白底. alpha 
+        通道是被建立在图片处理程序, 并保存在.TGA图片里面. OpenGL 调入图片, 能用alpha 通道设置图片中每个象素透明的数量. </p>
+      <p></p></td><td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table>
+<font color=#aaffaa size=3> 
+<pre>
+bool LoadTGA(TextureImage *texture, char *filename)					<font color=#ffffaa>// 调入一个TGA 文件到内存</font>
+{
+	GLubyte		TGAheader[12]={0,0,2,0,0,0,0,0,0,0,0,0};			<font color=#ffffaa>// (未)压缩的 TGA 头</font>
+	GLubyte		TGAcompare[12];						<font color=#ffffaa>// 用来比较 TGA 头</font>
+	GLubyte		header[6];						<font color=#ffffaa>// 首先 6 个有用的字节</font>
+	GLuint		bytesPerPixel;						<font color=#ffffaa>// 每象素字节数在 TGA 文件使用</font>
+	GLuint		imageSize;						<font color=#ffffaa>// 用来图片大小的存储</font>
+	GLuint		temp;							<font color=#ffffaa>// 临时变量</font>
+	GLuint		type=GL_RGBA;						<font color=#ffffaa>// 设置默认的 GL 模式 为 RBGA </font>
+
+	FILE *file = fopen(filename, "rb");						<font color=#ffffaa>// 打开 TGA 文件</font>
+
+	if(	file==NULL ||							<font color=#ffffaa>// 文件是否已存在 ?</font>
+		fread(TGAcompare,1,sizeof(TGAcompare),file)!=sizeof(TGAcompare) ||	<font color=#ffffaa>// 是否读出12个字节?</font>
+		memcmp(TGAheader,TGAcompare,sizeof(TGAheader))!=0 ||			<font color=#ffffaa>// 文件头是不是我们想要的 ?</font>
+		fread(header,1,sizeof(header),file)!=sizeof(header))		<font color=#ffffaa>	// 若正确则读下 6 个 Bytes</font>
+	{
+		if (file == NULL)						<font color=#ffffaa>	// 文件是否已存在 ? </font>
+			return FALSE;						<font color=#ffffaa>// 返回错误</font>
+		else								<font color=#ffffaa>// 否则</font>
+		{
+			fclose(file);						<font color=#ffffaa>// 若有任何错误, 关掉文件</font>
+			return FALSE;						<font color=#ffffaa>// 返回错误</font>
+		}
+	}
+
+	texture-&gt;width  = header[1] * 256 + header[0];				<font color=#ffffaa>// 定义 TGA 宽</font>
+	texture-&gt;height = header[3] * 256 + header[2];				<font color=#ffffaa>// 定义 TGA 高</font>
+
+ 	if(	texture-&gt;width	&lt;=0 ||						<font color=#ffffaa>// 若 宽&lt;=0</font>
+		texture-&gt;height	&lt;=0 ||						<font color=#ffffaa>// 若 高&lt;=0</font>
+		(header[4]!=24 && header[4]!=32))					<font color=#ffffaa>// 若 TGA 是 24 or 32 位?</font>
+	{
+		fclose(file);							<font color=#ffffaa>// 若有任何错误, 关掉文件</font>
+		return FALSE;							<font color=#ffffaa>// 返回错误</font>
+	}
+
+	texture-&gt;bpp	= header[4];						<font color=#ffffaa>// 取 TGA 的位每象素 (24 或 32)</font>
+	bytesPerPixel	= texture-&gt;bpp/8;						<font color=#ffffaa>// 除以 8 得到字节每象素</font>
+	imageSize		= texture-&gt;width*texture-&gt;height*bytesPerPixel;		<font color=#ffffaa>// 计算 所需内存为 TGA 数据</font>
+
+	texture-&gt;imageData=(GLubyte *)malloc(imageSize);				<font color=#ffffaa>// 分配 内存 为 TGA 数据</font>
+
+	if(	texture-&gt;imageData==NULL ||						<font color=#ffffaa>// 这个内存是否存在?</font>
+		fread(texture-&gt;imageData, 1, imageSize, file)!=imageSize)		<font color=#ffffaa>// 图片大小与保留内存的大小想等 ?</font>
+	{
+		if(texture-&gt;imageData!=NULL)					<font color=#ffffaa>// 图片数据的调入</font>
+			free(texture-&gt;imageData);				<font color=#ffffaa>	// 若成功, 释放图象数据</font>
+
+		fclose(file);							<font color=#ffffaa>// 关掉文件</font>
+		return FALSE;							<font color=#ffffaa>// 返回错误</font>
+	}
+
+	for(GLuint i=0; i&lt;int(imageSize); i+=bytesPerPixel)			<font color=#ffffaa>	// 在图象数据里循环</font>
+	{									<font color=#ffffaa>// 交换第1和第3 Bytes (’红’red 和 ’蓝’blue)</font>
+		temp=texture-&gt;imageData[i];					<font color=#ffffaa>	// 临时存储 图象的 ’i’</font>
+		texture-&gt;imageData[i] = texture-&gt;imageData[i + 2];		<font color=#ffffaa>	// 设 第1 Byte 得到变量 第3 Byte</font>
+		texture-&gt;imageData[i + 2] = temp;					<font color=#ffffaa>// 设第3 Byte 得到变量 ’temp’ (第1 Byte 变量)</font>
+	}
+
+	fclose (file);								<font color=#ffffaa>// 关掉文件</font>
+
+	<font color=#ffffaa>// 建立一个贴图材质从以上数据</font>
+	glGenTextures(1, &texture[0].texID);						<font color=#ffffaa>// 生成 OpenGL 材质 ID</font>
+
+	glBindTexture(GL_TEXTURE_2D, texture[0].texID);				<font color=#ffffaa>// 绑定我们的材质</font>
+	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);	<font color=#ffffaa>	// 线过滤器</font>
+	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);		<font color=#ffffaa>// 线过滤器</font>
+
+	if (texture[0].bpp==24)							<font color=#ffffaa>// 若 TGA 是24 位的</font>
+	{
+		type=GL_RGB;							<font color=#ffffaa>// 设 ’type’ 为 GL_RGB</font>
+	}
+
+	glTexImage2D(GL_TEXTURE_2D, 0, type, texture[0].width, texture[0].height, 0, type, GL_UNSIGNED_BYTE, texture[0].imageData);
+
+	return true;								<font color=#ffffaa>// 材质建立成功, 返回正确</font>
+}
+</pre>
+</font> 
+<table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>2D 字体材质代码同我已在前一课用的是一样的. 然而, 有一些小不同. 第一是你将看到仅仅唯一生成95 
+      显示列表. 若你看字体材质, 你会看到只有 95 字母计算空间在图片顶，左. 第二个事是你将通知分在16.0f 为 cx 和 我们只分在8.0f 
+      为cy. 我这样做的结果是因为字体材质是256 象素宽, 但仅仅一伴就高(128 象素). 所以计算cx 我们分为16.0f 和计算分cy 为一半(8.0f). 
+      <p>若你不懂下面的代码, 回去读17课. 建立字体的代码的详细解释在第17课里! </p>
+      <p><br>
+      </p></td><td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table>
+<font color=#aaffaa size=3> 
+<pre>
+GLvoid BuildFont(GLvoid)							<font color=#ffffaa>// 建立我们字体显示列表</font>
+{
+	base=glGenLists(95);						<font color=#ffffaa>// 建立 95 显示列表</font>
+	glBindTexture(GL_TEXTURE_2D, textures[9].texID);			<font color=#ffffaa>// 绑我们字体材质</font>
+	for (int loop=0; loop&lt;95; loop++)					<font color=#ffffaa>// 循环在 95 列表</font>
+	{
+		float cx=float(loop%16)/16.0f;				<font color=#ffffaa>// X 位置 在当前字母</font>
+		float cy=float(loop/16)/8.0f;				<font color=#ffffaa>// Y 位置 在当前字母</font>
+
+		glNewList(base+loop,GL_COMPILE);				<font color=#ffffaa>// 开始建立一个列表</font>
+			glBegin(GL_QUADS);					<font color=#ffffaa>// 用四边形组成每个字母</font>
+				glTexCoord2f(cx,         1.0f-cy-0.120f); glVertex2i(0,0);	<font color=#ffffaa>// 质地 / 点 座标 (底 左)</font>
+				glTexCoord2f(cx+0.0625f, 1.0f-cy-0.120f); glVertex2i(16,0);	<font color=#ffffaa>// 质地 / 点 座标 (底 右)</font>
+				glTexCoord2f(cx+0.0625f, 1.0f-cy);	  glVertex2i(16,16);	<font color=#ffffaa>// 质地 / 点 座标 (顶 右)</font>
+				glTexCoord2f(cx,         1.0f-cy);	  glVertex2i(0,16);	<font color=#ffffaa>// 质地 / 点 座标 (顶 左)</font>
+			glEnd();						<font color=#ffffaa>// 完成建立我们的 四边形 (字母)</font>
+			glTranslated(10,0,0);				<font color=#ffffaa>// 移到字体的右边</font>
+		glEndList();						<font color=#ffffaa>// 完成建军立这个显示列表</font>
+	}								<font color=#ffffaa>// 循环直到所有 256 完成建立</font>
+}
+</pre>
+</font> 
+<table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>输出的代码也在第17课, 但已修改为在屏幕输出我们的分数, 等级和士气(不断改变的值). </td>
+    <td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table>
+<font color=#aaffaa size=3> 
+<pre>
+GLvoid glPrint(GLint x, GLint y, const char *string, ...)				<font color=#ffffaa>// 输出在屏慕的位置</font>
+{
+	char		text[256];						<font color=#ffffaa>// 保存在我们的字符串</font>
+	va_list		ap;							<font color=#ffffaa>// 到列表的指针</font>
+
+	if (string == NULL)							<font color=#ffffaa>// 若文字为空</font>
+		return;								<font color=#ffffaa>// 返回</font>
+
+	va_start(ap, string);							<font color=#ffffaa>// 解析字符串</font>
+	    vsprintf(text, string, ap);						<font color=#ffffaa>// 转换字符串</font>
+	va_end(ap);								<font color=#ffffaa>// 结果的字符串</font>
+
+	glBindTexture(GL_TEXTURE_2D, textures[9].texID);			<font color=#ffffaa>	// 选择我们字体材质</font>
+	glPushMatrix();								<font color=#ffffaa>// 存观看模式矩阵</font>
+	glLoadIdentity();							<font color=#ffffaa>	// 设观看模式矩阵</font>
+	glTranslated(x,y,0);							<font color=#ffffaa>// 文字输出位置 (0,0 - 底 左-Bottom Left)</font>
+	glListBase(base-32);							<font color=#ffffaa>// 选择字体设置</font>
+	glCallLists(strlen(text), GL_UNSIGNED_BYTE, text);				<font color=#ffffaa>// 输出显示列表中的文字</font>
+	glPopMatrix();								<font color=#ffffaa>// 取出以前的模式矩阵</font>
+}
+</pre>
+</font> 
+<table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>这些代码调用排序程序. 它比较距离在两个结构并返回-1 若第一个结构的距离小于第二个 , 1 i若 
+      第一个结构的距离大于第二个 0 否则 (若 距离相等) </td>
+    <td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table>
+<font color=#aaffaa size=3> 
+<pre>
+int Compare(struct objects *elem1, struct objects *elem2)			<font color=#ffffaa>// 比较 函数</font>
+{
+   if ( elem1-&gt;distance &lt; elem2-&gt;distance)					<font color=#ffffaa>// 若 第一个结构的距离小于第二个</font>
+      return -1;								<font color=#ffffaa>// 返回 -1</font>
+   else if (elem1-&gt;distance &gt; elem2-&gt;distance)				<font color=#ffffaa>// 若 第一个结构的距离大于第二个</font>
+      return 1;								<font color=#ffffaa>// 返回1</font>
+   else									<font color=#ffffaa>// 否则 (若 距离相等)</font>
+      return 0;								<font color=#ffffaa>// 返回 0</font>
+}
+</pre>
+</font> 
+<table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>InitObject() 代码是来建立每个物体. 我们开始设 rot 为 1. 这使物体顺时针旋转. 
+      然后设爆炸效果动画帧为0(我们不想爆炸效果从中间开始).我们下面设 hit 为 FALSE, 意思是物体还没被击中或正开如. 选一个物体材质, 
+      texid 用来给一个随机的变量从 0 到 4. 0是blueface 材质 和4 是 vase 材质. 这给我们5种随机物体. 
+      <p>距离变量是在-0.0f to -40.0f (4000/100 is 40)的随机数 . 当我们真实的画物体,我们透过在屏幕上的另10 个单位. 
+        所以当物体在画时, 他们将画从-10.0f to -50.0f 单位 在屏幕(不挨着, 也不离得太远). 我分随机数为 100.0f 得到更精确的浮点数值. 
+      </p>
+      <p>在给完随机的距离之后, 我们给物体一个随机的 y . 我们不想物体低于 -1.5f, 否则他将低于大地, 且我们不想物体高于3.0f. 所以留在我们的区间的随机数不能高于4.5f 
+        (-1.5f+4.5f=3.0f). </p>
+      <p>去计算 x 位置, 用一些狡猾的数学. 用我们的距离减去15.0f . 除以2 减5*level. 再 减随机数（0.0f 到5） 乘level. 
+        减 5*level rndom(0.0f to 5*level) 这是最高级. </p>
+      <p>选一个方向. </p>
+      <p>使事情简单明白x, 写一个快的例子. 距离是 -30.0f ，当前级是 1: </p>
+      <p>object[num].x=((-30.0f-15.0f)/2.0f)-(5*1)-float(rand()%(5*1));<br>
+        object[num].x=(-45.0f/2.0f)-5-float(rand()%5);<br>
+        object[num].x=(-22.5f)-5-{lets say 3.0f};<br>
+        object[num].x=(-22.5f)-5-{3.0f};<br>
+        object[num].x=-27.5f-{3.0f};<br>
+        object[num].x=-30.5f; </p>
+      <p>开始在屏模上移 10 个单位 , 距离是 -30.0f. 其实是 -40.0f.用透视的代码在 NeHeGL.cpp 文件. </p>
+      <p></p>
+      <p></p></td><td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table>
+<font color=#aaffaa size=3> 
+<pre>
+GLvoid InitObject(int num)							<font color=#ffffaa>// 初始化一个物体</font>
+{
+	object[num].rot=1;							<font color=#ffffaa>// 顺时针旋转</font>
+	object[num].frame=0;						<font color=#ffffaa>// 设爆炸效果动画帧为0</font>
+	object[num].hit=FALSE;						<font color=#ffffaa>// 设点击检测为0</font>
+	object[num].texid=rand()%5;						<font color=#ffffaa>// 设一个材质</font>
+	object[num].distance=-(float(rand()%4001)/100.0f);			<font color=#ffffaa>// 随机距离</font>
+	object[num].y=-1.5f+(float(rand()%451)/100.0f);			<font color=#ffffaa>// 随机 Y 位置</font>
+	<font color=#ffffaa>// 随机开始 X 位置 基于物体的距离 和随机的延时量 (确定变量)</font>
+	object[num].x=((object[num].distance-15.0f)/2.0f)-(5*level)-float(rand()%(5*level));
+	object[num].dir=(rand()%2);						<font color=#ffffaa>// 选一个随机的方向</font>
+</pre>
+</font> 
+<table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>检查方向 <br></td><td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table>
+<font color=#aaffaa size=3> 
+<pre>
+
+	if (object[num].dir==0)							<font color=#ffffaa>// 若随机的方向正确</font>
+	{
+		object[num].rot=2;							<font color=#ffffaa>// 逆时针旋转</font>
+		object[num].x=-object[num].x;					<font color=#ffffaa>// 开始在左边 (否定 变量)</font>
+	}
+</pre>
+</font> 
+<table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>现在我们检查texid 来找出所选的的物体. 若 texid 为0, 所选的物体是 Blueface 
+      . blueface 总是在大地上面旋转. 确定开始时在地上的层, 我们设 y 是 -2.0f. <br></td><td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table>
+<font color=#aaffaa size=3> 
+<pre>
+
+	if (object[num].texid==0)							<font color=#ffffaa>// 蓝色天空表面</font>
+		object[num].y=-2.0f;						<font color=#ffffaa>// 总是在大地上面旋转</font>
+</pre>
+</font> 
+<table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>下面检查若texid 是 1. 这样, 电脑所选物体的是 Bucket. bucket不从左到右运动, 
+      它从天上掉下来. 首先我们不得不设 dir 是 3. 这告诉电脑我们的水桶bucket 是掉下来或向下运动. 
+      <p>我们最初的代码假定物体从左到右运动. 因为bucket 是向下落的, 我们得不给它一个新的随机的变量 x . 若不是这样, bucket 
+        会被看不到. 它将不在左边落下就在屏幕外面. 我们给它一个新的随机距离变量在屏幕上. 代替减去15, 我们仅仅减去 10. 这给我们一些幅度, 
+        保持物体在屏幕??. 设我们的distance 是-30.0f, 从0.0f -40.0f的随机变量. 为什么从 0.0f 到 40.0f? 
+        不是从0.0f to -40.0f? 答案很简单. rand() 函数总返回正数. 所以总是正数. 另外，回到我们的故事. 我们有个正数 从0.0f 
+        到 40.0f.我们加距离 最小 10.0f 除以 2. 举个例子，设x变量为 15 ，距离是 -30.0f:</p>
+      <p>object[num].x=float(rand()%int(-30.0f-10.0f))+((-30.0f-10.0f)/2.0f); 
+      </p>
+      <p>object[num].x=float(rand()%int(-40.0f)+(-40.0f)/2.0f); </p>
+      <p>object[num].x=float(15 {assuming 15 was returned))+(-20.0f); </p>
+      <p>object[num].x=15.0f-20.0f; </p>
+      <p>object[num].x=-5.0f; </p>
+      <p>下面设y. 我们想水桶从天上下来. 我人不想穿过云. 所以我们设 y 为 4.5f. 刚在去的下面一点. <br>
+      </p>
+      </td><td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table>
+<font color=#aaffaa size=3> 
+<pre>
+
+	if (object[num].texid==1)						<font color=#ffffaa>// 水桶(Bucket)</font>
+	{
+		object[num].dir=3;						<font color=#ffffaa>// 下落</font>
+		object[num].x=float(rand()%int(object[num].distance-10.0f))+((object[num].distance-10.0f)/2.0f);
+		object[num].y=4.5f;					<font color=#ffffaa>// 随机 X, 开始在屏模上方</font>
+	}
+</pre>
+</font> 
+<table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>我们想靶子从地面突出到天上. 我们检查物体为 (texid 是 2). 若是, 设方向(dir) 
+      是 2 (上). 用精确的数 x 位置. 
+      <p>我们不想target 开始在地上. 设 y 初值为-3.0f (在地下). 然后减一个值从0.0f 到 5 乘当前 level. 靶子不是立即出现. 
+        在高级别是有延时， 通过delay, 靶子将出现在一个在另一个以后, 给你很少时间打到他们. </p>
+      <p></p></td><td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table>
+<font color=#aaffaa size=3> 
+<pre>
+	if (object[num].texid==2)						<font color=#ffffaa>// 靶子</font>
+	{
+		object[num].dir=2;						<font color=#ffffaa>// 开始向上飞</font>
+		object[num].x=float(rand()%int(object[num].distance-10.0f))+((object[num].distance-10.0f)/2.0f);
+		object[num].y=-3.0f-float(rand()%(5*level));			<font color=#ffffaa>// 随机 X, 开始在下面的大地 + 随机变量</font>
+	}
+</pre>
+</font> 
+<table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>所有其它的物体从右到左旅行, 因而不必给任何变量付值来改变物体. 它们应该刚好工作在所给的随机变量. 
+      <p>现在来点有趣的材料! &quot;为了alpha 混合技术正常的工作, 透明的原物必须不断地排定在从后向前画&quot;. 当画alpha 
+        混合物体是, 在远处的物体是先画的,这是非常重要的, 下面画紧临的上面的物体. </p>
+      <p>理由是简单的... Z 缓冲区防止 OpenGL 从已画好的混合东西再画象素. 这就是为什么会发生物体画在透明混合之后而不再显示出来. 为什么你最后看到的是一个四边形与物体重叠... 
+        很不好看! </p>
+      <p>我们已知道每个物体的深度. 因而在初始化一个物体之后, 我们能通过把物体排序，而用qsort 函数(快速排序sort)，来解决这个问题 . 
+        通过物体排序, 我们能确信第一个画的是最远的物体. 这意味着当我们画物体时, 起始于第一个物体, 物体通过用距离将被先画. 紧挨着那个物体(晚一会儿画) 
+        将看到先前的物体在他们的后面, 再将适度的混合! </p>
+      <p>这文中的这行线注释是我在 MSDN 里发现这些代码，在网上花时间查找之后找到的解答 . 他们工作的很好,允许各种的排序结构. qsort 
+        传送 4 个参数. 第一个参数指向物体数组 (被排序的数组d). 第二个参数是我们想排序数组的个数... 当然，我们想所有的排序的物体普遍的被显示(各个level). 
+        第三个参数规定物体结构的大不, 第四个参数指向我们的 Compare() 函数. </p>
+      <p>大概有更好的排序结构的方法, 但是 qsort() 工作起来... 快速方便，简单易用! </p>
+      <p>这个是重要的知识点, 若你们想用 glAlphaFunc() 和 glEnable(GL_ALPHA_TEST), 排序是没必要的. 然而, 
+        用Alpha 功能你被限制在完全透明或完全白底混合, 没有中间值. 用 Blendfunc()排序用一些更多的工作，但他顾及半透明物体. <br>
+      </p>
+      </td><td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table>
+<font color=#aaffaa size=3> 
+<pre><font color=#ffffaa>// 排序物体从距离:我们物体数组的开始地址 *** MSDN 代码修改为这个 TUT ***<br>// 各种的数按<br>// 各自的要素的<br>// 指针比较的函数</font>
+	qsort((void *) &object, level, sizeof(struct objects), (compfn)Compare );
+}
+</pre>
+</font>
+<table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>初始化的代码总是一样的. 首先的现两行取得我们window 的消息和我们建盘消息. 然后我们用 
+      srand() 建一个基于时间的多样化的游戏. 之后我们调入 TGA 图片并用LoadTGA()转换到材质 . 先前的 5个图片是将穿过屏幕的物体. 
+      Explode 是我们爆炸动画, 大地和天空 弥补现场背景, crosshair是你在屏幕上看到表现鼠标当前位置的十字光标, 最后, 用来显示分数，标题和士气值的字体的图片. 
+      若任何调入图片的失误,则到返回 FALSE 值, 并程序结束. 值得注意的是这些基本代码不是返回整数型(INIT)的 FAILED 错误消息. 
+      <br></td><td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table>
+<font color=#aaffaa size=3> 
+<pre>
+BOOL Initialize (GL_Window* window, Keys* keys)				<font color=#ffffaa>// 任何 OpenGL 从这初始化</font>
+{
+	g_window	= window;
+	g_keys		= keys;
+
+	srand( (unsigned)time( NULL ) );					<font color=#ffffaa>// 使随机化事件</font>
+
+	if ((!LoadTGA(&textures[0],"Data/BlueFace.tga")) ||			<font color=#ffffaa>// 调入蓝面材质</font>
+		(!LoadTGA(&textures[1],"Data/Bucket.tga")) ||			<font color=#ffffaa>// 调入水桶材质</font>
+		(!LoadTGA(&textures[2],"Data/Target.tga")) ||			<font color=#ffffaa>// 调入靶子材质</font>
+		(!LoadTGA(&textures[3],"Data/Coke.tga")) ||			<font color=#ffffaa>// 调入 可乐材质</font>
+		(!LoadTGA(&textures[4],"Data/Vase.tga")) ||			<font color=#ffffaa>// 调入 花瓶 材质</font>
+		(!LoadTGA(&textures[5],"Data/Explode.tga")) ||			<font color=#ffffaa>// 调入 爆炸材质</font>
+		(!LoadTGA(&textures[6],"Data/Ground.tga")) ||			<font color=#ffffaa>// 调入 地面 材质</font>
+		(!LoadTGA(&textures[7],"Data/Sky.tga")) ||			<font color=#ffffaa>// 调入 天空 材质</font>
+		(!LoadTGA(&textures[8],"Data/Crosshair.tga")) ||		<font color=#ffffaa>// 调入 十字光标 材质</font>
+		(!LoadTGA(&textures[9],"Data/Font.tga")))			<font color=#ffffaa>// 调入 字符 材质</font>
+	{
+		return FALSE;						<font color=#ffffaa>// 若调入失败, 返回错误</font>
+	}
+</pre>
+</font> 
+<table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>若所有图片调入成功则轮到材质, 我们能继续初始化. 字体材质被调入, 因而保险能建立我们的字体. 
+      我们跳入BuildFont()来做这些. 
+      <p>然后我们设置OpenGL. 背景色为黑, alpha 也设为0.0f. 深度缓冲区设为激活小于或等于测试. </p>
+      <p>glBlendFunc() 是很重要的一行代码. 我们设混合函数(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA). 
+        这些加上alpha变量的屏幕上的混合物体存在物体的材质. 在设置混合模式之后, 我们激活blending(混合). 然后我们打开 2D 材质贴图, 
+        最后,打开 GL_CULL_FACE. 这是去除每个物体的后面( 没有一点浪费在一些我们看不到的循环 ). 画一些四边形逆时针卷动 ,因而精致而适当的面片. 
+      </p>
+      <p>早先的教程我谈论使用glAlphaFunc()代替alpha 混合. 若你想用Alpha 函数, 注释出的两行混合代码和不注释的两行在glEnable(GL_BLEND)之下. 
+        你也能注释出qsort()函数在 InitObject() 部分里的代码. </p>
+      <p>程序应该运行ok,但sky 材质将不在这. 因为sky的材质已是一个alpha 变量0.5f. 当早在我说关于Alpha函数, 我提及它只工作在alpha 
+        变量0 或 1. 若你想它出现,你将不得不修改sky的材质alpha 通道! 再则, 若你决定用Alpha 函数代替, 你不得排序物体.两个方法都有好处! 
+        再下而是从SGI 网站的快速引用: </p>
+      <p>&quot;alpha 函数丢弃细节,代替画他们在结构缓冲器里. 因此排序原来的物体不是必须的 (除了一些其它像混合alpha模式是打开的). 
+        不占优势的是象素必须完全白底或完全透明&quot;. </p>
+      <p><br>
+      </p></td><td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table>
+<font color=#aaffaa size=3> 
+<pre>
+	BuildFont();								<font color=#ffffaa>// 建立我们的字体显示列表</font>
+
+	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);					<font color=#ffffaa>// 黑色背景</font>
+	glClearDepth(1.0f);							<font color=#ffffaa>// 安装深度缓冲器</font>
+	glDepthFunc(GL_LEQUAL);							<font color=#ffffaa>// 深度的类型测试</font>
+	glEnable(GL_DEPTH_TEST);							<font color=#ffffaa>// 打开深度测试</font>
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);			<font color=#ffffaa>	// 打开 Alpha 混合</font>
+	glEnable(GL_BLEND);							<font color=#ffffaa>// 打开混合</font>
+	glAlphaFunc(GL_GREATER,0.1f);						<font color=#ffffaa>// 设 Alpha 测试</font>
+	glEnable(GL_ALPHA_TEST);							<font color=#ffffaa>// 打开 Alpha 测试</font>
+	glEnable(GL_TEXTURE_2D);							<font color=#ffffaa>// 打开材质贴图</font>
+	glEnable(GL_CULL_FACE);							<font color=#ffffaa>// 去掉画物体的背面</font>
+</pre>
+</font> 
+<table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>在程序的这段, 还没有物体被定义,所以循环30个物体，每个物体都调InitObject().</td>
+    <td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table>
+<font color=#aaffaa size=3>
+<pre>
+	for (int loop=0; loop&lt;30; loop++)					<font color=#ffffaa>// 循环在 30 个物体Objects</font>
+		InitObject(loop);						<font color=#ffffaa>// 初始化每个物体</font>
+
+	return TRUE;							<font color=#ffffaa>// 返回正确 (设初值成功)</font>
+}
+</pre>
+</font>
+<table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>在初始化代码里, 调入BuildFont() 建立95 的显示列表. 所以这里在程序结束前删掉95显示列表</td>
+    <td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table>
+<font color=#aaffaa size=3>
+<pre>
+void Deinitialize (void)							<font color=#ffffaa>// 任何user 结束初始化从这</font>
+{
+	glDeleteLists(base,95);							<font color=#ffffaa>// 删掉所有95 字体显示列表</font>
+}
+</pre>
+</font>
+<table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>现在为急速原始物体... 是实际被选?形锾宓拇?. 第一行为我们选择物体的信息分配内存. hits 
+      是当选择时碰撞迅检测的次数. <br></td><td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table>
+<font color=#aaffaa size=3> 
+<pre>
+void Selection(void)								<font color=#ffffaa>// 这是选择正确</font>
+{
+	GLuint	buffer[512];							<font color=#ffffaa>//  设选择缓冲</font>
+	GLint	hits;								<font color=#ffffaa>// 选择物体的数</font>
+</pre>
+</font> 
+<table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>下面的代码, 若游戏结束(FALSE).没有选任何, 返回(exit). 若游戏还在运行 (TRUE),用Playsound() 
+      命令放射击的声间. 仅仅调Selection()的时间是在当已鼠标按下时和每次按下按键调用时, 想放射击的声音. 声音在放在 async 模式 
+      ,所以放音乐是程序不会停. </td>
+    <td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table>
+<font color=#aaffaa size=3> 
+<pre>
+	if (game)								<font color=#ffffaa>// 游戏是否结束?</font>
+		return;							<font color=#ffffaa>// 是，返回, 不在检测 Hits<br></font>
+	
+	PlaySound("data/shot.wav",NULL,SND_ASYNC);				<font color=#ffffaa>// 放音乐 Gun Shot</font>
+</pre>
+</font> 
+<table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top><p>设视点. viewport[] 包括当前 x, y, 当前的视点(OpenGL Window)长度，宽度. 
+      </p>
+      <p>glGetIntegerv(GL_VIEWPORT, viewport) 取当前视点存在viewport[]. 最初，等于 OpenGL 
+        窗口维数. glSelectBuffer(512, buffer) 说 OpenGL 用这个内存. </p></td>
+    <td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table>
+<font color=#aaffaa size=3> 
+<pre>
+
+	<font color=#ffffaa>// 视点的大小. [0] 是 &lt;x&gt;, [1] 是 &lt;y&gt;, [2] 是 &lt;length&gt;, [3] 是 &lt;width&gt;</font>
+	GLint	viewport[4];
+
+	<font color=#ffffaa>// 这是设视点的数组在屏幕窗口的位置</font>
+	glGetIntegerv(GL_VIEWPORT, viewport);
+	glSelectBuffer(512, buffer);						<font color=#ffffaa>// 告诉 OpenGL 使我们的数组来选择</font>
+</pre>
+</font> 
+<table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>存opengl的模式. 在这个模式什么也不画. 代替, 在选择模式物体渲染信息存在缓存. 
+      <p>下面初实化name 堆栈,通过调入glInitNames() 和glPushName(0). I它重要的是标记若程序不在选择模式, 一个到glPushName()调用将忽略. 
+        当然在选择的模试, 但这一些是是紧记的. <br>
+      </p>
+      </td><td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table>
+<font color=#aaffaa size=3> 
+<pre>
+
+	<font color=#ffffaa>// 设 OpenGL 选择模式. 将不画东西. 物体 ID’的广度放在内存</font>
+	(void) glRenderMode(GL_SELECT);
+
+	glInitNames();								<font color=#ffffaa>// 设名字堆栈</font>
+	glPushName(0);								<font color=#ffffaa>// Push 0 (最少一个) 在栈上</font>
+</pre>
+</font> 
+<table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>之后, 不得不限制在光标的下面画图. 为了做这些得用到投影矩阵. 然后把它推到堆栈中.重设矩阵则用到 
+      glLoadIdentity(). 
+      <p>用gluPickMatrix()限制的画. 第1个参数是当前鼠标的 x-座标, 第2个参数是当前鼠标的 y-座标, 然后宽和高的选区. 最后当前的 
+        viewport[]. viewport[] 是指出视点的边界. x 和_y 将在选区的中心. <br>
+      </p>
+      </td><td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table>
+<font color=#aaffaa size=3> 
+<pre>
+	glMatrixMode(GL_PROJECTION);						<font color=#ffffaa>// 选投影矩阵</font>
+	glPushMatrix();								<font color=#ffffaa>// 压入投影矩阵</font>
+	glLoadIdentity();								<font color=#ffffaa>// 重设矩阵</font>
+
+	<font color=#ffffaa>//  这是建一个矩阵使鼠标在屏幕缩放</font>
+	gluPickMatrix((GLdouble) mouse_x, (GLdouble) (viewport[3]-mouse_y), 1.0f, 1.0f, viewport);
+</pre>
+</font>
+<table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>调入 gluPerspective() 应用透视矩阵 ,被gluPickMatrix()选择矩阵限制所画区域 
+      . 
+      <p>打开modelview 矩阵，调用DrawTargets()画我们的靶子. 画靶子在DrawTargets() 而不在 Draw() 是因为仅仅想选择物体的碰撞检测且, 
+        不是天空，大地，光标. </p>
+      <p>之后, 打开回到发射矩阵， 从堆栈中弹出矩阵. 之扣打开回到modelview 矩阵. </p>
+      <p>最后一行，回到渲染模式 因而物体画的很真实的在屏幕上. hits 将采集gluPickMatrix()所需要取渲染的物体数 .<br>
+      </p></td><td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table>
+<font color=#aaffaa size=3> 
+<pre>
+	<font color=#ffffaa>// 应用透视矩阵</font>
+	gluPerspective(45.0f, (GLfloat) (viewport[2]-viewport[0])/(GLfloat) (viewport[3]-viewport[1]), 0.1f, 100.0f);
+	glMatrixMode(GL_MODELVIEW);						<font color=#ffffaa>	// 选择模型变换矩阵</font>
+	DrawTargets();								<font color=#ffffaa>// 画目标</font>
+	glMatrixMode(GL_PROJECTION);						<font color=#ffffaa>// 选择投影变换矩阵</font>
+	glPopMatrix();								<font color=#ffffaa>// 取出投影矩阵</font>
+	glMatrixMode(GL_MODELVIEW);						<font color=#ffffaa>	// 选模式显示矩阵</font>
+	hits=glRenderMode(GL_RENDER);						<font color=#ffffaa>// 切换模式, 找出有多少</font>
+</pre>
+</font> 
+<table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>检查若多于0 个hits 记录. 若这样, 设choose 为 第一个物体的名子. depth 
+      取得它有多远. 
+      <p>每个hit 分有4 个项目在内存. 第一，在名子堆栈上打击发生时的数字 .第二， 所选物体的最小z值. 第三，所选物体的最大 z 值, 最后，在同一时间里所选物体名子堆栈的内容 
+        (物体的名子). 在这一课,我们仅对最小z值和物体名子感兴趣. </p>
+      <p></p></td><td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table>
+<font color=#aaffaa size=3> 
+<pre>
+	if (hits &gt; 0)								<font color=#ffffaa>// 若有大于0个 Hits</font>
+	{
+		int	choose = buffer[3];					<font color=#ffffaa>// 选择第一物体</font>
+		int	depth = buffer[1];						<font color=#ffffaa>// 存它有多远</font></pre>
+</font> 
+<table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top><br>
+      做循环所有hits 使没有物体在第一个物体旁边. 否则, 两个物体会重叠, 一个物体碰到另一个.当你射击时, 重叠的物体会被误选.</td>
+    <td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table><font color=#aaffaa size=3>
+<pre>
+		for (int loop = 1; loop &lt; hits; loop++)				<font color=#ffffaa>// 循环所有检测到的物体</font>
+		{
+			<font color=#ffffaa>// 对于其它的物体</font>
+			if (buffer[loop*4+1] &lt; GLuint(depth))
+			{
+				choose = buffer[loop*4+3];				<font color=#ffffaa>// 选择更近的物体</font>
+				depth = buffer[loop*4+1];			<font color=#ffffaa>	// 保存它有多远</font>
+			}
+		}
+</pre>
+</font><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>若物体被选. <br></td><td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table>
+<font color=#aaffaa size=3> 
+<pre>
+
+		if (!object[choose].hit)					<font color=#ffffaa>// 如果物体还没有被击中</font>
+		{
+			object[choose].hit=TRUE;				<font color=#ffffaa>// 标记物体象被击中</font>
+			score+=1;						<font color=#ffffaa>// 增加分数</font>
+			kills+=1;						<font color=#ffffaa>// 加被杀数</font>
+</pre>
+</font> 
+<table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>如下 <br></td><td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table>
+<font color=#aaffaa size=3> 
+<pre>
+			if (kills&gt;level*5)					<font color=#ffffaa>// 已有新的级?</font>
+			{
+				miss=0;					<font color=#ffffaa>// 失掉数回0</font>
+				kills=0;					<font color=#ffffaa>// 设 Kills数为0</font>
+				level+=1;					<font color=#ffffaa>// 加 Level</font>
+				if (level&gt;30)				<font color=#ffffaa>// 高过 30?</font>
+					level=30;				<font color=#ffffaa>// 设 Level 为 30 (你是 God 吗?)</font>
+			}
+		}
+	}
+}
+</pre>
+</font> 
+<table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>如下 <br></td><td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table>
+<font color=#aaffaa size=3> 
+<pre>
+void Update(DWORD milliseconds)							<font color=#ffffaa>// 这里用来更新</font>
+{
+	if (g_keys-&gt;keyDown[VK_ESCAPE])						<font color=#ffffaa>// 按下 ESC?</font>
+	{
+		TerminateApplication (g_window);					<font color=#ffffaa>// 推出程序</font>
+	}
+</pre>
+</font> 
+<table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>如下 </td>
+    <td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table>
+<font color=#aaffaa size=3> 
+<pre>
+	if (g_keys-&gt;keyDown[' '] && game)					<font color=#ffffaa>// 按下空格键?</font>
+	{
+		for (int loop=0; loop&lt;30; loop++)				<font color=#ffffaa>// 循环所有的物体</font>
+			InitObject(loop);					<font color=#ffffaa>// 初始化</font>
+
+		game=FALSE;						<font color=#ffffaa>//设game为false </font>
+		score=0;							<font color=#ffffaa>// 分数为0</font>
+		level=1;							<font color=#ffffaa>// 级别为1</font>
+		kills=0;							<font color=#ffffaa>// 杀敌数为0</font>
+		miss=0;							<font color=#ffffaa>// 漏过数为0</font>
+	}
+</pre>
+</font> <font color=#aaffaa size=3> 
+<pre>
+
+	if (g_keys-&gt;keyDown[VK_F1])						<font color=#ffffaa>// 按下f1?</font>
+	{
+		ToggleFullscreen (g_window);				<font color=#ffffaa>// 换到全屏模式</font>
+	}
+</pre>
+</font> <font color=#aaffaa size=3>
+<pre>
+	roll-=milliseconds*0.00005f;					<font color=#ffffaa>// 云的旋转</font>
+
+	for (int loop=0; loop&lt;level; loop++)					<font color=#ffffaa>// 循环所有的物体</font>
+	{
+</pre>
+</font><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>下面的代码按物体的运动方向更新所有的运动</td>
+    <td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table>
+<font color=#aaffaa size=3>
+<pre>
+		if (object[loop].rot==1)					
+			object[loop].spin-=0.2f*(float(loop+milliseconds));	<font color=#ffffaa>// 若顺时针,则顺时针旋转</font>
+</pre>
+</font><font color=#aaffaa size=3> 
+<pre>
+		if (object[loop].rot==2)
+			object[loop].spin+=0.2f*(float(loop+milliseconds));	<font color=#ffffaa>// 若逆时针,则逆时针旋转</font>
+</pre>
+</font><font color=#aaffaa size=3> 
+<pre>
+		if (object[loop].dir==1)					
+			object[loop].x+=0.012f*float(milliseconds);		<font color=#ffffaa>// 向右移动</font>
+</pre>
+</font><font color=#aaffaa size=3>
+<pre>
+		if (object[loop].dir==0)					
+			object[loop].x-=0.012f*float(milliseconds);		<font color=#ffffaa>// 向左移动</font>
+</pre>
+</font><font color=#aaffaa size=3>
+<pre>
+		if (object[loop].dir==2)					
+			object[loop].y+=0.012f*float(milliseconds);		<font color=#ffffaa>// 向上移动</font>
+</pre>
+</font><font color=#aaffaa size=3>
+<pre>
+		if (object[loop].dir==3)					
+			object[loop].y-=0.0025f*float(milliseconds);		<font color=#ffffaa>// 向下移动</font>
+</pre>
+</font><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>下面的代码处理当物体移动到边缘处,如果你没有击中它的结果</td>
+    <td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table><font color=#aaffaa size=3>
+<pre>
+		<font color=#ffffaa>// 如果到达左边界,你没有击中,则增加丢失的目标数</font>
+		if ((object[loop].x&lt;(object[loop].distance-15.0f)/2.0f) && (object[loop].dir==0) && !object[loop].hit)
+		{
+			miss+=1;						
+			object[loop].hit=TRUE;					
+		}
+</pre>
+</font><font color=#aaffaa size=3> 
+<pre>
+
+		<font color=#ffffaa>// 如果到达右边界,你没有击中,则增加丢失的目标数</font>
+		if ((object[loop].x&gt;-(object[loop].distance-15.0f)/2.0f) && (object[loop].dir==1) && !object[loop].hit)
+		{
+			miss+=1;						
+			object[loop].hit=TRUE;				
+		}
+</pre>
+</font><font color=#aaffaa size=3> 
+<pre>
+
+		<font color=#ffffaa>// 如果到达下边界,你没有击中,则增加丢失的目标数</font>
+		if ((object[loop].y&lt;-2.0f) && (object[loop].dir==3) && !object[loop].hit)
+		{
+			miss+=1;						
+			object[loop].hit=TRUE;					
+		}
+</pre>
+</font><font color=#aaffaa size=3> 
+<pre>		<font color=#ffffaa>//如果到达左边界,你没有击中,则方向变为向下</font>
+		if ((object[loop].y&gt;4.5f) && (object[loop].dir==2))		
+			object[loop].dir=3;				
+	}
+}
+</pre>
+</font>
+<table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>下面的代码在屏幕上绘制一个图像</td>
+    <td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table>
+<font color=#aaffaa size=3> 
+<pre>
+void Object(float width,float height,GLuint texid)				<font color=#ffffaa>// 画物体用需要的宽，高，材质</font>
+{
+	glBindTexture(GL_TEXTURE_2D, textures[texid].texID);			<font color=#ffffaa>// 选合适的材质</font>
+	glBegin(GL_QUADS);							<font color=#ffffaa>// 开始画四边形</font>
+		glTexCoord2f(0.0f,0.0f); glVertex3f(-width,-height,0.0f);	
+		glTexCoord2f(1.0f,0.0f); glVertex3f( width,-height,0.0f);	
+		glTexCoord2f(1.0f,1.0f); glVertex3f( width, height,0.0f);	
+		glTexCoord2f(0.0f,1.0f); glVertex3f(-width, height,0.0f);	
+	glEnd();								
+}
+</pre>
+</font> 
+<table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>下面的代码绘制爆炸的效果</td>
+    <td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table>
+<font color=#aaffaa size=3> 
+<pre>
+	void Explosion(int num)						<font color=#ffffaa>// 画爆炸动画的1帧</font>
+{
+	float ex = (float)((object[num].frame/4)%4)/4.0f;			<font color=#ffffaa>// 计算爆炸时生成的x的纹理坐标</font>
+	float ey = (float)((object[num].frame/4)/4)/4.0f;			<font color=#ffffaa>// </font><font color=#aaffaa size=3><font color=#ffffaa>计算爆炸时生成的y的纹理坐标</font></font>
+</pre>
+</font><font color=#aaffaa size=3> 
+<pre>
+	glBindTexture(GL_TEXTURE_2D, textures[5].texID);			<font color=#ffffaa>// 选择爆炸的纹理</font>
+	glBegin(GL_QUADS);							
+		glTexCoord2f(ex      ,1.0f-(ey      )); glVertex3f(-1.0f,-1.0f,0.0f);	
+		glTexCoord2f(ex+0.25f,1.0f-(ey      )); glVertex3f( 1.0f,-1.0f,0.0f);	
+		glTexCoord2f(ex+0.25f,1.0f-(ey+0.25f)); glVertex3f( 1.0f, 1.0f,0.0f);
+		glTexCoord2f(ex      ,1.0f-(ey+0.25f)); glVertex3f(-1.0f, 1.0f,0.0f);	
+	glEnd();								</pre>
+</font><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>增加帧数,如果大于63,则重置动画</td>
+    <td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table>
+<font color=#aaffaa size=3> 
+<pre>
+
+	object[num].frame+=1;						<font color=#ffffaa>// 加当前的爆炸动画帧</font>
+	if (object[num].frame&gt;63)						<font color=#ffffaa>// 是否已完成所有的16帧?</font>
+	{
+		InitObject(num);						<font color=#ffffaa>// 定义物体 (给新的变量)</font>
+	}
+}
+</pre>
+</font> 
+<table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>画靶子</td>
+    <td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table>
+<font color=#aaffaa size=3> 
+<pre>
+void DrawTargets(void)								<font color=#ffffaa>// 画靶子</font>
+{
+	glLoadIdentity();							
+	glTranslatef(0.0f,0.0f,-10.0f);						<font color=#ffffaa>// 移入屏幕 20 个单位</font>
+	for (int loop=0; loop&lt;level; loop++)						<font color=#ffffaa>// 循环在 9 个物体</font>
+	{
+</pre>
+</font> <font color=#aaffaa size=3> 
+<pre>
+		glLoadName(loop);							<font color=#ffffaa>// 给物体新名字</font>
+		glPushMatrix();							<font color=#ffffaa>// 存矩阵</font>
+		glTranslatef(object[loop].x,object[loop].y,object[loop].distance);	<font color=#ffffaa>// 物体的位置 (x,y)</font>
+</pre>
+</font> <font color=#aaffaa size=3> 
+<pre>
+		if (object[loop].hit)						<font color=#ffffaa>// 若物体已被点击</font>
+		{
+			Explosion(loop);					<font color=#ffffaa>	// 画爆炸动画</font>
+		}
+		else								
+		{
+			glRotatef(object[loop].spin,0.0f,0.0f,1.0f);		<font color=#ffffaa>	// 旋转物体</font>
+			Object(size[object[loop].texid].w,size[object[loop].texid].h,object[loop].texid);	<font color=#ffffaa>// 画物体</font>
+		}
+		glPopMatrix();							<font color=#ffffaa>// 弹出矩阵</font>
+	}
+}
+</pre>
+</font> 
+<table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>下面的代码绘制整个场景</td>
+    <td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table>
+<font color=#aaffaa size=3> 
+<pre>
+void Draw(void)								<font color=#ffffaa>// 画我们的现场</font>
+{
+	glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);			<font color=#ffffaa>// 清除屏幕和深度缓冲</font>
+	glLoadIdentity();							<font color=#ffffaa>// 重设矩阵</font>
+</pre>
+</font> 
+<table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>下面的代码绘制飘动的天空,它由四块纹理组成,每一块的移动速度都不一样,并把它们混合起来</td>
+    <td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table>
+<font color=#aaffaa size=3>
+<pre>
+	glPushMatrix();								
+	glBindTexture(GL_TEXTURE_2D, textures[7].texID);			<font color=#ffffaa>// 选天空的材质</font>
+	glBegin(GL_QUADS);						
+		glTexCoord2f(1.0f,roll/1.5f+1.0f); glVertex3f( 28.0f,+7.0f,-50.0f);	
+		glTexCoord2f(0.0f,roll/1.5f+1.0f); glVertex3f(-28.0f,+7.0f,-50.0f);	
+		glTexCoord2f(0.0f,roll/1.5f+0.0f); glVertex3f(-28.0f,-3.0f,-50.0f);	
+		glTexCoord2f(1.0f,roll/1.5f+0.0f); glVertex3f( 28.0f,-3.0f,-50.0f);	
+
+		glTexCoord2f(1.5f,roll+1.0f); glVertex3f( 28.0f,+7.0f,-50.0f);		
+		glTexCoord2f(0.5f,roll+1.0f); glVertex3f(-28.0f,+7.0f,-50.0f);		
+		glTexCoord2f(0.5f,roll+0.0f); glVertex3f(-28.0f,-3.0f,-50.0f);		
+		glTexCoord2f(1.5f,roll+0.0f); glVertex3f( 28.0f,-3.0f,-50.0f);		</pre>
+</font> <font color=#aaffaa size=3>
+<pre>
+		glTexCoord2f(1.0f,roll/1.5f+1.0f); glVertex3f( 28.0f,+7.0f,0.0f);	
+		glTexCoord2f(0.0f,roll/1.5f+1.0f); glVertex3f(-28.0f,+7.0f,0.0f);	
+		glTexCoord2f(0.0f,roll/1.5f+0.0f); glVertex3f(-28.0f,+7.0f,-50.0f);	
+		glTexCoord2f(1.0f,roll/1.5f+0.0f); glVertex3f( 28.0f,+7.0f,-50.0f);	
+
+		glTexCoord2f(1.5f,roll+1.0f); glVertex3f( 28.0f,+7.0f,0.0f);		
+		glTexCoord2f(0.5f,roll+1.0f); glVertex3f(-28.0f,+7.0f,0.0f);		
+		glTexCoord2f(0.5f,roll+0.0f); glVertex3f(-28.0f,+7.0f,-50.0f);		
+		glTexCoord2f(1.5f,roll+0.0f); glVertex3f( 28.0f,+7.0f,-50.0f);		
+	glEnd();							</pre>
+</font><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top><FONT color="#FFFFFF">下面的代码绘制地面</font></td>
+    <td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table><font color=#aaffaa size=3>
+<pre>
+	glBindTexture(GL_TEXTURE_2D, textures[6].texID);			<font color=#ffffaa>// 大地材质</font>
+	glBegin(GL_QUADS);							
+		glTexCoord2f(7.0f,4.0f-roll); glVertex3f( 27.0f,-3.0f,-50.0f);	
+		glTexCoord2f(0.0f,4.0f-roll); glVertex3f(-27.0f,-3.0f,-50.0f);	
+		glTexCoord2f(0.0f,0.0f-roll); glVertex3f(-27.0f,-3.0f,0.0f);	
+		glTexCoord2f(7.0f,0.0f-roll); glVertex3f( 27.0f,-3.0f,0.0f);	
+	glEnd();								</pre>
+</font><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>绘制我们的靶子</td>
+    <td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table>
+<font color=#aaffaa size=3>
+<pre>
+
+	DrawTargets();								<font color=#ffffaa>// 画我们的靶子</font>
+	glPopMatrix();								</pre>
+</font>
+<table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>下面的代码绘制我们的十字光标<FONT face=Tahoma,Verdana,sans-serif size=-1><br>
+      </font></td>
+    <td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table>
+<font color=#aaffaa size=3> 
+<pre>
+
+	<font color=#ffffaa>// 十字光标 (在光标里)</font>
+	RECT window;								<font color=#ffffaa>// 用来存窗口位置</font>
+	GetClientRect (g_window-&gt;hWnd,&window);					<font color=#ffffaa>// 取窗口位置</font>
+	glMatrixMode(GL_PROJECTION);						
+	glPushMatrix();								
+	glLoadIdentity();						
+	glOrtho(0,window.right,0,window.bottom,-1,1);				<font color=#ffffaa>// 设置为正投影</font>
+	glMatrixMode(GL_MODELVIEW);						
+	glTranslated(mouse_x,window.bottom-mouse_y,0.0f);			<font color=#ffffaa>// 移动到当前鼠标位置</font>
+	Object(16,16,8);							<font color=#ffffaa>// 画十字光标</font>
+</pre>
+</font> 
+<table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>下面的代码用来显示帮助文字</td>
+    <td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table>
+<font color=#aaffaa size=3> 
+<pre>
+
+	<font color=#ffffaa>// 游戏状态 / 标题名称</font>
+	glPrint(240,450,"NeHe Productions");					<font color=#ffffaa>// 输出 标题名称</font>
+	glPrint(10,10,"Level: %i",level);					<font color=#ffffaa>// 输出 等级</font>
+	glPrint(250,10,"Score: %i",score);					<font color=#ffffaa>// 输出 分数</font>
+</pre>
+</font> 
+<table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>如果丢失10个物体,游戏结束</td>
+    <td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table>
+<font color=#aaffaa size=3> 
+<pre>
+	if (miss&gt;9)								<font color=#ffffaa>// 我们已丢失 10 个物体?</font>
+	{
+		miss=9;								<font color=#ffffaa>// 限制丢失是10个</font>
+		game=TRUE;							<font color=#ffffaa>// 游戏结束</font>
+	}
+</pre>
+</font> 
+<table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>在下面的代码里, 我们查看若game 是TRUE. 若 game 是TRUE, 我们输出 ’GAME 
+      OVER’游戏结束的消息. 若game 是false, 我们输出 玩家的士气morale (到10溢出). 士气morale是被设计用来从10减去玩家失误的次数(miss) 
+      . 玩家失掉的越多, 士气越低. <br></td><td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table>
+<font color=#aaffaa size=3> 
+<pre>
+	if (game)								<font color=#ffffaa>// 游戏是否结束?</font>
+		glPrint(490,10,"GAME OVER");				<font color=#ffffaa>// 结束消息</font>
+	else
+		glPrint(490,10,"Morale: %i/10",10-miss);			<font color=#ffffaa>// 输出剩余生命</font></pre>
+</font> 
+<table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>最后做的事我们选投影矩阵, 恢复(取出) 我们的矩阵返回到前一个情形, 设矩阵模式为 modelview 
+      ，刷新缓冲区 ，使所有物体被渲染. </td>
+    <td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table><font color=#aaffaa size=3>
+<pre>
+	glMatrixMode(GL_PROJECTION);						
+	glPopMatrix();								
+	glMatrixMode(GL_MODELVIEW);						
+
+	glFlush();								
+}
+</pre>
+</font><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>这课程是多次熬夜的成果, 许多的时间用来编码和写 HTML. 在这一课结束的时候你应你会学会怎样picking, 
+      sorting, alpha blending and alpha testing 工作. 制做点和软件. 每一个游戏, 到精选的GUI’们.最好的未来是制做时你不用记录物体. 
+      你给一个名字和碰撞 . 这很简单! 用alpha 通道和alpha 测试你能使物体完全显示, 或漏出一些. 结果是很好, 你不用担心关于显示物体的材质, 
+      除非你不显示他们! 同以往一样, 我希望你喜欢这个课程,愿看到一些好的游戏或好的项目从这个课程诞生.如果你有什么问题或找到错误，让我知道 ... 
+      我仅是一个普通人 :) 
+      <p>我将花大量的时间加入东西像物理系统, 更多图, 更多声音, 等. 虽然只是一个课程! 我不写不按车灯和车轮. 我写这个用尽量不混乱的方法教你 
+        OpenGL . 我希望看到一些严谨的修改. 若你找一些cool的课程发给我一份. 若是好的修改我将放到下载页. 若有足够充分的修改我会专注修改这个课程的版本! 
+        我在这里给你一个起点. 剩下的靠你了 :) </p>
+      <p>要点: 这是很重要的，称为glTexImage2D 你设为两种格式国际 GL_RGBA. 否则 alpha blending 将不工作! 
+        <br>
+      </p>
+<table width="100%" border="1">
+  <tr>
+    <td width="27%"><img src="logo 3.jpg" tppabs="http://www.owlei.com/DancingWind/images/logo%203.jpg" width="209" height="200" align="middle"></td>
+    <td width="73%">版权与使用声明:<br>
+      我是个对学习和生活充满激情的普通男孩,在网络上我以DancingWind为昵称，我的联系方式是zhouwei02@mails.tsinghua.edu.cn，如果你有任何问题，都可以联系我。
+      <p>引子<br>
+        网络是一个共享的资源，但我在自己的学习生涯中浪费大量的时间去搜索可用的资料，在现实生活中花费了大量的金钱和时间在书店中寻找资料，于是我给自己起了个昵称DancingWind，其意义是想风一样从各个知识的站点中吸取成长的养料。在飘荡了多年之后，我决定把自己收集的资料整理为一个统一的资源库。</p>
+      <p>版权声明<br>
+        所有DancingWind发表的内容，大多都来自共享的资源，所以我没有资格把它们据为己有，或声称自己为这些资源作出了一点贡献。故任何人都可以复制，修改，重新发表，甚至以自己的名义发表，我都不会追究，但你在做以上事情的时候必须保证内容的完整性，给后来的人一个完整的教程。最后，任何人不能以这些资料的任何部分，谋取任何形式的报酬。</p>
+      <p>发展计划<br>
+        在国外，很多资料都是很多人花费几年的时间慢慢积累起来的。如果任何人有兴趣与别人共享你的知识，我很欢迎你与我联系，但你必须同意我上面的声明。</p>
+            <p>感谢<br>
+              感谢我的母亲一直以来对我的支持和在生活上的照顾。<br>
+              感谢我深爱的女友田芹，一直以来默默的在精神上和生活中对我的支持，她甚至把买衣服的钱都用来给我买书了，她真的是我见过的最好的女孩，希望我能带给她幸福。</p>
+            <p>资源下载: <br>
+              文档 <a href="javascript:if(confirm('http://www.owlei.com/DancingWind/Res/mht/NeHe%20OpenGL%20Chinese%20Course%2032.mht  \n\nThis file was not retrieved by Teleport Pro, because the server reports that this file cannot be found.  \n\nDo you want to open it from the server?'))window.location='http://www.owlei.com/DancingWind/Res/mht/NeHe%20OpenGL%20Chinese%20Course%2032.mht'" tppabs="http://www.owlei.com/DancingWind/Res/mht/NeHe%20OpenGL%20Chinese%20Course%2032.mht">网页格式</a> 
+              <a href="javascript:if(confirm('http://www.owlei.com/DancingWind/Res/pdf/OpenGL_Nehe_Course_Tutorial_32.pdf  \n\nThis file was not retrieved by Teleport Pro, because the server reports that this file cannot be found.  \n\nDo you want to open it from the server?'))window.location='http://www.owlei.com/DancingWind/Res/pdf/OpenGL_Nehe_Course_Tutorial_32.pdf'" tppabs="http://www.owlei.com/DancingWind/Res/pdf/OpenGL_Nehe_Course_Tutorial_32.pdf">PDF格式</a><br>
+              源码 <a href="javascript:if(confirm('http://www.owlei.com/DancingWind/Res/Src/32_Pick.rar  \n\nThis file was not retrieved by Teleport Pro, because the server reports that this file cannot be found.  \n\nDo you want to open it from the server?'))window.location='http://www.owlei.com/DancingWind/Res/Src/32_Pick.rar'" tppabs="http://www.owlei.com/DancingWind/Res/Src/32_Pick.rar">RAR格式</a></p></td>
+  </tr>
+</table>
+      <table border="0" width="100%">
+        <td width="50%" align="left"><b><font size="-1"><a href="Tutorial_31.htm" tppabs="http://www.owlei.com/DancingWind/Course/Tutorial_31.htm">< 
+          第31课 </a></font></b></td>
+        <td width="50%" align="right"><b><font size="-1"><a href="Tutorial_33.htm" tppabs="http://www.owlei.com/DancingWind/Course/Tutorial_33.htm">第33课 
+          ></a></font></b></td>
+      </table>
+      </font></td>
+    <td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table>
+
+</body>
+</html>

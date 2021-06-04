@@ -1,0 +1,633 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<!-- 这篇文章由Dancingwind翻译，作者的联系方式zhouwei02@mails.tsinghua.edu.cn -->
+<html>
+<head>
+<title>NeHe OpenGL教程第三十五课，DancingWind翻译</title>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<style type=text/css>
+A:link {COLOR: #ccaaff; TEXT-DECORATION: none}
+A:visited {COLOR: #ccaaff; TEXT-DECORATION: none}
+A:active {COLOR: #ccaaff; TEXT-DECORATION: none}
+A:hover {COLOR: #ffccaa; TEXT-DECORATION: none}
+</style>
+</head>
+
+<br><br>
+
+<body bgcolor=#000000 text=#ffffff><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td width=326 height=130><img src="logo.png" tppabs="http://www.owlei.com/DancingWind/Pic/logo.png" width=326 height=130></td>
+    <td valign=middle align=center width="75%"><font color=#ffccaa size=+3><b><i>第35课 
+      </i></b></font></td>
+  </tr></table>
+  <!-- 上边框-->
+<table border="0" cellPadding="0" cellSpacing="0" width="100%">
+<TBODY>
+  <tr>
+    <td><img height="28" src="tl.jpg" tppabs="http://www.owlei.com/DancingWind/Pic/tl.jpg" width="28"></td>
+    <td width="100%"><img height="28" src="tc.gif" tppabs="http://www.owlei.com/DancingWind/Pic/tc.gif" width="100%"></td>
+    <td><img height="28" src="tr.gif" tppabs="http://www.owlei.com/DancingWind/Pic/tr.gif" width="28"></td>
+  </tr>
+</TBODY>
+</table>
+
+<!-- 中部-->
+<table border="0" cellPadding="0" cellSpacing="0" width="100%">
+<TBODY>
+  <tr>
+  	<!-- 中部左边框-->
+    <td  background="l.gif" tppabs="http://www.owlei.com/DancingWind/Pic/l.gif"><img src="l.gif" tppabs="http://www.owlei.com/DancingWind/Pic/l.gif" width="28" height="28"></td>
+	<!-- 中部文字部分-->
+    <td vAlign="top" width="100%">
+	<table width="100%" border="0">
+          <tr>
+            <td width="31%"><img src="lesson35.jpg" tppabs="http://www.owlei.com/DancingWind/Pic/lesson35.jpg" width="240" height="180"></td>
+            <td width="69%"><p><FONT class=head>在OpenGL中播放AVI:</FONT></p>
+              <p><font size="3">在OpenGL中如何播放AVI呢？利用Windows的API把每一帧作为纹理绑定到OpenGL中，虽然很慢，但它的效果不错。你可以试试。</FONT></p></td>
+          </tr>
+     </table>
+      </td>
+	<!-- 中部右边框-->
+    <td background="r.gif" tppabs="http://www.owlei.com/DancingWind/Pic/r.gif"><img src="r.gif" tppabs="http://www.owlei.com/DancingWind/Pic/r.gif" width="28" height="28"></td>
+  </tr>
+</TBODY>
+</table>
+
+<!-- 下边框-->
+<table border="0" cellPadding="0" cellSpacing="0" width="100%">
+<TBODY>
+  <tr>
+    <td><img height="28" src="bl.gif" tppabs="http://www.owlei.com/DancingWind/Pic/bl.gif" width="28"></td>
+    <td width="100%"><img height="28" src="bc.gif" tppabs="http://www.owlei.com/DancingWind/Pic/bc.gif" width="100%"></td>
+    <td><img height="28" src="br.gif" tppabs="http://www.owlei.com/DancingWind/Pic/br.gif" width="28"></td>
+  </tr>
+</TBODY>
+</table>
+  <table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>首先我得说我非常喜欢这一章节.Jonathan de Blok使我产生了用OpenGL编写AVI播放器的想法,可那时,我跟本不知如何打开AVI文件,更不必说去写一个播放器了.于是我浏览了搜藏的编程书籍,没有一本讲到AVI文件的.我又阅读了MSDN上和AVI文件格式有关的一切内容,上面有很多有用的信息,但我需要更多的.
+      <p>花了几小时在网上搜到AVI范例,只找到两个网站.我的搜索技巧不能说很棒吧,但99.9%的情况,我能找到我要寻找的东西.了解到AVI范例竟如此之少时,我完全震惊了.大多数范例并不能编译通过...有一些则用了太复杂的的方法(至少对我如此),剩下的不错,可是用VB,Delphi等写的(不是用vc++).</p>
+      <p>找到的第一个网页是Jonathan Nix写的题为&quot;AVI 文件&quot;的文章.网址是http://www.gamedev.net/reference/programming/features/avifile.感谢Jonathan写了这片关于AVI格式的好文章.虽然我用不同的做法,但他的代码片断和清晰的注解让人学得很轻松!第二个网站标题为&quot;AVI 
+        总体观&quot;(John F. McGowan, Ph.D写的)..我可以大肆赞美John的网叶有多么惊奇,但你最好自己去看看.他的网址是http://www.jmcgowan.com/avi.html.这个网站讲到了和AVI格式有关的几乎所有内容.感谢John做了一个这么有用的网站.</p>
+      <p>最后要提到是我没有借鉴任何代码,没有抄袭任何代码.我的代码是花了三天时间了解到上述网站和文章的信息后才写成的.我是想说我的代码也许不是播放AVI文件的最好代码,他也许不是放AVI文件的正确代码,但他管用而且使用方便.如果你不喜欢这些代码和我的编程风格,或者觉得我的言论伤害到整个编程界,你有以下选择:1)在网上找到替换的资源2)写自己的AVI播放器3)写一篇更好的文章.任何访问本网站的人现在应该知道我只是一名中级程序员(这一点我在网站里很多文章的开头都提到过)!我编写代码自乐而已.本网站的目的在于让非精英程序员更轻松的开始OpenGl编程.这些文章只是关于我实现的几个特殊的效果...没有其他的.</p>
+      <p>开始讲代码首先你要注意的是我们要包括和连接到视频头文件和库文件.非常感谢微软(窝不敢相信我说了什么).库文件使打开,播放AVI文件都很简便.现在你要知道的是必须包括头文件vfw.h而且要连接到vfw32.lib库文件如果想编译你的代码的话:)<br>
+      </p></td><td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table>
+<font color=#aaffaa size=3> 
+<pre>
+#include &lt;vfw.h&gt;							<font color=#ffffaa>// Video For Windows头文件</font>
+#include "NeHeGL.h"						<font color=#ffffaa>// NeHeGL头文件</font>
+
+#pragma comment( lib, "opengl32.lib" )				
+#pragma comment( lib, "glu32.lib" )				
+#pragma comment( lib, "vfw32.lib" )					<font color=#ffffaa>// 链接到VFW32.lib</font>
+
+
+GL_Window*	g_window;
+Keys*		g_keys;
+</pre>
+</font> 
+<table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>现在定义变量.angle是用来根据时间来旋转物体的.为简单起见我们用angle来控制所有的旋转.<br>
+      接下来是一个整型变量是用来计算经过的时间(以毫秒计).它使帧速保持一个速度.<br>
+      后面细讲!<br>
+      frame是动画要显示的当前帧,初始值为0(第一帧).我想如果成功打开AVI,他至少有一帧吧,这样假定比较安全:)<br>
+      effect是当前屏幕上的效果(有:立方体,球体,圆柱体).env是布尔值.若它为true则环境映射启动,若为假,则物体没有环境映射.若bg为true,你会看到物体后有全屏的动画;若为假,你只会看到物体(没有背景).<br>
+      sp,ep和bp用来确定使用者没有按着键不放.</td>
+    <td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table>
+<font color=#aaffaa size=3> 
+<pre>float		angle;							<font color=#ffffaa>// 旋转用</font>
+int		next;							<font color=#ffffaa>// 动画用</font>
+int		frame=0;						<font color=#ffffaa>	// 帧计数器</font>
+int		effect;							<font color=#ffffaa>// 当前效果</font>
+bool		sp;							<font color=#ffffaa>// 空格键按下?</font>
+bool		env=TRUE;							<font color=#ffffaa>// 环境映射(默认开)</font>
+bool		ep;							<font color=#ffffaa>//’E’ 按下?</font>
+bool		bg=TRUE;							<font color=#ffffaa>// 背景(默认开)</font>
+bool		bp;							<font color=#ffffaa>// ’B’ 按下?</font>
+</pre>
+</font> 
+<table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>psi结构体包含AVI文件信息.pavi缓冲的指针,缓冲用来接受AVI文件打开时的流句柄.pgf是指向GetFrame对象的指针.bmih在后面的代码中将被用来把动画的每一帧转换为我们需要的格式(保存位图的头信息).lastframe保存AVI动画最后一帧的序号.width和height保存AVI流的维信息,最后...pdata是图象数据的指针(每次在从AVI中获得一帧后返回).mpf用来计算每帧需要多少毫秒.后面细谈这个变量.</td>
+    <td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table>
+<font color=#aaffaa size=3> 
+<pre>
+AVISTREAMINFO		psi;						<font color=#ffffaa>// 包含流信息的结构体的指针</font>
+PAVISTREAM		pavi;						<font color=#ffffaa>// 流句柄</font>
+PGETFRAME		pgf;							<font color=#ffffaa>// GetFrame对象的指针</font>
+BITMAPINFOHEADER	bmih;							<font color=#ffffaa>// 头信息 For DrawDibDraw </font>
+long			lastframe;					<font color=#ffffaa>// 流中最后一帧</font>
+int			width;						<font color=#ffffaa>// 视频宽</font>
+int			height;						<font color=#ffffaa>// 视频高</font>
+char			*pdata;						<font color=#ffffaa>// 纹理数据指针</font>
+int			mpf;						<font color=#ffffaa>// 控制每帧显示时间</font>
+</pre>
+</font> 
+<table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>在本章中我们用GLU库创建两个二次曲面(球体和圆柱体).quadratic是曲面对象的指针.<br>
+      hdd是DrawDib设备上下文的句柄.hdc是设备上下文的句柄.<br>
+      hBitmap是设备无关位图的句柄(在后面位图转换时用到).<br>
+      data是最后指向转换后位图的图象数据的指针,在后面的代码中会有意义,往下读:)</td>
+    <td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table>
+<font color=#aaffaa size=3> 
+<pre>
+GLUquadricObj *quadratic;						<font color=#ffffaa>// 存储二次曲面对象</font>
+
+HDRAWDIB hdd;							<font color=#ffffaa>// Dib句柄</font>
+HBITMAP hBitmap;							<font color=#ffffaa>// 设备无关位图的句柄</font>
+HDC hdc = CreateCompatibleDC(0);					<font color=#ffffaa>// 创建一个兼容的设备上下文</font>
+unsigned char* data = 0;						<font color=#ffffaa>// 调整后的图象数据指针</font>
+</pre>
+</font> 
+<table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>下面使用到汇编语言.那些从来没有用过汇编的不要被吓倒了.他看起来神秘,实际上非常简单!
+      <p>在写本章是我发现了十分奇怪的事.第一次做出来的可以播放,但色彩混乱了.本来是红色的变成蓝色的了,本来是蓝色的变成红色的了.我简直要发狂了!我相信我的代码某处有问题.看了一边代码还是找不到bug于是又读了MSDN.为什么红色与蓝色互换了!?!MSDN明明说24比特位图是RGB啊!又读了一些东西,我找到了答案.在WINDOWS图形系统中,RGB数据是倒着存储的(BGR).而在OpenGL中,要用的RGB数据就是RGB的顺序!</p>
+      <p>在抱怨了微软之后:)我决定加一条注解!我不因为RGB数据倒过来存放而打算骂微软.只是觉得很奇怪--他叫做RGB实际上在文件中是按BGR存的!</p>
+      <p>另:这一点和&quot;little endian&quot;和&quot;big endian&quot;有关.Intel以及Intel兼容产品用little 
+        endian--LSB(数据最低位)首先存.OpenGL是产生于Silicon Graphics的机器的,用的是big endian,所以标准的OpenGL要位图格式是big 
+        endian格式.这是我的理解.</p>
+      <p>棒极了!所以说这第一个播放器就是一个垃圾!我的解决方法是用一个循环把数据交换过来.这能行,但太慢.我又在纹理生成代码中用GL_BGR_EXT代替了GL_RGB,速度暴升,色彩显示也对了!问题解决了...原来我是这样想!后来发现一些OpenGL驱动不支持GL_BGR... 
+        :(</p>
+      <p>与好友Maxwell Sayles讨论后,他推荐我用汇编代码来交换数据.一分钟后,他用icq发来下面的代码!也许不是最优化的,但他很快也很有效!</p>
+      <p>动画的每一帧存在一个缓冲里.图象256像素宽,256像素高,每个色彩一字节(一像素3字节).下面的代码会扫描整个缓冲并交换红与蓝的字节.红存在ebx+0,蓝存在ebx+2.我们一次向前走3字节(因为一个像素3字节).不断扫描直到所有数据交换过来.</p>
+      <p>你们有些人不喜欢用汇编代码,所以我想有必要在本章里解释一下.本来计划用GL_BGR_EXT,他管用,但不是所有的显卡都支持!我又用异或交换法,这在所有机器上都是有效的,但不十分快.用了汇编后速度相当快.考虑到我们在处理实时视频,你需要最快的交换方法.权衡了以上选择,汇编是最好的!如果你有更好的办法,就用你自己的吧!我并不是告诉你必须如何去做,只是告诉你我的做法.我也会细致的解释代码.如果你要用更好的代码来作替换,你要清楚这些代码是来干什么的,自己写代码时,要为日后的优化提供方便.</p>
+      <p></p></td><td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table>
+<font color=#aaffaa size=3> 
+<pre>
+void flipIt(void* buffer)						<font color=#ffffaa>// 交换红蓝数据(256x256)</font>
+{
+	void* b = buffer;						<font color=#ffffaa>// 缓冲指针</font>
+	__asm							<font color=#ffffaa>// 汇编代码</font>
+	{
+		mov ecx, 256*256					<font color=#ffffaa>// 设置计数器</font>
+		mov ebx, b					<font color=#ffffaa>// ebx存数据指针</font>
+		label:						<font color=#ffffaa>// 循环标记</font>
+			mov al,[ebx+0]				<font color=#ffffaa>// 把ebx位置的值赋予al</font>
+			mov ah,[ebx+2]				<font color=#ffffaa>// 把ebx+2位置的值赋予ah</font>
+			mov [ebx+2],al				<font color=#ffffaa>// 把al的值存到ebx+2的位置</font>
+			mov [ebx+0],ah				<font color=#ffffaa>// 把ah的值存到ebx+0的位置</font>
+
+			add ebx,3					<font color=#ffffaa>// 向前走3个字节</font>
+			dec ecx					<font color=#ffffaa>// 循环计数器减1</font>
+			jnz label					<font color=#ffffaa>// ecx非0则跳至label</font>
+	}
+}
+</pre>
+</font> 
+<table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>下面的代码以只读方式打开AVI文件.szFile是打开文件的名字.title[100]用来修改window标题(显示AVI文件信息).
+      <p>首先调用AVIFileInit().他初始化AVI文件库(使东西能用?鹄?).</p>
+      <p>打开AVI文件有很多方法.我采用AVIStreamOpenFromFile(...).他能打开AVI文件中单独一个流(AVI文件可以包含多个流).它的参数如下:pavi是接收流句柄的缓冲的指针,szFile是打开文件的名字(包括路径).第三参数是打开的流的类型.在这个工程里,我们只对视频流感兴趣(streamtypeVIDEO).第四参数是0,这表示我们需要第一次读到的视频流(一个AVI文件里会有多个视频流,我们要第一个).OF_READ表示以只读方式打开文件.最后一个参数是一个类标识句柄的指针.说实话,我也不清楚他是干吗的.我让windows自己设定,于是把NULL传过去.<br>
+      </p></td><td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table>
+<font color=#aaffaa size=3> 
+<pre>
+void OpenAVI(LPCSTR szFile)						<font color=#ffffaa>// 打开AVI文件szFile</font>
+{
+	TCHAR	title[100];					<font color=#ffffaa>// 包含修改了的window标题</font>
+
+	AVIFileInit();						<font color=#ffffaa>// 打开AVI文件库</font>
+
+	<font color=#ffffaa>// 打开AVI流</font>
+	if (AVIStreamOpenFromFile(&pavi, szFile, streamtypeVIDEO, 0, OF_READ, NULL) !=0)
+	{
+		<font color=#ffffaa>// 打开流时的出错处理</font>
+		MessageBox (HWND_DESKTOP, "打开AVI流失败", "错误", MB_OK | MB_ICONEXCLAMATION);
+	}
+</pre>
+</font> 
+<table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>到目前为止,我们假定文件被正确打开,流被正确定位!然后用AVIStreamInfo(...)从AVI文件里抓取一些信息.
+      <p>先前我们创建了叫psi的结构体来保存AVI流的信息.下面第一行,我们把AVI信息填入该结构体.从流的宽度(以像素计)到动画的帧速等所有的信息都会存到psi中.那些想要精确控制播放速度的要记住我刚才说的.更多的信息参阅MSDN.</p>
+      <p>我们通过右边位置减左边位置算出帧宽.这个结果是以像素记的精确的帧宽.至于高度,可以用底边位置减顶边位置得到.这样得到高度的像素值.</p>
+      <p>然后用AVIStreamLength(...)得到AVI文件最后一帧的序号.AVIStreamLength(...)返回动画最后一帧的序号.结果存在lastframe里.</p>
+      <p>计算帧速很简单.每秒帧速(fps)= psi.dwRate/psi,dwScale.返回的值应该匹配显示帧的速度(你在AVI动画中右击鼠标可以看到).你会问那么这和mpf有什么关系呢?第一次写这个代码时,我试着用fps来选择动画了正确的帧面.我遇到一个问题...视频放的太快!于是我看了一下视频属性.face2.avi文件有3.36秒长.帧速是29.974fps.视频动画共有91帧.而3.36*29.974 
+        = 100.71.非常奇怪!!</p>
+      <p>所以我采用一些不同的方法.不是计算帧速,我计算每一帧播放所需时间.AVIStreamSampleToTime()把在动画中的位置转换位你到达该位置所需的时间(毫秒计).所以通过计算到达最后一帧的时间就得到整个动画的播放时间.再拿这个结果除以动画总帧数(lastframe).这样就给出了每帧的显示时间(毫秒计).结果存在mpf(milliseconds 
+        per frame)里.你也能通过获取动画中一帧的时间来算每帧的毫秒数,代码为:AVIStreamSampleToTime(pavi,1).两种方法都不错!非常感谢Albert 
+        Chaulk提供思路!</p>
+      <p>我说每帧的毫秒数不精确是因为mpf是一个整型值,所以所有的浮点数都会被取整.</p>
+      <p></p></td><td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table>
+<font color=#aaffaa size=3> 
+<pre>
+	AVIStreamInfo(pavi, &psi, sizeof(psi));			<font color=#ffffaa>// 把流信息读进psi</font>
+	width=psi.rcFrame.right-psi.rcFrame.left;			<font color=#ffffaa>// 宽度为右边减左边</font>
+	height=psi.rcFrame.bottom-psi.rcFrame.top;			<font color=#ffffaa>// 高为底边减顶边</font>
+
+	lastframe=AVIStreamLength(pavi);				<font color=#ffffaa>// 最后一帧的序号</font>
+
+	mpf=AVIStreamSampleToTime(pavi,lastframe)/lastframe;		<font color=#ffffaa>// mpf的不精确值</font>
+</pre>
+</font> 
+<table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>因为OpenGL需要纹理数据是2的幂,而大多视频是160*120,320*240等等,所以需要一种把视频格式重调整为能用作纹理的格式.我们可利用Windows 
+      Dib函数去做.
+      <p>首先要做的是描述我们想要的图像的类型.于是我们要以所需参数填好bmih这个BitmapInfoHeader结构.<br>
+        首先设定该结构体的大小.再把位平面数设为1.3字节的数据有24比特(RGB).要使图像位256像素宽,256像素高,最后要让数据返回为UNCOMPRESSED(非压缩)的RGB数据(BI_RGB). 
+      </p>
+      <p>CreateDIBSection创建一个可直接写的设备无关位图(dib).如果一切顺利,hBitmap会指向该dib的比特值.hdc是设备上下文(DC)的句柄第二参数是BitmapInfo结构体的指针.该结构体包含了上述dib文件的信息.第三参数(DIB_RGB_COLORS)设定数据是RGB值.data是指向DIB比特值位置的指针的指针(呜,真绕口).第五参数设为NULL,我们的DIB已被分配好内存.末了,最后一个参数可忽略(设为NULL).</p>
+      <p>引自MSDN:SelecObject函数选一个对象进入设备上下文(DC).</p>
+      <p>现在我们建好一个能直接写的DIB,yeah:)</p>
+      <p></p></td><td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table>
+<font color=#aaffaa size=3> 
+<pre>
+	bmih.biSize		= sizeof (BITMAPINFOHEADER);		<font color=#ffffaa>// BitmapInfoHeader的大小</font>
+	bmih.biPlanes		= 1;					<font color=#ffffaa>// 位平面</font>
+	bmih.biBitCount		= 24;					<font color=#ffffaa>//比特格式(24 Bit, 3 Bytes)</font>
+	bmih.biWidth		= 256;					<font color=#ffffaa>// 宽度(256 Pixels)</font>
+	bmih.biHeight		= 256;					<font color=#ffffaa>// 高度 (256 Pixels)</font>
+	bmih.biCompression	= BI_RGB;				<font color=#ffffaa>		// 申请的模式 = RGB</font>
+
+	hBitmap = CreateDIBSection (hdc, (BITMAPINFO*)(&bmih), DIB_RGB_COLORS, (void**)(&data), NULL, NULL);
+	SelectObject (hdc, hBitmap);					<font color=#ffffaa>// 选hBitmap进入设备上下文(hdc)</font>
+</pre>
+</font> 
+<table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>在从AVI中读取帧面前还有几件事要做.接下来使程序做好从AVI文件中解出帧面的准备.用AVIStreamGetFrameOpen(...)函数做这一点.
+      <p>你能给这个函数传一个结构体作为第二参数(它会返回一个特定的视频格式).糟糕的是,你能改变的唯一数据是返回的图像的宽度和高度.MSDN也提到能传AVIGETFRAMEF_BESTDISPLAYFMT为参数来选择一个最佳显示格式.奇怪的是,我的编译器没有定义这玩艺儿.</p>
+      <p>如果一切顺利,一个GETFRAME对象被返回(用来读帧数据).有问题的话,提示框会出现在屏幕上告诉你有错误!</p>
+      <p></p></td><td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table>
+<font color=#aaffaa size=3>
+<pre>
+	pgf=AVIStreamGetFrameOpen(pavi, NULL);				<font color=#ffffaa>// 用要求的模式建PGETFRAME</font>
+	if (pgf==NULL)
+	{
+		<font color=#ffffaa>// 解帧出错</font>
+		MessageBox (HWND_DESKTOP, "不能打开AVI帧", "错误", MB_OK | MB_ICONEXCLAMATION);
+	}
+</pre>
+</font>
+<table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>下面的代码把视频宽,高和帧数传给window标题.用函数SetWindowText(...)在window顶部显示标题.以窗口模式运行程序看看以下代码的作用.</td>
+    <td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table>
+<font color=#aaffaa size=3>
+<pre>
+	<font color=#ffffaa>// bt标题栏信息(宽 / 高/ 帧数)</font>
+	wsprintf (title, "NeHe's AVI Player: Width: %d, Height: %d, Frames: %d", width, height, lastframe);
+	SetWindowText(g_window-&gt;hWnd, title);				<font color=#ffffaa>// 修改标题栏</font>
+}
+</pre>
+</font>
+<table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>下面是有趣的东西...从AVI中抓取一帧,把它转为大小和色深可用的图象.lpbi包含一帧的BitmapInfoHeader信息.我们在下面第二行完成了几件事.先是抓了动画的一帧...我们需要的帧面由这些帧确定.这会让动画走掉这一帧,lpbi会指向这一帧的头信息.
+      <p>下面是有趣的东西...我们要指向图像数据了.要跳过头信息(lpbi-&gt;biSize).一件事直到写本文时我才意识到:也要跳过任何的色彩信息.所以要跳过biClrUsed*sizeof(RGBQUAD)(译者:我想他是说要跳过调色板信息).做完这一切,我们就得到图像数据的指针了(pdata).</p>
+      <p>也要把动画的每一帧的大小转为纹理能用的大小,还要把数据转为RGB数据.这用到DrawDibDraw(...).</p>
+      <p>一个大概的解释.我们能直接写设定的DIB图像.那就是DrawDibDraw(...)所做的.第一参数是DrawDib DC的句柄.第二参数是DC的句柄.接下来用左上角(0,0)和右下角(256,256)构成目标矩形.</p>
+      <p>lpbi指向刚读的帧的bitmapinfoheader信息.pdata是刚读的帧的图像数据指针.</p>
+      <p>再把源图象(刚读的帧)的左上角设为(0,0),右下角设为(帧宽,帧高).最后的参数应设为0.</p>
+      <p>这个方法可把任何大小、色深的图像转为256*256*24bit的图像.</p>
+      <p></p></td><td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table>
+<font color=#aaffaa size=3> 
+<pre>
+void GrabAVIFrame(int frame)						<font color=#ffffaa>// 从流中抓取一帧</font>
+{
+	LPBITMAPINFOHEADER lpbi;					<font color=#ffffaa>	// 存位图的头信息</font>
+	lpbi = (LPBITMAPINFOHEADER)AVIStreamGetFrame(pgf, frame);	<font color=#ffffaa>	// 从AVI流中得到数据</font>
+	pdata=(char *)lpbi+lpbi-&gt;biSize+lpbi-&gt;biClrUsed * sizeof(RGBQUAD);	<font color=#ffffaa>// 数据指针,由AVIStreamGetFrame返回(跳过头 
+//信息和色彩信息)</font>
+<font color=#ffffaa>// 把数据转为所需格式</font>
+	DrawDibDraw (hdd, hdc, 0, 0, 256, 256, lpbi, pdata, 0, 0, width, height, 0);
+</pre>
+</font> 
+<table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>我们得到动画的每帧数据(红蓝数据颠倒的).为解决这个问题,我们的高速代码flipIt(...).记住,data是指向DIB比特值位置的指针的指针变量.这意味着调用DrawDibDraw后,data指向一个调整过大小(256*256),修改过色深(24bits)的位图数据.
+      <p>原来我通过重建动画的每一帧来更新纹理.我收到几封email建议我用glTexSubImage2D().翻阅了OpenGL红宝书后,我磕磕绊绊的写出下面注释:&quot;创建纹理的计算消耗比修改纹理要大.在OpenGL1.1版本中,有几条调用能更新全部或部分纹理图像信息.这对某些应用程序有用,比如实时的抓取视频图像作纹理.对于这些程序,用glTexSubImage2D()根据新视频图像来创建单个纹理以代替旧的纹理数据是行得通的.&quot;</p>
+      <p>在我个人并没有发现速度明显加快,也许在低端显卡上才会.glTexSubImage2D()的参数是:目标是一个二维纹理(GL_TEXTURE_2D).细节级别(0),mipmapping用.x(0),y(0)告诉OpenGL开始拷贝的位置(0,0是纹理的左下角).然后是图像的宽度,我们要拷贝的图像是256像素宽,256像素高.GL_RGB是我们的数据格式.我们在拷贝无符号byte.最后...图像数据指针----data.非常简单!</p>
+      <p>Kevin Rogers 另加:我想指出使用glTexSubImage2D()另一个重要原因.不仅因为在许多OpenGL实现中它很快,还因为目标区不必是2的幂.这对视频重放很方便,因为一帧的维通常不是2的幂(而是像320*200之类的).这样给了你很大机动性,你可以按视频流原本的样子播放,而不是扭曲或剪切每一帧来适应纹理的维.</p>
+      <p>重要的是你不能更新一个纹理如果你第一次没有创建他!我们在Initialize()中创建纹理.</p>
+      <p>还要提到的是...如果你计划在工程里使用多个纹理,务必绑住你要更新的纹理.否则,更新出来的纹理也许不是你想要的!</p>
+      <p></p></td><td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table>
+<font color=#aaffaa size=3>
+<pre>
+	flipIt(data);							<font color=#ffffaa>// 交换红蓝数据</font>
+
+	<font color=#ffffaa>// 更新纹理</font>
+	glTexSubImage2D (GL_TEXTURE_2D, 0, 0, 0, 256, 256, GL_RGB, GL_UNSIGNED_BYTE, data);
+}
+</pre>
+</font>
+<table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>接下来的部分当程序退出时调用,我们关掉DrawDib DC,释放占用的资源.然后释放AVI GetFrame资源.最后释放AVI流和文件.</td>
+    <td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table>
+<font color=#aaffaa size=3> 
+<pre>
+void CloseAVI(void)							<font color=#ffffaa>// 关掉AVI资源</font>
+{
+	DeleteObject(hBitmap);						<font color=#ffffaa>//释放设备无关位图信息</font>
+	DrawDibClose(hdd);						<font color=#ffffaa>	// 关掉DrawDib DC</font>
+	AVIStreamGetFrameClose(pgf);					<font color=#ffffaa>// 释放AVI GetFrame资源</font>
+	AVIStreamRelease(pavi);						<font color=#ffffaa>// 释放AVI流</font>
+	AVIFileExit();							<font color=#ffffaa>// 释放AVI文件</font>
+}
+</pre>
+</font> 
+<table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>初始化很简明.设初始的angle为0.再打开DrawDib库(得到一个DC).一切顺利的话,hdd会是新创建的dc的句柄.
+      <p>以黑色清屏,开启深度测试,等等.</p>
+      <p>然后建一个新的二次曲面.quadratic是这个新对象的指针.设置光滑的法线,允许纹理坐标的生成.</p>
+      <p></p></td><td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table>
+<font color=#aaffaa size=3> 
+<pre>
+BOOL Initialize (GL_Window* window, Keys* keys)
+{
+	g_window	= window;
+	g_keys		= keys;
+
+	<font color=#ffffaa>// 开始用户的初始</font>
+	angle = 0.0f;							<font color=#ffffaa>// angle为0先</font>
+	hdd = DrawDibOpen();						<font color=#ffffaa>// 得到Dib的DC</font>
+	glClearColor (0.0f, 0.0f, 0.0f, 0.5f);				<font color=#ffffaa>// 黑色背景</font>
+	glClearDepth (1.0f);						<font color=#ffffaa>// 深度缓冲初始</font>
+	glDepthFunc (GL_LEQUAL);					<font color=#ffffaa>	// 深度测试的类型(小于或等于)</font>
+	glEnable(GL_DEPTH_TEST);					<font color=#ffffaa>	// 开启深度测试</font>
+	glShadeModel (GL_SMOOTH);					<font color=#ffffaa>	// 平滑效果</font>
+	glHint (GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);			<font color=#ffffaa>// 透视图计算设为 //最高精度</font>
+
+	quadratic=gluNewQuadric();						<font color=#ffffaa>// 建二次曲面的指针</font>
+	gluQuadricNormals(quadratic, GLU_SMOOTH);				<font color=#ffffaa>// 设置光滑的法线</font>
+	gluQuadricTexture(quadratic, GL_TRUE);				<font color=#ffffaa>// 创建纹理坐标</font>
+</pre>
+</font> 
+<table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>下面的代码中,我们开启2D纹理映射,纹理滤镜设为GLNEAREST(最快,但看起来很糙),建立球面映射(为了实现环境映射效果).试试其它滤镜,如果你有条件,可以试试GLLINEAR得到一个平滑的动画效果.
+      <p>设完纹理和球面映射,我们打开.AVI文件.我尽量使事情简单化...你能看出来么:)我们要打开的文件叫作facec2.avi<br>
+      </p></td><td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table>
+<font color=#aaffaa size=3> 
+<pre>
+	glEnable(GL_TEXTURE_2D);					<font color=#ffffaa>// 开启2D纹理映射</font>
+	glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_NEAREST);<font color=#ffffaa>// 设置纹理滤镜</font>
+	glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_NEAREST);
+
+	glTexGeni(GL_S, GL_TEXTURE_GEN_MODE, GL_SPHERE_MAP);		<font color=#ffffaa>// 设纹理坐标生成模式为s</font>
+	glTexGeni(GL_T, GL_TEXTURE_GEN_MODE, GL_SPHERE_MAP);		<font color=#ffffaa>// 设纹理坐标生成模式为t</font>
+
+	OpenAVI("data/face2.avi");					<font color=#ffffaa>// 打开AVI文件</font>
+
+	<font color=#ffffaa>// 创建纹理</font>
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, 256, 256, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+
+	return TRUE;						<font color=#ffffaa>// 初始化成功返回TRUE</font>
+}
+</pre>
+</font> 
+<table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>关闭时调用CloseAVI().他正确的关闭AVI文件,并释放所有占用资源.</td>
+    <td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table>
+<font color=#aaffaa size=3>
+<pre>
+void Deinitialize (void)						<font color=#ffffaa>// 做所有的释放工作</font>
+{
+	CloseAVI();						<font color=#ffffaa>// 关闭AVI文件</font>
+}
+</pre>
+</font>
+<table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>到了检查按键和更新旋转角度的地方了.我知道再没有必要详细解释这些代码了.我们检查空格键是否按下,若是,则增加effect值.有3种效果(立方,球,圆柱)第四个效果被选时(effect 
+      = 3)不画任何对象...仅显示背景!如果选了第四效果,空格又按下了,就重设为第一个效果(effect = 0).Yeah,我本该叫他对象:) 
+      <p>然后检查’b’键是否按下,若是,则改变背景(bg从ON到OFF或从OFF到ON).</p>
+      <p>环境映射的键设置也一样.检查’E’是否按下,若是则改变env从TRUE到FALSE或从FALSE到TRUE.仅仅是关闭或开启环境映射!</p>
+      <p>每次调用Updata()时angle都加上一个小分数.我用经过的时间除以60.0f使速度降一点.<br>
+      </p></td><td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table>
+<font color=#aaffaa size=3> 
+<pre>
+void Update (DWORD milliseconds)					<font color=#ffffaa>// 动画更新</font>
+{
+	if (g_keys-&gt;keyDown [VK_ESCAPE] == TRUE)			<font color=#ffffaa>//ESC按下?</font>
+	{
+		TerminateApplication (g_window);			<font color=#ffffaa>// 关闭程序</font>
+	}
+
+	if (g_keys-&gt;keyDown [VK_F1] == TRUE)				<font color=#ffffaa>// F1按下?</font>
+	{
+		ToggleFullscreen (g_window);			<font color=#ffffaa>// 改变显示模式</font>
+	}
+
+	if ((g_keys-&gt;keyDown [' ']) && !sp)				<font color=#ffffaa>// 空格按下并已松开</font>
+	{
+		sp=TRUE;						<font color=#ffffaa>// 设sp为True</font>
+		effect++;						<font color=#ffffaa>// 增加effect</font>
+		if (effect&gt;3)					<font color=#ffffaa>// 超出界限?</font>
+			effect=0;					<font color=#ffffaa>// 重设为0</font>
+	}
+
+	if (!g_keys-&gt;keyDown[' '])					<font color=#ffffaa>// 空格没按下?</font>
+		sp=FALSE;						<font color=#ffffaa>// 设sp为False</font>
+
+	if ((g_keys-&gt;keyDown ['B']) && !bp)				<font color=#ffffaa>// ’B’按下并已松开</font>
+	{
+		bp=TRUE;						<font color=#ffffaa>// 设bp为True</font>
+		bg=!bg;						<font color=#ffffaa>// 改变背景 Off/On</font>
+	}
+
+	if (!g_keys-&gt;keyDown['B'])					<font color=#ffffaa>// ’B’没按下?</font>
+		bp=FALSE;						<font color=#ffffaa>// 设bp为False</font>
+
+	if ((g_keys-&gt;keyDown ['E']) && !ep)				<font color=#ffffaa>//  ’E’按下并已松开</font>
+	{
+		ep=TRUE;						<font color=#ffffaa>// 设ep为True</font>
+		env=!env;						<font color=#ffffaa>// 改变环境映射 Off/On</font>
+	}
+
+	if (!g_keys-&gt;keyDown['E'])					<font color=#ffffaa>//’E’没按下</font>
+		ep=FALSE;						<font color=#ffffaa>// 设ep为False</font>
+
+	angle += (float)(milliseconds) / 60.0f;			<font color=#ffffaa>// 根据时间更新angle</font>
+</pre>
+</font> 
+<table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>在原来的文章里,所有的AVI文件都以相同的速度播放.于是,我重写了本文让视频以正常的速度播放.next增加经过的毫秒数.如果你记得文章的前面,我们算出了显示每帧的毫秒数(mpf).为了计算当前帧,我们拿经过的时间除以显示每帧的毫秒数(mpf).
+      <p>还要检查确定当前帧没有超过视频的最后帧.若超过了,则将frame设为0,动画计时器设为0,于是动画从头开始.</p>
+      <p>下面的代码会丢掉一些帧,若果你的计算机太慢的话,<br>
+        或者另一个程序占用了CPU.如果想显示每一帧而不管计算机有多慢的话,你要检查next是否比mpf大,若是,你要把next设为0,frame增1.两种方法都行,虽然下面的代码更有利于跑的快的机器.</p>
+      <p>如果你有干劲,试着加上循环,快速播放,暂停或倒放等功能.</p>
+      <p></p></td><td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table>
+<font color=#aaffaa size=3> 
+<pre>
+	next+= milliseconds;						<font color=#ffffaa>// 根据时间增加next</font>
+	frame=next/mpf;							<font color=#ffffaa>// 计算当前帧号</font>
+
+	if (frame&gt;=lastframe)						<font color=#ffffaa>// 超过最后一帧?</font>
+	{
+		frame=0;							<font color=#ffffaa>// Frame设为0</font>
+		next=0;							<font color=#ffffaa>// 重设动画计时器</font>
+	}
+}
+</pre>
+</font> 
+<table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>下面是画屏代码:)我们清屏和深度缓冲.再抓取动画的一帧.我将使这更简单!把你想要的帧数传给GrabAVIFrame().非常简单!当然,如果是多个AVI,你要传一个纹理标号.(你要做更多的事)</td>
+    <td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table>
+<font color=#aaffaa size=3> 
+<pre>
+void Draw (void)							<font color=#ffffaa>// 绘制我们的屏幕</font>
+{
+	glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);		<font color=#ffffaa>// 清屏和深度缓冲</font>
+
+	GrabAVIFrame(frame);				<font color=#ffffaa>	// 抓取动画的一帧</font>
+</pre>
+</font> 
+<table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>下面检查我们是否想画一个背景图.若bg是TRUE,重设模型视角矩阵,画一个单纹理映射的能盖住整个屏幕的矩形(纹理是从AVI从得到的一帧).矩形距离屏面向里20个单位,这样它看起来在对象之后(距离更远).</td>
+    <td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table>
+<font color=#aaffaa size=3> 
+<pre>
+	if (bg)							<font color=#ffffaa>// 背景可见?</font>
+	{
+		glLoadIdentity();					<font color=#ffffaa>// 重设模型视角矩阵</font>
+		glBegin(GL_QUADS);					<font color=#ffffaa>// 开始画背景(一个矩形)</font>
+			<font color=#ffffaa>// 正面</font>
+			glTexCoord2f(1.0f, 1.0f); glVertex3f( 11.0f,  8.3f, -20.0f);
+			glTexCoord2f(0.0f, 1.0f); glVertex3f(-11.0f,  8.3f, -20.0f);
+			glTexCoord2f(0.0f, 0.0f); glVertex3f(-11.0f, -8.3f, -20.0f);
+			glTexCoord2f(1.0f, 0.0f); glVertex3f( 11.0f, -8.3f, -20.0f);
+		glEnd();						
+	}
+</pre>
+</font> 
+<table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>画完背景(或没有),重设模型视角矩阵(使视角中心回到屏幕中央).视角中心再向屏内移进10个单位.然后检查env是否为TRUE.若是,开启球面映射来实现环境映射效果.<br></td><td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table>
+<font color=#aaffaa size=3> 
+<pre>
+	glLoadIdentity ();						<font color=#ffffaa>// 重设模型视角矩阵</font>
+	glTranslatef (0.0f, 0.0f, -10.0f);				<font color=#ffffaa>// 视角中心再向屏内移进10个单位</font>
+
+	if (env)							<font color=#ffffaa>// 环境映射开启?</font>
+	{
+		glEnable(GL_TEXTURE_GEN_S);				<font color=#ffffaa>// 开启纹理坐标生成S坐标</font>
+		glEnable(GL_TEXTURE_GEN_T);				<font color=#ffffaa>// 开启纹理坐标生成T坐标</font>
+	}
+</pre>
+</font> 
+<table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>在最后关头我加了以下代码.他绕X轴和Y轴旋转(根据angle的值)然后在Z轴方向移动2单位.这使我们离开了屏幕中心.如果删掉下面三行,对象会在屏幕中心打转.有了下面三行,对象旋转时看起来离我们远一些:)
+      <p>如果你不懂旋转和平移...你就不该读这一章:)<br>
+      </p></td><td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table>
+<font color=#aaffaa size=3> 
+<pre>
+	glRotatef(angle*2.3f,1.0f,0.0f,0.0f);				<font color=#ffffaa>// 加旋转让东西动起来</font>
+	glRotatef(angle*1.8f,0.0f,1.0f,0.0f);				<font color=#ffffaa>// 加旋转让东西动起来</font>
+	glTranslatef(0.0f,0.0f,2.0f);					<font color=#ffffaa>// 旋转后平移到新位置</font>
+</pre>
+</font> 
+<table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>下面的代码检查我们要画哪一个对象.若effect为0,我们做一些旋转在画一个立方体.这个旋转使立方体绕X,Y,Z轴旋转.现在你脑中该烙下建一个立方体的方法了吧:)</td>
+    <td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table>
+<font color=#aaffaa size=3>
+<pre>
+	switch (effect)							<font color=#ffffaa>// 哪个效果?</font>
+	{
+	case 0:								<font color=#ffffaa>// 效果 0 - 立方体</font>
+		glRotatef (angle*1.3f, 1.0f, 0.0f, 0.0f);		
+		glRotatef (angle*1.1f, 0.0f, 1.0f, 0.0f);		
+		glRotatef (angle*1.2f, 0.0f, 0.0f, 1.0f);		
+		glBegin(GL_QUADS);				
+			glNormal3f( 0.0f, 0.0f, 0.5f);
+			glTexCoord2f(0.0f, 0.0f); glVertex3f(-1.0f, -1.0f,  1.0f);
+			glTexCoord2f(1.0f, 0.0f); glVertex3f( 1.0f, -1.0f,  1.0f);
+			glTexCoord2f(1.0f, 1.0f); glVertex3f( 1.0f,  1.0f,  1.0f);
+			glTexCoord2f(0.0f, 1.0f); glVertex3f(-1.0f,  1.0f,  1.0f);
+			
+			glNormal3f( 0.0f, 0.0f,-0.5f);
+			glTexCoord2f(1.0f, 0.0f); glVertex3f(-1.0f, -1.0f, -1.0f);
+			glTexCoord2f(1.0f, 1.0f); glVertex3f(-1.0f,  1.0f, -1.0f);
+			glTexCoord2f(0.0f, 1.0f); glVertex3f( 1.0f,  1.0f, -1.0f);
+			glTexCoord2f(0.0f, 0.0f); glVertex3f( 1.0f, -1.0f, -1.0f);
+		
+			glNormal3f( 0.0f, 0.5f, 0.0f);
+			glTexCoord2f(0.0f, 1.0f); glVertex3f(-1.0f,  1.0f, -1.0f);
+			glTexCoord2f(0.0f, 0.0f); glVertex3f(-1.0f,  1.0f,  1.0f);
+			glTexCoord2f(1.0f, 0.0f); glVertex3f( 1.0f,  1.0f,  1.0f);
+			glTexCoord2f(1.0f, 1.0f); glVertex3f( 1.0f,  1.0f, -1.0f);
+			
+			glNormal3f( 0.0f,-0.5f, 0.0f);
+			glTexCoord2f(1.0f, 1.0f); glVertex3f(-1.0f, -1.0f, -1.0f);
+			glTexCoord2f(0.0f, 1.0f); glVertex3f( 1.0f, -1.0f, -1.0f);
+			glTexCoord2f(0.0f, 0.0f); glVertex3f( 1.0f, -1.0f,  1.0f);
+			glTexCoord2f(1.0f, 0.0f); glVertex3f(-1.0f, -1.0f,  1.0f);
+		
+			glNormal3f( 0.5f, 0.0f, 0.0f);
+			glTexCoord2f(1.0f, 0.0f); glVertex3f( 1.0f, -1.0f, -1.0f);
+			glTexCoord2f(1.0f, 1.0f); glVertex3f( 1.0f,  1.0f, -1.0f);
+			glTexCoord2f(0.0f, 1.0f); glVertex3f( 1.0f,  1.0f,  1.0f);
+			glTexCoord2f(0.0f, 0.0f); glVertex3f( 1.0f, -1.0f,  1.0f);
+		
+			glNormal3f(-0.5f, 0.0f, 0.0f);
+			glTexCoord2f(0.0f, 0.0f); glVertex3f(-1.0f, -1.0f, -1.0f);
+			glTexCoord2f(1.0f, 0.0f); glVertex3f(-1.0f, -1.0f,  1.0f);
+			glTexCoord2f(1.0f, 1.0f); glVertex3f(-1.0f,  1.0f,  1.0f);
+			glTexCoord2f(0.0f, 1.0f); glVertex3f(-1.0f,  1.0f, -1.0f);
+		glEnd();						
+		break;						</pre>
+</font>
+<table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>下面是画球体的地方.开始先绕X,Y,Z轴旋转,再画球体.球体半径为1.3f,20经线,20纬线.我用20是因为我没打算让球体非常光滑.少用些经纬数,使球看起来不那么光滑,这样球转起来时就能看到球面映射的效果(当然球面映射必须开启).试着尝试其它值!要知道,使用更多的经纬数需要更强的计算能力!</td>
+    <td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table><font color=#aaffaa size=3>
+<pre>
+	case 1:								<font color=#ffffaa>// 效果1，球体</font>
+		glRotatef (angle*1.3f, 1.0f, 0.0f, 0.0f);		
+		glRotatef (angle*1.1f, 0.0f, 1.0f, 0.0f);		
+		glRotatef (angle*1.2f, 0.0f, 0.0f, 1.0f);		
+		gluSphere(quadratic,1.3f,20,20);			
+		break;							</pre>
+</font><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>下面画圆柱.开始先绕X,Y,Z轴旋转,圆柱顶和底的半径都为1.0f.高3.0f,32经线,32纬线.若减少经纬数,圆柱的组成多边形会减少,他看起来就没那么圆.</td>
+    <td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table><font color=#aaffaa size=3>
+<pre>
+	case 2:								<font color=#ffffaa>// 效果2，圆柱</font>
+		glRotatef (angle*1.3f, 1.0f, 0.0f, 0.0f);		
+		glRotatef (angle*1.1f, 0.0f, 1.0f, 0.0f);		
+		glRotatef (angle*1.2f, 0.0f, 0.0f, 1.0f);		
+		glTranslatef(0.0f,0.0f,-1.5f);				
+		gluCylinder(quadratic,1.0f,1.0f,3.0f,32,32);		
+		break;							
+	}
+</pre>
+</font><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>下面检查env是否为TRUE,若是,关闭球面映射.调用glFlush()清空渲染流水线(使在下一帧开始前一切都渲染了).</td>
+    <td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table>
+<font color=#aaffaa size=3> 
+<pre>
+	if (env)								<font color=#ffffaa>// 是否开启了环境渲染</font>
+	{
+		glDisable(GL_TEXTURE_GEN_S);				<font color=#ffffaa>// 关闭纹理坐标S</font>
+		glDisable(GL_TEXTURE_GEN_T);				<font color=#ffffaa>// 关闭纹理坐标T</font>
+	}
+
+	glFlush ();							<font color=#ffffaa>// 清空渲染流水线</font>
+}
+</pre>
+</font> 
+<table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top><FONT face=Tahoma,Verdana,sans-serif size=-1>希</font>望你们喜欢这一章.现在已经凌晨两点了(译者oak:译到这时刚好也是2:00am!)...写这章花了我6小时了.听起来不可思议,可要把东西写通不是件容易的事.本文我读了三边,我力图使文章好懂.不管你信还是不信,对我最重要的是你们能明白代码是怎样运作的,它为什么能行.那就是我喋喋不休并且加了过量注解的原因. 
+      <p>无论如何,我都想听到本文的反馈.如果你找到文章的错误,并想帮我做一些改进,请联系我.就像我说的那样,这是我第一次写和AVI有关的代码.通常我不会写一个我才接触到的主题,但我太兴奋了,并且考虑到关于这方面的文章太少了.我所希望的是,我打开了编写高质量AVI 
+        demo和代码的一扇门!也许成功,也许没有.不管怎样,你可以任意处理我的代码.</p>
+      <p>非常感谢 Fredster提供face AVI文件.Face是他发来的六个AVI动画中的一个.他没提出任何问题和条件.他以他的方式帮助了我,谢谢他!</p>
+      <p>更要感谢Jonathan de Blok,要没要她,本文就不会有.他给我发来他的AVI播放器的代码,这使我对AVI格式产生了兴趣.他也回答了我问的关于他的代码的问题.但重要的是我并没有借鉴或抄袭他的代码,他的代码只是帮助我理解AVI播放器的运行机制.我的播放器的打开,解帧和播放AVI文件用的是不同的代码!</p>
+      <p>感谢给予帮助的所有人,包括所有参观者!若没有你们,我的网站不值一文!!!</p>
+<table width="100%" border="1">
+  <tr>
+    <td width="27%"><img src="logo 3.jpg" tppabs="http://www.owlei.com/DancingWind/images/logo%203.jpg" width="209" height="200" align="middle"></td>
+    <td width="73%">版权与使用声明:<br>
+      我是个对学习和生活充满激情的普通男孩,在网络上我以DancingWind为昵称，我的联系方式是zhouwei02@mails.tsinghua.edu.cn，如果你有任何问题，都可以联系我。
+      <p>引子<br>
+        网络是一个共享的资源，但我在自己的学习生涯中浪费大量的时间去搜索可用的资料，在现实生活中花费了大量的金钱和时间在书店中寻找资料，于是我给自己起了个昵称DancingWind，其意义是想风一样从各个知识的站点中吸取成长的养料。在飘荡了多年之后，我决定把自己收集的资料整理为一个统一的资源库。</p>
+      <p>版权声明<br>
+        所有DancingWind发表的内容，大多都来自共享的资源，所以我没有资格把它们据为己有，或声称自己为这些资源作出了一点贡献。故任何人都可以复制，修改，重新发表，甚至以自己的名义发表，我都不会追究，但你在做以上事情的时候必须保证内容的完整性，给后来的人一个完整的教程。最后，任何人不能以这些资料的任何部分，谋取任何形式的报酬。</p>
+      <p>发展计划<br>
+        在国外，很多资料都是很多人花费几年的时间慢慢积累起来的。如果任何人有兴趣与别人共享你的知识，我很欢迎你与我联系，但你必须同意我上面的声明。</p>
+            <p>感谢<br>
+              感谢我的母亲一直以来对我的支持和在生活上的照顾。<br>
+              感谢我深爱的女友田芹，一直以来默默的在精神上和生活中对我的支持，她甚至把买衣服的钱都用来给我买书了，她真的是我见过的最好的女孩，希望我能带给她幸福。</p>
+            <p>资源下载: <br>
+              文档 <a href="javascript:if(confirm('http://www.owlei.com/DancingWind/Res/mht/NeHe%20OpenGL%20Chinese%20Course%2035.mht  \n\nThis file was not retrieved by Teleport Pro, because the server reports that this file cannot be found.  \n\nDo you want to open it from the server?'))window.location='http://www.owlei.com/DancingWind/Res/mht/NeHe%20OpenGL%20Chinese%20Course%2035.mht'" tppabs="http://www.owlei.com/DancingWind/Res/mht/NeHe%20OpenGL%20Chinese%20Course%2035.mht">网页格式</a> 
+              <a href="javascript:if(confirm('http://www.owlei.com/DancingWind/Res/pdf/OpenGL_Nehe_Course_Tutorial_35.pdf  \n\nThis file was not retrieved by Teleport Pro, because the server reports that this file cannot be found.  \n\nDo you want to open it from the server?'))window.location='http://www.owlei.com/DancingWind/Res/pdf/OpenGL_Nehe_Course_Tutorial_35.pdf'" tppabs="http://www.owlei.com/DancingWind/Res/pdf/OpenGL_Nehe_Course_Tutorial_35.pdf">PDF格式</a><br>
+              源码 <a href="javascript:if(confirm('http://www.owlei.com/DancingWind/Res/Src/35_avi.rar  \n\nThis file was not retrieved by Teleport Pro, because the server reports that this file cannot be found.  \n\nDo you want to open it from the server?'))window.location='http://www.owlei.com/DancingWind/Res/Src/35_avi.rar'" tppabs="http://www.owlei.com/DancingWind/Res/Src/35_avi.rar">RAR格式</a></p></td>
+  </tr>
+</table>
+      <FONT face=Tahoma,Verdana,sans-serif size=-1>
+      <table border="0" width="100%">
+        <td width="50%" align="left"><b><font size="-1"><a href="Tutorial_34.htm" tppabs="http://www.owlei.com/DancingWind/Course/Tutorial_34.htm">< 
+          第34课 </a></font></b></td>
+        <td width="50%" align="right"><b><font size="-1"><a href="Tutorial_36.htm" tppabs="http://www.owlei.com/DancingWind/Course/Tutorial_36.htm">第36课 
+          ></a></font></b></td>
+      </table>
+      </font></td>
+    <td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table>
+
+</body>
+</html>

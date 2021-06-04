@@ -1,0 +1,392 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN">
+<html>
+<head>
+<title>Untitled</title>
+<link rel="stylesheet" type="text/css" href="standard-1.css" tppabs="http://www.yabasic.de/old/yabasic263/standard.css">
+<meta name="author" content="Marc-Oliver Ihm">
+<meta name="generator" content="Namo WebEditor v3.0">
+<style><!--
+p { margin-left: 0pt;}
+A:link { color:black; text-decoration:none; }
+A:visited { color:black; text-decoration:none; }
+A:active { color:black; text-decoration:none; }
+A:hover { color:black; text-decoration:none; }
+--></style>
+<script language="JavaScript">
+<!--
+function namo_list(parent, visible, width, height, font, size, fgColor, bgColor, indent, hbgColor) {
+  this.additem = namo_l_additem;
+  this.addlist = namo_l_addlist;
+  this.make    = namo_l_make;
+  this.write   = namo_l_write;
+  this.show    = namo_l_show;
+  this.update  = namo_l_update;
+  this.updateparent = namo_l_updateparent;
+  this.items = new Array();
+  this.id = document.namo_lists.length;
+  this.parent_id = 0;
+  this.x = 0;
+  this.y = 0;
+  this.visible = visible;
+  this.width    = width;
+  this.height   = height;
+  this.parent   = parent;
+  this.indent = indent;
+  this.bgColor  = bgColor;
+  this.hbgColor = hbgColor;
+  this.font_start = '<font color=' + fgColor;
+  if (font != '') this.font_start += ' face=\"' + font + '\"';
+  if (size != '') this.font_start += ' size=' + size;
+  this.font_start += '>';
+  this.font_end = '</font>';
+  this.made     = false;
+  this.shown    = false;
+  document.namo_lists[document.namo_lists.length] = this;
+}
+
+function namo_l_setclip(layer, left, right, top, bottom) {
+  if (navigator.appName == 'Netscape') {
+    layer.clip.left   = left; 
+    layer.clip.right  = right;
+    layer.clip.top    = top;  
+    layer.clip.bottom = bottom;
+  } else {    
+    layer.style.pixelWidth  = right-left;
+    layer.style.pixelHeight = bottom-top;
+    layer.style.clip  = "rect(" + top + "," + right + "," + bottom + "," + left + ")";
+  }
+}
+
+function namo_l_write() {
+  var layer, clip, str;
+  for(var i = 0; i < this.items.length; i++) { 
+    layer = this.items[i];
+    if (navigator.appName == 'Netscape') 
+      layer.visibility = "hidden";
+    else 
+      layer.style.visibility = "hidden";
+    str = "";
+
+    str += "<table nowrap border='0' cellpadding='0' cellspacing='0'><tr>";
+    if (0 < this.indent) str += "<td width="+this.indent+" nowrap>&nbsp;</td>";
+    if (layer.type == 'list') {
+      str += "<td width=15 valign='middle' nowrap><a"
+      if (navigator.appName == 'Netscape') str += " href=\"javascript:void(0);\""
+      str += " onclick=\"namo_l_expand("+layer.list.id+");\"><img src=\"closed.gif\" name=\"_img"+layer.list.id+"\" border='0'></a></td>";
+    } else {
+      str += "<td width=15 nowrap>&nbsp;</td>";
+    }
+    str += "<td nowrap valign='middle' align='left'>";
+    if (this.font_start) str += this.font_start;
+    str += "<a href='"+layer.url+"' target='"+layer.frame+"' style='text-decoration:none;'>"+layer.text+"</a>";
+    if (this.font_end) str += this.font_end;
+    str += "</td></tr></table>";
+
+    if (navigator.appName == 'Netscape') {
+      layer.document.writeln(str);
+      layer.document.close();
+    } else {
+      layer.innerHTML = str;
+    }
+    if (layer.type == 'list' && layer.list.visible)
+      this.items[i].list.write();
+  }
+  this.made = true;
+}
+
+function namo_l_show() {
+  var layer;
+  for(var i = 0; i < this.items.length; i++) { 
+    layer = this.items[i];
+    namo_l_setclip(layer, 0, this.width, 0, this.height-1);
+    if (navigator.appName == 'Netscape') {
+      if (layer.oBgColor) layer.document.bgColor = layer.oBgColor;
+      else layer.document.bgColor = this.bgColor;
+    } else {
+      if (layer.oBgColor) layer.style.backgroundColor = layer.oBgColor;
+      else layer.style.backgroundColor = this.bgColor;
+    }
+    if (layer.type == 'list' && layer.list.visible)
+      layer.list.show();
+  }
+  this.shown = true;
+}
+
+function namo_l_update(parent_visible, x, y) {
+  var top = y, layer, list;
+  for(var i = 0; i < this.items.length; i++) { 
+    layer = this.items[i];
+    list  = layer.list;
+    if (this.visible && parent_visible) {
+      if (navigator.appName == 'Netscape') {
+ layer.visibility = "visible";
+ layer.top = top;
+ layer.left = x;
+      } else {
+ layer.style.visibility = "visible";
+ layer.style.pixelTop = top;
+ layer.style.pixelLeft = x;
+      }
+      top += this.height;
+    } else {
+      if (navigator.appName == 'Netscape') layer.visibility = "hidden";
+      else layer.style.visibility = "hidden";
+    }
+    if (layer.type == 'list') {
+      if (list.visible) {
+        if (!list.made)  list.write();
+        if (!list.shown) list.show();
+        if (navigator.appName == 'Netscape') layer.document.images[0].src = "closed.gif"/*tpa=http://www.yabasic.de/old/yabasic263/closed.gif*/;
+ else eval('document.images._img'+list.id+'.src = "closed.gif"/*tpa=http://www.yabasic.de/old/yabasic263/closed.gif*/');
+      } else {
+ if (navigator.appName == 'Netscape') layer.document.images[0].src = "open.gif"/*tpa=http://www.yabasic.de/old/yabasic263/open.gif*/;
+ else eval('document.images._img'+list.id+'.src = "open.gif"/*tpa=http://www.yabasic.de/old/yabasic263/open.gif*/');
+      }
+      if (list.made)
+        top = list.update(this.visible && parent_visible, x, top);
+    }
+  }
+  return top;
+}
+
+function namo_l_updateparent(parent_id) {
+  this.parent_id = parent_id;
+  for(var i = 0; i < this.items.length; i++)
+    if (this.items[i].type == 'list')
+      this.items[i].list.updateparent(parent_id);
+}
+
+function namo_l_expand(i) {
+  document.namo_lists[i].visible = !document.namo_lists[i].visible;
+  list = document.namo_lists[document.namo_lists[i].parent_id];
+  list.update(true, list.x, list.y);
+}
+
+function namo_l_make(x, y) {
+  this.updateparent(this.id);
+  this.write();
+  this.show();
+  this.update(true, x, y);
+  this.x = x; 
+  this.y = y;
+}
+
+function namo_l_additem(text, url, frame) {
+  var layer = null;
+  if (navigator.appName == 'Netscape' && this.parent)
+    layer = eval('this.parent.document.layers.namolistitem'+document.namo_lists.lid);
+  else
+    layer = eval('document.all.namolistitem'+document.namo_lists.lid);
+  if (layer == null) {
+    if (navigator.appName == 'Netscape') 
+      layer = this.parent ? new Layer(this.width, this.parent) : new Layer(this.width);
+  }
+  if (layer == null) return;
+
+  if (url)   layer.url   = url;
+  if (frame) layer.frame = frame;
+  layer.type = 'item';
+  layer.text = text;
+  this.items[this.items.length] = layer;
+  if (this.hbgColor) layer.hbgColor = this.hbgColor;
+  if (this.bgColor)  layer.oBgColor = this.bgColor;
+
+  if (layer.captureEvents)
+    layer.captureEvents(Event.MOUSEOVER|Event.MOUSEOUT|Event.MOUSEUP);
+  layer.onmouseover = namo_l_onmouseover;
+  layer.onmouseout  = namo_l_onmouseout;
+  document.namo_lists.lid++;
+}
+
+function namo_l_addlist(list, text, url, frame) {
+  var layer = null;
+
+  if (navigator.appName == 'Netscape' && this.parent)
+    layer = eval('this.parent.document.layers.namolistitem'+document.namo_lists.lid);
+  else
+    layer = eval('document.all.namolistitem'+document.namo_lists.lid);
+  if (layer == null) {
+    if (navigator.appName == 'Netscape') 
+      layer = this.parent ? new Layer(this.width, this.parent) : new Layer(this.width);
+  }
+  if (layer == null) return;
+
+  if (url)   layer.url   = url;
+  if (frame) layer.frame = frame;
+  layer.list = list;
+  layer.type = 'list';
+  layer.text = text;
+  this.items[this.items.length] = layer;
+  list.parent = this;
+  if (this.hbgColor) layer.hbgColor = this.hbgColor;
+  if (this.bgColor)  layer.oBgColor = this.bgColor;
+
+  if (layer.captureEvents)
+    layer.captureEvents(Event.MOUSEOVER|Event.MOUSEOUT|Event.MOUSEUP);
+  layer.onmouseover = namo_l_onmouseover;
+  layer.onmouseout  = namo_l_onmouseout;
+  document.namo_lists.lid++;
+}
+
+function namo_l_onmouseover()
+{
+  if (this.hbgColor) {
+    if (navigator.appName == 'Netscape')
+      this.bgColor = this.hbgColor;
+    else
+      this.style.backgroundColor = this.hbgColor;
+  }
+  if (this.url) self.status = this.url;
+}
+
+function namo_l_onmouseout()
+{
+  if (this.hbgColor) {
+    if (navigator.appName == 'Netscape') 
+      this.bgColor = this.oBgColor;
+    else 
+      this.style.backgroundColor = this.oBgColor;
+  }
+  if (this.url) self.status = '';
+}
+
+function namo_l_onmouseup()
+{
+  if (this.url) {
+    if (this.frame == 'blank') {
+     window.open(this.url, 'win1');
+    } else {
+      var frame_obj;
+      if ((frame_obj = eval(this.frame)) != null)
+        frame_obj.location = this.url;
+    }
+  }
+}
+
+function namo_init_list(top_layer)
+{
+  if (parseInt(navigator.appVersion) < 4)
+    return;
+
+  document.namo_lists     = new Array();
+  document.namo_lists.lid = 0;
+
+  var layer;
+  if (navigator.appName == 'Netscape')
+    layer = document.layers[top_layer];
+  else
+    layer = document.all[top_layer];
+
+  l1 = new namo_list(layer, true, 150, 22, 'Verdana', '2', 'black', '#30D0C8', 0, '#fff000');
+    l2 = new namo_list(layer, false, 150, 20, 'Verdana', '1', 'black', '#30D0C8', 4, '#fff000');
+    l2.additem('Windows Binaries', 'download.htm#binwin', 'detail');
+    l2.additem('Linux Binaries', 'download.htm#binlin', 'detail');
+    l2.additem('Unix Sources', 'download.htm#sourceunix', 'detail');
+    l2.additem('Windows Sources', 'download.htm#sourcewin', 'detail');
+  l1.addlist(l2, 'Download', 'http://www.yabasic.de/old/yabasic263/download.htm', 'detail');
+    l3 = new namo_list(layer, false, 150, 20, 'Verdana', '1', 'black', '#30D0C8', 4, '#fff000');
+    l3.additem('Whats new ?', 'whatsnew.htm#whatsnew', 'detail');
+    l3.additem('Yab in a Nutshell', 'whatsnew.htm#nutshell', 'detail');
+    l3.additem('FAQ', 'http://www.yabasic.de/old/yabasic263/faq.htm', 'detail');
+    l3.additem('History of Yabasic', 'http://www.yabasic.de/old/yabasic263/history.htm', 'detail');
+    l3.additem('Log of changes', 'http://www.yabasic.de/old/yabasic263/log.htm', 'detail');
+    l3.additem('Manual of Yabasic', 'http://www.yabasic.de/old/yabasic263/yabasic.htm', 'detail');
+    l3.additem('... auch auf Deutsch', 'http://www.yabasic.de/old/yabasic263/yabasic_de.htm', 'detail');
+    l3.additem('Guide into the Guts', 'http://www.yabasic.de/old/yabasic263/guts.htm', 'detail');
+  l1.addlist(l3, 'Documentation', 'whatsnew-1.htm'/*tpa=http://www.yabasic.de/old/yabasic263/whatsnew.htm*/, 'detail');
+    l4 = new namo_list(layer, false, 150, 20, 'Verdana', '1', 'black', '#30D0C8', 4, '#fff000');
+    l4.additem('Mailing list', 'http://www.onelist.com/community/yabasic', '_parent');
+    l4.additem('FAQ', 'http://www.yabasic.de/old/yabasic263/faq.htm', 'detail');
+  l1.addlist(l4, 'Support', 'http://www.yabasic.de/old/yabasic263/support.htm', 'detail');
+    l5 = new namo_list(layer, false, 150, 20, 'Verdana', '1', 'black', '#30D0C8', 4, '#fff000');
+    l5.additem('Gnu Public License', 'http://www.yabasic.de/old/yabasic263/gpl.htm', 'detail');
+    l5.additem('Artistic License', 'http://www.yabasic.de/old/yabasic263/artistic.htm', 'detail');
+  l1.addlist(l5, 'Copyright', 'http://www.yabasic.de/old/yabasic263/copyright.htm', 'detail');
+    l6 = new namo_list(layer, false, 150, 20, 'Verdana', '1', 'black', '#30D0C8', 4, '#fff000');
+    l6.additem('Yabedit', 'http://www.rovoscape.com/yabedit', '_parent');
+    l6.additem('Yabasic Realms', 'http://www.rovoscape.com/yabasicrealms', '_parent');
+    l6.additem('Programs and Libaries', 'http://underworld.fortunecity.com/redalert/259/yabasic/', '_parent');
+    l6.additem('Other Yabasic Sites', 'related.htm#dedicated', 'detail');
+    l6.additem('Other Basic Sites', 'related.htm#other', 'detail');
+  l1.addlist(l6, 'Related Sites', 'http://www.yabasic.de/old/yabasic263/related.htm', 'detail');
+    l7 = new namo_list(layer, false, 150, 20, 'Verdana', '1', 'black', '#30D0C8', 4, '#fff000');
+    l7.additem('Sybilles Homepage', 'http://www.yabasic.de/old/yabasic263/sybille/default.htm', '_parent');
+  l1.addlist(l7, 'Not Yabasic', 'http://www.yabasic.de/old/yabasic263/other.htm', 'detail');
+  l1.additem('About me', 'http://www.yabasic.de/old/yabasic263/aboutme.htm', 'detail');
+
+  l1.make(0, 14);
+}
+
+//-->
+</script></head>
+
+<body bgcolor="#30D0C8" text="black" link="blue" vlink="purple" alink="red" onload="namo_init_list('layer1');">
+
+<p align="left"><div id="layer1" style="position:absolute; left:12px; top:8px; width:200px; height:480px; z-index:1; border-width:1px; border-style:none;">
+    <p><div id="namolistitem0" style="position:absolute; left:350px; top:50px; width:200px; height:200px; z-index:1; border-width:1px; border-style:none;">
+        <p>&nbsp;</p>
+    </div> <div id="namolistitem1" style="position:absolute; left:350px; top:350px; width:200px; height:200px; z-index:1; border-width:1px; border-style:none;">
+        <p>&nbsp;</p>
+    </div> <div id="namolistitem2" style="position:absolute; left:350px; top:350px; width:200px; height:200px; z-index:1; border-width:1px; border-style:none;">
+        <p>&nbsp;</p>
+    </div> <div id="namolistitem3" style="position:absolute; left:350px; top:350px; width:200px; height:200px; z-index:1; border-width:1px; border-style:none;">
+        <p>&nbsp;</p>
+    </div> <div id="namolistitem4" style="position:absolute; left:350px; top:350px; width:200px; height:200px; z-index:1; border-width:1px; border-style:none;">
+        <p>&nbsp;</p>
+    </div> <div id="namolistitem5" style="position:absolute; left:350px; top:350px; width:200px; height:200px; z-index:1; border-width:1px; border-style:none;">
+        <p>&nbsp;</p>
+    </div> <div id="namolistitem6" style="position:absolute; left:350px; top:350px; width:200px; height:200px; z-index:1; border-width:1px; border-style:none;">
+        <p>&nbsp;</p>
+    </div> <div id="namolistitem7" style="position:absolute; left:350px; top:350px; width:200px; height:200px; z-index:1; border-width:1px; border-style:none;">
+        <p>&nbsp;</p>
+    </div> <div id="namolistitem8" style="position:absolute; left:350px; top:350px; width:200px; height:200px; z-index:1; border-width:1px; border-style:none;">
+        <p>&nbsp;</p>
+    </div> <div id="namolistitem9" style="position:absolute; left:350px; top:350px; width:200px; height:200px; z-index:1; border-width:1px; border-style:none;">
+        <p>&nbsp;</p>
+    </div> <div id="namolistitem10" style="position:absolute; left:350px; top:350px; width:200px; height:200px; z-index:1; border-width:1px; border-style:none;">
+        <p>&nbsp;</p>
+    </div> <div id="namolistitem11" style="position:absolute; left:350px; top:350px; width:200px; height:200px; z-index:1; border-width:1px; border-style:none;">
+        <p>&nbsp;</p>
+    </div> <div id="namolistitem12" style="position:absolute; left:350px; top:350px; width:200px; height:200px; z-index:1; border-width:1px; border-style:none;">
+        <p>&nbsp;</p>
+    </div> <div id="namolistitem13" style="position:absolute; left:350px; top:350px; width:200px; height:200px; z-index:1; border-width:1px; border-style:none;">
+        <p>&nbsp;</p>
+    </div> <div id="namolistitem14" style="position:absolute; left:350px; top:350px; width:200px; height:200px; z-index:1; border-width:1px; border-style:none;">
+        <p>&nbsp;</p>
+    </div> <div id="namolistitem15" style="position:absolute; left:350px; top:350px; width:200px; height:200px; z-index:1; border-width:1px; border-style:none;">
+        <p>&nbsp;</p>
+    </div> <div id="namolistitem16" style="position:absolute; left:350px; top:350px; width:200px; height:200px; z-index:1; border-width:1px; border-style:none;">
+        <p>&nbsp;</p>
+    </div> <div id="namolistitem17" style="position:absolute; left:350px; top:350px; width:200px; height:200px; z-index:1; border-width:1px; border-style:none;">
+        <p>&nbsp;</p>
+    </div> <div id="namolistitem18" style="position:absolute; left:350px; top:350px; width:200px; height:200px; z-index:1; border-width:1px; border-style:none;">
+        <p>&nbsp;</p>
+    </div> <div id="namolistitem19" style="position:absolute; left:350px; top:350px; width:200px; height:200px; z-index:1; border-width:1px; border-style:none;">
+        <p>&nbsp;</p>
+    </div> <div id="namolistitem20" style="position:absolute; left:350px; top:350px; width:200px; height:200px; z-index:1; border-width:1px; border-style:none;">
+        <p>&nbsp;</p>
+    </div> <div id="namolistitem21" style="position:absolute; left:350px; top:350px; width:200px; height:200px; z-index:1; border-width:1px; border-style:none;">
+        <p>&nbsp;</p>
+    </div> <div id="namolistitem22" style="position:absolute; left:350px; top:350px; width:200px; height:200px; z-index:1; border-width:1px; border-style:none;">
+        <p>&nbsp;</p>
+    </div> <div id="namolistitem23" style="position:absolute; left:350px; top:350px; width:200px; height:200px; z-index:1; border-width:1px; border-style:none;">
+        <p>&nbsp;</p>
+    </div> <div id="namolistitem24" style="position:absolute; left:350px; top:350px; width:200px; height:200px; z-index:1; border-width:1px; border-style:none;">
+        <p>&nbsp;</p>
+    </div> <div id="namolistitem25" style="position:absolute; left:350px; top:350px; width:200px; height:200px; z-index:1; border-width:1px; border-style:none;">
+        <p>&nbsp;</p>
+    </div> <div id="namolistitem26" style="position:absolute; left:350px; top:350px; width:200px; height:200px; z-index:1; border-width:1px; border-style:none;">
+        <p>&nbsp;</p>
+    </div> <div id="namolistitem27" style="position:absolute; left:350px; top:350px; width:200px; height:200px; z-index:1; border-width:1px; border-style:none;">
+        <p>&nbsp;</p>
+    </div> <div id="namolistitem28" style="position:absolute; left:350px; top:350px; width:200px; height:200px; z-index:1; border-width:1px; border-style:none;">
+        <p>&nbsp;</p>
+    </div> <div id="namolistitem29" style="position:absolute; left:350px; top:350px; width:200px; height:200px; z-index:1; border-width:1px; border-style:none;">
+        <p>&nbsp;</p>
+    </div> </p>
+    <p>&nbsp;</p>
+    <p>&nbsp;</p>
+</div></p>
+</body>
+
+</html>

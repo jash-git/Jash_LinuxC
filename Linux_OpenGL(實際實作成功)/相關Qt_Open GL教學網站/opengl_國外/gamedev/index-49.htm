@@ -1,0 +1,443 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+    dir="ltr"
+    xml:lang="en"
+    lang="en">
+  <head>
+    <title>NeHe Productions: Moving Bitmaps In 3D Space</title>
+
+    <link rel="stylesheet" type="text/css" href="public_base.css" tppabs="http://nehe.gamedev.net/static/css/public_base.css" />
+    <link type="text/css" rel="stylesheet" href="shThemeMidnight.css" tppabs="http://nehe.gamedev.net/static/css/syntax_highlighter/shThemeMidnight.css"/>
+    
+    <link rel="alternate" type="application/atom+xml" title="Atom feed" href="index-1.htm" tppabs="http://nehe.gamedev.net/atom/" />
+    <link rel="alternate" type="application/rss+xml" title="RSS feed" href="index-2.htm" tppabs="http://nehe.gamedev.net/rss/" />
+    
+    <meta name="author" content="Luke Benstead + Carsten Haubold" />
+    <meta name="description" content="OpenGL Tutorials, Demos, Games and More..." />
+    <meta name="keywords" content="opengl, tutorial, article, demo, game, blend, texturemap, lighting, contest, 3D" />
+
+    
+    
+
+    
+
+</script>
+
+
+    
+    
+    
+    
+        
+        <script type='text/javascript'>
+        var googletag = googletag || {};
+        googletag.cmd = googletag.cmd || [];
+        (function() {
+        var gads = document.createElement('script');
+        gads.async = true;
+        gads.type = 'text/javascript';
+        var useSSL = 'https:' == document.location.protocol;
+        gads.src = (useSSL ? 'https:' : 'http:') + 
+        '//www.googletagservices.com/tag/js/gpt.js';
+        var node = document.getElementsByTagName('script')[0];
+        node.parentNode.insertBefore(gads, node);
+        })();
+        </script>
+
+        <script type='text/javascript'>
+        googletag.cmd.push(function() {
+        googletag.defineSlot('/1004699/Leaderboard_NeHe', [728, 90], 'div-gpt-ad-1327940144417-0').addService(googletag.pubads());
+        googletag.defineSlot('/1004699/Skyscraper_NeHe', [160, 600], 'div-gpt-ad-1327940144417-1').addService(googletag.pubads());
+        googletag.pubads().enableSingleRequest();
+        googletag.enableServices();
+        });
+        </script>
+    
+    
+
+    
+  </head>
+
+  <body>
+    
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "all.js#xfbml=1"/*tpa=http://connect.facebook.net/en_GB/all.js#xfbml=1*/;
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+
+
+    <table cellpadding="0" cellspacing="0" border="0" id="layout_table">
+    <tr><td>
+        <div id="header">
+                <a href="index.htm" tppabs="http://nehe.gamedev.net/"><img class="logo" class="logo" src="nehe.png" tppabs="http://nehe.gamedev.net/static/images/nehe.png" border="0" alt="Nehe" /></a>
+        </div>            
+    </td></tr>
+    <tr><td colspan="2">
+            
+<div class="navbar">
+    <a href="index.htm" tppabs="http://nehe.gamedev.net/">HOME</a>
+    <a href="javascript:if(confirm('http://twitter.com/  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://twitter.com/#!/nehegl'" tppabs="http://twitter.com/#!/nehegl">TWITTER</a>  
+    <a href="javascript:if(confirm('http://www.facebook.com/pages/NeHe/300582493323181  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://www.facebook.com/pages/NeHe/300582493323181'" tppabs="http://www.facebook.com/pages/NeHe/300582493323181">FACEBOOK</a>     
+    <a href="index-2.htm" tppabs="http://nehe.gamedev.net/rss/">RSS</a>    
+    <a href="index-1.htm" tppabs="http://nehe.gamedev.net/atom/">ATOM</a>    
+    <a href="javascript:if(confirm('http://www.gamedev.net/forum/27-nehe-productions/page__forum_title__NeHe+Productions  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://www.gamedev.net/forum/27-nehe-productions/page__forum_title__NeHe+Productions'" tppabs="http://www.gamedev.net/forum/27-nehe-productions/page__forum_title__NeHe+Productions">FORUM</a>    
+</div>
+    
+    </td></tr>
+    <tr>
+        <td class="col1">
+
+            
+<div id="article_container">
+
+
+<h1 class="article-header">Moving Bitmaps In 3D Space</h1>
+<div class="social-media">
+<!-- Place this tag where you want the +1 button to render -->
+<div class="g-plusone" data-size="medium" data-width="120" data-annotation="inline"></div>
+<div class="fb-like" data-send="false" data-layout="button_count" data-width="60" data-show-faces="false" data-colorscheme="dark" data-font="arial"></div>
+</div>
+<div style="clear:both;"></div>
+<p>Welcome to Tutorial 9. By now you should have a very good understanding of OpenGL. You've learned everything from setting up an OpenGL Window, to texture mapping a spinning object while using lighting and blending. This will be the first semi-advanced tutorial. You'll learn the following: Moving bitmaps around the screen in 3D, removing the black pixels around the bitmap (using blending), adding color to a black &amp; white texture and finally you'll learn how to create fancy colors and simple animation by mixing different colored textures together.</p>
+<p>We'll be modifying the code from lesson one for this tutorial. We'll start off by adding a few new variables to the beginning of the program. I'll rewrite the entire section of code so it's easier to see where the changes are being made.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">#include	&lt;windows.h&gt;					// Header File For Windows
+#include	&lt;stdio.h&gt;					// Header File For Standard Input/Output
+#include	&lt;gl\gl.h&gt;					// Header File For The OpenGL32 Library
+#include	&lt;gl\glu.h&gt;					// Header File For The GLu32 Library
+#include	&lt;gl\glaux.h&gt;					// Header File For The GLaux Library
+
+HDC		hDC=NULL;					// Private GDI Device Context
+HGLRC		hRC=NULL;					// Permanent Rendering Context
+HWND		hWnd=NULL;					// Holds Our Window Handle
+HINSTANCE	hInstance;					// Holds The Instance Of The Application
+
+bool		keys[256];					// Array Used For The Keyboard Routine
+bool		active=TRUE;					// Window Active Flag Set To TRUE By Default
+bool		fullscreen=TRUE;				// Fullscreen Flag Set To Fullscreen Mode By Default
+</pre>
+<p>The following lines are new. twinkle and tp are BOOLean variables meaning they can be TRUE or FALSE. twinkle will keep track of whether or not the twinkle effect has been enabled. tp is used to check if the 'T' key has been pressed or released. (pressed tp=TRUE, relased tp=FALSE).</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">BOOL	twinkle;						// Twinkling Stars
+BOOL	tp;							// 'T' Key Pressed?
+</pre>
+<p>num will keep track of how many stars we draw to the screen. It's defined as a CONSTant. This means it can never change within the code. The reason we define it as a constant is because you can not redefine an array. So if we've set up an array of only 50 stars and we decided to increase num to 51 somewhere in the code, the array can not grow to 51, so an error would occur. You can change this value to whatever you want it to be in this line only. Don't try to change the value of num later on in the code unless you want disaster to occur.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">const	num=50;							// Number Of Stars To Draw
+</pre>
+<p>Now we create a structure. The word structure sounds intimidating, but it's not really. A structure is a group simple data (variables, etc) representing a larger similar group. In english :) We know that we're keeping track of stars. You'll see that the 7th line below is stars;. We know each star will have 3 values for color, and all these values will be integer values. The 3rd line int r,g,b sets up 3 integer values. One for red (r), one for green (g), and one for blue (b). We know each star will be a different distance from the center of the screen, and can be place at one of 360 different angles from the center. If you look at the 4th line below, we make a floating point value called dist. This will keep track of the distance. The 5th line creates a floating point value called angle. This will keep track of the stars angle.</p>
+<p>So now we have this group of data that describes the color, distance and angle of a star on the screen. Unfortunately we have more than one star to keep track of. Instead of creating 50 red values, 50 green values, 50 blue values, 50 distance values and 50 angle values, we just create an array called star. Each number in the star array will hold all of the information in our structure called stars. We make the star array in the 8th line below. If we break down the 8th line: stars star[num]. This is what we come up with. The type of array is going to be stars. stars is a structure. So the array is going to hold all of the information in the structure. The name of the array is star. The number of arrays is [num]. So because num=50, we now have an array called star. Our array stores the elements of the structure stars. Alot easier than keeping track of each star with seperate variables. Which would be a very stupid thing to do, and would not allow us to add remove stars by changing the const value of num.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">typedef struct							// Create A Structure For Star
+{
+	int r, g, b;						// Stars Color
+	GLfloat dist;						// Stars Distance From Center
+	GLfloat angle;						// Stars Current Angle
+}
+stars;								// Structures Name Is Stars
+stars star[num];						// Make 'star' Array Of 'num' Using Info From The Structure 'stars'
+</pre>
+<p>Next we set up variables to keep track of how far away from the stars the viewer is (zoom), and what angle we're seeing the stars from (tilt). We make a variable called spin that will spin the twinkling stars on the z axis, which makes them look like they are spinning at their current location.</p>
+<p>loop is a variable we'll use in the program to draw all 50 stars, and texture[1] will be used to store the one b&amp;w texture that we load in. If you wanted more textures, you'd increase the value from one to however many textures you decide to use.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">GLfloat	zoom=-15.0f;						// Viewing Distance Away From Stars
+GLfloat tilt=90.0f;						// Tilt The View
+GLfloat	spin;							// Spin Twinkling Stars
+
+GLuint	loop;							// General Loop Variable
+GLuint	texture[1];						// Storage For One Texture
+
+LRESULT	CALLBACK WndProc(HWND, UINT, WPARAM, LPARAM);		// Declaration For WndProc
+</pre>
+<p>Right after the line above we add code to load in our texture. I shouldn't have to explain the code in great detail. It's the same code we used to load the textures in lesson 6, 7 and 8. The bitmap we load this time is called star.bmp. We generate only one texture using glGenTextures(1, &amp;texture[0]). The texture will use linear filtering.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">AUX_RGBImageRec *LoadBMP(char *Filename)			// Loads A Bitmap Image
+{
+	FILE *File=NULL;					// File Handle
+
+	if (!Filename)						// Make Sure A Filename Was Given
+	{
+		return NULL;					// If Not Return NULL
+	}
+
+	File=fopen(Filename,"r");				// Check To See If The File Exists
+
+	if (File)						// Does The File Exist?
+	{
+		fclose(File);					// Close The Handle
+		return auxDIBImageLoad(Filename);		// Load The Bitmap And Return A Pointer
+	}
+	return NULL;						// If Load Failed Return NULL
+}
+</pre>
+<p>This is the section of code that loads the bitmap (calling the code above) and converts it into a textures. Status is used to keep track of whether or not the texture was loaded and created.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">int LoadGLTextures()						// Load Bitmaps And Convert To Textures
+{
+	int Status=FALSE;					// Status Indicator
+
+	AUX_RGBImageRec *TextureImage[1];			// Create Storage Space For The Texture
+
+	memset(TextureImage,0,sizeof(void *)*1);		// Set The Pointer To NULL
+
+	// Load The Bitmap, Check For Errors, If Bitmap's Not Found Quit
+	if (TextureImage[0]=LoadBMP("Data/Star.bmp"))
+	{
+		Status=TRUE;					// Set The Status To TRUE
+
+		glGenTextures(1, &amp;texture[0]);			// Create One Texture
+
+		// Create Linear Filtered Texture
+		glBindTexture(GL_TEXTURE_2D, texture[0]);
+		glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_LINEAR);
+		glTexImage2D(GL_TEXTURE_2D, 0, 3, TextureImage[0]-&gt;sizeX, TextureImage[0]-&gt;sizeY, 0, GL_RGB, GL_UNSIGNED_BYTE, TextureImage[0]-&gt;data);
+	}
+
+	if (TextureImage[0])					// If Texture Exists
+	{
+		if (TextureImage[0]-&gt;data)			// If Texture Image Exists
+		{
+			free(TextureImage[0]-&gt;data);		// Free The Texture Image Memory
+		}
+
+		free(TextureImage[0]);				// Free The Image Structure
+	}
+
+	return Status;						// Return The Status
+}
+</pre>
+<p>Now we set up OpenGL to render the way we want. We're not going to be using Depth Testing in this project, so make sure if you're using the code from lesson one that you remove glDepthFunc(GL_LEQUAL); and glEnable(GL_DEPTH_TEST); otherwise you'll see some very bad results. We're using texture mapping in this code however so you'll want to make sure you add any lines that are not in lesson 1. You'll notice we're enabling texture mapping, along with blending.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">int InitGL(GLvoid)						// All Setup For OpenGL Goes Here
+{
+	if (!LoadGLTextures())					// Jump To Texture Loading Routine
+	{
+		return FALSE;					// If Texture Didn't Load Return FALSE
+	}
+
+	glEnable(GL_TEXTURE_2D);				// Enable Texture Mapping
+	glShadeModel(GL_SMOOTH);				// Enable Smooth Shading
+	glClearColor(0.0f, 0.0f, 0.0f, 0.5f);			// Black Background
+	glClearDepth(1.0f);					// Depth Buffer Setup
+	glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);	// Really Nice Perspective Calculations
+	glBlendFunc(GL_SRC_ALPHA,GL_ONE);			// Set The Blending Function For Translucency
+	glEnable(GL_BLEND);					// Enable Blending
+</pre>
+<p>The following code is new. It sets up the starting angle, distance, and color of each star. Notice how easy it is to change the information in the structure. The loop will go through all 50 stars. To change the angle of star[1] all we have to do is say star[1].angle={some number} . It's that simple!</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	for (loop=0; loop&lt;num; loop++)				// Create A Loop That Goes Through All The Stars
+	{
+		star[loop].angle=0.0f;				// Start All The Stars At Angle Zero
+</pre>
+<p>I calculate the distance by taking the current star (which is the value of loop) and dividing it by the maximum amount of stars there can be. Then I multiply the result by 5.0f. Basically what this does is moves each star a little bit farther than the previous star. When loop is 50 (the last star), loop divided by num will be 1.0f. The reason I multiply by 5.0f is because 1.0f*5.0f is 5.0f. 5.0f is the very edge of the screen. I don't want stars going off the screen so 5.0f is perfect. If you set the zoom further into the screen you could use a higher number than 5.0f, but your stars would be alot smaller (because of perspective).</p>
+<p>You'll notice that the colors for each star are made up of random values from 0 to 255. You might be wondering how we can use such large values when normally the colors are from 0.0f to 1.0f. When we set the color we'll use glColor4ub instead of glColor4f. ub means Unsigned Byte. A byte can be any value from 0 to 255. In this program it's easier to use bytes than to come up with a random floating point value.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">		star[loop].dist=(float(loop)/num)*5.0f;		// Calculate Distance From The Center
+		star[loop].r=rand()%256;			// Give star[loop] A Random Red Intensity
+		star[loop].g=rand()%256;			// Give star[loop] A Random Green Intensity
+		star[loop].b=rand()%256;			// Give star[loop] A Random Blue Intensity
+	}
+	return TRUE;						// Initialization Went OK
+}
+</pre>
+<p>The Resize code is the same, so we'll jump to the drawing code. If you're using the code from lesson one, delete the DrawGLScene code, and just copy what I have below. There's only 2 lines of code in lesson one anyways, so there's not a lot to delete.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">int DrawGLScene(GLvoid)						// Here's Where We Do All The Drawing
+{
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);	// Clear The Screen And The Depth Buffer
+	glBindTexture(GL_TEXTURE_2D, texture[0]);		// Select Our Texture
+
+	for (loop=0; loop&lt;num; loop++)				// Loop Through All The Stars
+	{
+		glLoadIdentity();				// Reset The View Before We Draw Each Star
+		glTranslatef(0.0f,0.0f,zoom);			// Zoom Into The Screen (Using The Value In 'zoom')
+		glRotatef(tilt,1.0f,0.0f,0.0f);			// Tilt The View (Using The Value In 'tilt')
+</pre>
+<p>Now we move the star. The star starts off in the middle of the screen. The first thing we do is spin the scene on the x axis. If we spin 90 degrees, the x axis will no longer run left to right, it will run into and out of the screen. As an example to help clarify. Imagine you were in the center of a room. Now imagine that the left wall had -x written on it, the front wall had -z written on it, the right wall had +x written on it, and the wall behind you had +z written on it. If the room spun 90 degrees to the right, but you did not move, the wall in front of you would no longer say -z it would say -x. All of the walls would have moved. -z would be on the right, +z would be on the left, -x would be in front, and +x would be behind you. Make sense? By rotating the scene, we change the direction of the x and z planes.</p>
+<p>The second line of code moves to a positive value on the x plane. Normally a positive value on x would move us to the right side of the screen (where +x usually is), but because we've rotated on the y plane, the +x could be anywhere. If we rotated by 180 degrees, it would be on the left side of the screen instead of the right. So when we move forward on the positive x plane, we could be moving left, right, forward or backward.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">		glRotatef(star[loop].angle,0.0f,1.0f,0.0f);	// Rotate To The Current Stars Angle
+		glTranslatef(star[loop].dist,0.0f,0.0f);	// Move Forward On The X Plane
+</pre>
+<p>Now for some tricky code. The star is actually a flat texture. Now if you drew a flat quad in the middle of the screen and texture mapped it, it would look fine. It would be facing you like it should. But if you rotated on the y axis by 90 degrees, the texture would be facing the right and left sides of the screen. All you'd see is a thin line. We don't want that to happen. We want the stars to face the screen all the time, no matter how much we rotate and tilt the screen.</p>
+<p>We do this by cancelling any rotations that we've made, just before we draw the star. You cancel the rotations in reverse order. So above we tilted the screen, then we rotated to the stars current angle. In reverse order, we'd un-rotate (new word) the stars current angle. To do this we use the negative value of the angle, and rotate by that. So if we rotated the star by 10 degrees, rotating it back -10 degrees will make the star face the screen once again on that axis. So the first line below cancels the rotation on the y axis. Then we need to cancel the screen tilt on the x axis. To do that we just tilt the screen by -tilt. After we've cancelled the x and y rotations, the star will face the screen completely.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">		glRotatef(-star[loop].angle,0.0f,1.0f,0.0f);	// Cancel The Current Stars Angle
+		glRotatef(-tilt,1.0f,0.0f,0.0f);		// Cancel The Screen Tilt
+</pre>
+<p>If twinkle is TRUE, we'll draw a non-spinning star on the screen. To get a different color, we take the maximum number of stars (num) and subtract the current stars number (loop), then subtract 1 because our loop only goes from 0 to num-1. If the result was 10 we'd use the color from star number 10. That way the color of the two stars is usually different. Not a good way to do it, but effective. The last value is the alpha value. The lower the value, the darker the star is.</p>
+<p>If twinkle is enabled, each star will be drawn twice. This will slow down the program a little depending on what type of computer you have. If twinkle is enabled, the colors from the two stars will mix together creating some really nice colors. Also because this star does not spin, it will appear as if the stars are animated when twinkling is enabled. (look for yourself if you don't understand what I mean).</p>
+<p>Notice how easy it is to add color to the texture. Even though the texture is black and white, it will become whatever color we select before we draw the texture. Also take note that we're using bytes for the color values rather than floating point numbers. Even the alpha value is a byte.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">		if (twinkle)					// Twinkling Stars Enabled
+		{
+			// Assign A Color Using Bytes
+			glColor4ub(star[(num-loop)-1].r,star[(num-loop)-1].g,star[(num-loop)-1].b,255);
+			glBegin(GL_QUADS);			// Begin Drawing The Textured Quad
+				glTexCoord2f(0.0f, 0.0f); glVertex3f(-1.0f,-1.0f, 0.0f);
+				glTexCoord2f(1.0f, 0.0f); glVertex3f( 1.0f,-1.0f, 0.0f);
+				glTexCoord2f(1.0f, 1.0f); glVertex3f( 1.0f, 1.0f, 0.0f);
+				glTexCoord2f(0.0f, 1.0f); glVertex3f(-1.0f, 1.0f, 0.0f);
+			glEnd();				// Done Drawing The Textured Quad
+		}
+</pre>
+<p>Now we draw the main star. The only difference from the code above is that this star is always drawn, and this star spins on the z axis.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">		glRotatef(spin,0.0f,0.0f,1.0f);			// Rotate The Star On The Z Axis
+		// Assign A Color Using Bytes
+		glColor4ub(star[loop].r,star[loop].g,star[loop].b,255);
+		glBegin(GL_QUADS);				// Begin Drawing The Textured Quad
+			glTexCoord2f(0.0f, 0.0f); glVertex3f(-1.0f,-1.0f, 0.0f);
+			glTexCoord2f(1.0f, 0.0f); glVertex3f( 1.0f,-1.0f, 0.0f);
+			glTexCoord2f(1.0f, 1.0f); glVertex3f( 1.0f, 1.0f, 0.0f);
+			glTexCoord2f(0.0f, 1.0f); glVertex3f(-1.0f, 1.0f, 0.0f);
+		glEnd();					// Done Drawing The Textured Quad
+</pre>
+<p>Here's where we do all the movement. We spin the normal stars by increasing the value of spin. Then we change the angle of each star. The angle of each star is increased by loop/num. What this does is spins the stars that are farther from the center faster. The stars closer to the center spin slower. Finally we decrease the distance each star is from the center of the screen. This makes the stars look as if they are being sucked into the middle of the screen.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">		spin+=0.01f;					// Used To Spin The Stars
+		star[loop].angle+=float(loop)/num;		// Changes The Angle Of A Star
+		star[loop].dist-=0.01f;				// Changes The Distance Of A Star
+</pre>
+<p>The lines below check to see if the stars have hit the center of the screen or not. When a star hits the center of the screen it's given a new color, and is moved 5 units from the center, so it can start it's journey back to the center as a new star.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">		if (star[loop].dist&lt;0.0f)			// Is The Star In The Middle Yet
+		{
+			star[loop].dist+=5.0f;			// Move The Star 5 Units From The Center
+			star[loop].r=rand()%256;		// Give It A New Red Value
+			star[loop].g=rand()%256;		// Give It A New Green Value
+			star[loop].b=rand()%256;		// Give It A New Blue Value
+		}
+	}
+	return TRUE;						// Everything Went OK
+}
+</pre>
+<p>Now we're going to add code to check if any keys are being pressed. Go down to WinMain(). Look for the line SwapBuffers(hDC). We'll add our key checking code right under that line. lines of code.</p>
+<p>The lines below check to see if the T key has been pressed. If it has been pressed and it's not being held down the following will happen. If twinkle is FALSE, it will become TRUE. If it was TRUE, it will become FALSE. Once T is pressed tp will become TRUE. This prevents the code from running over and over again if you hold down the T key.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">		SwapBuffers(hDC);				// Swap Buffers (Double Buffering)
+		if (keys['T'] &amp;&amp; !tp)				// Is T Being Pressed And Is tp FALSE
+		{
+			tp=TRUE;				// If So, Make tp TRUE
+			twinkle=!twinkle;			// Make twinkle Equal The Opposite Of What It Is
+		}
+</pre>
+<p>The code below checks to see if you've let go of the T key. If you have, it makes tp=FALSE. Pressing the T key will do nothing unless tp is FALSE, so this section of code is very important.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">		if (!keys['T'])					// Has The T Key Been Released
+		{
+			tp=FALSE;				// If So, make tp FALSE
+		}
+</pre>
+<p>The rest of the code checks to see if the up arrow, down arrow, page up or page down keys are being pressed.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">		if (keys[VK_UP])				// Is Up Arrow Being Pressed
+		{
+			tilt-=0.5f;				// Tilt The Screen Up
+		}
+
+		if (keys[VK_DOWN])				// Is Down Arrow Being Pressed
+		{
+			tilt+=0.5f;				// Tilt The Screen Down
+		}
+
+		if (keys[VK_PRIOR])				// Is Page Up Being Pressed
+		{
+			zoom-=0.2f;				// Zoom Out
+		}
+
+		if (keys[VK_NEXT])				// Is Page Down Being Pressed
+		{
+			zoom+=0.2f;				// Zoom In
+		}
+</pre>
+<p>Like all the previous tutorials, make sure the title at the top of the window is correct.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">		if (keys[VK_F1])				// Is F1 Being Pressed?
+		{
+			keys[VK_F1]=FALSE;			// If So Make Key FALSE
+			KillGLWindow();				// Kill Our Current Window
+			fullscreen=!fullscreen;			// Toggle Fullscreen / Windowed Mode
+			// Recreate Our OpenGL Window
+			if (!CreateGLWindow("NeHe's Textures, Lighting &amp; Keyboard Tutorial",640,480,16,fullscreen))
+			{
+				return 0;			// Quit If Window Was Not Created
+			}
+		}
+	}
+}
+</pre>
+<p>In this tutorial I have tried to explain in as much detail how to load in a gray scale bitmap image, remove the black space around the image (using blending), add color to the image, and move the image around the screen in 3D. I've also shown you how to create beautiful colors and animation by overlapping a second copy of the bitmap on top of the original bitmap. Once you have a good understanding of everything I've taught you up till now, you should have no problems making 3D demos ofyour own. All the basics have been covered!</p>
+<p><strong>Jeff Molofee</strong> (<strong>NeHe</strong>)</p>
+<p>* DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/vc/lesson09.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/vc/lesson09.zip'" tppabs="http://nehe.gamedev.net/data/lessons/vc/lesson09.zip">Visual C++</a> Code For This Lesson.</p>
+<p>* DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/bcb6/lesson09_bcb6.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/bcb6/lesson09_bcb6.zip'" tppabs="http://nehe.gamedev.net/data/lessons/bcb6/lesson09_bcb6.zip">Borland C++ Builder 6</a> Code For This Lesson. ( Conversion by <a href="mailto:christian@tugzip.com">Christian Kindahl</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/c_sharp/lesson09.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/c_sharp/lesson09.zip'" tppabs="http://nehe.gamedev.net/data/lessons/c_sharp/lesson09.zip">C#</a> Code For This Lesson. ( Conversion by <a href="mailto:bholley@unlnotes.unl.edu">Brian Holley</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/cwarrior/lesson09.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/cwarrior/lesson09.zip'" tppabs="http://nehe.gamedev.net/data/lessons/cwarrior/lesson09.zip">Code Warrior 5.3</a> Code For This Lesson. ( Conversion by <a href="mailto:DelusionalBeing@hotmail.com">Scott Lupton</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/cygwin/lesson09.tar.gz  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/cygwin/lesson09.tar.gz'" tppabs="http://nehe.gamedev.net/data/lessons/cygwin/lesson09.tar.gz">Cygwin</a> Code For This Lesson. ( Conversion by <a href="mailto:stephan@lazyfellow.com">Stephan Ferraro</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/d/lesson09.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/d/lesson09.zip'" tppabs="http://nehe.gamedev.net/data/lessons/d/lesson09.zip">D Language</a> Code For This Lesson. ( Conversion by <a href="mailto:gpineda2013@yahoo.com.mx">Familia Pineda Garcia</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/delphi/lesson09.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/delphi/lesson09.zip'" tppabs="http://nehe.gamedev.net/data/lessons/delphi/lesson09.zip">Delphi</a> Code For This Lesson. ( Conversion by <a href="mailto:michal_praha@seznam.cz">Michal Tucek</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/devc/lesson09.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/devc/lesson09.zip'" tppabs="http://nehe.gamedev.net/data/lessons/devc/lesson09.zip">Dev C++</a> Code For This Lesson. ( Conversion by <a href="mailto:danprogram@hotmail.com">Dan</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/euphoria/lesson09.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/euphoria/lesson09.zip'" tppabs="http://nehe.gamedev.net/data/lessons/euphoria/lesson09.zip">Euphoria</a> Code For This Lesson. ( Conversion by <a href="mailto:1evan@sbcglobal.net">Evan Marshall</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/gameglut/lesson09.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/gameglut/lesson09.zip'" tppabs="http://nehe.gamedev.net/data/lessons/gameglut/lesson09.zip">Game GLUT</a> Code For This Lesson. ( Conversion by <a href="mailto:milix_gr@hotmail.com">Milikas Anastasios</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/irix/lesson09.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/irix/lesson09.zip'" tppabs="http://nehe.gamedev.net/data/lessons/irix/lesson09.zip">Irix</a> Code For This Lesson. ( Conversion by <a href="mailto:lakmal@gunasekara.de">Lakmal Gunasekara</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/java/lesson09.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/java/lesson09.zip'" tppabs="http://nehe.gamedev.net/data/lessons/java/lesson09.zip">Java</a> Code For This Lesson. ( Conversion by <a href="mailto:jeff@consunet.com.au">Jeff Kirby</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/jedisdl/lesson09.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/jedisdl/lesson09.zip'" tppabs="http://nehe.gamedev.net/data/lessons/jedisdl/lesson09.zip">Jedi-SDL</a> Code For This Lesson. ( Conversion by <a href="mailto:Dominique@SavageSoftware.com.au">Dominique Louis</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/jogl/lesson09.jar  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/jogl/lesson09.jar'" tppabs="http://nehe.gamedev.net/data/lessons/jogl/lesson09.jar">JoGL</a> Code For This Lesson. ( Conversion by <a href="mailto:abezrati@hotmail.com">Abdul Bezrati</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/lccwin32/lccwin32_lesson09.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/lccwin32/lccwin32_lesson09.zip'" tppabs="http://nehe.gamedev.net/data/lessons/lccwin32/lccwin32_lesson09.zip">LCC Win32</a> Code For This Lesson. ( Conversion by <a href="mailto:rwishlaw@shaw.ca">Robert Wishlaw</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/linux/lesson09.tar.gz  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/linux/lesson09.tar.gz'" tppabs="http://nehe.gamedev.net/data/lessons/linux/lesson09.tar.gz">Linux</a> Code For This Lesson. ( Conversion by <a href="mailto:ulmont@bellsouth.net">Richard Campbell</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/linuxglx/lesson09.tar.gz  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/linuxglx/lesson09.tar.gz'" tppabs="http://nehe.gamedev.net/data/lessons/linuxglx/lesson09.tar.gz">Linux/GLX</a> Code For This Lesson. ( Conversion by <a href="mailto:Mihael.Vrbanec@stud.uni-karlsruhe.de">Mihael Vrbanec</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/linuxsdl/lesson09.tar.gz  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/linuxsdl/lesson09.tar.gz'" tppabs="http://nehe.gamedev.net/data/lessons/linuxsdl/lesson09.tar.gz">Linux/SDL</a> Code For This Lesson. ( Conversion by <a href="mailto:leggett@eecs.tulane.edu">Ti Leggett</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/lwjgl/lesson09.jar  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/lwjgl/lesson09.jar'" tppabs="http://nehe.gamedev.net/data/lessons/lwjgl/lesson09.jar">LWJGL</a> Code For This Lesson. ( Conversion by <a href="mailto:mark.bernard@rogers.com">Mark Bernard</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev.net/data/lessons/mac/lesson09.sit  \n\nThis file was not retrieved by Teleport Pro, because the server reports that this file cannot be found.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev.net/data/lessons/mac/lesson09.sit'" tppabs="http://nehe.gamedev.net/data/lessons/mac/lesson09.sit">Mac OS</a> Code For This Lesson. ( Conversion by <a href="mailto:asp@usc.edu">Anthony Parker</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/macosxcocoa/lesson09.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/macosxcocoa/lesson09.zip'" tppabs="http://nehe.gamedev.net/data/lessons/macosxcocoa/lesson09.zip">Mac OS X/Cocoa</a> Code For This Lesson. ( Conversion by <a href="mailto:blb@pobox.com">Bryan Blackburn</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/masm/lesson09.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/masm/lesson09.zip'" tppabs="http://nehe.gamedev.net/data/lessons/masm/lesson09.zip">MASM</a> Code For This Lesson. (Conversion by <a href="mailto:scalp@bigfoot.com">Nico (Scalp)</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/openil/lesson09.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/openil/lesson09.zip'" tppabs="http://nehe.gamedev.net/data/lessons/openil/lesson09.zip">Visual C++ / OpenIL</a> Code For This Lesson. ( Conversion by <a href="mailto:doomwiz@ticnet.com">Denton Woods</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/pbasic/lesson09.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/pbasic/lesson09.zip'" tppabs="http://nehe.gamedev.net/data/lessons/pbasic/lesson09.zip">Power Basic</a> Code For This Lesson. ( Conversion by <a href="mailto:anguslaw@net.ntl.com">Angus Law</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/pelles_c/lesson09.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/pelles_c/lesson09.zip'" tppabs="http://nehe.gamedev.net/data/lessons/pelles_c/lesson09.zip">Pelles C</a> Code For This Lesson. ( Conversion by <a href="mailto:pelle@smorgasbordet.com">Pelle Orinius</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/python/lesson09.tar.gz  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/python/lesson09.tar.gz'" tppabs="http://nehe.gamedev.net/data/lessons/python/lesson09.tar.gz">Python</a> Code For This Lesson. ( Conversion by <a href="mailto:tankcoder@warpmail.net">Ryan Showalter</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/solaris/lesson09.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/solaris/lesson09.zip'" tppabs="http://nehe.gamedev.net/data/lessons/solaris/lesson09.zip">Solaris</a> Code For This Lesson. ( Conversion by <a href="mailto:lakmal@gunasekara.de">Lakmal Gunasekara</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/vb/lesson09.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/vb/lesson09.zip'" tppabs="http://nehe.gamedev.net/data/lessons/vb/lesson09.zip">Visual Basic</a> Code For This Lesson. ( Conversion by <a href="mailto:pdetagyos@cox.net">Peter De Tagyos</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/vfortran/lesson09.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/vfortran/lesson09.zip'" tppabs="http://nehe.gamedev.net/data/lessons/vfortran/lesson09.zip">Visual Fortran</a> Code For This Lesson. ( Conversion by <a href="mailto:Jean-Philippe.Perois@wanadoo.fr">Jean-Philippe Perois</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/vs_net/lesson09.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/vs_net/lesson09.zip'" tppabs="http://nehe.gamedev.net/data/lessons/vs_net/lesson09.zip">Visual Studio .NET</a> Code For This Lesson. ( Conversion by <a href="mailto:ultimatezeus@hotmail.com">Grant James</a> )</p>
+<p>&nbsp;</p>
+<p><strong><span><a href="index-48.htm" tppabs="http://nehe.gamedev.net/data/lessons/lesson.asp?lesson=08">&lt; Lesson 08</a></span></strong><strong><span><a href="index-50.htm" tppabs="http://nehe.gamedev.net/data/lessons/lesson.asp?lesson=10">Lesson 10 &gt;</a></span></strong></p>
+
+
+</div>
+</div>
+
+
+
+            <div style="width:728px;padding:0px;margin:auto; margin-top: 10px;">
+            
+
+    
+                <!-- Leaderboard_NeHe -->
+                <div id='div-gpt-ad-1327940144417-0' style='width:728px; height:90px;'>
+                <script type='text/javascript'>
+                googletag.cmd.push(function() { googletag.display('div-gpt-ad-1327940144417-0'); });
+                </script>
+                </div>
+            
+
+                           
+            </div>   
+        </td>
+        <td class="col2">
+            
+
+
+
+
+<div style="text-align: center; padding:10px;">
+
+<script type='text/javascript'>
+    GA_googleFillSlot("Skyscraper_NeHe");
+</script>
+
+</div>
+            
+        </td>
+    </table>
+    <div id="footer">
+        <p>
+            
+    
+    © 1997-2012 Gamedev . All rights reserved.<br/>
+
+			NeHe™ and NeHe Productions™ are trademarks of GameDev.net, LLC<br/>
+			OpenGL® is a registered trademark of Silicon Graphics Inc.<br/>
+		</p>        
+		<br/>
+    </div>
+
+    
+    
+	    <script type="text/javascript" src="shCore.js" tppabs="http://nehe.gamedev.net/static/js/syntax_highlighter/shCore.js"></script>
+        <script type="text/javascript" src="shBrushCpp.js" tppabs="http://nehe.gamedev.net/static/js/syntax_highlighter/shBrushCpp.js"></script>
+	    <script type="text/javascript" src="shBrushJScript.js" tppabs="http://nehe.gamedev.net/static/js/syntax_highlighter/shBrushJScript.js"></script>
+	    <script type="text/javascript">SyntaxHighlighter.all();</script>
+    
+
+    <!-- Place this render call where appropriate -->
+    <script type="text/javascript">
+      (function() {
+        var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+        po.src = 'plusone.js'/*tpa=https://apis.google.com/js/plusone.js*/;
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+      })();
+    </script>    
+
+    
+<!-- GoogleAnalytics code -->
+<script src="urchin.js" tppabs="http://www.google-analytics.com/urchin.js" type="text/javascript">
+</script>
+<script type="text/javascript">
+_uacct = "UA-279474-2"; // Gamedev
+urchinTracker();
+_uff = 0; // Reset for second account
+_uacct = "UA-24180731-1"; // Non-GD
+urchinTracker();
+</script> 
+  </body>
+</html>

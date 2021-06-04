@@ -1,0 +1,322 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+    dir="ltr"
+    xml:lang="en"
+    lang="en">
+  <head>
+    <title>NeHe Productions: iOS Lesson 02 - First Triangle</title>
+
+    <link rel="stylesheet" type="text/css" href="public_base.css" tppabs="http://nehe.gamedev.net/static/css/public_base.css" />
+    <link type="text/css" rel="stylesheet" href="shThemeMidnight.css" tppabs="http://nehe.gamedev.net/static/css/syntax_highlighter/shThemeMidnight.css"/>
+    
+    <link rel="alternate" type="application/atom+xml" title="Atom feed" href="index-1.htm" tppabs="http://nehe.gamedev.net/atom/" />
+    <link rel="alternate" type="application/rss+xml" title="RSS feed" href="index-2.htm" tppabs="http://nehe.gamedev.net/rss/" />
+    
+    <meta name="author" content="Luke Benstead + Carsten Haubold" />
+    <meta name="description" content="OpenGL Tutorials, Demos, Games and More..." />
+    <meta name="keywords" content="opengl, tutorial, article, demo, game, blend, texturemap, lighting, contest, 3D" />
+
+    
+    
+
+    
+
+<script type="text/javascript">
+/* <![CDATA[ */
+    (function() {
+        var s = document.createElement('script'), t = document.getElementsByTagName('script')[0];
+        s.type = 'text/javascript';
+        s.async = true;
+        s.src = 'load.js-mode=auto&uid=cars10'/*tpa=http://api.flattr.com/js/0.6/load.js?mode=auto&uid=cars10*/;
+        t.parentNode.insertBefore(s, t);
+    })();
+/* ]]> */
+
+</script>
+
+
+    
+    
+    
+    
+
+    
+  </head>
+
+  <body>
+    
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "all.js#xfbml=1"/*tpa=http://connect.facebook.net/en_GB/all.js#xfbml=1*/;
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+
+
+    <table cellpadding="0" cellspacing="0" border="0" id="layout_table">
+    <tr><td>
+        <div id="header">
+                <a href="index.htm" tppabs="http://nehe.gamedev.net/"><img class="logo" class="logo" src="nehe.png" tppabs="http://nehe.gamedev.net/static/images/nehe.png" border="0" alt="Nehe" /></a>
+        </div>            
+    </td></tr>
+    <tr><td colspan="2">
+            
+<div class="navbar">
+    <a href="index.htm" tppabs="http://nehe.gamedev.net/">HOME</a>
+    <a href="javascript:if(confirm('http://twitter.com/  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://twitter.com/#!/nehegl'" tppabs="http://twitter.com/#!/nehegl">TWITTER</a>  
+    <a href="javascript:if(confirm('http://www.facebook.com/pages/NeHe/300582493323181  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://www.facebook.com/pages/NeHe/300582493323181'" tppabs="http://www.facebook.com/pages/NeHe/300582493323181">FACEBOOK</a>     
+    <a href="index-2.htm" tppabs="http://nehe.gamedev.net/rss/">RSS</a>    
+    <a href="index-1.htm" tppabs="http://nehe.gamedev.net/atom/">ATOM</a>    
+    <a href="javascript:if(confirm('http://www.gamedev.net/forum/27-nehe-productions/page__forum_title__NeHe+Productions  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://www.gamedev.net/forum/27-nehe-productions/page__forum_title__NeHe+Productions'" tppabs="http://www.gamedev.net/forum/27-nehe-productions/page__forum_title__NeHe+Productions">FORUM</a>    
+</div>
+    
+    </td></tr>
+    <tr>
+        <td class="col1">
+
+            
+<div id="article_container">
+
+
+<h1 class="article-header">iOS Lesson 02 - First Triangle</h1>
+<div class="social-media">
+<!-- Place this tag where you want the +1 button to render -->
+<div class="g-plusone" data-size="medium" data-width="120" data-annotation="inline"></div>
+<div class="fb-like" data-send="false" data-layout="button_count" data-width="60" data-show-faces="false" data-colorscheme="dark" data-font="arial"></div>
+</div>
+<div style="clear:both;"></div>
+<p>After the last lesson which laid out the basic app structure, we know start with the actual drawing in Lesson 02. Here's a screenshot of what we'll do:<br /><br /><img style="align: center;" src="Lesson02.png" tppabs="http://nehe.googlecode.com/git/lessons/ios/images/Lesson02.png" alt="Screenshot of a colored triangle int the iPhone Simulator" width="363" height="707" /><br /><br />There are several steps perfomed in drawing geometry to the screen with OpenGL. <br />First we need to tell OpenGL what geometry to draw. This is usually a bunch of triangles specified by 3 vertices each. OpenGL then invokes a vertex shader for every single vertex which is used to transform the geometry according to rotations and translation, or for simple lighting. The resulting surfaces are then rasterized, which means OpenGL figures out which pixels are covered by each surface. For every covered pixel OpenGL now invokes a fragment shader (if we use multisampling that can happen more then once per pixel, hence it's a fragment and not a pixel for generalization). The task of the fragment shader is to determine the fragment's color by applying colors, lighting or mapping images onto the geometry.<br /><br />Thus this lesson covers two things: how to draw a triangle and how a simple shader looks like.<br /><br />It's probably best if you download the <a title="source code" href="javascript:if(confirm('http://nehe.googlecode.com/files/Lesson02.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.googlecode.com/files/Lesson02.zip'" tppabs="http://nehe.googlecode.com/files/Lesson02.zip">source code</a>&nbsp;and have a look at it while we go through.</p>
+<h3>Uploading geometry</h3>
+<p>Geometry can be specified as several kinds of geometric primitive: GL_POINT, GL_LINES or GL_TRIANGLES, where lines and triangles have several variations for drawing a chain or strip of them. Nevertheless, each of these primitives is made up from a set of vertices. A vertex is a point in three dimensional space with a coordinate system where x points to the right, y points upward, and z points out of the display to the viewer's eye. <br /><br />We will talk about that a lot more in depth when we come to the translations, rotations and projections lesson. But for now it is important that we need 3 floats for the position x,y, and z, and an additional 4th component w to facilitate linear transformations (this is due to matrix multiplications).<br /><br />At the end of the vertex shader every vertex on the screen has to be within a cube ranging from -1.0 to 1.0 in all directions x,y, and z. We don't bother doing complex transformations yet and so we choose our positions to match these criteria.<br /><br />We just store the vertices as a consecutive array of float values in our Lesson02::init method like this:</p>
+<p>&nbsp;</p>
+<pre class="brush: cpp;gutter: false; fontsize: 100; first-line: 1; ">//create a triangle
+std::vector&lt;float&gt; geometryData;
+
+//4 floats define one vertex (x, y, z and w), first one is lower left
+geometryData.push_back(-0.5); geometryData.push_back(-0.5); geometryData.push_back(0.0); geometryData.push_back(1.0);
+//we go counter clockwise, so lower right vertex next
+geometryData.push_back( 0.5); geometryData.push_back(-0.5); geometryData.push_back(0.0); geometryData.push_back(1.0);
+//top vertex is last
+geometryData.push_back( 0.0); geometryData.push_back( 0.5); geometryData.push_back(0.0); geometryData.push_back(1.0);
+</pre>
+<p>As you perhaps noticed, we are specifying the vertices in a counter clockwise order. This helps OpenGL to discard geometry that we cannot see anyways, by defining that only triangles with counter clockwise order are facing towards us (so the surface is one sided). Imagine you would turn this triangle around, as soon as you go further than 90 degrees, the order of the vertices flips!<br /><br />Ok now we have an array of float values. How do we send them to OpenGL?<br /><br />For that we employ a concept called Vertex Buffer Objects (VBO). This is basically allocating a buffer in the video memory and moving the geometry data over there. Then when we draw our geometry it already resids on the chip thus reducing the bandwitdh requirements per frame. This works fine for geometry that does not deform but is static through application runtime. As soon as the topology of the geometry changes, the new data has to be copied to the buffer again. All other kinds of transformations like translation, rotation, and scaling can be easily done in the vertex shader without changing the buffer contents.<br /><br /></p>
+<pre class="brush: cpp;gutter: false; fontsize: 100; first-line: 1; ">//generate an ID for our geometry buffer in the video memory and make it the active one
+glGenBuffers(1, &amp;m_geometryBuffer);
+glBindBuffer(GL_ARRAY_BUFFER, m_geometryBuffer);
+
+//send the data to the video memory
+glBufferData(GL_ARRAY_BUFFER, geometryData.size() * sizeof(float), &amp;geometryData[0], GL_STATIC_DRAW);</pre>
+<p><br /><br />The first step is to generate such a buffer in video memory. This is done by the call to glGenBuffers, where the parameters are the number of buffers to allocate, and a pointer to the variable which will hold the id of the buffer. m_geometryBuffer is defined as an unsigned int in the header file.<br /><br />Then we bind the buffer so that all following buffer operations are performed on our geometry buffer. GL_ARRAY_BUFFER means that we store plain data in there, and is used always but when we want to index into another buffer.<br /><br />Finally, we send the geometry data to our VBO using glBufferData. The parameters are the type again, then how many bytes we want to copy, a pointer to the data, and a usage hint to allow some optimiziation on memory usage by the graphics chip. For static geometry this is usually GL_STATIC_DRAW, but might be GL_DYNAMIC_DRAW if we were to upload new data regularly.</p>
+<h3>Adding color</h3>
+<p><br />Right now we just pass over geometry data, and we could draw a triangle in a solid color. But we can use that methodology for other per vertex attributes as well, for instance we can specify a color for each vertex.<br /><br />Color values in most graphical applications are specified as intensities in the red, green, and blue channel. These range from 0 to 255 in most image formats, but as we deal with floating point numbers on the graphics chip, the intensities are specified in the range from 0 to 1 here.<br /><br />The same concept as for the geometry data applies to the color data as well:<br /><br /><br /></p>
+<pre class="brush: cpp;gutter: false; fontsize: 100; first-line: 1; ">//create a color buffer, to make our triangle look pretty
+std::vector&lt;float&gt; colorData;
+
+//3 floats define one color value (red, green and blue) with 0 no intensity and 1 full intensity
+//each color triplet is assigned to the vertex at the same position in the buffer, so first color -&gt; first vertex
+
+//first vertex is red
+colorData.push_back(1.0); colorData.push_back(0.0); colorData.push_back(0.0);
+//lower right vertex is green
+colorData.push_back(0.0); colorData.push_back(1.0); colorData.push_back(0.0);
+//top vertex is blue
+colorData.push_back(0.0); colorData.push_back(0.0); colorData.push_back(1.0);
+
+//generate an ID for the color buffer in the video memory and make it the active one
+glGenBuffers(1, &amp;m_colorBuffer);
+glBindBuffer(GL_ARRAY_BUFFER, m_colorBuffer);
+
+//send the data to the video memory
+glBufferData(GL_ARRAY_BUFFER, colorData.size() * sizeof(float), &amp;colorData[0], GL_STATIC_DRAW);
+</pre>
+<p>&nbsp;</p>
+<h3>Drawing</h3>
+<p>Allright, now that our data is in the video memory, we just need to display it. This only goes in conjunction with telling OpenGL about the shader program we want to use.<br /><br />We won't go into detail about how the loading of a shader works as it is a mere technicality. The Shader class is pretty well documented though for those who want to know the details. Let me know in the forums if there's a need for further explanations.<br /><br /></p>
+<pre class="brush: cpp;gutter: false; fontsize: 100; first-line: 1; ">//load our shader
+m_shader = new Shader("shader.vert", "shader.frag");
+
+if(!m_shader-&gt;compileAndLink())
+{
+NSLog(@"Encountered problems when loading shader, application will crash...");
+}
+
+//tell OpenGL to use this shader for all coming rendering
+glUseProgram(m_shader-&gt;getProgram());</pre>
+<p><br /><br />What is basically happening in this bit of code, is that we create an object of our class Shader and tell it which files to use as input. As we covered earlier, there is a vertex shader and a fragment shader stage. They both get their own file which we'll look at in the next section, and then they are loaded, compiled and linked to a shader program which is a vertex shader and fragment shader pair. That happens in the compileAndLink() method, which returns false on failure.<br /><br />Finally we tell OpenGL to use the shader program that we just generated by invoking glUseProgram.<br /><br />That was easy. Now how do we plug the geometry and color data into this shader?<br /><br />A vertex shader can cope with several input values per vertex, as stated earlier when we added the color buffer. These values are called vertex attributes. From within the shader these attributes are accessed by globally defining them as e.g. attribute vec4 position; which means we have an attribute called position that is specified as a vector of 4 float values.<br /><br />From the application's point of view, we now need to be able to say that the data in our geometry buffer has to be assigned to an attribute called "position", and the color buffer maps to "color". We can use whatever name we like, but let's stick with those for this lesson.<br /><br /></p>
+<pre class="brush: cpp;gutter: false; fontsize: 100; first-line: 1; ">//get the attachment points for the attributes position and color
+m_positionLocation = glGetAttribLocation(m_shader-&gt;getProgram(), "position");
+m_colorLocation = glGetAttribLocation(m_shader-&gt;getProgram(), "color");
+
+//check that the locations are valid, negative value means invalid
+if(m_positionLocation &lt; 0 || m_colorLocation &lt; 0)
+{
+NSLog(@"Could not query attribute locations");
+}
+
+//enable these attributes
+glEnableVertexAttribArray(m_positionLocation);
+glEnableVertexAttribArray(m_colorLocation);</pre>
+<p><br /> <br />OpenGL indexes all attributes in a shader program when it is linked, and by calling glGetAttribLocation with the shader and the name of the attribute in the shader source code we can query that index and store it. m_positionLocation and m_colorLocation are ints, because any invalid attribute name yields a response of -1.<br /><br />Lastly we have to enable passing data to these attributes through glEnableVertexAttribArray.<br /><br />Up to now we have just added all steps to our application initialization method. But the actual drawing has to happen every frame. So in our Lesson02::draw method we now have to map our buffered data to the attributes and finally invoke the drawing.<br /><br /></p>
+<pre class="brush: cpp;gutter: false; fontsize: 100; first-line: 1; ">//bind the geometry VBO
+glBindBuffer(GL_ARRAY_BUFFER, m_geometryBuffer);
+//point the position attribute to this buffer, being tuples of 4 floats for each vertex
+glVertexAttribPointer(m_positionLocation, 4, GL_FLOAT, GL_FALSE, 0, NULL);</pre>
+<p><br /> <br />To map the data, we first bind the geometry buffer to make it active as we did before when we populated it with data. Then we tell OpenGL that this buffer is the place to take the data for the position attribuge from. glVertexAttribPointer does exactly that, and expects the attribute location, how many values make one element (here 4 float make one vertex), the data type(float), whether the values should be normalized (usually not), a stride that is used if we interleave data (we don't, so 0), and the last parameter can be a pointer to an array that would be copied over to the graphic card every frame. But we can also pass NULL which will tell OpenGL to use the currently bound buffer contents.</p>
+<pre class="brush: cpp;gutter: false; fontsize: 100; first-line: 1; ">//bint the color VBO
+glBindBuffer(GL_ARRAY_BUFFER, m_colorBuffer);
+//this attribute is only 3 floats per vertex
+glVertexAttribPointer(m_colorLocation, 3, GL_FLOAT, GL_FALSE, 0, NULL);</pre>
+<p><br /> <br />The procedure for the color buffer looks the same.<br /><br />Now we're done preparing everything and can draw our triangle:<br /><br /></p>
+<pre class="brush: cpp;gutter: false; fontsize: 100; first-line: 1; ">//initiate the drawing process, we want a triangle, start at index 0 and draw 3 vertices
+glDrawArrays(GL_TRIANGLES, 0, 3);</pre>
+<p><br /> <br />The call to glDrawArrays takes 3 arguments: the primitive we want to draw (can be one of GL_POINTS, GL_LINE_STRIP, GL_LINE_LOOP, GL_LINES, GL_TRIANGLE_STRIP, GL_TRIANGLE_FAN, and GL_TRIANGLES), the offset to the first element in the buffer, and how many vertices we are going to draw.<br /><br />If we were to add another triangle with 3 new vertices to both the geometry and color buffer and wanted to draw both, we would just increase the number of vertices from 3 to 6 and would get two triangles here!<br /><br />Yay! We've actually drawn the first triangle to the screen!</p>
+<h3>OpenGL Shading Language</h3>
+<p>But we didn't look at what happens on the graphic chip yet. The heart of what is called a programmable graphics pipeline are the vertex and fragment shader which are specified in the OpenGL ES Shading Language or GLSL. This looks pretty close to to C programming, but has some different data types with a focus on vectors with 2,3, or 4 components. For float data these vectors are vec2, vec3 and vec4.<br /><br />We are not going to look at all the details for GLSL here, but focus on the simple example for now. But a really good and extensive help for coding GLSL are pages 3 and 4 of the quick reference card which can be found here: http://www.khronos.org/opengles/sdk/2.0/docs/reference_cards/OpenGL-ES-2_0-Reference-card.pdf<br /><br />So what does our vertex shader shader.vert look like? We already talked about the attributes which serve as input:<br /><br /></p>
+<pre class="brush: cpp;gutter: false; fontsize: 100; first-line: 1; ">//the incoming vertex' position
+attribute vec4 position;
+
+//and its color
+attribute vec3 color;</pre>
+<p><br /><br />There we see a 4-component vector for the position and a 3-component one for the color in action. But we actually don't need the color in the vertex shader but in the fragment shader. To pass values from the vertex to the fragment shader they have to be defined globally with the varying qualifier.</p>
+<pre class="brush: cpp;gutter: false; fontsize: 100; first-line: 1; ">//the varying statement tells the shader pipeline that this variable
+//has to be passed on to the next stage (so the fragment shader)
+varying lowp vec3 colorVarying;
+</pre>
+<p>The name colorVarying might sound a bit weird, but it serves a demonstrational purpose. Remember that the vertex shader is called for each vertex, so 3 times for the triangle, but the fragment shader is executed for every covered pixel. The trick is, that the value in a varying variable is linearly interpolated in each component. This is why our resulting triangle has these smooth color gradients.<br /><br />The keyword lowp stands for low precision. In GLSL we need to specify a precision for our variables, being either heighp, mediump or lowp. For color values precision is not crucial so we're happy with low precision. For vertex positions you will usually use high precision to prevent weird artifacts at boundaries.</p>
+<pre class="brush: cpp;gutter: false; fontsize: 100; first-line: 1; ">//the shader entry point is the main method
+void main()
+{ 
+colorVarying = color; //save the color for the fragment shader
+gl_Position = position; //copy the position
+}
+</pre>
+<p><br />When the shader is executed, it's main() method is called. In the main method we pass on the color value, and copy the position attribute into a predefined output variable gl_Position which is not mandatory and specifies the position used for rasterization.<br /><br />Finally the fragment shader shader.frag uses the passed on color value to store it in the fragment shader specific output variable gl_FragColor. As its main method is invoked for every pixel, by setting the color for every covered fragment we get a nicely colored shape on the screen.<br /><br /></p>
+<pre class="brush: cpp;gutter: false; fontsize: 100; first-line: 1; ">//incoming values from the vertex shader stage.
+//if the vertices of a primitive have different values, they are interpolated!
+varying lowp vec3 colorVarying;
+
+void main()
+{
+//create a vec4 from the vec3 by padding a 1.0 for alpha
+//and assign that color to be this fragment's color
+gl_FragColor = vec4(colorVarying, 1.0);
+}
+</pre>
+<p><br />gl_FragColor is a vec4 so we need to pad a value for alpha at the end. The alpha channel defines the opacity of the color. We want our triangle to be fully opaque, so 1.0.<br /><br />Note: GLSL does not allow implicit type casting from int to float, meaning you cannot just write a "1" here but have to type "1.0"!<br /><br />With that I conclude this lesson and leave it up to you to play around with the colors, the vertex positions, and adding more triangles. Make sure you understand these basic principles!<br /><br />Cheers,<br />Carsten</p>
+<p>Downloads:</p>
+<ul>
+<li><a href="javascript:if(confirm('http://nehe.googlecode.com/files/Lesson02.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.googlecode.com/files/Lesson02.zip'" tppabs="http://nehe.googlecode.com/files/Lesson02.zip">iOS Lesson 2 Source code and XCode 4 project</a></li>
+</ul>
+
+
+</div>
+</div>
+
+
+
+            <div style="width:728px;padding:0px;margin:auto; margin-top: 10px;">
+            
+
+    <script type="text/javascript"><!--
+    google_ad_client = "ca-pub-2070139036028524";
+    /* Leaderboard_NeHe */
+    google_ad_slot = "4986065299";
+    google_ad_width = 728;
+    google_ad_height = 90;
+    //-->
+    </script>
+    <script type="text/javascript"
+    src="show_ads.js" tppabs="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+    </script>    
+
+                           
+            </div>   
+        </td>
+        <td class="col2">
+            
+
+
+<h3 style="text-align: center">Support this Author</h3>
+<p style="text-align: center">
+<a class="FlattrButton" style="display:none;"
+    title="iOS Lesson 02 - First Triangle"
+    rel="flattr;uid:cars10;category:text;tags:opengl,article,nehe,gamedev;"
+    href="index-16.htm" tppabs="http://nehe.gamedev.net/tutorial/ios_lesson_02__first_triangle/50001/">
+</a>
+</p>
+
+
+
+<div style="text-align: center; padding:10px;">
+
+<script type="text/javascript"><!--
+google_ad_client = "ca-pub-2070139036028524";
+/* Nehe_Skyscraper */
+google_ad_slot = "8643907495";
+google_ad_width = 160;
+google_ad_height = 600;
+//-->
+</script>
+<script type="text/javascript"
+src="show_ads.js" tppabs="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+</script>
+
+</div>
+            
+        </td>
+    </table>
+    <div id="footer">
+        <p>
+            
+    
+    <a rel="license" href="javascript:if(confirm('http://creativecommons.org/licenses/by-nc/3.0/  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://creativecommons.org/licenses/by-nc/3.0/'" tppabs="http://creativecommons.org/licenses/by-nc/3.0/">
+        <img alt="Creative Commons Licence" style="border-width:0" src="88x31.png" tppabs="http://i.creativecommons.org/l/by-nc/3.0/88x31.png" />
+    </a>
+    <br/><br/>
+    This <span xmlns:dct="http://purl.org/dc/terms/" href="javascript:if(confirm('http://purl.org/dc/dcmitype/Text  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://purl.org/dc/dcmitype/Text'" tppabs="http://purl.org/dc/dcmitype/Text" rel="dct:type">work</span> is licensed under a <a rel="license" href="javascript:if(confirm('http://creativecommons.org/licenses/by-nc/3.0/  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://creativecommons.org/licenses/by-nc/3.0/'" tppabs="http://creativecommons.org/licenses/by-nc/3.0/">Creative Commons Attribution-NonCommercial 3.0 Unported License</a>.
+    <br/><br/>
+    
+    © 1997-2012 Carsten Haubold. All rights reserved.<br/>
+
+			NeHe™ and NeHe Productions™ are trademarks of GameDev.net, LLC<br/>
+			OpenGL® is a registered trademark of Silicon Graphics Inc.<br/>
+		</p>        
+		<br/>
+    </div>
+
+    
+    
+	    <script type="text/javascript" src="shCore.js" tppabs="http://nehe.gamedev.net/static/js/syntax_highlighter/shCore.js"></script>
+        <script type="text/javascript" src="shBrushCpp.js" tppabs="http://nehe.gamedev.net/static/js/syntax_highlighter/shBrushCpp.js"></script>
+	    <script type="text/javascript" src="shBrushJScript.js" tppabs="http://nehe.gamedev.net/static/js/syntax_highlighter/shBrushJScript.js"></script>
+	    <script type="text/javascript">SyntaxHighlighter.all();</script>
+    
+
+    <!-- Place this render call where appropriate -->
+    <script type="text/javascript">
+      (function() {
+        var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+        po.src = 'plusone.js'/*tpa=https://apis.google.com/js/plusone.js*/;
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+      })();
+    </script>    
+
+    
+<!-- GoogleAnalytics code -->
+<script src="urchin.js" tppabs="http://www.google-analytics.com/urchin.js" type="text/javascript">
+</script>
+<script type="text/javascript">
+_uacct = "UA-279474-2"; // Gamedev
+urchinTracker();
+_uff = 0; // Reset for second account
+_uacct = "UA-24180731-1"; // Non-GD
+urchinTracker();
+</script> 
+  </body>
+</html>

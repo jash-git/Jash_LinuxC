@@ -1,0 +1,503 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+    dir="ltr"
+    xml:lang="en"
+    lang="en">
+  <head>
+    <title>NeHe Productions: Masking</title>
+
+    <link rel="stylesheet" type="text/css" href="public_base.css" tppabs="http://nehe.gamedev.net/static/css/public_base.css" />
+    <link type="text/css" rel="stylesheet" href="shThemeMidnight.css" tppabs="http://nehe.gamedev.net/static/css/syntax_highlighter/shThemeMidnight.css"/>
+    
+    <link rel="alternate" type="application/atom+xml" title="Atom feed" href="index-1.htm" tppabs="http://nehe.gamedev.net/atom/" />
+    <link rel="alternate" type="application/rss+xml" title="RSS feed" href="index-2.htm" tppabs="http://nehe.gamedev.net/rss/" />
+    
+    <meta name="author" content="Luke Benstead + Carsten Haubold" />
+    <meta name="description" content="OpenGL Tutorials, Demos, Games and More..." />
+    <meta name="keywords" content="opengl, tutorial, article, demo, game, blend, texturemap, lighting, contest, 3D" />
+
+    
+    
+
+    
+
+</script>
+
+
+    
+    
+    
+    
+        
+        <script type='text/javascript'>
+        var googletag = googletag || {};
+        googletag.cmd = googletag.cmd || [];
+        (function() {
+        var gads = document.createElement('script');
+        gads.async = true;
+        gads.type = 'text/javascript';
+        var useSSL = 'https:' == document.location.protocol;
+        gads.src = (useSSL ? 'https:' : 'http:') + 
+        '//www.googletagservices.com/tag/js/gpt.js';
+        var node = document.getElementsByTagName('script')[0];
+        node.parentNode.insertBefore(gads, node);
+        })();
+        </script>
+
+        <script type='text/javascript'>
+        googletag.cmd.push(function() {
+        googletag.defineSlot('/1004699/Leaderboard_NeHe', [728, 90], 'div-gpt-ad-1327940144417-0').addService(googletag.pubads());
+        googletag.defineSlot('/1004699/Skyscraper_NeHe', [160, 600], 'div-gpt-ad-1327940144417-1').addService(googletag.pubads());
+        googletag.pubads().enableSingleRequest();
+        googletag.enableServices();
+        });
+        </script>
+    
+    
+
+    
+  </head>
+
+  <body>
+    
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "all.js#xfbml=1"/*tpa=http://connect.facebook.net/en_GB/all.js#xfbml=1*/;
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+
+
+    <table cellpadding="0" cellspacing="0" border="0" id="layout_table">
+    <tr><td>
+        <div id="header">
+                <a href="index.htm" tppabs="http://nehe.gamedev.net/"><img class="logo" class="logo" src="nehe.png" tppabs="http://nehe.gamedev.net/static/images/nehe.png" border="0" alt="Nehe" /></a>
+        </div>            
+    </td></tr>
+    <tr><td colspan="2">
+            
+<div class="navbar">
+    <a href="index.htm" tppabs="http://nehe.gamedev.net/">HOME</a>
+    <a href="javascript:if(confirm('http://twitter.com/  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://twitter.com/#!/nehegl'" tppabs="http://twitter.com/#!/nehegl">TWITTER</a>  
+    <a href="javascript:if(confirm('http://www.facebook.com/pages/NeHe/300582493323181  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://www.facebook.com/pages/NeHe/300582493323181'" tppabs="http://www.facebook.com/pages/NeHe/300582493323181">FACEBOOK</a>     
+    <a href="index-2.htm" tppabs="http://nehe.gamedev.net/rss/">RSS</a>    
+    <a href="index-1.htm" tppabs="http://nehe.gamedev.net/atom/">ATOM</a>    
+    <a href="javascript:if(confirm('http://www.gamedev.net/forum/27-nehe-productions/page__forum_title__NeHe+Productions  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://www.gamedev.net/forum/27-nehe-productions/page__forum_title__NeHe+Productions'" tppabs="http://www.gamedev.net/forum/27-nehe-productions/page__forum_title__NeHe+Productions">FORUM</a>    
+</div>
+    
+    </td></tr>
+    <tr>
+        <td class="col1">
+
+            
+<div id="article_container">
+
+
+<h1 class="article-header">Masking</h1>
+<div class="social-media">
+<!-- Place this tag where you want the +1 button to render -->
+<div class="g-plusone" data-size="medium" data-width="120" data-annotation="inline"></div>
+<div class="fb-like" data-send="false" data-layout="button_count" data-width="60" data-show-faces="false" data-colorscheme="dark" data-font="arial"></div>
+</div>
+<div style="clear:both;"></div>
+<p>Welcome to Tutorial 20. The bitmap image format is supported on just about every computer, and just about every operating system. Not only is it easy to work with, it's very easy to load and use as a texture. Up until now, we've been using blending to place text and other images onto the screen without erasing what's underneath the text or image. This is effective, but the results are not always pretty.</p>
+<p>Most the time a blended texture blends in too much or not enough. When making a game using sprites, you don't want the scene behind your character shining through the characters body. When writing text to the screen you want the text to be solid and easy to read.</p>
+<p>That's where masking comes in handy. Masking is a two step process. First we place a black and white image of our texture on top of the scene. The white represents the transparent part of our texture. The black represents the solid part of our texture. Because of the type of blending we use, only the black will appear on the scene. Almost like a cookie cutter effect. Then we switch blending modes, and map our texture on top of the black cut out. Again, because of the blending mode we use, the only parts of our texture that will be copied to the screen are the parts that land on top of the black mask.</p>
+<p>I'll rewrite the entire program in this tutorial aside from the sections that haven't changed. So if you're ready to learn something new, let's begin!</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">#include &lt;windows.h&gt;								// Header File For Windows
+#include &lt;math.h&gt;								// Header File For Windows Math Library
+#include &lt;stdio.h&gt;								// Header File For Standard Input/Output
+#include &lt;gl\gl.h&gt;								// Header File For The OpenGL32 Library
+#include &lt;gl\glu.h&gt;								// Header File For The GLu32 Library
+#include &lt;gl\glaux.h&gt;								// Header File For The Glaux Library
+
+HDC		hDC=NULL;							// Private GDI Device Context
+HGLRC		hRC=NULL;							// Permanent Rendering Context
+HWND		hWnd=NULL;							// Holds Our Window Handle
+HINSTANCE	hInstance;							// Holds The Instance Of The Application
+</pre>
+<p>We'll be using 7 global variables in this program. masking is a boolean variable (TRUE / FALSE) that will keep track of whether or not masking is turned on of off. mp is used to make sure that the 'M' key isn't being held down. sp is used to make sure that the 'Spacebar' isn't being held down and the variable scene will keep track of whether or not we're drawing the first or second scene.</p>
+<p>We set up storage space for 5 textures using the variable texture[5]. loop is our generic counter variable, we'll use it a few times in our program to set up textures, etc. Finally we have the variable roll. We'll use roll to roll the textures across the screen. Creates a neat effect! We'll also use it to spin the object in scene 2.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">bool	keys[256];								// Array Used For The Keyboard Routine
+bool	active=TRUE;								// Window Active Flag Set To TRUE By Default
+bool	fullscreen=TRUE;							// Fullscreen Flag Set To Fullscreen Mode By Default
+bool	masking=TRUE;								// Masking On/Off
+bool	mp;									// M Pressed?
+bool	sp;									// Space Pressed?
+bool	scene;									// Which Scene To Draw
+
+GLuint	texture[5];								// Storage For Our Five Textures
+GLuint	loop;									// Generic Loop Variable
+
+GLfloat	roll;									// Rolling Texture
+
+LRESULT	CALLBACK WndProc(HWND, UINT, WPARAM, LPARAM);				// Declaration For WndProc
+</pre>
+<p>The load bitmap code hasn't changed. It's the same as it was in lesson 6, etc.</p>
+<p>In the code below we create storage space for 5 images. We clear the space and load in all 5 bitmaps. We loop through each image and convert it into a texture for use in our program. The textures are stored in texture[0-4].</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">int LoadGLTextures()								// Load Bitmaps And Convert To Textures
+{
+	int Status=FALSE;							// Status Indicator
+	AUX_RGBImageRec *TextureImage[5];					// Create Storage Space For The Texture Data
+	memset(TextureImage,0,sizeof(void *)*5);				// Set The Pointer To NULL
+
+	if ((TextureImage[0]=LoadBMP("Data/logo.bmp")) &amp;&amp;			// Logo Texture
+	    (TextureImage[1]=LoadBMP("Data/mask1.bmp")) &amp;&amp;			// First Mask
+	    (TextureImage[2]=LoadBMP("Data/image1.bmp")) &amp;&amp;			// First Image
+	    (TextureImage[3]=LoadBMP("Data/mask2.bmp")) &amp;&amp;			// Second Mask
+	    (TextureImage[4]=LoadBMP("Data/image2.bmp")))			// Second Image
+	{
+		Status=TRUE;							// Set The Status To TRUE
+		glGenTextures(5, &amp;texture[0]);					// Create Five Textures
+
+		for (loop=0; loop&lt;5; loop++)					// Loop Through All 5 Textures
+		{
+			glBindTexture(GL_TEXTURE_2D, texture[loop]);
+			glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_LINEAR);
+			glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_LINEAR);
+			glTexImage2D(GL_TEXTURE_2D, 0, 3, TextureImage[loop]-&gt;sizeX, TextureImage[loop]-&gt;sizeY,
+				0, GL_RGB, GL_UNSIGNED_BYTE, TextureImage[loop]-&gt;data);
+		}
+	}
+	for (loop=0; loop&lt;5; loop++)						// Loop Through All 5 Textures
+	{
+		if (TextureImage[loop])						// If Texture Exists
+		{
+			if (TextureImage[loop]-&gt;data)				// If Texture Image Exists
+			{
+				free(TextureImage[loop]-&gt;data);			// Free The Texture Image Memory
+			}
+			free(TextureImage[loop]);				// Free The Image Structure
+		}
+	}
+	return Status;								// Return The Status
+}
+</pre>
+<p>The ReSizeGLScene() code hasn't changed so we'll skip over it.</p>
+<p>The Init code is fairly bare bones. We load in our textures, set the clear color, set and enable depth testing, turn on smooth shading, and enable texture mapping. Simple program so no need for a complex init :)</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">int InitGL(GLvoid)								// All Setup For OpenGL Goes Here
+{
+	if (!LoadGLTextures())							// Jump To Texture Loading Routine
+	{
+		return FALSE;							// If Texture Didn't Load Return FALSE
+	}
+
+	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);					// Clear The Background Color To Black
+	glClearDepth(1.0);							// Enables Clearing Of The Depth Buffer
+	glEnable(GL_DEPTH_TEST);						// Enable Depth Testing
+	glShadeModel(GL_SMOOTH);						// Enables Smooth Color Shading
+	glEnable(GL_TEXTURE_2D);						// Enable 2D Texture Mapping
+	return TRUE;								// Initialization Went OK
+}
+</pre>
+<p>Now for the fun stuff. Our drawing code! We start off the same as usual. We clear the background color and the depth buffer. Then we reset the modelview matrix, and translate into the screen 2 units so that we can see our scene.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">int DrawGLScene(GLvoid)								// Here's Where We Do All The Drawing
+{
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);			// Clear The Screen And The Depth Buffer
+	glLoadIdentity();							// Reset The Modelview Matrix
+	glTranslatef(0.0f,0.0f,-2.0f);						// Move Into The Screen 5 Units
+</pre>
+<p>The first line below selects the 'logo' texture. We'll map the texture to the screen using a quad. We specify our four texture coordinates along with our four vertices.</p>
+<p>Revised Description by Jonathan Roy: Remember that OpenGL is a vertex-based graphic system. Most of the parameters you set are recorded as attributes of a particular vertex. Texture coordinate is one such attribute. You simply specify appropriate texture coordinates for each vertex of a polygon, and OpenGL automatically fills in the surface between the vertices with the texture, through a process known as interpolation. Interpolation is a standard geometric technique that lets OpenGL determine how a given parameter varies between vertices just by knowing the value that parameter takes at the vertices themselves.</p>
+<p>Like in the previous lessons, we pretend we are facing the quad and assign texture coordinates as follows: (0.0, 0.0) to the bottom-left corner, (0.0, 1.0) to the top-left corner, (1.0, 0.0) to the bottom-right, and (1.0, 1.0) to the top-right. Now, given these settings, can you tell what texture coordinates correspond to the quad's middle point? That's right, (0.5, 0.5). But no where in the code did you specify that coordinate, did you? When it draws the quad, OpenGL computes it for you. And the real magic is that it does so whatever the position, size, or orientation of the polygon!</p>
+<p>In this lesson we add another interesting twist by assigning texture coordinates with values other than 0.0 and 1.0. Texture coordinates are said to be normalized. Value 0.0 maps to one edge of the texture, while value 1.0 maps to the opposite edge, spanning the full width or height of the texture image in a one unit step, regardless of the polygon's size or the image's size in pixels (which we therefore don't have to worry about when doing texture mapping, and that makes life a whole lot easier). Above 1.0, the mapping simply wraps around at the other edge and the texture repeats. In other words, texture coordinate (0.3, 0.5) for instance, maps to the exact same pixel in the texture image as coordinate (1.3, 0.5), or as (12.3, -2.5). In this lesson, we achieve a tiling effect by specifying value 3.0 instead of 1.0, effectively repeating the texture nine times (3x3 tiling) over the surface of the quad.</p>
+<p><img style="float: left; border: 5px solid black;" src="lesson20-1-1.jpg" tppabs="http://nehe.gamedev.net/data/lessons/extras/lesson20/lesson20-1.jpg" alt="" /><img style="float: right; border: 5px solid black;" src="lesson20-2-1.jpg" tppabs="http://nehe.gamedev.net/data/lessons/extras/lesson20/lesson20-2.jpg" alt="" width="96" height="96" /> Additionally, we use the roll variable to translate (or slide) the texture over the surface of the quad. A value of 0.0 for roll, which is added to the vertical texture coordinate, means that texture mapping on the bottom edge of the quad begins at the bottom edge of the texture image, as shown in the figure on the left. When roll equals 0.5, mapping on the bottom edge of the quad begins halfway up in the image (see figure on the right). Rolling textures can be used to create great effects such as moving clouds, words spinning around an object, etc.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	glBindTexture(GL_TEXTURE_2D, texture[0]);				// Select Our Logo Texture
+	glBegin(GL_QUADS);							// Start Drawing A Textured Quad
+		glTexCoord2f(0.0f, -roll+0.0f); glVertex3f(-1.1f, -1.1f,  0.0f);	// Bottom Left
+		glTexCoord2f(3.0f, -roll+0.0f); glVertex3f( 1.1f, -1.1f,  0.0f);	// Bottom Right
+		glTexCoord2f(3.0f, -roll+3.0f); glVertex3f( 1.1f,  1.1f,  0.0f);	// Top Right
+		glTexCoord2f(0.0f, -roll+3.0f); glVertex3f(-1.1f,  1.1f,  0.0f);	// Top Left
+	glEnd();								// Done Drawing The Quad
+</pre>
+<p>Anyways... back to reality. Now we enable blending. In order for this effect to work we also have to disable depth testing. It's very important that you do this! If you do not disable depth testing you probably wont see anything. Your entire image will vanish!</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	glEnable(GL_BLEND);							// Enable Blending
+	glDisable(GL_DEPTH_TEST);						// Disable Depth Testing
+</pre>
+<p>The first thing we do after we enable blending and disable depth testing is check to see if we're going to mask our image or blend it the old fashioned way. The line of code below checks to see if masking is TRUE. If it is we'll set up blending so that our mask gets drawn to the screen properly.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	if (masking)								// Is Masking Enabled?
+	{
+</pre>
+<p>If masking is TRUE the line below will set up blending for our mask. A mask is just a copy of the texture we want to draw to the screen but in black and white. Any section of the mask that is white will be transparent. Any sections of the mask that is black will be SOLID.</p>
+<p>The blend command below does the following: The Destination color (screen color) will be set to black if the section of our mask that is being copied to the screen is black. This means that sections of the screen that the black portion of our mask covers will turn black. Anything that was on the screen under the mask will be cleared to black. The section of the screen covered by the white mask will not change.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">		glBlendFunc(GL_DST_COLOR,GL_ZERO);				// Blend Screen Color With Zero (Black)
+	}
+</pre>
+<p>Now we check to see what scene to draw. If scene is TRUE we will draw the second scene. If scene is FALSE we will draw the first scene.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	if (scene)								// Are We Drawing The Second Scene?
+	{
+</pre>
+<p>We don't want things to be too big so we translate one more unit into the screen. This reduces the size of our objects.</p>
+<p>After we translate into the screen, we rotate from 0-360 degrees depending on the value of roll. If roll is 0.0 we will be rotating 0 degrees. If roll is 1.0 we will be rotating 360 degrees. Fairly fast rotation, but I didn't feel like creating another variable just to rotate the image in the center of the screen. :)</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">		glTranslatef(0.0f,0.0f,-1.0f);					// Translate Into The Screen One Unit
+		glRotatef(roll*360,0.0f,0.0f,1.0f);				// Rotate On The Z Axis 360 Degrees
+</pre>
+<p>We already have the rolling logo on the screen and we've rotated the scene on the Z axis causing any objects we draw to be rotated counter-clockwise, now all we have to do is check to see if masking is on. If it is we'll draw our mask then our object. If masking is off we'll just draw our object.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">		if (masking)							// Is Masking On?
+		{
+</pre>
+<p>If masking is TRUE the code below will draw our mask to the screen. Our blend mode should be set up properly because we had checked for masking once already while setting up the blending. Now all we have to do is draw the mask to the screen. We select mask 2 (because this is the second scene). After we have selected the mask texture we texture map it onto a quad. The quad is 1.1 units to the left and right so that it fills the screen up a little more. We only want one texture to show up so our texture coordinates only go from 0.0 to 1.0.</p>
+<p>After drawing our mask to the screen a solid black copy of our final texture will appear on the screen. The final result will look as if someone took a cookie cutter and cut the shape of our final texture out of the screen, leaving an empty black space.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">			glBindTexture(GL_TEXTURE_2D, texture[3]);		// Select The Second Mask Texture
+			glBegin(GL_QUADS);					// Start Drawing A Textured Quad
+				glTexCoord2f(0.0f, 0.0f); glVertex3f(-1.1f, -1.1f,  0.0f);	// Bottom Left
+				glTexCoord2f(1.0f, 0.0f); glVertex3f( 1.1f, -1.1f,  0.0f);	// Bottom Right
+				glTexCoord2f(1.0f, 1.0f); glVertex3f( 1.1f,  1.1f,  0.0f);	// Top Right
+				glTexCoord2f(0.0f, 1.0f); glVertex3f(-1.1f,  1.1f,  0.0f);	// Top Left
+			glEnd();						// Done Drawing The Quad
+		}
+</pre>
+<p>Now that we have drawn our mask to the screen it's time to change blending modes again. This time we're going to tell OpenGL to copy any part of our colored texture that is NOT black to the screen. Because the final texture is an exact copy of the mask but with color, the only parts of our texture that get drawn to the screen are parts that land on top of the black portion of the mask. Because the mask is black, nothing from the screen will shine through our texture. This leaves us with a very solid looking texture floating on top of the screen.</p>
+<p>Notice that we select the second image after selecting the final blending mode. This selects our colored image (the image that our second mask is based on). Also notice that we draw this image right on top of the mask. Same texture coordinates, same vertices.</p>
+<p>If we don't lay down a mask, our image will still be copied to the screen, but it will blend with whatever was on the screen.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">		glBlendFunc(GL_ONE, GL_ONE);					// Copy Image 2 Color To The Screen
+		glBindTexture(GL_TEXTURE_2D, texture[4]);			// Select The Second Image Texture
+		glBegin(GL_QUADS);						// Start Drawing A Textured Quad
+			glTexCoord2f(0.0f, 0.0f); glVertex3f(-1.1f, -1.1f,  0.0f);	// Bottom Left
+			glTexCoord2f(1.0f, 0.0f); glVertex3f( 1.1f, -1.1f,  0.0f);	// Bottom Right
+			glTexCoord2f(1.0f, 1.0f); glVertex3f( 1.1f,  1.1f,  0.0f);	// Top Right
+			glTexCoord2f(0.0f, 1.0f); glVertex3f(-1.1f,  1.1f,  0.0f);	// Top Left
+		glEnd();							// Done Drawing The Quad
+	}
+</pre>
+<p>If scene was FALSE, we will draw the first scene (my favorite).</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	else									// Otherwise
+	{
+</pre>
+<p>We start off by checking to see if masking is TRUE of FALSE, just like in the code above.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">		if (masking)							// Is Masking On?
+		{
+</pre>
+<p>If masking is TRUE we draw our mask 1 to the screen (the mask for scene 1). Notice that the texture is rolling from right to left (roll is added to the horizontal texture coordinate). We want this texture to fill the entire screen that is why we never translated further into the screen.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">			glBindTexture(GL_TEXTURE_2D, texture[1]);		// Select The First Mask Texture
+			glBegin(GL_QUADS);					// Start Drawing A Textured Quad
+				glTexCoord2f(roll+0.0f, 0.0f); glVertex3f(-1.1f, -1.1f,  0.0f);	// Bottom Left
+				glTexCoord2f(roll+4.0f, 0.0f); glVertex3f( 1.1f, -1.1f,  0.0f);	// Bottom Right
+				glTexCoord2f(roll+4.0f, 4.0f); glVertex3f( 1.1f,  1.1f,  0.0f);	// Top Right
+				glTexCoord2f(roll+0.0f, 4.0f); glVertex3f(-1.1f,  1.1f,  0.0f);	// Top Left
+			glEnd();						// Done Drawing The Quad
+		}
+</pre>
+<p>Again we enable blending and select our texture for scene 1. We map this texture on top of it's mask. Notice we roll this texture as well, otherwise the mask and final image wouldn't line up.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">		glBlendFunc(GL_ONE, GL_ONE);					// Copy Image 1 Color To The Screen
+		glBindTexture(GL_TEXTURE_2D, texture[2]);			// Select The First Image Texture
+		glBegin(GL_QUADS);						// Start Drawing A Textured Quad
+			glTexCoord2f(roll+0.0f, 0.0f); glVertex3f(-1.1f, -1.1f,  0.0f);	// Bottom Left
+			glTexCoord2f(roll+4.0f, 0.0f); glVertex3f( 1.1f, -1.1f,  0.0f);	// Bottom Right
+			glTexCoord2f(roll+4.0f, 4.0f); glVertex3f( 1.1f,  1.1f,  0.0f);	// Top Right
+			glTexCoord2f(roll+0.0f, 4.0f); glVertex3f(-1.1f,  1.1f,  0.0f);	// Top Left
+		glEnd();							// Done Drawing The Quad
+	}
+</pre>
+<p>Next we enable depth testing, and disable blending. This prevents strange things from happening in the rest of our program :)</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	glEnable(GL_DEPTH_TEST);						// Enable Depth Testing
+	glDisable(GL_BLEND);							// Disable Blending
+</pre>
+<p>Finally all we have left to do is increase the value of roll. If roll is greater than 1.0 we subtract 1.0. This prevents the value of roll from getting to high.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	roll+=0.002f;								// Increase Our Texture Roll Variable
+	if (roll&gt;1.0f)								// Is Roll Greater Than One
+	{
+		roll-=1.0f;							// Subtract 1 From Roll
+	}
+
+	return TRUE;								// Everything Went OK
+}
+</pre>
+<p>The KillGLWindow(), CreateGLWindow() and WndProc() code hasn't changed so we'll skip over it.</p>
+<p>The first thing you will notice different in the WinMain() code is the Window title. It's now titled "NeHe's Masking Tutorial". Change it to whatever you want :)</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">int WINAPI WinMain(	HINSTANCE	hInstance,				// Instance
+			HINSTANCE	hPrevInstance,				// Previous Instance
+			LPSTR		lpCmdLine,				// Command Line Parameters
+			int		nCmdShow)				// Window Show State
+{
+	MSG	msg;								// Windows Message Structure
+	BOOL	done=FALSE;							// Bool Variable To Exit Loop
+
+	// Ask The User Which Screen Mode They Prefer
+	if (MessageBox(NULL,"Would You Like To Run In Fullscreen Mode?", "Start FullScreen?",MB_YESNO|MB_ICONQUESTION)==IDNO)
+	{
+		fullscreen=FALSE;						// Windowed Mode
+	}
+
+	// Create Our OpenGL Window
+	if (!CreateGLWindow("NeHe's Masking Tutorial",640,480,16,fullscreen))
+	{
+		return 0;							// Quit If Window Was Not Created
+	}
+
+	while(!done)								// Loop That Runs While done=FALSE
+	{
+		if (PeekMessage(&amp;msg,NULL,0,0,PM_REMOVE))			// Is There A Message Waiting?
+		{
+			if (msg.message==WM_QUIT)				// Have We Received A Quit Message?
+			{
+				done=TRUE;					// If So done=TRUE
+			}
+			else							// If Not, Deal With Window Messages
+			{
+				TranslateMessage(&amp;msg);				// Translate The Message
+				DispatchMessage(&amp;msg);				// Dispatch The Message
+			}
+		}
+		else								// If There Are No Messages
+		{
+			// Draw The Scene.  Watch For ESC Key And Quit Messages From DrawGLScene()
+			if ((active &amp;&amp; !DrawGLScene()) || keys[VK_ESCAPE])	// Active?  Was There A Quit Received?
+			{
+				done=TRUE;					// ESC or DrawGLScene Signalled A Quit
+			}
+			else							// Not Time To Quit, Update Screen
+			{
+				SwapBuffers(hDC);				// Swap Buffers (Double Buffering)
+</pre>
+<p>Now for our simple key handling code. We check to see if the spacebar is being pressed. If it is, we set the sp variable to TRUE. If sp is TRUE, the code below will not run a second time until the spacebar has been released. This keeps our program from flipping back and forth from scene to scene very rapidly. After we set sp to TRUE, we toggle the scene. If it was TRUE, it becomes FALSE, if it was FALSE it becomes TRUE. In our drawing code above, if scene is FALSE the first scene is drawn. If scene is TRUE the second scene is drawn.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">				if (keys[' '] &amp;&amp; !sp)				// Is Space Being Pressed?
+				{
+					sp=TRUE;				// Tell Program Spacebar Is Being Held
+					scene=!scene;				// Toggle From One Scene To The Other
+				}
+</pre>
+<p>The code below checks to see if we have released the spacebar (if NOT ' '). If the spacebar has been released, we set sp to FALSE letting our program know that the spacebar is NOT being held down. By setting sp to FALSE the code above will check to see if the spacebar has been pressed again, and if so the cycle will start over.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">				if (!keys[' '])					// Has Spacebar Been Released?
+				{
+					sp=FALSE;				// Tell Program Spacebar Has Been Released
+				}
+</pre>
+<p>The next section of code checks to see if the 'M' key is being pressed. If it is being pressed, we set mp to TRUE, telling our program not to check again until the key is released, and we toggle masking from TRUE to FALSE or FALSE to TRUE. If masking is TRUE, the drawing code will turn on masking. If it is FALSE masking will be off. If masking is off, the object will be blended to the screen using the old fashioned blending we've been using up until now.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">				if (keys['M'] &amp;&amp; !mp)				// Is M Being Pressed?
+				{
+					mp=TRUE;				// Tell Program M Is Being Held
+					masking=!masking;			// Toggle Masking Mode OFF/ON
+				}
+</pre>
+<p>The last bit of code checks to see if we've stopped pressing 'M'. If we have, mp becomes FALSE letting the program know that we are no longer holding the 'M' key down. Once the 'M' key has been released, we are able to press it once again to toggle masking on or off.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">				if (!keys['M'])					// Has M Been Released?
+				{
+					mp=FALSE;				// Tell Program That M Has Been Released
+				}
+</pre>
+<p>Like all the previous tutorials, make sure the title at the top of the window is correct.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">				if (keys[VK_F1])				// Is F1 Being Pressed?
+				{
+					keys[VK_F1]=FALSE;			// If So Make Key FALSE
+					KillGLWindow();				// Kill Our Current Window
+					fullscreen=!fullscreen;			// Toggle Fullscreen / Windowed Mode
+					// Recreate Our OpenGL Window
+					if (!CreateGLWindow("NeHe's Masking Tutorial",640,480,16,fullscreen))
+					{
+						return 0;			// Quit If Window Was Not Created
+					}
+				}
+			}
+		}
+	}
+	// Shutdown
+	KillGLWindow();								// Kill The Window
+	return (msg.wParam);							// Exit The Program
+}
+</pre>
+<p>Creating a mask isn't to hard. A little time consuming. The best way to make a mask if you already have your image made is to load your image into an art program or a handy program like infranview, and reduce it to a gray scale image. After you've done that, turn the contrast way up so that gray pixels become black. You can also try turning down the brightness, etc. It's important that the white is bright white, and the black is pure black. If you have any gray pixels in your mask, that section of the image will appear transparent. The most reliable way to make sure your mask is a perfect copy of your image is to trace over the image with black. It's also very important that your image has a BLACK background and the mask has a WHITE background! If you create a mask and notice a square shape around your texture, either your white isn't bright enough (255 or FFFFFF) or your black isn't true black (0 or 000000). Below you can see an example of a mask and the image that goes over top of the mask. The image can be any color you want as long as the background is black. The mask must have a white background and a black copy of your image.</p>
+<table style="width: 100%;" border="0">
+<tbody>
+<tr>
+<td class="text" width="150px">This is the mask -&gt;</td>
+<td><img style="vertical-align: middle; margin-left: 20px; margin-right: 20px;" src="lesson20-3-1.jpg" tppabs="http://nehe.gamedev.net/data/lessons/extras/lesson20/lesson20-3.jpg" alt="" width="32" height="32" /></td>
+<td>&nbsp;</td>
+<td class="text" width="150px">This is the image -&gt;</td>
+<td><img style="vertical-align: middle; margin-left: 20px; margin-right: 20px;" src="lesson20-4-1.jpg" tppabs="http://nehe.gamedev.net/data/lessons/extras/lesson20/lesson20-4.jpg" alt="" width="32" height="32" /></td>
+</tr>
+</tbody>
+</table>
+<p>Eric Desrosiers pointed out that you can also check the value of each pixel in your bitmap while you load it. If you want the pixel transparent you can give it an alpha value of 0. For all the other colors you can give them an alpha value of 255. This method will also work but requires some extra coding. The current tutorial is simple and requires very little extra code. I'm not blind to other techniques, but when I write a tutorial I try to make the code easy to understand and easy to use. I just wanted to point out that there are always other ways to get the job done. Thanks for the feedback Eric.</p>
+<p>In this tutorial I have shown you a simple, but effective way to draw sections of a texture to the screen without using the alpha channel. Normal blending usually looks bad (textures are either transparent or they're not), and texturing with an alpha channel requires that your images support the alpha channel. Bitmaps are convenient to work with, but they do not support the alpha channel this program shows us how to get around the limitations of bitmap images, while demonstrating a cool way to create overlay type effects.</p>
+<p>Thanks to Rob Santa for the idea and for example code. I had never heard of this little trick until he pointed it out. He wanted me to point out that although this trick does work, it takes two passes, which causes a performance hit. He recommends that you use textures that support the alpha channel for complex scenes.</p>
+<p>I hope you enjoyed this tutorial. If you had any problems understanding it, or you've found a mistake in the tutorial please let me know. I want to make the best tutorials available. Your feedback is important!</p>
+<p><strong>Jeff Molofee</strong> (<strong>NeHe</strong>)</p>
+<p>* DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/vc/lesson20.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/vc/lesson20.zip'" tppabs="http://nehe.gamedev.net/data/lessons/vc/lesson20.zip">Visual C++</a> Code For This Lesson.</p>
+<p>* DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/bcb6/lesson20_bcb6.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/bcb6/lesson20_bcb6.zip'" tppabs="http://nehe.gamedev.net/data/lessons/bcb6/lesson20_bcb6.zip">Borland C++ Builder 6</a> Code For This Lesson. ( Conversion by <a href="mailto:christian@tugzip.com">Christian Kindahl</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/c_sharp/lesson20.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/c_sharp/lesson20.zip'" tppabs="http://nehe.gamedev.net/data/lessons/c_sharp/lesson20.zip">C#</a> Code For This Lesson. ( Conversion by <a href="mailto:bholley@unlnotes.unl.edu">Brian Holley</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/cwarrior/lesson20.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/cwarrior/lesson20.zip'" tppabs="http://nehe.gamedev.net/data/lessons/cwarrior/lesson20.zip">Code Warrior 5.3</a> Code For This Lesson. ( Conversion by <a href="mailto:DelusionalBeing@hotmail.com">Scott Lupton</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/cygwin/lesson20.tar.gz  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/cygwin/lesson20.tar.gz'" tppabs="http://nehe.gamedev.net/data/lessons/cygwin/lesson20.tar.gz">Cygwin</a> Code For This Lesson. ( Conversion by <a href="mailto:stephan@lazyfellow.com">Stephan Ferraro</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/delphi/lesson20.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/delphi/lesson20.zip'" tppabs="http://nehe.gamedev.net/data/lessons/delphi/lesson20.zip">Delphi</a> Code For This Lesson. ( Conversion by <a href="mailto:michal_praha@seznam.cz">Michal Tucek</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/devc/lesson20.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/devc/lesson20.zip'" tppabs="http://nehe.gamedev.net/data/lessons/devc/lesson20.zip">Dev C++</a> Code For This Lesson. ( Conversion by <a href="mailto:danprogram@hotmail.com">Dan</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/euphoria/lesson20.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/euphoria/lesson20.zip'" tppabs="http://nehe.gamedev.net/data/lessons/euphoria/lesson20.zip">Euphoria</a> Code For This Lesson. ( Conversion by <a href="mailto:1evan@sbcglobal.net">Evan Marshall</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/gameglut/lesson20.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/gameglut/lesson20.zip'" tppabs="http://nehe.gamedev.net/data/lessons/gameglut/lesson20.zip">Game GLUT</a> Code For This Lesson. ( Conversion by <a href="mailto:alex_r@vortexentertainment.com">Alexandre Ribeiro de S&aacute;</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/irix/lesson20.tar.gz  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/irix/lesson20.tar.gz'" tppabs="http://nehe.gamedev.net/data/lessons/irix/lesson20.tar.gz">Irix / GLUT</a> Code For This Lesson. ( Conversion by <a href="mailto:rpf1@york.ac.uk">Rob Fletcher</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/java/lesson20.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/java/lesson20.zip'" tppabs="http://nehe.gamedev.net/data/lessons/java/lesson20.zip">Java</a> Code For This Lesson. ( Conversion by <a href="mailto:jeff@consunet.com.au">Jeff Kirby</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/lccwin32/lccwin32_lesson20.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/lccwin32/lccwin32_lesson20.zip'" tppabs="http://nehe.gamedev.net/data/lessons/lccwin32/lccwin32_lesson20.zip">LCC Win32</a> Code For This Lesson. ( Conversion by <a href="mailto:rwishlaw@shaw.ca">Robert Wishlaw</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/linux/lesson20.tar.gz  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/linux/lesson20.tar.gz'" tppabs="http://nehe.gamedev.net/data/lessons/linux/lesson20.tar.gz">Linux</a> Code For This Lesson. ( Conversion by <a href="mailto:bryantdesign11@mindspring.com">Daniel Davis</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/linuxglx/lesson20.tar.gz  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/linuxglx/lesson20.tar.gz'" tppabs="http://nehe.gamedev.net/data/lessons/linuxglx/lesson20.tar.gz">Linux/GLX</a> Code For This Lesson. ( Conversion by <a href="mailto:miqster@gmx.net">Mihael Vrbanec</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/linuxsdl/lesson20.tar.gz  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/linuxsdl/lesson20.tar.gz'" tppabs="http://nehe.gamedev.net/data/lessons/linuxsdl/lesson20.tar.gz">Linux/SDL</a> Code For This Lesson. ( Conversion by <a href="mailto:leggett@eecs.tulane.edu">Ti Leggett</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/lwjgl/lesson20.jar  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/lwjgl/lesson20.jar'" tppabs="http://nehe.gamedev.net/data/lessons/lwjgl/lesson20.jar">LWJGL</a> Code For This Lesson. ( Conversion by <a href="mailto:mark.bernard@rogers.com">Mark Bernard</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev.net/data/lessons/mac/lesson20.sit  \n\nThis file was not retrieved by Teleport Pro, because the server reports that this file cannot be found.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev.net/data/lessons/mac/lesson20.sit'" tppabs="http://nehe.gamedev.net/data/lessons/mac/lesson20.sit">Mac OS</a> Code For This Lesson. ( Conversion by <a href="mailto:asp@usc.edu">Anthony Parker</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/macosxcocoa/lesson20.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/macosxcocoa/lesson20.zip'" tppabs="http://nehe.gamedev.net/data/lessons/macosxcocoa/lesson20.zip">Mac OS X/Cocoa</a> Code For This Lesson. ( Conversion by <a href="mailto:blb@pobox.com">Bryan Blackburn</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/masm/lesson20.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/masm/lesson20.zip'" tppabs="http://nehe.gamedev.net/data/lessons/masm/lesson20.zip">MASM</a> Code For This Lesson. ( Conversion by <a href="mailto:chris.j84@free.fr">Christophe</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/openil/lesson20.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/openil/lesson20.zip'" tppabs="http://nehe.gamedev.net/data/lessons/openil/lesson20.zip">Visual C++ / OpenIL</a> Code For This Lesson. ( Conversion by <a href="mailto:doomwiz@ticnet.com">Denton Woods</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/pelles_c/lesson20.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/pelles_c/lesson20.zip'" tppabs="http://nehe.gamedev.net/data/lessons/pelles_c/lesson20.zip">Pelles C</a> Code For This Lesson. ( Conversion by <a href="mailto:pelle@smorgasbordet.com">Pelle Orinius</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/vb/lesson20.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/vb/lesson20.zip'" tppabs="http://nehe.gamedev.net/data/lessons/vb/lesson20.zip">Visual Basic</a> Code For This Lesson. ( Conversion by <a href="mailto:fredo@studenten.net">Edo</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/vs_net/lesson20.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/vs_net/lesson20.zip'" tppabs="http://nehe.gamedev.net/data/lessons/vs_net/lesson20.zip">Visual Studio .NET</a> Code For This Lesson. ( Conversion by <a href="mailto:ultimatezeus@hotmail.com">Grant James</a> )</p>
+
+
+</div>
+</div>
+
+
+
+            <div style="width:728px;padding:0px;margin:auto; margin-top: 10px;">
+            
+
+    
+                <!-- Leaderboard_NeHe -->
+                <div id='div-gpt-ad-1327940144417-0' style='width:728px; height:90px;'>
+                <script type='text/javascript'>
+                googletag.cmd.push(function() { googletag.display('div-gpt-ad-1327940144417-0'); });
+                </script>
+                </div>
+            
+
+                           
+            </div>   
+        </td>
+        <td class="col2">
+            
+
+
+
+
+<div style="text-align: center; padding:10px;">
+
+<script type='text/javascript'>
+    GA_googleFillSlot("Skyscraper_NeHe");
+</script>
+
+</div>
+            
+        </td>
+    </table>
+    <div id="footer">
+        <p>
+            
+    
+    © 1997-2012 Gamedev . All rights reserved.<br/>
+
+			NeHe™ and NeHe Productions™ are trademarks of GameDev.net, LLC<br/>
+			OpenGL® is a registered trademark of Silicon Graphics Inc.<br/>
+		</p>        
+		<br/>
+    </div>
+
+    
+    
+	    <script type="text/javascript" src="shCore.js" tppabs="http://nehe.gamedev.net/static/js/syntax_highlighter/shCore.js"></script>
+        <script type="text/javascript" src="shBrushCpp.js" tppabs="http://nehe.gamedev.net/static/js/syntax_highlighter/shBrushCpp.js"></script>
+	    <script type="text/javascript" src="shBrushJScript.js" tppabs="http://nehe.gamedev.net/static/js/syntax_highlighter/shBrushJScript.js"></script>
+	    <script type="text/javascript">SyntaxHighlighter.all();</script>
+    
+
+    <!-- Place this render call where appropriate -->
+    <script type="text/javascript">
+      (function() {
+        var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+        po.src = 'plusone.js'/*tpa=https://apis.google.com/js/plusone.js*/;
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+      })();
+    </script>    
+
+    
+<!-- GoogleAnalytics code -->
+<script src="urchin.js" tppabs="http://www.google-analytics.com/urchin.js" type="text/javascript">
+</script>
+<script type="text/javascript">
+_uacct = "UA-279474-2"; // Gamedev
+urchinTracker();
+_uff = 0; // Reset for second account
+_uacct = "UA-24180731-1"; // Non-GD
+urchinTracker();
+</script> 
+  </body>
+</html>

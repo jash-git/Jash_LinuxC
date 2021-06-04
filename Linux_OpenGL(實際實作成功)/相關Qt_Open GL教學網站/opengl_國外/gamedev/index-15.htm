@@ -1,0 +1,769 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+    dir="ltr"
+    xml:lang="en"
+    lang="en">
+  <head>
+    <title>NeHe Productions: iOS Lesson 01 - Setting up GL ES</title>
+
+    <link rel="stylesheet" type="text/css" href="public_base.css" tppabs="http://nehe.gamedev.net/static/css/public_base.css" />
+    <link type="text/css" rel="stylesheet" href="shThemeMidnight.css" tppabs="http://nehe.gamedev.net/static/css/syntax_highlighter/shThemeMidnight.css"/>
+    
+    <link rel="alternate" type="application/atom+xml" title="Atom feed" href="index-1.htm" tppabs="http://nehe.gamedev.net/atom/" />
+    <link rel="alternate" type="application/rss+xml" title="RSS feed" href="index-2.htm" tppabs="http://nehe.gamedev.net/rss/" />
+    
+    <meta name="author" content="Luke Benstead + Carsten Haubold" />
+    <meta name="description" content="OpenGL Tutorials, Demos, Games and More..." />
+    <meta name="keywords" content="opengl, tutorial, article, demo, game, blend, texturemap, lighting, contest, 3D" />
+
+    
+    
+
+    
+
+<script type="text/javascript">
+/* <![CDATA[ */
+    (function() {
+        var s = document.createElement('script'), t = document.getElementsByTagName('script')[0];
+        s.type = 'text/javascript';
+        s.async = true;
+        s.src = 'load.js-mode=auto&uid=cars10'/*tpa=http://api.flattr.com/js/0.6/load.js?mode=auto&uid=cars10*/;
+        t.parentNode.insertBefore(s, t);
+    })();
+/* ]]> */
+
+</script>
+
+
+    
+    
+    
+    
+
+    
+  </head>
+
+  <body>
+    
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "all.js#xfbml=1"/*tpa=http://connect.facebook.net/en_GB/all.js#xfbml=1*/;
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+
+
+    <table cellpadding="0" cellspacing="0" border="0" id="layout_table">
+    <tr><td>
+        <div id="header">
+                <a href="index.htm" tppabs="http://nehe.gamedev.net/"><img class="logo" class="logo" src="nehe.png" tppabs="http://nehe.gamedev.net/static/images/nehe.png" border="0" alt="Nehe" /></a>
+        </div>            
+    </td></tr>
+    <tr><td colspan="2">
+            
+<div class="navbar">
+    <a href="index.htm" tppabs="http://nehe.gamedev.net/">HOME</a>
+    <a href="javascript:if(confirm('http://twitter.com/  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://twitter.com/#!/nehegl'" tppabs="http://twitter.com/#!/nehegl">TWITTER</a>  
+    <a href="javascript:if(confirm('http://www.facebook.com/pages/NeHe/300582493323181  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://www.facebook.com/pages/NeHe/300582493323181'" tppabs="http://www.facebook.com/pages/NeHe/300582493323181">FACEBOOK</a>     
+    <a href="index-2.htm" tppabs="http://nehe.gamedev.net/rss/">RSS</a>    
+    <a href="index-1.htm" tppabs="http://nehe.gamedev.net/atom/">ATOM</a>    
+    <a href="javascript:if(confirm('http://www.gamedev.net/forum/27-nehe-productions/page__forum_title__NeHe+Productions  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://www.gamedev.net/forum/27-nehe-productions/page__forum_title__NeHe+Productions'" tppabs="http://www.gamedev.net/forum/27-nehe-productions/page__forum_title__NeHe+Productions">FORUM</a>    
+</div>
+    
+    </td></tr>
+    <tr>
+        <td class="col1">
+
+            
+<div id="article_container">
+
+
+<h1 class="article-header">iOS Lesson 01 - Setting up GL ES</h1>
+<div class="social-media">
+<!-- Place this tag where you want the +1 button to render -->
+<div class="g-plusone" data-size="medium" data-width="120" data-annotation="inline"></div>
+<div class="fb-like" data-send="false" data-layout="button_count" data-width="60" data-show-faces="false" data-colorscheme="dark" data-font="arial"></div>
+</div>
+<div style="clear:both;"></div>
+<p>Hi all to the first tutorial in our new iOS series!</p>
+<h2>Preface</h2>
+<p>Before you start with the tutorial you should know, that I'm fairly new to Objective-C and iOS, so if there's anything I'm doing wrong or that could be done better, let me know! I'll just use Objective-C to interact with the OS anyway, all the OpenGL related code will be in C++. I will try to explain most things as we come across, but I will assume you have some basic programming knowledge and understand the fundamental concepts of object oriented programming like classes and a class diagram like below.</p>
+<p>This code is working with iOS 4 and 5, so even compatible with the iPhone 4S and whatever you have out there.</p>
+<p>We are going to use XCode 4, so if you don't have that installed yet, go and grab it from the Mac AppStore! And if anybody read up to this point hoping he could develop iPhone Apps from Windows or Linux, I'm sorry to disappoint you, you can't.</p>
+<blockquote>
+<p><strong>Note:</strong>&nbsp;Just owning a Mac and an iPhone/iPod/iPad does not mean that you can actually run your self written applications on your device. Unfortunately, to run the apps on a device, you have to be a registered Apple Developer which costs 99$ per year. If you don't want to spend so much money just to try it, you can still develop on the iOS Simulator until your game idea is polished enough to be sold on the AppStore :)</p>
+<p><strong>Note:</strong> What is <strong>OpenGL ES</strong> anyway? OpenGL is an standard which defines an API to access drawing and geometry rasterization functionality. On the desktop it has evolved to version 4.2 now, providing access to the most recent features of new graphic cards, a lot of which deal with shaders. The OpenGL Shading Language (GLSL) is used to take control over specific parts of the graphics pipeline. We will see that in later tutorials. The <strong>ES</strong> stands for embedded systems, thus this API is tailored to mobile phones, consoles, and anything that is not a whole PC. GL ES is currently at version 2.0, and is quite similar to desktop OpenGL without the really advanced functionality.</p>
+</blockquote>
+<p>And I know this first lesson looks scary, it is probably the most boring lesson in this series and we don't even see any cool stuff at the end.. :( Nevertheless, the lesson contains a whole lot of valuable information, and is important to understand the interactions between the different parts of our framework. So be sure to read through or skim over it before moving on, you don't need to understand everything as you can always come back later if you want to know the details. But in good old NeHe manner, I tried to explain every single bit of code!</p>
+<h2>Overview</h2>
+<p>Let's first have a look at all the things and classes we need. As I said before, we'll have some Objective-C classes (with purple lines), and some C++ classes (in cyan).</p>
+<p><img style="vertical-align: middle;" title="Lesson01 classes" src="image.png" tppabs="http://www.lucidchart.com/publicSegments/view/4e66b4aa-8a30-4b14-9360-0d6c0adcefe5/image.png" alt="UML Class diagram" /></p>
+<p>The starting point of the application is a main method, like in all C/C++ programs. From there we start a <span style="font-family: 'courier new', courier;">UIApplicationMain</span>, which we'll configure with the InterfaceBuilder to be a <span style="font-family: 'courier new', courier;">UIWindow</span> containing an <span style="font-family: 'courier new', courier;">EAGLView</span> and using our <span style="font-family: 'courier new', courier;">Lesson01AppDelegate</span> to process all events. The window is created by the <span style="font-family: 'courier new', courier;">UIApplicationMain</span> automatically and will then display our view. The view contains our OpenGL context which you can think of as our access to a canvas where we can use OpenGL ES to draw to. Within the view, we will hook into the operating system's run loop, and redraw our frame as often as we can. This is required for later lessons with animation. The drawing itself is done by the draw method of a <span style="font-family: 'courier new', courier;">Lesson</span>, or more precisely, of a <span style="font-family: 'courier new', courier;">Lesson01</span> object, because <span style="font-family: 'courier new', courier;">init()</span> and <span style="font-family: 'courier new', courier;">draw()</span> are abstract methods in <span style="font-family: 'courier new', courier;">Lesson</span>.</p>
+<h2>Walkthrough</h2>
+<p>Okay that was pretty high level, so now let's look at how to this works step by step. Grab the code from <a title="download lesson 01" href="javascript:if(confirm('http://nehe.googlecode.com/files/Lesson01.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.googlecode.com/files/Lesson01.zip'" tppabs="http://nehe.googlecode.com/files/Lesson01.zip">here</a>&nbsp;(or&nbsp;by cloning the git repository from <a href="javascript:if(confirm('http://code.google.com/p/nehe  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://code.google.com/p/nehe'" tppabs="http://code.google.com/p/nehe">http://code.google.com/p/nehe</a>). Fire up XCode and open the project file Lesson01.xcodeproj.</p>
+<blockquote>
+<p><strong>Note:</strong>If you want to create your own OpenGL ES project later on, then you can do so using the project wizard. The structure of that will be a bit more confusing, but it has the same components. The draw method would then be yourProjectNameViewController::drawFrame(). The lesson code here is simply cleaned up and I separated our OpenGL code from the window.</p>
+</blockquote>
+<p>You should see 3 folders in your project to the left: Lesson01, Frameworks and Products. Lesson01 contains all our code and has subfolders Supporting Files and Basecode. Frameworks contains all the Frameworks we intend to use, or which are needed by our project. Developers from other languages or operating systems call them libraries. Products finally lists all the applications that will be built, which is just our Lesson01.app right now.</p>
+<p>In our source code we will mainly work in the LessonXX class in the following lessons, and the AppDelegate changes every time to create an object of our current lesson instance. But in this first lesson we will have a detailed look at the Basecode and some of the Supporting Files.</p>
+<p>Let's approach the different files in the order they are traversed when the application is run. As we already mentioned, the birth of every program is it's main method. It is found in <strong>Lesson01/Supporting Files/main.m</strong></p>
+<pre class="brush: cpp;fontsize: 100; first-line: 1; ">#import &lt;UIKit/UIKit.h&gt;
+
+//standard main method, looks like that for every iOS app..
+int main(int argc, char *argv[])
+{
+    NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+    NSLog(@"Running app");
+    int retVal = UIApplicationMain(argc, argv, nil, nil);
+    [pool release];
+    return retVal;
+}</pre>
+<p>The method is rather uninformative and looks pretty much the same for every iPhone app. The <span style="font-family: 'courier new', courier;">NSAutoreleasePool</span> is needed for the Objective-C garbage collection, we print a log message, and then comes the important part: we hand over the control to the <span style="font-family: 'courier new', courier;">UIApplicationMain</span> method and pass our application's parameters. As soon as control comes back, we release the garbare collection utility and end the program with the return value that came from the <span style="font-family: 'courier new', courier;">UIApplicationMain</span>.</p>
+<p>The UIApplicationMain method runs, as the name implies, a user interface. In our project settings under <em>Targets-&gt;Lesson01</em>, tab <em>Summary</em>, our <em>MainInterface</em> is set to <strong>MainWindow</strong>. This tells our App, that we want it to display MainWindow.xib at startup. This file is under <em>Supporting Files</em>&nbsp;as well, and opens in the InterfaceBuilder.</p>
+<p>In the new sidebar left of the editor, you will see the <em>Placeholders</em> and <em>Objects</em>. Among the Objects is our <span style="font-family: 'courier new', courier;">Lesson01AppDelegate</span> and a Window with an embedded View. If you've never done any GUI programming you could imagine this like opening your favourite Office text processor (=window), and open a document (=view). Now you can switch between documents(views) filled with content (here UI elements like buttons, text fields, or an OpenGL ES canvas) without closing the whole program. But to be able to see any content, you need an open document (view).</p>
+<p>The important thing to note about the setup of our window is not obvious unless you control-click (or right-click) <span style="font-family: 'courier new', courier;">Lesson01AppDelegate</span>. There you see two defined outlets <span style="font-family: 'courier new', courier;">glView</span> and <span style="font-family: 'courier new', courier;">window</span>, which are connected to the View and the Window in the InterfaceBuilder. An outlet defines a slot, where a variable in the code of our app delegate contains a reference to the connected element in the InterfaceBuilder.</p>
+<h3>Lesson01AppDelegate</h3>
+<p>Which brings us to the first important code file: Lesson01AppDelegate.h</p>
+<pre class="brush: cpp;fontsize: 100; first-line: 1; ">#import &lt;UIKit/UIKit.h&gt;
+
+//we want to create variables of these classes, but don't need their implementation yet,
+//so we just tell the compiler that they exist - called forward declaration
+@class EAGLView;
+class Lesson;
+
+//This is our delegate class. It handles all messages from the device's operating system
+@interface Lesson01AppDelegate : NSObject &lt;UIApplicationDelegate&gt; {
+@private
+    //we store a pointer to our lesson so we can delete it at program shutdown
+    Lesson *lesson;
+}
+
+//we configure these variables in the interface builder (IB), thus they have to be declared as IBOutlet
+//properties get accessor methods by synthesizing them in the source file (.mm)
+
+//in this window we will embed a view which acts as OpenGL context
+@property (nonatomic, retain) IBOutlet UIWindow *window;
+
+//our main window, covering the whole screen
+@property (nonatomic, retain) IBOutlet EAGLView *glView;
+
+@end
+</pre>
+<p>In this Objective-C style class definition we first declare the <strong>interface</strong>&nbsp;in the header before the <strong>implementation</strong> of the methods follows in the corresponding source (.mm for Objective-C++) file. As also seen in the class diagram, it has member variables for the <span style="font-family: 'courier new', courier;">window</span>, our <span style="font-family: 'courier new', courier;">glView</span>, and the <span style="font-family: 'courier new', courier;">lesson</span> which will be created when the AppDelegate is initialized. The important thing to note, is the definition of the properties as IBOutlets so they can be used in the InterfaceBuilder. An object of this class is automatically created when the application starts, because it is needed to handle the window's events. To be able to handle the window events, our AppDelegate implements the interface (or in Objective-C terminology: protocol) UIApplicationDelegate. This is done by adding it in &lt; &gt; brackets after the class name definition.</p>
+<p>The first event the window triggers after it has been created is didFinishLaunchingWithOptions. The code is in Lesson01AppDelegate.mm</p>
+<pre class="brush: cpp;fontsize: 100; first-line: 1; ">#import "Lesson01AppDelegate.h"
+
+#import "EAGLView.h"
+#include "Lesson01.h"
+
+//now we implement all methods needed by our delegate
+@implementation Lesson01AppDelegate
+
+//
+@synthesize window;
+@synthesize glView;
+
+//this method tells us, that our application has started and we can set up our OpenGL things,
+//as the window is set up, and thus our glView is going to be displayed soon
+- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
+{
+    //for the first lesson we don't need a depth buffer as we're not drawing any geometry yet
+    [glView setDepthBufferNeeded:FALSE];
+    
+    //we create our lesson which contains the OpenGL code
+    //(allocated with new -&gt; has to be cleaned up with delete!)
+    lesson = new Lesson01();
+    
+    //we tell our OpenGL view which lesson we want to use for rendering.
+    [glView setLesson:lesson];
+    
+    return YES;
+}</pre>
+<p>As you can see, here we configure our glView and create the lesson instance. One important thing is that we defined the member variable lesson to be a pointer to a <span style="font-family: 'courier new', courier;">Lesson</span> instance, but as <span style="font-family: 'courier new', courier;">Lesson01</span> is derived from <span style="font-family: 'courier new', courier;">Lesson</span>(see class diagram), it offers the same interface and can be used as well.</p>
+<p>Also note, that we <strong>synthesize</strong> our two properties from the header, this auto-generates getter and setter method for the otherwise private fields.</p>
+<p>The remainder of Lesson01AppDelegate.mm deals with the other events that can be triggered from the window, and they are all related to becoming visible or being moved to the background. In the case of becoming visible, we tell our view to start refreshing repeatedly - and when we move to the background or close, we stop refreshing. Finally, if the AppDelegate gets disposed, its <span style="font-family: 'courier new', courier;">dealloc</span> method is called where we clean up everything by freeing the memory that has been allocated. In Objective-C that is done with <span style="font-family: 'courier new', courier;">release</span>, C++ pointers get created with <span style="font-family: 'courier new', courier;">new</span> and deleted with <span style="font-family: 'courier new', courier;">delete</span>.</p>
+<pre class="brush: cpp;fontsize: 100; first-line: 29; ">- (void)applicationWillResignActive:(UIApplication *)application
+{
+    //the app is going to be suspended to the background,
+    //so we should stop our render loop
+    [glView stopRenderLoop];
+}
+
+- (void)applicationDidEnterBackground:(UIApplication *)application
+{
+    //we could do something here when the application entered the background
+}
+
+- (void)applicationWillEnterForeground:(UIApplication *)application
+{
+    //we could start preparing stuff for becoming active again
+}
+
+- (void)applicationDidBecomeActive:(UIApplication *)application
+{
+    //we're on stage! so let's draw some nice stuff
+    [glView startRenderLoop];
+}
+
+- (void)applicationWillTerminate:(UIApplication *)application
+{
+    //before shutdown we stop the render loop
+    [glView stopRenderLoop];
+}
+
+//dealloc is the destructor in Objective-C, so clean up all allocated things
+- (void)dealloc
+{
+    [window release];
+    [glView release];
+    delete lesson;
+    [super dealloc];
+}
+
+@end
+</pre>
+<p>Now let's finally move on to the classes involving OpenGL context creation and drawing!</p>
+<h3>EAGLView</h3>
+<p>As we already learned, the window and the delegate get created automatically if we run <span style="font-family: 'courier new', courier;">UIApplicationMain</span>. When the window is created, it knows that it has to contain a view which is an <span style="font-family: 'courier new', courier;">EAGLView</span> because we defined the corresponding outlet in our delegate. So the window automatically creates the view as it needs it to be displayed. Let's first look at the header EAGLView.h:</p>
+<pre class="brush: cpp;fontsize: 100; first-line: 1; ">//forward declarations again
+@class EAGLContext;
+class Lesson;
+
+// This class combines our OpenGL context (which is our access to all drawing functionality)
+// with a UIView that can be displayed on the iOS device. It handles the creation and presentation
+// of our drawing surface, as well as handling the render loop which allows for seamless animations.
+@interface EAGLView : UIView {
+@private
+    // The pixel dimensions of the CAEAGLLayer.
+    GLint framebufferWidth;
+    GLint framebufferHeight;
+    
+    // These are the buffers we render to: the colorRenderbuffer will contain the color that we will
+    // finaly see on the screen, the depth renderbuffer has to be used if we want to make sure, that
+    // we always see only the closest object and not just the one that has been drawn most recently.
+    // The framebuffer is a collection of buffers to use together while rendering, here it is either
+    // just the color buffer, or color and depth renderbuffer.
+    GLuint defaultFramebuffer, colorRenderbuffer, depthRenderbuffer;
+    
+    // The display link is used to create a render loop
+    CADisplayLink* displayLink;
+    
+    // Do we need a depth buffer
+    BOOL useDepthBuffer;
+    
+    // The pointer to the lesson which we're rendering
+    Lesson* lesson;
+    
+    // Did we already initialize our lesson?
+    BOOL lessonIsInitialized;
+}
+
+// The OpenGL context as a property (has autogenerated getter and setter)
+@property (nonatomic, retain) EAGLContext *context;
+
+// Configuration setters
+- (void) setDepthBufferNeeded:(BOOL)needed;
+- (void) setLesson:(Lesson*)newLesson;
+
+//if we want OpenGL to repaint with the screens refresh rate, we use this render loop
+- (void) startRenderLoop;
+- (void) stopRenderLoop;
+@end</pre>
+<p>The class is derived from a UIView as it just specializes what this very view shall do. Being a subclass of a UIView allows us to overwrite several methods (or <em>selectors</em> in Objective-C), which we will se in the source file.&nbsp;</p>
+<blockquote>
+<p><strong>Note:</strong>&nbsp;The name EAGLView is not mandatory, but very common in iOS GL ES programs, because the context is called EAGLContext. EAGL probably stands for "Embedded AGL" &nbsp;where AGL are Apple's OpenGL Extensions.</p>
+</blockquote>
+<p>As we already mentioned, the EAGLView encapsulates our Open GL ES context. The OpenGL context can be seen as the permission to use OpenGL calls for drawing. It also keeps track of all the states we set like the current color or which image we're currently using as texture on our surfaces. The context is only useful in combination with a canvas where we can draw to. This canvas is implemented in a construct called a <strong>framebuffer</strong>. It can consist of several layers of buffers storing different information. The two layers that we usually need are a color renderbuffer (render because we are going to render to it), and a depth renderbuffer. The <strong>color renderbuffer</strong> stores information pretty similar to what is stored in images like JPEG, namely it stores a few bytes per color channel per pixel. This is what we will eventually see on the screen. The <strong>depth renderbuffer</strong> records for every pixel in our color buffer how far it is away from our screen, so that if we draw a house that is 10 units away and draw a person in front of it that is 5 units away, the person will definitely be in front of the house, no matter what is drawn first! This is called <strong>depth testing</strong>. The depth buffer is not meant to be displayed, though.</p>
+<p>After this explanation most of the member variables of our EAGLView class should make sense: we store the width and height of our framebuffer (the color and depth buffer have to be the same size!), and we store IDs of the buffers which act as names or references in OpenGL.</p>
+<p>Next is a&nbsp;CADisplayLink which allows us to hook into the system's run loop and request a redraw around 60 times a second. Then we have a switch to enable/disable the use of a depth buffer. As the buffer consumes valuable memory on the graphics chip, we should not set it up if we don't need it.</p>
+<p>And obviously we need a pointer to our lesson so that we can invoke our <span style="font-family: 'courier new', courier;">draw()</span> method, and a flag whether we already initialized it.</p>
+<p>The context which we have talked about already for so long, is stored as an&nbsp;<span style="font-family: 'courier new', courier;">EAGLContext</span> property.</p>
+<p>Last but not least we have 4 methods with pretty self explanatory names which are used by the AppDelegate.</p>
+<p>Before we can dive into the real code,&nbsp;<strong>EAGLView.mm</strong>&nbsp;begins with some initialization stuff:</p>
+<pre class="brush: cpp;fontsize: 100; first-line: 1; ">#import &lt;QuartzCore/QuartzCore.h&gt;
+
+#import "EAGLView.h"
+#include "Lesson.h"
+
+//declare private methods, so they can be used everywhere in this file
+@interface EAGLView (PrivateMethods)
+- (void)createFramebuffer;
+- (void)deleteFramebuffer;
+@end
+
+
+//start the actual implementation of our view here
+@implementation EAGLView
+
+//generate getter and setter for the context
+@synthesize context;
+
+// We have to implement this method
++ (Class)layerClass
+{
+    return [CAEAGLLayer class];
+}
+</pre>
+<p>We first add the private methods to the class definition. If we wouldn't do this, then we'd have to order the code in a way that a method has been defined before it is used. Not putting the declaration of the private methods into the header file has the advantage of keeping the header clean, although it does not really add to the readability of the source.</p>
+<p>Then we actually begin the implementation of our EAGLView, synthesize our context to get auto-generated getters and setters, and we overwrite the layerClass method of UIView. This needs to be done because our view does not behave like a standard UI element but it paints onto a <span style="font-family: 'courier new', courier;">CAEAGLLayer</span> (CA for CoreAnimation).</p>
+<pre class="brush: cpp;fontsize: 100; first-line: 24; ">//our EAGLView is the view in our MainWindow which will be automatically loaded to be displayed.
+//when the EAGLView gets loaded, it will be initialized by calling this method.
+- (id)initWithCoder:(NSCoder*)coder
+{
+    //call the init method of our parent view
+    self = [super initWithCoder:coder];
+    
+    //now we create the core animation EAGL layer
+	if (!self) {
+        return nil;
+    }
+
+    CAEAGLLayer *eaglLayer = (CAEAGLLayer *)self.layer;
+    
+    //we don't want a transparent surface
+    eaglLayer.opaque = TRUE;
+    
+    //here we configure the properties of our canvas, most important is the color depth RGBA8 !
+    eaglLayer.drawableProperties = [NSDictionary dictionaryWithObjectsAndKeys:
+                                    [NSNumber numberWithBool:FALSE], kEAGLDrawablePropertyRetainedBacking,
+                                    kEAGLColorFormatRGBA8, kEAGLDrawablePropertyColorFormat,
+                                    nil];
+    
+    //create an OpenGL ES 2 context
+    context = [[EAGLContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES2];
+    
+    //if this failed or we cannot set the context for some reason, quit
+    if (!context || ![EAGLContext setCurrentContext:context]) {
+        NSLog(@"Could not create context!");
+        [self release];
+        return nil;
+    }
+
+    //do we want to use a depth buffer?
+    //for 3D applications we usually do, so we'll set it to true by default
+    useDepthBuffer = FALSE;
+    
+    //we did not initialize our lesson yet:
+    lessonIsInitialized = FALSE;
+    
+    //default values for our OpenGL buffers
+    defaultFramebuffer = 0;
+    colorRenderbuffer = 0;
+    depthRenderbuffer = 0;
+    
+    
+    return self;
+}
+</pre>
+<p>When our view is initialized, the method <span style="font-family: 'courier new', courier;">initWithCoder</span> is executed. That is when we start setting up our context. First, we initialize our superclass UIView and check that everything went fine. Then we create the CAEGLLayer from our View's layer and make it drawable. (Don't ask me about details of this part.. ;) )</p>
+<p>The next step is where we finally create our OpenGL context, and we require it to be version 2 (available since iPhone 3GS and iPod Touch 3rd gen) by calling&nbsp;<span style="font-family: 'courier new', courier;">initWithAPI<span class="s1">:</span>kEAGLRenderingAPIOpenGLES2.</span>&nbsp;If this was successfull and we're able to make the context current (visually speaking: take the brush in our hand), then we move on and set our member variables to default values.</p>
+<p>Remember the paragraph about framebuffers? Let's create our canvas which will serve as playground in all following lessons!</p>
+<pre class="brush: cpp;fontsize: 100; first-line: 72; ">//on iOS, all rendering goes into a renderbuffer,
+//which is then copied to the window by "presenting" it.
+//here we create it!
+- (void)createFramebuffer
+{
+    //this method assumes, that the context is valid and current, and that the default framebuffer has not been created yet!
+    //this works, because as soon as we call glGenFramebuffers the value will be &gt; 0
+    assert(defaultFramebuffer == 0);
+    
+    NSLog(@"EAGLView: creating Framebuffer");
+    
+    // Create default framebuffer object and bind it
+    glGenFramebuffers(1, &amp;defaultFramebuffer);
+    glBindFramebuffer(GL_FRAMEBUFFER, defaultFramebuffer);
+    
+    // Create color render buffer
+    glGenRenderbuffers(1, &amp;colorRenderbuffer);
+    glBindRenderbuffer(GL_RENDERBUFFER, colorRenderbuffer);
+</pre>
+<p>First we check that we don't have a frambuffer already. If that's not the case then we generate IDs for our framebuffer by calling OpenGL's method for this. This assures that the ID is unique, and every generated ID is greater than zero. After the ID is generated, we bind the framebuffer. OpenGL keeps track of the active object of most things, like the active framebuffer, the last recently st color, the active texture or active shader program, etc. This causes all following API calls with respect to a framebuffer, affect the currently bound framebuffer.</p>
+<p>Next we do the same thing for our color renderbuffer: we generate a name and bind it.</p>
+<pre class="brush: cpp;fontsize: 100; first-line: 90; ">//get the storage from iOS so it can be displayed in the view
+    [context renderbufferStorage:GL_RENDERBUFFER fromDrawable:(CAEAGLLayer *)self.layer];
+    //get the frame's width and height
+    glGetRenderbufferParameteriv(GL_RENDERBUFFER, GL_RENDERBUFFER_WIDTH, &amp;framebufferWidth);
+    glGetRenderbufferParameteriv(GL_RENDERBUFFER, GL_RENDERBUFFER_HEIGHT, &amp;framebufferHeight);
+    
+    //attach this color buffer to our framebuffer
+    glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_RENDERBUFFER, colorRenderbuffer);</pre>
+<p>This color renderbuffer is special. We want the color that we draw to, to be used as the UIView's color. That's why we created the <span style="font-family: 'courier new', courier;">CAEAGLLayer</span> earlier. Now, we need to grab the layer and use it as renderbuffer storage. This way, the color we draw ends up in the UIView without the need to copy the buffer contents again. That is done by calling the renderbufferStorage method of our context. The neat thing about this is, that we automatically have a buffer adjusted to the size of our view. The next two lines are just querying for the width and height of our framebuffer.</p>
+<p><span style="font-family: 'courier new', courier;">glFramebufferRenderbuffer</span> is very important. As we learned before, a framebuffer consists of several layers, called attachments. Here we tell OpenGL, that our currently bound framebuffer has a color buffer attached to it, namely our color renderbuffer. The index in <span style="font-family: 'courier new', courier;">GL_COLOR_ATTACHMENT_0</span> indicates that you can have several color attachments in one framebuffer, but that goes beyond the scope of this lesson.</p>
+<pre class="brush: cpp;fontsize: 100; first-line: 98; ">    //our lesson needs to know the size of the renderbuffer so it can work with the right aspect ratio
+    if(lesson != NULL)
+    {
+        lesson-&gt;setRenderbufferSize(framebufferWidth, framebufferHeight);
+    }</pre>
+<p>As we just found out about the size of our actual render window, we need to pass this on to our lesson to make it actually render to the full screen size.</p>
+<pre class="brush: cpp;fontsize: 100; first-line: 103; ">if(useDepthBuffer)
+    {
+        //create a depth renderbuffer
+        glGenRenderbuffers(1, &amp;depthRenderbuffer);
+        glBindRenderbuffer(GL_RENDERBUFFER, depthRenderbuffer);
+        //create the storage for the buffer, optimized for depth values, same size as the colorRenderbuffer
+        glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT16, framebufferWidth, framebufferHeight);
+        //attach the depth buffer to our framebuffer
+        glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, depthRenderbuffer);
+    }</pre>
+<p>Given the case that we requested a depth buffer, then we perform pretty much the same steps as for the color renderbuffer, but this time we create the storage on our own by calling <span style="font-family: 'courier new', courier;">glRenderbufferStorage</span> with details on which kind of data we store (<span style="font-family: 'courier new', courier;">DEPTH_COMPONENT16</span> is 16 bit per pixel) and how big the buffer is.</p>
+<pre class="brush: cpp;fontsize: 100; first-line: 113; ">//check that our configuration of the framebuffer is valid
+    if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
+        NSLog(@"Failed to make complete framebuffer object %x", glCheckFramebufferStatus(GL_FRAMEBUFFER));
+}</pre>
+<p>Finally we make sure that our framebuffer is ready to be rendered to. This is best practice with framebuffer objects (short FBOs) as there are many possibilities to go wrong :)</p>
+<pre class="brush: cpp;fontsize: 100; first-line: 117; ">//deleting the framebuffer and all the buffers it contains
+- (void)deleteFramebuffer
+{
+    //we need a valid and current context to access any OpenGL methods
+    if (context) {
+        [EAGLContext setCurrentContext:context];
+        
+        //if the default framebuffer has been set, delete it.
+        if (defaultFramebuffer) {
+            glDeleteFramebuffers(1, &amp;defaultFramebuffer);
+            defaultFramebuffer = 0;
+        }
+        
+        //same for the renderbuffers, if they are set, delete them
+        if (colorRenderbuffer) {
+            glDeleteRenderbuffers(1, &amp;colorRenderbuffer);
+            colorRenderbuffer = 0;
+        }
+        
+        if (depthRenderbuffer) {
+            glDeleteRenderbuffers(1, &amp;depthRenderbuffer);
+            depthRenderbuffer = 0;
+        }
+    }
+}</pre>
+<p>Everything we create has to be deleted again at some point. This is true for FBOs and their renderbuffers as well. As always we can only use OpenGL calls if we have a valid and current context, and we use <span style="font-family: 'courier new', courier;">glDeleteFramebuffers</span> and <span style="font-family: 'courier new', courier;">glDeleteRenderbuffers</span> for deletion.</p>
+<pre class="brush: cpp;fontsize: 100; first-line: 142; ">//this is where all the magic happens!
+- (void)drawFrame
+{
+    //we need a context for rendering
+    if (context != nil)
+    {
+        //make it the current context for rendering
+        [EAGLContext setCurrentContext:context];
+        
+        //if our framebuffers have not been created yet, do that now!
+        if (!defaultFramebuffer)
+            [self createFramebuffer];
+
+        glBindFramebuffer(GL_FRAMEBUFFER, defaultFramebuffer);
+        
+        //we need a lesson to be able to render something
+        if(lesson != nil)
+        {
+            //check whether we have to initialize the lesson
+            if(lessonIsInitialized == FALSE)
+            {
+                lesson-&gt;init();
+                lessonIsInitialized = TRUE;
+            }
+            
+            //perform the actual drawing!
+            lesson-&gt;draw();
+        }
+        
+        //finally, get the color buffer we rendered to, and pass it to iOS
+        //so it can display our awesome results!
+        glBindRenderbuffer(GL_RENDERBUFFER, colorRenderbuffer);
+        [context presentRenderbuffer:GL_RENDERBUFFER];
+    }
+    else
+        NSLog(@"Context not set!");
+}</pre>
+<p>Now let's look at the heart of our app, the <span style="font-family: 'courier new', courier;">drawFrame</span> method. This is the method that is called every time a frame is rendered, invoked by our display link. Here we actually make sure that we have a context, that the framebuffer is created and bound, and the lesson is present and initialized. If all that is true, then we call<span style="font-family: 'courier new', courier;"> lesson-&gt;draw()</span>which will be the method we will mostly focus on in the following lessons. The last lines are pretty interesting. After having called <span style="font-family: 'courier new', courier;">lesson-&gt;draw()</span> our renderbuffers now contain what we rendered. To actually tell the system that we have new information that shall be displayed, we bind the color buffer and ask our context to present it in&nbsp;<span style="font-family: 'courier new', courier;"><span class="s1">[</span><span class="s2">context&nbsp;</span>presentRenderbuffer<span class="s1">:</span><span class="s3">GL_RENDERBUFFER</span></span><span class="s1"><span style="font-family: 'courier new', courier;">]</span>.</span></p>
+<p><span class="s1">We just mentioned the display link. Remember that we invoke startRenderLoop and stopRenderLoop from our AppDelegate to have the application refreshed periodically if it is active?</span></p>
+<pre class="brush: cpp;fontsize: 100; first-line: 180; ">//our render loop just tells the iOS device that we want to keep refreshing our view all the time
+- (void)startRenderLoop
+{
+    //check whether the loop is already running
+    if(displayLink == nil)
+    {
+        //the display link specifies what to do when the screen has to be redrawn,
+        //here we use the selector (method) drawFrame
+        displayLink = [self.window.screen displayLinkWithTarget:self selector:@selector(drawFrame)];
+        
+        //by adding the display link to the run loop our draw method will be called 60 times per second
+        [displayLink addToRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
+        NSLog(@"Starting Render Loop");
+    }
+}</pre>
+<p>To begin updating our screen periodically, after making sure we haven't already set this up, we create a CADisplayLink for our screen, telling it what to do when the display needs to be redrawn. So we pass <span style="font-family: 'courier new', courier;">self</span> as target and the selector <span style="font-family: 'courier new', courier;">drawFrame</span><span style="font-family: arial, helvetica, sans-serif;">&nbsp;to the method <span style="font-family: 'courier new', courier;">displayLinkWithTarget</span>. To actually force a refresh around 60 times per second, we need to add this <span style="font-family: 'courier new', courier;">displayLink</span> to the system's runLoop, which is done with the next line. We get the system's runLoop by creating a <span style="font-family: 'courier new', courier;">NSRunLoop</span> using its static method <span style="font-family: 'courier new', courier;">currentRunLoop<span style="font-family: arial, helvetica, sans-serif;"> and passing this to our <span style="font-family: 'courier new', courier;">displayLink</span>'s method <span style="font-family: 'courier new', courier;">addToRunLoop</span>. Now we're actually rendering! But how do we stop this whenever our app moves to the background?</span></span></span></p>
+<pre class="brush: cpp;fontsize: 100; first-line: 196; ">//we have to be able to stop the render loop
+- (void)stopRenderLoop
+{
+    if (displayLink != nil) {
+        //if the display link is present, we invalidate it (so the loop stops)
+        [displayLink invalidate];
+        displayLink = nil;
+        NSLog(@"Stopping Render Loop");
+    }
+}</pre>
+<p>To stop the <span style="font-family: 'courier new', courier;">displayLink</span> we just need to call its method invalidate. This automatically performs a clean up, so the pointer now points to some unitialized memory. That's why we set it to <span style="font-family: 'courier new', courier;">nil</span> again, never ever leave pointers dangling!</p>
+<p>We're almost done with the class EAGLView, there are just two simple setters left to implement, a destructor (the dealloc method in Objective-C), and a callback method for a windowing event.</p>
+<pre class="brush: cpp;fontsize: 100; first-line: 207; ">//setter methods, should be straightforward
+- (void) setDepthBufferNeeded:(BOOL)needed
+{
+    useDepthBuffer = needed;
+}
+
+- (void) setLesson:(Lesson*)newLesson
+{
+    lesson = newLesson;
+    //if we set a new lesson, it is not yet initialized!
+    lessonIsInitialized = FALSE;
+}
+
+//As soon as the view is resized or new subviews are added, this method is called,
+//apparently the framebuffers are invalid in this case so we delete them
+//and have them recreated the next time we draw to them
+- (void)layoutSubviews
+{
+    [self deleteFramebuffer];
+}
+
+//cleanup our view
+- (void)dealloc
+{
+    [self deleteFramebuffer];    
+    [context release];
+    [super dealloc];
+}</pre>
+<p>The two setters should be easy to understand. The callback <span style="font-family: 'courier new', courier;">layoutSubviews</span> gets invoked whenever something about our UIView changes, so either it was resized or new subviews have been added to it. In this case we have to create our renderbuffers again because they become invalid through such an event. For this we just delete the buffers, as we know that <span style="font-family: 'courier new', courier;">drawFrame</span> creates the framebuffer before rendering, if it is not present.</p>
+<p>The dealloc method cleans up everything that was created by it, namely the framebuffers and the context. For the framebuffers we use our delete method, the <span style="font-family: 'courier new', courier;">context</span> has to be <span style="font-family: 'courier new', courier;">release</span>d as it is managed by the garbage collection. Finally we call our superclass' dealloc method, which is the UIView in this case. In Objective-C you have to invoke the dealloc method of the superclass manually, in C++ the destructor of the superclass is called automatically.</p>
+<h3>Lesson</h3>
+<p>We eventually end up in the class that plays the key role in all our following tutorials. A lesson is responsible for drawing every single frame, and for initializing our OpenGL stuff like loading images and shaders or sending geometry data to the graphic chip. See<strong> Basecode/Lesson.h</strong></p>
+<pre class="brush: cpp;fontsize: 100; first-line: 1; ">#include &lt;OpenGLES/ES2/gl.h&gt;
+#include &lt;OpenGLES/ES2/glext.h&gt;
+
+//this is our general lesson class, providing the two most important methods init and draw
+//which will be invoked by our EAGLView
+class Lesson
+{
+public:
+    //constructor
+    Lesson();
+    //the destructor has always to virtual!
+    virtual ~Lesson();
+    
+    //abstract methods init and draw have to be defined in derived classes
+    virtual void init() = 0;
+    virtual void draw() = 0;
+    
+    //we need to know the size of our drawing canvas (called renderbuffer here),
+    //so this method just saves the parameters in the member variables
+    virtual void setRenderbufferSize(unsigned int width, unsigned int height);
+    
+//all protected stuff will be visible within derived classes, but from nowhere else    
+protected:
+    //fields for the renderbuffer size
+    unsigned int m_renderbufferWidth, m_renderbufferHeight;
+};
+</pre>
+<p>The first two lines include the OpenGL header files which define all the API. Then we define the class, which has a pretty simple interface. It has a constructor and a virtual destructor. In C++ every method that you are going to overwrite in derived classes has to be defined virtual in both, the super and the derived class. Remember that the constructors are never virtual, but the destructor should always be!</p>
+<p>The init and draw method define the interface for the core functionality. But as the class <span style="font-family: 'courier new', courier;">Lesson</span> is just a generic interface, we don't want to implement this methods here but leave that to the derived classes (e.g. <span style="font-family: 'courier new', courier;">Lesson01</span>). This is why the methods are not only virtual, but also set to zero. This is &nbsp;the C++ way of defining an abstract method, which implicitly makes the class Lesson abstract. An abstract class cannot be instanciated to prevent unallowed usage of these not implemented methods.</p>
+<p>We have two <span style="font-family: 'courier new', courier;">protected</span> member variables for our renderbuffer size. Protected means they will be visible in derived classes, but nowhere else. We already saw in <span style="font-family: 'courier new', courier;">EAGLView::createFramebuffer</span> that we called the method <span style="font-family: 'courier new', courier;">setRenderbufferSize</span> to pass these values to the lesson, and here we receive this input.</p>
+<p>The implementation in <strong>Basecode/Lesson.mm</strong> is quite simple. The constructor does nothing but setting the size of the renderbuffer to zero, and the destructor does not need to clean up anything here as we haven't allocated any further memory from within the class.</p>
+<pre class="brush: cpp;fontsize: 100; first-line: 1; ">#include "Lesson.h"
+
+//Lesson constructor, set default values
+Lesson::Lesson():
+    m_renderbufferWidth(0),
+    m_renderbufferHeight(0)
+{
+    
+}
+
+//Lesson destructor
+Lesson::~Lesson()
+{
+    //cleanup here
+}
+
+//save the renderbuffer size in the member variables
+void Lesson::setRenderbufferSize(unsigned int width, unsigned int height)
+{
+    m_renderbufferWidth = width;
+    m_renderbufferHeight = height;
+    
+    glViewport(0, 0, m_renderbufferWidth, m_renderbufferHeight);
+}</pre>
+<p>The first interesting OpenGL call happens in setRenderbufferSize. After storing the width and height in our member variables, we call <span style="font-family: 'courier new', courier;">glViewport(int left, int bottom, int width, int height)</span>. &nbsp;With this we tell OpenGL which part of our screen we are drawing to. We specify that we want the whole screen by starting in the lower left and using the full width and height.</p>
+<h3>Lesson01</h3>
+<p>Now we know every piece of our application but the actual OpenGL part. This was necessary to get started, I promise from now on there will be less code and more explanations and images :)</p>
+<pre class="brush: cpp;fontsize: 100; first-line: 1; ">//We derive our current lesson class from the general lesson class
+class Lesson01 : public Lesson
+{
+public:
+    //overwrite all important methods
+    Lesson01();
+    virtual ~Lesson01();
+    
+    virtual void init();
+    virtual void draw();
+};</pre>
+<p>For every lesson we will derive a new <span style="font-family: 'courier new', courier;">LessonXX</span> class, putting in more and more features of OpenGL ES. This lesson's <strong>Lesson01.h</strong> is very simplistic, we just implement the necessary methods declared abstract in the superclass <span style="font-family: 'courier new', courier;">Lesson</span>.</p>
+<p>In this lesson we will start with the simplest of all operations: clearing the screen. You can find them in <strong>Lesson01.mm</strong>. There we first define our constructor and destructor although they don't have to do anything yet.</p>
+<pre class="brush: cpp;fontsize: 100; first-line: 1; ">#include "Lesson01.h"
+
+//lesson constructor
+Lesson01::Lesson01()
+{
+    //initialize values
+}
+
+//lesson destructor
+Lesson01::~Lesson01()
+{
+    //do cleanup
+}</pre>
+<p>When we initialize our lesson, we set the color we wish to use to overwrite everything that has been in there. Colors in OpenGL are usually specified as intensities for the color channels red, green, and blue (commonly known as RGB color). Each intensity is a floating point value between 0 (no intensity) and 1 (full intensity). Sometimes(e.g. in images like JPEG) the intensity is given as values between 0 and 255. This additional color model allows us to describe every color that a computer monitor can display.</p>
+<p><img style="vertical-align: middle;" title="RGB color model" src="RGB_farbwuerfel.jpg" tppabs="http://upload.wikimedia.org/wikipedia/commons/0/03/RGB_farbwuerfel.jpg" alt="RGB color model" width="774" height="236" /></p>
+<p>(Image taken from:&nbsp;<a href="javascript:if(confirm('http://en.wikipedia.org/wiki/File:RGB_farbwuerfel.jpg  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://en.wikipedia.org/wiki/File:RGB_farbwuerfel.jpg'" tppabs="http://en.wikipedia.org/wiki/File:RGB_farbwuerfel.jpg">http://en.wikipedia.org/wiki/File:RGB_farbwuerfel.jpg</a>)</p>
+<p>So let's define our clearing color to plain red. This means we need full intensity in our red channel, and no intensity in green and blue.</p>
+<pre class="brush: cpp;fontsize: 100; first-line: 14; ">//initializing all OpenGL related things
+void Lesson01::init()
+{
+    NSLog(@"Init..");
+    
+    //set the color we use for clearing our colorRenderbuffer to red
+    glClearColor(1.0, 0.0, 0.0, 1.0);
+}</pre>
+<p>Whats that? There's 4 parameters to <span style="font-family: 'courier new', courier;">glClearColor</span> ? The last value specifies the alpha value (an RGBA color) which defines the opacity, which will be 1 for most surfaces. The alpha value can be used to mix the current and new color of each pixel (calld blending), but here we will set the value of each pixel to the RGBA-tupel and don't use blending, so actually the value does not matter.</p>
+<p>Now we also need to tell OpenGL that we want it to clear our color buffer. This is done with the command <span style="font-family: 'courier new', courier;">glClear(GL_COLOR_BUFFER_BIT)</span>. We will do this at the beginning of every frame, so put it into the <span style="font-family: 'courier new', courier;">draw()</span> method.</p>
+<pre class="brush: cpp;fontsize: 100; first-line: 22; ">//drawing a frame
+void Lesson01::draw()
+{
+    //clear the color buffer
+    glClear(GL_COLOR_BUFFER_BIT);
+    
+    //everything should be red now! yay :)
+}</pre>
+<p>Congratulations! You've just completed you first OpenGL application on iOS! Play around with the color a bit to make sure you understand the RGB color model, and next time we'll actually start drawing.</p>
+<p>Stay tuned!</p>
+<p>Carsten</p>
+<hr />
+<h3>Downloads:</h3>
+<ul>
+<li><a href="javascript:if(confirm('http://nehe.googlecode.com/files/Lesson01.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.googlecode.com/files/Lesson01.zip'" tppabs="http://nehe.googlecode.com/files/Lesson01.zip">Lesson01 source code</a></li>
+</ul>
+<h3>Forum for this lesson:</h3>
+<ul>
+<li><a href="javascript:if(confirm('http://www.gamedev.net/topic/613789-nehe-ios-lesson-01-qa/  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://www.gamedev.net/topic/613789-nehe-ios-lesson-01-qa/'" tppabs="http://www.gamedev.net/topic/613789-nehe-ios-lesson-01-qa/" target="_blank">http://www.gamedev.net/topic/613789-nehe-ios-lesson-01-qa/</a></li>
+</ul>
+
+
+</div>
+</div>
+
+
+
+            <div style="width:728px;padding:0px;margin:auto; margin-top: 10px;">
+            
+
+    <script type="text/javascript"><!--
+    google_ad_client = "ca-pub-2070139036028524";
+    /* Leaderboard_NeHe */
+    google_ad_slot = "4986065299";
+    google_ad_width = 728;
+    google_ad_height = 90;
+    //-->
+    </script>
+    <script type="text/javascript"
+    src="show_ads.js" tppabs="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+    </script>    
+
+                           
+            </div>   
+        </td>
+        <td class="col2">
+            
+
+
+<h3 style="text-align: center">Support this Author</h3>
+<p style="text-align: center">
+<a class="FlattrButton" style="display:none;"
+    title="iOS Lesson 01 - Setting up GL ES"
+    rel="flattr;uid:cars10;category:text;tags:opengl,article,nehe,gamedev;"
+    href="index-15.htm" tppabs="http://nehe.gamedev.net/tutorial/ios_lesson_01__setting_up_gl_es/44001/">
+</a>
+</p>
+
+
+
+<div style="text-align: center; padding:10px;">
+
+<script type="text/javascript"><!--
+google_ad_client = "ca-pub-2070139036028524";
+/* Nehe_Skyscraper */
+google_ad_slot = "8643907495";
+google_ad_width = 160;
+google_ad_height = 600;
+//-->
+</script>
+<script type="text/javascript"
+src="show_ads.js" tppabs="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+</script>
+
+</div>
+            
+        </td>
+    </table>
+    <div id="footer">
+        <p>
+            
+    
+    <a rel="license" href="javascript:if(confirm('http://creativecommons.org/licenses/by-nc/3.0/  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://creativecommons.org/licenses/by-nc/3.0/'" tppabs="http://creativecommons.org/licenses/by-nc/3.0/">
+        <img alt="Creative Commons Licence" style="border-width:0" src="88x31.png" tppabs="http://i.creativecommons.org/l/by-nc/3.0/88x31.png" />
+    </a>
+    <br/><br/>
+    This <span xmlns:dct="http://purl.org/dc/terms/" href="javascript:if(confirm('http://purl.org/dc/dcmitype/Text  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://purl.org/dc/dcmitype/Text'" tppabs="http://purl.org/dc/dcmitype/Text" rel="dct:type">work</span> is licensed under a <a rel="license" href="javascript:if(confirm('http://creativecommons.org/licenses/by-nc/3.0/  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://creativecommons.org/licenses/by-nc/3.0/'" tppabs="http://creativecommons.org/licenses/by-nc/3.0/">Creative Commons Attribution-NonCommercial 3.0 Unported License</a>.
+    <br/><br/>
+    
+    © 1997-2012 Carsten Haubold. All rights reserved.<br/>
+
+			NeHe™ and NeHe Productions™ are trademarks of GameDev.net, LLC<br/>
+			OpenGL® is a registered trademark of Silicon Graphics Inc.<br/>
+		</p>        
+		<br/>
+    </div>
+
+    
+    
+	    <script type="text/javascript" src="shCore.js" tppabs="http://nehe.gamedev.net/static/js/syntax_highlighter/shCore.js"></script>
+        <script type="text/javascript" src="shBrushCpp.js" tppabs="http://nehe.gamedev.net/static/js/syntax_highlighter/shBrushCpp.js"></script>
+	    <script type="text/javascript" src="shBrushJScript.js" tppabs="http://nehe.gamedev.net/static/js/syntax_highlighter/shBrushJScript.js"></script>
+	    <script type="text/javascript">SyntaxHighlighter.all();</script>
+    
+
+    <!-- Place this render call where appropriate -->
+    <script type="text/javascript">
+      (function() {
+        var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+        po.src = 'plusone.js'/*tpa=https://apis.google.com/js/plusone.js*/;
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+      })();
+    </script>    
+
+    
+<!-- GoogleAnalytics code -->
+<script src="urchin.js" tppabs="http://www.google-analytics.com/urchin.js" type="text/javascript">
+</script>
+<script type="text/javascript">
+_uacct = "UA-279474-2"; // Gamedev
+urchinTracker();
+_uff = 0; // Reset for second account
+_uacct = "UA-24180731-1"; // Non-GD
+urchinTracker();
+</script> 
+  </body>
+</html>

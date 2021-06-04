@@ -1,0 +1,423 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+    dir="ltr"
+    xml:lang="en"
+    lang="en">
+  <head>
+    <title>NeHe Productions: SimpleGLXWindow Class</title>
+
+    <link rel="stylesheet" type="text/css" href="public_base.css" tppabs="http://nehe.gamedev.net/static/css/public_base.css" />
+    <link type="text/css" rel="stylesheet" href="shThemeMidnight.css" tppabs="http://nehe.gamedev.net/static/css/syntax_highlighter/shThemeMidnight.css"/>
+    
+    <link rel="alternate" type="application/atom+xml" title="Atom feed" href="index-1.htm" tppabs="http://nehe.gamedev.net/atom/" />
+    <link rel="alternate" type="application/rss+xml" title="RSS feed" href="index-2.htm" tppabs="http://nehe.gamedev.net/rss/" />
+    
+    <meta name="author" content="Luke Benstead + Carsten Haubold" />
+    <meta name="description" content="OpenGL Tutorials, Demos, Games and More..." />
+    <meta name="keywords" content="opengl, tutorial, article, demo, game, blend, texturemap, lighting, contest, 3D" />
+
+    
+    
+
+    
+
+<script type="text/javascript">
+/* <![CDATA[ */
+    (function() {
+        var s = document.createElement('script'), t = document.getElementsByTagName('script')[0];
+        s.type = 'text/javascript';
+        s.async = true;
+        s.src = 'load.js-mode=auto&uid=kazade'/*tpa=http://api.flattr.com/js/0.6/load.js?mode=auto&uid=kazade*/;
+        t.parentNode.insertBefore(s, t);
+    })();
+/* ]]> */
+
+</script>
+
+
+    
+    
+    
+    
+
+    
+  </head>
+
+  <body>
+    
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "all.js#xfbml=1"/*tpa=http://connect.facebook.net/en_GB/all.js#xfbml=1*/;
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+
+
+    <table cellpadding="0" cellspacing="0" border="0" id="layout_table">
+    <tr><td>
+        <div id="header">
+                <a href="index.htm" tppabs="http://nehe.gamedev.net/"><img class="logo" class="logo" src="nehe.png" tppabs="http://nehe.gamedev.net/static/images/nehe.png" border="0" alt="Nehe" /></a>
+        </div>            
+    </td></tr>
+    <tr><td colspan="2">
+            
+<div class="navbar">
+    <a href="index.htm" tppabs="http://nehe.gamedev.net/">HOME</a>
+    <a href="javascript:if(confirm('http://twitter.com/  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://twitter.com/#!/nehegl'" tppabs="http://twitter.com/#!/nehegl">TWITTER</a>  
+    <a href="javascript:if(confirm('http://www.facebook.com/pages/NeHe/300582493323181  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://www.facebook.com/pages/NeHe/300582493323181'" tppabs="http://www.facebook.com/pages/NeHe/300582493323181">FACEBOOK</a>     
+    <a href="index-2.htm" tppabs="http://nehe.gamedev.net/rss/">RSS</a>    
+    <a href="index-1.htm" tppabs="http://nehe.gamedev.net/atom/">ATOM</a>    
+    <a href="javascript:if(confirm('http://www.gamedev.net/forum/27-nehe-productions/page__forum_title__NeHe+Productions  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://www.gamedev.net/forum/27-nehe-productions/page__forum_title__NeHe+Productions'" tppabs="http://www.gamedev.net/forum/27-nehe-productions/page__forum_title__NeHe+Productions">FORUM</a>    
+</div>
+    
+    </td></tr>
+    <tr>
+        <td class="col1">
+
+            
+<div id="article_container">
+
+
+<h1 class="article-header">SimpleGLXWindow Class</h1>
+<div class="social-media">
+<!-- Place this tag where you want the +1 button to render -->
+<div class="g-plusone" data-size="medium" data-width="120" data-annotation="inline"></div>
+<div class="fb-like" data-send="false" data-layout="button_count" data-width="60" data-show-faces="false" data-colorscheme="dark" data-font="arial"></div>
+</div>
+<div style="clear:both;"></div>
+<p>&nbsp;</p>
+<h2>Introduction</h2>
+<p>After OpenGL Game Programming - Second Edition was released, it became apparent that the SimpleGLXWindow class that was used in the final chapter wasn't documented in the book! So, for those of you on Linux who'd like a quick breakdown, here it is!</p>
+<h2>Class Structure</h2>
+<p>The class structure for SimpleGLXWindow is very similar to the Win32 version. Like the Win32 version it inherits the BOGLGPWindow base class and so implements the same virtual methods. Here's the class definition for reference:</p>
+<p>&nbsp;</p>
+<pre class="brush: cpp;fontsize: 100; first-line: 1; ">class SimpleGLXWindow : public BOGLGPWindow
+{
+public:
+    SimpleGLXWindow(); //default constructor
+    virtual ~SimpleGLXWindow();
+
+    bool create(int width, int height, int bpp, bool fullscreen);
+    void destroy();
+    void processEvents();
+    void attachExample(Example* example);
+
+    bool isRunning(); //Is the window running?
+
+    void swapBuffers() { glXSwapBuffers(m_display, m_XWindow); }
+
+    float getElapsedSeconds();
+
+    KeyboardInterface* getKeyboard() const { return m_keyboard; }
+    MouseInterface* getMouse() const { return m_mouse; }
+private:
+    Example* m_example; //A link to the example program
+    bool m_isRunning; //Is the window still running?
+
+
+    Example* getAttachedExample() { return m_example; }
+
+    unsigned int m_lastTime;
+
+    Display* m_display;
+    Window m_XWindow;
+    GLXContext m_glContext;
+    XF86VidModeModeInfo m_XF86DeskMode;
+    XSetWindowAttributes m_XSetAttr;
+    int m_screenID;
+
+    bool m_isFullscreen;
+    unsigned int m_width;
+    unsigned int m_height;
+    unsigned int m_bpp;
+
+    bool m_GL3Supported;
+
+    KeyboardInterface* m_keyboard;
+    MouseInterface* m_mouse;
+};
+</pre>
+<p>&nbsp;</p>
+<h2>&nbsp;</h2>
+<h2>Window Creation</h2>
+<p>The most important and complicated part of the window class is the code that creates the OpenGL window. The first thing we do is get a handle on the default display using <a title="XOpenDisplay" href="javascript:if(confirm('http://tronche.com/gui/x/xlib/display/opening.html  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://tronche.com/gui/x/xlib/display/opening.html'" tppabs="http://tronche.com/gui/x/xlib/display/opening.html" target="_blank">XOpenDisplay</a>, by passing in a zero (or NULL) this will grab whichever display is set in the DISPLAY environment variable (which is normally the one you are using to view your desktop!).</p>
+<pre class="brush: cpp;fontsize: 100; first-line: 1; ">    m_display = XOpenDisplay(0);  //Open default display
+    if (m_display == NULL)
+    {
+        std::cerr &lt;&lt; "Could not open the display" &lt;&lt; std::endl;
+        return false;
+    }
+</pre>
+<pre> </pre>
+<p>So, we've grabbed the default display, and if there was an error we've logged it and returned false to indicate that window creation failed. Next, we get a handle identifying the default screen for the display:</p>
+<pre class="brush: cpp;fontsize: 100; first-line: 1; ">    m_screenID = DefaultScreen(m_display); //Get the default screen id
+</pre>
+<pre> </pre>
+<p>Now, we get a list of the available display modes, and see if one matches what we asked for. If not we bail out with an error:</p>
+<pre class="brush: cpp;fontsize: 100; first-line: 1; ">    XF86VidModeModeInfo **modes;
+    if (!XF86VidModeGetAllModeLines(m_display, m_screenID, &amp;modeNum, &amp;modes))
+    {
+        std::cerr &lt;&lt; "Could not query the video modes" &lt;&lt; std::endl;
+        return false;
+    }
+
+    int bestMode = -1;
+    for (int i = 0; i &lt; modeNum; i++)
+    {
+        if ((modes[i]-&gt;hdisplay == width) &amp;&amp;
+            (modes[i]-&gt;vdisplay == height))
+        {
+            bestMode = i;
+        }
+    }
+
+    if (bestMode == -1)
+    {
+        std::cerr &lt;&lt; "Could not find a suitable graphics mode" &lt;&lt; std::endl;
+        return false;
+    }
+</pre>
+<pre> </pre>
+<p>After we've stored the best matching display mode, we request for a double buffered window with a 16 bit depthbuffer:</p>
+<pre class="brush: cpp;fontsize: 100; first-line: 1; ">    int doubleBufferedAttribList [] = {
+        GLX_RGBA, GLX_DOUBLEBUFFER,
+        GLX_RED_SIZE, 4,
+        GLX_GREEN_SIZE, 4,
+        GLX_BLUE_SIZE, 4,
+        GLX_DEPTH_SIZE, 16,
+        None
+    };
+
+    XVisualInfo* vi = NULL;
+    //Attempt to create a double buffered window
+    vi = glXChooseVisual(m_display, m_screenID, doubleBufferedAttribList);
+
+    if (vi == NULL)
+    {
+        std::cerr &lt;&lt; "Could not create a double buffered window" &lt;&lt; std::endl;
+        return false;
+    }</pre>
+<pre> 
+</pre>
+<p>The next step is to create an OpenGL 2.1 context, so we can in-turn request a GL3 one. These are the same steps we have to take as on Windows:</p>
+<pre class="brush: cpp;fontsize: 100; first-line: 1; ">    //Create a GL 2.1 context
+    GLXContext gl2Context = glXCreateContext(m_display, vi, 0, GL_TRUE);
+
+    if (gl2Context == NULL)
+    {
+        std::cerr &lt;&lt; "Could not create a GL 2.1 context, please check your graphics drivers" &lt;&lt; std::endl;
+        return false;
+    }
+
+    //Get a pointer to the GL 3.0 context creation
+    PFNGLXCREATECONTEXTATTRIBSARBPROC glXCreateContextAttribs = (PFNGLXCREATECONTEXTATTRIBSARBPROC)glXGetProcAddress((GLubyte*)"glXCreateContextAttribsARB");
+
+    if (glXCreateContextAttribs == NULL)
+    {
+        std::cerr &lt;&lt; "OpenGL 3.0 is not supported, falling back to 2.1" &lt;&lt; std::endl;
+        m_glContext = gl2Context;
+        m_GL3Supported = false;
+    }
+    else
+    {
+        //Create a GL 3.0 context
+
+        int attribs[] = {
+            GLX_CONTEXT_MAJOR_VERSION_ARB, 3,//we want a 3.0 context
+            GLX_CONTEXT_MINOR_VERSION_ARB, 0,
+            0 //zero indicates the end of the array
+        };
+
+        m_glContext = glXCreateContextAttribs(m_display, framebufferConfig, 0, true, &amp;attribs[0]);
+        glXDestroyContext(m_display, gl2Context); //We can destroy the GL 2.0 context once the 3.0 one has bene created
+        m_GL3Supported = true;
+    }</pre>
+<pre> 
+</pre>
+<p>If OpenGL 3.0 isn't supported, we set a flag so we can use the fallback 2.1 shaders.</p>
+<p>Now we have enough information to actually create the window. Remember we stored the best display mode we could find? We use that below after setting up some window configuration settings:</p>
+<pre class="brush: cpp;fontsize: 100; first-line: 1; ">    Colormap cmap = XCreateColormap(m_display, RootWindow(m_display, vi-&gt;screen),vi-&gt;visual, AllocNone);
+    m_XSetAttr.colormap = cmap;
+    m_XSetAttr.border_pixel = 0;
+    m_XSetAttr.event_mask = ExposureMask | KeyPressMask | KeyReleaseMask | ButtonPressMask |
+                                StructureNotifyMask;
+
+    m_XSetAttr.override_redirect = False;
+
+    unsigned long windowAttributes = CWBorderPixel | CWColormap | CWEventMask;
+
+    if (fullscreen)
+    {
+        windowAttributes = CWBorderPixel | CWColormap | CWEventMask | CWOverrideRedirect;
+
+        XF86VidModeSwitchToMode(m_display, m_screenID, modes[bestMode]);
+        XF86VidModeSetViewPort(m_display, m_screenID, 0, 0);
+        m_XSetAttr.override_redirect = True;
+    }
+
+    m_XWindow = XCreateWindow(m_display, RootWindow(m_display, vi-&gt;screen),
+                                  0, 0, width, height, 0, vi-&gt;depth, InputOutput, vi-&gt;visual,
+                                  CWBorderPixel | CWColormap | CWEventMask, &amp;m_XSetAttr);</pre>
+<pre> 
+</pre>
+<p>Finally, we set the window title, and if we are fullscreen we grab the cursor:</p>
+<pre class="brush: cpp;fontsize: 100; first-line: 1; ">    if (fullscreen)
+    {
+        XWarpPointer(m_display, None, m_XWindow, 0, 0, 0, 0, 0, 0);
+        XMapRaised(m_display, m_XWindow);
+        XGrabKeyboard(m_display, m_XWindow, True, GrabModeAsync, GrabModeAsync, CurrentTime);
+        XGrabPointer(m_display, m_XWindow, True, ButtonPressMask,
+                     GrabModeAsync, GrabModeAsync, m_XWindow, None, CurrentTime);
+
+        m_isFullscreen = true;
+    }
+    else
+    {
+        Atom wmDelete = XInternAtom(m_display, "WM_DELETE_WINDOW", True);
+        XSetWMProtocols(m_display, m_XWindow, &amp;wmDelete, 1);
+        XSetStandardProperties(m_display, m_XWindow, title.c_str(), None, NULL, NULL, 0, NULL);
+        XMapRaised(m_display, m_XWindow);
+    }
+
+
+    XFree(modes);</pre>
+<pre> 
+</pre>
+<p>The last line above releases the memory for the display modes that we searched earlier.</p>
+<h2>Destroying the Window</h2>
+<p>This is pretty straightforward, here's the code:</p>
+<pre class="brush: cpp;fontsize: 100; first-line: 1; ">void SimpleGLXWindow::destroy()
+{
+    m_mouse-&gt;showCursor(true);
+    if (m_glContext)
+    {
+        glXMakeCurrent(m_display, None, NULL);
+        glXDestroyContext(m_display, m_glContext);
+        m_glContext = NULL;
+    }
+
+    if (m_isFullscreen)
+    {
+        XF86VidModeSwitchToMode(m_display, m_screenID, &amp;m_XF86DeskMode);
+        XF86VidModeSetViewPort(m_display, m_screenID, 0, 0);
+    }
+
+    XCloseDisplay(m_display);
+}</pre>
+<pre> 
+</pre>
+<p>Basically, we make sure that the cursor is visible, then we destroy the OpenGL context and finally switch the display mode back when we are done. We release our handle on the display and the window is completely destroyed.</p>
+<p>If you have any further questions, either about this article or the book itself, either let me know on the forums or<a href="javascript:if(confirm('http://www.twitter.com/  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://www.twitter.com/#!/kazade/'" tppabs="http://www.twitter.com/#!/kazade/" target="_blank"> poke me on the Twitters</a>.</p>
+
+
+</div>
+</div>
+
+
+
+            <div style="width:728px;padding:0px;margin:auto; margin-top: 10px;">
+            
+
+    <script type="text/javascript"><!--
+    google_ad_client = "ca-pub-7989950444316787";
+    /* Leaderboard_NeHe */
+    google_ad_slot = "3856279516";
+    google_ad_width = 728;
+    google_ad_height = 90;
+    //-->
+    </script>
+    <script type="text/javascript"
+    src="show_ads.js" tppabs="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+    </script>    
+
+                           
+            </div>   
+        </td>
+        <td class="col2">
+            
+
+
+<h3 style="text-align: center">Support this Author</h3>
+<p style="text-align: center">
+<a class="FlattrButton" style="display:none;"
+    title="SimpleGLXWindow Class"
+    rel="flattr;uid:kazade;category:text;tags:opengl,article,nehe,gamedev;"
+    href="index-30.htm" tppabs="http://nehe.gamedev.net/tutorial/simpleglxwindow_class/35003/">
+</a>
+</p>
+
+
+
+<div style="text-align: center; padding:10px;">
+
+<script type="text/javascript"><!--
+google_ad_client = "ca-pub-7989950444316787";
+/* Nehe_Skyscraper */
+google_ad_slot = "6284221953";
+google_ad_width = 160;
+google_ad_height = 600;
+//-->
+</script>
+<script type="text/javascript"
+src="show_ads.js" tppabs="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+</script>
+
+</div>
+            
+        </td>
+    </table>
+    <div id="footer">
+        <p>
+            
+    
+    <a rel="license" href="javascript:if(confirm('http://creativecommons.org/licenses/by-nc/3.0/  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://creativecommons.org/licenses/by-nc/3.0/'" tppabs="http://creativecommons.org/licenses/by-nc/3.0/">
+        <img alt="Creative Commons Licence" style="border-width:0" src="88x31.png" tppabs="http://i.creativecommons.org/l/by-nc/3.0/88x31.png" />
+    </a>
+    <br/><br/>
+    This <span xmlns:dct="http://purl.org/dc/terms/" href="javascript:if(confirm('http://purl.org/dc/dcmitype/Text  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://purl.org/dc/dcmitype/Text'" tppabs="http://purl.org/dc/dcmitype/Text" rel="dct:type">work</span> is licensed under a <a rel="license" href="javascript:if(confirm('http://creativecommons.org/licenses/by-nc/3.0/  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://creativecommons.org/licenses/by-nc/3.0/'" tppabs="http://creativecommons.org/licenses/by-nc/3.0/">Creative Commons Attribution-NonCommercial 3.0 Unported License</a>.
+    <br/><br/>
+    
+    © 1997-2012 Luke Benstead. All rights reserved.<br/>
+
+			NeHe™ and NeHe Productions™ are trademarks of GameDev.net, LLC<br/>
+			OpenGL® is a registered trademark of Silicon Graphics Inc.<br/>
+		</p>        
+		<br/>
+    </div>
+
+    
+    
+	    <script type="text/javascript" src="shCore.js" tppabs="http://nehe.gamedev.net/static/js/syntax_highlighter/shCore.js"></script>
+        <script type="text/javascript" src="shBrushCpp.js" tppabs="http://nehe.gamedev.net/static/js/syntax_highlighter/shBrushCpp.js"></script>
+	    <script type="text/javascript" src="shBrushJScript.js" tppabs="http://nehe.gamedev.net/static/js/syntax_highlighter/shBrushJScript.js"></script>
+	    <script type="text/javascript">SyntaxHighlighter.all();</script>
+    
+
+    <!-- Place this render call where appropriate -->
+    <script type="text/javascript">
+      (function() {
+        var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+        po.src = 'plusone.js'/*tpa=https://apis.google.com/js/plusone.js*/;
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+      })();
+    </script>    
+
+    
+<!-- GoogleAnalytics code -->
+<script src="urchin.js" tppabs="http://www.google-analytics.com/urchin.js" type="text/javascript">
+</script>
+<script type="text/javascript">
+_uacct = "UA-279474-2"; // Gamedev
+urchinTracker();
+_uff = 0; // Reset for second account
+_uacct = "UA-24180731-1"; // Non-GD
+urchinTracker();
+</script> 
+  </body>
+</html>

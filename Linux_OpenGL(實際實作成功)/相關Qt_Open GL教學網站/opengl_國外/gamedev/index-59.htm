@@ -1,0 +1,652 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+    dir="ltr"
+    xml:lang="en"
+    lang="en">
+  <head>
+    <title>NeHe Productions: Particle Engine Using Triangle Strips</title>
+
+    <link rel="stylesheet" type="text/css" href="public_base.css" tppabs="http://nehe.gamedev.net/static/css/public_base.css" />
+    <link type="text/css" rel="stylesheet" href="shThemeMidnight.css" tppabs="http://nehe.gamedev.net/static/css/syntax_highlighter/shThemeMidnight.css"/>
+    
+    <link rel="alternate" type="application/atom+xml" title="Atom feed" href="index-1.htm" tppabs="http://nehe.gamedev.net/atom/" />
+    <link rel="alternate" type="application/rss+xml" title="RSS feed" href="index-2.htm" tppabs="http://nehe.gamedev.net/rss/" />
+    
+    <meta name="author" content="Luke Benstead + Carsten Haubold" />
+    <meta name="description" content="OpenGL Tutorials, Demos, Games and More..." />
+    <meta name="keywords" content="opengl, tutorial, article, demo, game, blend, texturemap, lighting, contest, 3D" />
+
+    
+    
+
+    
+
+</script>
+
+
+    
+    
+    
+    
+        
+        <script type='text/javascript'>
+        var googletag = googletag || {};
+        googletag.cmd = googletag.cmd || [];
+        (function() {
+        var gads = document.createElement('script');
+        gads.async = true;
+        gads.type = 'text/javascript';
+        var useSSL = 'https:' == document.location.protocol;
+        gads.src = (useSSL ? 'https:' : 'http:') + 
+        '//www.googletagservices.com/tag/js/gpt.js';
+        var node = document.getElementsByTagName('script')[0];
+        node.parentNode.insertBefore(gads, node);
+        })();
+        </script>
+
+        <script type='text/javascript'>
+        googletag.cmd.push(function() {
+        googletag.defineSlot('/1004699/Leaderboard_NeHe', [728, 90], 'div-gpt-ad-1327940144417-0').addService(googletag.pubads());
+        googletag.defineSlot('/1004699/Skyscraper_NeHe', [160, 600], 'div-gpt-ad-1327940144417-1').addService(googletag.pubads());
+        googletag.pubads().enableSingleRequest();
+        googletag.enableServices();
+        });
+        </script>
+    
+    
+
+    
+  </head>
+
+  <body>
+    
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "all.js#xfbml=1"/*tpa=http://connect.facebook.net/en_GB/all.js#xfbml=1*/;
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+
+
+    <table cellpadding="0" cellspacing="0" border="0" id="layout_table">
+    <tr><td>
+        <div id="header">
+                <a href="index.htm" tppabs="http://nehe.gamedev.net/"><img class="logo" class="logo" src="nehe.png" tppabs="http://nehe.gamedev.net/static/images/nehe.png" border="0" alt="Nehe" /></a>
+        </div>            
+    </td></tr>
+    <tr><td colspan="2">
+            
+<div class="navbar">
+    <a href="index.htm" tppabs="http://nehe.gamedev.net/">HOME</a>
+    <a href="javascript:if(confirm('http://twitter.com/  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://twitter.com/#!/nehegl'" tppabs="http://twitter.com/#!/nehegl">TWITTER</a>  
+    <a href="javascript:if(confirm('http://www.facebook.com/pages/NeHe/300582493323181  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://www.facebook.com/pages/NeHe/300582493323181'" tppabs="http://www.facebook.com/pages/NeHe/300582493323181">FACEBOOK</a>     
+    <a href="index-2.htm" tppabs="http://nehe.gamedev.net/rss/">RSS</a>    
+    <a href="index-1.htm" tppabs="http://nehe.gamedev.net/atom/">ATOM</a>    
+    <a href="javascript:if(confirm('http://www.gamedev.net/forum/27-nehe-productions/page__forum_title__NeHe+Productions  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://www.gamedev.net/forum/27-nehe-productions/page__forum_title__NeHe+Productions'" tppabs="http://www.gamedev.net/forum/27-nehe-productions/page__forum_title__NeHe+Productions">FORUM</a>    
+</div>
+    
+    </td></tr>
+    <tr>
+        <td class="col1">
+
+            
+<div id="article_container">
+
+
+<h1 class="article-header">Particle Engine Using Triangle Strips</h1>
+<div class="social-media">
+<!-- Place this tag where you want the +1 button to render -->
+<div class="g-plusone" data-size="medium" data-width="120" data-annotation="inline"></div>
+<div class="fb-like" data-send="false" data-layout="button_count" data-width="60" data-show-faces="false" data-colorscheme="dark" data-font="arial"></div>
+</div>
+<div style="clear:both;"></div>
+<p>Welcome to Tutorial 19. You've learned alot, and now you want to play. I will introduce one new command in this tutorial... The triangle strip. It's very easy to use, and can help speed up your programs when drawing alot of triangles.</p>
+<p>In this tutorial I will teach you how to make a semi-complex Particle Engine. Once you understand how particle engines work, creating effects such as fire, smoke, water fountains and more will be a piece of cake!</p>
+<p>I have to warn you however! Until today I had never written a particle engine. I had this idea that the 'famous' particle engine was a very complex piece of code. I've made attempts in the past, but usually gave up after I realized I couldn't control all the points without going crazy.</p>
+<p>You might not believe me when I tell you this, but this tutorial was written 100% from scratch. I borrowed no ones ideas, and I had no technical information sitting in front of me. I started thinking about particles, and all of a sudden my head filled with ideas (brain turning on?). Instead of thinking about each particle as a pixel that had to go from point 'A' to point 'B', and do this or that, I decided it would be better to think of each particle as an individual object responding to the environment around it. I gave each particle life, random aging, color, speed, gravitational influence and more.</p>
+<p>Soon I had a finished project. I looked up at the clock and realized aliens had come to get me once again. Another 4 hours gone! I remember stopping now and then to drink coffee and blink, but 4 hours... ?</p>
+<p>So, although this program in my opinion looks great, and works exactly like I wanted it to, it may not be the proper way to make a particle engine. I don't care personally, as long as it works well, and I can use it in my projects! If you are the type of person that needs to know you're conforming, then spend hours browsing the net looking for information. Just be warned. The few code snippits you do find may appear cryptic :)</p>
+<p>This tutorial uses the base code from lesson 1. There is alot of new code however, so I'll rewrite any section of code that contains changes (makes it easier to understand).</p>
+<p>Using the code from lesson 1, we'll add 5 new lines of code at the top of our program. The first line (stdio.h) allows us to read data from files. It's the same line we've added to previous tutorials the use texture mapping. The second line defines how many particles we're going to create and display on the screen. Define just tells our program that MAX_PARTICLES will equal whatever value we specify. In this case 1000. The third line will be used to toggle 'rainbow mode' off and on. We'll set it to on by default. sp and rp are variables we'll use to prevent the spacebar or return key from rapidly repeating when held down.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">#include &lt;windows.h&gt;			// Header File For Windows
+#include &lt;stdio.h&gt;			// Header File For Standard Input/Output ( ADD )
+#include &lt;gl\gl.h&gt;			// Header File For The OpenGL32 Library
+#include &lt;gl\glu.h&gt;			// Header File For The GLu32 Library
+#include &lt;gl\glaux.h&gt;			// Header File For The GLaux Library
+
+#define	MAX_PARTICLES	1000		// Number Of Particles To Create ( NEW )
+
+HDC		hDC=NULL;		// Private GDI Device Context
+HGLRC		hRC=NULL;		// Permanent Rendering Context
+HWND		hWnd=NULL;		// Holds Our Window Handle
+HINSTANCE	hInstance;		// Holds The Instance Of The Application
+
+bool	keys[256];			// Array Used For The Keyboard Routine
+bool	active=TRUE;			// Window Active Flag Set To TRUE By Default
+bool	fullscreen=TRUE;		// Fullscreen Flag Set To Fullscreen Mode By Default
+bool	rainbow=true;			// Rainbow Mode?	( ADD )
+bool	sp;				// Spacebar Pressed?	( ADD )
+bool	rp;				// Return Key Pressed?	( ADD )
+</pre>
+<p>The next 4 lines are misc variables. The variable slowdown controls how fast the particles move. The higher the number, the slower they move. The lower the number, the faster they move. If the value is set to low, the particles will move way too fast! The speed the particles travel at will affect how they move on the screen. Slow particles will not shoot out as far. Keep this in mind.</p>
+<p>The variables xspeed and yspeed allow us to control the direction of the tail. xspeed will be added to the current speed a particle is travelling on the x axis. If xspeed is a positive value our particle will be travelling more to the right. If xspeed is a negative value, our particle will travel more to the left. The higher the value, the more it travels in that direction. yspeed works the same way, but on the y axis. The reason I say 'MORE' in a specific direction is because other factors affect the direction our particle travels. xspeed and yspeed help to move the particle in the direction we want.</p>
+<p>Finally we have the variable zoom. We use this variable to pan into and out of our scene. With particle engines, it's nice to see more of the screen at times, and cool to zoom in real close other times.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">float	slowdown=2.0f;			// Slow Down Particles
+float	xspeed;				// Base X Speed (To Allow Keyboard Direction Of Tail)
+float	yspeed;				// Base Y Speed (To Allow Keyboard Direction Of Tail)
+float	zoom=-40.0f;			// Used To Zoom Out
+</pre>
+<p>Now we set up a misc loop variable called loop. We'll use this to predefine the particles and to draw the particles to the screen. col will be use to keep track of what color to make the particles. delay will be used to cycle through the colors while in rainbow mode.</p>
+<p>Finally, we set aside storage space for one texture (the particle texture). I decided to use a texture rather than OpenGL points for a few reasons. The most important reason is because points are not all that fast, and they look pretty blah. Secondly, textures are way more cool :) You can use a square particle, a tiny picture of your face, a picture of a star, etc. More control!</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">GLuint	loop;				// Misc Loop Variable
+GLuint	col;				// Current Color Selection
+GLuint	delay;				// Rainbow Effect Delay
+GLuint	texture[1];			// Storage For Our Particle Texture
+</pre>
+<p>Ok, now for the fun stuff. The next section of code creates a structure describing a single particle. This is where we give the particle certain characteristics.</p>
+<p>We start off with the boolean variable active. If this variable is TRUE, our particle is alive and kicking. If it's FALSE our particle is dead or we've turned it off! In this program I don't use active, but it's handy to include.</p>
+<p>The variables life and fade control how long the particle is displayed, and how bright the particle is while it's alive. The variable life is gradually decreased by the value stored in fade. In this program that will cause some particles to burn longer than others.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">typedef struct						// Create A Structure For Particle
+{
+	bool	active;					// Active (Yes/No)
+	float	life;					// Particle Life
+	float	fade;					// Fade Speed
+</pre>
+<p>The variables r, g and b hold the red intensity, green intensity and blue intensity of our particle. The closer r is to 1.0f, the more red the particle will be. Making all 3 variables 1.0f will create a white particle.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	float	r;					// Red Value
+	float	g;					// Green Value
+	float	b;					// Blue Value
+</pre>
+<p>The variables x, y and z control where the particle will be displayed on the screen. x holds the location of our particle on the x axis. y holds the location of our particle on the y axis, and finally z holds the location of our particle on the z axis.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	float	x;					// X Position
+	float	y;					// Y Position
+	float	z;					// Z Position
+</pre>
+<p>The next three variables are important. These three variables control how fast a particle is moving on specific axis, and what direction to move. If xi is a negative value our particle will move left. Positive it will move right. If yi is negative our particle will move down. Positive it will move up. Finally, if zi is negative the particle will move into the screen, and postive it will move towards the viewer.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	float	xi;					// X Direction
+	float	yi;					// Y Direction
+	float	zi;					// Z Direction
+</pre>
+<p>Lastly, 3 more variables! Each of these variables can be thought of as gravity. If xg is a positive value, our particle will pull to the right. If it's negative our particle will be pulled to the left. So if our particle is moving left (negative) and we apply a positive gravity, the speed will eventually slow so much that our particle will start moving the opposite direction. yg pulls up or down and zg pulls towards or away from the viewer.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	float	xg;					// X Gravity
+	float	yg;					// Y Gravity
+	float	zg;					// Z Gravity
+</pre>
+<p>particles is the name of our structure.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">}
+particles;						// Particles Structure
+</pre>
+<p>Next we create an array called particle. This array will store MAX_PARTICLES. Translated into english we create storage for 1000 (MAX_PARTICLES) particles. This storage space will store the information for each individual particle.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">particles particle[MAX_PARTICLES];			// Particle Array (Room For Particle Info)
+</pre>
+<p>We cut back on the amount of code required for this program by storing our 12 different colors in a color array. For each color from 0 to 11 we store the red intensity, the green intensity, and finally the blue intensity. The color table below stores 12 different colors fading from red to violet.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">static GLfloat colors[12][3]=				// Rainbow Of Colors
+{
+	{1.0f,0.5f,0.5f},{1.0f,0.75f,0.5f},{1.0f,1.0f,0.5f},{0.75f,1.0f,0.5f},
+	{0.5f,1.0f,0.5f},{0.5f,1.0f,0.75f},{0.5f,1.0f,1.0f},{0.5f,0.75f,1.0f},
+	{0.5f,0.5f,1.0f},{0.75f,0.5f,1.0f},{1.0f,0.5f,1.0f},{1.0f,0.5f,0.75f}
+};
+
+LRESULT	CALLBACK WndProc(HWND, UINT, WPARAM, LPARAM);	// Declaration For WndProc
+</pre>
+<p>Our bitmap loading code hasn't changed.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">AUX_RGBImageRec *LoadBMP(char *Filename)		// Loads A Bitmap Image
+{
+	FILE *File=NULL;				// File Handle
+	if (!Filename)					// Make Sure A Filename Was Given
+	{
+		return NULL;				// If Not Return NULL
+	}
+
+	File=fopen(Filename,"r");			// Check To See If The File Exists
+	if (File)					// Does The File Exist?
+	{
+		fclose(File);				// Close The Handle
+		return auxDIBImageLoad(Filename);	// Load The Bitmap And Return A Pointer
+	}
+	return NULL;					// If Load Failed Return NULL
+}
+</pre>
+<p>This is the section of code that loads the bitmap (calling the code above) and converts it into a textures. Status is used to keep track of whether or not the texture was loaded and created.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">int LoadGLTextures()						// Load Bitmaps And Convert To Textures
+{
+	int Status=FALSE;					// Status Indicator
+
+	AUX_RGBImageRec *TextureImage[1];			// Create Storage Space For The Texture
+
+	memset(TextureImage,0,sizeof(void *)*1);		// Set The Pointer To NULL
+</pre>
+<p>Our texture loading code will load in our particle bitmap and convert it to a linear filtered texture.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	if (TextureImage[0]=LoadBMP("Data/Particle.bmp"))	// Load Particle Texture
+	{
+		Status=TRUE;					// Set The Status To TRUE
+		glGenTextures(1, &amp;texture[0]);			// Create One Textures
+
+		glBindTexture(GL_TEXTURE_2D, texture[0]);
+		glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_LINEAR);
+		glTexImage2D(GL_TEXTURE_2D, 0, 3, TextureImage[0]-&gt;sizeX, TextureImage[0]-&gt;sizeY, 0, GL_RGB, GL_UNSIGNED_BYTE, TextureImage[0]-&gt;data);
+	}
+
+	if (TextureImage[0])					// If Texture Exists
+	{
+		if (TextureImage[0]-&gt;data)			// If Texture Image Exists
+		{
+			free(TextureImage[0]-&gt;data);		// Free The Texture Image Memory
+		}
+		free(TextureImage[0]);				// Free The Image Structure
+	}
+	return Status;						// Return The Status
+}
+</pre>
+<p>The only change I made to the resize code was a deeper viewing distance. Instead of 100.0f, we can now view particles 200.0f units into the screen.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">GLvoid ReSizeGLScene(GLsizei width, GLsizei height)		// Resize And Initialize The GL Window
+{
+	if (height==0)						// Prevent A Divide By Zero By
+	{
+		height=1;					// Making Height Equal One
+	}
+
+	glViewport(0, 0, width, height);			// Reset The Current Viewport
+
+	glMatrixMode(GL_PROJECTION);				// Select The Projection Matrix
+	glLoadIdentity();					// Reset The Projection Matrix
+
+	// Calculate The Aspect Ratio Of The Window
+	gluPerspective(45.0f,(GLfloat)width/(GLfloat)height,0.1f,200.0f);	 ( MODIFIED )
+
+	glMatrixMode(GL_MODELVIEW);				// Select The Modelview Matrix
+	glLoadIdentity();					// Reset The Modelview Matrix
+}
+</pre>
+<p>If you're using the lesson 1 code, replace it with the code below. I've added code to load in our texture and set up blending for our particles.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">int InitGL(GLvoid)								// All Setup For OpenGL Goes Here
+{
+	if (!LoadGLTextures())							// Jump To Texture Loading Routine
+	{
+		return FALSE;							// If Texture Didn't Load Return FALSE
+	}
+</pre>
+<p>We make sure smooth shading is enabled, set the background clear color to black, disable depth testing and enable blending and texture mapping. After enabling texture mapping we select our particle texture.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	glShadeModel(GL_SMOOTH);						// Enables Smooth Shading
+	glClearColor(0.0f,0.0f,0.0f,0.0f);					// Black Background
+	glClearDepth(1.0f);							// Depth Buffer Setup
+	glDisable(GL_DEPTH_TEST);						// Disables Depth Testing
+	glEnable(GL_BLEND);							// Enable Blending
+	glBlendFunc(GL_SRC_ALPHA,GL_ONE);					// Type Of Blending To Perform
+	glHint(GL_PERSPECTIVE_CORRECTION_HINT,GL_NICEST);			// Really Nice Perspective Calculations
+	glHint(GL_POINT_SMOOTH_HINT,GL_NICEST);					// Really Nice Point Smoothing
+	glEnable(GL_TEXTURE_2D);						// Enable Texture Mapping
+	glBindTexture(GL_TEXTURE_2D,texture[0]);				// Select Our Texture
+</pre>
+<p>The code below will initialize each of the particles. We start off by activating each particle. If a particle is not active, it won't appear on the screen, no matter how much life it has.</p>
+<p>After we've made the particle active, we give it life. I doubt the way I apply life, and fade the particles is the best way, but once again, it works good! Full life is 1.0f. This also gives the particle full brightness.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	for (loop=0;loop&lt;MAX_PARTICLES;loop++)					// Initialize All The Textures
+	{
+		particle[loop].active=true;					// Make All The Particles Active
+		particle[loop].life=1.0f;					// Give All The Particles Full Life
+</pre>
+<p>We set how fast the particle fades out by giving fade a random value. The variable life will be reduced by fade each time the particle is drawn. The value we end up with will be a random value from 0 to 99. We then divide it by 1000 so that we get a very tiny floating point value. Finally we then add .003 to the final result so that the fade speed is never 0.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">		particle[loop].fade=float(rand()%100)/1000.0f+0.003f;		// Random Fade Speed
+</pre>
+<p>Now that our particle is active, and we've given it life, it's time to give it some color. For the initial effect, we want each particle to be a different color. What I do is make each particle one of the 12 colors that we've built in our color table at the top of this program. The math is simple. We take our loop variable and multiply it by the number of colors in our color table divided by the maximum number of particles (MAX_PARTICLES). This prevents the final color value from being higher than our max number of colors (12).</p>
+<p>Some quick examples: 900*(12/900)=12. 1000*(12/1000)=12, etc.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">		particle[loop].r=colors[loop*(12/MAX_PARTICLES)][0];		// Select Red Rainbow Color
+		particle[loop].g=colors[loop*(12/MAX_PARTICLES)][1];		// Select Red Rainbow Color
+		particle[loop].b=colors[loop*(12/MAX_PARTICLES)][2];		// Select Red Rainbow Color
+</pre>
+<p>Now we'll set the direction that each particle moves, along with the speed. We're going to multiply the results by 10.0f to create a spectacular explosion when the program first starts.</p>
+<p>We'll end up with either a positive or negative random value. This value will be used to move the particle in a random direction at a random speed.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">		particle[loop].xi=float((rand()%50)-26.0f)*10.0f;		// Random Speed On X Axis
+		particle[loop].yi=float((rand()%50)-25.0f)*10.0f;		// Random Speed On Y Axis
+		particle[loop].zi=float((rand()%50)-25.0f)*10.0f;		// Random Speed On Z Axis
+</pre>
+<p>Finally, we set the amount of gravity acting on each particle. Unlike regular gravity that just pulls things down, our gravity can pull up, down, left, right, forward or backward. To start out we want semi strong gravity pulling downwards. To do this we set xg to 0.0f. No pull left or right on the x plane. We set yg to -0.8f. This creates a semi-strong pull downwards. If the value was positive it would pull upwards. We don't want the particles pulling towards or away from us so we'll set zg to 0.0f.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">		particle[loop].xg=0.0f;						// Set Horizontal Pull To Zero
+		particle[loop].yg=-0.8f;					// Set Vertical Pull Downward
+		particle[loop].zg=0.0f;						// Set Pull On Z Axis To Zero
+	}
+	return TRUE;								// Initialization Went OK
+}
+</pre>
+<p>Now for the fun stuff. The next section of code is where we draw the particle, check for gravity, etc. It's important that you understand what's going on, so please read carefully :)</p>
+<p>We reset the Modelview Matrix only once. We'll position the particles using the glVertex3f() command instead of using translations, that way we don't alter the modelview matrix while drawing our particles.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">int DrawGLScene(GLvoid)								// Where We Do All The Drawing
+{
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);			// Clear Screen And Depth Buffer
+	glLoadIdentity();							// Reset The ModelView Matrix
+</pre>
+<p>We start off by creating a loop. This loop will update each one of our particles.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	for (loop=0;loop&lt;MAX_PARTICLES;loop++)					// Loop Through All The Particles
+	{
+</pre>
+<p>First thing we do is check to see if the particle is active. If it's not active, it wont be updated. In this program they're all active, all the time. But in a program of your own, you may want to make certain particles inactive.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">		if (particle[loop].active)					// If The Particle Is Active
+		{
+</pre>
+<p>The next three variables x, y and z are temporary variables that we'll use to hold the particles x, y and z position. Notice we add zoom to the z position so that our scene is moved into the screen based on the value stored in zoom. particle[loop].x holds our x position for whatever particle we are drawing (particle loop). particle[loop].y holds our y position for our particle and particle[loop].z holds our z position.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">			float x=particle[loop].x;				// Grab Our Particle X Position
+			float y=particle[loop].y;				// Grab Our Particle Y Position
+			float z=particle[loop].z+zoom;				// Particle Z Pos + Zoom
+</pre>
+<p>Now that we have the particle position, we can color the particle. particle[loop].r holds the red intensity of our particle, particle[loop].g holds our green intensity, and particle[loop].b holds our blue intensity. Notice I use the particles life for the alpha value. As the particle dies, it becomes more and more transparent, until it eventually doesn't exist. That's why the particles life should never be more than 1.0f. If you need the particles to burn longer, try reducing the fade speed so that the particle doesn't fade out as fast.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">			// Draw The Particle Using Our RGB Values, Fade The Particle Based On It's Life
+			glColor4f(particle[loop].r,particle[loop].g,particle[loop].b,particle[loop].life);
+</pre>
+<p>We have the particle position and the color is set. All that we have to do now is draw our particle. Instead of using a textured quad, I've decided to use a textured triangle strip to speed the program up a bit. Most 3D cards can draw triangles alot faster than they can draw quads. Some 3D cards will convert the quad to two triangles for you, but some don't. So we'll do the work ourselves. We start off by telling OpenGL we want to draw a triangle strip.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">			glBegin(GL_TRIANGLE_STRIP);				// Build Quad From A Triangle Strip
+</pre>
+<p><img style="float: left; margin: 10px 20px;" src="lesson19-1-1.gif" tppabs="http://nehe.gamedev.net/data/lessons/extras/lesson19/lesson19-1.gif" alt="" width="128" height="128" />Quoted directly from the red book: A triangle strip draws a series of triangles (three sided polygons) using vertices V<sub>0</sub>, V<sub>1</sub>, V<sub>2</sub>, then V<sub>2</sub>, V<sub>1</sub>, V<sub>3</sub> (note the order), then V<sub>2</sub>, V<sub>3</sub>, V<sub>4</sub>, and so on. The ordering is to ensure that the triangles are all drawn with the same orientation so that the strip can correctly form part of a surface. Preserving the orientation is important for some operations, such as culling. There must be at least 3 points for anything to be drawn.</p>
+<p>So the first triangle is drawn using vertices 0, 1 and 2. If you look at the picture you'll see that vertex points 0, 1 and 2 do indeed make up the first triangle (top right, top left, bottom right). The second triangle is drawn using vertices 2, 1 and 3. Again, if you look at the picture, vertices 2, 1 and 3 create the second triangle (bottom right, top left, bottom left). Notice that both triangles are drawn with the same winding (counter-clockwise orientation). I've seen quite a few web sites that claim every second triangle is wound the opposite direction. This is <span style="text-decoration: underline;">not</span> the case. OpenGL will rearrange the vertices to ensure that all of the triangles are wound the same way!</p>
+<p>There are two good reasons to use triangle strips. First, after specifying the first three vertices for the initial triangle, you only need to specify a single point for each additional triangle. That point will be combined with 2 previous vertices to create a triangle. Secondly, by cutting back the amount of data needed to create a triangle your program will run quicker, and the amount of code or data required to draw an object is greatly reduced.</p>
+<p>Note: The number of triangles you see on the screen will be the number of vertices you specify minus 2. In the code below we have 4 vertices and we see two triangles.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">				glTexCoord2d(1,1); glVertex3f(x+0.5f,y+0.5f,z); // Top Right
+				glTexCoord2d(0,1); glVertex3f(x-0.5f,y+0.5f,z); // Top Left
+				glTexCoord2d(1,0); glVertex3f(x+0.5f,y-0.5f,z); // Bottom Right
+				glTexCoord2d(0,0); glVertex3f(x-0.5f,y-0.5f,z); // Bottom Left
+</pre>
+<p>Finally we tell OpenGL that we are done drawing our triangle strip.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">			glEnd();						// Done Building Triangle Strip
+</pre>
+<p>Now we can move the particle. The math below may look strange, but once again, it's pretty simple. First we take the current particle x position. Then we add the x movement value to the particle divided by slowdown times 1000. So if our particle was in the center of the screen on the x axis (0), our movement variable (xi) for the x axis was +10 (moving us to the right) and slowdown was equal to 1, we would be moving to the right by 10/(1*1000), or 0.01f. If we increase the slowdown to 2 we'll only be moving at 0.005f. Hopefully that helps you understand how slowdown works.</p>
+<p>That's also why multiplying the start values by 10.0f made the pixels move alot faster, creating an explosion.</p>
+<p>We use the same formula for the y and z axis to move the particle around on the screen.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">			particle[loop].x+=particle[loop].xi/(slowdown*1000);	// Move On The X Axis By X Speed
+			particle[loop].y+=particle[loop].yi/(slowdown*1000);	// Move On The Y Axis By Y Speed
+			particle[loop].z+=particle[loop].zi/(slowdown*1000);	// Move On The Z Axis By Z Speed
+</pre>
+<p>After we've calculated where to move the particle to next, we have to apply gravity or resistance. In the first line below, we do this by adding our resistance (xg) to the speed we are moving at (xi).</p>
+<p>Lets say our moving speed was 10 and our resistance was 1. Each time our particle was drawn resistance would act on it. So the second time it was drawn, resistance would act, and our moving speed would drop from 10 to 9. This causes the particle to slow down a bit. The third time the particle is drawn, resistance would act again, and our moving speed would drop to 8. If the particle burns for more than 10 redraws, it will eventually end up moving the opposite direction because the moving speed would become a negative value.</p>
+<p>The resistance is applied to the y and z moving speed the same way it's applied to the x moving speed.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">			particle[loop].xi+=particle[loop].xg;			// Take Pull On X Axis Into Account
+			particle[loop].yi+=particle[loop].yg;			// Take Pull On Y Axis Into Account
+			particle[loop].zi+=particle[loop].zg;			// Take Pull On Z Axis Into Account
+</pre>
+<p>The next line takes some life away from the particle. If we didn't do this, the particle would never burn out. We take the current life of the particle and subtract the fade value for that particle. Each particle will have a different fade value, so they'll all burn out at different speeds.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">			particle[loop].life-=particle[loop].fade;		// Reduce Particles Life By 'Fade'
+</pre>
+<p>Now we check to see if the particle is still alive after having life taken from it.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">			if (particle[loop].life&lt;0.0f)					// If Particle Is Burned Out
+			{
+</pre>
+<p>If the particle is dead (burnt out), we'll rejuvenate it. We do this by giving it full life and a new fade speed.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">				particle[loop].life=1.0f;				// Give It New Life
+				particle[loop].fade=float(rand()%100)/1000.0f+0.003f;	// Random Fade Value
+</pre>
+<p>We also reset the particles position to the center of the screen. We do this by resetting the x, y and z positions of the particle to zero.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">				particle[loop].x=0.0f;					// Center On X Axis
+				particle[loop].y=0.0f;					// Center On Y Axis
+				particle[loop].z=0.0f;					// Center On Z Axis
+</pre>
+<p>After the particle has been reset to the center of the screen, we give it a new moving speed / direction. Notice I've increased the maximum and minimum speed that the particle can move at from a random value of 50 to a value of 60, but this time we're not going to multiply the moving speed by 10. We don't want an explosion this time around, we want slower moving particles.</p>
+<p>Also notice that I add xspeed to the x axis moving speed, and yspeed to the y axis moving speed. This gives us control over what direction the particles move later in the program.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">				particle[loop].xi=xspeed+float((rand()%60)-32.0f);	// X Axis Speed And Direction
+				particle[loop].yi=yspeed+float((rand()%60)-30.0f);	// Y Axis Speed And Direction
+				particle[loop].zi=float((rand()%60)-30.0f);		// Z Axis Speed And Direction
+</pre>
+<p>Lastly we assign the particle a new color. The variable col holds a number from 0 to 11 (12 colors). We use this variable to look of the red, green and blue intensities in our color table that we made at the beginning of the program. The first line below sets the red (r) intensity to the red value stored in colors[col][0]. So if col was 0, the red intensity would be 1.0f. The green and blue values are read the same way.</p>
+<p>If you don't understand how I got the value of 1.0f for the red intensity if col is 0, I'll explain in a bit more detail. Look at the very top of the program. Find the line: static GLfloat colors[12][3]. Notice there are 12 groups of 3 number. The first of the three number is the red intensity. The second value is the green intensity and the third value is the blue intensity. [0], [1] and [2] below represent the 1st, 2nd and 3rd values I just mentioned. If col is equal to 0, we want to look at the first group. 11 is the last group (12th color).</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">				particle[loop].r=colors[col][0];			// Select Red From Color Table
+				particle[loop].g=colors[col][1];			// Select Green From Color Table
+				particle[loop].b=colors[col][2];			// Select Blue From Color Table
+			}
+</pre>
+<p>The line below controls how much gravity there is pulling upward. By pressing 8 on the number pad, we increase the yg (y gravity) variable. This causes a pull upwards. This code is located here in the program because it makes our life easier by applying the gravity to all of our particles thanks to the loop. If this code was outside the loop we'd have to create another loop to do the same job, so we might as well do it here.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">			// If Number Pad 8 And Y Gravity Is Less Than 1.5 Increase Pull Upwards
+			if (keys[VK_NUMPAD8] &amp;&amp; (particle[loop].yg&lt;1.5f)) particle[loop].yg+=0.01f;
+</pre>
+<p>This line has the exact opposite affect. By pressing 2 on the number pad we decrease yg creating a stronger pull downwards.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">			// If Number Pad 2 And Y Gravity Is Greater Than -1.5 Increase Pull Downwards
+			if (keys[VK_NUMPAD2] &amp;&amp; (particle[loop].yg&gt;-1.5f)) particle[loop].yg-=0.01f;
+</pre>
+<p>Now we modify the pull to the right. If the 6 key on the number pad is pressed, we increase the pull to the right.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">			// If Number Pad 6 And X Gravity Is Less Than 1.5 Increase Pull Right
+			if (keys[VK_NUMPAD6] &amp;&amp; (particle[loop].xg&lt;1.5f)) particle[loop].xg+=0.01f;
+</pre>
+<p>Finally, if the 4 key on the number pad is pressed, our particle will pull more to the left. These keys give us some really cool results. For example, you can make a stream of particles shooting straight up in the air. By adding some gravity pulling downwards you can turn the stream of particles into a fountain of water!</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">			// If Number Pad 4 And X Gravity Is Greater Than -1.5 Increase Pull Left
+			if (keys[VK_NUMPAD4] &amp;&amp; (particle[loop].xg&gt;-1.5f)) particle[loop].xg-=0.01f;
+</pre>
+<p>I added this bit of code just for fun. My brother thought the explosion was a cool effect :) By pressing the tab key all the particles will be reset back to the center of the screen. The moving speed of the particles will once again be multiplied by 10, creating a big explosion of particles. After the particles fade out, your original effect will again reappear.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">			if (keys[VK_TAB])						// Tab Key Causes A Burst
+			{
+				particle[loop].x=0.0f;					// Center On X Axis
+				particle[loop].y=0.0f;					// Center On Y Axis
+				particle[loop].z=0.0f;					// Center On Z Axis
+				particle[loop].xi=float((rand()%50)-26.0f)*10.0f;	// Random Speed On X Axis
+				particle[loop].yi=float((rand()%50)-25.0f)*10.0f;	// Random Speed On Y Axis
+				particle[loop].zi=float((rand()%50)-25.0f)*10.0f;	// Random Speed On Z Axis
+			}
+		}
+    }
+	return TRUE;									// Everything Went OK
+}
+</pre>
+<p>The code in KillGLWindow(), CreateGLWindow() and WndProc() hasn't changed, so we'll skip down to WinMain(). I'll rewrite the entire section of code to make it easier to follow through the code.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">int WINAPI WinMain(	HINSTANCE	hInstance,			// Instance
+			HINSTANCE	hPrevInstance,			// Previous Instance
+			LPSTR		lpCmdLine,			// Command Line Parameters
+			int		nCmdShow)			// Window Show State
+{
+	MSG	msg;							// Windows Message Structure
+	BOOL	done=FALSE;						// Bool Variable To Exit Loop
+
+	// Ask The User Which Screen Mode They Prefer
+	if (MessageBox(NULL,"Would You Like To Run In Fullscreen Mode?", "Start FullScreen?",MB_YESNO|MB_ICONQUESTION)==IDNO)
+	{
+		fullscreen=FALSE;					// Windowed Mode
+	}
+
+	// Create Our OpenGL Window
+	if (!CreateGLWindow("NeHe's Particle Tutorial",640,480,16,fullscreen))
+	{
+		return 0;						// Quit If Window Was Not Created
+	}
+</pre>
+<p>This is our first change to WinMain(). I've added some code to check if the user decide to run in fullscreen mode or windowed mode. If they decide to use fullscreen mode, I change the variable slowdown to 1.0f instead of 2.0f. You can leave this bit code out if you want. I added the code to speed up fullscreen mode on my 3dfx (runs ALOT slower than windowed mode for some reason).</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	if (fullscreen)							// Are We In Fullscreen Mode ( ADD )
+	{
+		slowdown=1.0f;						// Speed Up The Particles (3dfx Issue) ( ADD )
+	}
+
+	while(!done)							// Loop That Runs Until done=TRUE
+	{
+		if (PeekMessage(&amp;msg,NULL,0,0,PM_REMOVE))		// Is There A Message Waiting?
+		{
+			if (msg.message==WM_QUIT)			// Have We Received A Quit Message?
+			{
+				done=TRUE;				// If So done=TRUE
+			}
+			else						// If Not, Deal With Window Messages
+			{
+				TranslateMessage(&amp;msg);			// Translate The Message
+				DispatchMessage(&amp;msg);			// Dispatch The Message
+			}
+		}
+		else							// If There Are No Messages
+		{
+			if ((active &amp;&amp; !DrawGLScene()) || keys[VK_ESCAPE])	// Updating View Only If Active
+			{
+				done=TRUE;				// ESC or DrawGLScene Signalled A Quit
+			}
+			else						// Not Time To Quit, Update Screen
+			{
+				SwapBuffers(hDC);			// Swap Buffers (Double Buffering)
+</pre>
+<p>I was a little sloppy with the next bit of code. Usually I don't include everything on one line, but it makes the code look a little cleaner :)</p>
+<p>The line below checks to see if the + key on the number pad is being pressed. If it is and slowdown is greater than 1.0f we decrease slowdown by 0.01f. This causes the particles to move faster. Remember in the code above when I talked about slowdown and how it affects the speed at which the particles travel.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">				if (keys[VK_ADD] &amp;&amp; (slowdown&gt;1.0f)) slowdown-=0.01f;		// Speed Up Particles
+</pre>
+<p>This line checks to see if the - key on the number pad is being pressed. If it is and slowdown is less than 4.0f we increase the value of slowdown. This causes our particles to move slower. I put a limit of 4.0f because I wouldn't want them to move much slower. You can change the minimum and maximum speeds to whatever you want :)</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">				if (keys[VK_SUBTRACT] &amp;&amp; (slowdown&lt;4.0f)) slowdown+=0.01f;	// Slow Down Particles
+</pre>
+<p>The line below check to see if Page Up is being pressed. If it is, the variable zoom is increased. This causes the particles to move closer to us.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">				if (keys[VK_PRIOR]) zoom+=0.1f;		// Zoom In
+</pre>
+<p>This line has the opposite effect. By pressing Page Down, zoom is decreased and the scene moves futher into the screen. This allows us to see more of the screen, but it makes the particles smaller.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">				if (keys[VK_NEXT]) zoom-=0.1f;		// Zoom Out
+</pre>
+<p>The next section of code checks to see if the return key has been pressed. If it has and it's not being 'held' down, we'll let the computer know it's being pressed by setting rp to true. Then we'll toggle rainbow mode. If rainbow was true, it will become false. If it was false, it will become true. The last line checks to see if the return key was released. If it was, rp is set to false, telling the computer that the key is no longer being held down.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">				if (keys[VK_RETURN] &amp;&amp; !rp)		// Return Key Pressed
+				{
+					rp=true;			// Set Flag Telling Us It's Pressed
+					rainbow=!rainbow;		// Toggle Rainbow Mode On / Off
+				}
+				if (!keys[VK_RETURN]) rp=false;		// If Return Is Released Clear Flag
+</pre>
+<p>The code below is a little confusing. The first line checks to see if the spacebar is being pressed and not held down. It also check to see if rainbow mode is on, and if so, it checks to see if the variable delay is greater than 25. delay is a counter I use to create the rainbow effect. If you were to change the color ever frame, the particles would all be a different color. By creating a delay, a group of particles will become one color, before the color is changed to something else.</p>
+<p>If the spacebar was pressed or rainbow is on and delay is greater than 25, the color will be changed!</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">				if ((keys[' '] &amp;&amp; !sp) || (rainbow &amp;&amp; (delay&gt;25)))	// Space Or Rainbow Mode
+				{
+</pre>
+<p>The line below was added so that rainbow mode would be turned off if the spacebar was pressed. If we didn't turn off rainbow mode, the colors would continue cycling until the return key was pressed again. It makes sense that if the person is hitting space instead of return that they want to go through the colors themselves.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">					if (keys[' ']) rainbow=false;	// If Spacebar Is Pressed Disable Rainbow Mode
+</pre>
+<p>If the spacebar was pressed or rainbow mode is on, and delay is greater than 25, we'll let the computer know that space has been pressed by making sp equal true. Then we'll set the delay back to 0 so that it can start counting back up to 25. Finally we'll increase the variable col so that the color will change to the next color in the color table.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">					sp=true;			// Set Flag Telling Us Space Is Pressed
+					delay=0;			// Reset The Rainbow Color Cycling Delay
+					col++;				// Change The Particle Color
+</pre>
+<p>If the color is greater than 11, we reset it back to zero. If we didn't reset col to zero, our program would try to find a 13th color. We only have 12 colors! Trying to get information about a color that doesn't exist would crash our program.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">					if (col&gt;11) col=0;		// If Color Is To High Reset It
+				}
+</pre>
+<p>Lastly if the spacebar is no longer being pressed, we let the computer know by setting the variable sp to false.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">				if (!keys[' '])	sp=false;		// If Spacebar Is Released Clear Flag
+</pre>
+<p>Now for some control over the particles. Remember that we created 2 variables at the beginning of our program? One was called xspeed and one was called yspeed. Also remember that after the particle burned out, we gave it a new moving speed and added the new speed to either xspeed or yspeed. By doing that we can influence what direction the particles will move when they're first created.</p>
+<p>For example. Say our particle had a moving speed of 5 on the x axis and 0 on the y axis. If we decreased xspeed until it was -10, we would be moving at a speed of -10 (xspeed) + 5 (original moving speed). So instead of moving at a rate of 10 to the right we'd be moving at a rate of -5 to the left. Make sense?</p>
+<p>Anyways. The line below checks to see if the up arrow is being pressed. If it is, yspeed will be increased. This will cause our particles to move upwards. The particles will move at a maximum speed of 200 upwards. Anything faster than that doesn't look to good.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">				// If Up Arrow And Y Speed Is Less Than 200 Increase Upward Speed
+				if (keys[VK_UP] &amp;&amp; (yspeed&lt;200)) yspeed+=1.0f;
+</pre>
+<p>This line checks to see if the down arrow is being pressed. If it is, yspeed will be decreased. This will cause the particles to move downward. Again, a maximum downward speed of 200 is enforced.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">				// If Down Arrow And Y Speed Is Greater Than -200 Increase Downward Speed
+				if (keys[VK_DOWN] &amp;&amp; (yspeed&gt;-200)) yspeed-=1.0f;
+</pre>
+<p>Now we check to see if the right arrow is being pressed. If it is, xspeed will be increased. This will cause the particles to move to the right. A maximum speed of 200 is enforced.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">				// If Right Arrow And X Speed Is Less Than 200 Increase Speed To The Right
+				if (keys[VK_RIGHT] &amp;&amp; (xspeed&lt;200)) xspeed+=1.0f;
+</pre>
+<p>Finally we check to see if the left arrow is being pressed. If it is... you guessed it... xspeed is decreased, and the particles start to move left. Maximum speed of 200 enforced.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">				// If Left Arrow And X Speed Is Greater Than -200 Increase Speed To The Left
+				if (keys[VK_LEFT] &amp;&amp; (xspeed&gt;-200)) xspeed-=1.0f;
+</pre>
+<p>The last thing we need to do is increase the variable delay. Like I said above, delay is used to control how fast the colors change when you're using rainbow mode.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">				delay++;			// Increase Rainbow Mode Color Cycling Delay Counter
+</pre>
+<p>Like all the previous tutorials, make sure the title at the top of the window is correct.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">				if (keys[VK_F1])		// Is F1 Being Pressed?
+				{
+					keys[VK_F1]=FALSE;	// If So Make Key FALSE
+					KillGLWindow();		// Kill Our Current Window
+					fullscreen=!fullscreen;	// Toggle Fullscreen / Windowed Mode
+					// Recreate Our OpenGL Window
+					if (!CreateGLWindow("NeHe's Particle Tutorial",640,480,16,fullscreen))
+					{
+						return 0;	// Quit If Window Was Not Created
+					}
+				}
+			}
+		}
+	}
+	// Shutdown
+	KillGLWindow();						// Kill The Window
+	return (msg.wParam);					// Exit The Program
+}
+</pre>
+<p>In this lesson, I have tried to explain in as much detail, all the steps required to create a simple but impressive particle system. This particle system can be used in games of your own to create effects such as Fire, Water, Snow, Explosions, Falling Stars, and more. The code can easily be modified to handle more parameters, and new effects (fireworks for example).</p>
+<p>Thanks to Richard Nutman for suggesting that the particles be positioned with glVertex3f() instead of resetting the Modelview Matrix and repositioning each particle with glTranslatef(). Both methods are effective, but his method will reduce the amount of work the computer has to do before it draws each particle, causing the program to run even faster.</p>
+<p>Thanks to Antoine Valentim for suggesting triangle strips to help speed up the program and to introduce a new command to this tutorial. The feedback on this tutorial has been great, I appreciate it!</p>
+<p>I hope you enjoyed this tutorial. If you had any problems understanding it, or you've found a mistake in the tutorial please let me know. I want to make the best tutorials available. Your feedback is important!</p>
+<p><strong>Jeff Molofee</strong> (<strong>NeHe</strong>)</p>
+<p>* DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/vc/lesson19.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/vc/lesson19.zip'" tppabs="http://nehe.gamedev.net/data/lessons/vc/lesson19.zip">Visual C++</a> Code For This Lesson.</p>
+<p>* DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/bcb6/lesson19_bcb6.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/bcb6/lesson19_bcb6.zip'" tppabs="http://nehe.gamedev.net/data/lessons/bcb6/lesson19_bcb6.zip">Borland C++ Builder 6</a> Code For This Lesson. ( Conversion by <a href="mailto:christian@tugzip.com">Christian Kindahl</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/c_sharp/lesson19.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/c_sharp/lesson19.zip'" tppabs="http://nehe.gamedev.net/data/lessons/c_sharp/lesson19.zip">C#</a> Code For This Lesson. ( Conversion by <a href="mailto:bholley@unlnotes.unl.edu">Brian Holley</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/cwarrior/lesson19.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/cwarrior/lesson19.zip'" tppabs="http://nehe.gamedev.net/data/lessons/cwarrior/lesson19.zip">Code Warrior 5.3</a> Code For This Lesson. ( Conversion by <a href="mailto:DelusionalBeing@hotmail.com">Scott Lupton</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/cygwin/lesson19.tar.gz  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/cygwin/lesson19.tar.gz'" tppabs="http://nehe.gamedev.net/data/lessons/cygwin/lesson19.tar.gz">Cygwin</a> Code For This Lesson. ( Conversion by <a href="mailto:stephan@lazyfellow.com">Stephan Ferraro</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/delphi/lesson19.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/delphi/lesson19.zip'" tppabs="http://nehe.gamedev.net/data/lessons/delphi/lesson19.zip">Delphi</a> Code For This Lesson. ( Conversion by <a href="mailto:michal_praha@seznam.cz">Michal Tucek</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/devc/lesson19.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/devc/lesson19.zip'" tppabs="http://nehe.gamedev.net/data/lessons/devc/lesson19.zip">Dev C++</a> Code For This Lesson. ( Conversion by <a href="mailto:danprogram@hotmail.com">Dan</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/euphoria/lesson19.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/euphoria/lesson19.zip'" tppabs="http://nehe.gamedev.net/data/lessons/euphoria/lesson19.zip">Euphoria</a> Code For This Lesson. ( Conversion by <a href="mailto:1evan@sbcglobal.net">Evan Marshall</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/gameglut/lesson19.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/gameglut/lesson19.zip'" tppabs="http://nehe.gamedev.net/data/lessons/gameglut/lesson19.zip">Game GLUT</a> Code For This Lesson. ( Conversion by <a href="mailto:milix_gr@hotmail.com">Milikas Anastasios</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/irix/lesson19.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/irix/lesson19.zip'" tppabs="http://nehe.gamedev.net/data/lessons/irix/lesson19.zip">Irix</a> Code For This Lesson. ( Conversion by <a href="mailto:christop@fhw.gr">Dimitrios Christopoulos</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/java/lesson19.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/java/lesson19.zip'" tppabs="http://nehe.gamedev.net/data/lessons/java/lesson19.zip">Java</a> Code For This Lesson. ( Conversion by <a href="mailto:jeff@consunet.com.au">Jeff Kirby</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/jedisdl/lesson19.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/jedisdl/lesson19.zip'" tppabs="http://nehe.gamedev.net/data/lessons/jedisdl/lesson19.zip">Jedi-SDL</a> Code For This Lesson. ( Conversion by <a href="mailto:Dominique@SavageSoftware.com.au">Dominique Louis</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/jogl/lesson19.jar  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/jogl/lesson19.jar'" tppabs="http://nehe.gamedev.net/data/lessons/jogl/lesson19.jar">JoGL</a> Code For This Lesson. ( Conversion by <a href="mailto:kaminc@cox.net">Irene Kam</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/lccwin32/lccwin32_lesson19.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/lccwin32/lccwin32_lesson19.zip'" tppabs="http://nehe.gamedev.net/data/lessons/lccwin32/lccwin32_lesson19.zip">LCC Win32</a> Code For This Lesson. ( Conversion by <a href="mailto:rwishlaw@shaw.ca">Robert Wishlaw</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/linux/lesson19.tar.gz  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/linux/lesson19.tar.gz'" tppabs="http://nehe.gamedev.net/data/lessons/linux/lesson19.tar.gz">Linux</a> Code For This Lesson. ( Conversion by <a href="mailto:kjrockot@home.com">Ken Rockot</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/linuxglx/lesson19.tar.gz  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/linuxglx/lesson19.tar.gz'" tppabs="http://nehe.gamedev.net/data/lessons/linuxglx/lesson19.tar.gz">Linux/GLX</a> Code For This Lesson. ( Conversion by <a href="mailto:miqster@gmx.net">Mihael Vrbanec</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/linuxsdl/lesson19.tar.gz  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/linuxsdl/lesson19.tar.gz'" tppabs="http://nehe.gamedev.net/data/lessons/linuxsdl/lesson19.tar.gz">Linux/SDL</a> Code For This Lesson. ( Conversion by <a href="mailto:leggett@eecs.tulane.edu">Ti Leggett</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/lwjgl/lesson19.jar  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/lwjgl/lesson19.jar'" tppabs="http://nehe.gamedev.net/data/lessons/lwjgl/lesson19.jar">LWJGL</a> Code For This Lesson. ( Conversion by <a href="mailto:mark.bernard@rogers.com">Mark Bernard</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev.net/data/lessons/mac/lesson19.sit  \n\nThis file was not retrieved by Teleport Pro, because the server reports that this file cannot be found.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev.net/data/lessons/mac/lesson19.sit'" tppabs="http://nehe.gamedev.net/data/lessons/mac/lesson19.sit">Mac OS</a> Code For This Lesson. ( Conversion by <a href="mailto:OBorstad@Bowesnet.com">Owen Borstad</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/macosxcocoa/lesson19.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/macosxcocoa/lesson19.zip'" tppabs="http://nehe.gamedev.net/data/lessons/macosxcocoa/lesson19.zip">Mac OS X/Cocoa</a> Code For This Lesson. ( Conversion by <a href="mailto:blb@pobox.com">Bryan Blackburn</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/masm/lesson19.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/masm/lesson19.zip'" tppabs="http://nehe.gamedev.net/data/lessons/masm/lesson19.zip">MASM</a> Code For This Lesson. ( Conversion by <a href="mailto:chris.j84@free.fr">Christophe</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/openil/lesson19.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/openil/lesson19.zip'" tppabs="http://nehe.gamedev.net/data/lessons/openil/lesson19.zip">Visual C++ / OpenIL</a> Code For This Lesson. ( Conversion by <a href="mailto:doomwiz@ticnet.com">Denton Woods</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/pelles_c/lesson19.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/pelles_c/lesson19.zip'" tppabs="http://nehe.gamedev.net/data/lessons/pelles_c/lesson19.zip">Pelles C</a> Code For This Lesson. ( Conversion by <a href="mailto:pelle@smorgasbordet.com">Pelle Orinius</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/vb/lesson19.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/vb/lesson19.zip'" tppabs="http://nehe.gamedev.net/data/lessons/vb/lesson19.zip">Visual Basic</a> Code For This Lesson. ( Conversion by <a href="mailto:fredo@studenten.net">Edo</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/vs_net/lesson19.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/vs_net/lesson19.zip'" tppabs="http://nehe.gamedev.net/data/lessons/vs_net/lesson19.zip">Visual Studio .NET</a> Code For This Lesson. ( Conversion by <a href="mailto:ultimatezeus@hotmail.com">Grant James</a> )</p>
+<p>&nbsp;</p>
+<p><strong><span><a href="index-58.htm" tppabs="http://nehe.gamedev.net/data/lessons/lesson.asp?lesson=18">&lt; Lesson 18</a></span></strong><strong><span><a href="index-60.htm" tppabs="http://nehe.gamedev.net/data/lessons/lesson.asp?lesson=20">Lesson 20 &gt;</a></span></strong></p>
+
+
+</div>
+</div>
+
+
+
+            <div style="width:728px;padding:0px;margin:auto; margin-top: 10px;">
+            
+
+    
+                <!-- Leaderboard_NeHe -->
+                <div id='div-gpt-ad-1327940144417-0' style='width:728px; height:90px;'>
+                <script type='text/javascript'>
+                googletag.cmd.push(function() { googletag.display('div-gpt-ad-1327940144417-0'); });
+                </script>
+                </div>
+            
+
+                           
+            </div>   
+        </td>
+        <td class="col2">
+            
+
+
+
+
+<div style="text-align: center; padding:10px;">
+
+<script type='text/javascript'>
+    GA_googleFillSlot("Skyscraper_NeHe");
+</script>
+
+</div>
+            
+        </td>
+    </table>
+    <div id="footer">
+        <p>
+            
+    
+    © 1997-2012 Gamedev . All rights reserved.<br/>
+
+			NeHe™ and NeHe Productions™ are trademarks of GameDev.net, LLC<br/>
+			OpenGL® is a registered trademark of Silicon Graphics Inc.<br/>
+		</p>        
+		<br/>
+    </div>
+
+    
+    
+	    <script type="text/javascript" src="shCore.js" tppabs="http://nehe.gamedev.net/static/js/syntax_highlighter/shCore.js"></script>
+        <script type="text/javascript" src="shBrushCpp.js" tppabs="http://nehe.gamedev.net/static/js/syntax_highlighter/shBrushCpp.js"></script>
+	    <script type="text/javascript" src="shBrushJScript.js" tppabs="http://nehe.gamedev.net/static/js/syntax_highlighter/shBrushJScript.js"></script>
+	    <script type="text/javascript">SyntaxHighlighter.all();</script>
+    
+
+    <!-- Place this render call where appropriate -->
+    <script type="text/javascript">
+      (function() {
+        var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+        po.src = 'plusone.js'/*tpa=https://apis.google.com/js/plusone.js*/;
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+      })();
+    </script>    
+
+    
+<!-- GoogleAnalytics code -->
+<script src="urchin.js" tppabs="http://www.google-analytics.com/urchin.js" type="text/javascript">
+</script>
+<script type="text/javascript">
+_uacct = "UA-279474-2"; // Gamedev
+urchinTracker();
+_uff = 0; // Reset for second account
+_uacct = "UA-24180731-1"; // Non-GD
+urchinTracker();
+</script> 
+  </body>
+</html>

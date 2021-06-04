@@ -1,0 +1,895 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+    dir="ltr"
+    xml:lang="en"
+    lang="en">
+  <head>
+    <title>NeHe Productions: Picking, Alpha Blending, Alpha Testing, Sorting</title>
+
+    <link rel="stylesheet" type="text/css" href="public_base.css" tppabs="http://nehe.gamedev.net/static/css/public_base.css" />
+    <link type="text/css" rel="stylesheet" href="shThemeMidnight.css" tppabs="http://nehe.gamedev.net/static/css/syntax_highlighter/shThemeMidnight.css"/>
+    
+    <link rel="alternate" type="application/atom+xml" title="Atom feed" href="index-1.htm" tppabs="http://nehe.gamedev.net/atom/" />
+    <link rel="alternate" type="application/rss+xml" title="RSS feed" href="index-2.htm" tppabs="http://nehe.gamedev.net/rss/" />
+    
+    <meta name="author" content="Luke Benstead + Carsten Haubold" />
+    <meta name="description" content="OpenGL Tutorials, Demos, Games and More..." />
+    <meta name="keywords" content="opengl, tutorial, article, demo, game, blend, texturemap, lighting, contest, 3D" />
+
+    
+    
+
+    
+
+</script>
+
+
+    
+    
+    
+    
+        
+        <script type='text/javascript'>
+        var googletag = googletag || {};
+        googletag.cmd = googletag.cmd || [];
+        (function() {
+        var gads = document.createElement('script');
+        gads.async = true;
+        gads.type = 'text/javascript';
+        var useSSL = 'https:' == document.location.protocol;
+        gads.src = (useSSL ? 'https:' : 'http:') + 
+        '//www.googletagservices.com/tag/js/gpt.js';
+        var node = document.getElementsByTagName('script')[0];
+        node.parentNode.insertBefore(gads, node);
+        })();
+        </script>
+
+        <script type='text/javascript'>
+        googletag.cmd.push(function() {
+        googletag.defineSlot('/1004699/Leaderboard_NeHe', [728, 90], 'div-gpt-ad-1327940144417-0').addService(googletag.pubads());
+        googletag.defineSlot('/1004699/Skyscraper_NeHe', [160, 600], 'div-gpt-ad-1327940144417-1').addService(googletag.pubads());
+        googletag.pubads().enableSingleRequest();
+        googletag.enableServices();
+        });
+        </script>
+    
+    
+
+    
+  </head>
+
+  <body>
+    
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "all.js#xfbml=1"/*tpa=http://connect.facebook.net/en_GB/all.js#xfbml=1*/;
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+
+
+    <table cellpadding="0" cellspacing="0" border="0" id="layout_table">
+    <tr><td>
+        <div id="header">
+                <a href="index.htm" tppabs="http://nehe.gamedev.net/"><img class="logo" class="logo" src="nehe.png" tppabs="http://nehe.gamedev.net/static/images/nehe.png" border="0" alt="Nehe" /></a>
+        </div>            
+    </td></tr>
+    <tr><td colspan="2">
+            
+<div class="navbar">
+    <a href="index.htm" tppabs="http://nehe.gamedev.net/">HOME</a>
+    <a href="javascript:if(confirm('http://twitter.com/  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://twitter.com/#!/nehegl'" tppabs="http://twitter.com/#!/nehegl">TWITTER</a>  
+    <a href="javascript:if(confirm('http://www.facebook.com/pages/NeHe/300582493323181  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://www.facebook.com/pages/NeHe/300582493323181'" tppabs="http://www.facebook.com/pages/NeHe/300582493323181">FACEBOOK</a>     
+    <a href="index-2.htm" tppabs="http://nehe.gamedev.net/rss/">RSS</a>    
+    <a href="index-1.htm" tppabs="http://nehe.gamedev.net/atom/">ATOM</a>    
+    <a href="javascript:if(confirm('http://www.gamedev.net/forum/27-nehe-productions/page__forum_title__NeHe+Productions  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://www.gamedev.net/forum/27-nehe-productions/page__forum_title__NeHe+Productions'" tppabs="http://www.gamedev.net/forum/27-nehe-productions/page__forum_title__NeHe+Productions">FORUM</a>    
+</div>
+    
+    </td></tr>
+    <tr>
+        <td class="col1">
+
+            
+<div id="article_container">
+
+
+<h1 class="article-header">Picking, Alpha Blending, Alpha Testing, Sorting</h1>
+<div class="social-media">
+<!-- Place this tag where you want the +1 button to render -->
+<div class="g-plusone" data-size="medium" data-width="120" data-annotation="inline"></div>
+<div class="fb-like" data-send="false" data-layout="button_count" data-width="60" data-show-faces="false" data-colorscheme="dark" data-font="arial"></div>
+</div>
+<div style="clear:both;"></div>
+<p>Welcome to Tutorial 32. This tutorial is probably the largest tutorial I have written to date. Over 1000 lines of Code and more than 1540 lines of HTML. This is also the first tutorial to use my new NeHeGL basecode. This tutorial took a long time to write, but I think it was worth the wait. Some of the topics I cover in this tutorial are: Alpha Blending, Alpha Testing, Reading The Mouse, Using Both Ortho And Perspective At The Same Time, Displaying A Custom Cursor, Manually Sorting Objects By Depth, Animating Frames From A Single Texture and most important, you will learn all about PICKING!</p>
+<p>The original version of this tutorial displayed three objects on the screen that would change color when you clicked on them. How exciting is that!?! Not exciting at all! As always, I wanted to impress you guys with a super cool tutorial. I wanted the tutorial to be exciting, packed full of information and of course... nice to look at. So, after weeks of coding, the tutorial is done! Even if you don't code you might enjoy this tutorial. It's a complete game. The object of the game is to shoot as many targets as you can before your morale hits rock bottom or your hand cramps up and you can no longer click the mouse button.</p>
+<p>I'm sure there will be critics, but I'm very happy with this tutorial! I've taken dull topics such as picking and sorting object by depth and turned them into something fun!</p>
+<p>Some quick notes about the code. I will only discuss the code in lesson32.cpp. There have been a few minor changes in the NeHeGL code. The most important change is that I have added mouse support to WindowProc(). I also added int mouse_x, mouse_y to store mouse movement. In NeHeGL.h the following two lines of code were added: extern int mouse_x; &amp; extern int mouse_y;</p>
+<p>The textures used in this tutorial were made in Adobe Photoshop. Each .TGA file is a 32 bit image with an alpha channel. If you are not sure how to add an alpha channel to an image buy yourself a good book, browse the net or read the built in help in Adobe Photoshop. The entire process is very similar to the way I created masks in the masking tutorial. Load your object into Adobe Photoshop (or some other art program that supports the alpha channel). Use select by color range to select the area around your object. Copy that area. Create a new image. Paste the selection into the new image. Negate the image so the area where your image should be is black. Make the area around it white. Select the entire image and copy it. Go back to the original image and create an alpha channel. Paste the black and white mask that you just created into the alpha channel. Save the image as a 32 bit .TGA file. Make sure preserve transparency is checked, and make sure you save it uncompressed!</p>
+<p>As always I hope you enjoy the tutorial. I'm interested to hear what you think of it. If you have any questions or you find any mistakes, let me know. I rushed through parts of the tutorial, so if you find any part really hard to understand, send me some email and I'll try to explain things differently or in more detail!</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">#include &lt;windows.h&gt;								// Header File For Windows
+#include &lt;stdio.h&gt;								// Header File For Standard Input / Output
+#include &lt;stdarg.h&gt;								// Header File For Variable Argument Routines
+#include &lt;gl\gl.h&gt;								// Header File For The OpenGL32 Library
+#include &lt;gl\glu.h&gt;								// Header File For The GLu32 Library
+#include &lt;time.h&gt;								// For Random Seed
+#include "NeHeGL.h"								// Header File For NeHeGL
+</pre>
+<p>In lesson 1, I preached about the proper way to link to the OpenGL libraries. In Visual C++ click on project, settings and then the link tab. Move down to object/library modules and add OpenGL32.lib, GLu32.lib and GLaux.lib. Failing to include a required library will cause the compiler to spout out error after error. Something you don't want happening! To make matters worse, if you only include the libaries in debug mode, and someone tries to build your code in release mode... more errors. There are alot of people looking for code. Most of them are new to programming. They grab your code, and try to compile it. They get errors, delete the code and move on.</p>
+<p>The code below tells the compiler to link to the required libraries. A little more typing, but alot less headache in the long run. For this tutorial, we will link to the OpenGL32 library, the GLu32 library and the WinMM library (for playing sound). In this tutorial we will be loading .TGA files so we don't need the GLaux library.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">#pragma comment( lib, "opengl32.lib" )						// Search For OpenGL32.lib While Linking
+#pragma comment( lib, "glu32.lib" )						// Search For GLu32.lib While Linking
+#pragma comment( lib, "winmm.lib" )						// Search For WinMM Library While Linking
+</pre>
+<p>The 3 lines below check to see if CDS_FULLSCREEN has been defined by your compiler. If it has not been defined, we manually give CDS_FULLSCREEN a value of 4. For those of you that are completely lost right now... Some compilers do not give CDS_FULLSCREEN a value and will return an error message if CDS_FULLSCREEN is used! To prevent an error message, we check to see if CDS_FULLSCREEN has been defined and if not, we manually define it. Makes life easier for everyone.</p>
+<p>We then declare DrawTargets, and set up variables for our window and keyboard handling. If you don't understand declarations, read through the MSDN glossary. Keep in mind, I'm not teaching C/C++, buy a good book if you need help with the NON GL code!</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">#ifndef		CDS_FULLSCREEN							// CDS_FULLSCREEN Is Not Defined By Some
+#define		CDS_FULLSCREEN 4						// Compilers. By Defining It This Way,
+#endif										// We Can Avoid Errors
+
+void DrawTargets();								// Declaration
+
+GL_Window*	g_window;
+Keys*		g_keys;
+</pre>
+<p>The following section of code sets up our user defined variables. base will be used for our font display lists. roll will be used to move the ground and create the illusion of rolling clouds. level should be pretty straight forward (we start off on level 1). miss keeps track of how many objects were missed. It's also used to show the players morale (no misses means a high morale). kills keeps track of how many targets were hit each level. score will keep a running total of the number of objects hit, and game will be used to signal game over!</p>
+<p>The last line lets us pass structures to our compare function. The qsort routine expects the last parameter to be type type (const *void, const *void).</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">// User Defined Variables
+GLuint		base;								// Font Display List
+GLfloat		roll;								// Rolling Clouds
+GLint		level=1;							// Current Level
+GLint		miss;								// Missed Targets
+GLint		kills;								// Level Kill Counter
+GLint		score;								// Current Score
+bool		game;								// Game Over?
+
+typedef int (*compfn)(const void*, const void*);				// Typedef For Our Compare Function
+</pre>
+<p>Now for our objects structure. This structure holds all the information about an object. The direction it's rotating, if it's been hit, it's location on the screen, etc.</p>
+<p>A quick rundown of the variables... rot specifies the direction we want to rotate the object. hit will be FALSE if the object has not yet been hit. If the object was hit or manually flagged as being hit, the value of hit will be TRUE.</p>
+<p>The variable frame is used to cycle through the frames of animation for our explosion. As frame is increased the explosion texture changes. More on this later in the tutorial.</p>
+<p>To keep track of which direction our object is moving, we have a variable called dir. dir can be one of 4 values: 0 - object is moving Left, 1 - object is moving right, 2 - object is moving up and finally 3 - object is moving down.</p>
+<p>texid can be any number from 0 to 4. Zero represents the BlueFace texture, 1 is the Bucket texture, 2 is the Target texture , 3 is the Coke can texture and 4 is the Vase texture. Later in the load texture code, you will see that the first 5 textures are the target images.</p>
+<p>Both x and y are used to position the object on the screen. x represents where the object is on the x-axis, and y the location of the object on the y-axis.</p>
+<p>The objects rotate on the z-axis based on the value of spin. Later in the code, we will increase or decrease spin based on the direction the object is travelling.</p>
+<p>Finally, distance keeps track of how far into the screen our object is. distance is an extremely important variable, we will use it to calculate the left and right sides of the screen, and to sort the objects so the objects in the distance are drawn before the objects up close.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">struct objects {
+	GLuint	rot;								// Rotation (0-None, 1-Clockwise, 2-Counter Clockwise)
+	bool	hit;								// Object Hit?
+	GLuint	frame;								// Current Explosion Frame
+	GLuint	dir;								// Object Direction (0-Left, 1-Right, 2-Up, 3-Down)
+	GLuint	texid;								// Object Texture ID
+	GLfloat	x;								// Object X Position
+	GLfloat y;								// Object Y Position
+	GLfloat	spin;								// Object Spin
+	GLfloat	distance;							// Object Distance
+};
+</pre>
+<p>No real reason to explain the code below. We are loading TGA images in this tutorial instead of bitmaps. The structure below is used to store image data, as well as information about the TGA image. Read the tutorial on loading TGA files if you need a detailed explanation of the code below.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">typedef struct									// Create A Structure
+{
+	GLubyte	*imageData;							// Image Data (Up To 32 Bits)
+	GLuint	bpp;								// Image Color Depth In Bits Per Pixel.
+	GLuint	width;								// Image Width
+	GLuint	height;								// Image Height
+	GLuint	texID;								// Texture ID Used To Select A Texture
+} TextureImage;									// Structure Name
+</pre>
+<p>The following code sets aside room for our 10 textures and 30 objects. If you plan to add more objects to the game make sure you increase the value from 30 to however many objects you want.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">TextureImage textures[10];							// Storage For 10 Textures
+
+objects	object[30];								// Storage For 30 Objects
+</pre>
+<p>I didn't want to limit the size of each object. I wanted the vase to be taller than the can, I wanted the bucket to be wider than the vase. To make life easy, I create a structure that holds the objects width (w) and height (h).</p>
+<p>I then set the width and height of each object in the last line of code. To get the coke cans width, I would check size[3].w. The Blueface is 0, the Bucket is 1, and the Target is 2, etc. The width is represented by w. Make sense?</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">struct dimensions {								// Object Dimensions
+	GLfloat	w;								// Object Width
+	GLfloat h;								// Object Height
+};
+
+// Size Of Each Object: Blueface,     Bucket,      Target,       Coke,         Vase
+dimensions size[5] = { {1.0f,1.0f}, {1.0f,1.0f}, {1.0f,1.0f}, {0.5f,1.0f}, {0.75f,1.5f} };
+</pre>
+<p>The following large section of code loads our TGA images and converts them to textures. It's the same code I used in lesson 25 so if you need a detailed description go back and read lesson 25.</p>
+<p>I use TGA images because they are capable of having an alpha channel. The alpha channel tells OpenGL which parts of the image are transparent and which parts are opaque. The alpha channel is created in an art program, and is saved inside the .TGA image. OpenGL loads the image, and uses the alpha channel to set the amount of transparency for each pixel in the image.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">bool LoadTGA(TextureImage *texture, char *filename)				// Loads A TGA File Into Memory
+{    
+	GLubyte		TGAheader[12]={0,0,2,0,0,0,0,0,0,0,0,0};		// Uncompressed TGA Header
+	GLubyte		TGAcompare[12];						// Used To Compare TGA Header
+	GLubyte		header[6];						// First 6 Useful Bytes From The Header
+	GLuint		bytesPerPixel;						// Holds Number Of Bytes Per Pixel Used In The TGA File
+	GLuint		imageSize;						// Used To Store The Image Size When Setting Aside Ram
+	GLuint		temp;							// Temporary Variable
+	GLuint		type=GL_RGBA;						// Set The Default GL Mode To RBGA (32 BPP)
+
+	FILE *file = fopen(filename, "rb");					// Open The TGA File
+
+	if(	file==NULL ||							// Does File Even Exist?
+		fread(TGAcompare,1,sizeof(TGAcompare),file)!=sizeof(TGAcompare) ||	// Are There 12 Bytes To Read?
+		memcmp(TGAheader,TGAcompare,sizeof(TGAheader))!=0 ||		// Does The Header Match What We Want?
+		fread(header,1,sizeof(header),file)!=sizeof(header))		// If So Read Next 6 Header Bytes
+	{
+		if (file == NULL)						// Does The File Even Exist? *Added Jim Strong*
+			return FALSE;						// Return False
+		else								// Otherwise
+		{
+			fclose(file);						// If Anything Failed, Close The File
+			return FALSE;						// Return False
+		}
+	}
+
+	texture-&gt;width  = header[1] * 256 + header[0];				// Determine The TGA Width	(highbyte*256+lowbyte)
+	texture-&gt;height = header[3] * 256 + header[2];				// Determine The TGA Height	(highbyte*256+lowbyte)
+    
+ 	if(	texture-&gt;width	&lt;=0 ||						// Is The Width Less Than Or Equal To Zero
+		texture-&gt;height	&lt;=0 ||						// Is The Height Less Than Or Equal To Zero
+		(header[4]!=24 &amp;&amp; header[4]!=32))				// Is The TGA 24 or 32 Bit?
+	{
+		fclose(file);							// If Anything Failed, Close The File
+		return FALSE;							// Return False
+	}
+
+	texture-&gt;bpp	= header[4];						// Grab The TGA's Bits Per Pixel (24 or 32)
+	bytesPerPixel	= texture-&gt;bpp/8;					// Divide By 8 To Get The Bytes Per Pixel
+	imageSize		= texture-&gt;width*texture-&gt;height*bytesPerPixel;	// Calculate The Memory Required For The TGA Data
+
+	texture-&gt;imageData=(GLubyte *)malloc(imageSize);			// Reserve Memory To Hold The TGA Data
+
+	if(	texture-&gt;imageData==NULL ||					// Does The Storage Memory Exist?
+		fread(texture-&gt;imageData, 1, imageSize, file)!=imageSize)	// Does The Image Size Match The Memory Reserved?
+	{
+		if(texture-&gt;imageData!=NULL)					// Was Image Data Loaded
+			free(texture-&gt;imageData);				// If So, Release The Image Data
+
+		fclose(file);							// Close The File
+		return FALSE;							// Return False
+	}
+
+	for(GLuint i=0; i&lt;int(imageSize); i+=bytesPerPixel)			// Loop Through The Image Data
+	{									// Swaps The 1st And 3rd Bytes ('R'ed and 'B'lue)
+		temp=texture-&gt;imageData[i];					// Temporarily Store The Value At Image Data 'i'
+		texture-&gt;imageData[i] = texture-&gt;imageData[i + 2];		// Set The 1st Byte To The Value Of The 3rd Byte
+		texture-&gt;imageData[i + 2] = temp;				// Set The 3rd Byte To The Value In 'temp' (1st Byte Value)
+	}
+
+	fclose (file);								// Close The File
+
+	// Build A Texture From The Data
+	glGenTextures(1, &amp;texture[0].texID);					// Generate OpenGL texture IDs
+
+	glBindTexture(GL_TEXTURE_2D, texture[0].texID);				// Bind Our Texture
+	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);	// Linear Filtered
+	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);	// Linear Filtered
+	
+	if (texture[0].bpp==24)							// Was The TGA 24 Bits
+	{
+		type=GL_RGB;							// If So Set The 'type' To GL_RGB
+	}
+
+	glTexImage2D(GL_TEXTURE_2D, 0, type, texture[0].width, texture[0].height, 0, type, GL_UNSIGNED_BYTE, texture[0].imageData);
+
+	return true;								// Texture Building Went Ok, Return True
+}
+</pre>
+<p>The 2D texture font code is the same code I have used in previous tutorials. However, there are a few small changes. The thing you will notice is that we are only generating 95 display lists. If you look at the font texture, you will see there are only 95 characters counting the space at the top left of the image. The second thing you will notice is we divide by 16.0f for cx and we only divide by 8.0f for cy. The reason we do this is because the font texture is 256 pixels wide, but only half as tall (128 pixels). So to calculate cx we divide by 16.0f and to calculate cy we divide by half that (8.0f).</p>
+<p>If you do not understand the code below, go back and read through Lesson 17. The font building code is explained in detail in lesson 17!</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">GLvoid BuildFont(GLvoid)							// Build Our Font Display List
+{
+	base=glGenLists(95);							// Creating 95 Display Lists
+	glBindTexture(GL_TEXTURE_2D, textures[9].texID);			// Bind Our Font Texture
+	for (int loop=0; loop&lt;95; loop++)					// Loop Through All 95 Lists
+	{
+		float cx=float(loop%16)/16.0f;					// X Position Of Current Character
+		float cy=float(loop/16)/8.0f;					// Y Position Of Current Character
+
+		glNewList(base+loop,GL_COMPILE);				// Start Building A List
+			glBegin(GL_QUADS);					// Use A Quad For Each Character
+				glTexCoord2f(cx,         1.0f-cy-0.120f); glVertex2i(0,0);	// Texture / Vertex Coord (Bottom Left)
+				glTexCoord2f(cx+0.0625f, 1.0f-cy-0.120f); glVertex2i(16,0);	// Texutre / Vertex Coord (Bottom Right)
+				glTexCoord2f(cx+0.0625f, 1.0f-cy);	  glVertex2i(16,16);	// Texture / Vertex Coord (Top Right)
+				glTexCoord2f(cx,         1.0f-cy);	  glVertex2i(0,16);	// Texture / Vertex Coord (Top Left)
+			glEnd();						// Done Building Our Quad (Character)
+			glTranslated(10,0,0);					// Move To The Right Of The Character
+		glEndList();							// Done Building The Display List
+	}									// Loop Until All 256 Are Built
+}
+</pre>
+<p>The printing code is the code is also from lesson 17, but has been modified to allow us to print the score, level and morale to the screen (variables that continually change).</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">GLvoid glPrint(GLint x, GLint y, const char *string, ...)			// Where The Printing Happens
+{
+	char		text[256];						// Holds Our String
+	va_list		ap;							// Pointer To List Of Arguments
+
+	if (string == NULL)							// If There's No Text
+		return;								// Do Nothing
+
+	va_start(ap, string);							// Parses The String For Variables
+	    vsprintf(text, string, ap);						// And Converts Symbols To Actual Numbers
+	va_end(ap);								// Results Are Stored In Text
+
+	glBindTexture(GL_TEXTURE_2D, textures[9].texID);			// Select Our Font Texture
+	glPushMatrix();								// Store The Modelview Matrix
+	glLoadIdentity();							// Reset The Modelview Matrix
+	glTranslated(x,y,0);							// Position The Text (0,0 - Bottom Left)
+	glListBase(base-32);							// Choose The Font Set
+	glCallLists(strlen(text), GL_UNSIGNED_BYTE, text);			// Draws The Display List Text
+	glPopMatrix();								// Restore The Old Projection Matrix
+}
+</pre>
+<p>This code will be called later in the program by qsort. It compares the distance in two structures and return -1 if the first structures distance was less than the seconds structures distance, 1 if the first structures distance is greater than the second structures distance and 0 if the distance is the same in both structures.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">int Compare(struct objects *elem1, struct objects *elem2)			// Compare Function *** MSDN CODE MODIFIED FOR THIS TUT ***
+{
+   if ( elem1-&gt;distance &lt; elem2-&gt;distance)					// If First Structure distance Is Less Than The Second
+      return -1;								// Return -1
+   else if (elem1-&gt;distance &gt; elem2-&gt;distance)					// If First Structure distance Is Greater Than The Second
+      return 1;									// Return 1
+   else										// Otherwise (If The distance Is Equal)
+      return 0;									// Return 0
+}
+</pre>
+<p>The InitObject() code is where we set up each object. We start off by setting rot to 1. This gives the object clockwise rotation. Then we set the explosion animation to frame 0 (we don't want the explosion to start halfway through the animation). Next we set hit to FALSE, meaning the object has not yet been hit or set to self destruct. To select an object texture, texid is assigned a random value from 0 to 4. Zero is the blueface texture and 4 is the vase texture. This gives us one of 5 random objects.</p>
+<p>The variable distance will be a random number from -0.0f to -40.0f (4000/100 is 40). When we actually draw the object, we translate another 10 units into the screen. So when the objects are drawn, they will be drawn from -10.0f to -50.0f units into the screen (not to close, and not too far). I divide the random number by 100.0f to get a more accurate floating point value.</p>
+<p>After assigning a random distance, we then give the object a random y value. We don't want the object any lower than -1.5f, otherwise it will be under the ground, and we dont want the object any higher than 3.0f. So to stay in that range our random number can not be any higher than 4.5f (-1.5f+4.5f=3.0f).</p>
+<p>To calculate the x position, we use some tricky math. We take our distance and we subtract 15.0f from it. Then we divide the result by 2 and subtract 5*level. Finally, we subtract a random amount from 0.0f to 5 multiplied by the current level. We subtract the 5*level and the random amount from 0.0f to 5*level so that our object appears further off the screen on higher levels. If we didn't, the objects would appear one after another, making it even more difficult to hit all the targets than it already is.</p>
+<p>Finally we choose a random direction (dir) from 0 (left) to 1 (right).</p>
+<p>To make things easier to understand in regards to the x position, I'll write out a quick example. Say our distance is -30.0f and the current level is 1:</p>
+<p>object[num].x=((-30.0f-15.0f)/2.0f)-(5*1)-float(rand()%(5*1));<br /> object[num].x=(-45.0f/2.0f)-5-float(rand()%5);<br /> object[num].x=(-22.5f)-5-{lets say 3.0f};<br /> object[num].x=(-22.5f)-5-{3.0f};<br /> object[num].x=-27.5f-{3.0f};<br /> object[num].x=-30.5f;</p>
+<p>Now keeping in mind that we move 10 units into the screen before we draw our objects, and the distance in the example above is -30.0f. It's safe to say our actual distance into the screen will be -40.0f. Using the perspective code in the NeHeGL.cpp file, it's safe to assume that if the distance is -40.0f, the far left edge of the screen will be -20.0f and the far right will be +20.0f. In the code above our x value is -22.5f (which would be JUST off the left side of the screen). We then subtract 5 and our random value of 3 which guarantees the object will start off the screen (at -30.5f) which means the object would have to move roughly 8 units to the right before it even appeared on the screen.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">GLvoid InitObject(int num)							// Initialize An Object
+{
+	object[num].rot=1;							// Clockwise Rotation
+	object[num].frame=0;							// Reset The Explosion Frame To Zero
+	object[num].hit=FALSE;							// Reset Object Has Been Hit Status To False
+	object[num].texid=rand()%5;						// Assign A New Texture
+	object[num].distance=-(float(rand()%4001)/100.0f);			// Random Distance
+	object[num].y=-1.5f+(float(rand()%451)/100.0f);				// Random Y Position
+	// Random Starting X Position Based On Distance Of Object And Random Amount For A Delay (Positive Value)
+	object[num].x=((object[num].distance-15.0f)/2.0f)-(5*level)-float(rand()%(5*level));
+	object[num].dir=(rand()%2);						// Pick A Random Direction
+</pre>
+<p>Now we check to see which direction the object is going to be travelling. The code below checks to see if the object is moving left. If it is, we have to change the rotation so that the object is spinning counter clockwise. We do this by changing the value of rot to 2.</p>
+<p>Our x value by default is going to be a negative number. However, the right side of the screen would be a positive value. So the last thing we do is negate the current x value. In english, we make the x value a positive value instead of a negative value.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	if (object[num].dir==0)							// Is Random Direction Right
+	{
+		object[num].rot=2;						// Counter Clockwise Rotation
+		object[num].x=-object[num].x;					// Start On The Left Side (Negative Value)
+	}
+</pre>
+<p>Now we check the texid to find out what object the computer has randomly picked. If texid is equal to 0, the computer has picked the Blueface object. The blueface guys always roll across the ground. To make sure they start off at ground level, we manually set the y value to -2.0f.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	if (object[num].texid==0)						// Blue Face
+		object[num].y=-2.0f;						// Always Rolling On The Ground
+</pre>
+<p>Next we check to see if texid is 1. If so, the computer has selected the Bucket. The bucket doesn't travel from left to right, it falls from the sky. The first thing we have to do is set dir to 3. This tells the computer that our bucket is falling or moving down.</p>
+<p>Our initial code assumes the object will be travelling from left to right. Because the bucket is falling down, we have to give it a new random x value. If we didn't, the bucket would never be visible. It would fall either far off the left side of the screen or far off the right side of the screen. To assign a new value we randomly choose a value based on the distance into the screen. Instead of subtracting 15, we only subtract 10. This gives us a little less range, and keeps the object ON the screen instead of off the side of the screen. Assuming our distance was -30.0f, we would end up with a random value from 0.0f to 40.0f. If you're asking yourself, why from 0.0f to 40.0f? Shouldn't it be from 0.0f to -40.0f? The answer is easy. The rand() function always returns a positive number. So whatever number we get back will be a positive value. Anyways... back to the story. So we have a positive number from 0.0f to 40.0f. We then add the distance (a negative value) minus 10.0f divided by 2. As an example... assuming the random value returned is say 15 and the distance is -30.0f:</p>
+<p>object[num].x=float(rand()%int(-30.0f-10.0f))+((-30.0f-10.0f)/2.0f);</p>
+<p>object[num].x=float(rand()%int(-40.0f)+(-40.0f)/2.0f);</p>
+<p>object[num].x=float(15 {assuming 15 was returned))+(-20.0f);</p>
+<p>object[num].x=15.0f-20.0f;</p>
+<p>object[num].x=-5.0f;</p>
+<p>The last thing we have to do is set the y value. We want the bucket to drop from the sky. We don't want it falling through the clouds though. So we set the y value to 4.5f. Just a little below the clouds.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	if (object[num].texid==1)						// Bucket
+	{
+		object[num].dir=3;						// Falling Down
+		object[num].x=float(rand()%int(object[num].distance-10.0f))+((object[num].distance-10.0f)/2.0f);
+		object[num].y=4.5f;						// Random X, Start At Top Of The Screen
+	}
+</pre>
+<p>We want the target to pop out of the ground and up into the air. We check to make sure the object is indeed a target (texid is 2). If so, we set the direction (dir) to 2 (up). We use the exact same code as above to get a random x location.</p>
+<p>We don't want the target to start above ground. So we set it's initial y value to -3.0f (under the ground). We then subtract a random value from 0.0f to 5 multiplied by the current level. We do this so that the target doesn't INSTANTLY appear. On higher levels we want a delay before the target appears. Without a delay, the targets would pop out one after another, giving you very little time to hit them.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	if (object[num].texid==2)						// Target
+	{
+		object[num].dir=2;						// Start Off Flying Up
+		object[num].x=float(rand()%int(object[num].distance-10.0f))+((object[num].distance-10.0f)/2.0f);
+		object[num].y=-3.0f-float(rand()%(5*level));			// Random X, Start Under Ground + Random Value
+	}
+</pre>
+<p>All of the other objects travel from left to right, so there is no need to assign any values to the remaining objects. They should work just fine with the random values they were assigned.</p>
+<p>Now for the fun stuff! <em>"For the alpha blending technique to work correctly, the transparent primitives must be drawn in back to front order and must not intersect"</em>. When drawing alpha blended objects, it is very important that objects in the distance are drawn first, and objects up close are drawn last.</p>
+<p>The reason is simple... The Z buffer prevents OpenGL from drawing pixels that are behind things that have already been drawn. So what ends up happening is objects drawn behind transparent objects do not show up. What you end up seeing is a square shape around overlapping objects... Not pretty!</p>
+<p>We already know the depth of each object. So after initializing a new object, we can get around this problem by sorting the objects using the qsort function (quick sort). By sorting the objects, we can be sure that the first object drawn is the object furthest away. That way when we draw the objects, starting at the first object, the objects in the distance will be drawn first. Objects that are closer (drawn later) will see the previously drawn objects behind them, and will blend properly!</p>
+<p>As noted in the line comments I found this code in the MSDN after searching the net for hours looking for a solution. It works good and allows you to sort entire structures. qsort takes 4 parameters. The first parameter points to the object array (the array to be sorted). The second parameter is the number of arrays we want to sort... of course we want to sort through all the object currently being displayed (which is level). The third parameter specifies the size of our objects structure and the fourth parameter points to our Compare() function.</p>
+<p>There is probably a better way to sort structures, but qsort() works... It's quick, convenient and easy to use!</p>
+<p>It's important to note, that if you wanted to use the glAlphaFunc() and glEnable(GL_ALPHA_TEST), sorting is not necessary. However, using the Alpha Function you are restricted to completely transparent or completely opaque blending, there is no in between. Sorting and using the Blendfunc() is a little more work, but it allows for semi-transparent objects.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	// Sort Objects By Distance:	Beginning Address Of Our object Array	*** MSDN CODE MODIFIED FOR THIS TUT ***
+	//								Number Of Elements To Sort
+	//								Size Of Each Element
+	//								Pointer To Our Compare Function
+	qsort((void *) &amp;object, level, sizeof(struct objects), (compfn)Compare );
+}
+</pre>
+<p>The init code is same as always. The first two lines grab information about our window and our keyboard handler. We then use srand() to create a more random game based on the time. After that we load our TGA images and convert them to textures using LoadTGA(). The first 5 images are objects that will streak across the screen. Explode is our explosion animation, ground and sky make up the background scene, crosshair is the crosshair you see on the screen representing your current mouse location, and finally, the font image is the font used to display the score, title, and morale. If any of the images fail to load FALSE is returned, and the program shuts down. It's important to note that this base code will not return an INIT FAILED error message.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">BOOL Initialize (GL_Window* window, Keys* keys)					// Any OpenGL Initialization Goes Here
+{
+	g_window	= window;
+	g_keys		= keys;
+
+	srand( (unsigned)time( NULL ) );					// Randomize Things
+
+	if ((!LoadTGA(&amp;textures[0],"Data/BlueFace.tga")) ||			// Load The BlueFace Texture
+		(!LoadTGA(&amp;textures[1],"Data/Bucket.tga")) ||			// Load The Bucket Texture
+		(!LoadTGA(&amp;textures[2],"Data/Target.tga")) ||			// Load The Target Texture
+		(!LoadTGA(&amp;textures[3],"Data/Coke.tga")) ||			// Load The Coke Texture
+		(!LoadTGA(&amp;textures[4],"Data/Vase.tga")) ||			// Load The Vase Texture
+		(!LoadTGA(&amp;textures[5],"Data/Explode.tga")) ||			// Load The Explosion Texture
+		(!LoadTGA(&amp;textures[6],"Data/Ground.tga")) ||			// Load The Ground Texture
+		(!LoadTGA(&amp;textures[7],"Data/Sky.tga")) ||			// Load The Sky Texture
+		(!LoadTGA(&amp;textures[8],"Data/Crosshair.tga")) ||		// Load The Crosshair Texture
+		(!LoadTGA(&amp;textures[9],"Data/Font.tga")))			// Load The Crosshair Texture
+	{
+		return FALSE;							// If Loading Failed, Return False
+	}
+</pre>
+<p>If all of the images loaded and were successfully turned into textures, we can continue with initialization. The font texture is loaded, so it's safe to build our font. We do this by jumping to BuildFont().</p>
+<p>We then set up OpenGL. The background color is set to black, the alpha is also set to 0.0f. The depth buffer is set up and enabled with less than or equal testing.</p>
+<p>The glBlendFunc() is a VERY important line of code. We set the blend function to (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA). This blends the object with what's on the screen using the alpha values stored in the objects texture. After setting the blend mode, we enable blending. We then enable 2D texture mapping, and finally, we enable GL_CULL_FACE. This removes the back face from each object ( no point in wasting cycles drawing something we can't see ). We draw all of our quads with a counter clockwise winding so the proper face is culled.</p>
+<p>Earlier in the tutorial I talked about using the glAlphaFunc() instead of alpha blending. If you want to use the Alpha Function, comment out the 2 lines of blending code and uncomment the 2 lines under glEnable(GL_BLEND). You can also comment out the qsort() function in the InitObject() section of code.</p>
+<p>The program should run ok, but the sky texture will not be there. The reason is because the sky texture has an alpha value of 0.5f. When I was talking about the Alpha Function earlier on, I mentioned that it only works with alpha values of 0 or 1. You will have to modify the alpha channel for the sky texture if you want it to appear! Again, if you decide to use the Alpha Function instead, you don't have to sort the objects. Both methods have the good points! Below is a quick quote from the SGI site:</p>
+<p><em>"The alpha function discards fragments instead of drawing them into the frame buffer. Therefore sorting of the primitives is not necessary (unless some other mode like alpha blending is enabled). The disadvantage is that pixels must be completely opaque or completely transparent"</em>.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	BuildFont();								// Build Our Font Display List
+
+	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);					// Black Background
+	glClearDepth(1.0f);							// Depth Buffer Setup
+	glDepthFunc(GL_LEQUAL);							// Type Of Depth Testing
+	glEnable(GL_DEPTH_TEST);						// Enable Depth Testing
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);			// Enable Alpha Blending (disable alpha testing)
+	glEnable(GL_BLEND);							// Enable Blending       (disable alpha testing)
+//	glAlphaFunc(GL_GREATER,0.1f);						// Set Alpha Testing     (disable blending)
+//	glEnable(GL_ALPHA_TEST);						// Enable Alpha Testing  (disable blending)
+	glEnable(GL_TEXTURE_2D);						// Enable Texture Mapping
+	glEnable(GL_CULL_FACE);							// Remove Back Face
+</pre>
+<p>At this point in the program, none of the objects have been defined. So we loop through all thirty objects calling InitObject() for each object.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	for (int loop=0; loop&lt;30; loop++)					// Loop Through 30 Objects
+		InitObject(loop);						// Initialize Each Object
+	
+	return TRUE;								// Return TRUE (Initialization Successful)
+}
+</pre>
+<p>In our init code, we called BuildFont() which builds our 95 display lists. The following line of code deletes all 95 display lists before the program quits.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">void Deinitialize (void)							// Any User DeInitialization Goes Here
+{
+	glDeleteLists(base,95);							// Delete All 95 Font Display Lists
+}
+</pre>
+<p>Now for the tricky stuff... The code that does the actual selecting of the objects. The first line of code below allocates a buffer that we can use to store information about our selected objects into. The variable hits will hold the number of hits detected while in selection mode.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">void Selection(void)								// This Is Where Selection Is Done
+{
+	GLuint	buffer[512];							// Set Up A Selection Buffer
+	GLint	hits;								// The Number Of Objects That We Selected
+</pre>
+<p>In the code below, we check to see if the game is over (FALSE). If it is, there is no point in selecting anything, so we return (exit). If the game is still active (TRUE), we play a gunshot sound using the Playsound() command. The only time Selection() is called is when the mouse button has been pressed, and every time the button is pressed, we want to play the gunshot sound. The sound is played in async mode so that it doesn't halt the program while the sound is playing.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	if (game)								// Is Game Over?
+		return;								// If So, Don't Bother Checking For Hits
+	
+	PlaySound("data/shot.wav",NULL,SND_ASYNC);				// Play Gun Shot Sound
+</pre>
+<p>Now we set up a viewport. viewport[] will hold the current x, y, length and width of the current viewport (OpenGL Window).</p>
+<p>glGetIntegerv(GL_VIEWPORT, viewport) gets the current viewport boundries and stores them in viewport[]. Initially, the boundries are equal the the OpenGL window dimensions. glSelectBuffer(512, buffer) tells OpenGL to use buffer for it's selection buffer.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	// The Size Of The Viewport. [0] Is &lt;x&gt;, [1] Is &lt;y&gt;, [2] Is &lt;length&gt;, [3] Is &lt;width&gt;
+	GLint	viewport[4];
+
+	// This Sets The Array &lt;viewport&gt; To The Size And Location Of The Screen Relative To The Window
+	glGetIntegerv(GL_VIEWPORT, viewport);
+	glSelectBuffer(512, buffer);						// Tell OpenGL To Use Our Array For Selection
+</pre>
+<p>All of the code below is very important. The first line puts OpenGL in selection mode. In selection mode, nothing is drawn to the screen. Instead, information about objects rendered while in selection mode will be stored in the selection buffer.</p>
+<p>Next we initialize the name stack by calling glInitNames() and glPushName(0). It's important to note that if the program is not in selection mode, a call to glPushName() will be ignored. Of course we are in selection mode, but it's something to keep in mind.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	// Puts OpenGL In Selection Mode. Nothing Will Be Drawn. Object ID's and Extents Are Stored In The Buffer.
+	(void) glRenderMode(GL_SELECT);
+
+	glInitNames();								// Initializes The Name Stack
+	glPushName(0);								// Push 0 (At Least One Entry) Onto The Stack
+</pre>
+<p>After preparing the name stack, we have to to restrict drawing to the area just under our crosshair. In order to do this we have to select the projection matrix. After selecting the projection matrix we push it onto the stack. We then reset the projection matrix using glLoadIdentity().</p>
+<p>We restrict drawing using gluPickMatrix(). The first parameter is our current mouse position on the x-axis, the second parameter is the current mouse position on the y-axis, then the width and height of the picking region. Finally the current viewport[]. The viewport[] indicates the current viewport boundaries. mouse_x and mouse_y will be the center of the picking region.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	glMatrixMode(GL_PROJECTION);						// Selects The Projection Matrix
+	glPushMatrix();								// Push The Projection Matrix
+	glLoadIdentity();							// Resets The Matrix
+
+	// This Creates A Matrix That Will Zoom Up To A Small Portion Of The Screen, Where The Mouse Is.
+	gluPickMatrix((GLdouble) mouse_x, (GLdouble) (viewport[3]-mouse_y), 1.0f, 1.0f, viewport);
+</pre>
+<p>Calling gluPerspective() multiplies the perspective matrix by the pick matrix which restricts the drawing to the area requested by gluPickMatrix().</p>
+<p>We then switch to the modelview matrix and draw our targets by calling DrawTargets(). We draw the targets in DrawTargets() and not in Draw() because we only want selection to check for hits with objects (targets) and not the sky, ground or crosshair.</p>
+<p>After drawing our targets, we switch back to the projection matrix and pop the stored matrix off the stack. We then switch back to the modelview matrix.</p>
+<p>The last line of code below switches back to render mode so that objects we draw actually appear on the screen. hits will hold the number of objects that were rendered in the viewing area requested by gluPickMatrix().</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	// Apply The Perspective Matrix
+	gluPerspective(45.0f, (GLfloat) (viewport[2]-viewport[0])/(GLfloat) (viewport[3]-viewport[1]), 0.1f, 100.0f);
+	glMatrixMode(GL_MODELVIEW);						// Select The Modelview Matrix
+	DrawTargets();								// Render The Targets To The Selection Buffer
+	glMatrixMode(GL_PROJECTION);						// Select The Projection Matrix
+	glPopMatrix();								// Pop The Projection Matrix
+	glMatrixMode(GL_MODELVIEW);						// Select The Modelview Matrix
+	hits=glRenderMode(GL_RENDER);						// Switch To Render Mode, Find Out How Many
+</pre>
+<p>Now we check to see if there were more than 0 hits recorded. If so, we set choose to equal the name of the first object drawn into the picking area. depth holds how deep into the screen, the object is.</p>
+<p>Each hit takes 4 items in the buffer. The first item is the number of names on the name stack when the hit occured. The second item is the minimum z value of all the verticies that intersected the viewing area at the time of the hit. The third item is the maximum z value of all the vertices that intersected the viewing area at the time of the hit and the last item is the content of the name stack at the time of the hit (name of the object). We are only interested in the minimum z value and the object name in this tutorial.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	if (hits &gt; 0)								// If There Were More Than 0 Hits
+	{
+		int	choose = buffer[3];					// Make Our Selection The First Object
+		int	depth = buffer[1];					// Store How Far Away It Is
+</pre>
+<p>We then loop through all of the hits to make sure none of the objects are closer than the first object hit. If we didn't do this, and two objects were overlapping, the first object hit might behind another object, and clicking the mouse would take away the first object, even though it was behind another object. When you shoot at something, the closest object should be the object that gets hit.</p>
+<p>So, we check through all of the hits. Remember that each object takes 4 items in the buffer, so to search through each hit we have to multiply the current loop value by 4. We add 1 to get the depth of each object hit. If the depth is less than the the current selected objects depth, we store the name of the closer object in choose and we store the depth of the closer object in depth. After we have looped through all of our hits, choose will hold the name of the closest object hit, and depth will hold the depth of the closest object hit.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">		for (int loop = 1; loop &lt; hits; loop++)				// Loop Through All The Detected Hits
+		{
+			// If This Object Is Closer To Us Than The One We Have Selected
+			if (buffer[loop*4+1] &lt; GLuint(depth))
+			{
+				choose = buffer[loop*4+3];			// Select The Closer Object
+				depth = buffer[loop*4+1];			// Store How Far Away It Is
+			}       
+		}
+</pre>
+<p>All we have to do is mark the object as being hit. We check to make sure the object has not already been hit. If it has not been hit, we mark it as being hit by setting hit to TRUE. We increase the players score by 1 point, and we increase the kills counter by 1.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">		if (!object[choose].hit)					// If The Object Hasn't Already Been Hit
+		{
+			object[choose].hit=TRUE;				// Mark The Object As Being Hit
+			score+=1;						// Increase Score
+			kills+=1;						// Increase Level Kills
+</pre>
+<p>I use kills to keep track of how many objects have been destroyed on each level. I wanted each level to have more objects (making it harder to get through the level). So I check to see if the players kills is greater than the current level multiplied by 5. On level 1, the player only has to kill 5 objects (1*5). On level 2 the player has to kill 10 objects (2*5), progressively getting harder each level.</p>
+<p>So, the first line of code checks to see if kills is higher than the level multiplied by 5. If so, we set miss to 0. This sets the player morale back to 10 out of 10 (the morale is 10-miss). We then set kills to 0 (which starts the counting process over again).</p>
+<p>Finally, we increase the value of level by 1 and check to see if we've hit the last level. I have set the maximum level to 30 for the following two reasons... Level 30 is insanely difficult. I am pretty sure no one will ever have that good of a game. The second reason... At the top of the code, we only set up 30 objects. If you want more objects, you have to increase the value accordingly.</p>
+<p>It is VERY important to note that you can have a maximum of 64 objects on the screen (0-63). If you try to render 65 or more objects, picking becomes confused, and odd things start to happen. Everything from objects randomly exploding to your computer crashing. It's a physical limit in OpenGL (just like the 8 lights limit).</p>
+<p>If by some chance you are a god, and you finish level 30, the level will no longer increase, but your score will. Your morale will also reset to 10 every time you finish the 30th level.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">			if (kills&gt;level*5)					// New Level Yet?
+			{
+				miss=0;						// Misses Reset Back To Zero
+				kills=0;					// Reset Level Kills
+				level+=1;					// Increase Level
+				if (level&gt;30)					// Higher Than 30?
+					level=30;				// Set Level To 30 (Are You A God?)
+			}
+		}
+	}
+}
+</pre>
+<p>Update() is where I check for key presses, and update object movement. One of the nice things about Update() is the milliseconds timer. You can use the milliseconds timer to move objects based on the amount of time that has passed since Update() was last called. It's important to note that moving object based on time keeps the objects moving at the same speed on any processor... BUT there are drawbacks! Lets say you have an object moving 5 units in 10 seconds. On a fast system, the computer will move the object half a unit every second. On a slow system, it could be 2 seconds before the update procedure is even called. So when the object moves, it will appear to skip a spot. The animation will not be as smooth on a slower system. (Note: this is just an exaggerated example... computers update ALOT faster than once every two seconds).</p>
+<p>Anyways... with that out of the way... on to the code. The code below checks to see if the escape key is being pressed. If it is, we quit the application by calling TerminateApplication(). g_window holds the information about our window.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">void Update(DWORD milliseconds)							// Perform Motion Updates Here
+{
+	if (g_keys-&gt;keyDown[VK_ESCAPE])						// Is ESC Being Pressed?
+	{
+		TerminateApplication (g_window);				// Terminate The Program
+	}
+</pre>
+<p>The code below checks to see if the space bar is pressed and the game is over. If both conditions are true, we initialize all 30 object (give them new directions, textures, etc). We set game to FALSE, telling the program the game is no longer over. We set the score back to 0, the level back to 1, the player kills to 0 and finally we set the miss variable back to zero. This restarts the game on the first level with full morale and a score of 0.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	if (g_keys-&gt;keyDown[' '] &amp;&amp; game)					// Space Bar Being Pressed After Game Has Ended?
+	{
+		for (int loop=0; loop&lt;30; loop++)				// Loop Through 30 Objects
+			InitObject(loop);					// Initialize Each Object
+
+		game=FALSE;							// Set game (Game Over) To False
+		score=0;							// Set score To 0
+		level=1;							// Set level Back To 1
+		kills=0;							// Zero Player Kills
+		miss=0;								// Set miss (Missed Shots) To 0
+	}
+</pre>
+<p>The code below checks to see if the F1 key has been pressed. If F1 is being pressed, ToggleFullscreen will switch from windowed to fullscreen mode or fullscreen mode to windowed mode.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	if (g_keys-&gt;keyDown[VK_F1])						// Is F1 Being Pressed?
+	{
+		ToggleFullscreen (g_window);					// Toggle Fullscreen Mode
+	}
+</pre>
+<p>To create the illusion of rolling clouds and moving ground, we decrease roll by .00005f multiplied by the number of milliseconds that have passed. This keeps the clouds moving at the same speed on all systems (fast or slow).</p>
+<p>We then set up a loop to loop through all of the objects on the screen. Level 1 has one object, level 10 has 10 objects, etc.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	roll-=milliseconds*0.00005f;						// Roll The Clouds
+
+	for (int loop=0; loop&lt;level; loop++)					// Loop Through The Objects
+	{
+</pre>
+<p>We need to find out which way the object should be spinning. We do this by checking the value of rot. If rot equals 1, we need to spin the object clockwise. To do this, we decrease the value of spin. We decrease spin by 0.2f multiplied by value of loop plus the number of milliseconds that have passed. By using milliseconds the objects will rotate the same speed on all systems. Adding loop makes each NEW object spin a little faster than the last object. So object 2 will spin faster than object 1 and object 3 will spin faster than object 2.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">		if (object[loop].rot==1)					// If Rotation Is Clockwise
+			object[loop].spin-=0.2f*(float(loop+milliseconds));	// Spin Clockwise
+</pre>
+<p>Next we check to see if rot equals 2. If rot equals 2, we need to spin counter clockwise. The only difference from the code above is that we are increasing the value of spin instead of decreasing it. This causes the object to spin in the opposite direction.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">		if (object[loop].rot==2)					// If Rotation Is Counter Clockwise
+			object[loop].spin+=0.2f*(float(loop+milliseconds));	// Spin Counter Clockwise
+</pre>
+<p>Now for the movement code. We check the value of dir if it's equal to 1, we increase the objects x value based on the milliseconds passed multiplied by 0.012f. This moves the object right. Because we use milliseconds the objects should move the same speed on all systems.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">		if (object[loop].dir==1)					// If Direction Is Right
+			object[loop].x+=0.012f*float(milliseconds);		// Move Right
+</pre>
+<p>If dir equals 0, the object is moving left. We move the object left by decreasing the objects x value. Again we decrease x based on the amount of time that has passed in milliseconds multiplied by our fixed value of 0.012f.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">		if (object[loop].dir==0)					// If Direction Is Left
+			object[loop].x-=0.012f*float(milliseconds);		// Move Left
+</pre>
+<p>Only two more directions to watch for. This time we check to see if dir equals 2. If so, we increase the objects y value. This causes the object to move UP the screen. Keep in mind the positive y axis is at the top of the screen and the negative y axis is at the bottom. So increasing y moves from the bottom to the top. Again movement is based on time passed.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">		if (object[loop].dir==2)					// If Direction Is Up
+			object[loop].y+=0.012f*float(milliseconds);		// Move Up
+</pre>
+<p>The last direction our object can travel is down. If dir equals three, we want to move the object down the screen. We do this by increasing the objects y value based on the amount of time that has passed. Notice we move down slower than we move up. When an object is falling, our fixed falling rate is 0.0025f. When we move up, the fixed rate is 0.012f.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">		if (object[loop].dir==3)					// If Direction Is Down
+			object[loop].y-=0.0025f*float(milliseconds);		// Move Down
+</pre>
+<p>After moving our objects we have to check if they are still in view. The code below first checks to see where our object is on the screen. We can roughly calculate how far left an object can travel by taking the objects distance into the screen minus 15.0f (to make sure it's a little past the screen) and dividing it by 2. For those of you that don't already know... If you are 20 units into the screen, depending on the way you set up the perspective, you have roughly 10 units from the left of the screen to the center and 10 from the center to the right. so -20.0f(distance)-15.0f(extra padding)=-35.0f... divide that by 2 and you get -17.5f. That's roughly 7.5 units off the left side of the screen. Meaning our object is completely out of view.</p>
+<p>Anyways... after making sure the object is far off the left side of the screen, we check to see if it was moving left (dir=0). If it's not moving left, we don't care if it's off the left side of the screen!</p>
+<p>Finally, we check to see if the object was hit. If the object is off the left of the screen, it's travelling left and it wasn't hit, it's too late for the player to hit it. So we increase the value of miss. This lowers morale and increases the number of missed targets. We set the objects hit value to TRUE so the computer thinks it's been hit. This forces the object to self destruct (allowing us to give the object a new texture, directions, spin, etc).</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">		// If We Are To Far Left, Direction Is Left And The Object Was Not Hit
+		if ((object[loop].x&lt;(object[loop].distance-15.0f)/2.0f) &amp;&amp; (object[loop].dir==0) &amp;&amp; !object[loop].hit)
+		{
+			miss+=1;						// Increase miss (Missed Object)
+			object[loop].hit=TRUE;					// Set hit To True To Manually Blow Up The Object
+		}
+</pre>
+<p>The following code does the exact same thing as the code above, but instead of checking to see if we've gone off the left side of the screen, we check to see if it's gone off the right side of the screen. We also check to make sure the object is moving right and not some other direction. If the object is off the screen, we increase the value of miss and self destruct the object by telling our program it's been hit.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">		// If We Are To Far Right, Direction Is Left And The Object Was Not Hit
+		if ((object[loop].x&gt;-(object[loop].distance-15.0f)/2.0f) &amp;&amp; (object[loop].dir==1) &amp;&amp; !object[loop].hit)
+		{
+			miss+=1;						// Increase miss (Missed Object)
+			object[loop].hit=TRUE;					// Set hit To True To Manually Blow Up The Object
+		}
+</pre>
+<p>The falling code is pretty straight forward. We check to see if the object has just about hit the ground. We don't want it to fall through the ground which is at -3.0f. Instead, we check to see if the object is below -2.0f. We then check to make sure the object is indeed falling (dir=3) and that the object has not yet been hit. If the object is below -2.0f on the y axis, we increase miss and set the objects hit variable to TRUE (causing it to self destruct as it hits the ground... nice effect).</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">		// If We Are To Far Down, Direction Is Down And The Object Was Not Hit
+		if ((object[loop].y&lt;-2.0f) &amp;&amp; (object[loop].dir==3) &amp;&amp; !object[loop].hit)
+		{
+			miss+=1;						// Increase miss (Missed Object)
+			object[loop].hit=TRUE;					// Set hit To True To Manually Blow Up The Object
+		}
+</pre>
+<p>Unlike the previous code, the going up code is a little different. We don't want the object to go through the clouds! We check to see if the objects y variable is greater than 4.5f (close to the clouds). We also make sure the object is travelling up (dir=2). If the objects y value is greater than 4.5f, instead of destroying the object, we change it's direction. That way the object will quickly pop out of the ground (remember, it goes up faster than it comes down) and once it gets to high we change its direction so it starts to fall toward the ground.</p>
+<p>There is no need to destroy the object, or increase the miss variable. If you miss the object as it's flying into the sky, there's always a chance to hit it as it falls. The falling code will handle the final destruction of the object.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">		if ((object[loop].y&gt;4.5f) &amp;&amp; (object[loop].dir==2))		// If We Are To Far Up And The Direction Is Up
+			object[loop].dir=3;					// Change The Direction To Down
+	}
+}
+</pre>
+<p>Next we have the object drawing code. I wanted a quick and easy way to draw the game objects, along with the crosshair with as little code as possible. Object takes 3 parameters. First we have the width. The width controls how wide the object will be when it's drawn. Then we have the height. The height controls how tall the object will be when it's drawn. Finally, we have the texid. The texid selects the texture we want to use. If we wanted to draw a bucket, which is texture 1, we would pass a value of 1 for the texid. Pretty simple!</p>
+<p>A quick breakdown. We select the texture, and then draw a quad. We use standard texture coordinates so the entire textue is mapped to the face of the quad. The quad is drawn in a counter-clockwise direction (required for culling to work).</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">void Object(float width,float height,GLuint texid)				// Draw Object Using Requested Width, Height And Texture
+{
+	glBindTexture(GL_TEXTURE_2D, textures[texid].texID);			// Select The Correct Texture
+	glBegin(GL_QUADS);							// Start Drawing A Quad
+		glTexCoord2f(0.0f,0.0f); glVertex3f(-width,-height,0.0f);	// Bottom Left
+		glTexCoord2f(1.0f,0.0f); glVertex3f( width,-height,0.0f);	// Bottom Right
+		glTexCoord2f(1.0f,1.0f); glVertex3f( width, height,0.0f);	// Top Right
+		glTexCoord2f(0.0f,1.0f); glVertex3f(-width, height,0.0f);	// Top Left
+	glEnd();								// Done Drawing Quad
+}
+</pre>
+<p>The explosion code takes one parameter. num is the object identifier. In order to create the explosion we need to grab a portion of the explosion texture similar to the way we grab each letter from the font texture. The two lines below calculate the column (ex) and row (ey) from a single number (frame).</p>
+<p>The first line below grabs the current frame and divides it by 4. The division by 4 is to slow down the animation. %4 keeps the value in the 0-3 range. If the value is higher than 3 it would wrap around and become 0. If the value is 5 it would become 1. A value of 9 would be 0,1,2,3,0,1,2,3,0. We divide the final result by 4.0f because texture coordinates are in the 0.0f to 1.0f range. Our explosion texture has 4 explosion images from left to right and 4 up and down.</p>
+<p>Hopefully you're not completely confused. So if our number before division can only be 0,1,2 or 3 our number after we divide it by 4.0f can only be 0.0f, 0.25f (1/4), 0.50f (2/4) or 0.75f (3/4). This gives us our left to right texture coordinate (ex).</p>
+<p>Next we calculate the row (ey). We grab the current object frame and divide it by 4 to slow the animation down a little. We then divide by 4 again to eliminate an entire row. Finally we divide by 4 one last time to get our vertical texture coordinate.</p>
+<p>A quick example. If our current frame was 16. ey=((16/4)/4)/4 or 4/4/4 or 0.25f. One row down. If our current frame was 60. ey=((60/4)/4)/4 or 15/4/4 or 3/4 or 0.75f. The reason 15/4 isn't 3.75 is because we are working with integers up until we do the final division. With that in mind, the value of ey can only be one of 4 values... 0.0f, 0.25f, 0.50f or 0.75f. Assuming we stay inside our texture (prevent frame from going over a value of 63).</p>
+<p>Hope that made sense... it's simple, but intimidating math.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">void Explosion(int num)								// Draws An Animated Explosion For Object "num"
+{
+	float ex = (float)((object[num].frame/4)%4)/4.0f;			// Calculate Explosion X Frame (0.0f - 0.75f)
+	float ey = (float)((object[num].frame/4)/4)/4.0f;			// Calculate Explosion Y Frame (0.0f - 0.75f)
+</pre>
+<p>Now that we have the texture coordinates, all that's left to do is draw our textured quad. The vertex coordinates are fixed at -1.0f and 1.0f. You will notice we subract ey from 1.0f. If we didn't, the animation would be drawn in the reverse order... The explosion would get bigger, rather than fade out. The effect won't look right!</p>
+<p>We bind the explosion texture before we draw the textured quad. Again, the quad is drawn counter-clockwise.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	glBindTexture(GL_TEXTURE_2D, textures[5].texID);			// Select The Explosion Texture
+	glBegin(GL_QUADS);							// Begin Drawing A Quad
+		glTexCoord2f(ex      ,1.0f-(ey      )); glVertex3f(-1.0f,-1.0f,0.0f);	// Bottom Left
+		glTexCoord2f(ex+0.25f,1.0f-(ey      )); glVertex3f( 1.0f,-1.0f,0.0f);	// Bottom Right
+		glTexCoord2f(ex+0.25f,1.0f-(ey+0.25f)); glVertex3f( 1.0f, 1.0f,0.0f);	// Top Right
+		glTexCoord2f(ex      ,1.0f-(ey+0.25f)); glVertex3f(-1.0f, 1.0f,0.0f);	// Top Left
+	glEnd();								// Done Drawing Quad
+</pre>
+<p>As I mentioned above, the value of frame should not exceed 63 otherwise the animation will start over again. So we increase the value of frame and then we check to see if the value is greater than 63. If it is, we call InitObject(num) which destroys the object and gives it new values to create an entirely new object.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	object[num].frame+=1;							// Increase Current Explosion Frame
+	if (object[num].frame&gt;63)						// Have We Gone Through All 16 Frames?
+	{
+		InitObject(num);						// Init The Object (Assign New Values)
+	}
+}
+</pre>
+<p>This section of code draws all of the targets (objects) to the screen. We start off by resetting the modelview matrix. We then translate 10 units into the screen and set up a loop from 0 to the players current level.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">void DrawTargets(void)								// Draws The Targets (Needs To Be Seperate)
+{
+	glLoadIdentity();							// Reset The Modelview Matrix
+	glTranslatef(0.0f,0.0f,-10.0f);						// Move Into The Screen 20 Units
+	for (int loop=0; loop&lt;level; loop++)					// Loop Through 9 Objects
+	{
+</pre>
+<p>The first line of code is the secret to picking individual objects. What it does is assigns a name (number) to each object. The first object drawn will be 0. The second object will be 1, etc... If the loop was to hit 29, the last object drawn would be given the name 29. After assigning a name to the object, we push the modelview matrix onto the stack. It's important to note the calls to glLoadName() are ignored if the program is not in selection mode.</p>
+<p>We then move to the location on the screen where we want our object to be drawn. We use object[loop].x to position on the x-axis, object[loop].y to position on the y-axis and object[loop].distance to position the object on the z-axis (depth into the screen). We have already translated 10 units into the screen, so the actual distance at which the object will be drawn is going to be object[loop].distance-10.0f.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">		glLoadName(loop);						// Assign Object A Name (ID)
+		glPushMatrix();							// Push The Modelview Matrix
+		glTranslatef(object[loop].x,object[loop].y,object[loop].distance);	// Position The Object (x,y)
+</pre>
+<p>Before we draw the object, we have to check if it's been hit or not. We do this by checking to see if object[loop].hit is TRUE. If it is, we jump to Explosion(loop) which will draw the explosion animation instead of the actual object. If the object was not hit, we spin the object on it's z-axis by object[loop].spin degrees before we call Object().</p>
+<p>Object takes 3 parameters. The first one is the width, the second one is the height and the third one is the number of the texture to use. To get the width and height, we use the array size[object[loop].texid].w and size[object[loop].texid].h. This looks up the width and height from our predefined object size array at the beginning of this program. The reason we use object[loop].texid is because it represents the type of object we are drawing. A texid of 0 is always the blueface... a texid of 3 is always the coke can, etc.</p>
+<p>After drawing an object, we pop the matrix resetting the view, so our next object is drawn at the proper location on the screen.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">		if (object[loop].hit)						// If Object Has Been Hit
+		{
+			Explosion(loop);					// Draw An Explosion
+		}
+		else								// Otherwise
+		{
+			glRotatef(object[loop].spin,0.0f,0.0f,1.0f);		// Rotate The Object
+			Object(size[object[loop].texid].w,size[object[loop].texid].h,object[loop].texid);	// Draw The Object
+		}
+		glPopMatrix();							// Pop The Modelview Matrix
+	}
+}
+</pre>
+<p>This is where the drawing occurs. We start off by clearing the screen, and resetting our modelview matrix.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">void Draw(void)									// Draw Our Scene
+{
+	glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);			// Clear Screen And Depth Buffer
+	glLoadIdentity();							// Reset The Modelview Matrix
+</pre>
+<p>Next we push the modelview matrix onto the stack and select the sky texture (texture 7). The sky is made up of 4 textured quads. The first 4 vertices draw the sky way in the distance from the ground straight up. The texture on this quad will roll fairly slowly. The next 4 vertices draw the sky again at the exact same location but the sky texture will roll faster. The two textures will blend together in alpha blending mode to create a neat multilayered effect.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	glPushMatrix();								// Push The Modelview Matrix
+	glBindTexture(GL_TEXTURE_2D, textures[7].texID);			// Select The Sky Texture
+	glBegin(GL_QUADS);							// Begin Drawing Quads
+		glTexCoord2f(1.0f,roll/1.5f+1.0f); glVertex3f( 28.0f,+7.0f,-50.0f);	// Top Right
+		glTexCoord2f(0.0f,roll/1.5f+1.0f); glVertex3f(-28.0f,+7.0f,-50.0f);	// Top Left
+		glTexCoord2f(0.0f,roll/1.5f+0.0f); glVertex3f(-28.0f,-3.0f,-50.0f);	// Bottom Left
+		glTexCoord2f(1.0f,roll/1.5f+0.0f); glVertex3f( 28.0f,-3.0f,-50.0f);	// Bottom Right
+
+		glTexCoord2f(1.5f,roll+1.0f); glVertex3f( 28.0f,+7.0f,-50.0f);		// Top Right
+		glTexCoord2f(0.5f,roll+1.0f); glVertex3f(-28.0f,+7.0f,-50.0f);		// Top Left
+		glTexCoord2f(0.5f,roll+0.0f); glVertex3f(-28.0f,-3.0f,-50.0f);		// Bottom Left
+		glTexCoord2f(1.5f,roll+0.0f); glVertex3f( 28.0f,-3.0f,-50.0f);		// Bottom Right
+</pre>
+<p>To give the illusion that the sky is coming towards the viewer, we draw two more quads, but this time we draw them from way in the distance coming toward the viewer. The first 4 verticies draw slow rolling clouds and the remaining 4 draw faster moving clouds. The two layers will blend together in alpha blending mode to create a multilayered effect. The second layer of clouds is offset by 0.5f so that the two textures don't line up. Same with the two layers of clouds above. The second layer is offset by 0.5f.</p>
+<p>The final effect of all 4 quads is a sky that appears to move up way out in the distance and then toward the viewer up high. I could have used a textured half sphere for the sky, but I was too lazy, and the effect is still pretty good as is.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">		glTexCoord2f(1.0f,roll/1.5f+1.0f); glVertex3f( 28.0f,+7.0f,0.0f);	// Top Right
+		glTexCoord2f(0.0f,roll/1.5f+1.0f); glVertex3f(-28.0f,+7.0f,0.0f);	// Top Left
+		glTexCoord2f(0.0f,roll/1.5f+0.0f); glVertex3f(-28.0f,+7.0f,-50.0f);	// Bottom Left
+		glTexCoord2f(1.0f,roll/1.5f+0.0f); glVertex3f( 28.0f,+7.0f,-50.0f);	// Bottom Right
+
+		glTexCoord2f(1.5f,roll+1.0f); glVertex3f( 28.0f,+7.0f,0.0f);		// Top Right
+		glTexCoord2f(0.5f,roll+1.0f); glVertex3f(-28.0f,+7.0f,0.0f);		// Top Left
+		glTexCoord2f(0.5f,roll+0.0f); glVertex3f(-28.0f,+7.0f,-50.0f);		// Bottom Left
+		glTexCoord2f(1.5f,roll+0.0f); glVertex3f( 28.0f,+7.0f,-50.0f);		// Bottom Right
+	glEnd();								// Done Drawing Quads
+</pre>
+<p>With the sky out of the way, it's time to draw the ground. We draw the ground starting where the sky texture is the lowest coming towards the viewer. The ground texture rolls at the same speed as the fast moving clouds.</p>
+<p>The texture is repeated 7 times from left to right and 4 times from back to front to add a little more detail and to prevent the texture from getting all blocky looking. This is done by increasing the texture coordinates from 0.0f - 1.0f to 0.0f - 7.0f (left to right) and 0.0f - 4.0f (up and down).</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	glBindTexture(GL_TEXTURE_2D, textures[6].texID);			// Select The Ground Texture
+	glBegin(GL_QUADS);							// Draw A Quad
+		glTexCoord2f(7.0f,4.0f-roll); glVertex3f( 27.0f,-3.0f,-50.0f);	// Top Right
+		glTexCoord2f(0.0f,4.0f-roll); glVertex3f(-27.0f,-3.0f,-50.0f);	// Top Left
+		glTexCoord2f(0.0f,0.0f-roll); glVertex3f(-27.0f,-3.0f,0.0f);	// Bottom Left
+		glTexCoord2f(7.0f,0.0f-roll); glVertex3f( 27.0f,-3.0f,0.0f);	// Bottom Right
+	glEnd();								// Done Drawing Quad
+</pre>
+<p>After drawing the sky and the ground, we jump to the section of code that draws all of our targets (objects) called none other than DrawTargets().</p>
+<p>After drawing out targets, we pop the modelview matrix off the stack (restoring it to it's previous state).</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	DrawTargets();								// Draw Our Targets
+	glPopMatrix();								// Pop The Modelview Matrix
+</pre>
+<p>The code below draws the crosshair. We start off by grabbing our current window dimensions. We do this in case the window was resized in windowed mode. GetClientRect grabs the dimensions and stores them in window. We then select our projection matrix and push it onto the stack. We reset the view with glLoadIdentity() and then set the screen up in ortho mode instead of perspective. The window will go from 0 to window.right from left to right, and from 0 to window.bottom from the bottom to the top of the screen.</p>
+<p>The third parameter of glOrtho() is supposed to be the bottom value, instead I swapped the bottom and top values. I did this so that the crosshair would be rendered in a counter clockwise direction. With 0 at the top and window.bottom at the bottom, the winding would go the opposite direction and the crosshair and text would not appear.</p>
+<p>After setting up the ortho view, we select the modelview matrix, and position the crosshair. Because the screen is upside down, we have to invert the mouse as well. Otherwise our crosshair would move down if we moved the mouse up and up if we moved the mouse down. To do this we subtract the current mouse_y value from the bottom of the window (window.bottom).</p>
+<p>After translating to the current mouse position, we draw the crosshair. We do this by calling Object(). Instead of units, we are going to specify the width and height in pixels. The crosshair will be 16x16 pixels wide and tall and the texture used to draw the object is texture 8 (the crosshair texture).</p>
+<p>I decided to use a custom cursor for two reasons... first and most important, it looks cool, and it can be modified using any art program that supports the alpha channel. Secondly, some video cards do not display a cursor in fullscreen mode. Playing the game without a cursor in fullscreen mode is not easy :)</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	// Crosshair (In Ortho View)
+	RECT window;								// Storage For Window Dimensions
+	GetClientRect (g_window-&gt;hWnd,&amp;window);					// Get Window Dimensions
+	glMatrixMode(GL_PROJECTION);						// Select The Projection Matrix
+	glPushMatrix();								// Store The Projection Matrix
+	glLoadIdentity();							// Reset The Projection Matrix
+	glOrtho(0,window.right,0,window.bottom,-1,1);				// Set Up An Ortho Screen
+	glMatrixMode(GL_MODELVIEW);						// Select The Modelview Matrix
+	glTranslated(mouse_x,window.bottom-mouse_y,0.0f);			// Move To The Current Mouse Position
+	Object(16,16,8);							// Draw The Crosshair
+</pre>
+<p>This section of code put the title at the top of the screen, and displays the level and score in the bottom left and right corners of the screen. The reason I put this code here is because it's easier to position the text accurately in ortho mode.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	// Game Stats / Title
+	glPrint(240,450,"NeHe Productions");					// Print Title
+	glPrint(10,10,"Level: %i",level);					// Print Level
+	glPrint(250,10,"Score: %i",score);					// Print Score
+</pre>
+<p>This section checks to see if the player has missed more than 10 objects. If so, we set the number of misses (miss) to 9 and we set game to TRUE. Setting the game to TRUE means the game is over!</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	if (miss&gt;9)								// Have We Missed 10 Objects?
+	{
+		miss=9;								// Limit Misses To 10
+		game=TRUE;							// Game Over TRUE
+	}
+</pre>
+<p>In the code below, we check to see if game is TRUE. If game is TRUE, we print the GAME OVER messages. If game is false, we print the players morale (out of 10). The morale is calculated by subtracting the players misses (miss) from 10. The more the player misses, the lower his morale.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	if (game)								// Is Game Over?
+		glPrint(490,10,"GAME OVER");					// Game Over Message
+	else
+		glPrint(490,10,"Morale: %i/10",10-miss);			// Print Morale #/10
+</pre>
+<p>The last thing we do is select the projection matrix, restore (pop) our matrix back to it's previous state, set the matrix mode to modelview and flush the buffer to make sure all objects have been rendered.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	glMatrixMode(GL_PROJECTION);						// Select The Projection Matrix
+	glPopMatrix();								// Restore The Old Projection Matrix
+	glMatrixMode(GL_MODELVIEW);						// Select The Modelview Matrix
+
+	glFlush();								// Flush The GL Rendering Pipeline
+}
+</pre>
+<p>This tutorial is the result of many late nights, and many many hours of coding &amp; writing HTML. By the end of this tutorial you should have a good understanding of how picking, sorting, alpha blending and alpha testing works. Picking allows you to create interactive point and click software. Everything from games, to fancy GUI's. The best feature of picking is that you don't have to keep track of where your objects are. You assign a name and check for hits. It's that easy! With alpha blending and alpha testing you can make your objects completely solid, or full of holes. The results are great, and you don't have to worry about objects showing through your textures, unless you want them to! As always, I hope you have enjoyed this tutorial, and hope to see some cool games, or projects based on code from this tutorial. If you have any questions or you find mistakes in the tutorial please let me know... I'm only human :)</p>
+<p>I could have spent alot more time adding things like physics, more graphics, more sound, etc. This is just a tutorial though! I didn't write it to impress you with bells and whistles. I wrote it to teach you OpenGL with as little confusion as possible. I hope to see some cool modifications to the code. If you add something cool the the tutorial send me the demo. If it's a cool modification I'll post it to the downloads page. If I get enough modifications I may set up a page dedicated to modified versions of this tutorial! I am here to give you a starting point. The rest is up to you :)</p>
+<p><strong>NOTE:</strong> It is VERY important that in the call to glTexImage2D you set both the format and the internal format to GL_RGBA. Otherwise alpha blending will not work!</p>
+<p><strong>Jeff Molofee</strong> (<strong>NeHe</strong>)</p>
+<p>* DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/vc/lesson32.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/vc/lesson32.zip'" tppabs="http://nehe.gamedev.net/data/lessons/vc/lesson32.zip">Visual C++</a> Code For This Lesson.</p>
+<p>* DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/bcb6/lesson32_bcb6.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/bcb6/lesson32_bcb6.zip'" tppabs="http://nehe.gamedev.net/data/lessons/bcb6/lesson32_bcb6.zip">Borland C++ Builder 6</a> Code For This Lesson. ( Conversion by <a href="mailto:christian@tugzip.com">Christian Kindahl</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/cwarrior/lesson32.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/cwarrior/lesson32.zip'" tppabs="http://nehe.gamedev.net/data/lessons/cwarrior/lesson32.zip">Code Warrior 5.3</a> Code For This Lesson. ( Conversion by <a href="mailto:DelusionalBeing@hotmail.com">Scott Lupton</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/delphi/lesson32.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/delphi/lesson32.zip'" tppabs="http://nehe.gamedev.net/data/lessons/delphi/lesson32.zip">Delphi</a> Code For This Lesson. ( Conversion by <a href="mailto:michal_praha@seznam.cz">Michal Tucek</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/devc/lesson32.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/devc/lesson32.zip'" tppabs="http://nehe.gamedev.net/data/lessons/devc/lesson32.zip">Dev C++</a> Code For This Lesson. ( Conversion by <a href="mailto:danprogram@hotmail.com">Dan</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/euphoria/lesson32.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/euphoria/lesson32.zip'" tppabs="http://nehe.gamedev.net/data/lessons/euphoria/lesson32.zip">Euphoria</a> Code For This Lesson. ( Conversion by <a href="mailto:1evan@sbcglobal.net">Evan Marshall</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/linuxsdl/lesson32.tar.gz  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/linuxsdl/lesson32.tar.gz'" tppabs="http://nehe.gamedev.net/data/lessons/linuxsdl/lesson32.tar.gz">Linux/SDL</a> Code For This Lesson. ( Conversion by <a href="mailto:edgarcostanzo@tiscalinet.it">Edgar Costanzo</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/lwjgl/lesson32.jar  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/lwjgl/lesson32.jar'" tppabs="http://nehe.gamedev.net/data/lessons/lwjgl/lesson32.jar">LWJGL</a> Code For This Lesson. ( Conversion by <a href="mailto:mark.bernard@rogers.com">Mark Bernard</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/macosxcocoa/lesson32.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/macosxcocoa/lesson32.zip'" tppabs="http://nehe.gamedev.net/data/lessons/macosxcocoa/lesson32.zip">Mac OS X/Cocoa</a> Code For This Lesson. ( Conversion by <a href="mailto:blb@pobox.com">Bryan Blackburn</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/vs_net/lesson32.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/vs_net/lesson32.zip'" tppabs="http://nehe.gamedev.net/data/lessons/vs_net/lesson32.zip">Visual Studio .NET</a> Code For This Lesson. ( Conversion by <a href="mailto:ultimatezeus@hotmail.com">Grant James</a> )</p>
+<p>&nbsp;</p>
+<p><strong><span><a href="index-71.htm" tppabs="http://nehe.gamedev.net/data/lessons/lesson.asp?lesson=31">&lt; Lesson 31</a></span></strong><strong><span><a href="index-142.htm" tppabs="http://nehe.gamedev.net/data/lessons/lesson.asp?lesson=33">Lesson 33 &gt;</a></span></strong></p>
+
+
+</div>
+</div>
+
+
+
+            <div style="width:728px;padding:0px;margin:auto; margin-top: 10px;">
+            
+
+    
+                <!-- Leaderboard_NeHe -->
+                <div id='div-gpt-ad-1327940144417-0' style='width:728px; height:90px;'>
+                <script type='text/javascript'>
+                googletag.cmd.push(function() { googletag.display('div-gpt-ad-1327940144417-0'); });
+                </script>
+                </div>
+            
+
+                           
+            </div>   
+        </td>
+        <td class="col2">
+            
+
+
+
+
+<div style="text-align: center; padding:10px;">
+
+<script type='text/javascript'>
+    GA_googleFillSlot("Skyscraper_NeHe");
+</script>
+
+</div>
+            
+        </td>
+    </table>
+    <div id="footer">
+        <p>
+            
+    
+    © 1997-2012 Gamedev . All rights reserved.<br/>
+
+			NeHe™ and NeHe Productions™ are trademarks of GameDev.net, LLC<br/>
+			OpenGL® is a registered trademark of Silicon Graphics Inc.<br/>
+		</p>        
+		<br/>
+    </div>
+
+    
+    
+	    <script type="text/javascript" src="shCore.js" tppabs="http://nehe.gamedev.net/static/js/syntax_highlighter/shCore.js"></script>
+        <script type="text/javascript" src="shBrushCpp.js" tppabs="http://nehe.gamedev.net/static/js/syntax_highlighter/shBrushCpp.js"></script>
+	    <script type="text/javascript" src="shBrushJScript.js" tppabs="http://nehe.gamedev.net/static/js/syntax_highlighter/shBrushJScript.js"></script>
+	    <script type="text/javascript">SyntaxHighlighter.all();</script>
+    
+
+    <!-- Place this render call where appropriate -->
+    <script type="text/javascript">
+      (function() {
+        var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+        po.src = 'plusone.js'/*tpa=https://apis.google.com/js/plusone.js*/;
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+      })();
+    </script>    
+
+    
+<!-- GoogleAnalytics code -->
+<script src="urchin.js" tppabs="http://www.google-analytics.com/urchin.js" type="text/javascript">
+</script>
+<script type="text/javascript">
+_uacct = "UA-279474-2"; // Gamedev
+urchinTracker();
+_uff = 0; // Reset for second account
+_uacct = "UA-24180731-1"; // Non-GD
+urchinTracker();
+</script> 
+  </body>
+</html>

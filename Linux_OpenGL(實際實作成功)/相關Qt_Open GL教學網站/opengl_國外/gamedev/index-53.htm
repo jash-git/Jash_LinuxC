@@ -1,0 +1,369 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+    dir="ltr"
+    xml:lang="en"
+    lang="en">
+  <head>
+    <title>NeHe Productions: Bitmap Fonts</title>
+
+    <link rel="stylesheet" type="text/css" href="public_base.css" tppabs="http://nehe.gamedev.net/static/css/public_base.css" />
+    <link type="text/css" rel="stylesheet" href="shThemeMidnight.css" tppabs="http://nehe.gamedev.net/static/css/syntax_highlighter/shThemeMidnight.css"/>
+    
+    <link rel="alternate" type="application/atom+xml" title="Atom feed" href="index-1.htm" tppabs="http://nehe.gamedev.net/atom/" />
+    <link rel="alternate" type="application/rss+xml" title="RSS feed" href="index-2.htm" tppabs="http://nehe.gamedev.net/rss/" />
+    
+    <meta name="author" content="Luke Benstead + Carsten Haubold" />
+    <meta name="description" content="OpenGL Tutorials, Demos, Games and More..." />
+    <meta name="keywords" content="opengl, tutorial, article, demo, game, blend, texturemap, lighting, contest, 3D" />
+
+    
+    
+
+    
+
+</script>
+
+
+    
+    
+    
+    
+        
+        <script type='text/javascript'>
+        var googletag = googletag || {};
+        googletag.cmd = googletag.cmd || [];
+        (function() {
+        var gads = document.createElement('script');
+        gads.async = true;
+        gads.type = 'text/javascript';
+        var useSSL = 'https:' == document.location.protocol;
+        gads.src = (useSSL ? 'https:' : 'http:') + 
+        '//www.googletagservices.com/tag/js/gpt.js';
+        var node = document.getElementsByTagName('script')[0];
+        node.parentNode.insertBefore(gads, node);
+        })();
+        </script>
+
+        <script type='text/javascript'>
+        googletag.cmd.push(function() {
+        googletag.defineSlot('/1004699/Leaderboard_NeHe', [728, 90], 'div-gpt-ad-1327940144417-0').addService(googletag.pubads());
+        googletag.defineSlot('/1004699/Skyscraper_NeHe', [160, 600], 'div-gpt-ad-1327940144417-1').addService(googletag.pubads());
+        googletag.pubads().enableSingleRequest();
+        googletag.enableServices();
+        });
+        </script>
+    
+    
+
+    
+  </head>
+
+  <body>
+    
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "all.js#xfbml=1"/*tpa=http://connect.facebook.net/en_GB/all.js#xfbml=1*/;
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+
+
+    <table cellpadding="0" cellspacing="0" border="0" id="layout_table">
+    <tr><td>
+        <div id="header">
+                <a href="index.htm" tppabs="http://nehe.gamedev.net/"><img class="logo" class="logo" src="nehe.png" tppabs="http://nehe.gamedev.net/static/images/nehe.png" border="0" alt="Nehe" /></a>
+        </div>            
+    </td></tr>
+    <tr><td colspan="2">
+            
+<div class="navbar">
+    <a href="index.htm" tppabs="http://nehe.gamedev.net/">HOME</a>
+    <a href="javascript:if(confirm('http://twitter.com/  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://twitter.com/#!/nehegl'" tppabs="http://twitter.com/#!/nehegl">TWITTER</a>  
+    <a href="javascript:if(confirm('http://www.facebook.com/pages/NeHe/300582493323181  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://www.facebook.com/pages/NeHe/300582493323181'" tppabs="http://www.facebook.com/pages/NeHe/300582493323181">FACEBOOK</a>     
+    <a href="index-2.htm" tppabs="http://nehe.gamedev.net/rss/">RSS</a>    
+    <a href="index-1.htm" tppabs="http://nehe.gamedev.net/atom/">ATOM</a>    
+    <a href="javascript:if(confirm('http://www.gamedev.net/forum/27-nehe-productions/page__forum_title__NeHe+Productions  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://www.gamedev.net/forum/27-nehe-productions/page__forum_title__NeHe+Productions'" tppabs="http://www.gamedev.net/forum/27-nehe-productions/page__forum_title__NeHe+Productions">FORUM</a>    
+</div>
+    
+    </td></tr>
+    <tr>
+        <td class="col1">
+
+            
+<div id="article_container">
+
+
+<h1 class="article-header">Bitmap Fonts</h1>
+<div class="social-media">
+<!-- Place this tag where you want the +1 button to render -->
+<div class="g-plusone" data-size="medium" data-width="120" data-annotation="inline"></div>
+<div class="fb-like" data-send="false" data-layout="button_count" data-width="60" data-show-faces="false" data-colorscheme="dark" data-font="arial"></div>
+</div>
+<div style="clear:both;"></div>
+<p>Welcome to yet another Tutorial. This time on I'll be teaching you how to use Bitmap Fonts. You may be saying to yourself "what's so hard about putting text onto the screen". If you've ever tried it, it's not that easy!</p>
+<p>Sure you can load up an art program, write text onto an image, load the image into your OpenGL program, turn on blending then map the text onto the screen. But this is time consuming, the final result usually looks blurry or blocky depending on the type of filtering you use, and unless your image has an alpha channel your text will end up transparent (blended with the objects on the screen) once it's mapped to the screen.</p>
+<p>If you've ever used Wordpad, Microsoft Word or some other Word Processor, you may have noticed all the different types of Font's available. This tutorial will teach you how to use the exact same fonts in your own OpenGL programs. As a matter of fact... Any font you install on your computer can be used in your demos.</p>
+<p>Not only do Bitmap Fonts looks 100 times better than graphical fonts (textures). You can change the text on the fly. No need to make textures for each word or letter you want to write to the screen. Just position the text, and use my handy new gl command to display the text on the screen.</p>
+<p>I tried to make the command as simple as possible. All you do is type glPrint("Hello"). It's that easy. Anyways. You can tell by the long intro that I'm pretty happy with this tutorial. It took me roughly 1 1/2 hours to create the program. Why so long? Because there is literally no information available on using Bitmap Fonts, unless of course you enjoy MFC code. In order to keep the code simple I decided it would be nice if I wrote it all in simple to understand C code :)</p>
+<p>A small note, this code is Windows specific. It uses the wgl functions of Windows to build the font. Apparently Apple has agl support that should do the same thing, and X has glx. Unfortunately I can't guarantee this code is portable. If anyone has platform independant code to draw fonts to the screen, send it my way and I'll write another font tutorial.</p>
+<p>We start off with the typical code from lesson 1. We'll be adding the stdio.h header file for standard input/output operations; the stdarg.h header file to parse the text and convert variables to text, and finally the math.h header file so we can move the text around the screen using SIN and COS.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">#include &lt;windows.h&gt;						// Header File For Windows
+#include &lt;math.h&gt;						// Header File For Windows Math Library		( ADD )
+#include &lt;stdio.h&gt;						// Header File For Standard Input/Output	( ADD )
+#include &lt;stdarg.h&gt;						// Header File For Variable Argument Routines	( ADD )
+#include &lt;gl\gl.h&gt;						// Header File For The OpenGL32 Library
+#include &lt;gl\glu.h&gt;						// Header File For The GLu32 Library
+#include &lt;gl\glaux.h&gt;						// Header File For The GLaux Library
+
+HDC		hDC=NULL;					// Private GDI Device Context
+HGLRC		hRC=NULL;					// Permanent Rendering Context
+HWND		hWnd=NULL;					// Holds Our Window Handle
+HINSTANCE	hInstance;					// Holds The Instance Of The Application
+</pre>
+<p>We're going to add 3 new variables as well. base will hold the number of the first display list we create. Each character requires it's own display list. The character 'A' is 65 in the display list, 'B' is 66, 'C' is 67, etc. So 'A' would be stored in display list base+65.</p>
+<p>Next we add two counters (cnt1 &amp; cnt2). These counters will count up at different rates, and are used to move the text around the screen using SIN and COS. This creates a semi-random looking movement on the screen. We'll also use the counters to control the color of the letters (more on this later).</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">GLuint	base;							// Base Display List For The Font Set
+GLfloat	cnt1;							// 1st Counter Used To Move Text &amp; For Coloring
+GLfloat	cnt2;							// 2nd Counter Used To Move Text &amp; For Coloring
+
+bool	keys[256];						// Array Used For The Keyboard Routine
+bool	active=TRUE;						// Window Active Flag Set To TRUE By Default
+bool	fullscreen=TRUE;					// Fullscreen Flag Set To Fullscreen Mode By Default
+
+LRESULT	CALLBACK WndProc(HWND, UINT, WPARAM, LPARAM);		// Declaration For WndProc
+</pre>
+<p>The following section of code builds the actual font. This was the most difficult part of the code to write. 'HFONT font' in simple english tells Windows we are going to be manipulating a Windows font. oldfont is used for good house keeping.</p>
+<p>Next we define base. We do this by creating a group of 96 display lists using glGenLists(96). After the display lists are created, the variable base will hold the number of the first list.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">GLvoid BuildFont(GLvoid)					// Build Our Bitmap Font
+{
+	HFONT	font;						// Windows Font ID
+	HFONT	oldfont;					// Used For Good House Keeping
+
+	base = glGenLists(96);					// Storage For 96 Characters ( NEW )
+</pre>
+<p>Now for the fun stuff. We're going to create our font. We start off by specifying the size of the font. You'll notice it's a negative number. By putting a minus, we're telling windows to find us a font based on the CHARACTER height. If we use a positive number we match the font based on the CELL height.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	font = CreateFont(	-24,				// Height Of Font ( NEW )
+</pre>
+<p>Then we specify the cell width. You'll notice I have it set to 0. By setting values to 0, windows will use the default value. You can play around with this value if you want. Make the font wide, etc.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">				0,				// Width Of Font
+</pre>
+<p>Angle of Escapement will rotate the font. Unfortunately this isn't a very useful feature. Unless your at 0, 90, 180, and 270 degrees, the font usually gets cropped to fit inside it's invisible square border. Orientation Angle quoted from MSDN help Specifies the angle, in tenths of degrees, between each character's base line and the x-axis of the device. Unfortunately I have no idea what that means :(</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">				0,				// Angle Of Escapement
+				0,				// Orientation Angle
+</pre>
+<p>Font weight is a great parameter. You can put a number from 0 - 1000 or you can use one of the predefined values. FW_DONTCARE is 0, FW_NORMAL is 400, FW_BOLD is 700 and FW_BLACK is 900. There are alot more predefined values, but those 4 give some good variety. The higher the value, the thicker the font (more bold).</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">				FW_BOLD,			// Font Weight
+</pre>
+<p>Italic, Underline and Strikeout can be either TRUE or FALSE. Basically if underline is TRUE, the font will be underlined. If it's FALSE it wont be. Pretty simple :)</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">				FALSE,				// Italic
+				FALSE,				// Underline
+				FALSE,				// Strikeout
+</pre>
+<p>Character set Identifier describes the type of Character set you wish to use. There are too many types to explain. CHINESEBIG5_CHARSET, GREEK_CHARSET, RUSSIAN_CHARSET, DEFAULT_CHARSET, etc. ANSI is the one I use, although DEFAULT would probably work just as well.</p>
+<p>If you're interested in using a font such as Webdings or Wingdings, you need to use SYMBOL_CHARSET instead of ANSI_CHARSET.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">				ANSI_CHARSET,			// Character Set Identifier
+</pre>
+<p>Output Precision is very important. It tells Windows what type of character set to use if there is more than one type available. OUT_TT_PRECIS tells Windows that if there is more than one type of font to choose from with the same name, select the TRUETYPE version of the font. Truetype fonts always look better, especially when you make them large. You can also use OUT_TT_ONLY_PRECIS, which ALWAYS trys to use a TRUETYPE Font.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">				OUT_TT_PRECIS,			// Output Precision
+</pre>
+<p>Clipping Precision is the type of clipping to do on the font if it goes outside the clipping region. Not much to say about this, just leave it set to default.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">				CLIP_DEFAULT_PRECIS,		// Clipping Precision
+</pre>
+<p>Output Quality is very important. You can have PROOF, DRAFT, NONANTIALIASED, DEFAULT or ANTIALIASED. We all know that ANTIALIASED fonts look good :) Antialiasing a font is the same effect you get when you turn on font smoothing in Windows. It makes everything look less jagged.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">				ANTIALIASED_QUALITY,		// Output Quality
+</pre>
+<p>Next we have the Family and Pitch settings. For pitch you can have DEFAULT_PITCH, FIXED_PITCH and VARIABLE_PITCH, and for family you can have FF_DECORATIVE, FF_MODERN, FF_ROMAN, FF_SCRIPT, FF_SWISS, FF_DONTCARE. Play around with them to find out what they do. I just set them both to default.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">				FF_DONTCARE|DEFAULT_PITCH,	// Family And Pitch
+</pre>
+<p>Finally... We have the actual name of the font. Boot up Microsoft Word or some other text editor. Click on the font drop down menu, and find a font you like. To use the font, replace 'Courier New' with the name of the font you'd rather use.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">				"Courier New");			// Font Name
+</pre>
+<p>oldFont stores the previously used font. SelectObject will return the font (or pen, or filler, or whatever GDI objects) that was previously set when it switches to the new font. The way that GDI works is such that the use of the return value of SelectObject is not very apparent. At first glance it looks as if the code is selecting the new font and returning a pointer and storing it within oldFont.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	oldfont = (HFONT)SelectObject(hDC, font);		// Selects The Font We Want
+	wglUseFontBitmaps(hDC, 32, 96, base);			// Builds 96 Characters Starting At Character 32
+	SelectObject(hDC, oldfont);				// Selects The Font We Want
+	DeleteObject(font);					// Delete The Font
+}
+</pre>
+<p>The following code is pretty simple. It deletes the 96 display lists from memory starting at the first list specified by 'base'. I'm not sure if windows would do this for you, but it's better to be safe than sorry :)</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">GLvoid KillFont(GLvoid)						// Delete The Font List
+{
+ 	glDeleteLists(base, 96);				// Delete All 96 Characters ( NEW )
+}
+</pre>
+<p>Now for my handy dandy GL text routine. You call this section of code with the command glPrint("message goes here"). The text is stored in the char string *fmt.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">GLvoid glPrint(const char *fmt, ...)				// Custom GL "Print" Routine
+{
+</pre>
+<p>The first line below creates storage space for a 256 character string. text is the string we will end up printing to the screen. The second line below creates a pointer that points to the list of arguments we pass along with the string. If we send any variables along with the text, this will point to them.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	char		text[256];				// Holds Our String
+	va_list		ap;					// Pointer To List Of Arguments
+</pre>
+<p>The next two lines of code check to see if there's anything to display? If there's no text, fmt will equal nothing (NULL), and nothing will be drawn to the screen.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	if (fmt == NULL)					// If There's No Text
+		return;						// Do Nothing
+</pre>
+<p>The following three lines of code convert any symbols in the text to the actual numbers the symbols represent. The final text and any converted symbols are then stored in the character string called "text". I'll explain symbols in more detail down below.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	va_start(ap, fmt);					// Parses The String For Variables
+	    vsprintf(text, fmt, ap);				// And Converts Symbols To Actual Numbers
+	va_end(ap);						// Results Are Stored In Text
+</pre>
+<p>We then push the GL_LIST_BIT, this prevents glListBase from affecting any other display lists we may be using in our program.</p>
+<p>The command glListBase(base-32) is a little hard to explain. Say we draw the letter 'A', it's represented by the number 65. Without glListBase(base-32) OpenGL wouldn't know where to find this letter. It would look for it at display list 65, but if base was equal to 1000, 'A' would actually be stored at display list 1065. So by setting a base starting point, OpenGL knows where to get the proper display list from. The reason we subtract 32 is because we never made the first 32 display lists. We skipped them. So we have to let OpenGL know this by subtracting 32 from the base value. I hope that makes sense.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	glPushAttrib(GL_LIST_BIT);				// Pushes The Display List Bits		( NEW )
+	glListBase(base - 32);					// Sets The Base Character to 32	( NEW )
+</pre>
+<p>Now that OpenGL knows where the Letters are located, we can tell it to write the text to the screen. glCallLists is a very interesting command. It's capable of putting more than one display list on the screen at a time.</p>
+<p>The line below does the following. First it tells OpenGL we're going to be displaying lists to the screen. strlen(text) finds out how many letters we're going to send to the screen. Next it needs to know what the largest list number were sending to it is going to be. We're not sending any more than 255 characters. The lists parameter is treated as an array of unsigned bytes, each in the range 0 through 255. Finally we tell it what to display by passing text (pointer to our string).</p>
+<p>In case you're wondering why the letters don't pile on top of eachother. Each display list for each character knows where the right side of the letter is. After the letter is drawn, OpenGL translates to the right side of the drawn letter. The next letter or object drawn will be drawn starting at the last location GL translated to, which is to the right of the last letter.</p>
+<p>Finally we pop the GL_LIST_BIT setting GL back to how it was before we set our base setting using glListBase(base-32).</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	glCallLists(strlen(text), GL_UNSIGNED_BYTE, text);	// Draws The Display List Text	( NEW )
+	glPopAttrib();						// Pops The Display List Bits	( NEW )
+}
+</pre>
+<p>The only thing different in the Init code is the line BuildFont(). This jumps to the code above that builds the font so OpenGL can use it later on.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">int InitGL(GLvoid)						// All Setup For OpenGL Goes Here
+{
+	glShadeModel(GL_SMOOTH);				// Enable Smooth Shading
+	glClearColor(0.0f, 0.0f, 0.0f, 0.5f);			// Black Background
+	glClearDepth(1.0f);					// Depth Buffer Setup
+	glEnable(GL_DEPTH_TEST);				// Enables Depth Testing
+	glDepthFunc(GL_LEQUAL);					// The Type Of Depth Testing To Do
+	glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);	// Really Nice Perspective Calculations
+
+	BuildFont();						// Build The Font
+
+	return TRUE;						// Initialization Went OK
+}
+</pre>
+<p>Now for the drawing code. We start off by clearing the screen and the depth buffer. We call glLoadIdentity() to reset everything. Then we translate one unit into the screen. If we don't translate, the text wont show up. Bitmap fonts work better when you use an ortho projection rather than a perspective projection, but ortho looks bad, so to make it work in projection, translate.</p>
+<p>You'll notice that if you translate even deeper into the screen the size of the font does not shrink like you'd expect it to. What actually happens when you translate deeper is that you have more control over where the text is on the screen. If you translate 1 unit into the screen, you can place the text anywhere from -0.5 to +0.5 on the X axis. If you translate 10 units into the screen, you place the text from -5 to +5. It just gives you more control instead of using decimal places to position the text at exact locations. Nothing will change the size of the text. Not even glScalef(x,y,z). If you want the font bigger or smaller, make it bigger or smaller when you create it!</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">int DrawGLScene(GLvoid)						// Here's Where We Do All The Drawing
+{
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);	// Clear The Screen And The Depth Buffer
+	glLoadIdentity();					// Reset The View
+	glTranslatef(0.0f,0.0f,-1.0f);				// Move One Unit Into The Screen
+</pre>
+<p>Now we use some fancy math to make the colors pulse. Don't worry if you don't understand what I'm doing. I like to take advantage of as many variables and stupid tricks as I can to achieve results :)</p>
+<p>In this case I'm using the two counters we made to move the text around the screen to change the red, green and blue colors. Red will go from -1.0 to 1.0 using COS and counter 1. Green will also go from -1.0 to 1.0 using SIN and counter 2. Blue will go from 0.5 to 1.5 using COS and counter 1 and 2. That way blue will never be 0, and the text should never completely fade out. Stupid, but it works :)</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	// Pulsing Colors Based On Text Position
+	glColor3f(1.0f*float(cos(cnt1)),1.0f*float(sin(cnt2)),1.0f-0.5f*float(cos(cnt1+cnt2)));
+</pre>
+<p>Now for a new command. glRasterPos2f(x,y) will position the Bitmapped Font on the screen. The center of the screen is still 0,0. Notice there's no Z position. Bitmap Fonts only use the X axis (left/right) and Y axis (up/down). Because we translate one unit into the screen, the far left is -0.5, and the far right is +0.5. You'll notice that I move 0.45 pixels to the left on the X axis. This moves the text into the center of the screen. Otherwise it would be more to the right of the screen because it would be drawn from the center to the right.</p>
+<p>The fancy(?) math does pretty much the same thing as the color setting math does. It moves the text on the x axis from -0.50 to -0.40 (remember, we subtract 0.45 right off the start). This keeps the text on the screen at all times. It swings left and right using COS and counter 1. It moves from -0.35 to +0.35 on the Y axis using SIN and counter 2.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	// Position The Text On The Screen
+	glRasterPos2f(-0.45f+0.05f*float(cos(cnt1)), 0.35f*float(sin(cnt2)));
+</pre>
+<p>Now for my favorite part... Writing the actual text to the screen. I tried to make it super easy, and very user friendly. You'll notice it looks alot like an OpenGL call, combined with the good old fashioned Print statement :) All you do to write the text to the screen is glPrint("{any text you want}"). It's that easy. The text will be drawn onto the screen at the exact spot you positioned it.</p>
+<p>Shawn T. sent me modified code that allows glPrint to pass variables to the screen. This means that you can increase a counter and display the results on the screen! It works like this... In the line below you see our normal text. Then there's a space, a dash, a space, then a "symbol" (%7.2f). Now you may look at %7.2f and say what the heck does that mean. It's very simple. % is like a marker saying don't print 7.2f to the screen, because it represents a variable. The 7 means a maximum of 7 digits will be displayed to the left of the decimal place. Then the decimal place, and right after the decimal place is a 2. The 2 means that only two digits will be displayed to the right of the decimal place. Finally, the f. The f means that the number we want to display is a floating point number. We want to display the value of cnt1 on the screen. As an example, if cnt1 was equal to 300.12345f the number we would end up seeing on the screen would be 300.12. The 3, 4, and 5 after the decimal place would be cut off because we only want 2 digits to appear after the decimal place.</p>
+<p>I know if you're an experienced C programmer, this is absolute basic stuff, but there may be people out there that have never used printf. If you're interested in learning more about symbols, buy a book, or read through the MSDN.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;"> 	glPrint("Active OpenGL Text With NeHe - %7.2f", cnt1);	// Print GL Text To The Screen
+</pre>
+<p>The last thing to do is increase both the counters by different amounts so the colors pulse and the text moves.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	cnt1+=0.051f;						// Increase The First Counter
+	cnt2+=0.005f;						// Increase The Second Counter
+	return TRUE;						// Everything Went OK
+}
+</pre>
+<p>The last thing to do is add KillFont() to the end of KillGLWindow() just like I'm showing below. It's important to add this line. It cleans things up before we exit our program.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	if (!UnregisterClass("OpenGL",hInstance))		// Are We Able To Unregister Class
+	{
+		MessageBox(NULL,"Could Not Unregister Class.","SHUTDOWN ERROR",MB_OK | MB_ICONINFORMATION);
+		hInstance=NULL;					// Set hInstance To NULL
+	}
+
+	KillFont();						// Destroy The Font
+}
+</pre>
+<p>That's it... Everything you need to know in order to use Bitmap Fonts in your own OpenGL projects. I've searched the net looking for a tutorial similar to this one, and have found nothing. Perhaps my site is the first to cover this topic in easy to understand C code? Anyways. Enjoy the tutorial, and happy coding!</p>
+<p><strong>Jeff Molofee</strong> (<strong>NeHe</strong>)</p>
+<p>* DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/vc/lesson13.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/vc/lesson13.zip'" tppabs="http://nehe.gamedev.net/data/lessons/vc/lesson13.zip">Visual C++</a> Code For This Lesson.</p>
+<p>* DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/bcb6/lesson13_bcb6.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/bcb6/lesson13_bcb6.zip'" tppabs="http://nehe.gamedev.net/data/lessons/bcb6/lesson13_bcb6.zip">Borland C++ Builder 6</a> Code For This Lesson. ( Conversion by <a href="mailto:christian@tugzip.com">Christian Kindahl</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/cwarrior/lesson13.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/cwarrior/lesson13.zip'" tppabs="http://nehe.gamedev.net/data/lessons/cwarrior/lesson13.zip">Code Warrior 5.3</a> Code For This Lesson. ( Conversion by <a href="mailto:DelusionalBeing@hotmail.com">Scott Lupton</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/cygwin/lesson13.tar.gz  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/cygwin/lesson13.tar.gz'" tppabs="http://nehe.gamedev.net/data/lessons/cygwin/lesson13.tar.gz">Cygwin</a> Code For This Lesson. ( Conversion by <a href="mailto:jjolly@sfcn.org">John Jolly</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/delphi/lesson13.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/delphi/lesson13.zip'" tppabs="http://nehe.gamedev.net/data/lessons/delphi/lesson13.zip">Delphi</a> Code For This Lesson. ( Conversion by <a href="mailto:michal_praha@seznam.cz">Michal Tucek</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/devc/lesson13.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/devc/lesson13.zip'" tppabs="http://nehe.gamedev.net/data/lessons/devc/lesson13.zip">Dev C++</a> Code For This Lesson. ( Conversion by <a href="mailto:danprogram@hotmail.com">Dan</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/euphoria/lesson13.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/euphoria/lesson13.zip'" tppabs="http://nehe.gamedev.net/data/lessons/euphoria/lesson13.zip">Euphoria</a> Code For This Lesson. ( Conversion by <a href="mailto:1evan@sbcglobal.net">Evan Marshall</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/gameglut/lesson13.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/gameglut/lesson13.zip'" tppabs="http://nehe.gamedev.net/data/lessons/gameglut/lesson13.zip">Game GLUT</a> Code For This Lesson. ( Conversion by <a href="mailto:milix_gr@hotmail.com">Milikas Anastasios</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/irix/lesson13.tar.gz  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/irix/lesson13.tar.gz'" tppabs="http://nehe.gamedev.net/data/lessons/irix/lesson13.tar.gz">Irix / GLUT</a> Code For This Lesson. ( Conversion by <a href="mailto:rpf1@york.ac.uk">Rob Fletcher</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/java/lesson13.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/java/lesson13.zip'" tppabs="http://nehe.gamedev.net/data/lessons/java/lesson13.zip">Java</a> Code For This Lesson. ( Conversion by <a href="mailto:jeff@consunet.com.au">Jeff Kirby</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/jogl/lesson13.jar  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/jogl/lesson13.jar'" tppabs="http://nehe.gamedev.net/data/lessons/jogl/lesson13.jar">JoGL</a> Code For This Lesson. ( Conversion by <a href="mailto:ncb000gt65@hotmail.com">Nicholas Campbell</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/lccwin32/lccwin32_lesson13.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/lccwin32/lccwin32_lesson13.zip'" tppabs="http://nehe.gamedev.net/data/lessons/lccwin32/lccwin32_lesson13.zip">LCC Win32</a> Code For This Lesson. ( Conversion by <a href="mailto:rwishlaw@shaw.ca">Robert Wishlaw</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/linux/lesson13.tar.gz  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/linux/lesson13.tar.gz'" tppabs="http://nehe.gamedev.net/data/lessons/linux/lesson13.tar.gz">Linux</a> Code For This Lesson. ( Conversion by <a href="mailto:ulmont@bellsouth.net">Richard Campbell</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/linuxglx/lesson13.tar.gz  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/linuxglx/lesson13.tar.gz'" tppabs="http://nehe.gamedev.net/data/lessons/linuxglx/lesson13.tar.gz">Linux/GLX</a> Code For This Lesson. ( Conversion by <a href="mailto:Mihael.Vrbanec@stud.uni-karlsruhe.de">Mihael Vrbanec</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/linuxsdl/lesson13.tar.gz  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/linuxsdl/lesson13.tar.gz'" tppabs="http://nehe.gamedev.net/data/lessons/linuxsdl/lesson13.tar.gz">Linux/SDL</a> Code For This Lesson. ( Conversion by <a href="mailto:leggett@eecs.tulane.edu">Ti Leggett</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/lwjgl/lesson13.jar  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/lwjgl/lesson13.jar'" tppabs="http://nehe.gamedev.net/data/lessons/lwjgl/lesson13.jar">LWJGL</a> Code For This Lesson. ( Conversion by <a href="mailto:mark.bernard@rogers.com">Mark Bernard</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev.net/data/lessons/mac/lesson13.sit  \n\nThis file was not retrieved by Teleport Pro, because the server reports that this file cannot be found.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev.net/data/lessons/mac/lesson13.sit'" tppabs="http://nehe.gamedev.net/data/lessons/mac/lesson13.sit">Mac OS</a> Code For This Lesson. ( Conversion by <a href="mailto:asp@usc.edu">Anthony Parker</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/macosxcocoa/lesson13.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/macosxcocoa/lesson13.zip'" tppabs="http://nehe.gamedev.net/data/lessons/macosxcocoa/lesson13.zip">Mac OS X/Cocoa</a> Code For This Lesson. ( Conversion by <a href="mailto:blb@pobox.com">Bryan Blackburn</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/masm/lesson13.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/masm/lesson13.zip'" tppabs="http://nehe.gamedev.net/data/lessons/masm/lesson13.zip">MASM</a> Code For This Lesson. ( Conversion by <a href="mailto:andras.kobor@wanadoo.fr">Andras Kobor</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/pelles_c/lesson13.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/pelles_c/lesson13.zip'" tppabs="http://nehe.gamedev.net/data/lessons/pelles_c/lesson13.zip">Pelles C</a> Code For This Lesson. ( Conversion by <a href="mailto:pelle@smorgasbordet.com">Pelle Orinius</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/python/lesson13.tar.gz  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/python/lesson13.tar.gz'" tppabs="http://nehe.gamedev.net/data/lessons/python/lesson13.tar.gz">Python</a> Code For This Lesson. ( Conversion by <a href="mailto:bleair@comcast.net">Brian Leair</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/vb/lesson13.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/vb/lesson13.zip'" tppabs="http://nehe.gamedev.net/data/lessons/vb/lesson13.zip">Visual Basic</a> Code For This Lesson. ( Conversion by <a href="mailto:rosscogl@email.com">Ross Dawson</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/vb/lesson13-2.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/vb/lesson13-2.zip'" tppabs="http://nehe.gamedev.net/data/lessons/vb/lesson13-2.zip">Visual Basic</a> Code For This Lesson. ( Conversion by <a href="mailto:fredo@studenten.net">Edo</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/vs_net/lesson13.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/vs_net/lesson13.zip'" tppabs="http://nehe.gamedev.net/data/lessons/vs_net/lesson13.zip">Visual Studio .NET</a> Code For This Lesson. ( Conversion by <a href="mailto:ultimatezeus@hotmail.com">Grant James</a> )</p>
+<p>&nbsp;</p>
+<p><strong><span><a href="index-52.htm" tppabs="http://nehe.gamedev.net/data/lessons/lesson.asp?lesson=12">&lt; Lesson 12</a></span></strong><strong><span><a href="index-54.htm" tppabs="http://nehe.gamedev.net/data/lessons/lesson.asp?lesson=14">Lesson 14 &gt;</a></span></strong></p>
+
+
+</div>
+</div>
+
+
+
+            <div style="width:728px;padding:0px;margin:auto; margin-top: 10px;">
+            
+
+    
+                <!-- Leaderboard_NeHe -->
+                <div id='div-gpt-ad-1327940144417-0' style='width:728px; height:90px;'>
+                <script type='text/javascript'>
+                googletag.cmd.push(function() { googletag.display('div-gpt-ad-1327940144417-0'); });
+                </script>
+                </div>
+            
+
+                           
+            </div>   
+        </td>
+        <td class="col2">
+            
+
+
+
+
+<div style="text-align: center; padding:10px;">
+
+<script type='text/javascript'>
+    GA_googleFillSlot("Skyscraper_NeHe");
+</script>
+
+</div>
+            
+        </td>
+    </table>
+    <div id="footer">
+        <p>
+            
+    
+    © 1997-2012 Gamedev . All rights reserved.<br/>
+
+			NeHe™ and NeHe Productions™ are trademarks of GameDev.net, LLC<br/>
+			OpenGL® is a registered trademark of Silicon Graphics Inc.<br/>
+		</p>        
+		<br/>
+    </div>
+
+    
+    
+	    <script type="text/javascript" src="shCore.js" tppabs="http://nehe.gamedev.net/static/js/syntax_highlighter/shCore.js"></script>
+        <script type="text/javascript" src="shBrushCpp.js" tppabs="http://nehe.gamedev.net/static/js/syntax_highlighter/shBrushCpp.js"></script>
+	    <script type="text/javascript" src="shBrushJScript.js" tppabs="http://nehe.gamedev.net/static/js/syntax_highlighter/shBrushJScript.js"></script>
+	    <script type="text/javascript">SyntaxHighlighter.all();</script>
+    
+
+    <!-- Place this render call where appropriate -->
+    <script type="text/javascript">
+      (function() {
+        var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+        po.src = 'plusone.js'/*tpa=https://apis.google.com/js/plusone.js*/;
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+      })();
+    </script>    
+
+    
+<!-- GoogleAnalytics code -->
+<script src="urchin.js" tppabs="http://www.google-analytics.com/urchin.js" type="text/javascript">
+</script>
+<script type="text/javascript">
+_uacct = "UA-279474-2"; // Gamedev
+urchinTracker();
+_uff = 0; // Reset for second account
+_uacct = "UA-24180731-1"; // Non-GD
+urchinTracker();
+</script> 
+  </body>
+</html>

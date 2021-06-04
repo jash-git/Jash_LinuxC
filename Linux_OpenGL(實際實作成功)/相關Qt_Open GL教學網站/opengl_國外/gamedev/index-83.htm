@@ -1,0 +1,675 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+    dir="ltr"
+    xml:lang="en"
+    lang="en">
+  <head>
+    <title>NeHe Productions: FreeType Fonts in OpenGL</title>
+
+    <link rel="stylesheet" type="text/css" href="public_base.css" tppabs="http://nehe.gamedev.net/static/css/public_base.css" />
+    <link type="text/css" rel="stylesheet" href="shThemeMidnight.css" tppabs="http://nehe.gamedev.net/static/css/syntax_highlighter/shThemeMidnight.css"/>
+    
+    <link rel="alternate" type="application/atom+xml" title="Atom feed" href="index-1.htm" tppabs="http://nehe.gamedev.net/atom/" />
+    <link rel="alternate" type="application/rss+xml" title="RSS feed" href="index-2.htm" tppabs="http://nehe.gamedev.net/rss/" />
+    
+    <meta name="author" content="Luke Benstead + Carsten Haubold" />
+    <meta name="description" content="OpenGL Tutorials, Demos, Games and More..." />
+    <meta name="keywords" content="opengl, tutorial, article, demo, game, blend, texturemap, lighting, contest, 3D" />
+
+    
+    
+
+    
+
+</script>
+
+
+    
+    
+    
+    
+        
+        <script type='text/javascript'>
+        var googletag = googletag || {};
+        googletag.cmd = googletag.cmd || [];
+        (function() {
+        var gads = document.createElement('script');
+        gads.async = true;
+        gads.type = 'text/javascript';
+        var useSSL = 'https:' == document.location.protocol;
+        gads.src = (useSSL ? 'https:' : 'http:') + 
+        '//www.googletagservices.com/tag/js/gpt.js';
+        var node = document.getElementsByTagName('script')[0];
+        node.parentNode.insertBefore(gads, node);
+        })();
+        </script>
+
+        <script type='text/javascript'>
+        googletag.cmd.push(function() {
+        googletag.defineSlot('/1004699/Leaderboard_NeHe', [728, 90], 'div-gpt-ad-1327940144417-0').addService(googletag.pubads());
+        googletag.defineSlot('/1004699/Skyscraper_NeHe', [160, 600], 'div-gpt-ad-1327940144417-1').addService(googletag.pubads());
+        googletag.pubads().enableSingleRequest();
+        googletag.enableServices();
+        });
+        </script>
+    
+    
+
+    
+  </head>
+
+  <body>
+    
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "all.js#xfbml=1"/*tpa=http://connect.facebook.net/en_GB/all.js#xfbml=1*/;
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+
+
+    <table cellpadding="0" cellspacing="0" border="0" id="layout_table">
+    <tr><td>
+        <div id="header">
+                <a href="index.htm" tppabs="http://nehe.gamedev.net/"><img class="logo" class="logo" src="nehe.png" tppabs="http://nehe.gamedev.net/static/images/nehe.png" border="0" alt="Nehe" /></a>
+        </div>            
+    </td></tr>
+    <tr><td colspan="2">
+            
+<div class="navbar">
+    <a href="index.htm" tppabs="http://nehe.gamedev.net/">HOME</a>
+    <a href="javascript:if(confirm('http://twitter.com/  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://twitter.com/#!/nehegl'" tppabs="http://twitter.com/#!/nehegl">TWITTER</a>  
+    <a href="javascript:if(confirm('http://www.facebook.com/pages/NeHe/300582493323181  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://www.facebook.com/pages/NeHe/300582493323181'" tppabs="http://www.facebook.com/pages/NeHe/300582493323181">FACEBOOK</a>     
+    <a href="index-2.htm" tppabs="http://nehe.gamedev.net/rss/">RSS</a>    
+    <a href="index-1.htm" tppabs="http://nehe.gamedev.net/atom/">ATOM</a>    
+    <a href="javascript:if(confirm('http://www.gamedev.net/forum/27-nehe-productions/page__forum_title__NeHe+Productions  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://www.gamedev.net/forum/27-nehe-productions/page__forum_title__NeHe+Productions'" tppabs="http://www.gamedev.net/forum/27-nehe-productions/page__forum_title__NeHe+Productions">FORUM</a>    
+</div>
+    
+    </td></tr>
+    <tr>
+        <td class="col1">
+
+            
+<div id="article_container">
+
+
+<h1 class="article-header">FreeType Fonts in OpenGL</h1>
+<div class="social-media">
+<!-- Place this tag where you want the +1 button to render -->
+<div class="g-plusone" data-size="medium" data-width="120" data-annotation="inline"></div>
+<div class="fb-like" data-send="false" data-layout="button_count" data-width="60" data-show-faces="false" data-colorscheme="dark" data-font="arial"></div>
+</div>
+<div style="clear:both;"></div>
+<center><span style="font-size: xx-small;">Tutorial on using FreeType Fonts in OpenGL</span></center>
+<p>So here's a quick tutorial to show you how to use the FreeType version 2 font rendering library in OpenGL. By using the FreeType library we can create anti-aliased text that looks better than text made using bitmap fonts (as in Lesson 13). Our text will also have some other advantages over bitmap fonts - it will be easy to rotate and works well with OpenGL's picking functions.</p>
+<blockquote>
+<p><strong>Note: This tutorial has a small bug, see the fix <a href="javascript:if(confirm('http://www.gamedev.net/topic/612246-bug-in-the-freetype-opengl-tutorial/  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://www.gamedev.net/topic/612246-bug-in-the-freetype-opengl-tutorial/'" tppabs="http://www.gamedev.net/topic/612246-bug-in-the-freetype-opengl-tutorial/" target="_blank">here</a>!</strong></p>
+</blockquote>
+<p><strong><span style="text-decoration: underline;">Motivation</span></strong></p>
+<p>Here I've printed out the same text using both WGL bitmap fonts and fonts rendered with FreeType as per this tutorial (both are Arial Black Italic).</p>
+<center><img src="foo_foo-1.gif" tppabs="http://nehe.gamedev.net/data/lessons/extras/lesson43/foo_foo.gif" alt="" /></center>
+<p><br /> The basic problem with using bitmaps fonts is that in OpenGL bitmaps are by definition binary images. This means that an OpenGL bitmap stores only one bit of information per-pixel. If you zoom in on the text created using WGL bitmaps, the result looks like this:</p>
+<center><img src="wgl-1.gif" tppabs="http://nehe.gamedev.net/data/lessons/extras/lesson43/wgl.gif" alt="" /></center>
+<p><br /> Because bitmaps are binary images, there are no gray pixels in the image above, and it means that the text looks blocky.</p>
+<p>Luckily it is fairly easy to make better looking fonts using the GNU FreeType library. FreeType is the same library that Blizzard uses to render the fonts in their games, so you know it has to be good!</p>
+<p>Here's a close up of the text that I've created with the help of the FreeType library:</p>
+<center><img src="free-1.gif" tppabs="http://nehe.gamedev.net/data/lessons/extras/lesson43/free.gif" alt="" /></center>
+<p><br /> You can see that there are a fair number of gray pixels around the edges of the text; this is typical of an anti-aliased font, the gray pixels make the font look smoother from a distance.</p>
+<p><strong><span style="text-decoration: underline;">Creating the Program</span></strong></p>
+<p>The first step is to get yourself a copy of the GNU FreeType library. Go to <a href="javascript:if(confirm('http://nehe.gamedev.net/data/lessons/http://gnuwin32.sourceforge.net/packages/freetype.htm  \n\nThis file was not retrieved by Teleport Pro, because the server reports that this file cannot be found.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev.net/data/lessons/http://gnuwin32.sourceforge.net/packages/freetype.htm'" tppabs="http://nehe.gamedev.net/data/lessons/http://gnuwin32.sourceforge.net/packages/freetype.htm" target="_blank">/data/lessons/http://gnuwin32.sourceforge.net/packages/freetype.htm</a> and download the binaries and developer files. When you install it make sure to notice the licensing terms, which basically say that if you are going to use FreeType in your own programs, you need to give them credit somewhere in your documentation.</p>
+<p>Now we need to setup MSVC to use FreeType. So create new project as in Lesson 1, but when you go to Project-&gt;Settings-&gt;Link make sure you add libfreetype.lib to Object Modules / libraries along with opengl32.lib, glu32.lib and glaux.lib (if required).</p>
+<p>Next we need to go to Tools-&gt;Options-&gt;Directories and add the FreeType library directories. Under "Show Directories For" select "Include Files", then double click on the empty line at the bottom of the directory list, after you double click a "..." button will appear that you can use to browse for a directory. In this way add</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">C:\PROGRAM FILES\GNUWIN32\INCLUDE\FREETYPE2
+</pre>
+<p>and</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">C:\PROGRAM FILES\GNUWIN32\INCLUDE
+</pre>
+<p>To you list of header directories.</p>
+<p>Now under "Show Directories For" select "Library Files", and this time add</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">C:\PROGRAM FILES\GNUWIN32\LIB
+</pre>
+<p>At this point we should be able to compile programs using FreeType, but they won't run unless they can access the freetype-6.dll. Right now you have a copy of that DLL file in your GNUWIN32\BIN directory, and if you put it somewhere where all your programs can see it (Program Files\Microsoft Visual Studio\VC98\Bin is a good choice), you will be able to run programs using FreeType. But remember that if you distribute a program that you have made using FreeType, you will need to also distribute copies of the DLL along with it.</p>
+<p>Ok, now we can finally start writing code. I've decided to work off the <a href="index-53.htm" tppabs="http://nehe.gamedev.net/data/lessons/lesson.asp?lesson=13" target="_blank">Lesson 13</a> source, so grab a copy of lesson 13 if you don't have one already. Copy lesson13.cpp to your project directory, and add the file to the project.</p>
+<p>Now add and create two new files called "freetype.cpp" and "freetype.h". We will put all our FreeType specific code into these files, and then modify lesson13 a little to show off the functions that we've written. When we are done, we will have created a very simple OpenGL FreeType library that could theoretically be used in any OpenGL project.</p>
+<p>We will start with freetype.h.</p>
+<p>Naturally, we need include the FreeType and OpenGL headers. We will also include some handy parts of the Standard Template Library, including STL's exception classes, which will make it easier for us create nice debugging messages.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">#ifndef FREE_NEHE_H
+#define FREE_NEHE_H
+
+// FreeType Headers
+#include &lt;ft2build.h&gt;
+#include &lt;freetype/freetype.h&gt;
+#include &lt;freetype/ftglyph.h&gt;
+#include &lt;freetype/ftoutln.h&gt;
+#include &lt;freetype/fttrigon.h&gt;
+
+// OpenGL Headers 
+#include &lt;windows.h&gt;										// (The GL Headers Need It)
+#include &lt;GL/gl.h&gt;
+#include &lt;GL/glu.h&gt;
+
+// Some STL Headers
+#include &lt;vector&gt;
+#include &lt;string&gt;
+
+// Using The STL Exception Library Increases The
+// Chances That Someone Else Using Our Code Will Correctly
+// Catch Any Exceptions That We Throw.
+#include &lt;stdexcept&gt;
+
+// MSVC Will Spit Out All Sorts Of Useless Warnings If
+// You Create Vectors Of Strings, This Pragma Gets Rid Of Them.
+#pragma warning(disable: 4786)
+</pre>
+<p>We will put all the information that each font needs into one structure (this will make managing multiple fonts a little easier). As we learned in Lesson 13, when WGL creates a font, it generates a set of consecutive display lists. This is nifty, because it means that you can use glCallLists to print out a string of characters with just one command. When we create our font we will set things up the same way, which means that the list_base field will store the first of 128 consecutive display lists. Because we are going to use textures to draw our text, so we will also need storage for the 128 associated textures. The last bit of info that we will need is the height, in pixels, of the font that we have created (this will make it possible to handle newlines in our print function).</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">// Wrap Everything In A Namespace, That Way We Can Use A Common
+// Function Name Like "print" Without Worrying About
+// Overlapping With Anyone Else's Code.
+namespace freetype {
+
+// Inside Of This Namespace, Give Ourselves The Ability
+// To Write Just "vector" Instead Of "std::vector"
+using std::vector;
+
+// Ditto For String.
+using std::string;
+
+// This Holds All Of The Information Related To Any
+// FreeType Font That We Want To Create.  
+struct font_data {
+	float h;										// Holds The Height Of The Font.
+	GLuint * textures;									// Holds The Texture Id's 
+	GLuint list_base;									// Holds The First Display List Id
+
+	// The Init Function Will Create A Font With
+	// The Height h From The File fname.
+	void init(const char * fname, unsigned int h);
+
+	// Free All The Resources Associated With The Font.
+        void clean();
+};
+</pre>
+<p>The last thing we need is a prototype for our print function:</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">// The Flagship Function Of The Library - This Thing Will Print
+// Out Text At Window Coordinates X, Y, Using The Font ft_font.
+// The Current Modelview Matrix Will Also Be Applied To The Text. 
+void print(const font_data &amp;ft_font, float x, float y, const char *fmt, ...);
+
+}												// Close The Namespace
+
+#endif
+</pre>
+<p>And that's the end of the header file! Time to open up freetype.cpp.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">// Include Our Header File.
+#include "freetype.h"
+
+namespace freetype {
+</pre>
+<p>We are using textures to display each character in our font. OpenGL textures need to have dimensions that are powers of two, so we need to pad the font bitmaps created by FreeType to make them a legal size. That's why we need this function:</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">// This Function Gets The First Power Of 2 &gt;= The
+// Int That We Pass It.
+inline int next_p2 (int a )
+{
+	int rval=1;
+	// rval&lt;&lt;=1 Is A Prettier Way Of Writing rval*=2; 
+	while(rval&lt;a) rval&lt;&lt;=1;
+	return rval;
+}
+</pre>
+<p>The next function that we need is make_dlist, it is really the heart of this code. It takes in an FT_Face, which is an object that FreeType uses to store information about a font, and creates a display list coresponding to the character which we pass in.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">// Create A Display List Corresponding To The Given Character.
+void make_dlist ( FT_Face face, char ch, GLuint list_base, GLuint * tex_base ) {
+
+	// The First Thing We Do Is Get FreeType To Render Our Character
+	// Into A Bitmap.  This Actually Requires A Couple Of FreeType Commands:
+
+	// Load The Glyph For Our Character.
+	if(FT_Load_Glyph( face, FT_Get_Char_Index( face, ch ), FT_LOAD_DEFAULT ))
+		throw std::runtime_error("FT_Load_Glyph failed");
+
+	// Move The Face's Glyph Into A Glyph Object.
+	FT_Glyph glyph;
+	if(FT_Get_Glyph( face-&gt;glyph, &amp;glyph ))
+		throw std::runtime_error("FT_Get_Glyph failed");
+
+	// Convert The Glyph To A Bitmap.
+	FT_Glyph_To_Bitmap( &amp;glyph, ft_render_mode_normal, 0, 1 );
+	FT_BitmapGlyph bitmap_glyph = (FT_BitmapGlyph)glyph;
+
+	// This Reference Will Make Accessing The Bitmap Easier.
+	FT_Bitmap&amp; bitmap=bitmap_glyph-&gt;bitmap;
+</pre>
+<p>Now that we have a bitmap created by FreeType, we need to pad it with empty pixels to make it a legal source for an OpenGL texture. It's important to remember that while OpenGL uses the term "bitmap" to mean binary images, in FreeType bitmaps store 8 bits of information per pixel, so FreeType's bitmaps can store the grays that we need to create anti-aliased text.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	// Use Our Helper Function To Get The Widths Of
+	// The Bitmap Data That We Will Need In Order To Create
+	// Our Texture.
+	int width = next_p2( bitmap.width );
+	int height = next_p2( bitmap.rows );
+
+	// Allocate Memory For The Texture Data.
+	GLubyte* expanded_data = new GLubyte[ 2 * width * height];
+
+	// Here We Fill In The Data For The Expanded Bitmap.
+	// Notice That We Are Using A Two Channel Bitmap (One For
+	// Channel Luminosity And One For Alpha), But We Assign
+	// Both Luminosity And Alpha To The Value That We
+	// Find In The FreeType Bitmap. 
+	// We Use The ?: Operator To Say That Value Which We Use
+	// Will Be 0 If We Are In The Padding Zone, And Whatever
+	// Is The FreeType Bitmap Otherwise.
+	for(int j=0; j &lt;height;j++) {
+		for(int i=0; i &lt; width; i++){
+			expanded_data[2*(i+j*width)]= expanded_data[2*(i+j*width)+1] = 
+				(i&gt;=bitmap.width || j&gt;=bitmap.rows) ?
+				0 : bitmap.buffer[i + bitmap.width*j];
+		}
+	}
+</pre>
+<p>With the padding done, we can get onto creating the OpenGL texture. We are including an alpha channel so that the black parts of the bitmap will be transparent, and so that the edges of the text will be slightly translucent (which should make them look right against any background).</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	// Now We Just Setup Some Texture Parameters.
+	glBindTexture( GL_TEXTURE_2D, tex_base[ch]);
+	glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_LINEAR);
+
+	// Here We Actually Create The Texture Itself, Notice
+	// That We Are Using GL_LUMINANCE_ALPHA To Indicate That
+	// We Are Using 2 Channel Data.
+	glTexImage2D( GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0,
+		GL_LUMINANCE_ALPHA, GL_UNSIGNED_BYTE, expanded_data );
+
+	// With The Texture Created, We Don't Need The Expanded Data Anymore.
+	delete [] expanded_data;
+</pre>
+<p>We use texture mapped quads to draw our text. This means that it will be easy to rotate and scale text, and it will also make fonts inherit their color from the current OpenGL color (none of which would be true if we used pixmaps).</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	// Now We Create The Display List
+	glNewList(list_base+ch,GL_COMPILE);
+
+	glBindTexture(GL_TEXTURE_2D,tex_base[ch]);
+
+	glPushMatrix();
+
+	// First We Need To Move Over A Little So That
+	// The Character Has The Right Amount Of Space
+	// Between It And The One Before It.
+	glTranslatef(bitmap_glyph-&gt;left,0,0);
+
+	// Now We Move Down A Little In The Case That The
+	// Bitmap Extends Past The Bottom Of The Line 
+	// This Is Only True For Characters Like 'g' Or 'y'.
+	glTranslatef(0,bitmap_glyph-&gt;top-bitmap.rows,0);
+
+	// Now We Need To Account For The Fact That Many Of
+	// Our Textures Are Filled With Empty Padding Space.
+	// We Figure What Portion Of The Texture Is Used By 
+	// The Actual Character And Store That Information In
+	// The x And y Variables, Then When We Draw The
+	// Quad, We Will Only Reference The Parts Of The Texture
+	// That Contains The Character Itself.
+	float   x=(float)bitmap.width / (float)width,
+	y=(float)bitmap.rows / (float)height;
+
+	// Here We Draw The Texturemapped Quads.
+	// The Bitmap That We Got From FreeType Was Not 
+	// Oriented Quite Like We Would Like It To Be,
+	// But We Link The Texture To The Quad
+	// In Such A Way That The Result Will Be Properly Aligned.
+	glBegin(GL_QUADS);
+	glTexCoord2d(0,0); glVertex2f(0,bitmap.rows);
+	glTexCoord2d(0,y); glVertex2f(0,0);
+	glTexCoord2d(x,y); glVertex2f(bitmap.width,0);
+	glTexCoord2d(x,0); glVertex2f(bitmap.width,bitmap.rows);
+	glEnd();
+	glPopMatrix();
+	glTranslatef(face-&gt;glyph-&gt;advance.x &gt;&gt; 6 ,0,0);
+
+	// Increment The Raster Position As If We Were A Bitmap Font.
+	// (Only Needed If You Want To Calculate Text Length)
+	// glBitmap(0,0,0,0,face-&gt;glyph-&gt;advance.x &gt;&gt; 6,0,NULL);
+
+	// Finish The Display List
+	glEndList();
+}
+</pre>
+<p>The next function that we are going to create will use make_dlist to create a set of display lists corresponding to a given font file and pixel height.</p>
+<p>FreeType uses truetype fonts, so you will want to find yourself some truetype font files to feed into this function. Truetype font files are very common, and there are a bunch of sites out there where you can download lots of different truetype fonts for free. Windows 98 used truetype for nearly all of it's fonts, so if you can find an old computer running windows98, you can get all of the standard fonts in truetype format from its windows/fonts directory.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">void font_data::init(const char * fname, unsigned int h) {
+	// Allocate Some Memory To Store The Texture Ids.
+	textures = new GLuint[128];
+
+	this-&gt;h=h;
+
+	// Create And Initilize A FreeType Font Library.
+	FT_Library library;
+	if (FT_Init_FreeType( &amp;library )) 
+		throw std::runtime_error("FT_Init_FreeType failed");
+
+	// The Object In Which FreeType Holds Information On A Given
+	// Font Is Called A "face".
+	FT_Face face;
+
+	// This Is Where We Load In The Font Information From The File.
+	// Of All The Places Where The Code Might Die, This Is The Most Likely,
+	// As FT_New_Face Will Fail If The Font File Does Not Exist Or Is Somehow Broken.
+	if (FT_New_Face( library, fname, 0, &amp;face )) 
+		throw std::runtime_error("FT_New_Face failed (there is probably a problem with your font file)");
+
+	// For Some Twisted Reason, FreeType Measures Font Size
+	// In Terms Of 1/64ths Of Pixels.  Thus, To Make A Font
+	// h Pixels High, We Need To Request A Size Of h*64.
+	// (h &lt;&lt; 6 Is Just A Prettier Way Of Writing h*64)
+	FT_Set_Char_Size( face, h &lt;&lt; 6, h &lt;&lt; 6, 96, 96);
+
+	// Here We Ask OpenGL To Allocate Resources For
+	// All The Textures And Display Lists Which We
+	// Are About To Create.  
+	list_base=glGenLists(128);
+	glGenTextures( 128, textures );
+
+	// This Is Where We Actually Create Each Of The Fonts Display Lists.
+	for(unsigned char i=0;i&lt;128;i++)
+		make_dlist(face,i,list_base,textures);
+
+	// We Don't Need The Face Information Now That The Display
+	// Lists Have Been Created, So We Free The Assosiated Resources.
+	FT_Done_Face(face);
+
+	// Ditto For The Font Library.
+	FT_Done_FreeType(library);
+}
+</pre>
+<p>Now we need a function to cleanup all the displaylist and textures associated with a font.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">void font_data::clean() {
+	glDeleteLists(list_base,128);
+	glDeleteTextures(128,textures);
+	delete [] textures;
+}
+</pre>
+<p>Here are two little functions that we are going to define in anticipation of our print function. The print function is going to want to think in pixel coordinates (also called window coordinates), so we are going to need to switch to a projection matrix that makes everything measured in pixel coordinates.</p>
+<p>We are using two very handy OpenGL functions here, glGet to get the window dimensions, and glPush / PopAttrib to make sure that leave the matrix mode in the same state as we found it. If you are not familiar with these functions, it's probably worth your time to look them up in your favorite OpenGL reference manual.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">// A Fairly Straightforward Function That Pushes
+// A Projection Matrix That Will Make Object World 
+// Coordinates Identical To Window Coordinates.
+inline void pushScreenCoordinateMatrix() {
+	glPushAttrib(GL_TRANSFORM_BIT);
+	GLint   viewport[4];
+	glGetIntegerv(GL_VIEWPORT, viewport);
+	glMatrixMode(GL_PROJECTION);
+	glPushMatrix();
+	glLoadIdentity();
+	gluOrtho2D(viewport[0],viewport[2],viewport[1],viewport[3]);
+	glPopAttrib();
+}
+
+// Pops The Projection Matrix Without Changing The Current
+// MatrixMode.
+inline void pop_projection_matrix() {
+	glPushAttrib(GL_TRANSFORM_BIT);
+	glMatrixMode(GL_PROJECTION);
+	glPopMatrix();
+	glPopAttrib();
+}
+</pre>
+<p>Our printing function looks very much like the one from lesson 13, but there are a couple of important differences. The OpenGL enable flags that we set are different, which reflects the fact that we are actually using 2 channel textures rather than bitmaps. We also do a little extra processing on the line of text that we get in order to properly handle newlines. Because we are such good samaritans, we take care to use OpenGL's matrix and attribute stacks to ensure that the function undoes any changes that it makes to OpenGL's internal state (this will prevent anyone using the function from suddenly finding that, say, the modelview matrix had mysteriously changed).</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">// Much Like NeHe's glPrint Function, But Modified To Work
+// With FreeType Fonts.
+void print(const font_data &amp;ft_font, float x, float y, const char *fmt, ...)  {
+        
+	// We Want A Coordinate System Where Distance Is Measured In Window Pixels.
+	pushScreenCoordinateMatrix();                                   
+        
+	GLuint font=ft_font.list_base;
+	// We Make The Height A Little Bigger.  There Will Be Some Space Between Lines.
+	float h=ft_font.h/.63f;                                                 
+	char	text[256];									// Holds Our String
+	va_list	ap;										// Pointer To List Of Arguments
+
+	if (fmt == NULL)									// If There's No Text
+		*text=0;									// Do Nothing
+	else {
+		va_start(ap, fmt);								// Parses The String For Variables
+		vsprintf(text, fmt, ap);							// And Converts Symbols To Actual Numbers
+		va_end(ap);									// Results Are Stored In Text
+	}
+
+	// Here Is Some Code To Split The Text That We Have Been
+	// Given Into A Set Of Lines.  
+	// This Could Be Made Much Neater By Using
+	// A Regular Expression Library Such As The One Available From
+	// boost.org (I've Only Done It Out By Hand To Avoid Complicating
+	// This Tutorial With Unnecessary Library Dependencies).
+	const char *start_line=text;
+	vector&lt;string&gt; lines;
+	for(const char *c=text;*c;c++) {
+		if(*c=='\n') {
+			string line;
+			for(const char *n=start_line;n&lt;c;n++) line.append(1,*n);
+			lines.push_back(line);
+			start_line=c+1;
+		}
+	}
+	if(start_line) {
+		string line;
+		for(const char *n=start_line;n&lt;c;n++) line.append(1,*n);
+		lines.push_back(line);
+	}
+
+	glPushAttrib(GL_LIST_BIT | GL_CURRENT_BIT  | GL_ENABLE_BIT | GL_TRANSFORM_BIT); 
+	glMatrixMode(GL_MODELVIEW);
+	glDisable(GL_LIGHTING);
+	glEnable(GL_TEXTURE_2D);
+	glDisable(GL_DEPTH_TEST);
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);      
+
+	glListBase(font);
+</pre>
+<p>Because we are using texture mapped quads, any transformations that we apply to the modelview matrix before making our glCallLists call will apply to the text itself. This means that there is the potential to rotate or scale the text (another advantage over using WGL bitmaps). The most natural way to take advantage of this fact would be to leave the current modelview matrix alone, thus letting any transformation made before the print function apply to the text. But because of the way that we are using the modelview matrix to set font position, this won't work. Our next best option is to save a copy of the modelview matrix that is passed in, and apply it between the glTranslate and the glCallLists. This is easy enough to do, but because we need to draw the text using a special projection matrix the effects of the modelview matrix will be a little different than one might expect- everything will be will be interpreted on scale of pixels. We could get around this issue entirely by not resetting the projection matrix inside of print. This is probably a good idea in some situations - but if you try it make sure to scale the fonts to an appropriate size (they tend to be something like 32x32, and you probably want something on the order of 0.01x0.01).</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	float modelview_matrix[16];     
+	glGetFloatv(GL_MODELVIEW_MATRIX, modelview_matrix);
+
+	// This Is Where The Text Display Actually Happens.
+	// For Each Line Of Text We Reset The Modelview Matrix
+	// So That The Line's Text Will Start In The Correct Position.
+	// Notice That We Need To Reset The Matrix, Rather Than Just Translating
+	// Down By h. This Is Because When Each Character Is
+	// Drawn It Modifies The Current Matrix So That The Next Character
+	// Will Be Drawn Immediately After It.  
+	for(int i=0;i&lt;lines.size();i++) {
+		glPushMatrix();
+		glLoadIdentity();
+		glTranslatef(x,y-h*i,0);
+		glMultMatrixf(modelview_matrix);
+
+	// The Commented Out Raster Position Stuff Can Be Useful If You Need To
+	// Know The Length Of The Text That You Are Creating.
+	// If You Decide To Use It Make Sure To Also Uncomment The glBitmap Command
+	// In make_dlist().
+		// glRasterPos2f(0,0);
+		glCallLists(lines[i].length(), GL_UNSIGNED_BYTE, lines[i].c_str());
+		// float rpos[4];
+		// glGetFloatv(GL_CURRENT_RASTER_POSITION ,rpos);
+		// float len=x-rpos[0]; (Assuming No Rotations Have Happend)
+
+		glPopMatrix();
+	}
+
+	glPopAttrib();          
+
+	pop_projection_matrix();
+}
+
+}												// Close The Namespace
+</pre>
+<p>The library is now finished. Open up lesson13.cpp and we will make some minor modifications to show off the functions we just wrote.</p>
+<p>Underneth the other headers, add in the freetype.h header.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">#include "freetype.h"										// Header For Our Little Font Library.
+</pre>
+<p>And while we are here, let's create a global font_data object.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">// This Holds All The Information For The Font That We Are Going To Create.
+freetype::font_data our_font;
+</pre>
+<p>Now we need to see about creating and destroying the resources for our font. So add the following line to the end of InitGL</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">our_font.init("Test.ttf", 16);									// Build The FreeType Font
+</pre>
+<p>And add this line to the start of KillGLWindow to destroy the font when we are finished.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">our_font.clean();
+</pre>
+<p>Now we need to modify the function DrawGLScene function so that it uses our print function. This could have been as simple to adding a single line "hello world" command to the end of the function, but I got a little more creative because I wanted to show off rotations and scaling.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">int DrawGLScene(GLvoid)										// Here's Where We Do All The Drawing
+{
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);					// Clear Screen And Depth Buffer
+	glLoadIdentity();									// Reset The Current Modelview Matrix
+	glTranslatef(0.0f,0.0f,-1.0f);								// Move One Unit Into The Screen
+
+	// Blue text
+	glColor3ub(0,0,0xff);
+
+	// Position the WGL Text On The Screen
+	glRasterPos2f(-0.40f, 0.35f);
+ 	glPrint("Active WGL Bitmap Text With NeHe - %7.2f", cnt1);	// Print GL Text To The Screen
+
+	// Here We Print Some Text Using Our Freetype Font
+	// The Only Really Important Command Is The Actual Print() Call,
+	// But For The Sake Of Making The Results A Bit More Interesting
+	// I Have Put In Some Code To Rotate And Scale The Text.
+
+	// Red Text
+	glColor3ub(0xff,0,0);
+
+	glPushMatrix();
+	glLoadIdentity();
+	glRotatef(cnt1,0,0,1);
+	glScalef(1,.8+.3*cos(cnt1/5),1);
+	glTranslatef(-180,0,0);
+	freetype::print(our_font, 320, 200, "Active FreeType Text - %7.2f", cnt1);
+	glPopMatrix();
+
+	// Uncomment This To Test Out Print's Ability To Handle Newlines.
+	// freetype::print(our_font, 320, 200, "Here\nthere\nbe\n\nnewlines\n.", cnt1);
+
+	cnt1+=0.051f;										// Increase The First Counter
+	cnt2+=0.005f;										// Increase The First Counter
+	return TRUE;										// Everything Went OK
+}
+</pre>
+<p>The last thing to do is put in a little exception handling code. Go to WinMain and open up a try { .. } statement at the beginning of the function.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	MSG	msg;										// Windows Message Structure
+	BOOL	done=FALSE;									// Bool Variable To Exit Loop
+
+	try {											// Use Exception Handling
+</pre>
+<p>Then modify the end of the function to have a catch {} command.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	// Shutdown
+	KillGLWindow();										// Kill The Window
+
+	// Catch Any Exceptions That Were Thrown
+	} catch (std::exception &amp;e) {
+		MessageBox(NULL,e.what(),"CAUGHT AN EXCEPTION",MB_OK | MB_ICONINFORMATION);
+	}
+
+	return (msg.wParam);									// Exit The Program
+}
+</pre>
+<p>Now if we ever hit an exception, we will get a little message box telling us what happened. Note that exception handling can slow down your code, so when you are compiling a release version of your program, you may want to go to Project-&gt;Settings-&gt;C/C++, switch to the "C++ Language" category, and turn off exception handling.</p>
+<p>So that's it! Compile the program and you should see some nice FreeType rendered text moving around underneath the original bitmapped text from lesson 13.</p>
+<p><strong><span style="text-decoration: underline;">General Notes</span></strong></p>
+<p><strong>I have been keeping track of all known bugs in this tutorial, please take a look at the <a href="javascript:if(confirm('http://nehe.gamedev.net/data/lessons/http://www.cs.northwestern.edu/~sco590/fonts_tutorial.html  \n\nThis file was not retrieved by Teleport Pro, because the server reports that this file cannot be found.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev.net/data/lessons/http://www.cs.northwestern.edu/~sco590/fonts_tutorial.html'" tppabs="http://nehe.gamedev.net/data/lessons/http://www.cs.northwestern.edu/~sco590/fonts_tutorial.html">errata</a>.</strong></p>
+<p>There are a number of improvements that you might want to make to this library. For one thing using the font data objects directly tends to be a little awkward, so you might want to create a standard cache of fonts to hide font resource management from users. You might also want to take a tip from the OpenGL library itself and create a font stack, which would let you avoid passing in references to font objects each time you called the print function. (These are all things that I currently do things in my own code, but decided to leave out of the tutorial for the sake of simplicity.) You might also want to make a version of print that centers the text- to do that you will probably need to use the techniques discussed below.</p>
+<p>Right now I have the text spinning around it's center. However, to get an effect like this to work for arbitrary text, you would need to have some way of knowing exactly how long the line of text was - this can be a little tricky. One way to get the length of the text is to put glBitmap commands into the font's display lists in order modify the raster position as well as the modelview matrix (I've left the necessary line in the code, but it is commented out). Then you can set the raster position to x,y before using glCallLists, and use glGet to find the raster position after the text is drawn - the difference in raster positions will give you the length of the text in pixels.</p>
+<p>You should be aware that FreeType fonts take up much more memory than WGL's bitmap fonts (that's one the advantages of binary images, they use very little space). If for some reason you really need to conserve your texture memory, you might want to stick with the code from lesson 13.</p>
+<p>Another interesting advantage of using texture mapped quads to represent fonts is that quads, unlike bitmaps, work well with the OpenGL picking functions (see <a href="index-72.htm" tppabs="http://nehe.gamedev.net/data/lessons/lesson.asp?lesson=32" target="_blank">Lesson 32</a> ). This makes life much easier if you want to create text that responds when someone holds the mouse over it or clicks on it. (Making WGL fonts work well with picking functions is possible, again the key trick is to use raster coordinates to figure out the length of the text in pixels).</p>
+<p>And finally, here are some links to OpenGL font libraries. Depending on your goals and compiler you may want to use one of them instead of this code (there are many more of them out there, I've generally only included things that I have some amount of experience with myself).</p>
+<p>GLTT This library is an old library that doesn't seem to still be maintained, but it has gotten some very positive reviews. Based on FreeType1. I think you will need to find a copy of the old FreeType1 source distribution to compile it in MSVC6. Download available from <a href="javascript:if(confirm('http://nehe.gamedev.net/data/lessons/http://www.opengl.org/developers/faqs/technical/fonts.htm  \n\nThis file was not retrieved by Teleport Pro, because the server reports that this file cannot be found.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev.net/data/lessons/http://www.opengl.org/developers/faqs/technical/fonts.htm'" tppabs="http://nehe.gamedev.net/data/lessons/http://www.opengl.org/developers/faqs/technical/fonts.htm" target="_blank">/data/lessons/http://www.opengl.org/developers/faqs/technical/fonts.htm</a>.</p>
+<p>OGLFT A nice FreeType2 based font library, it takes a bit of work to compile under MSVC though (mostly just typical for-loop scope problems). Seems to be targeted at linux machines... <a href="javascript:if(confirm('http://nehe.gamedev.net/data/lessons/http://oglft.sourceforge.net  \n\nThis file was not retrieved by Teleport Pro, because the server reports that this file cannot be found.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev.net/data/lessons/http://oglft.sourceforge.net'" tppabs="http://nehe.gamedev.net/data/lessons/http://oglft.sourceforge.net" target="_blank">/data/lessons/http://oglft.sourceforge.net</a>.</p>
+<p>FTGL Yet a third FreeType based font library, this one was clearly developed for OS X. <a href="javascript:if(confirm('http://nehe.gamedev.net/data/lessons/http://homepages.paradise.net.nz/henryj/code/  \n\nThis file was not retrieved by Teleport Pro, because the server reports that this file cannot be found.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev.net/data/lessons/http://homepages.paradise.net.nz/henryj/code/#FTGL'" tppabs="http://nehe.gamedev.net/data/lessons/http://homepages.paradise.net.nz/henryj/code/#FTGL" target="_blank">/data/lessons/http://homepages.paradise.net.nz/henryj/code/#FTGL</a>.</p>
+<p>FNT A non-FreeType library that is part of PLIB. Seems to have a nice interface, uses its own font format, compiles under MSVC6 with a minimum amount of fuss... <a href="javascript:if(confirm('http://nehe.gamedev.net/data/lessons/http://plib.sourceforge.net/fnt  \n\nThis file was not retrieved by Teleport Pro, because the server reports that this file cannot be found.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev.net/data/lessons/http://plib.sourceforge.net/fnt'" tppabs="http://nehe.gamedev.net/data/lessons/http://plib.sourceforge.net/fnt" target="_blank">/data/lessons/http://plib.sourceforge.net/fnt</a>.</p>
+<p><strong><a href="javascript:if(confirm('http://nehe.gamedev.net/data/lessons/http://www.sccs.swarthmore.edu/users/03/sven  \n\nThis file was not retrieved by Teleport Pro, because the server reports that this file cannot be found.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev.net/data/lessons/http://www.sccs.swarthmore.edu/users/03/sven'" tppabs="http://nehe.gamedev.net/data/lessons/http://www.sccs.swarthmore.edu/users/03/sven" target="_blank">Sven Olsen</a></strong></p>
+<p>* DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/vc/lesson43.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/vc/lesson43.zip'" tppabs="http://nehe.gamedev.net/data/lessons/vc/lesson43.zip">Visual C++</a> Code For This Lesson.</p>
+<p>* DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/bcb6/lesson43_bcb6.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/bcb6/lesson43_bcb6.zip'" tppabs="http://nehe.gamedev.net/data/lessons/bcb6/lesson43_bcb6.zip">Borland C++ Builder 6</a> Code For This Lesson. ( Conversion by <a href="mailto:galileo_m2@hotmail.com">Galileo Sjodin</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/cwarrior/lesson43.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/cwarrior/lesson43.zip'" tppabs="http://nehe.gamedev.net/data/lessons/cwarrior/lesson43.zip">Code Warrior 5.3</a> Code For This Lesson. ( Conversion by <a href="mailto:DelusionalBeing@hotmail.com">Scott Lupton</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/devc/lesson43.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/devc/lesson43.zip'" tppabs="http://nehe.gamedev.net/data/lessons/devc/lesson43.zip">Dev C++</a> Code For This Lesson. ( Conversion by <a href="mailto:wudan@sisna.com">mt-Wudan</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/linuxsdl/lesson43.tar.gz  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/linuxsdl/lesson43.tar.gz'" tppabs="http://nehe.gamedev.net/data/lessons/linuxsdl/lesson43.tar.gz">Linux/SDL</a> Code For This Lesson. ( Conversion by <a href="mailto:agraves@bu.edu">Aaron Graves</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/python/lesson43.tar.gz  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/python/lesson43.tar.gz'" tppabs="http://nehe.gamedev.net/data/lessons/python/lesson43.tar.gz">Python</a> Code For This Lesson. ( Conversion by <a href="mailto:bleair@comcast.net">Brian Leair</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/vs_net/lesson43.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/vs_net/lesson43.zip'" tppabs="http://nehe.gamedev.net/data/lessons/vs_net/lesson43.zip">Visual Studio .NET</a> Code For This Lesson. ( Conversion by <a href="mailto:webmaster@joachimrohde.de">Joachim Rohde</a> )</p>
+<p><strong><span><a href="index-82.htm" tppabs="http://nehe.gamedev.net/data/lessons/lesson.asp?lesson=42">&lt; Lesson 42</a></span></strong><strong><span><a href="index-84.htm" tppabs="http://nehe.gamedev.net/data/lessons/lesson.asp?lesson=44">Lesson 44 &gt;</a></span></strong></p>
+
+
+</div>
+</div>
+
+
+
+            <div style="width:728px;padding:0px;margin:auto; margin-top: 10px;">
+            
+
+    
+                <!-- Leaderboard_NeHe -->
+                <div id='div-gpt-ad-1327940144417-0' style='width:728px; height:90px;'>
+                <script type='text/javascript'>
+                googletag.cmd.push(function() { googletag.display('div-gpt-ad-1327940144417-0'); });
+                </script>
+                </div>
+            
+
+                           
+            </div>   
+        </td>
+        <td class="col2">
+            
+
+
+
+
+<div style="text-align: center; padding:10px;">
+
+<script type='text/javascript'>
+    GA_googleFillSlot("Skyscraper_NeHe");
+</script>
+
+</div>
+            
+        </td>
+    </table>
+    <div id="footer">
+        <p>
+            
+    
+    © 1997-2012 Gamedev . All rights reserved.<br/>
+
+			NeHe™ and NeHe Productions™ are trademarks of GameDev.net, LLC<br/>
+			OpenGL® is a registered trademark of Silicon Graphics Inc.<br/>
+		</p>        
+		<br/>
+    </div>
+
+    
+    
+	    <script type="text/javascript" src="shCore.js" tppabs="http://nehe.gamedev.net/static/js/syntax_highlighter/shCore.js"></script>
+        <script type="text/javascript" src="shBrushCpp.js" tppabs="http://nehe.gamedev.net/static/js/syntax_highlighter/shBrushCpp.js"></script>
+	    <script type="text/javascript" src="shBrushJScript.js" tppabs="http://nehe.gamedev.net/static/js/syntax_highlighter/shBrushJScript.js"></script>
+	    <script type="text/javascript">SyntaxHighlighter.all();</script>
+    
+
+    <!-- Place this render call where appropriate -->
+    <script type="text/javascript">
+      (function() {
+        var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+        po.src = 'plusone.js'/*tpa=https://apis.google.com/js/plusone.js*/;
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+      })();
+    </script>    
+
+    
+<!-- GoogleAnalytics code -->
+<script src="urchin.js" tppabs="http://www.google-analytics.com/urchin.js" type="text/javascript">
+</script>
+<script type="text/javascript">
+_uacct = "UA-279474-2"; // Gamedev
+urchinTracker();
+_uff = 0; // Reset for second account
+_uacct = "UA-24180731-1"; // Non-GD
+urchinTracker();
+</script> 
+  </body>
+</html>

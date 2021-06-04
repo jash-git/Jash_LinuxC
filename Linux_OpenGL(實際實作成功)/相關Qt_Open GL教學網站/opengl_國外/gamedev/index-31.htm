@@ -1,0 +1,703 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+    dir="ltr"
+    xml:lang="en"
+    lang="en">
+  <head>
+    <title>NeHe Productions: Creating an OpenGL Window (Win32)</title>
+
+    <link rel="stylesheet" type="text/css" href="public_base.css" tppabs="http://nehe.gamedev.net/static/css/public_base.css" />
+    <link type="text/css" rel="stylesheet" href="shThemeMidnight.css" tppabs="http://nehe.gamedev.net/static/css/syntax_highlighter/shThemeMidnight.css"/>
+    
+    <link rel="alternate" type="application/atom+xml" title="Atom feed" href="index-1.htm" tppabs="http://nehe.gamedev.net/atom/" />
+    <link rel="alternate" type="application/rss+xml" title="RSS feed" href="index-2.htm" tppabs="http://nehe.gamedev.net/rss/" />
+    
+    <meta name="author" content="Luke Benstead + Carsten Haubold" />
+    <meta name="description" content="OpenGL Tutorials, Demos, Games and More..." />
+    <meta name="keywords" content="opengl, tutorial, article, demo, game, blend, texturemap, lighting, contest, 3D" />
+
+    
+    
+
+    
+
+</script>
+
+
+    
+    
+    
+    
+        
+        <script type='text/javascript'>
+        var googletag = googletag || {};
+        googletag.cmd = googletag.cmd || [];
+        (function() {
+        var gads = document.createElement('script');
+        gads.async = true;
+        gads.type = 'text/javascript';
+        var useSSL = 'https:' == document.location.protocol;
+        gads.src = (useSSL ? 'https:' : 'http:') + 
+        '//www.googletagservices.com/tag/js/gpt.js';
+        var node = document.getElementsByTagName('script')[0];
+        node.parentNode.insertBefore(gads, node);
+        })();
+        </script>
+
+        <script type='text/javascript'>
+        googletag.cmd.push(function() {
+        googletag.defineSlot('/1004699/Leaderboard_NeHe', [728, 90], 'div-gpt-ad-1327940144417-0').addService(googletag.pubads());
+        googletag.defineSlot('/1004699/Skyscraper_NeHe', [160, 600], 'div-gpt-ad-1327940144417-1').addService(googletag.pubads());
+        googletag.pubads().enableSingleRequest();
+        googletag.enableServices();
+        });
+        </script>
+    
+    
+
+    
+  </head>
+
+  <body>
+    
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "all.js#xfbml=1"/*tpa=http://connect.facebook.net/en_GB/all.js#xfbml=1*/;
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+
+
+    <table cellpadding="0" cellspacing="0" border="0" id="layout_table">
+    <tr><td>
+        <div id="header">
+                <a href="index.htm" tppabs="http://nehe.gamedev.net/"><img class="logo" class="logo" src="nehe.png" tppabs="http://nehe.gamedev.net/static/images/nehe.png" border="0" alt="Nehe" /></a>
+        </div>            
+    </td></tr>
+    <tr><td colspan="2">
+            
+<div class="navbar">
+    <a href="index.htm" tppabs="http://nehe.gamedev.net/">HOME</a>
+    <a href="javascript:if(confirm('http://twitter.com/  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://twitter.com/#!/nehegl'" tppabs="http://twitter.com/#!/nehegl">TWITTER</a>  
+    <a href="javascript:if(confirm('http://www.facebook.com/pages/NeHe/300582493323181  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://www.facebook.com/pages/NeHe/300582493323181'" tppabs="http://www.facebook.com/pages/NeHe/300582493323181">FACEBOOK</a>     
+    <a href="index-2.htm" tppabs="http://nehe.gamedev.net/rss/">RSS</a>    
+    <a href="index-1.htm" tppabs="http://nehe.gamedev.net/atom/">ATOM</a>    
+    <a href="javascript:if(confirm('http://www.gamedev.net/forum/27-nehe-productions/page__forum_title__NeHe+Productions  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://www.gamedev.net/forum/27-nehe-productions/page__forum_title__NeHe+Productions'" tppabs="http://www.gamedev.net/forum/27-nehe-productions/page__forum_title__NeHe+Productions">FORUM</a>    
+</div>
+    
+    </td></tr>
+    <tr>
+        <td class="col1">
+
+            
+<div id="article_container">
+
+
+<h1 class="article-header">Creating an OpenGL Window (Win32)</h1>
+<div class="social-media">
+<!-- Place this tag where you want the +1 button to render -->
+<div class="g-plusone" data-size="medium" data-width="120" data-annotation="inline"></div>
+<div class="fb-like" data-send="false" data-layout="button_count" data-width="60" data-show-faces="false" data-colorscheme="dark" data-font="arial"></div>
+</div>
+<div style="clear:both;"></div>
+<p>Welcome to my OpenGL tutorials. I am an average guy with a passion for OpenGL! The first time I heard about OpenGL was back when 3Dfx released their Hardware accelerated OpenGL driver for the Voodoo 1 card. Immediately I knew OpenGL was something I had to learn. Unfortunately, it was very hard to find any information about OpenGL in books or on the net. I spent hours trying to make code work and even more time begging people for help in email and on IRC. I found that those people that understood OpenGL considered themselves elite, and had no interest in sharing their knowledge. VERY frustrating!</p>
+<p>I created this web site so that people interested in learning OpenGL would have a place to come if they needed help. In each of my tutorials I try to explain, in as much detail as humanly possible, what each line of code is doing. I try to keep my code simple (no MFC code to learn)! An absolute newbie to both Visual C++ and OpenGL should be able to go through the code, and have a pretty good idea of what's going on. My site is just one of many sites offering OpenGL tutorials. If you're a hardcore OpenGL programmer, my site may be too simplistic, but if you're just starting out, I feel my site has a lot to offer!</p>
+<p>This tutorial was completely rewritten January 2000. This tutorial will teach you how to set up an OpenGL window. The window can be windowed or fullscreen, any size you want, any resolution you want, and any color depth you want. The code is very flexible and can be used for all your OpenGL projects. All my tutorials will be based on this code! I wrote the code to be flexible, and powerful at the same time. All errors are reported. There should be no memory leaks, and the code is easy to read and easy to modify. Thanks to Fredric Echols for his modifications to the code!</p>
+<p>I'll start this tutorial by jumping right into the code. The first thing you will have to do is build a project in Visual C++. If you don't know how to do that, you should not be learning OpenGL, you should be learning Visual C++. The downloadable code is Visual C++ 6.0 code. Some versions of VC++ require that bool is changed to BOOL, true is changed to TRUE, and false is changed to FALSE. By making the changes mentioned, I have been able to compile the code on Visual C++ 4.0 and 5.0 with no other problems.</p>
+<p>After you have created a new Win32 Application (NOT a console application) in Visual C++, you will need to link the OpenGL libraries. In Visual C++ go to Project, Settings, and then click on the LINK tab. Under "Object/Library Modules" at the beginning of the line (before kernel32.lib) add OpenGL32.lib GLu32.lib and GLaux.lib. Once you've done this click on OK. You're now ready to write an OpenGL Windows program.</p>
+<p><strong>NOTE #1:</strong> Many compilers do not define CDS_FULLSCREEN. If you receive an error message complaining about CDS_FULLSCREEN you need to add the following line of code to the top of your program: #define CDS_FULLSCREEN 4.</p>
+<p><strong>NOTE #2:</strong> When the first tutorials were written, GLAUX was the way to go. Over time GLAUX lost support. Many of the tutorials on this site still use the old GLAUX code. If your compiler does not support GLAUX or you would rather not use it, download the GLAUX REPLACEMENT CODE from the main page (left menu).</p>
+<p>The first 4 lines include the header files for each library we are using. The lines look like this:</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">#include &lt;windows.h&gt;								// Header File For Windows
+#include &lt;gl\gl.h&gt;								// Header File For The OpenGL32 Library
+#include &lt;gl\glu.h&gt;								// Header File For The GLu32 Library
+#include &lt;gl\glaux.h&gt;								// Header File For The GLaux Library
+</pre>
+<p>Next you need to set up all the variables you plan to use in your program. This program will create a blank OpenGL window, so we won't need to set up a lot of variables just yet. The few variables that we do set up are very important, and will be used in just about every OpenGL program you write using this code.</p>
+<p>The first line sets up a Rendering Context. Every OpenGL program is linked to a Rendering Context. A Rendering Context is what links OpenGL calls to the Device Context. The OpenGL Rendering Context is defined as hRC. In order for your program to draw to a Window you need to create a Device Context, this is done in the second line. The Windows Device Context is defined as hDC. The DC connects the Window to the GDI (Graphics Device Interface). The RC connects OpenGL to the DC.</p>
+<p>In the third line the variable hWnd will hold the handle assigned to our window by Windows, and finally, the fourth line creates an Instance (occurrence) for our program.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">HGLRC           hRC=NULL;							// Permanent Rendering Context
+HDC             hDC=NULL;							// Private GDI Device Context
+HWND            hWnd=NULL;							// Holds Our Window Handle
+HINSTANCE       hInstance;							// Holds The Instance Of The Application
+</pre>
+<p>The first line below sets up an array that we will use to monitor key presses on the keyboard. There are many ways to watch for key presses on the keyboard, but this is the way I do it. It's reliable, and it can handle more than one key being pressed at a time.</p>
+<p>The active variable will be used to tell our program whether or not our Window has been minimized to the taskbar or not. If the Window has been minimized we can do anything from suspend the code to exit the program. I like to suspend the program. That way it won't keep running in the background when it's minimized.</p>
+<p>The variable fullscreen is fairly obvious. If our program is running in fullscreen mode, fullscreen will be TRUE, if our program is running in Windowed mode, fullscreen will be FALSE. It's important to make this global so that each procedure knows if the program is running in fullscreen mode or not.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">bool	keys[256];								// Array Used For The Keyboard Routine
+bool	active=TRUE;								// Window Active Flag Set To TRUE By Default
+bool	fullscreen=TRUE;							// Fullscreen Flag Set To Fullscreen Mode By Default
+</pre>
+<p>Now we have to declare WndProc(). The reason we have to do this is because CreateGLWindow() has a reference to WndProc() but WndProc() comes after CreateGLWindow(). In C if we want to access a procedure or section of code that comes after the section of code we are currently in we have to declare the section of code we wish to access at the top of our program. So in the following line we declare WndProc() so that CreateGLWindow() can make reference to WndProc().</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">LRESULT	CALLBACK WndProc(HWND, UINT, WPARAM, LPARAM);				// Declaration For WndProc
+</pre>
+<p>The job of the next section of code is to resize the OpenGL scene whenever the window (assuming you are using a Window rather than fullscreen mode) has been resized. Even if you are not able to resize the window (for example, you're in fullscreen mode), this routine will still be called at least once when the program is first run to set up our perspective view. The OpenGL scene will be resized based on the width and height of the window it's being displayed in.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">GLvoid ReSizeGLScene(GLsizei width, GLsizei height)				// Resize And Initialize The GL Window
+{
+	if (height==0)								// Prevent A Divide By Zero By
+	{
+		height=1;							// Making Height Equal One
+	}
+
+	glViewport(0, 0, width, height);					// Reset The Current Viewport
+</pre>
+<p>The following lines set the screen up for a perspective view. Meaning things in the distance get smaller. This creates a realistic looking scene. The perspective is calculated with a 45 degree viewing angle based on the windows width and height. The 0.1f, 100.0f is the starting point and ending point for how deep we can draw into the screen.</p>
+<p>glMatrixMode(GL_PROJECTION) indicates that the next 2 lines of code will affect the projection matrix. The projection matrix is responsible for adding perspective to our scene. glLoadIdentity() is similar to a reset. It restores the selected matrix to it's original state. After glLoadIdentity() has been called we set up our perspective view for the scene. glMatrixMode(GL_MODELVIEW) indicates that any new transformations will affect the modelview matrix. The modelview matrix is where our object information is stored. Lastly we reset the modelview matrix. Don't worry if you don't understand this stuff, I will be explaining it all in later tutorials. Just know that it HAS to be done if you want a nice perspective scene.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	glMatrixMode(GL_PROJECTION);						// Select The Projection Matrix
+	glLoadIdentity();							// Reset The Projection Matrix
+
+	// Calculate The Aspect Ratio Of The Window
+	gluPerspective(45.0f,(GLfloat)width/(GLfloat)height,0.1f,100.0f);
+
+	glMatrixMode(GL_MODELVIEW);						// Select The Modelview Matrix
+	glLoadIdentity();							// Reset The Modelview Matrix
+}
+</pre>
+<p>In the next section of code we do all of the setup for OpenGL. We set what color to clear the screen to, we turn on the depth buffer, enable smooth shading, etc. This routine will not be called until the OpenGL Window has been created. This procedure returns a value but because our initialization isn't that complex we wont worry about the value for now.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">int InitGL(GLvoid)								// All Setup For OpenGL Goes Here
+{
+</pre>
+<p>The next line enables smooth shading. Smooth shading blends colors nicely across a polygon, and smoothes out lighting. I will explain smooth shading in more detail in another tutorial.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	glShadeModel(GL_SMOOTH);						// Enables Smooth Shading
+</pre>
+<p>The following line sets the color of the screen when it clears. If you don't know how colors work, I'll quickly explain. The color values range from 0.0f to 1.0f. 0.0f being the darkest and 1.0f being the brightest. The first parameter after glClearColor is the Red Intensity, the second parameter is for Green and the third is for Blue. The closer the number is to 1.0f, the brighter that specific color will be. The last number is an Alpha value. When it comes to clearing the screen, we wont worry about the 4th number. For now leave it at 0.0f. I will explain its use in another tutorial.</p>
+<p>You create different colors by mixing the three primary colors for light (red, green, blue). Hope you learned primaries in school. So, if you had glClearColor(0.0f,0.0f,1.0f,0.0f) you would be clearing the screen to a bright blue. If you had glClearColor(0.5f,0.0f,0.0f,0.0f) you would be clearing the screen to a medium red. Not bright (1.0f) and not dark (0.0f). To make a white background, you would set all the colors as high as possible (1.0f). To make a black background you would set all the colors to as low as possible (0.0f).</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);					// Black Background
+</pre>
+<p>The next three lines have to do with the Depth Buffer. Think of the depth buffer as layers into the screen. The depth buffer keeps track of how deep objects are into the screen. We won't really be using the depth buffer in this program, but just about every OpenGL program that draws on the screen in 3D will use the depth buffer. It sorts out which object to draw first so that a square you drew behind a circle doesn't end up on top of the circle. The depth buffer is a very important part of OpenGL.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	glClearDepth(1.0f);							// Depth Buffer Setup
+	glEnable(GL_DEPTH_TEST);						// Enables Depth Testing
+	glDepthFunc(GL_LEQUAL);							// The Type Of Depth Test To Do
+</pre>
+<p>Next we tell OpenGL we want the best perspective correction to be done. This causes a very tiny performance hit, but makes the perspective view look a bit better.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);			// Really Nice Perspective Calculations
+</pre>
+<p>Finally we return TRUE. If we wanted to see if initialization went ok, we could check to see if TRUE or FALSE was returned. You can add code of your own to return FALSE if an error happens. For now we won't worry about it.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	return TRUE;								// Initialization Went OK
+}
+</pre>
+<p>This section is where all of your drawing code will go. Anything you plan to display on the screen will go in this section of code. Each tutorial after this one will add code to this section of the program. If you already have an understanding of OpenGL, you can try creating basic shapes by adding OpenGL code below glLoadIdentity() and before return TRUE. If you're new to OpenGL, wait for my next tutorial. For now all we will do is clear the screen to the color we previously decided on, clear the depth buffer and reset the scene. We wont draw anything yet.</p>
+<p>The return TRUE tells our program that there were no problems. If you wanted the program to stop for some reason, adding a return FALSE line somewhere before return TRUE will tell our program that the drawing code failed. The program will then quit.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">int DrawGLScene(GLvoid)								// Here's Where We Do All The Drawing
+{
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);			// Clear The Screen And The Depth Buffer
+	glLoadIdentity();							// Reset The Current Modelview Matrix
+	return TRUE;								// Everything Went OK
+}
+</pre>
+<p>The next section of code is called just before the program quits. The job of KillGLWindow() is to release the Rendering Context, the Device Context and finally the Window Handle. I've added a lot of error checking. If the program is unable to destroy any part of the Window, a message box with an error message will pop up, telling you what failed. Making it a lot easier to find problems in your code.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">GLvoid KillGLWindow(GLvoid)							// Properly Kill The Window
+{
+</pre>
+<p>The first thing we do in KillGLWindow() is check to see if we are in fullscreen mode. If we are, we'll switch back to the desktop. We should destroy the Window before disabling fullscreen mode, but on some video cards if we destroy the Window BEFORE we disable fullscreen mode, the desktop will become corrupt. So we'll disable fullscreen mode first. This will prevent the desktop from becoming corrupt, and works well on both Nvidia and 3dfx video cards!</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	if (fullscreen)								// Are We In Fullscreen Mode?
+	{
+</pre>
+<p>We use ChangeDisplaySettings(NULL,0) to return us to our original desktop. Passing NULL as the first parameter and 0 as the second parameter forces Windows to use the values currently stored in the Windows registry (the default resolution, bit depth, frequency, etc) effectively restoring our original desktop. After we've switched back to the desktop we make the cursor visible again.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">		ChangeDisplaySettings(NULL,0);					// If So Switch Back To The Desktop
+		ShowCursor(TRUE);						// Show Mouse Pointer
+	}
+</pre>
+<p>The code below checks to see if we have a Rendering Context (hRC). If we don't, the program will jump to the section of code below that checks to see if we have a Device Context.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	if (hRC)								// Do We Have A Rendering Context?
+	{
+</pre>
+<p>If we have a Rendering Context, the code below will check to see if we are able to release it (detach the hRC from the hDC). Notice the way I'm checking for errors. I'm basically telling our program to try freeing it (with wglMakeCurrent(NULL,NULL), then I check to see if freeing it was successful or not. Nicely combining a few lines of code into one line.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">		if (!wglMakeCurrent(NULL,NULL))					// Are We Able To Release The DC And RC Contexts?
+		{
+</pre>
+<p>If we were unable to release the DC and RC contexts, MessageBox() will pop up an error message letting us know the DC and RC could not be released. NULL means the message box has no parent Window. The text right after NULL is the text that appears in the message box. "SHUTDOWN ERROR" is the text that appears at the top of the message box (title). Next we have MB_OK, this means we want a message box with one button labelled "OK". MB_ICONINFORMATION makes a lower case i in a circle appear inside the message box (makes it stand out a bit more).</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">			MessageBox(NULL,"Release Of DC And RC Failed.","SHUTDOWN ERROR",MB_OK | MB_ICONINFORMATION);
+		}
+</pre>
+<p>Next we try to delete the Rendering Context. If we were unsuccessful an error message will pop up.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">		if (!wglDeleteContext(hRC))					// Are We Able To Delete The RC?
+		{
+</pre>
+<p>If we were unable to delete the Rendering Context the code below will pop up a message box letting us know that deleting the RC was unsuccessful. hRC will be set to NULL.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">			MessageBox(NULL,"Release Rendering Context Failed.","SHUTDOWN ERROR",MB_OK | MB_ICONINFORMATION);
+		}
+		hRC=NULL;							// Set RC To NULL
+	}
+</pre>
+<p>Now we check to see if our program has a Device Context and if it does, we try to release it. If we're unable to release the Device Context an error message will pop up and hDC will be set to NULL.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	if (hDC &amp;&amp; !ReleaseDC(hWnd,hDC))					// Are We Able To Release The DC
+	{
+		MessageBox(NULL,"Release Device Context Failed.","SHUTDOWN ERROR",MB_OK | MB_ICONINFORMATION);
+		hDC=NULL;							// Set DC To NULL
+	}
+</pre>
+<p>Now we check to see if there is a Window Handle and if there is, we try to destroy the Window using DestroyWindow(hWnd). If we are unable to destroy the Window, an error message will pop up and hWnd will be set to NULL.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	if (hWnd &amp;&amp; !DestroyWindow(hWnd))					// Are We Able To Destroy The Window?
+	{
+		MessageBox(NULL,"Could Not Release hWnd.","SHUTDOWN ERROR",MB_OK | MB_ICONINFORMATION);
+		hWnd=NULL;							// Set hWnd To NULL
+	}
+</pre>
+<p>Last thing to do is unregister our Windows Class. This allows us to properly kill the window, and then reopen another window without receiving the error message "Windows Class already registered".</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	if (!UnregisterClass("OpenGL",hInstance))				// Are We Able To Unregister Class
+	{
+		MessageBox(NULL,"Could Not Unregister Class.","SHUTDOWN ERROR",MB_OK | MB_ICONINFORMATION);
+		hInstance=NULL;							// Set hInstance To NULL
+	}
+}
+</pre>
+<p>The next section of code creates our OpenGL Window. I spent a lot of time trying to decide if I should create a fixed fullscreen Window that doesn't require a lot of extra code, or an easy to customize user friendly Window that requires a lot more code. I decided the user friendly Window with a lot more code would be the best choice. I get asked the following questions all the time in email: How can I create a Window instead of using fullscreen? How do I change the Window's title? How do I change the resolution or pixel format of the Window? The following code does all of that! Therefore it's better learning material and will make writing OpenGL programs of your own a lot easier!</p>
+<p>As you can see the procedure returns BOOL (TRUE or FALSE), it also takes 5 parameters: title of the Window, width of the Window, height of the Window, bits (16/24/32), and finally fullscreenflag TRUE for fullscreen or FALSE for windowed. We return a boolean value that will tell us if the Window was created successfully.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">BOOL CreateGLWindow(char* title, int width, int height, int bits, bool fullscreenflag)
+{
+</pre>
+<p>When we ask Windows to find us a pixel format that matches the one we want, the number of the mode that Windows ends up finding for us will be stored in the variable PixelFormat.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	GLuint		PixelFormat;						// Holds The Results After Searching For A Match
+</pre>
+<p>wc will be used to hold our Window Class structure. The Window Class structure holds information about our window. By changing different fields in the Class we can change how the window looks and behaves. Every window belongs to a Window Class. Before you create a window, you MUST register a Class for the window.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	WNDCLASS	wc;							// Windows Class Structure
+</pre>
+<p>dwExStyle and dwStyle will store the Extended and normal Window Style Information. I use variables to store the styles so that I can change the styles depending on what type of window I need to create (A popup window for fullscreen or a window with a border for windowed mode)</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	DWORD		dwExStyle;						// Window Extended Style
+	DWORD		dwStyle;						// Window Style
+</pre>
+<p>The following 5 lines of code grab the upper left, and lower right values of a rectangle. We'll use these values to adjust our window so that the area we draw on is the exact resolution we want. Normally if we create a 640x480 window, the borders of the window take up some of our resolution.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	RECT WindowRect;							// Grabs Rectangle Upper Left / Lower Right Values
+	WindowRect.left=(long)0;						// Set Left Value To 0
+	WindowRect.right=(long)width;						// Set Right Value To Requested Width
+	WindowRect.top=(long)0;							// Set Top Value To 0
+	WindowRect.bottom=(long)height;						// Set Bottom Value To Requested Height
+</pre>
+<p>In the next line of code we make the global variable fullscreen equal fullscreenflag.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	fullscreen=fullscreenflag;						// Set The Global Fullscreen Flag
+</pre>
+<p>In the next section of code, we grab an instance for our Window, then we declare the Window Class.</p>
+<p>The style CS_HREDRAW and CS_VREDRAW force the Window to redraw whenever it is resized. CS_OWNDC creates a private DC for the Window. Meaning the DC is not shared across applications. WndProc is the procedure that watches for messages in our program. No extra Window data is used so we zero the two fields. Then we set the instance. Next we set hIcon to NULL meaning we don't want an ICON in the Window, and for a mouse pointer we use the standard arrow. The background color doesn't matter (we set that in GL). We don't want a menu in this Window so we set it to NULL, and the class name can be any name you want. I'll use "OpenGL" for simplicity.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	hInstance		= GetModuleHandle(NULL);			// Grab An Instance For Our Window
+	wc.style		= CS_HREDRAW | CS_VREDRAW | CS_OWNDC;		// Redraw On Move, And Own DC For Window
+	wc.lpfnWndProc		= (WNDPROC) WndProc;				// WndProc Handles Messages
+	wc.cbClsExtra		= 0;						// No Extra Window Data
+	wc.cbWndExtra		= 0;						// No Extra Window Data
+	wc.hInstance		= hInstance;					// Set The Instance
+	wc.hIcon		= LoadIcon(NULL, IDI_WINLOGO);			// Load The Default Icon
+	wc.hCursor		= LoadCursor(NULL, IDC_ARROW);			// Load The Arrow Pointer
+	wc.hbrBackground	= NULL;						// No Background Required For GL
+	wc.lpszMenuName		= NULL;						// We Don't Want A Menu
+	wc.lpszClassName	= "OpenGL";					// Set The Class Name
+</pre>
+<p>Now we register the Class. If anything goes wrong, an error message will pop up. Clicking on OK in the error box will exit the program.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	if (!RegisterClass(&amp;wc))						// Attempt To Register The Window Class
+	{
+		MessageBox(NULL,"Failed To Register The Window Class.","ERROR",MB_OK|MB_ICONEXCLAMATION);
+		return FALSE;							// Exit And Return FALSE
+	}
+</pre>
+<p>Now we check to see if the program should run in fullscreen mode or windowed mode. If it should be fullscreen mode, we'll attempt to set fullscreen mode.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	if (fullscreen)								// Attempt Fullscreen Mode?
+	{
+</pre>
+<p>The next section of code is something people seem to have a lot of problems with... switching to fullscreen mode. There are a few very important things you should keep in mind when switching to full screen mode. Make sure the width and height that you use in fullscreen mode is the same as the width and height you plan to use for your window, and most importantly, set fullscreen mode BEFORE you create your window. In this code, you don't have to worry about the width and height, the fullscreen and the window size are both set to be the size requested.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">		DEVMODE dmScreenSettings;					// Device Mode
+		memset(&amp;dmScreenSettings,0,sizeof(dmScreenSettings));		// Makes Sure Memory's Cleared
+		dmScreenSettings.dmSize=sizeof(dmScreenSettings);		// Size Of The Devmode Structure
+		dmScreenSettings.dmPelsWidth	= width;			// Selected Screen Width
+		dmScreenSettings.dmPelsHeight	= height;			// Selected Screen Height
+		dmScreenSettings.dmBitsPerPel	= bits;				// Selected Bits Per Pixel
+		dmScreenSettings.dmFields=DM_BITSPERPEL|DM_PELSWIDTH|DM_PELSHEIGHT;
+</pre>
+<p>In the code above we clear room to store our video settings. We set the width, height and bits that we want the screen to switch to. In the code below we try to set the requested full screen mode. We stored all the information about the width, height and bits in dmScreenSettings. In the line below ChangeDisplaySettings tries to switch to a mode that matches what we stored in dmScreenSettings. I use the parameter CDS_FULLSCREEN when switching modes, because it's supposed to remove the start bar at the bottom of the screen, plus it doesn't move or resize the windows on your desktop when you switch to fullscreen mode and back.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">		// Try To Set Selected Mode And Get Results.  NOTE: CDS_FULLSCREEN Gets Rid Of Start Bar.
+		if (ChangeDisplaySettings(&amp;dmScreenSettings,CDS_FULLSCREEN)!=DISP_CHANGE_SUCCESSFUL)
+		{
+</pre>
+<p>If the mode couldn't be set the code below will run. If a matching fullscreen mode doesn't exist, a messagebox will pop up offering two options... The option to run in a window or the option to quit.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">			// If The Mode Fails, Offer Two Options.  Quit Or Run In A Window.
+			if (MessageBox(NULL,"The Requested Fullscreen Mode Is Not Supported By\nYour Video Card. Use Windowed Mode Instead?","NeHe GL",MB_YESNO|MB_ICONEXCLAMATION)==IDYES)
+			{
+</pre>
+<p>If the user decided to use windowed mode, the variable fullscreen becomes FALSE, and the program continues running.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">				fullscreen=FALSE;				// Select Windowed Mode (Fullscreen=FALSE)
+			}
+			else
+			{
+</pre>
+<p>If the user decided to quit, a messagebox will pop up telling the user that the program is about to close. FALSE will be returned telling our program that the window was not created successfully. The program will then quit.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">				// Pop Up A Message Box Letting User Know The Program Is Closing.
+				MessageBox(NULL,"Program Will Now Close.","ERROR",MB_OK|MB_ICONSTOP);
+				return FALSE;					// Exit And Return FALSE
+			}
+		}
+	}
+</pre>
+<p>Because the fullscreen code above may have failed and the user may have decided to run the program in a window instead, we check once again to see if fullscreen is TRUE or FALSE before we set up the screen / window type.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	if (fullscreen)								// Are We Still In Fullscreen Mode?
+	{
+</pre>
+<p>If we are still in fullscreen mode we'll set the extended style to WS_EX_APPWINDOW, which force a top level window down to the taskbar once our window is visible. For the window style we'll create a WS_POPUP window. This type of window has no border around it, making it perfect for fullscreen mode.</p>
+<p>Finally, we disable the mouse pointer. If your program is not interactive, it's usually nice to disable the mouse pointer when in fullscreen mode. It's up to you though.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">		dwExStyle=WS_EX_APPWINDOW;					// Window Extended Style
+		dwStyle=WS_POPUP;						// Windows Style
+		ShowCursor(FALSE);						// Hide Mouse Pointer
+	}
+	else
+	{
+</pre>
+<p>If we're using a window instead of fullscreen mode, we'll add WS_EX_WINDOWEDGE to the extended style. This gives the window a more 3D look. For style we'll use WS_OVERLAPPEDWINDOW instead of WS_POPUP. WS_OVERLAPPEDWINDOW creates a window with a title bar, sizing border, window menu, and minimize / maximize buttons.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">		dwExStyle=WS_EX_APPWINDOW | WS_EX_WINDOWEDGE;			// Window Extended Style
+		dwStyle=WS_OVERLAPPEDWINDOW;					// Windows Style
+	}
+</pre>
+<p>The line below adjust our window depending on what style of window we are creating. The adjustment will make our window exactly the resolution we request. Normally the borders will overlap parts of our window. By using the AdjustWindowRectEx command none of our OpenGL scene will be covered up by the borders, instead, the window will be made larger to account for the pixels needed to draw the window border. In fullscreen mode, this command has no effect.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	AdjustWindowRectEx(&amp;WindowRect, dwStyle, FALSE, dwExStyle);		// Adjust Window To True Requested Size
+</pre>
+<p>In the next section of code, we're going to create our window and check to see if it was created properly. We pass CreateWindowEx() all the parameters it requires. The extended style we decided to use. The class name (which has to be the same as the name you used when you registered the Window Class). The window title. The window style. The top left position of your window (0,0 is a safe bet). The width and height of the window. We don't want a parent window, and we don't want a menu so we set both these parameters to NULL. We pass our window instance, and finally we NULL the last parameter.</p>
+<p>Notice we include the styles WS_CLIPSIBLINGS and WS_CLIPCHILDREN along with the style of window we've decided to use. WS_CLIPSIBLINGS and WS_CLIPCHILDREN are both REQUIRED for OpenGL to work properly. These styles prevent other windows from drawing over or into our OpenGL Window.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	if (!(hWnd=CreateWindowEx(	dwExStyle,				// Extended Style For The Window
+					"OpenGL",				// Class Name
+					title,					// Window Title
+					WS_CLIPSIBLINGS |			// Required Window Style
+					WS_CLIPCHILDREN |			// Required Window Style
+					dwStyle,				// Selected Window Style
+					0, 0,					// Window Position
+					WindowRect.right-WindowRect.left,	// Calculate Adjusted Window Width
+					WindowRect.bottom-WindowRect.top,	// Calculate Adjusted Window Height
+					NULL,					// No Parent Window
+					NULL,					// No Menu
+					hInstance,				// Instance
+					NULL)))					// Don't Pass Anything To WM_CREATE
+</pre>
+<p>Next we check to see if our window was created properly. If our window was created, hWnd will hold the window handle. If the window wasn't created the code below will pop up an error message and the program will quit.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	{
+		KillGLWindow();							// Reset The Display
+		MessageBox(NULL,"Window Creation Error.","ERROR",MB_OK|MB_ICONEXCLAMATION);
+		return FALSE;							// Return FALSE
+	}
+</pre>
+<p>The next section of code describes a Pixel Format. We choose a format that supports OpenGL and double buffering, along with RGBA (red, green, blue, alpha channel). We try to find a pixel format that matches the bits we decided on (16bit,24bit,32bit). Finally we set up a 16bit Z-Buffer. The remaining parameters are either not used or are not important (aside from the stencil buffer and the (slow) accumulation buffer).</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	static	PIXELFORMATDESCRIPTOR pfd=					// pfd Tells Windows How We Want Things To Be
+	{
+		sizeof(PIXELFORMATDESCRIPTOR),					// Size Of This Pixel Format Descriptor
+		1,								// Version Number
+		PFD_DRAW_TO_WINDOW |						// Format Must Support Window
+		PFD_SUPPORT_OPENGL |						// Format Must Support OpenGL
+		PFD_DOUBLEBUFFER,						// Must Support Double Buffering
+		PFD_TYPE_RGBA,							// Request An RGBA Format
+		bits,								// Select Our Color Depth
+		0, 0, 0, 0, 0, 0,						// Color Bits Ignored
+		0,								// No Alpha Buffer
+		0,								// Shift Bit Ignored
+		0,								// No Accumulation Buffer
+		0, 0, 0, 0,							// Accumulation Bits Ignored
+		16,								// 16Bit Z-Buffer (Depth Buffer)
+		0,								// No Stencil Buffer
+		0,								// No Auxiliary Buffer
+		PFD_MAIN_PLANE,							// Main Drawing Layer
+		0,								// Reserved
+		0, 0, 0								// Layer Masks Ignored
+	};
+</pre>
+<p>If there were no errors while creating the window, we'll attempt to get an OpenGL Device Context. If we can't get a DC an error message will pop onto the screen, and the program will quit (return FALSE).</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	if (!(hDC=GetDC(hWnd)))							// Did We Get A Device Context?
+	{
+		KillGLWindow();							// Reset The Display
+		MessageBox(NULL,"Can't Create A GL Device Context.","ERROR",MB_OK|MB_ICONEXCLAMATION);
+		return FALSE;							// Return FALSE
+	}
+</pre>
+<p>If we managed to get a Device Context for our OpenGL window we'll try to find a pixel format that matches the one we described above. If Windows can't find a matching pixel format, an error message will pop onto the screen and the program will quit (return FALSE).</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	if (!(PixelFormat=ChoosePixelFormat(hDC,&amp;pfd)))				// Did Windows Find A Matching Pixel Format?
+	{
+		KillGLWindow();							// Reset The Display
+		MessageBox(NULL,"Can't Find A Suitable PixelFormat.","ERROR",MB_OK|MB_ICONEXCLAMATION);
+		return FALSE;							// Return FALSE
+	}
+</pre>
+<p>If windows found a matching pixel format we'll try setting the pixel format. If the pixel format cannot be set, an error message will pop up on the screen and the program will quit (return FALSE).</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	if(!SetPixelFormat(hDC,PixelFormat,&amp;pfd))				// Are We Able To Set The Pixel Format?
+	{
+		KillGLWindow();							// Reset The Display
+		MessageBox(NULL,"Can't Set The PixelFormat.","ERROR",MB_OK|MB_ICONEXCLAMATION);
+		return FALSE;							// Return FALSE
+	}
+</pre>
+<p>If the pixel format was set properly we'll try to get a Rendering Context. If we can't get a Rendering Context an error message will be displayed on the screen and the program will quit (return FALSE).</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	if (!(hRC=wglCreateContext(hDC)))					// Are We Able To Get A Rendering Context?
+	{
+		KillGLWindow();							// Reset The Display
+		MessageBox(NULL,"Can't Create A GL Rendering Context.","ERROR",MB_OK|MB_ICONEXCLAMATION);
+		return FALSE;							// Return FALSE
+	}
+</pre>
+<p>If there have been no errors so far, and we've managed to create both a Device Context and a Rendering Context all we have to do now is make the Rendering Context active. If we can't make the Rendering Context active an error message will pop up on the screen and the program will quit (return FALSE).</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	if(!wglMakeCurrent(hDC,hRC))						// Try To Activate The Rendering Context
+	{
+		KillGLWindow();							// Reset The Display
+		MessageBox(NULL,"Can't Activate The GL Rendering Context.","ERROR",MB_OK|MB_ICONEXCLAMATION);
+		return FALSE;							// Return FALSE
+	}
+</pre>
+<p>If everything went smoothly, and our OpenGL window was created we'll show the window, set it to be the foreground window (giving it more priority) and then set the focus to that window. Then we'll call ReSizeGLScene passing the screen width and height to set up our perspective OpenGL screen.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	ShowWindow(hWnd,SW_SHOW);						// Show The Window
+	SetForegroundWindow(hWnd);						// Slightly Higher Priority
+	SetFocus(hWnd);								// Sets Keyboard Focus To The Window
+	ReSizeGLScene(width, height);						// Set Up Our Perspective GL Screen
+</pre>
+<p>Finally we jump to InitGL() where we can set up lighting, textures, and anything else that needs to be setup. You can do your own error checking in InitGL(), and pass back TRUE (everythings OK) or FALSE (somethings not right). For example, if you were loading textures in InitGL() and had an error, you may want the program to stop. If you send back FALSE from InitGL() the lines of code below will see the FALSE as an error message and the program will quit.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	if (!InitGL())								// Initialize Our Newly Created GL Window
+	{
+		KillGLWindow();							// Reset The Display
+		MessageBox(NULL,"Initialization Failed.","ERROR",MB_OK|MB_ICONEXCLAMATION);
+		return FALSE;							// Return FALSE
+	}
+</pre>
+<p>If we've made it this far, it's safe to assume the window creation was successful. We return TRUE to WinMain() telling WinMain() there were no errors. This prevents the program from quitting.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	return TRUE;								// Success
+}
+</pre>
+<p>This is where all the window messages are dealt with. When we registred the Window Class we told it to jump to this section of code to deal with window messages.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">LRESULT CALLBACK WndProc(	HWND	hWnd,					// Handle For This Window
+				UINT	uMsg,					// Message For This Window
+				WPARAM	wParam,					// Additional Message Information
+				LPARAM	lParam)					// Additional Message Information
+{
+</pre>
+<p>The code below sets uMsg as the value that all the case statements will be compared to. uMsg will hold the name of the message we want to deal with.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	switch (uMsg)								// Check For Windows Messages
+	{
+</pre>
+<p>if uMsg is WM_ACTIVATE we check to see if our window is still active. If our window has been minimized the variable active will be FALSE. If our window is active, the variable active will be TRUE.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">		case WM_ACTIVATE:						// Watch For Window Activate Message
+		{
+			if (!HIWORD(wParam))					// Check Minimization State
+			{
+				active=TRUE;					// Program Is Active
+			}
+			else
+			{
+				active=FALSE;					// Program Is No Longer Active
+			}
+
+			return 0;						// Return To The Message Loop
+		}
+</pre>
+<p>If the message is WM_SYSCOMMAND (system command) we'll compare wParam against the case statements. If wParam is SC_SCREENSAVE or SC_MONITORPOWER either a screensaver is trying to start or the monitor is trying to enter power saving mode. By returning 0 we prevent both those things from happening.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">		case WM_SYSCOMMAND:						// Intercept System Commands
+		{
+			switch (wParam)						// Check System Calls
+			{
+				case SC_SCREENSAVE:				// Screensaver Trying To Start?
+				case SC_MONITORPOWER:				// Monitor Trying To Enter Powersave?
+				return 0;					// Prevent From Happening
+			}
+			break;							// Exit
+		}
+</pre>
+<p>If uMsg is WM_CLOSE the window has been closed. We send out a quit message that the main loop will intercept. The variable done will be set to TRUE, the main loop in WinMain() will stop, and the program will close.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">		case WM_CLOSE:							// Did We Receive A Close Message?
+		{
+			PostQuitMessage(0);					// Send A Quit Message
+			return 0;						// Jump Back
+		}
+</pre>
+<p>If a key is being held down we can find out what key it is by reading wParam. I then make that keys cell in the array keys[ ] become TRUE. That way I can read the array later on and find out which keys are being held down. This allows more than one key to be pressed at the same time.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">		case WM_KEYDOWN:						// Is A Key Being Held Down?
+		{
+			keys[wParam] = TRUE;					// If So, Mark It As TRUE
+			return 0;						// Jump Back
+		}
+</pre>
+<p>If a key has been released we find out which key it was by reading wParam. We then make that keys cell in the array keys[] equal FALSE. That way when I read the cell for that key I'll know if it's still being held down or if it's been released. Each key on the keyboard can be represented by a number from 0-255. When I press the key that represents the number 40 for example, keys[40] will become TRUE. When I let go, it will become FALSE. This is how we use cells to store keypresses.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">		case WM_KEYUP:							// Has A Key Been Released?
+		{
+			keys[wParam] = FALSE;					// If So, Mark It As FALSE
+			return 0;						// Jump Back
+		}
+</pre>
+<p>Whenever we resize our window uMsg will eventually become the message WM_SIZE. We read the LOWORD and HIWORD values of lParam to find out the windows new width and height. We pass the new width and height to ReSizeGLScene(). The OpenGL Scene is then resized to the new width and height.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">		case WM_SIZE:							// Resize The OpenGL Window
+		{
+			ReSizeGLScene(LOWORD(lParam),HIWORD(lParam));		// LoWord=Width, HiWord=Height
+			return 0;						// Jump Back
+		}
+	}
+</pre>
+<p>Any messages that we don't care about will be passed to DefWindowProc so that Windows can deal with them.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	// Pass All Unhandled Messages To DefWindowProc
+	return DefWindowProc(hWnd,uMsg,wParam,lParam);
+}
+</pre>
+<p>This is the entry point of our Windows Application. This is where we call our window creation routine, deal with window messages, and watch for human interaction.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">int WINAPI WinMain(	HINSTANCE	hInstance,				// Instance
+			HINSTANCE	hPrevInstance,				// Previous Instance
+			LPSTR		lpCmdLine,				// Command Line Parameters
+			int		nCmdShow)				// Window Show State
+{
+</pre>
+<p>We set up two variables. msg will be used to check if there are any waiting messages that need to be dealt with. the variable done starts out being FALSE. This means our program is not done running. As long as done remains FALSE, the program will continue to run. As soon as done is changed from FALSE to TRUE, our program will quit.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	MSG	msg;								// Windows Message Structure
+	BOOL	done=FALSE;							// Bool Variable To Exit Loop
+</pre>
+<p>This section of code is completely optional. It pops up a messagebox that asks if you would like to run the program in fullscreen mode. If the user clicks on the NO button, the variable fullscreen changes from TRUE (it's default) to FALSE and the program runs in windowed mode instead of fullscreen mode.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	// Ask The User Which Screen Mode They Prefer
+	if (MessageBox(NULL,"Would You Like To Run In Fullscreen Mode?", "Start FullScreen?",MB_YESNO|MB_ICONQUESTION)==IDNO)
+	{
+		fullscreen=FALSE;						// Windowed Mode
+	}
+</pre>
+<p>This is how we create our OpenGL window. We pass the title, the width, the height, the color depth, and TRUE (fullscreen) or FALSE (window mode) to CreateGLWindow. That's it! I'm pretty happy with the simplicity of this code. If the window was not created for some reason, FALSE will be returned and our program will immediately quit (return 0).</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	// Create Our OpenGL Window
+	if (!CreateGLWindow("NeHe's OpenGL Framework",640,480,16,fullscreen))
+	{
+		return 0;							// Quit If Window Was Not Created
+	}
+</pre>
+<p>This is the start of our loop. As long as done equals FALSE the loop will keep repeating.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	while(!done)								// Loop That Runs Until done=TRUE
+	{
+</pre>
+<p>The first thing we have to do is check to see if any window messages are waiting. By using PeekMessage() we can check for messages without halting our program. A lot of programs use GetMessage(). It works fine, but with GetMessage() your program doesn't do anything until it receives a paint message or some other window message.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">		if (PeekMessage(&amp;msg,NULL,0,0,PM_REMOVE))			// Is There A Message Waiting?
+		{
+</pre>
+<p>In the next section of code we check to see if a quit message was issued. If the current message is a WM_QUIT message caused by PostQuitMessage(0) the variable done is set to TRUE, causing the program to quit.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">			if (msg.message==WM_QUIT)				// Have We Received A Quit Message?
+			{
+				done=TRUE;					// If So done=TRUE
+			}
+			else							// If Not, Deal With Window Messages
+			{
+</pre>
+<p>If the message isn't a quit message we translate the message then dispatch the message so that WndProc() or Windows can deal with it.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">				TranslateMessage(&amp;msg);				// Translate The Message
+				DispatchMessage(&amp;msg);				// Dispatch The Message
+			}
+		}
+		else								// If There Are No Messages
+		{
+</pre>
+<p>If there were no messages we'll draw our OpenGL scene. The first line of code below checks to see if the window is active. If the ESC key is pressed the variable done is set to TRUE, causing the program to quit.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">			// Draw The Scene.  Watch For ESC Key And Quit Messages From DrawGLScene()
+			if (active)						// Program Active?
+			{
+				if (keys[VK_ESCAPE])				// Was ESC Pressed?
+				{
+					done=TRUE;				// ESC Signalled A Quit
+				}
+				else						// Not Time To Quit, Update Screen
+				{
+</pre>
+<p>If the program is active and esc was not pressed we render the scene and swap the buffer (By using double buffering we get smooth flicker free animation). By using double buffering, we are drawing everything to a hidden screen that we can not see. When we swap the buffer, the screen we see becomes the hidden screen, and the screen that was hidden becomes visible. This way we don't see our scene being drawn out. It just instantly appears.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">					DrawGLScene();				// Draw The Scene
+					SwapBuffers(hDC);			// Swap Buffers (Double Buffering)
+				}
+			}
+</pre>
+<p>The next bit of code is new and has been added just recently (05-01-00). It allows us to press the F1 key to switch from fullscreen mode to windowed mode or windowed mode to fullscreen mode.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">			if (keys[VK_F1])					// Is F1 Being Pressed?
+			{
+				keys[VK_F1]=FALSE;				// If So Make Key FALSE
+				KillGLWindow();					// Kill Our Current Window
+				fullscreen=!fullscreen;				// Toggle Fullscreen / Windowed Mode
+				// Recreate Our OpenGL Window
+				if (!CreateGLWindow("NeHe's OpenGL Framework",640,480,16,fullscreen))
+				{
+					return 0;				// Quit If Window Was Not Created
+				}
+			}
+		}
+	}
+</pre>
+<p>If the done variable is no longer FALSE, the program quits. We kill the OpenGL window properly so that everything is freed up, and we exit the program.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	// Shutdown
+	KillGLWindow();								// Kill The Window
+	return (msg.wParam);							// Exit The Program
+}
+</pre>
+<p>In this tutorial I have tried to explain in as much detail, every step involved in setting up, and creating a fullscreen OpenGL program of your own, that will exit when the ESC key is pressed and monitor if the window is active or not. I've spent roughly 2 weeks writing the code, one week fixing bugs &amp; talking with programming gurus, and 2 days (roughly 22 hours writing this HTML file). If you have comments or questions please email me. If you feel I have incorrectly commented something or that the code could be done better in some sections, please let me know. I want to make the best OpenGL tutorials I can and I'm interested in hearing your feedback.</p>
+<p><strong>Jeff Molofee</strong> (<strong>NeHe</strong>)</p>
+<p>* DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/vc/lesson01.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/vc/lesson01.zip'" tppabs="http://nehe.gamedev.net/data/lessons/vc/lesson01.zip">Visual C++</a> Code For This Lesson.</p>
+<p>* DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/asm/lesson01.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/asm/lesson01.zip'" tppabs="http://nehe.gamedev.net/data/lessons/asm/lesson01.zip">ASM</a> Code For This Lesson. ( Conversion by Foolman )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/bcb6/lesson01_bcb6.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/bcb6/lesson01_bcb6.zip'" tppabs="http://nehe.gamedev.net/data/lessons/bcb6/lesson01_bcb6.zip">Borland C++ Builder 6</a> Code For This Lesson. ( Conversion by Christian Kindahl )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/beos/lesson01.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/beos/lesson01.zip'" tppabs="http://nehe.gamedev.net/data/lessons/beos/lesson01.zip">BeOS</a> Code For This Lesson. ( Conversion by Rene Manqueros )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/c_sharp/lesson01.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/c_sharp/lesson01.zip'" tppabs="http://nehe.gamedev.net/data/lessons/c_sharp/lesson01.zip">C#</a> Code For This Lesson. ( Conversion by Joachim Rohde )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/csgl/lesson01.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/csgl/lesson01.zip'" tppabs="http://nehe.gamedev.net/data/lessons/csgl/lesson01.zip">VB.Net CsGL</a> Code For This Lesson. ( Conversion by X )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/cwarrior/lesson01.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/cwarrior/lesson01.zip'" tppabs="http://nehe.gamedev.net/data/lessons/cwarrior/lesson01.zip">Code Warrior 5.3</a> Code For This Lesson. ( Conversion by Scott Lupton )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/cygwin/lesson01.tar.gz  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/cygwin/lesson01.tar.gz'" tppabs="http://nehe.gamedev.net/data/lessons/cygwin/lesson01.tar.gz">Cygwin</a> Code For This Lesson. ( Conversion by Stephan Ferraro )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/d/lesson01.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/d/lesson01.zip'" tppabs="http://nehe.gamedev.net/data/lessons/d/lesson01.zip">D Language</a> Code For This Lesson. ( Conversion by Familia Pineda Garcia )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/delphi/lesson01.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/delphi/lesson01.zip'" tppabs="http://nehe.gamedev.net/data/lessons/delphi/lesson01.zip">Delphi</a> Code For This Lesson. ( Conversion by Michal Tucek )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/devc/lesson01.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/devc/lesson01.zip'" tppabs="http://nehe.gamedev.net/data/lessons/devc/lesson01.zip">Dev C++</a> Code For This Lesson. ( Conversion by Dan )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/gameglut/lesson01.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/gameglut/lesson01.zip'" tppabs="http://nehe.gamedev.net/data/lessons/gameglut/lesson01.zip">Game GLUT</a> Code For This Lesson. ( Conversion by Milikas Anastasios )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/irix/lesson01.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/irix/lesson01.zip'" tppabs="http://nehe.gamedev.net/data/lessons/irix/lesson01.zip">Irix</a> Code For This Lesson. ( Conversion by Lakmal Gunasekara )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/java/lesson01.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/java/lesson01.zip'" tppabs="http://nehe.gamedev.net/data/lessons/java/lesson01.zip">Java</a> Code For This Lesson. ( Conversion by Jeff Kirby )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/java_swt/lesson01.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/java_swt/lesson01.zip'" tppabs="http://nehe.gamedev.net/data/lessons/java_swt/lesson01.zip">Java/SWT</a> Code For This Lesson. ( Conversion by Victor Gonzalez )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/jogl/lesson01.jar  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/jogl/lesson01.jar'" tppabs="http://nehe.gamedev.net/data/lessons/jogl/lesson01.jar">JoGL</a> Code For This Lesson. ( Conversion by Kevin J. Duling )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/lccwin32/lccwin32_lesson01.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/lccwin32/lccwin32_lesson01.zip'" tppabs="http://nehe.gamedev.net/data/lessons/lccwin32/lccwin32_lesson01.zip">LCC Win32</a> Code For This Lesson. ( Conversion by Robert Wishlaw )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/linux/lesson01.tar.gz  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/linux/lesson01.tar.gz'" tppabs="http://nehe.gamedev.net/data/lessons/linux/lesson01.tar.gz">Linux</a> Code For This Lesson. ( Conversion by Richard Campbell )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/linuxglx/lesson01.tar.gz  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/linuxglx/lesson01.tar.gz'" tppabs="http://nehe.gamedev.net/data/lessons/linuxglx/lesson01.tar.gz">Linux/GLX</a> Code For This Lesson. ( Conversion by Mihael Vrbanec )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/linuxsdl/lesson01.tar.gz  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/linuxsdl/lesson01.tar.gz'" tppabs="http://nehe.gamedev.net/data/lessons/linuxsdl/lesson01.tar.gz">Linux/SDL</a> Code For This Lesson. ( Conversion by Ti Leggett )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/lwjgl/lesson01.jar  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/lwjgl/lesson01.jar'" tppabs="http://nehe.gamedev.net/data/lessons/lwjgl/lesson01.jar">LWJGL</a> Code For This Lesson. ( Conversion by Mark Bernard )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev.net/data/lessons/mac/lesson01.sit  \n\nThis file was not retrieved by Teleport Pro, because the server reports that this file cannot be found.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev.net/data/lessons/mac/lesson01.sit'" tppabs="http://nehe.gamedev.net/data/lessons/mac/lesson01.sit">Mac OS</a> Code For This Lesson. ( Conversion by Anthony Parker )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/macosxcocoa/lesson01.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/macosxcocoa/lesson01.zip'" tppabs="http://nehe.gamedev.net/data/lessons/macosxcocoa/lesson01.zip">Mac OS X/Cocoa</a> Code For This Lesson. ( Conversion by Bryan Blackburn )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/m/data/lessons/asm/lesson01.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/m/data/lessons/asm/lesson01.zip'" tppabs="http://nehe.gamedev.net/data/lessons/m/data/lessons/asm/lesson01.zip">MASM</a> Code For This Lesson. ( Conversion by Nico (Scalp) )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/pbasic/lesson01.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/pbasic/lesson01.zip'" tppabs="http://nehe.gamedev.net/data/lessons/pbasic/lesson01.zip">Power Basic</a> Code For This Lesson. ( Conversion by Angus Law )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/pelles_c/lesson01.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/pelles_c/lesson01.zip'" tppabs="http://nehe.gamedev.net/data/lessons/pelles_c/lesson01.zip">Pelles C</a> Code For This Lesson. ( Conversion by Pelle Orinius )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/perl/lesson01.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/perl/lesson01.zip'" tppabs="http://nehe.gamedev.net/data/lessons/perl/lesson01.zip">Perl</a> Code For This Lesson. ( Conversion by Cora Hussey )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/python/lesson01.tar.gz  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/python/lesson01.tar.gz'" tppabs="http://nehe.gamedev.net/data/lessons/python/lesson01.tar.gz">Python</a> Code For This Lesson. ( Conversion by John Ferguson )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/scheme/lesson01.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/scheme/lesson01.zip'" tppabs="http://nehe.gamedev.net/data/lessons/scheme/lesson01.zip">Scheme</a> Code For This Lesson. ( Conversion by Jon DuBois )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/solaris/lesson01.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/solaris/lesson01.zip'" tppabs="http://nehe.gamedev.net/data/lessons/solaris/lesson01.zip">Solaris</a> Code For This Lesson. ( Conversion by Lakmal Gunasekara )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/vb/lesson01.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/vb/lesson01.zip'" tppabs="http://nehe.gamedev.net/data/lessons/vb/lesson01.zip">Visual Basic</a> Code For This Lesson. ( Conversion by Ross Dawson )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/vfortran/lesson01.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/vfortran/lesson01.zip'" tppabs="http://nehe.gamedev.net/data/lessons/vfortran/lesson01.zip">Visual Fortran</a> Code For This Lesson. ( Conversion by Jean-Philippe Perois )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/vs_net/lesson01.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/vs_net/lesson01.zip'" tppabs="http://nehe.gamedev.net/data/lessons/vs_net/lesson01.zip">Visual Studio .NET</a> Code For This Lesson. ( Conversion by Grant James )</p>
+<p>&nbsp;</p>
+<p>&nbsp;<strong><span><a href="index-32.htm" tppabs="http://nehe.gamedev.net/data/lessons/lesson.asp?lesson=02">Lesson 02 &gt;</a></span></strong></p>
+
+
+</div>
+</div>
+
+
+
+            <div style="width:728px;padding:0px;margin:auto; margin-top: 10px;">
+            
+
+    
+                <!-- Leaderboard_NeHe -->
+                <div id='div-gpt-ad-1327940144417-0' style='width:728px; height:90px;'>
+                <script type='text/javascript'>
+                googletag.cmd.push(function() { googletag.display('div-gpt-ad-1327940144417-0'); });
+                </script>
+                </div>
+            
+
+                           
+            </div>   
+        </td>
+        <td class="col2">
+            
+
+
+
+
+<div style="text-align: center; padding:10px;">
+
+<script type='text/javascript'>
+    GA_googleFillSlot("Skyscraper_NeHe");
+</script>
+
+</div>
+            
+        </td>
+    </table>
+    <div id="footer">
+        <p>
+            
+    
+    © 1997-2012 Gamedev . All rights reserved.<br/>
+
+			NeHe™ and NeHe Productions™ are trademarks of GameDev.net, LLC<br/>
+			OpenGL® is a registered trademark of Silicon Graphics Inc.<br/>
+		</p>        
+		<br/>
+    </div>
+
+    
+    
+	    <script type="text/javascript" src="shCore.js" tppabs="http://nehe.gamedev.net/static/js/syntax_highlighter/shCore.js"></script>
+        <script type="text/javascript" src="shBrushCpp.js" tppabs="http://nehe.gamedev.net/static/js/syntax_highlighter/shBrushCpp.js"></script>
+	    <script type="text/javascript" src="shBrushJScript.js" tppabs="http://nehe.gamedev.net/static/js/syntax_highlighter/shBrushJScript.js"></script>
+	    <script type="text/javascript">SyntaxHighlighter.all();</script>
+    
+
+    <!-- Place this render call where appropriate -->
+    <script type="text/javascript">
+      (function() {
+        var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+        po.src = 'plusone.js'/*tpa=https://apis.google.com/js/plusone.js*/;
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+      })();
+    </script>    
+
+    
+<!-- GoogleAnalytics code -->
+<script src="urchin.js" tppabs="http://www.google-analytics.com/urchin.js" type="text/javascript">
+</script>
+<script type="text/javascript">
+_uacct = "UA-279474-2"; // Gamedev
+urchinTracker();
+_uff = 0; // Reset for second account
+_uacct = "UA-24180731-1"; // Non-GD
+urchinTracker();
+</script> 
+  </body>
+</html>

@@ -1,0 +1,119 @@
+#!/bin/bash
+max_x=40
+max_y=40
+hx=20 hy=20
+tx=20 ty=20
+len=1
+cur_len=0
+need_food=1
+level0=0.1
+level1=0.05
+level2=0.025
+ 
+direct=u
+input(){
+  echo -ne "\033[?25l"
+  local aKey=(0 0 0 0)
+  local cESC=`echo -ne "\033"`
+  local index
+  while :
+  do
+    read -s -n 1 key
+    aKey=( "${aKey[@]:1}" "$key")
+    if [[ $key${aKey[2]} = $cESC$cESC ]] ; then kill -29 $1; break
+    elif [[ "${aKey[@]:1:2}$key" = "${cESC} [A" ]] ; then kill -25 $1 ## direct=u
+    elif [[ "${aKey[@]:1:2}$key" = "${cESC} [B" ]] ; then kill -26 $1 ## direct=d
+    elif [[ "${aKey[@]:1:2}$key" = "${cESC} [C" ]] ; then kill -27 $1 ## direct=r
+    elif [[ "${aKey[@]:1:2}$key" = "${cESC} [D" ]] ; then kill -28 $1 ## direct=l
+    else continue
+    fi
+  done
+  echo -ne "\033[?25h"
+}
+draw_head(){
+   tput cup $2 $(( $1<<1 ))
+   echo -ne "\033[1;47m  \033[m"
+}
+draw_tail(){
+   tput cup $2 $(( $1<<1 ))
+   echo -ne "\033[1;40m  \033[m"
+}
+run(){
+  trap '[[ $direct != d ]] && direct=u' 25
+  trap '[[ $direct != u ]] && direct=d' 26
+  trap '[[ $direct != l ]] && direct=r' 27
+  trap '[[ $direct != r ]] && direct=l' 28
+  trap 'exit' 29
+ 
+  while :
+  do
+    eval "[[ \"\$m${hx}_${hy}\" = f ]] && (( ++len )) && need_food=1"
+    draw_head $hx $hy
+    eval m${hx}_${hy}=$direct
+    case $direct in
+      u) (( --hy )); (( hy < 0 )) && break ;;
+      d) (( ++hy )); (( hy > max_y )) && break  ;;
+      r) (( ++hx )); (( hx > max_x )) && break ;;
+      l) (( --hx )); (( hx < 0 )) && break ;;
+    esac
+    eval "[ -n \"\${m${hx}_${hy}}\" -a ! \"\${m${hx}_${hy}}\" = f ] && break"
+    (( ++cur_len ))
+    if (( len < cur_len )) ; then
+      (( --cur_len ))
+      eval local d=\$m${tx}_${ty}
+      draw_tail $tx $ty
+      unset m${tx}_${ty}
+      case $d in
+        u) (( --ty ));;
+        d) (( ++ty ));;
+        r) (( ++tx ));;
+        l) (( --tx ));;
+      esac
+    fi
+    if [ $need_food = 1 ] ; then
+      draw_food && need_food=0
+    fi
+    sleep $level1
+  done
+  kill $1
+}
+draw_food(){
+ local fx=$(( $RANDOM % max_x + 1 ))
+ local fy=$(( $RANDOM % max_y + 1 ))
+ eval local f=\$m${fx}_${fy}
+ if [[ -z $f ]] ; then
+    tput cup $fy $(( $fx<<1 ))
+    eval m${fx}_${fy}=f
+    echo -ne "\033[1;45m  \033[m"
+    return 0
+ fi
+ return 1
+}
+draw_wall(){
+  for (( i=0; i<=max_x; i++ ))
+  do
+    tput cup 0 $(( $i<<1 ))
+    eval m${i}_0=w
+    echo -ne "\033[1;46m  \033[m"
+  done
+ 
+  for (( i=0; i<=max_x; i++ ))
+  do
+    eval m${i}_$max_y=w
+    tput cup $max_y $(( $i<<1 ))
+    echo -ne "\033[1;46m  \033[m"
+  done
+ 
+  for (( j=0; j<=max_y; j++ ))
+  do
+    tput cup $j 0
+    echo -ne "\033[1;46m  \033[m"
+    tput cup $j $(( max_x<<1 ))
+    echo -ne "\033[1;46m  \033[m"
+    eval m0_$j=w m${max_x}_$j=w
+  done
+}
+clear
+draw_wall
+run $$&
+input $!

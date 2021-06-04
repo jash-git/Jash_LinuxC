@@ -1,0 +1,302 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<!-- 这篇文章由Dancingwind翻译，作者的联系方式zhouwei02@mails.tsinghua.edu.cn --><html>
+
+<head>
+<title>NeHe OpenGL教程第十六课，DancingWind翻译</title>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<style type="text/css">A:link {
+	COLOR: #ccaaff; TEXT-DECORATION: none
+}
+A:visited {
+	COLOR: #ccaaff; TEXT-DECORATION: none
+}
+A:active {
+	COLOR: #ccaaff; TEXT-DECORATION: none
+}
+A:hover {
+	COLOR: #ffccaa; TEXT-DECORATION: none
+}
+</style>
+<meta content="Microsoft FrontPage 3.0" name="GENERATOR">
+</head>
+
+<body bgColor="#000000" text="#ffffff">
+<BR>
+<table border="0" cellPadding="0" cellSpacing="0" width="100%">
+<TBODY>
+  <tr>
+    <td height="130" width="326"><img height="130" src="logo.png" tppabs="http://www.owlei.com/DancingWind/Pic/logo.png" width="326"></td>
+      <td align="middle" vAlign="center" width="75%"><div align="center"><font color="#ffccaa" size="+3"><b><i>第16课</i></b></font></div></td>
+  </tr>
+</TBODY>
+</table>
+<!-- 上边框-->
+<table border="0" cellPadding="0" cellSpacing="0" width="100%">
+<TBODY>
+  <tr>
+    <td><img height="28" src="tl.jpg" tppabs="http://www.owlei.com/DancingWind/Pic/tl.jpg" width="28"></td>
+    <td width="100%"><img height="28" src="tc.gif" tppabs="http://www.owlei.com/DancingWind/Pic/tc.gif" width="100%"></td>
+    <td><img height="28" src="tr.gif" tppabs="http://www.owlei.com/DancingWind/Pic/tr.gif" width="28"></td>
+  </tr>
+</TBODY>
+</table>
+
+<!-- 中部-->
+<table border="0" cellPadding="0" cellSpacing="0" width="100%">
+<TBODY>
+  <tr>
+  	<!-- 中部左边框-->
+    <td  background="l.gif" tppabs="http://www.owlei.com/DancingWind/Pic/l.gif"><img src="l.gif" tppabs="http://www.owlei.com/DancingWind/Pic/l.gif" width="28" height="28"></td>
+	<!-- 中部文字部分-->
+    <td vAlign="top" width="100%">
+	<table width="100%" border="0">
+          <tr>
+            <td width="29%"><img src="lesson16.jpg" tppabs="http://www.owlei.com/DancingWind/Pic/lesson16.jpg" width="240" height="180"></td>
+            <td width="71%"><p><FONT class=head>雾:</FONT></p>
+              <p><font size="3">这一课是基于第7课的代码的，你将学会三种不同的雾的计算方法，以及怎样设置雾的颜色和雾的范围。</FONT></p></td>
+          </tr>
+     </table>
+      </td>
+	<!-- 中部右边框-->
+    <td background="r.gif" tppabs="http://www.owlei.com/DancingWind/Pic/r.gif"><img src="r.gif" tppabs="http://www.owlei.com/DancingWind/Pic/r.gif" width="28" height="28"></td>
+  </tr>
+</TBODY>
+</table>
+
+<!-- 下边框-->
+<table border="0" cellPadding="0" cellSpacing="0" width="100%">
+<TBODY>
+  <tr>
+    <td><img height="28" src="bl.gif" tppabs="http://www.owlei.com/DancingWind/Pic/bl.gif" width="28"></td>
+    <td width="100%"><img height="28" src="bc.gif" tppabs="http://www.owlei.com/DancingWind/Pic/bc.gif" width="100%"></td>
+    <td><img height="28" src="br.gif" tppabs="http://www.owlei.com/DancingWind/Pic/br.gif" width="28"></td>
+  </tr>
+</TBODY>
+</table>
+<table border="0" cellPadding="0" cellSpacing="0" width="100%">
+<TBODY>
+  <tr>
+    <td><img height="28" src="tl.jpg" tppabs="http://www.owlei.com/DancingWind/Pic/tl.jpg" width="28"></td>
+    <td width="100%"><img height="28" src="tc.gif" tppabs="http://www.owlei.com/DancingWind/Pic/tc.gif" width="100%"></td>
+    <td><img height="28" src="tr.gif" tppabs="http://www.owlei.com/DancingWind/Pic/tr.gif" width="28"></td>
+  </tr>
+</TBODY>
+</table>
+
+<table border="0" cellPadding="0" cellSpacing="0" width="100%">
+<TBODY>
+  <tr>
+    <td background="l.gif" tppabs="http://www.owlei.com/DancingWind/Pic/l.gif"><img src="l.gif" tppabs="http://www.owlei.com/DancingWind/Pic/l.gif" width="28" height="28"></td>
+      <td vAlign="top" width="100%">这篇教程由Chris Aliotta编写。
+        <p>你想给你的OpenGL程序添加雾效?我将在这篇教程中教你如何去做。这是我第一次写教程，我也只是OpenGL/C++编程的新手，所以如果你发现了什么错误请告诉我而不是叱责我。本课的代码基于第七课的代码编写。</p>
+        <p>Data Setup:</p>
+        <p>我们将从设置保存雾的信息的变量开始。变量fogMode用来保存三种类型的雾:GL_EXP,GL_EXP2和GL_LINEAR。我将在稍后解释这三种类型的区别。这些变量位于程序开头GLuint 
+          texture[3]这行后。变量fogfilter将用来表示我们使用的是哪种雾类型。变量fogColor保存雾的颜色。在程序的顶部我还加了一个布尔类型的变量gp用来记录'g'键是否被按下。<br>
+        </p></td>
+    <td background="r.gif" tppabs="http://www.owlei.com/DancingWind/Pic/r.gif"><img src="r.gif" tppabs="http://www.owlei.com/DancingWind/Pic/r.gif" width="28" height="28"></td>
+  </tr>
+</TBODY>
+</table>
+
+<table border="0" cellPadding="0" cellSpacing="0" width="100%">
+<TBODY>
+  <tr>
+    <td><img height="28" src="bl.gif" tppabs="http://www.owlei.com/DancingWind/Pic/bl.gif" width="28"></td>
+    <td width="100%"><img height="28" src="bc.gif" tppabs="http://www.owlei.com/DancingWind/Pic/bc.gif" width="100%"></td>
+    <td><img height="28" src="br.gif" tppabs="http://www.owlei.com/DancingWind/Pic/br.gif" width="28"></td>
+  </tr>
+</TBODY>
+</table>
+<font color="#aaffaa" size="3">
+
+<pre>bool   gp;						<font color="#ffffaa">// G健是否按下</font>
+GLuint filter;						<font
+color="#ffffaa">// 使用哪一个纹理过滤器</font>
+GLuint fogMode[]= { GL_EXP, GL_EXP2, GL_LINEAR };	<font
+color="#ffffaa">	// 雾气的模式</font>
+GLuint fogfilter= 0;					<font
+color="#ffffaa">// 使用哪一种雾气</font>
+GLfloat fogColor[4]= {0.5f, 0.5f, 0.5f, 1.0f};		<font
+color="#ffffaa">// 雾的颜色设为白色</font>
+</pre>
+</font>
+
+<table border="0" cellPadding="0" cellSpacing="0" width="100%">
+<TBODY>
+  <tr>
+    <td><img height="28" src="tl.jpg" tppabs="http://www.owlei.com/DancingWind/Pic/tl.jpg" width="28"></td>
+    <td width="100%"><img height="28" src="tc.gif" tppabs="http://www.owlei.com/DancingWind/Pic/tc.gif" width="100%"></td>
+    <td><img height="28" src="tr.gif" tppabs="http://www.owlei.com/DancingWind/Pic/tr.gif" width="28"></td>
+  </tr>
+</TBODY>
+</table>
+
+<table border="0" cellPadding="0" cellSpacing="0" width="100%">
+<TBODY>
+  <tr>
+    <td background="l.gif" tppabs="http://www.owlei.com/DancingWind/Pic/l.gif"><img src="l.gif" tppabs="http://www.owlei.com/DancingWind/Pic/l.gif" width="28" height="28"></td>
+      <td vAlign="top" width="100%">现在我们已经设置了变量，接下来我们来看InitGL函数。为了获得更好的效果，glClearColor()这行已经被修改为将屏幕清为同雾相同的颜色。使用雾效只需很少的代码。总之你将发现这很容易。</td>
+    <td background="r.gif" tppabs="http://www.owlei.com/DancingWind/Pic/r.gif"><img src="r.gif" tppabs="http://www.owlei.com/DancingWind/Pic/r.gif" width="28" height="28"></td>
+  </tr>
+</TBODY>
+</table>
+
+<table border="0" cellPadding="0" cellSpacing="0" width="100%">
+<TBODY>
+  <tr>
+    <td><img height="28" src="bl.gif" tppabs="http://www.owlei.com/DancingWind/Pic/bl.gif" width="28"></td>
+    <td width="100%"><img height="28" src="bc.gif" tppabs="http://www.owlei.com/DancingWind/Pic/bc.gif" width="100%"></td>
+    <td><img height="28" src="br.gif" tppabs="http://www.owlei.com/DancingWind/Pic/br.gif" width="28"></td>
+  </tr>
+</TBODY>
+</table>
+<font color="#aaffaa" size="3">
+
+<pre>glClearColor(0.5f,0.5f,0.5f,1.0f);			<font color="#ffffaa">// 设置背景的颜色为雾气的颜色</font>
+
+glFogi(GL_FOG_MODE, fogMode[fogfilter]);		<font
+color="#ffffaa">// 设置雾气的模式</font>
+glFogfv(GL_FOG_COLOR, fogColor);			<font color="#ffffaa">// 设置雾的颜色</font>
+glFogf(GL_FOG_DENSITY, 0.35f);			<font
+color="#ffffaa">// 设置雾的密度</font>
+glHint(GL_FOG_HINT, GL_DONT_CARE);			<font
+color="#ffffaa">// 设置系统如何计算雾气</font>
+glFogf(GL_FOG_START, 1.0f);				<font
+color="#ffffaa">// 雾气的开始位置</font>
+glFogf(GL_FOG_END, 5.0f);				<font
+color="#ffffaa">// 雾气的结束位置</font>
+glEnable(GL_FOG);					<font color="#ffffaa">// 使用雾气</font></pre>
+</font>
+
+<table border="0" cellPadding="0" cellSpacing="0" width="100%">
+<TBODY>
+  <tr>
+    <td><img height="28" src="tl.jpg" tppabs="http://www.owlei.com/DancingWind/Pic/tl.jpg" width="28"></td>
+    <td width="100%"><img height="28" src="tc.gif" tppabs="http://www.owlei.com/DancingWind/Pic/tc.gif" width="100%"></td>
+    <td><img height="28" src="tr.gif" tppabs="http://www.owlei.com/DancingWind/Pic/tr.gif" width="28"></td>
+  </tr>
+</TBODY>
+</table>
+
+<table border="0" cellPadding="0" cellSpacing="0" width="100%">
+<TBODY>
+  <tr>
+    <td background="l.gif" tppabs="http://www.owlei.com/DancingWind/Pic/l.gif"><img src="l.gif" tppabs="http://www.owlei.com/DancingWind/Pic/l.gif" width="28" height="28"></td>
+      <td vAlign="top" width="100%"><p><font face="arial">让我们先看看这段代码的头三行。第一行glEnable(GL_FOG);(?这应该是最后一行)不用再解释了吧，主要是初始化雾效。</font> 
+        <p>第二行glFogi(GL_FOG_MODE, fogMode[fogfilter]);建立雾的过滤模式。之前我们声明了数组fogMode，它保存了值GL_EXP, 
+          GL_EXP2, and GL_LINEAR。现在是使用他们的时候了。我来解释它们（具体见红皮书，其实这是计算雾效混合因子的三种方式）：<br>
+          GL_EXP - 充满整个屏幕的基本渲染的雾。它能在较老的PC上工作，因此并不是特别像雾。 <br>
+          GL_EXP2 - 比GL_EXP更进一步。它也是充满整个屏幕，但它使屏幕看起来更有深度。 <br>
+          GL_LINEAR - 最好的渲染模式。物体淡入淡出的效果更自然。</p>
+        <p>第三行glFogfv(GL_FOG_COLOR, fogcolor);设置雾的颜色。之前我们已将变量fogcolor设为(0.5f,0.5f,0.5f,1.0f)，这是一个很棒的灰色。</p>
+        <p>接下来我们看看最后的四行。glFogf(GL_FOG_DENSITY, 0.35f);这行设置雾的密度。增加数字会让雾更密，减少它则雾更稀。</p>
+        <p>glHint (GL_FOG_HINT, GL_DONT_CARE); 设置修正。我使用了GL_DONT_CARE因为我不关心它的值。</p>
+        <p>Eric Desrosiers Adds:关于glHint(GL_FOG_HINT, hintval);的解释</p>
+        <p>gl_dont_care - 由OpenGL决定使用何种雾效（对每个顶点还是每个像素执行雾效计算）和一个未知的公式（?）<br>
+          gl_nicest - 对每个像素执行雾效计算（效果好）<br>
+          gl_fastest - 对每个顶点执行雾效计算 （更快，但效果不如上面的好）</p>
+        <p>下一行glFogf(GL_FOG_START, 1.0f);设定雾效距屏幕多近开始。你可以根据你的需要随意改变这个值。下一行类似，glFogf(GL_FOG_END, 
+          5.0f);告诉OpenGL程序雾效持续到距屏幕多远。</p>
+        <p>现在我们建立了绘制雾的代码，我们将加入键盘指令在不同的雾效模式间循环。这段代码及其它的按键处理代码在程序的最后。<br>
+        </p></td>
+    <td background="r.gif" tppabs="http://www.owlei.com/DancingWind/Pic/r.gif"><img src="r.gif" tppabs="http://www.owlei.com/DancingWind/Pic/r.gif" width="28" height="28"></td>
+  </tr>
+</TBODY>
+</table>
+
+<table border="0" cellPadding="0" cellSpacing="0" width="100%">
+<TBODY>
+  <tr>
+    <td><img height="28" src="bl.gif" tppabs="http://www.owlei.com/DancingWind/Pic/bl.gif" width="28"></td>
+    <td width="100%"><img height="28" src="bc.gif" tppabs="http://www.owlei.com/DancingWind/Pic/bc.gif" width="100%"></td>
+    <td><img height="28" src="br.gif" tppabs="http://www.owlei.com/DancingWind/Pic/br.gif" width="28"></td>
+  </tr>
+</TBODY>
+</table>
+<font color="#aaffaa" size="3"> 
+<pre>if (keys['G'] &amp;&amp; !gp)					<font color="#ffffaa">// G键是否 按下</font>
+{
+	gp=TRUE;						<font
+color="#ffffaa">// 是<font color="#aaffaa"></font></font>
+	fogfilter+=1;					<font color="#ffffaa">// 变换雾气模式</font>
+	if (fogfilter&gt;2)					<font
+color="#ffffaa">// 模式是否大</font><font color="#aaffaa" size="3"><font
+color="#ffffaa">于</font></font><font
+color="#ffffaa">2</font>
+	{
+		fogfilter=0;				<font
+color="#ffffaa">// 置零</font>
+	}
+	glFogi (GL_FOG_MODE, fogMode[fogfilter]);	<font
+color="#ffffaa">	// 设置雾气模式</font>
+}
+if (!keys['G'])						<font color="#ffffaa">// G键是否释放</font>
+{
+	gp=FALSE;						<font
+color="#ffffaa">// 是，设置为释放</font>
+}
+</pre>
+</font> 
+<table border="0" cellPadding="0" cellSpacing="0" width="100%">
+<TBODY>
+  <tr>
+    <td><img height="28" src="tl.jpg" tppabs="http://www.owlei.com/DancingWind/Pic/tl.jpg" width="28"></td>
+    <td width="100%"><img height="28" src="tc.gif" tppabs="http://www.owlei.com/DancingWind/Pic/tc.gif" width="100%"></td>
+    <td><img height="28" src="tr.gif" tppabs="http://www.owlei.com/DancingWind/Pic/tr.gif" width="28"></td>
+  </tr>
+</TBODY>
+</table>
+
+<table border="0" cellPadding="0" cellSpacing="0" width="100%">
+<TBODY>
+  <tr>
+    <td background="l.gif" tppabs="http://www.owlei.com/DancingWind/Pic/l.gif"><img src="l.gif" tppabs="http://www.owlei.com/DancingWind/Pic/l.gif" width="28" height="28"></td>
+      <td vAlign="top" width="100%"><p>就是这样！大功告成！现在你的OpenGl程序有了雾效。 </p>
+ <table width="100%" border="1">
+  <tr>
+    <td width="27%"><img src="logo 3.jpg" tppabs="http://www.owlei.com/DancingWind/images/logo%203.jpg" width="209" height="200" align="middle"></td>
+    <td width="73%">版权与使用声明:<br>
+      我是个对学习和生活充满激情的普通男孩,在网络上我以DancingWind为昵称，我的联系方式是zhouwei02@mails.tsinghua.edu.cn，如果你有任何问题，都可以联系我。
+      <p>引子<br>
+        网络是一个共享的资源，但我在自己的学习生涯中浪费大量的时间去搜索可用的资料，在现实生活中花费了大量的金钱和时间在书店中寻找资料，于是我给自己起了个昵称DancingWind，其意义是想风一样从各个知识的站点中吸取成长的养料。在飘荡了多年之后，我决定把自己收集的资料整理为一个统一的资源库。</p>
+      <p>版权声明<br>
+        所有DancingWind发表的内容，大多都来自共享的资源，所以我没有资格把它们据为己有，或声称自己为这些资源作出了一点贡献。故任何人都可以复制，修改，重新发表，甚至以自己的名义发表，我都不会追究，但你在做以上事情的时候必须保证内容的完整性，给后来的人一个完整的教程。最后，任何人不能以这些资料的任何部分，谋取任何形式的报酬。</p>
+      <p>发展计划<br>
+        在国外，很多资料都是很多人花费几年的时间慢慢积累起来的。如果任何人有兴趣与别人共享你的知识，我很欢迎你与我联系，但你必须同意我上面的声明。</p>
+              <p>感谢<br>
+                感谢我的母亲一直以来对我的支持和在生活上的照顾。<br>
+                感谢我深爱的女友田芹，一直以来默默的在精神上和生活中对我的支持，她甚至把买衣服的钱都用来给我买书了，她真的是我见过的最好的女孩，希望我能带给她幸福。</p>
+              <p>资源下载: <br>
+                文档 <a href="javascript:if(confirm('http://www.owlei.com/DancingWind/Res/mht/NeHe%20OpenGL%20Chinese%20Course%2016.mht  \n\nThis file was not retrieved by Teleport Pro, because the server reports that this file cannot be found.  \n\nDo you want to open it from the server?'))window.location='http://www.owlei.com/DancingWind/Res/mht/NeHe%20OpenGL%20Chinese%20Course%2016.mht'" tppabs="http://www.owlei.com/DancingWind/Res/mht/NeHe%20OpenGL%20Chinese%20Course%2016.mht">网页格式</a> 
+                <a href="javascript:if(confirm('http://www.owlei.com/DancingWind/Res/pdf/OpenGL_Nehe_Course_Tutorial_16.pdf  \n\nThis file was not retrieved by Teleport Pro, because the server reports that this file cannot be found.  \n\nDo you want to open it from the server?'))window.location='http://www.owlei.com/DancingWind/Res/pdf/OpenGL_Nehe_Course_Tutorial_16.pdf'" tppabs="http://www.owlei.com/DancingWind/Res/pdf/OpenGL_Nehe_Course_Tutorial_16.pdf">PDF格式</a><br>
+                源码 <a href="javascript:if(confirm('http://www.owlei.com/DancingWind/Res/Src/16_Fog.rar  \n\nThis file was not retrieved by Teleport Pro, because the server reports that this file cannot be found.  \n\nDo you want to open it from the server?'))window.location='http://www.owlei.com/DancingWind/Res/Src/16_Fog.rar'" tppabs="http://www.owlei.com/DancingWind/Res/Src/16_Fog.rar">RAR格式</a></p></td>
+  </tr>
+</table>
+        <table border="0" width="100%">
+<TBODY>
+      <tr>
+              <td align="left" width="50%"><a href="Tutorial_15.htm" tppabs="http://www.owlei.com/DancingWind/Course/Tutorial_15.htm"><b><font size="-1">&lt; 
+                第15课</font></b></a></td>
+              <td align="right" width="50%"><a href="Tutorial_17.htm" tppabs="http://www.owlei.com/DancingWind/Course/Tutorial_17.htm"><b><font size="-1">第17课 
+                &gt;</font></b></a></td>
+      </tr>
+</TBODY>
+    </table>
+    </td>
+    <td background="r.gif" tppabs="http://www.owlei.com/DancingWind/Pic/r.gif"><img src="r.gif" tppabs="http://www.owlei.com/DancingWind/Pic/r.gif" width="28" height="28"></td>
+  </tr>
+</TBODY>
+</table>
+
+<table border="0" cellPadding="0" cellSpacing="0" width="100%">
+  <TBODY>
+  <tr>
+    <td><img height="28" src="bl.gif" tppabs="http://www.owlei.com/DancingWind/Pic/bl.gif" width="28"></td>
+    <td width="100%"><img height="28" src="bc.gif" tppabs="http://www.owlei.com/DancingWind/Pic/bc.gif" width="100%"></td>
+    <td><img height="28" src="br.gif" tppabs="http://www.owlei.com/DancingWind/Pic/br.gif" width="28"></td>
+  </tr>
+</TBODY>
+</table>
+
+</body>
+</html>

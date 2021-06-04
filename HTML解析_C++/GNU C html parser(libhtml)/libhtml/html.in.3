@@ -1,0 +1,783 @@
+.\"	$Id: html.in.3,v 1.47 2011/07/05 10:46:08 kristaps Exp $
+.\"
+.\" Copyright (c) 2009, 2010, 2011 Kristaps Dzonsons <kristaps@bsd.lv>
+.\"
+.\" Permission to use, copy, modify, and distribute this software for any
+.\" purpose with or without fee is hereby granted, provided that the above
+.\" copyright notice and this permission notice appear in all copies.
+.\"
+.\" THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+.\" WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+.\" MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
+.\" ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+.\" WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
+.\" ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
+.\" OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+.\"
+.Dd $Mdocdate: July 5 2011 $
+.Dt HTML 3
+.Os
+.Sh NAME
+.Nm html ,
+.Nm hattr_alloc_chars ,
+.Nm hattr_alloc_text ,
+.Nm hattr_clone ,
+.Nm hattr_column ,
+.Nm hattr_delete ,
+.Nm hattr_enumname ,
+.Nm hattr_find ,
+.Nm hattr_line ,
+.Nm hattr_literal ,
+.Nm hattr_name ,
+.Nm hattr_parent ,
+.Nm hattr_sibling ,
+.Nm hattr_type ,
+.Nm hattr_value ,
+.Nm hcache_alloc ,
+.Nm hcache_clone ,
+.Nm hcache_delete ,
+.Nm hcache_get ,
+.Nm hcache_root ,
+.Nm hcache_verify ,
+.Nm hcref_find ,
+.Nm hcref_name ,
+.Nm hdecl_enumname ,
+.Nm hdecl_find ,
+.Nm hdecl_name ,
+.Nm helem_enumname ,
+.Nm helem_find ,
+.Nm helem_name ,
+.Nm hident_alloc ,
+.Nm hident_clone ,
+.Nm hident_column ,
+.Nm hident_delete ,
+.Nm hident_line ,
+.Nm hident_literal ,
+.Nm hident_sibling ,
+.Nm hident_value ,
+.Nm hnode_addattr ,
+.Nm hnode_addchild ,
+.Nm hnode_addident ,
+.Nm hnode_alloc_comment ,
+.Nm hnode_alloc_decl ,
+.Nm hnode_alloc_elem ,
+.Nm hnode_alloc_proc ,
+.Nm hnode_alloc_root ,
+.Nm hnode_alloc_text ,
+.Nm hnode_attr ,
+.Nm hnode_child ,
+.Nm hnode_clone ,
+.Nm hnode_column ,
+.Nm hnode_comment ,
+.Nm hnode_dechild ,
+.Nm hnode_dechildpart ,
+.Nm hnode_decl ,
+.Nm hnode_delete ,
+.Nm hnode_elem ,
+.Nm hnode_ident ,
+.Nm hnode_line ,
+.Nm hnode_parent ,
+.Nm hnode_proc ,
+.Nm hnode_repattr ,
+.Nm hnode_sibling ,
+.Nm hnode_text ,
+.Nm hnode_type ,
+.Nm hparse_alloc ,
+.Nm hparse_delete ,
+.Nm hparse_tree ,
+.Nm hproc_enumname ,
+.Nm hproc_find ,
+.Nm hproc_name ,
+.Nm hvalid_alloc ,
+.Nm hvalid_delete ,
+.Nm hvalid_tree ,
+.Nm hwrite_alloc ,
+.Nm hwrite_delete ,
+.Nm hwrite_mode ,
+.Nm hwrite_tree
+.Nd simple HTML parsing library
+.Sh SYNOPSIS
+.In html.h
+.Vt enum hattrt ;
+.Vt enum hcreft ;
+.Vt enum hdeclt ;
+.Vt enum helemt ;
+.Vt enum hmode ;
+.Vt enum hnodet ;
+.Vt enum hproct ;
+.Vt struct ioctx ;
+.Vt struct iofd ;
+.Vt struct ioout ;
+.Vt struct iovalid ;
+.Ft "struct hattr *"
+.Fn hattr_alloc_chars "enum hattr t" "const char *val" "int lit" "int line" "int col"
+.Ft "struct hattr *"
+.Fn hattr_alloc_text "enum hattr t" "const char *val" "int lit" "int line" "int col"
+.Ft "struct hattr *"
+.Fn hattr_clone "struct hattr *"
+.Ft int
+.Fn hattr_column "struct hattr *"
+.Ft void
+.Fn hattr_delete "struct hattr *"
+.Ft "const char *"
+.Fn hattr_enumname "enum hattrt"
+.Ft "enum hattrt"
+.Fn hattr_find "const char *"
+.Ft int
+.Fn hattr_line "struct hattr *"
+.Ft int
+.Fn hattr_literal "struct hattr *"
+.Ft "const char *"
+.Fn hattr_name "enum hattrt"
+.Ft "struct hnode *"
+.Fn hattr_parent "struct hattr *"
+.Ft "struct hattr *"
+.Fn hattr_sibling "struct hattr *"
+.Ft "enum hattrt"
+.Fn hattr_type "struct hattr *"
+.Ft "const char *"
+.Fn hattr_value "struct hattr *"
+.Ft "struct hcache *"
+.Fn hcache_alloc "struct hnode *root" "const struct hcid *ids" "int maxid" "size_t idsz"
+.Ft "struct hcache *"
+.Fn hcache_clone "struct hcache *p"
+.Ft void
+.Fn hcache_delete "struct hcache *"
+.Ft "struct hnode *"
+.Fn hcache_get "struct hcache *p" "int id"
+.Ft "struct hnode *"
+.Fn hcache_root "struct hcache *p"
+.Ft int
+.Fn hcache_verify "struct hcache *p"
+.Ft "enum hcreft"
+.Fn hcref_find "const char *"
+.Ft "const char *"
+.Fn hcref_name "enum hcreft"
+.Ft "const char *"
+.Fn hdecl_enumname "enum hdeclt"
+.Ft "enum hdeclt"
+.Fn hdecl_find "const char *"
+.Ft "const char *"
+.Fn hdecl_name "enum hdeclt"
+.Ft "const char *"
+.Fn helem_enumname "enum helemt"
+.Ft "enum helemt"
+.Fn helem_find "const char *"
+.Ft "const char *"
+.Fn helem_name "enum helemt"
+.Ft "struct hident *"
+.Fn hident_alloc "const char *" int int int
+.Ft "struct hident *"
+.Fn hident_clone "struct hident *"
+.Ft int
+.Fn hident_column "struct hident *"
+.Ft void
+.Fn hident_delete "struct hident *"
+.Ft int
+.Fn hident_line "struct hident *"
+.Ft int
+.Fn hident_literal "struct hident *"
+.Ft "struct hident *"
+.Fn hident_sibling "struct hident *"
+.Ft "const char *"
+.Fn hident_value "struct hident *"
+.Ft int
+.Fn hnode_addattr "struct hnode *" "struct hattr *"
+.Ft int
+.Fn hnode_addchild "struct hnode *" "struct hnode *"
+.Ft int
+.Fn hnode_addident "struct hnode *" "struct hident *"
+.Ft "struct hnode *"
+.Fn hnode_alloc_chars "const char *p" "int line" "int col"
+.Ft "struct hnode *"
+.Fn hnode_alloc_comment "const char *p" "int line" "int col"
+.Ft "struct hnode *"
+.Fn hnode_alloc_decl "enum hdeclt type" "int line" "int col"
+.Ft "struct hnode *"
+.Fn hnode_alloc_elem "enum helemt type" "int line" "int col"
+.Ft "struct hnode *"
+.Fn hnode_alloc_proc "enum hproct type" "int line" "int col"
+.Ft "struct hnode *"
+.Fn hnode_alloc_root "int line" "int col"
+.Ft "struct hnode *"
+.Fn hnode_alloc_text "const char *p" "int line" "int col"
+.Ft "struct hattr *"
+.Fn hnode_attr "struct hnode *"
+.Ft "struct hnode *"
+.Fn hnode_child "struct hnode *"
+.Ft "struct hnode *"
+.Fn hnode_clone "struct hnode *"
+.Ft int
+.Fn hnode_column "struct hnode *"
+.Ft "const char *"
+.Fn hnode_comment "struct hnode *"
+.Ft void
+.Fn hnode_dechild "struct hnode *n"
+.Ft void
+.Fn hnode_dechildpart "struct hnode *n" "const struct hnode **r" "int rsz"
+.Ft "enum hdeclt"
+.Fn hnode_decl "struct hnode *"
+.Ft void
+.Fn hnode_delete "struct hnode *"
+.Ft "enum helemt"
+.Fn hnode_elem "struct hnode *"
+.Ft "struct hident *"
+.Fn hnode_ident "struct hnode *"
+.Ft int
+.Fn hnode_line "struct hnode *"
+.Ft "struct hnode *"
+.Fn hnode_parent "struct hnode *"
+.Ft "enum hproct"
+.Fn hnode_proc "struct hnode *"
+.Ft int
+.Fn hnode_repattr "struct hnode *" "struct hattr *"
+.Ft "struct hnode *"
+.Fn hnode_sibling "struct hnode *"
+.Ft "const char *"
+.Fn hnode_text "struct hnode *"
+.Ft "enum hnodet"
+.Fn hnode_type "struct hnode *"
+.Ft "struct hparse *"
+.Fn hparse_alloc "enum hmode"
+.Ft void
+.Fn hparse_delete "struct hparse *"
+.Ft int
+.Fn hparse_tree "struct hparse *" "struct ioctx *" "struct hnode **"
+.Ft "const char *"
+.Fn hproc_enumname "enum hproct"
+.Ft "enum hproct"
+.Fn hproc_find "const char *"
+.Ft "const char *"
+.Fn hproc_name "enum hproct"
+.Ft "struct hvalid *"
+.Fn hvalid_alloc "enum hmode"
+.Ft void
+.Fn hvalid_delete "struct hvalid *"
+.Ft int
+.Fn hvalid_tree "struct hvalid *" "struct iovalid *" "struct hnode *"
+.Ft "struct hwrite *"
+.Fn hwrite_alloc "enum hmode"
+.Ft void
+.Fn hwrite_delete "struct hwrite *"
+.Ft void
+.Fn hwrite_mode "struct hwrite *p" "enum hmode mode"
+.Ft int
+.Fn hwrite_tree "struct hwrite *" "struct ioout *" "struct hnode *"
+.Sh DESCRIPTION
+The
+.Nm
+library contains HTML DOM parsing, serialising, and manipulation
+functions.
+It only works on input and output described by a subset of
+HTML-4.01 and XHTML-1.0 strict (full compliance is an eventual
+possibility).
+Input and output contexts are provided by the calling
+application.
+All operations are strictly checked for correctness.
+.Pp
+In general, a parser object is first allocated with
+.Fn hparse_alloc .
+Input is parsed using
+.Fn hparse_tree ,
+which reads from user-supplied callbacks in
+.Vt struct ioctx .
+A commonly-used context of reading from a file is documented as the
+.Vt struct iofd
+context.
+Identifiers in the tree may then be queried with
+.Fn hcache_alloc .
+Finally, output is written with
+.Fn hwrite_tree .
+.Pp
+The
+.Nm
+library is
+.Ud
+A subset of both languages is implemented:
+parse trees are validated
+syntactically (XML/SGML) but not semantically (HTML).
+.Sh VALIDATION
+This section documents the validation process of the
+.Nm
+library.
+Validation is two-phase: syntactic, which occurs when a tree
+is being assembled by parsing
+.Pq Fn hparse_tree No et al.
+or manual construction
+.Pq Fn hnode_addchild No et al. ;
+and semantic, when a tree has been constructed and is walked with
+.Fn hvalid_tree .
+.Ss Syntax
+The tree is structurally validated in terms of SGML/XML as it is being
+built.
+First, only certain node types may be children of other nodes
+(comments may not have element children, roots may not be children of
+anybody, text may be a child of elements, etc.).
+Pseudo-semantic
+closure is also enforced, where some nodes (such as the
+.Qq LINK
+element in HTML-4.01) may not have children.
+.Pp
+After succcessful construction, a tree is guaranteed to be syntactically
+valid.
+.Ss Semantics
+Exclusion is enforced, where some nodes may not contain other nodes.
+For example,
+.Qq A
+may not contain other
+.Qq A
+nodes
+.Pp
+Assignment of attributes to processing instructions and elements is also
+enforced, such
+as the
+.Qq version
+attribute only be applicable to XML mark-up in the
+.Qq xml
+processing instruction or
+.Qq CELLPADDING
+only being applicable to
+.Qq TABLE
+in HTML-4.01).
+.Pp
+Lastly, text data streams are enforced when named of numeric character
+references are encountered.
+.Sh REFERENCE
+This section contains a canonical list of
+.Sx Data Types
+and
+.Sx Functions
+for this library.
+.Ss Data Types
+.Bl -ohang
+.It Vt enum hattrt
+An HTML attribute type.
+See
+.Fn hattr_type ,
+among other functions.
+.It Vt enum hcreft
+A named character reference.
+See
+.Fn hcref_find ,
+among other functions.
+.It Vt enum hdeclt
+A document type
+.Pq Qq doctype
+identifier.
+See
+.Fn hnode_decl ,
+among other functions.
+.It Vt enum helemt
+An HTML element type.
+See
+.Fn hnode_elem ,
+among other functions.
+.It Vt enum hmode
+An HTML version.
+This bit-wise value may be masked with
+.Dv HMODE_SGML
+for SGML-based HTML versions or
+.Dv HMODE_XML
+for XML-based versions.
+.It Vt enum hnodet
+The classification of a node.
+See
+.Fn hnode_type ,
+among other functions.
+.It Vt enum hproct
+A processing instruction
+.Pq Qq pic
+identifier.
+See
+.Fn hnode_proc ,
+among other functions.
+.It Vt struct ioctx
+Provides functions for manipulating I/O during a parsing sequence.
+See
+.Fn hparse_tree
+for usage and
+.Vt struct iofd
+for an example implementation.
+.It Vt struct iofd
+A bundled implementation of an
+.Vt struct ioctx
+context.
+The included
+.Fn iofd_open ,
+.Fn iofd_getchar ,
+.Fn iofd_close ,
+and
+.Fn iofd_rew
+functions should be used for the callbacks.
+Before using, the structure should be zeroed and
+.Va fd
+set to -1.
+.It Vt struct ioout
+Provides functions for serialising I/O during a write sequence.
+See
+.Fn hwrite_tree .
+The convenience functions
+.Fn iostdout_putchar
+and
+.Fn iostdout_puts
+are provided for writing to standard out.
+.It Vt struct iovalid
+Provides functions for validating HTML trees.
+See
+.Fn hvalid_tree .
+.El
+.Ss Functions
+.Bl -ohang
+.It Fn hattr_alloc_chars
+Allocate an HTML key/pair attribute.
+Variable
+.Va lit
+indicates whether the
+attribute value is a literal.
+Returns NULL if allocation failed.
+.It Fn hattr_alloc_text
+Like
+.Fn hattr_alloc_chars
+but HTML-encoding
+.Va val .
+.It Fn hattr_clone
+Clone an attribute.
+This will create a new attribute with no context
+(i.e., parent or siblings), but all values duplicated.
+Returns NULL if
+allocation failed.
+.It Fn hattr_column
+Get the column number where the attribute was first parsed.
+.It Fn hattr_delete
+Remove an HTML attribute from its context (if applicable) and free it.
+.It Fn hattr_enumname
+Convert an attribute type to the string representation of its
+enumeration type.
+.It Fn hattr_find
+Look up an element type by its name.
+Returns the type or HATTR__MAX if
+none was found.
+.It Fn hattr_line
+Get the line number where the attribute was first parsed.
+.It Fn hattr_literal
+Whether the attribute value was invoked as a literal or not.
+.It Fn hattr_name
+Convert an attribute type to its string representation.
+.It Fn hattr_parent
+Get the parent of an attribute or NULL if it has none.
+.It Fn hattr_sibling
+Get the next sibling of an attribute or NULL if it has none.
+.It Fn hattr_type
+Get the type of an attribute.
+.It Fn hattr_value
+Get the value of an attribute or NULL if it has none.
+.It Fn hcache_alloc
+Allocate a cached node tree.
+A cached tree is one where elements with the
+.Qq ID
+attribute are each assigned to a numeric identifier.
+These nodes may then be queried with
+.Fn hcache_get
+in constant time.
+This function should be called on the document root.
+It returns an allocated cache object over the
+.Va root
+node, whose pointer should
+.Em not
+be manipulated outside of the cache context.
+Cached node identifiers are stored in
+.Va ids ,
+which is of size
+.Va idsz ,
+where the maximum numeric identifier is strictly less than
+.Va maxid .
+Returns NULL if memory allocation fails.
+.It Fn hcache_clone
+Clone a cached node tree.
+Cloned nodes will propogate their cached-ness.
+Returns NULL if memory allocation fails.
+.It Fn hcache_delete
+Delete a cache, including the cached tree.
+.It Fn hcache_get
+Get a cached node.
+This will assert if the cached node has been unlinked.
+.It Fn hcache_root
+Return the node that was used to allocate the cache.
+.It Fn hcache_verify
+Verify that all cached entries are filled.
+Returns 1 if they are filled, 0 if they are not.
+.It Fn hcref_find
+Look up a character reference by its name (note that character
+references are case sensitive).
+Returns the type or HCREF__MAX if none
+was found.
+.It Fn hcref_name
+Convert a character reference to its string representation.
+.It Fn hdecl_enumname
+Convert an declaration type to the string representation of its
+enumeration type.
+.It Fn hdecl_find
+Look up a declaration type by its name.
+Returns the type or HDECL__MAX
+if none was found.
+.It Fn hdecl_name
+Convert a declaration type to its string representation.
+.It Fn helem_enumname
+Convert an element type to the string representation of its enumeration
+type.
+.It Fn helem_find
+Look up an element type by its name.
+Returns the type or HELEM__MAX if
+none was found.
+.It Fn helem_name
+Convert an element type to its string representation.
+.It Fn hident_alloc
+Allocate a identifier with whether it's a literal or not, i.e., one that
+was invoked with surrounding quotes.
+Returns NULL if allocation failed.
+.It Fn hident_clone
+Clone an identifier.
+This will create a new identifier with no context
+(i.e., parent or siblings), but all values duplicated.
+Returns NULL if
+allocation failed.
+.It Fn hident_column
+Get the column number where the node was first parsed.
+.It Fn hident_delete
+Remove an identifier from its context (if applicable) and free it.
+.It Fn hident_line
+Get the line number where the node was first parsed.
+.It Fn hident_literal
+Returns 1 if this identifier was invoked as a literal, 0 otherwise.
+.It Fn hident_sibling
+Get the next sibling of an identifier or NULL if it has none.
+.It Fn hident_value
+Get the value of an identifier.
+.It Fn hnode_addattr
+Unlink an attribute from its current context (if applicable) and add it
+to another element.
+Returns 1 on success of 0 if the attribute is not
+allowed to be the child of the parent.
+.It Fn hnode_addchild
+Unlink an element from its current context (if applicable) and append it
+to another element's queue of children.
+Returns 1 on success or 0 if
+the node is not allowed to be a child of the parent.
+.It Fn hnode_addident
+Unlink an identifier from its current context (if applicable) and add it
+to another declaration.
+Returns 1 on success or 0 if the node is not
+allowed to be a child of the parent.
+.It Fn hnode_alloc_chars
+Allocate an HTML text node.
+Copies over all values in the string as-is.
+This should be used for pre-validated strings (i.e., text that is
+guaranteed not to have invalid mark-up).
+Returns NULL if memory
+allocation failed.
+.It Fn hnode_alloc_comment
+Allocate an HTML comment node.
+Returns NULL if memory allocation failed.
+.It Fn hnode_alloc_decl
+Allocate an HTML type declaration.
+Returns NULL if memory allocation
+failed.
+.It Fn hnode_alloc_elem
+Allocate an HTML element node.
+Returns NULL if memory allocation
+failed.
+.It Fn hnode_alloc_proc
+Allocate a processing instruction node.
+Returns NULL if memory
+allocation failed.
+.It Fn hnode_alloc_root
+Allocate the root HTML node.
+Returns NULL if memory allocation failed.
+.It Fn hnode_alloc_text
+Allocate an HTML text node.
+The
+.Sq \&<
+.Sq \&>
+.Sq \&"
+and
+.Sq \&&
+characters are transformed into their named entity forms.
+Returns NULL
+if memory allocation failed.
+.It Fn hnode_attr
+Get the first attribute of a node or NULL if it has none.
+.It Fn hnode_child
+Get the first child of a node or NULL if it has none.
+.It Fn hnode_clone
+Recursively clone a node and any sub-components (nodes, attributes,
+identifiers, etc.).
+.Bf Em
+The HATTR_ID attribute is not duplicated.
+.Ef
+This will create a new node with no context (i.e.,
+parent or siblings), but all values duplicated.
+Sub-components are
+grouped under the returned node.
+Returns NULL if allocation failed.
+.It Fn hnode_column
+Get the column where the node began to be parsed.
+.It Fn hnode_comment
+Get the comment field of a node.
+The node must be of type
+HNODE_COMMENT.
+.It Fn hnode_dechild
+Convenience routine invoking
+.Fn hnode_delete
+for all children of a node.
+.It Fn hnode_dechildpart
+Like
+.Fn hnode_dechild ,
+but not deleting the subtree up to and below any node in
+.Fa r
+of size
+.Fa rsz .
+.It Fn hnode_decl
+Get the declaration type of a node.
+The node must be of type
+HNODE_DECL.
+.It Fn hnode_delete
+Recursively unlink HTML elements rooted at the current element (if
+applicable) and free them.
+.It Fn hnode_elem
+Get the element type of a node.
+The node must be of type HNODE_ELEM.
+.It Fn hnode_ident
+Get the first identifier of a node or NULL if it has none.
+.It Fn hnode_line
+Get the line number where the node was first parsed.
+.It Fn hnode_parent
+Get the parent of a node or NULL if it has none.
+.It Fn hnode_proc
+Get the processing type of a node.
+The node must be of type HNODE_PROC.
+.It Fn hnode_repattr
+Replace an existing attribute with a new one.
+An existing attribute, if
+found, will be deleted with
+.Fn hattr_delete .
+See
+.Fn hnode_addattr
+for return values.
+.It Fn hnode_sibling
+Get the next sibling of a node or NULL if it has none.
+.It Fn hnode_text
+Get the text of a node.
+The node must be of type HNODE_TEXT.
+.It Fn hnode_type
+Get the type of a node.
+.It Fn hparse_alloc
+Allocates a parse sequence with a certain document type.
+Returns NULL
+if memory allocation failed.
+A single
+.Ft "struct hparse *"
+may be used for multiple parse sequences of this document type.
+.It Fn hparse_delete
+Free a parse sequence.
+.It Fn hparse_tree
+Opens a
+.Vt struct ioctx
+and begins processing.
+The tree is processed until end of file or
+error.
+The
+.Vt struct ioctx
+is always closed unless the open fails.
+Returns 0 on syntax or system
+error, 1 on success.
+The tree is guaranteed to be well-structured, but
+not validated for HTML.
+The result, if not NULL (it may be non-NULL
+even if parsing fails),  must be freed by a separate call to
+.Fn hnode_delete .
+.It Fn hproc_enumname
+Convert a processing instruction type to the string representation of
+its enumeration type.
+.It Fn hproc_find
+Look up a processing type by its name.
+Returns the type or HPROC__MAX
+if none was found.
+.It Fn hproc_name
+Convert a processing type to its string representation.
+.It Fn hvalid_alloc
+Allocate a validator bound to a validation mode.
+Returns NULL if memory
+allocation fails.
+The same validator may be used with multiple
+.Fn hvalid_tree
+calls.
+.It Fn hvalid_delete
+Frees a validator.
+.It Fn hvalid_tree
+Depth-first validation of node and all children.
+Validation is tied to
+a particular mode, which is usually the same as the input mode (mixing
+modes is perfectly reasonable, but will probably fail validation due to
+differences between XHTML and HTML).
+Returns 1 on success and 0 on
+failure.
+.It Fn hwrite_alloc
+Allocate a writer bound to an output mode.
+Returns NULL if memory
+allocation fails.
+The same writer may be used with multiple
+.Fn hwrite_tree
+calls.
+.It Fn hwrite_delete
+Frees a writer.
+.It Fn hwrite_mode
+Changes the output mode of a writer.
+.It Fn hwrite_tree
+Serialise node and all children to a
+.Vt struct ioout .
+The input tree need not have been validated, as the writer assumes
+nothing about the semantic structure of the tree.
+Writing is
+necessarily tied to a particular mode, which is usually the same as the
+input and validation mode.
+Mixing modes is not suggested (parsing and
+validating in XHTML and printing in HTML, for example, will result in
+the <?xml?> processing instruction printed alongside SGML-formed HTML
+code).
+Returns 1 on success and 0 on failure (which can only happen if
+a
+.Vt struct ioout
+fails).
+.El
+.Sh EXAMPLES
+The
+.Pa test.c
+file contained in the distribution has a complete example.
+.Sh STANDARDS
+The
+.Nm
+library implements W3C REC-HTML-4.01 (HTML 4.01) and REC-XHTML-1.0
+(XHTML 1.0) with constant low-level syntax reference to ISO 8879:1986
+(SGML) and W3C REC-XML-1.0 (XML 1.0), respectively; and UTR-20 (Unicode
+in XML and other Markup Languages) for character references.
+.Sh AUTHORS
+The
+.Nm
+library was written by
+.An Kristaps Dzonsons Aq kristaps@bsd.lv .
+.Sh CAVEATS
+Many parts of HTML-4.01 and XHTML-1.0 aren't implemented.
+Most notably
+are XML namespaces for tags, which will confuse the parser.
+.Pp
+The
+.Nm
+library does not support tag and attribute names in non-ASCII characters:
+although the
+.Va xcode
+facility in
+.Va "struct ioctx"
+allows for transcoding arbitrary input character types, this is only
+called for text or literal data.
+Thus, while the SGML standard, in this
+regard, is implemented, the XML reference is not.

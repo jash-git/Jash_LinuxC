@@ -1,0 +1,105 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<meta name="Author" content="Qi Liang">
+<meta name="Qt OpenGL Tutorial" content="http://www.qiliang.net/nehe_qt">
+<title>你的第一个多边形</title>
+<style type="text/css"><!--
+h3.fn,span.fn { margin-left: 1cm; text-indent: -1cm; }
+a:link { color: #004faf; text-decoration: none }
+a:visited { color: #672967; text-decoration: none }
+body { background: #ffffff; color: black; font-family: "Times New Roman" }
+--></style>
+</head>
+<body>
+<p align="right">[<a href="lesson01.html" tppabs="http://www.qiliang.net/nehe_qt/lesson01.html">上一课：创建一个OpenGL窗口</a>] [<a href="index.html" tppabs="http://www.qiliang.net/nehe_qt/index.html">Qt OpenGL教程主页</a>] [<a href="lesson03.html" tppabs="http://www.qiliang.net/nehe_qt/lesson03.html">下一课：上色</a>]</p>
+
+<h2 align=center>你的第一个多边形</h2>
+
+<p> <center><img src="lesson02.png" tppabs="http://www.qiliang.net/nehe_qt/lesson02.png"></center> 
+<p> 上一课中，我教您如何创建一个OpenGL窗口。这一课中，我将教您如何创建三角形和四边形。我们讲使用GL_TRIANGLES来创建一个三角形，GL_QUADS来创建一个四边形。 
+<p> 我们只要修改第一课中的NeHeWidget类中的paintGL()函数就可以了。
+
+<h3><a name="1"></a>NeHeWidget类</h3>
+<p> （由<tt>nehewidget.cpp</tt>展开。）
+<pre>
+void NeHeWidget::paintGL()
+{
+  glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
+</pre>
+<p> 清除屏幕和深度缓存。
+<pre>
+  glLoadIdentity();
+</pre>
+<p> 重置当前的模型观察矩阵。
+<p> 当您调用glLoadIdentity()之后，您实际上将当前点移到了屏幕中心，X坐标轴从左至右，Y坐标轴从下至上，Z坐标轴从里至外。OpenGL屏幕中心的坐标值是X和Y轴上的0.0点。中心左面的坐标值是负值，右面是正值。移向屏幕顶端是正值，移向屏幕底端是负值。移入屏幕深处是负值，移出屏幕则是正值。 
+<pre>
+  glTranslatef( -1.5,  0.0, -6.0 );
+</pre>
+<p> glTranslatef(x, y, z)沿着 X, Y 和 Z 轴移动。根据前面的次序，下面的代码沿着X轴左移1.5个单位，Y轴不动(0.0)，最后移入屏幕6.0个单位。注意在glTranslatef(x, y, z)中当您移动的时候，您并不是相对屏幕中心移动，而是相对与当前所在的屏幕位置。
+<p> 现在我们已经移到了屏幕的左半部分，并且将视图推入屏幕背后足够的距离以便我们可以看见全部的场景－创建三角形。
+<pre>
+  glBegin( GL_TRIANGLES );
+</pre>
+<p> 开始绘制三角形。
+<p> glBegin(GL_TRIANGLES)的意思是开始绘制三角形，glEnd() 告诉OpenGL三角形已经创建好了。通常您会需要画3个顶点，可以使用GL_TRIANGLES。在绝大多数的显卡上，绘制三角形是相当快速的。如果要画四个顶点，使用GL_QUADS的话会更方便。但据我所知，绝大多数的显卡都使用三角形来为对象着色。最后，如果您想要画更多的顶点时，可以使用GL_POLYGON。
+<p> 本节的简单示例中，我们只画一个三角形。如果要画第二个三角形的话，可以在这三点之后，再加三行代码(3点)。所有六点代码都应包含在glBegin(GL_TRIANGLES)和glEnd()之间。在他们之间再不会有多余的点出现，也就是说，(GL_TRIANGLES)和glEnd()之间的点都是以三点为一个集合的。这同样适用于四边形。如果您知道实在绘制四边形的话，您必须在第一个四点之后，再加上四点为一个集合的点组。另一方面，多边形可以由任意个顶点，(GL_POLYGON)不在乎glBegin(GL_TRIANGLES)和glEnd()之间有多少行代码。
+<pre>
+    glVertex3f(  0.0,  1.0,  0.0 );
+</pre>
+<p> 上顶点。
+<p> glBegin之后的第一行设置了多边形的第一个顶点，glVertex 的第一个参数是X坐标，然后依次是Y坐标和Z坐标。第一个点是上顶点，然后是左下顶点和右下顶点。glEnd()告诉OpenGL没有其他点了。这样将显示一个填充的三角形。
+<p> CKer注：这里要注意的是存在两种不同的坐标变换方式，glTranslatef(x, y, z)中的x, y, z是相对与您当前所在点的位移，但glVertex(x,y,z)是相对于glTranslatef(x, y, z)移动后的新原点的位移。因而这里可以认为glTranslate移动的是坐标原点，glVertex中的点是相对最新的坐标原点的坐标值。
+<pre>
+    glVertex3f( -1.0, -1.0,  0.0 );
+</pre>
+<p>  左下顶点。
+<pre>
+    glVertex3f(  1.0, -1.0,  0.0 );
+</pre>
+<p> 右下顶点。
+<pre>
+  glEnd();
+</pre>
+<p> 三角形绘制结束。
+<pre>
+  glTranslatef(  3.0,  0.0,  0.0 );
+</pre>
+<p> 在屏幕的左半部分画完三角形后，我们要移到右半部分来画正方形。为此要再次使用glTranslate。这次右移，所以X坐标值为正值。因为前面左移了1.5个单位，这次要先向右移回屏幕中心(1.5个单位)，再向右移动1.5个单位。总共要向右移3.0个单位。  
+<pre>
+  glBegin( GL_QUADS );
+</pre>
+<p> 开始绘制四边形。
+<pre>
+    glVertex3f( -1.0,  1.0,  0.0 );
+</pre>
+<p> 左上顶点。
+<pre>
+    glVertex3f(  1.0,  1.0,  0.0 );
+</pre>
+<p> 右上顶点。
+<pre>
+    glVertex3f(  1.0, -1.0,  0.0 );
+</pre>
+<p> 右下顶点。
+<pre>
+    glVertex3f( -1.0, -1.0,  0.0 );
+</pre>
+<p> 左下顶点。
+<pre>
+  glEnd();
+</pre>
+<p> 四边形绘制结束。
+<pre>
+}
+</pre>
+<p> 本课程的<a href="lesson02.tar.gz" tppabs="http://www.qiliang.net/nehe_qt/source/lesson02.tar.gz">源代码</a>。
+
+<p align="right">[<a href="lesson01.html" tppabs="http://www.qiliang.net/nehe_qt/lesson01.html">上一课：创建一个OpenGL窗口</a>] [<a href="index.html" tppabs="http://www.qiliang.net/nehe_qt/index.html">Qt OpenGL教程主页</a>] [<a href="lesson03.html" tppabs="http://www.qiliang.net/nehe_qt/lesson03.html">下一课：上色</a>]</p>
+<p><address><hr><div align=center>
+<table width=100% cellspacing=0 border=0><tr>
+<td align=left><div align=left><a href="javascript:if(confirm('http://www.qiliang.net/  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://www.qiliang.net/'" tppabs="http://www.qiliang.net/">http://www.qiliang.net</a></div>
+<td><center><a href="mailto:cavendish@qiliang.net">mailto:cavendish@qiliang.net</a></center>
+<td align=right><div align=right>2002年12月19日</div>
+</table></div></address></body>
+</html>

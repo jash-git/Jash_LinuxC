@@ -1,0 +1,395 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+    dir="ltr"
+    xml:lang="en"
+    lang="en">
+  <head>
+    <title>NeHe Productions: Texture Mapped Outline Fonts</title>
+
+    <link rel="stylesheet" type="text/css" href="public_base.css" tppabs="http://nehe.gamedev.net/static/css/public_base.css" />
+    <link type="text/css" rel="stylesheet" href="shThemeMidnight.css" tppabs="http://nehe.gamedev.net/static/css/syntax_highlighter/shThemeMidnight.css"/>
+    
+    <link rel="alternate" type="application/atom+xml" title="Atom feed" href="index-1.htm" tppabs="http://nehe.gamedev.net/atom/" />
+    <link rel="alternate" type="application/rss+xml" title="RSS feed" href="index-2.htm" tppabs="http://nehe.gamedev.net/rss/" />
+    
+    <meta name="author" content="Luke Benstead + Carsten Haubold" />
+    <meta name="description" content="OpenGL Tutorials, Demos, Games and More..." />
+    <meta name="keywords" content="opengl, tutorial, article, demo, game, blend, texturemap, lighting, contest, 3D" />
+
+    
+    
+
+    
+
+</script>
+
+
+    
+    
+    
+    
+        
+        <script type='text/javascript'>
+        var googletag = googletag || {};
+        googletag.cmd = googletag.cmd || [];
+        (function() {
+        var gads = document.createElement('script');
+        gads.async = true;
+        gads.type = 'text/javascript';
+        var useSSL = 'https:' == document.location.protocol;
+        gads.src = (useSSL ? 'https:' : 'http:') + 
+        '//www.googletagservices.com/tag/js/gpt.js';
+        var node = document.getElementsByTagName('script')[0];
+        node.parentNode.insertBefore(gads, node);
+        })();
+        </script>
+
+        <script type='text/javascript'>
+        googletag.cmd.push(function() {
+        googletag.defineSlot('/1004699/Leaderboard_NeHe', [728, 90], 'div-gpt-ad-1327940144417-0').addService(googletag.pubads());
+        googletag.defineSlot('/1004699/Skyscraper_NeHe', [160, 600], 'div-gpt-ad-1327940144417-1').addService(googletag.pubads());
+        googletag.pubads().enableSingleRequest();
+        googletag.enableServices();
+        });
+        </script>
+    
+    
+
+    
+  </head>
+
+  <body>
+    
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "all.js#xfbml=1"/*tpa=http://connect.facebook.net/en_GB/all.js#xfbml=1*/;
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+
+
+    <table cellpadding="0" cellspacing="0" border="0" id="layout_table">
+    <tr><td>
+        <div id="header">
+                <a href="index.htm" tppabs="http://nehe.gamedev.net/"><img class="logo" class="logo" src="nehe.png" tppabs="http://nehe.gamedev.net/static/images/nehe.png" border="0" alt="Nehe" /></a>
+        </div>            
+    </td></tr>
+    <tr><td colspan="2">
+            
+<div class="navbar">
+    <a href="index.htm" tppabs="http://nehe.gamedev.net/">HOME</a>
+    <a href="javascript:if(confirm('http://twitter.com/  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://twitter.com/#!/nehegl'" tppabs="http://twitter.com/#!/nehegl">TWITTER</a>  
+    <a href="javascript:if(confirm('http://www.facebook.com/pages/NeHe/300582493323181  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://www.facebook.com/pages/NeHe/300582493323181'" tppabs="http://www.facebook.com/pages/NeHe/300582493323181">FACEBOOK</a>     
+    <a href="index-2.htm" tppabs="http://nehe.gamedev.net/rss/">RSS</a>    
+    <a href="index-1.htm" tppabs="http://nehe.gamedev.net/atom/">ATOM</a>    
+    <a href="javascript:if(confirm('http://www.gamedev.net/forum/27-nehe-productions/page__forum_title__NeHe+Productions  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://www.gamedev.net/forum/27-nehe-productions/page__forum_title__NeHe+Productions'" tppabs="http://www.gamedev.net/forum/27-nehe-productions/page__forum_title__NeHe+Productions">FORUM</a>    
+</div>
+    
+    </td></tr>
+    <tr>
+        <td class="col1">
+
+            
+<div id="article_container">
+
+
+<h1 class="article-header">Texture Mapped Outline Fonts</h1>
+<div class="social-media">
+<!-- Place this tag where you want the +1 button to render -->
+<div class="g-plusone" data-size="medium" data-width="120" data-annotation="inline"></div>
+<div class="fb-like" data-send="false" data-layout="button_count" data-width="60" data-show-faces="false" data-colorscheme="dark" data-font="arial"></div>
+</div>
+<div style="clear:both;"></div>
+<p>After posting the last two tutorials on bitmap and outlined fonts, I received quite a few emails from people wondering how they could texture map the fonts. You can use autotexture coordinate generation. This will generate texture coordinates for each of the polygons on the font.</p>
+<p>A small note, this code is Windows specific. It uses the wgl functions of Windows to build the font. Apparently Apple has agl support that should do the same thing, and X has glx. Unfortunately I can't guarantee this code is portable. If anyone has platform independant code to draw fonts to the screen, send it my way and I'll write another font tutorial.</p>
+<p>We'll build our Texture Font demo using the code from lesson 14. If any of the code has changed in a particular section of the program, I'll rewrite the entire section of code so that it's easier to see the changes that I have made.</p>
+<p>The following section of code is similar to the code in lesson 14, but this time we're not going to include the stdarg.h file.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">#include	&lt;windows.h&gt;					// Header File For Windows
+#include	&lt;math.h&gt;					// Header File For Windows Math Library
+#include	&lt;stdio.h&gt;					// Header File For Standard Input/Output
+#include	&lt;gl\gl.h&gt;					// Header File For The OpenGL32 Library
+#include	&lt;gl\glu.h&gt;					// Header File For The GLu32 Library
+#include	&lt;gl\glaux.h&gt;					// Header File For The GLaux Library
+
+HDC		hDC=NULL;					// Private GDI Device Context
+HGLRC		hRC=NULL;					// Permanent Rendering Context
+HWND		hWnd=NULL;					// Holds Our Window Handle
+HINSTANCE	hInstance;					// Holds The Instance Of The Application
+
+bool		keys[256];					// Array Used For The Keyboard Routine
+bool		active=TRUE;					// Window Active Flag Set To TRUE By Default
+bool		fullscreen=TRUE;				// Fullscreen Flag Set To Fullscreen Mode By Default
+</pre>
+<p>We're going to add one new integer variable here called texture[ ]. It will be used to store our texture. The last three lines were in tutorial 14 and have not changed in this tutorial.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">GLuint	texture[1];						// One Texture Map ( NEW )
+GLuint	base;							// Base Display List For The Font Set
+
+GLfloat	rot;							// Used To Rotate The Text
+
+LRESULT	CALLBACK WndProc(HWND, UINT, WPARAM, LPARAM);		// Declaration For WndProc
+</pre>
+<p>The following section of code has some minor changes. In this tutorial I'm going to use the wingdings font to display a skull and crossbones type object. If you want to display text instead, you can leave the code the same as it was in lesson 14, or change to a font of your own.</p>
+<p>A few of you were wondering how to use the wingdings font, which is another reason I'm not using a standard font. Wingdings is a SYMBOL font, and requires a few changes to make it work. It's not as easy as telling Windows to use the wingdings font. If you change the font name to wingdings, you'll notice that the font doesn't get selected. You have to tell Windows that the font is a symbol font and not a standard character font. More on this later.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">GLvoid BuildFont(GLvoid)					// Build Our Bitmap Font
+{
+	GLYPHMETRICSFLOAT	gmf[256];			// Address Buffer For Font Storage
+	HFONT	font;						// Windows Font ID
+
+	base = glGenLists(256);					// Storage For 256 Characters
+	font = CreateFont(	-12,				// Height Of Font
+				0,				// Width Of Font
+				0,				// Angle Of Escapement
+				0,				// Orientation Angle
+				FW_BOLD,			// Font Weight
+				FALSE,				// Italic
+				FALSE,				// Underline
+				FALSE,				// Strikeout
+</pre>
+<p>This is the magic line! Instead of using ANSI_CHARSET like we did in tutorial 14, we're going to use SYMBOL_CHARSET. This tells Windows that the font we are building is not your typical font made up of characters. A symbol font is usually made up of tiny pictures (symbols). If you forget to change this line, wingdings, webdings and any other symbol font you may be trying to use will not work.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">				SYMBOL_CHARSET,			// Character Set Identifier ( Modified )
+</pre>
+<p>The next few lines have not changed.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">				OUT_TT_PRECIS,			// Output Precision
+				CLIP_DEFAULT_PRECIS,		// Clipping Precision
+				ANTIALIASED_QUALITY,		// Output Quality
+				FF_DONTCARE|DEFAULT_PITCH,	// Family And Pitch
+</pre>
+<p>Now that we've selected the symbol character set identifier, we can select the wingdings font!</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">				"Wingdings");			// Font Name ( Modified )
+</pre>
+<p>The remaining lines of code have not changed.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	SelectObject(hDC, font);				// Selects The Font We Created
+
+	wglUseFontOutlines(	hDC,				// Select The Current DC
+				0,				// Starting Character
+				255,				// Number Of Display Lists To Build
+				base,				// Starting Display Lists
+</pre>
+<p>I'm allowing for more deviation. This means GL will not try to follow the outline of the font as closely. If you set deviation to 0.0f, you'll notice problems with the texturing on really curved surfaces. If you allow for some deviation, most of the problems will disappear.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">				0.1f,				// Deviation From The True Outlines
+</pre>
+<p>The next three lines of code are still the same.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">				0.2f,				// Font Thickness In The Z Direction
+				WGL_FONT_POLYGONS,		// Use Polygons, Not Lines
+				gmf);				// Address Of Buffer To Recieve Data
+}
+</pre>
+<p>Right before ReSizeGLScene() we're going to add the following section of code to load our texture. You might recognize the code from previous tutorials. We create storage for the bitmap image. We load the bitmap image. We tell OpenGL to generate 1 texture, and we store this texture in texture[0].</p>
+<p>I'm creating a mipmapped texture only because it looks better. The name of the texture is lights.bmp.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">AUX_RGBImageRec *LoadBMP(char *Filename)			// Loads A Bitmap Image
+{
+	FILE *File=NULL;					// File Handle
+
+	if (!Filename)						// Make Sure A Filename Was Given
+	{
+		return NULL;					// If Not Return NULL
+	}
+
+	File=fopen(Filename,"r");				// Check To See If The File Exists
+
+	if (File)						// Does The File Exist?
+	{
+		fclose(File);					// Close The Handle
+		return auxDIBImageLoad(Filename);		// Load The Bitmap And Return A Pointer
+	}
+
+	return NULL;						// If Load Failed Return NULL
+}
+
+int LoadGLTextures()						// Load Bitmaps And Convert To Textures
+{
+	int Status=FALSE;					// Status Indicator
+
+	AUX_RGBImageRec *TextureImage[1];			// Create Storage Space For The Texture
+
+	memset(TextureImage,0,sizeof(void *)*1);		// Set The Pointer To NULL
+
+	if (TextureImage[0]=LoadBMP("Data/Lights.bmp"))		// Load The Bitmap
+	{
+		Status=TRUE;					// Set The Status To TRUE
+
+		glGenTextures(1, &amp;texture[0]);			// Create The Texture
+
+		// Build Linear Mipmapped Texture
+		glBindTexture(GL_TEXTURE_2D, texture[0]);
+		gluBuild2DMipmaps(GL_TEXTURE_2D, 3, TextureImage[0]-&gt;sizeX, TextureImage[0]-&gt;sizeY, GL_RGB, GL_UNSIGNED_BYTE, TextureImage[0]-&gt;data);
+		glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_LINEAR_MIPMAP_NEAREST);
+</pre>
+<p>The next four lines of code will automatically generate texture coordinates for any object we draw to the screen. The glTexGen command is extremely powerful, and complex, and to get into all the math involved would be a tutorial on it's own. All you need to know is that GL_S and GL_T are texture coordinates. By default they are set up to take the current x location on the screen and the current y location on the screen and come up with a texture vertex. You'll notice the objects are not textured on the z plane... just stripes appear. The front and back faces are textured though, and that's all that matters. X (GL_S) will cover mapping the texture left to right, and Y (GL_T) will cover mapping the texture up and down.</p>
+<p>GL_TEXTURE_GEN_MODE lets us select the mode of texture mapping we want to use on the S and T texture coordinates. You have 3 choices:</p>
+<p>GL_EYE_LINEAR - The texture is fixed to the screen. It never moves. The object is mapped with whatever section of the texture it is passing over.</p>
+<p>GL_OBJECT_LINEAR - This is the mode we are using. The texture is fixed to the object moving around the screen.</p>
+<p>GL_SPHERE_MAP - Everyones favorite. Creates a metalic reflective type object.</p>
+<p>It's important to note that I'm leaving out alot of code. We should be setting the GL_OBJECT_PLANE as well, but by default it's set to the parameters we want. Buy a good book if you're interested in learning more, or check out the MSDN help CD / DVD.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">		// Texturing Contour Anchored To The Object
+		glTexGeni(GL_S, GL_TEXTURE_GEN_MODE, GL_OBJECT_LINEAR);
+		// Texturing Contour Anchored To The Object
+		glTexGeni(GL_T, GL_TEXTURE_GEN_MODE, GL_OBJECT_LINEAR);
+		glEnable(GL_TEXTURE_GEN_S);			// Auto Texture Generation
+		glEnable(GL_TEXTURE_GEN_T);			// Auto Texture Generation
+	}
+
+	if (TextureImage[0])					// If Texture Exists
+	{
+		if (TextureImage[0]-&gt;data)			// If Texture Image Exists
+		{
+			free(TextureImage[0]-&gt;data);		// Free The Texture Image Memory
+		}
+
+		free(TextureImage[0]);				// Free The Image Structure
+	}
+
+	return Status;						// Return The Status
+}
+</pre>
+<p>There are a few new lines at the end of the InitGL() code. BuildFont() has been moved underneath our texture loading code. The line glEnable(GL_COLOR_MATERIAL) has been removed. If you plan to apply colors to the texture using glColor3f(r,g,b) add the line glEnable(GL_COLOR_MATERIAL) back into this section of code.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">int InitGL(GLvoid)						// All Setup For OpenGL Goes Here
+{
+	if (!LoadGLTextures())					// Jump To Texture Loading Routine
+	{
+		return FALSE;					// If Texture Didn't Load Return FALSE
+	}
+	BuildFont();						// Build The Font
+
+	glShadeModel(GL_SMOOTH);				// Enable Smooth Shading
+	glClearColor(0.0f, 0.0f, 0.0f, 0.5f);			// Black Background
+	glClearDepth(1.0f);					// Depth Buffer Setup
+	glEnable(GL_DEPTH_TEST);				// Enables Depth Testing
+	glDepthFunc(GL_LEQUAL);					// The Type Of Depth Testing To Do
+	glEnable(GL_LIGHT0);					// Quick And Dirty Lighting (Assumes Light0 Is Set Up)
+	glEnable(GL_LIGHTING);					// Enable Lighting
+	glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);	// Really Nice Perspective Calculations
+</pre>
+<p>Enable 2D Texture Mapping, and select texture one. This will map texture one onto any 3D object we draw to the screen. If you want more control, you can enable and disable texture mapping yourself.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	glEnable(GL_TEXTURE_2D);				// Enable Texture Mapping
+	glBindTexture(GL_TEXTURE_2D, texture[0]);		// Select The Texture
+	return TRUE;						// Initialization Went OK
+}
+</pre>
+<p>The resize code hasn't changed, but our DrawGLScene code has.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">int DrawGLScene(GLvoid)						// Here's Where We Do All The Drawing
+{
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);	// Clear The Screen And The Depth Buffer
+	glLoadIdentity();					// Reset The View
+</pre>
+<p>Here's our first change. Instead of keeping the object in the middle of the screen, we're going to spin it around the screen using COS and SIN (no surprise). We'll translate 3 units into the screen (-3.0f). On the x axis, we'll swing from -1.1 at far left to +1.1 at the right. We'll be using the rot variable to control the left right swing. We'll swing from +0.8 at top to -0.8 at the bottom. We'll use the rot variable for this swinging motion as well. (might as well make good use of your variables).</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	// Position The Text
+	glTranslatef(1.1f*float(cos(rot/16.0f)),0.8f*float(sin(rot/20.0f)),-3.0f);
+</pre>
+<p>Now we do the normal rotations. This will cause the symbol to spin on the X, Y and Z axis.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	glRotatef(rot,1.0f,0.0f,0.0f);				// Rotate On The X Axis
+	glRotatef(rot*1.2f,0.0f,1.0f,0.0f);			// Rotate On The Y Axis
+	glRotatef(rot*1.4f,0.0f,0.0f,1.0f);			// Rotate On The Z Axis
+</pre>
+<p>We translate a little to the left, down, and towards the viewer to center the symbol on each axis. Otherwise when it spins it doesn't look like it's spinning around it's own center. -0.35 is just a number that worked. I had to play around with numbers for a bit because I'm not sure how wide the font is, could vary with each font. Why the fonts aren't built around a central point I'm not sure.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	glTranslatef(-0.35f,-0.35f,0.1f);			// Center On X, Y, Z Axis
+</pre>
+<p>Finally we draw our skull and crossbones symbol then increase the rot variable so our symbol spins and moves around the screen. If you can't figure out how I get a skull and crossbones from the letter 'N', do this: Run Microsoft Word or Wordpad. Go to the fonts drop down menu. Select the Wingdings font. Type and uppercase 'N'. A skull and crossbones appears.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	glPrint("N");						// Draw A Skull And Crossbones Symbol
+	rot+=0.1f;						// Increase The Rotation Variable
+	return TRUE;						// Keep Going
+}
+</pre>
+<p>The last thing to do is add KillFont() to the end of KillGLWindow() just like I'm showing below. It's important to add this line. It cleans things up before we exit our program.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	if (!UnregisterClass("OpenGL",hInstance))		// Are We Able To Unregister Class
+	{
+		MessageBox(NULL,"Could Not Unregister Class.","SHUTDOWN ERROR",MB_OK | MB_ICONINFORMATION);
+		hInstance=NULL;					// Set hInstance To NULL
+	}
+
+	KillFont();						// Destroy The Font
+}
+</pre>
+<p>Even though I never went into extreme detail, you should have a pretty good understanding on how to make OpenGL generate texture coordinates for you. You should have no problems mapping textures to fonts of your own, or even other objects for that matter. And by changing just two lines of code, you can enable sphere mapping, which is a really cool effect.</p>
+<p><strong>Jeff Molofee</strong> (<strong>NeHe</strong>)</p>
+<p>* DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/vc/lesson15.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/vc/lesson15.zip'" tppabs="http://nehe.gamedev.net/data/lessons/vc/lesson15.zip">Visual C++</a> Code For This Lesson.</p>
+<p>* DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/bcb6/lesson15_bcb6.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/bcb6/lesson15_bcb6.zip'" tppabs="http://nehe.gamedev.net/data/lessons/bcb6/lesson15_bcb6.zip">Borland C++ Builder 6</a> Code For This Lesson. ( Conversion by <a href="mailto:christian@tugzip.com">Christian Kindahl</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/cwarrior/lesson15.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/cwarrior/lesson15.zip'" tppabs="http://nehe.gamedev.net/data/lessons/cwarrior/lesson15.zip">Code Warrior 5.3</a> Code For This Lesson. ( Conversion by <a href="mailto:DelusionalBeing@hotmail.com">Scott Lupton</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/delphi/lesson15.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/delphi/lesson15.zip'" tppabs="http://nehe.gamedev.net/data/lessons/delphi/lesson15.zip">Delphi</a> Code For This Lesson. ( Conversion by <a href="mailto:michal_praha@seznam.cz">Michal Tucek</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/devc/lesson15.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/devc/lesson15.zip'" tppabs="http://nehe.gamedev.net/data/lessons/devc/lesson15.zip">Dev C++</a> Code For This Lesson. ( Conversion by <a href="mailto:danprogram@hotmail.com">Dan</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/euphoria/lesson15.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/euphoria/lesson15.zip'" tppabs="http://nehe.gamedev.net/data/lessons/euphoria/lesson15.zip">Euphoria</a> Code For This Lesson. ( Conversion by <a href="mailto:1evan@sbcglobal.net">Evan Marshall</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/glut/lesson15.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/glut/lesson15.zip'" tppabs="http://nehe.gamedev.net/data/lessons/glut/lesson15.zip">GLut</a> Code For This Lesson. ( Conversion by <a href="mailto:oster@ieee.org">David Phillip Oster</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/java/lesson15.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/java/lesson15.zip'" tppabs="http://nehe.gamedev.net/data/lessons/java/lesson15.zip">Java</a> Code For This Lesson. ( Conversion by <a href="mailto:jeff@consunet.com.au">Jeff Kirby</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/lccwin32/lccwin32_lesson15.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/lccwin32/lccwin32_lesson15.zip'" tppabs="http://nehe.gamedev.net/data/lessons/lccwin32/lccwin32_lesson15.zip">LCC Win32</a> Code For This Lesson. ( Conversion by <a href="mailto:rwishlaw@shaw.ca">Robert Wishlaw</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev.net/data/lessons/mac/lesson15.sit.hqx  \n\nThis file was not retrieved by Teleport Pro, because the server reports that this file cannot be found.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev.net/data/lessons/mac/lesson15.sit.hqx'" tppabs="http://nehe.gamedev.net/data/lessons/mac/lesson15.sit.hqx">Mac OS</a> Code For This Lesson. ( Conversion by <a href="mailto:oster@ieee.org">David Phillip Oster</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/masm/lesson15.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/masm/lesson15.zip'" tppabs="http://nehe.gamedev.net/data/lessons/masm/lesson15.zip">MASM</a> Code For This Lesson. ( Conversion by <a href="mailto:greg@ozducati.com">Greg Helps</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/pelles_c/lesson15.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/pelles_c/lesson15.zip'" tppabs="http://nehe.gamedev.net/data/lessons/pelles_c/lesson15.zip">Pelles C</a> Code For This Lesson. ( Conversion by <a href="mailto:pelle@smorgasbordet.com">Pelle Orinius</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/vb/lesson15.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/vb/lesson15.zip'" tppabs="http://nehe.gamedev.net/data/lessons/vb/lesson15.zip">Visual Basic</a> Code For This Lesson. ( Conversion by <a href="mailto:rosscogl@email.com">Ross Dawson</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/vs_net/lesson15.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/vs_net/lesson15.zip'" tppabs="http://nehe.gamedev.net/data/lessons/vs_net/lesson15.zip">Visual Studio .NET</a> Code For This Lesson. ( Conversion by <a href="mailto:ultimatezeus@hotmail.com">Grant James</a> )</p>
+<p>&nbsp;</p>
+<p><strong><span><a href="index-54.htm" tppabs="http://nehe.gamedev.net/data/lessons/lesson.asp?lesson=14">&lt; Lesson 14</a></span></strong><strong><span><a href="index-56.htm" tppabs="http://nehe.gamedev.net/data/lessons/lesson.asp?lesson=16">Lesson 16 &gt;</a></span></strong></p>
+
+
+</div>
+</div>
+
+
+
+            <div style="width:728px;padding:0px;margin:auto; margin-top: 10px;">
+            
+
+    
+                <!-- Leaderboard_NeHe -->
+                <div id='div-gpt-ad-1327940144417-0' style='width:728px; height:90px;'>
+                <script type='text/javascript'>
+                googletag.cmd.push(function() { googletag.display('div-gpt-ad-1327940144417-0'); });
+                </script>
+                </div>
+            
+
+                           
+            </div>   
+        </td>
+        <td class="col2">
+            
+
+
+
+
+<div style="text-align: center; padding:10px;">
+
+<script type='text/javascript'>
+    GA_googleFillSlot("Skyscraper_NeHe");
+</script>
+
+</div>
+            
+        </td>
+    </table>
+    <div id="footer">
+        <p>
+            
+    
+    © 1997-2012 Gamedev . All rights reserved.<br/>
+
+			NeHe™ and NeHe Productions™ are trademarks of GameDev.net, LLC<br/>
+			OpenGL® is a registered trademark of Silicon Graphics Inc.<br/>
+		</p>        
+		<br/>
+    </div>
+
+    
+    
+	    <script type="text/javascript" src="shCore.js" tppabs="http://nehe.gamedev.net/static/js/syntax_highlighter/shCore.js"></script>
+        <script type="text/javascript" src="shBrushCpp.js" tppabs="http://nehe.gamedev.net/static/js/syntax_highlighter/shBrushCpp.js"></script>
+	    <script type="text/javascript" src="shBrushJScript.js" tppabs="http://nehe.gamedev.net/static/js/syntax_highlighter/shBrushJScript.js"></script>
+	    <script type="text/javascript">SyntaxHighlighter.all();</script>
+    
+
+    <!-- Place this render call where appropriate -->
+    <script type="text/javascript">
+      (function() {
+        var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+        po.src = 'plusone.js'/*tpa=https://apis.google.com/js/plusone.js*/;
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+      })();
+    </script>    
+
+    
+<!-- GoogleAnalytics code -->
+<script src="urchin.js" tppabs="http://www.google-analytics.com/urchin.js" type="text/javascript">
+</script>
+<script type="text/javascript">
+_uacct = "UA-279474-2"; // Gamedev
+urchinTracker();
+_uff = 0; // Reset for second account
+_uacct = "UA-24180731-1"; // Non-GD
+urchinTracker();
+</script> 
+  </body>
+</html>

@@ -1,0 +1,536 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<!-- 这篇文章由Dancingwind翻译，作者的联系方式zhouwei02@mails.tsinghua.edu.cn --><html>
+<head>
+<title>NeHe OpenGL教程第十八课，DancingWind翻译</title>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<style type=text/css>
+A:link {COLOR: #ccaaff; TEXT-DECORATION: none}
+A:visited {COLOR: #ccaaff; TEXT-DECORATION: none}
+A:active {COLOR: #ccaaff; TEXT-DECORATION: none}
+A:hover {COLOR: #ffccaa; TEXT-DECORATION: none}
+</style>
+</head>
+
+<br><br>
+
+<body bgcolor=#000000 text=#ffffff><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td width=326 height=130><img src="logo.png" tppabs="http://www.owlei.com/DancingWind/Pic/logo.png" width=326 height=130></td>
+    <td valign=middle align=center width="75%"><font color=#ffccaa size=+3><b><i>第18课</i></b></font></td>
+  </tr></table>
+  <!-- 上边框-->
+<table border="0" cellPadding="0" cellSpacing="0" width="100%">
+<TBODY>
+  <tr>
+    <td><img height="28" src="tl.jpg" tppabs="http://www.owlei.com/DancingWind/Pic/tl.jpg" width="28"></td>
+    <td width="100%"><img height="28" src="tc.gif" tppabs="http://www.owlei.com/DancingWind/Pic/tc.gif" width="100%"></td>
+    <td><img height="28" src="tr.gif" tppabs="http://www.owlei.com/DancingWind/Pic/tr.gif" width="28"></td>
+  </tr>
+</TBODY>
+</table>
+
+<!-- 中部-->
+<table border="0" cellPadding="0" cellSpacing="0" width="100%">
+<TBODY>
+  <tr>
+  	<!-- 中部左边框-->
+    <td  background="l.gif" tppabs="http://www.owlei.com/DancingWind/Pic/l.gif"><img src="l.gif" tppabs="http://www.owlei.com/DancingWind/Pic/l.gif" width="28" height="28"></td>
+	<!-- 中部文字部分-->
+    <td vAlign="top" width="100%">
+	<table width="100%" border="0">
+          <tr>
+            <td width="25%"><img src="lesson18.jpg" tppabs="http://www.owlei.com/DancingWind/Pic/lesson18.jpg" width="240" height="180"></td>
+            <td width="75%"><p><FONT 
+                class=head>二次几何体:</FONT></p>
+              <p><font size="3">利用二次几何体，你可以很容易的创建球，圆盘，圆柱和圆锥。</FONT></p></td>
+          </tr>
+     </table>
+      </td>
+	<!-- 中部右边框-->
+    <td background="r.gif" tppabs="http://www.owlei.com/DancingWind/Pic/r.gif"><img src="r.gif" tppabs="http://www.owlei.com/DancingWind/Pic/r.gif" width="28" height="28"></td>
+  </tr>
+</TBODY>
+</table>
+
+<!-- 下边框-->
+<table border="0" cellPadding="0" cellSpacing="0" width="100%">
+<TBODY>
+  <tr>
+    <td><img height="28" src="bl.gif" tppabs="http://www.owlei.com/DancingWind/Pic/bl.gif" width="28"></td>
+    <td width="100%"><img height="28" src="bc.gif" tppabs="http://www.owlei.com/DancingWind/Pic/bc.gif" width="100%"></td>
+    <td><img height="28" src="br.gif" tppabs="http://www.owlei.com/DancingWind/Pic/br.gif" width="28"></td>
+  </tr>
+</TBODY>
+</table>
+  <table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>二次曲面是一种画复合对象的方法，这种方法通常并不需要很多的三角形。我们将要使用第七课的代码。我们将要增加7个变量以及修改纹理以增加一些变化 
+      ：</td>
+    <td background="r.gif" tppabs="http://www.owlei.com/DancingWind/Pic/r.gif"><img src="r.gif" tppabs="http://www.owlei.com/DancingWind/Pic/r.gif" width="28" height="28"></td>
+  </tr>
+</table>
+
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tr>
+    <td><img src="bl.gif" tppabs="http://www.owlei.com/DancingWind/Pic/bl.gif" width="28" height="28"></td>
+    <td width="100%"><img src="bc.gif" tppabs="http://www.owlei.com/DancingWind/Pic/bc.gif" width="100%" height="28"></td>
+    <td><img src="br.gif" tppabs="http://www.owlei.com/DancingWind/Pic/br.gif" width="28" height="28"></td>
+  </tr>
+</table>
+<font color="#aaffaa" size="3"> 
+<pre>bool    sp;						<font color="#ffffaa">// 空格键是否按下</font>
+
+int	part1;						<font
+color="#ffffaa">// 圆盘的起始角度</font>
+int	part2;						<font color="#ffffaa">// </font><font color="#aaffaa" size="3"><font
+color="#ffffaa">圆盘的结束角度</font></font>
+int	p1=0;						<font
+color="#ffffaa">// 增量1</font>
+int	p2=1;						<font color="#ffffaa">// </font><font color="#aaffaa" size="3"><font
+color="#ffffaa">增量1</font></font>
+GLUquadricObj *quadratic;					<font
+color="#ffffaa">// 二次几何体</font>
+GLuint  object=0;						<font
+color="#ffffaa">// 二次几何体标示符</font>
+</pre>
+</font> 
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tr>
+    <td><img src="tl.jpg" tppabs="http://www.owlei.com/DancingWind/Pic/tl.jpg" width="28" height="28"></td>
+    <td width="100%"><img src="tc.gif" tppabs="http://www.owlei.com/DancingWind/Pic/tc.gif" width="100%" height="28"></td>
+    <td><img src="tr.gif" tppabs="http://www.owlei.com/DancingWind/Pic/tr.gif" width="28" height="28"></td>
+  </tr>
+</table>
+
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tr>
+    <td background="l.gif" tppabs="http://www.owlei.com/DancingWind/Pic/l.gif"><img src="l.gif" tppabs="http://www.owlei.com/DancingWind/Pic/l.gif" width="28" height="28"></td>
+    <td width="100%" valign="top">好了我们现在开始搞InitGL()函数。我们打算增加3行代码用来初始化我们的二次曲面。这3行代码将在你使1号光源有效后增加，但是要在返回之前。第一行代码将初始化二次曲面并且创建一个指向改二次曲面的指针，如果改二次曲面不能被创建的话，那么该指针就是NULL。第二行代码将在二次曲面的表面创建平滑的法向量，这样当灯光照上去的时候将会好看些。另外一些可能的取值是：GLU_NONE和GLU_FLAT。最后我们使在二次曲面表面的纹理映射有效。</td>
+    <td background="r.gif" tppabs="http://www.owlei.com/DancingWind/Pic/r.gif"><img src="r.gif" tppabs="http://www.owlei.com/DancingWind/Pic/r.gif" width="28" height="28"></td>
+  </tr>
+</table>
+
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tr>
+    <td><img src="bl.gif" tppabs="http://www.owlei.com/DancingWind/Pic/bl.gif" width="28" height="28"></td>
+    <td width="100%"><img src="bc.gif" tppabs="http://www.owlei.com/DancingWind/Pic/bc.gif" width="100%" height="28"></td>
+    <td><img src="br.gif" tppabs="http://www.owlei.com/DancingWind/Pic/br.gif" width="28" height="28"></td>
+  </tr>
+</table>
+<font color="#aaffaa" size="3">
+
+<pre>	quadratic=gluNewQuadric();			<font color="#ffffaa">	// 创建二次几何体</font>
+	gluQuadricNormals(quadratic, GLU_SMOOTH);	<font
+color="#ffffaa">	// 使用平滑法线</font>
+	gluQuadricTexture(quadratic, GL_TRUE);		<font
+color="#ffffaa">// 使用纹理</font></pre>
+</font>
+
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tr>
+    <td><img src="tl.jpg" tppabs="http://www.owlei.com/DancingWind/Pic/tl.jpg" width="28" height="28"></td>
+    <td width="100%"><img src="tc.gif" tppabs="http://www.owlei.com/DancingWind/Pic/tc.gif" width="100%" height="28"></td>
+    <td><img src="tr.gif" tppabs="http://www.owlei.com/DancingWind/Pic/tr.gif" width="28" height="28"></td>
+  </tr>
+</table>
+
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tr>
+    <td background="l.gif" tppabs="http://www.owlei.com/DancingWind/Pic/l.gif"><img src="l.gif" tppabs="http://www.owlei.com/DancingWind/Pic/l.gif" width="28" height="28"></td>
+    <td width="100%" valign="top">现在我决定在本课里保留立方体，这样你可以看到纹理是如何映射到二次曲面对象上的。而且我打算将绘制立方体的代码定义为一个单独的函数，这样我们在定义函数Draw()的时候它将会变的不那么凌乱。每个人都应该记住这些代码：</td>
+    <td background="r.gif" tppabs="http://www.owlei.com/DancingWind/Pic/r.gif"><img src="r.gif" tppabs="http://www.owlei.com/DancingWind/Pic/r.gif" width="28" height="28"></td>
+  </tr>
+</table>
+
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tr>
+    <td><img src="bl.gif" tppabs="http://www.owlei.com/DancingWind/Pic/bl.gif" width="28" height="28"></td>
+    <td width="100%"><img src="bc.gif" tppabs="http://www.owlei.com/DancingWind/Pic/bc.gif" width="100%" height="28"></td>
+    <td><img src="br.gif" tppabs="http://www.owlei.com/DancingWind/Pic/br.gif" width="28" height="28"></td>
+  </tr>
+</table>
+<font color="#aaffaa" size="3">
+
+<pre>GLvoid glDrawCube()					<font color="#ffffaa">// 绘制立方体</font>
+{
+		glBegin(GL_QUADS);			
+		<font color="#ffffaa">// 前面</font>
+		glNormal3f( 0.0f, 0.0f, 1.0f);		
+		glTexCoord2f(0.0f, 0.0f); glVertex3f(-1.0f, -1.0f,  1.0f);	
+		glTexCoord2f(1.0f, 0.0f); glVertex3f( 1.0f, -1.0f,  1.0f);	
+		glTexCoord2f(1.0f, 1.0f); glVertex3f( 1.0f,  1.0f,  1.0f);	
+		glTexCoord2f(0.0f, 1.0f); glVertex3f(-1.0f,  1.0f,  1.0f);	
+		<font color="#ffffaa">// 后面</font>
+		glNormal3f( 0.0f, 0.0f,-1.0f);		
+		glTexCoord2f(1.0f, 0.0f); glVertex3f(-1.0f, -1.0f, -1.0f);	
+		glTexCoord2f(1.0f, 1.0f); glVertex3f(-1.0f,  1.0f, -1.0f);	
+		glTexCoord2f(0.0f, 1.0f); glVertex3f( 1.0f,  1.0f, -1.0f);	
+		glTexCoord2f(0.0f, 0.0f); glVertex3f( 1.0f, -1.0f, -1.0f);	
+		<font color="#ffffaa">// 上面</font>
+		glNormal3f( 0.0f, 1.0f, 0.0f);		
+		glTexCoord2f(0.0f, 1.0f); glVertex3f(-1.0f,  1.0f, -1.0f);	
+		glTexCoord2f(0.0f, 0.0f); glVertex3f(-1.0f,  1.0f,  1.0f);	
+		glTexCoord2f(1.0f, 0.0f); glVertex3f( 1.0f,  1.0f,  1.0f);	
+		glTexCoord2f(1.0f, 1.0f); glVertex3f( 1.0f,  1.0f, -1.0f);	
+		<font color="#ffffaa">// 下面</font>
+		glNormal3f( 0.0f,-1.0f, 0.0f);		
+		glTexCoord2f(1.0f, 1.0f); glVertex3f(-1.0f, -1.0f, -1.0f);	
+		glTexCoord2f(0.0f, 1.0f); glVertex3f( 1.0f, -1.0f, -1.0f);	
+		glTexCoord2f(0.0f, 0.0f); glVertex3f( 1.0f, -1.0f,  1.0f);	
+		glTexCoord2f(1.0f, 0.0f); glVertex3f(-1.0f, -1.0f,  1.0f);	
+		<font color="#ffffaa">// 右面</font>
+		glNormal3f( 1.0f, 0.0f, 0.0f);		
+		glTexCoord2f(1.0f, 0.0f); glVertex3f( 1.0f, -1.0f, -1.0f);	
+		glTexCoord2f(1.0f, 1.0f); glVertex3f( 1.0f,  1.0f, -1.0f);	
+		glTexCoord2f(0.0f, 1.0f); glVertex3f( 1.0f,  1.0f,  1.0f);	
+		glTexCoord2f(0.0f, 0.0f); glVertex3f( 1.0f, -1.0f,  1.0f);	
+		<font color="#ffffaa">// 左面</font>
+		glNormal3f(-1.0f, 0.0f, 0.0f);		
+		glTexCoord2f(0.0f, 0.0f); glVertex3f(-1.0f, -1.0f, -1.0f);	
+		glTexCoord2f(1.0f, 0.0f); glVertex3f(-1.0f, -1.0f,  1.0f);	
+		glTexCoord2f(1.0f, 1.0f); glVertex3f(-1.0f,  1.0f,  1.0f);	
+		glTexCoord2f(0.0f, 1.0f); glVertex3f(-1.0f,  1.0f, -1.0f);	
+	glEnd();					
+}
+</pre>
+</font>
+
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tr>
+    <td><img src="tl.jpg" tppabs="http://www.owlei.com/DancingWind/Pic/tl.jpg" width="28" height="28"></td>
+    <td width="100%"><img src="tc.gif" tppabs="http://www.owlei.com/DancingWind/Pic/tc.gif" width="100%" height="28"></td>
+    <td><img src="tr.gif" tppabs="http://www.owlei.com/DancingWind/Pic/tr.gif" width="28" height="28"></td>
+  </tr>
+</table>
+
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tr>
+    <td background="l.gif" tppabs="http://www.owlei.com/DancingWind/Pic/l.gif"><img src="l.gif" tppabs="http://www.owlei.com/DancingWind/Pic/l.gif" width="28" height="28"></td>
+    <td width="100%" valign="top">接下来就是场景绘制函数了，在这里我只写一个简单的例子。并且当我绘制一个部分的盘子的时候，我将使用一个静态变量（一个局部的变量，该变量可以保留他的值不论你任何时候调用他）来表达一个非常酷的效果。为了清晰起见我将要重写DrawGLScene函数。<br>
+      　　 你们将会注意到当我讨论这些正在使用的参数时我忽略了当前函数的第一个参数（quadratic）。这个参数将被除立方体外的所有对象使用。所以当我讨论这些参数的时候我忽略了它。</td>
+    <td background="r.gif" tppabs="http://www.owlei.com/DancingWind/Pic/r.gif"><img src="r.gif" tppabs="http://www.owlei.com/DancingWind/Pic/r.gif" width="28" height="28"></td>
+  </tr>
+</table>
+
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tr>
+    <td><img src="bl.gif" tppabs="http://www.owlei.com/DancingWind/Pic/bl.gif" width="28" height="28"></td>
+    <td width="100%"><img src="bc.gif" tppabs="http://www.owlei.com/DancingWind/Pic/bc.gif" width="100%" height="28"></td>
+    <td><img src="br.gif" tppabs="http://www.owlei.com/DancingWind/Pic/br.gif" width="28" height="28"></td>
+  </tr>
+</table>
+<font color="#aaffaa" size="3">
+
+<pre>int DrawGLScene(GLvoid)						
+{
+		//...
+<font color="#ffffaa">// 这部分是新增加的</font>
+	switch(object)						<font
+color="#ffffaa">// 绘制哪一种二次几何体</font>
+	{
+	case 0:							<font
+color="#ffffaa">// 绘制立方体</font>
+		glDrawCube();					
+		break;						
+</pre>
+</font>
+
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tr>
+    <td><img src="tl.jpg" tppabs="http://www.owlei.com/DancingWind/Pic/tl.jpg" width="28" height="28"></td>
+    <td width="100%"><img src="tc.gif" tppabs="http://www.owlei.com/DancingWind/Pic/tc.gif" width="100%" height="28"></td>
+    <td><img src="tr.gif" tppabs="http://www.owlei.com/DancingWind/Pic/tr.gif" width="28" height="28"></td>
+  </tr>
+</table>
+
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tr>
+    <td background="l.gif" tppabs="http://www.owlei.com/DancingWind/Pic/l.gif"><img src="l.gif" tppabs="http://www.owlei.com/DancingWind/Pic/l.gif" width="28" height="28"></td>
+    <td width="100%" valign="top">我们创建的第2个对象是一个圆柱体。参数1（1.0F）是圆柱体的底面半径，参数2（1.0F）是圆柱体的饿顶面半径，参数3（3.0F）是圆柱体的高度。参数4（32）是纬线（环绕Z轴有多少细分），参数5（32）是经线（沿着Z轴有多少细分）。细分越多该对象就越细致。我们可以用增加细分的方法来增加对象的多边形数。因此你可以牺牲速度换回质量（以时间换质量），大多数的时候我们都可以很容易的找到一个合适的“度”。<br></td>
+    <td background="r.gif" tppabs="http://www.owlei.com/DancingWind/Pic/r.gif"><img src="r.gif" tppabs="http://www.owlei.com/DancingWind/Pic/r.gif" width="28" height="28"></td>
+  </tr>
+</table>
+
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tr>
+    <td><img src="bl.gif" tppabs="http://www.owlei.com/DancingWind/Pic/bl.gif" width="28" height="28"></td>
+    <td width="100%"><img src="bc.gif" tppabs="http://www.owlei.com/DancingWind/Pic/bc.gif" width="100%" height="28"></td>
+    <td><img src="br.gif" tppabs="http://www.owlei.com/DancingWind/Pic/br.gif" width="28" height="28"></td>
+  </tr>
+</table>
+<font color="#aaffaa" size="3">
+
+<pre>	case 1:							<font color="#ffffaa">// 绘制圆柱体</font>
+		glTranslatef(0.0f,0.0f,-1.5f);			
+		gluCylinder(quadratic,1.0f,1.0f,3.0f,32,32);	
+		break;						</pre>
+</font>
+
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tr>
+    <td><img src="tl.jpg" tppabs="http://www.owlei.com/DancingWind/Pic/tl.jpg" width="28" height="28"></td>
+    <td width="100%"><img src="tc.gif" tppabs="http://www.owlei.com/DancingWind/Pic/tc.gif" width="100%" height="28"></td>
+    <td><img src="tr.gif" tppabs="http://www.owlei.com/DancingWind/Pic/tr.gif" width="28" height="28"></td>
+  </tr>
+</table>
+
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tr>
+    <td background="l.gif" tppabs="http://www.owlei.com/DancingWind/Pic/l.gif"><img src="l.gif" tppabs="http://www.owlei.com/DancingWind/Pic/l.gif" width="28" height="28"></td>
+    <td width="100%" valign="top">对象3将会创建一个CD样子的盘子。参数1（0.5F）是盘子的内圆半径，该参数可以为0，则表示在盘子中间没孔，内圆半径越大孔越大。参数2（1.5F）表示外圆半径，这个参数必须比内圆半径大。参数3（32）是组成该盘子的切片的数量，这个数量可以想象成披萨饼中的切片的数量。切片越多，外圆边缘就越平滑。最后一个参数（32）是组成盘子的环的数量。环很像唱片上的轨迹，一环套一环。这些环从内圆半径细分到外圆半径。再说一次，细分越多，速度越慢。</td>
+    <td background="r.gif" tppabs="http://www.owlei.com/DancingWind/Pic/r.gif"><img src="r.gif" tppabs="http://www.owlei.com/DancingWind/Pic/r.gif" width="28" height="28"></td>
+  </tr>
+</table>
+
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tr>
+    <td><img src="bl.gif" tppabs="http://www.owlei.com/DancingWind/Pic/bl.gif" width="28" height="28"></td>
+    <td width="100%"><img src="bc.gif" tppabs="http://www.owlei.com/DancingWind/Pic/bc.gif" width="100%" height="28"></td>
+    <td><img src="br.gif" tppabs="http://www.owlei.com/DancingWind/Pic/br.gif" width="28" height="28"></td>
+  </tr>
+</table>
+<font color="#aaffaa" size="3">
+
+<pre>	case 2:							<font color="#ffffaa">// 绘制圆盘</font>
+		gluDisk(quadratic,0.5f,1.5f,32,32);		
+		break;						</pre>
+</font>
+
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tr>
+    <td><img src="tl.jpg" tppabs="http://www.owlei.com/DancingWind/Pic/tl.jpg" width="28" height="28"></td>
+    <td width="100%"><img src="tc.gif" tppabs="http://www.owlei.com/DancingWind/Pic/tc.gif" width="100%" height="28"></td>
+    <td><img src="tr.gif" tppabs="http://www.owlei.com/DancingWind/Pic/tr.gif" width="28" height="28"></td>
+  </tr>
+</table>
+
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tr>
+    <td background="l.gif" tppabs="http://www.owlei.com/DancingWind/Pic/l.gif"><img src="l.gif" tppabs="http://www.owlei.com/DancingWind/Pic/l.gif" width="28" height="28"></td>
+    <td width="100%" valign="top">我们的第4个对象我知道你们为描述它耗尽精力。就是球。绘制球将会变的非常简单。参数1是球的半径。如果你无法理解半径/直径等等的话，可以理解成物体中心到物体外部的距离，在这里我们使用1.3F作为半径。接下来两个参数就是细分了，和圆柱体一样，参数2是纬线，参数3是经线。细分越多球看起来就越平滑，通常球需要多一些的细分以使他们看起来平滑。<br></td>
+    <td background="r.gif" tppabs="http://www.owlei.com/DancingWind/Pic/r.gif"><img src="r.gif" tppabs="http://www.owlei.com/DancingWind/Pic/r.gif" width="28" height="28"></td>
+  </tr>
+</table>
+
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tr>
+    <td><img src="bl.gif" tppabs="http://www.owlei.com/DancingWind/Pic/bl.gif" width="28" height="28"></td>
+    <td width="100%"><img src="bc.gif" tppabs="http://www.owlei.com/DancingWind/Pic/bc.gif" width="100%" height="28"></td>
+    <td><img src="br.gif" tppabs="http://www.owlei.com/DancingWind/Pic/br.gif" width="28" height="28"></td>
+  </tr>
+</table>
+<font color="#aaffaa" size="3">
+
+<pre>	case 3:							<font color="#ffffaa">// 绘制球</font>
+		gluSphere(quadratic,1.3f,32,32);		
+		break;						</pre>
+</font>
+
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tr>
+    <td><img src="tl.jpg" tppabs="http://www.owlei.com/DancingWind/Pic/tl.jpg" width="28" height="28"></td>
+    <td width="100%"><img src="tc.gif" tppabs="http://www.owlei.com/DancingWind/Pic/tc.gif" width="100%" height="28"></td>
+    <td><img src="tr.gif" tppabs="http://www.owlei.com/DancingWind/Pic/tr.gif" width="28" height="28"></td>
+  </tr>
+</table>
+
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tr>
+    <td background="l.gif" tppabs="http://www.owlei.com/DancingWind/Pic/l.gif"><img src="l.gif" tppabs="http://www.owlei.com/DancingWind/Pic/l.gif" width="28" height="28"></td>
+    <td width="100%" valign="top">我们创建的第4个对象使用与我们曾经创建的圆柱体一样的命令来创建，如果你还记得的话，我们可以通过控制参数2和参数3来控制顶面半径和地面半径。因此我们可以使顶面半径为0来绘制一个圆锥体，顶面半径为0将会在顶面上创建一个点。因此在下面的代码中，我们使顶面半径等于0，这将会创建一个点，同时也就创建了我们的圆锥。</td>
+    <td background="r.gif" tppabs="http://www.owlei.com/DancingWind/Pic/r.gif"><img src="r.gif" tppabs="http://www.owlei.com/DancingWind/Pic/r.gif" width="28" height="28"></td>
+  </tr>
+</table>
+
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tr>
+    <td><img src="bl.gif" tppabs="http://www.owlei.com/DancingWind/Pic/bl.gif" width="28" height="28"></td>
+    <td width="100%"><img src="bc.gif" tppabs="http://www.owlei.com/DancingWind/Pic/bc.gif" width="100%" height="28"></td>
+    <td><img src="br.gif" tppabs="http://www.owlei.com/DancingWind/Pic/br.gif" width="28" height="28"></td>
+  </tr>
+</table>
+<font color="#aaffaa" size="3">
+
+<pre>	case 4:							<font color="#ffffaa">// 绘制圆锥</font>
+		glTranslatef(0.0f,0.0f,-1.5f);			
+		gluCylinder(quadratic,1.0f,0.0f,3.0f,32,32);	
+		break;						</pre>
+</font>
+
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tr>
+    <td><img src="tl.jpg" tppabs="http://www.owlei.com/DancingWind/Pic/tl.jpg" width="28" height="28"></td>
+    <td width="100%"><img src="tc.gif" tppabs="http://www.owlei.com/DancingWind/Pic/tc.gif" width="100%" height="28"></td>
+    <td><img src="tr.gif" tppabs="http://www.owlei.com/DancingWind/Pic/tr.gif" width="28" height="28"></td>
+  </tr>
+</table>
+
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tr>
+    <td background="l.gif" tppabs="http://www.owlei.com/DancingWind/Pic/l.gif"><img src="l.gif" tppabs="http://www.owlei.com/DancingWind/Pic/l.gif" width="28" height="28"></td>
+    <td width="100%" valign="top">我们的第6个对象将被gluPartialDisk函数创建。我们打算创建的这个对象使用了一些命令，这些命令在我们创建对象之前，你将会清楚的看到。但是命令gluPartialDisk拥有两个新的参数。第5个参数是我们想要绘制的部分盘子的开始角度，参数6是旋转角，也就是转过的角度。我们将要增加旋转角，这将引起盘子沿顺时针方向缓慢的被绘制在屏幕上。一旦旋转角达到360度我们将开始增加开始角度，这样盘子看起来就想是被逐渐的抹去一样。我们将重复这些过程。</td>
+    <td background="r.gif" tppabs="http://www.owlei.com/DancingWind/Pic/r.gif"><img src="r.gif" tppabs="http://www.owlei.com/DancingWind/Pic/r.gif" width="28" height="28"></td>
+  </tr>
+</table>
+
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tr>
+    <td><img src="bl.gif" tppabs="http://www.owlei.com/DancingWind/Pic/bl.gif" width="28" height="28"></td>
+    <td width="100%"><img src="bc.gif" tppabs="http://www.owlei.com/DancingWind/Pic/bc.gif" width="100%" height="28"></td>
+    <td><img src="br.gif" tppabs="http://www.owlei.com/DancingWind/Pic/br.gif" width="28" height="28"></td>
+  </tr>
+</table>
+<font color="#aaffaa" size="3">
+
+<pre>	case 5:							<font color="#ffffaa">// 绘制部分圆盘</font>
+		part1+=p1;					
+		part2+=p2;					
+
+		if(part1&gt;359)					
+		{
+			p1=0;					
+			part1=0;				
+			p2=1;					
+			part2=0;				
+		}
+		if(part2&gt;359)					
+		{
+			p1=1;					
+			p2=0;					
+		}
+		gluPartialDisk(quadratic,0.5f,1.5f,32,32,part1,part2-part1);	
+		break;						
+	};
+
+		//...
+}
+</pre>
+</font>
+
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tr>
+    <td><img src="tl.jpg" tppabs="http://www.owlei.com/DancingWind/Pic/tl.jpg" width="28" height="28"></td>
+    <td width="100%"><img src="tc.gif" tppabs="http://www.owlei.com/DancingWind/Pic/tc.gif" width="100%" height="28"></td>
+    <td><img src="tr.gif" tppabs="http://www.owlei.com/DancingWind/Pic/tr.gif" width="28" height="28"></td>
+  </tr>
+</table>
+
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tr>
+    <td background="l.gif" tppabs="http://www.owlei.com/DancingWind/Pic/l.gif"><img src="l.gif" tppabs="http://www.owlei.com/DancingWind/Pic/l.gif" width="28" height="28"></td>
+    <td width="100%" valign="top"><font face="arial" size="-1">In the KillGLWindow() section
+    of code, we need to delete the quadratic to free up system resources. We do this with the
+    command gluDeleteQuadratic. </font></td>
+    <td background="r.gif" tppabs="http://www.owlei.com/DancingWind/Pic/r.gif"><img src="r.gif" tppabs="http://www.owlei.com/DancingWind/Pic/r.gif" width="28" height="28"></td>
+  </tr>
+</table>
+
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tr>
+    <td><img src="bl.gif" tppabs="http://www.owlei.com/DancingWind/Pic/bl.gif" width="28" height="28"></td>
+    <td width="100%"><img src="bc.gif" tppabs="http://www.owlei.com/DancingWind/Pic/bc.gif" width="100%" height="28"></td>
+    <td><img src="br.gif" tppabs="http://www.owlei.com/DancingWind/Pic/br.gif" width="28" height="28"></td>
+  </tr>
+</table>
+<font color="#aaffaa" size="3">
+
+<pre>GLvoid KillGLWindow(GLvoid)					
+{
+	gluDeleteQuadric(quadratic);				<font
+color="#ffffaa">// 删除二次几何体</font>
+</pre>
+</font>
+
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tr>
+    <td><img src="tl.jpg" tppabs="http://www.owlei.com/DancingWind/Pic/tl.jpg" width="28" height="28"></td>
+    <td width="100%"><img src="tc.gif" tppabs="http://www.owlei.com/DancingWind/Pic/tc.gif" width="100%" height="28"></td>
+    <td><img src="tr.gif" tppabs="http://www.owlei.com/DancingWind/Pic/tr.gif" width="28" height="28"></td>
+  </tr>
+</table>
+
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tr>
+    <td background="l.gif" tppabs="http://www.owlei.com/DancingWind/Pic/l.gif"><img src="l.gif" tppabs="http://www.owlei.com/DancingWind/Pic/l.gif" width="28" height="28"></td>
+    <td width="100%" valign="top"> 在最后，我给出键盘输入代码。仅仅增加一些对剩余键的检查。<br></td>
+    <td background="r.gif" tppabs="http://www.owlei.com/DancingWind/Pic/r.gif"><img src="r.gif" tppabs="http://www.owlei.com/DancingWind/Pic/r.gif" width="28" height="28"></td>
+  </tr>
+</table>
+
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tr>
+    <td><img src="bl.gif" tppabs="http://www.owlei.com/DancingWind/Pic/bl.gif" width="28" height="28"></td>
+    <td width="100%"><img src="bc.gif" tppabs="http://www.owlei.com/DancingWind/Pic/bc.gif" width="100%" height="28"></td>
+    <td><img src="br.gif" tppabs="http://www.owlei.com/DancingWind/Pic/br.gif" width="28" height="28"></td>
+  </tr>
+</table>
+<font color="#aaffaa" size="3">
+
+<pre>				if (keys[' '] &amp;&amp; !sp)		<font color="#ffffaa">// 空格是否按下</font>
+				{
+					sp=TRUE;		<font
+color="#ffffaa">	// 是,则绘制下一种二次几何体</font>
+					object++;		
+					if(object&gt;5)		
+						object=0;	
+				}
+				if (!keys[' '])			<font
+color="#ffffaa">// 空格是否释放</font>
+				{
+					sp=FALSE;		<font
+color="#ffffaa">	// 记录这个状态</font>
+				}
+</pre>
+</font>
+
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tr>
+    <td><img src="tl.jpg" tppabs="http://www.owlei.com/DancingWind/Pic/tl.jpg" width="28" height="28"></td>
+    <td width="100%"><img src="tc.gif" tppabs="http://www.owlei.com/DancingWind/Pic/tc.gif" width="100%" height="28"></td>
+    <td><img src="tr.gif" tppabs="http://www.owlei.com/DancingWind/Pic/tr.gif" width="28" height="28"></td>
+  </tr>
+</table>
+
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tr>
+    <td background="l.gif" tppabs="http://www.owlei.com/DancingWind/Pic/l.gif"><img src="l.gif" tppabs="http://www.owlei.com/DancingWind/Pic/l.gif" width="28" height="28"></td>
+    <td width="100%" valign="top"><p>这就是全部了。现在你可以在OpenGL中绘制二次曲面了。 </p>
+<table width="100%" border="1">
+  <tr>
+    <td width="27%"><img src="logo 3.jpg" tppabs="http://www.owlei.com/DancingWind/images/logo%203.jpg" width="209" height="200" align="middle"></td>
+    <td width="73%">版权与使用声明:<br>
+      我是个对学习和生活充满激情的普通男孩,在网络上我以DancingWind为昵称，我的联系方式是zhouwei02@mails.tsinghua.edu.cn，如果你有任何问题，都可以联系我。
+      <p>引子<br>
+        网络是一个共享的资源，但我在自己的学习生涯中浪费大量的时间去搜索可用的资料，在现实生活中花费了大量的金钱和时间在书店中寻找资料，于是我给自己起了个昵称DancingWind，其意义是想风一样从各个知识的站点中吸取成长的养料。在飘荡了多年之后，我决定把自己收集的资料整理为一个统一的资源库。</p>
+      <p>版权声明<br>
+        所有DancingWind发表的内容，大多都来自共享的资源，所以我没有资格把它们据为己有，或声称自己为这些资源作出了一点贡献。故任何人都可以复制，修改，重新发表，甚至以自己的名义发表，我都不会追究，但你在做以上事情的时候必须保证内容的完整性，给后来的人一个完整的教程。最后，任何人不能以这些资料的任何部分，谋取任何形式的报酬。</p>
+      <p>发展计划<br>
+        在国外，很多资料都是很多人花费几年的时间慢慢积累起来的。如果任何人有兴趣与别人共享你的知识，我很欢迎你与我联系，但你必须同意我上面的声明。</p>
+            <p>感谢<br>
+              感谢我的母亲一直以来对我的支持和在生活上的照顾。<br>
+              感谢我深爱的女友田芹，一直以来默默的在精神上和生活中对我的支持，她甚至把买衣服的钱都用来给我买书了，她真的是我见过的最好的女孩，希望我能带给她幸福。</p>
+            <p>资源下载: <br>
+              文档 <a href="javascript:if(confirm('http://www.owlei.com/DancingWind/Res/mht/NeHe%20OpenGL%20Chinese%20Course%2018.mht  \n\nThis file was not retrieved by Teleport Pro, because the server reports that this file cannot be found.  \n\nDo you want to open it from the server?'))window.location='http://www.owlei.com/DancingWind/Res/mht/NeHe%20OpenGL%20Chinese%20Course%2018.mht'" tppabs="http://www.owlei.com/DancingWind/Res/mht/NeHe%20OpenGL%20Chinese%20Course%2018.mht">网页格式</a> 
+              <a href="javascript:if(confirm('http://www.owlei.com/DancingWind/Res/pdf/OpenGL_Nehe_Course_Tutorial_18.pdf  \n\nThis file was not retrieved by Teleport Pro, because the server reports that this file cannot be found.  \n\nDo you want to open it from the server?'))window.location='http://www.owlei.com/DancingWind/Res/pdf/OpenGL_Nehe_Course_Tutorial_18.pdf'" tppabs="http://www.owlei.com/DancingWind/Res/pdf/OpenGL_Nehe_Course_Tutorial_18.pdf">PDF格式</a><br>
+              源码 <a href="javascript:if(confirm('http://www.owlei.com/DancingWind/Res/Src/18_Quadratic.rar  \n\nThis file was not retrieved by Teleport Pro, because the server reports that this file cannot be found.  \n\nDo you want to open it from the server?'))window.location='http://www.owlei.com/DancingWind/Res/Src/18_Quadratic.rar'" tppabs="http://www.owlei.com/DancingWind/Res/Src/18_Quadratic.rar">RAR格式</a></p></td>
+  </tr>
+</table>
+      <table border="0" width="100%">
+      <tr>
+          <td width="50%" align="left"><a href="Tutorial_17.htm" tppabs="http://www.owlei.com/DancingWind/Course/Tutorial_17.htm"><b>&lt; 第17课</b></a></td>
+          <td width="50%" align="right"><a href="Tutorial_19.htm" tppabs="http://www.owlei.com/DancingWind/Course/Tutorial_19.htm"><b>第19课 
+            &gt;</b></a></td>
+      </tr>
+    </table>
+    </td>
+    <td background="r.gif" tppabs="http://www.owlei.com/DancingWind/Pic/r.gif"><img src="r.gif" tppabs="http://www.owlei.com/DancingWind/Pic/r.gif" width="28" height="28"></td>
+  </tr>
+</table>
+
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tr>
+    <td><img src="bl.gif" tppabs="http://www.owlei.com/DancingWind/Pic/bl.gif" width="28" height="28"></td>
+    <td width="100%"><img src="bc.gif" tppabs="http://www.owlei.com/DancingWind/Pic/bc.gif" width="100%" height="28"></td>
+    <td><img src="br.gif" tppabs="http://www.owlei.com/DancingWind/Pic/br.gif" width="28" height="28"></td>
+  </tr>
+</table>
+
+</body>
+</html>

@@ -1,0 +1,3269 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!-- saved from url=(0038)http://my.oschina.net/renhc/blog/54582 -->
+<html lang="zh-CN" xml:lang="zh-CN" xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  
+  <meta http-equiv="Content-Language" content="zh-CN">
+  <meta name="robots" content="index, follow">
+  <link rel="shortcut icon" type="image/x-icon" href="http://my.oschina.net/img/favicon.ico">
+  <title>【C/C++】Linux下system()函数引发的错误 -  恋恋美食的个人空间 - 开源中国社区</title>
+      <meta name="Description" content="【C/C++】Linux下system()函数引发的错误：今天，一个运行了近一年的程序突然挂掉了，问题定位到是system()函数出的问题，关于该函数的简单使用在我...">
+    <link rel="stylesheet/less" href="./02_files/styles.less" type="text/css" media="screen">
+  <link rel="stylesheet" href="./02_files/tip-yellowsimple.css" type="text/css">
+  <link rel="stylesheet" type="text/css" href="./02_files/jquery.fancybox-1.3.4.css" media="screen">
+  <script type="text/javascript" async="" src="./02_files/ga.js"></script><script type="text/javascript" src="./02_files/jquery-1.7.1.min.js"></script><style type="text/css"></style><style type="text/css"></style>
+  <script type="text/javascript" src="./02_files/jquery.form.js"></script>
+  <script type="text/javascript" src="./02_files/jquery.fancybox-1.3.4.pack.js"></script>
+  <script type="text/javascript" src="./02_files/jquery.poshytip.min.js"></script>
+  <script type="text/javascript" src="./02_files/oschina.js"></script>
+  <script type="text/javascript" src="./02_files/less-1.3.0.min.js"></script><style type="text/css" media="screen" id="less:renhc-styles">:focus {
+  outline: 0;
+}
+* {
+  padding: 0;
+  margin: 0;
+}
+a {
+  color: #4466bb;
+  outline: 0;
+}
+a:hover {
+  color: #0000aa;
+}
+ul,
+ol {
+  list-style-type: none;
+}
+img {
+  border: 0;
+}
+textarea {
+  resize: none;
+}
+body {
+  background: #f9f9f9;
+  text-align: center;
+  font-size: 10pt;
+}
+label.SELECTED {
+  color: #A00;
+  font-weight: bold;
+}
+.clear {
+  clear: both;
+  font-size: 1px;
+  line-height: 0;
+}
+.clearfix:after {
+  content: ".";
+  display: block;
+  clear: both;
+  visibility: hidden;
+  line-height: 0;
+  height: 0;
+}
+.clearfix {
+  display: inline-block;
+}
+html[xmlns] .clearfix {
+  display: block;
+}
+* html .clearfix {
+  height: 1%;
+}
+.ostable {
+  width: 100%;
+  table-layout: fixed;
+}
+.ostable td {
+  vertical-align: top;
+  overflow: hidden;
+}
+.highlight {
+  color: #A00;
+  padding: 0 1px;
+  margin: 0 2px;
+}
+.NoData {
+  text-align: center;
+  padding: 20px 0;
+  color: #999999;
+}
+a.tag {
+  background-color: #E0EAF1;
+  border-bottom: 1px solid #3E6D8E;
+  border-right: 1px solid #7F9FB6;
+  color: #3E6D8E;
+  font-size: 8pt;
+  line-height: 2.4;
+  margin: 2px 2px 2px 0;
+  padding: 2px 4px;
+  text-decoration: none;
+  white-space: nowrap;
+}
+a.tag:hover {
+  background-color: #3E6D8E;
+  color: #fff;
+}
+a.project {
+  background-color: #cfc;
+  color: #060;
+}
+a.project:hover {
+  background-color: #5cc26f;
+  color: #fff;
+}
+a.rndbutton {
+  background: #5cc26f;
+  color: #fff;
+  text-decoration: none;
+  height: 30px;
+  float: left;
+  margin: 0;
+  border: 0px solid #000;
+  font-weight: bold;
+  cursor: pointer;
+}
+a.rndbutton:hover {
+  background: #40ab54;
+}
+a.rndbutton:hover span {
+  background: #40ab54;
+  color: #fff;
+}
+a.rndbutton span {
+  background: #5cc26f;
+  color: #fff;
+  float: left;
+  margin: 0 0 0 12px;
+  padding: 0 12px 0 0;
+  height: 30px;
+  line-height: 30px;
+}
+.obj_type_1 a.title {
+  background: url('/img/a2.gif') no-repeat left center;
+  background-position: 5px;
+}
+.obj_type_2 a.title {
+  background: url('/img/thread.gif') no-repeat left center;
+  background-position: 5px;
+}
+.obj_type_3 a.title {
+  background: url('/img/thread.gif') no-repeat left center;
+  background-position: 5px;
+}
+.obj_type_4 a.title {
+  background: url('/img/a3.gif') no-repeat left center;
+  background-position: 5px;
+}
+.obj_type_5 a.title {
+  background: url('/img/code.gif') no-repeat left center;
+}
+.obj_type_7 a.title {
+  background: url('/img/a3.gif') no-repeat left center;
+  background-position: 5px;
+}
+#OSC_Screen {
+  width: 990px;
+  margin: 0px auto;
+  text-align: left;
+  padding: 0 4px;
+  margin-bottom: 50px;
+}
+#OSC_Banner {
+  background: #40aa53;
+  border-top: 0;
+  height: 36px;
+  padding: 2px 5px 0 5px;
+}
+#OSC_Banner #OSC_Logo {
+  float: left;
+  margin: 1px 0 0 2px;
+  width: 105px;
+}
+#OSC_Banner #OSC_Logo a {
+  float: left;
+  background: url('/img/2012/osc2.png') no-repeat 0 1px;
+  width: 100px;
+  height: 34px;
+  text-indent: -9999px;
+}
+#OSC_Banner #OSC_Slogon {
+  float: left;
+  margin: 10px 0 0 10px;
+  color: #f2f2f2;
+}
+#OSC_Banner #OSC_Slogon a {
+  color: #fff;
+}
+#OSC_Banner #OSC_Channels {
+  margin-right: 10px;
+  float: right;
+  font-weight: bold;
+  font-size: 10.5pt;
+  height: 35px;
+  line-height: 35px;
+}
+#OSC_Banner #OSC_Channels ul li {
+  float: left;
+  margin: 0px 5px 0 10px;
+}
+#OSC_Banner #OSC_Channels ul li a {
+  text-decoration: none;
+  color: #f2f2f2;
+  padding: 2px;
+}
+#OSC_Banner #OSC_Channels ul li a:hover {
+  color: #fff;
+}
+#OSC_Notification {
+  width: 200px;
+  margin-left: 10px;
+  font-size: 9pt;
+}
+#OSC_Notification a.msgbox {
+  background: url('/img/msg.gif') no-repeat 5px 5px;
+  padding: 2px 4px 2px 22px;
+  text-decoration: none;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
+  -webkit-border-radius: 5px;
+}
+#OSC_Notification a.newmsg {
+  color: #A00;
+  background: url('/img/msg2.gif') no-repeat 5px 3px;
+  padding: 2px 4px 2px 22px;
+  text-decoration: none;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
+  -webkit-border-radius: 5px;
+}
+#OSC_Notification a:hover {
+  font-weight: bold;
+  color: #C00;
+}
+#OSC_Notification a em {
+  font-style: normal;
+  font-weight: bold;
+  margin-right: 2px;
+  text-decoration: underline;
+}
+#OSC_Topbar {
+  margin: 2px 0;
+}
+#OSC_Topbar #VisitorInfo {
+  font-size: 9pt;
+  color: #888;
+  float: left;
+}
+#OSC_Topbar #VisitorInfo a {
+  text-decoration: none;
+}
+#OSC_Topbar #SearchBar form {
+  float: right;
+  margin: 3px 0 0 0;
+  width: 310px;
+  background: #eee;
+  padding: 1px;
+}
+#OSC_Topbar #SearchBar form .ipt {
+  display: inline-block;
+  height: 22px;
+  padding: 2px 0 0 5px;
+  background: #FFF;
+}
+#OSC_Topbar #SearchBar form .ipt input {
+  color: #868686;
+  width: 200px;
+  font: 13px/22px Tahoma, Geneva, sans-serif;
+  border: none;
+  background: #FFF;
+  padding: 0;
+  height: 20px;
+  outline: 0;
+}
+#OSC_Topbar #SearchBar form .bnt {
+  color: #FFF;
+  text-align: center;
+  background: #5cc26f;
+  width: 45px;
+  height: 24px;
+  border: 0;
+  cursor: pointer;
+}
+#OSC_Topbar #SearchBar form .bnt:hover {
+  background: #40ab54;
+}
+#OSC_Topbar #SearchBar form .search-by {
+  float: left;
+}
+#OSC_Topbar #SearchBar form .search_on {
+  background: #FFF;
+  text-align: center;
+  position: relative;
+}
+#OSC_Topbar #SearchBar form .search_on .text {
+  height: 24px;
+  line-height: 23px;
+  width: 50px;
+  display: block;
+  color: #868686;
+  cursor: pointer ;
+  text-align: left;
+  padding: 0px 0 0 10px;
+  background: url(/img/android/selectbox_bg.png) no-repeat;
+}
+#OSC_Topbar #SearchBar form .search_on .text.on {
+  background-position: 0 -24px;
+}
+#OSC_Topbar #SearchBar form .search_on .text.hover {
+  background-position: 0 -48px;
+}
+#OSC_Topbar #SearchBar form .search_list {
+  background: #FFF;
+  display: none;
+  position: absolute;
+  width: 80px;
+  border: 1px solid #c3c3c3;
+  z-index: 9999;
+}
+#OSC_Topbar #SearchBar form .search_list li {
+  width: 80px;
+  height: 24px;
+  line-height: 24px;
+}
+#OSC_Topbar #SearchBar form .search_list a {
+  display: block;
+  color: #333 !important;
+  font-size: 8pt !important;
+  text-decoration: none;
+  padding: 0 0 0 10px;
+}
+#OSC_Topbar #SearchBar form .search_list a:hover {
+  background: #3399ff;
+  color: #ffffff !important;
+}
+#OSC_Topbar #SearchBar form .f_r {
+  float: right;
+}
+#OSC_Topbar #SearchBar form .f_l {
+  float: left;
+}
+#OSC_Topbar #SearchBar form .last {
+  margin: 0 !important;
+}
+#OSC_Topbar #SearchBar form .hide {
+  display: none;
+}
+/* 底部版权 */
+#OSC_Footer {
+  margin-top: 20px;
+  padding-bottom: 50px;
+  height: 38px;
+  line-height: 38px;
+  border-top: 2px solid #cccccc;
+  color: #666666;
+  text-align: center;
+}
+#OSC_Content {
+  margin: 10px 2px;
+  position: relative;
+}
+#SpaceLeft {
+  float: left;
+  width: 220px;
+}
+#SpaceLeft a {
+  text-decoration: none;
+}
+#SpaceMain {
+  margin: 0 220px 0 230px;
+  word-wrap: break-word;
+}
+#SpaceRight {
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 210px;
+  word-wrap: break-word;
+}
+.SpaceList {
+  margin: 0 0 0 230px;
+  border: 1px solid #eee;
+  padding: 10px 15px;
+  background: #fff;
+  word-wrap: break-word;
+}
+.SpaceList .TopBar {
+  margin: 0 0 25px 0;
+  color: #999999;
+  font-size: 9pt;
+  height: 22px;
+  line-height: 22px;
+}
+.SpaceList .TopBar h1 {
+  color: #333333;
+}
+.Owner {
+  background: #5cc26f;
+  padding: 15px 5px 15px 10px;
+  position: relative;
+}
+.Owner a.Img:hover {
+  background: none;
+}
+.Owner a {
+  color: #fff;
+  padding: 0px;
+}
+.Owner a:hover {
+  background: #fff;
+  color: #5cc26f;
+}
+.Owner a.ThemeSetting {
+  position: absolute;
+  right: 0;
+  top: 0;
+  text-indent: -9999px;
+  width: 28px;
+  height: 28px;
+  background: url('/img/2012/enter_narrow.png') no-repeat 0 0;
+}
+.Owner a.ThemeSetting:hover {
+  background: url('/img/2012/enter_narrow.png') no-repeat 0 -30px;
+}
+.Owner .Img img {
+  float: left;
+  width: 56px;
+  height: 56px;
+  background: #fff;
+  padding: 3px;
+  margin: 0 8px 10px 0;
+}
+.Owner .Img:hover img {
+  background: #eee;
+}
+.Owner span.U {
+  float: left;
+  width: 130px;
+}
+.Owner span.U .Name {
+  color: #FFF;
+  font-size: 14pt;
+  display: block;
+  margin: 0 0 12px 0;
+  font-weight: bold;
+  word-wrap: break-word;
+}
+.Owner span.U .Name {
+  background: none;
+}
+.Owner span.U .opts {
+  color: #fff;
+  font-size: 9pt;
+}
+.Owner span.U .opts a {
+  color: #fff;
+}
+.Owner span.U .opts a:hover {
+  background-color: #fff;
+  color: #5cc26f;
+}
+.Owner a#gender_icon {
+  text-indent: -9999px;
+  background-color: #5cc26f;
+}
+.Owner a#gender_icon:hover {
+  background-color: #5cc26f;
+}
+.Owner .stat {
+  color: #fff;
+  font-size: 9pt;
+}
+.Owner .stat a {
+  margin-right: 3px;
+}
+.Resume {
+  background: #7798cb url('/img/2012/resume24.png') no-repeat left bottom;
+  margin: 3px 0 0 0;
+  color: #fff;
+  padding: 18px 10px 18px 40px;
+  word-wrap: break-word;
+  overflow: hidden;
+}
+.Resume textarea {
+  width: 170px;
+  height: 60px;
+  font-size: 9pt;
+}
+.Opts {
+  margin: 3px 0 0 0;
+}
+.Opts a {
+  cursor: pointer;
+  float: left;
+  width: 108px;
+  height: 108px;
+}
+.Opts a.a1 {
+  background-color: #5cc26f;
+}
+.Opts a.a1:hover {
+  background-color: #40ab54;
+}
+.Opts a.a2 {
+  background-color: #5cc26f;
+}
+.Opts a.a2:hover {
+  background-color: #40ab54;
+}
+.Opts a span {
+  padding: 82px 0 0 10px;
+  font-size: 11pt;
+  color: #fff;
+}
+.Opts a i {
+  text-indent: -9999px;
+  display: block;
+  margin: 10px 0 0 20px;
+  width: 67px;
+  height: 67px;
+  background-image: url('/img/2012/space-opts.png');
+  background-repeat: no;
+}
+.Opts a.a2 {
+  margin-left: 4px;
+}
+.Opts a.blog i {
+  background-position: 0 -67px;
+}
+.Opts a.admin i {
+  background-position: 0 -201px;
+}
+.Opts a.sendmsg i {
+  background-position: 0 -134px;
+}
+.Opts a.ask i {
+  background-position: 0 0;
+}
+.Mod {
+  background: #EAEAEA;
+  margin: 3px 0 0 0;
+  padding: 5px 0;
+  color: #666666;
+  overflow: hidden;
+}
+.Mod strong {
+  display: block;
+  font-size: 12pt;
+  border-bottom: 2px solid #7798cb;
+  padding: 0 10px 5px 10px;
+  color: #666666;
+}
+.Mod strong .more {
+  float: right;
+  font-weight: normal;
+  font-size: 10pt;
+  margin: 3px 0 0 0;
+}
+.Mod ul,
+.Mod ol {
+  margin: 10px;
+  line-height: 24px;
+}
+.Users ul li {
+  float: left;
+}
+.Users ul li a {
+  margin: 1px 1px 0 0;
+}
+.Users ul li img {
+  width: 36px;
+  height: 36px;
+  border: 1px solid #EAEAEA;
+}
+.Users ul li a:hover img {
+  border: 1px solid #5cc26f;
+}
+.Users .more {
+  margin: 10px 0;
+  text-align: right;
+  padding: 0 5px 0 0 ;
+}
+#BlogCatalogs ul li a {
+  background: url('/img/fw_arrow.gif') no-repeat left center;
+  padding-left: 15px;
+  color: #333333;
+}
+#BlogCatalogs ul li a:hover {
+  color: #000;
+}
+#BlogCatalogs ul li span {
+  color: #666666;
+  font-size: 8pt;
+  -webkit-text-size-adjust: none;
+  margin-left: 5px;
+}
+#BlogCatalogs ul li.draft a {
+  font-weight: bold;
+}
+#HotBlogs ol li a {
+  color: #333333;
+  display: block;
+}
+#HotBlogs ol li a:hover {
+  color: #000;
+  background: #ddd;
+}
+#BlogLinks li a {
+  color: #333333;
+  display: block;
+}
+#BlogLinks li a:hover {
+  color: #000;
+  background: #ddd;
+}
+#RelativeBlogs {
+  position: fixed;
+  bottom: 0;
+  right: -400px;
+  width: 380px;
+  height: 160px;
+  background-color: #FFFFFF;
+  font-size: 10.5pt;
+  border: 1px solid #5cc26f;
+}
+#RelativeBlogs strong {
+  display: block;
+  margin: 0 0 10px 0;
+  background: #5cc26f;
+  color: #fff;
+  padding: 2px 5px;
+}
+#RelativeBlogs strong a#btn_close {
+  cursor: pointer;
+  float: right;
+  color: #fff;
+  font-size: 9pt;
+}
+#RelativeBlogs ul {
+  margin: 10px;
+}
+#RelativeBlogs ul li {
+  line-height: 22px;
+}
+#RelativeBlogs ul li a {
+  background: url('/img/a2.gif') no-repeat left center;
+  padding-left: 15px;
+  font-size: 10pt;
+  text-decoration: none;
+}
+#RelativeBlogs ul li .date {
+  float: right;
+  font-size: 8pt;
+  color: #666666;
+  -webkit-text-size-adjust: none;
+}
+#BlogReplies ul li {
+  color: #666666;
+  border-bottom: 1px dashed #999999;
+}
+.TopBar .NavPath {
+  float: left;
+}
+.TopBar .PreviewMod {
+  float: right;
+}
+.TopBar .PreviewMod a.active {
+  font-weight: bold;
+  color: #4466BB;
+}
+.TopBar .PreviewMod a {
+  color: #666666;
+}
+.BlogList .Blog {
+  margin: 0 0 30px 0;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 5px;
+  position: relative;
+}
+.BlogList .Blog .date {
+  position: absolute;
+  right: 0;
+  top: 5px;
+  background: #7798cb;
+  width: 50px;
+  height: 43px;
+  font-size: 8pt;
+  color: #fff;
+  -webkit-text-size-adjust: none;
+  text-align: center;
+}
+.BlogList .Blog .date em {
+  font-style: normal;
+  font-family: Calibri;
+  font-size: 16pt;
+  display: block;
+  font-weight: bold;
+}
+.BlogList .Blog .title {
+  margin-right: 80px;
+  overflow: hidden;
+}
+.BlogList .Blog h2 {
+  font-size: 12pt;
+  margin: 0 0 5px 0;
+}
+.BlogList .Blog h2.BlogAccess_false {
+  background: url('/img/lock.gif') no-repeat 3px center;
+  padding-left: 20px;
+}
+.BlogList .Blog h2.BlogTop_1 {
+  background: url('/img/top.gif') no-repeat left center;
+  padding-left: 22px;
+}
+.BlogList .Blog h2.BlogSong {
+  background: url('/img/song.gif') no-repeat left center;
+  padding-left: 22px;
+}
+.BlogList .Blog h2 a {
+  text-decoration: none;
+  color: #333333;
+}
+.BlogList .Blog .outline {
+  color: #666666;
+  font-size: 9pt;
+}
+.BlogList .Blog .bottom {
+  margin: 20px 0 0 0;
+  color: #666666;
+  font-size: 9pt;
+}
+.BlogList .Blog .bottom a.fullcontent {
+  margin-left: 10px;
+}
+.BlogList .Blog .TextContent {
+  margin: 15px 0 0 0px;
+  color: #666666;
+  line-height: 22px;
+  overflow: hidden;
+  letter-spacing: 1px;
+}
+.BlogList .Blog a {
+  color: #666666;
+}
+.BlogList .Blog a:hover {
+  color: #333333;
+}
+.BlogTitle {
+  padding: 5px 0 5px 0;
+  margin: 0 0 20px 0;
+}
+.BlogTitle h1 {
+  font-size: 20pt;
+  margin: 0 0 10px 0;
+  color: #000;
+}
+.BlogTitle .BlogStat {
+  color: #666666;
+}
+.BlogTitle .BlogStat strong {
+  margin: 0 2px;
+  color: #A00;
+}
+.BlogTitle .BlogStat a {
+  color: #A00;
+}
+.BlogTitle .BlogStat a:hover {
+  background: #A00;
+  color: #fff;
+}
+.BlogTitle .BlogStat .admin {
+  float: right;
+}
+.BlogTitle .BlogStat .admin em {
+  font-style: normal;
+  font-weight: bold;
+  color: #A00;
+  margin: 0 2px;
+}
+.BlogContent {
+  font-size: 10.5pt;
+  overflow: hidden;
+}
+.BlogContent p {
+  margin-bottom: 15pt;
+  line-height: 1.5;
+  letter-spacing: 1px;
+}
+.BlogContent pre {
+  line-height: 18px;
+  margin: 10px 0;
+  font-size: 9pt;
+  font-family: Courier New,Arial;
+  border: 1px solid #ddd;
+  border-left: 5px solid #6CE26C;
+  background: #f6f6f6;
+  padding: 5px;
+}
+.BlogAbstracts span {
+  line-height: 1.5;
+  letter-spacing: 1px;
+}
+.BlogContent img {
+  max-width: 640px;
+}
+.BlogContent ul,
+ol {
+  margin: 0 0 10px 20px;
+  list-style-position: inside;
+}
+.BlogContent ul {
+  list-style-type: disc;
+}
+.BlogContent ol {
+  list-style-type: decimal;
+}
+.BlogContent blockquote {
+  margin: 15px 10px;
+  border: 2px solid #eee;
+  padding: 5px 5px 5px 35px;
+  background: #f4f5f7 url('/img/blockquote.gif') no-repeat left top;
+  color: #060;
+  font-size: 9pt;
+}
+.BlogContent code {
+  margin: 0 2px;
+  padding: 0 5px;
+  border: 1px solid #DDD;
+  background-color: #F6F6F6;
+  border-radius: 3px;
+  word-break: break-all;
+}
+.BlogContent pre > code {
+  margin: 0;
+  padding: 0;
+  white-space: pre;
+  border: none;
+  background: transparent;
+}
+.BlogContent pre code {
+  background-color: transparent;
+  border: none;
+}
+.BlogShare {
+  height: 40px;
+}
+.BlogAnchor {
+  margin-bottom: 20px;
+  background: #eee;
+  padding: 5px;
+}
+.BlogAnchor p {
+  font-size: 12pt;
+}
+.BlogAnchor .AnchorContent {
+  padding: 10px;
+}
+.BlogAnchor li {
+  list-style: none;
+  padding: 3px 0;
+}
+.BlogAnchor a {
+  text-decoration: none;
+}
+.BlogAnchor a:hover {
+  color: #5cc26f;
+}
+.BlogAnchor .osc_h2 {
+  text-indent: 20px;
+}
+.BlogAnchor .osc_h3 {
+  text-indent: 40px;
+}
+.BlogAnchor .osc_h4 {
+  text-indent: 60px;
+}
+.BlogAnchor .osc_h5 {
+  text-indent: 80px;
+}
+.BlogAnchor .osc_h6 {
+  text-indent: 100px;
+}
+#BlogVote {
+  float: right;
+}
+#BlogVote a {
+  float: left;
+  background: #5cc26f;
+  color: #fff;
+  width: 40px;
+  height: 32px;
+  line-height: 32px;
+  text-decoration: none;
+  text-align: center;
+}
+#BlogVote a:hover {
+  background: #40ab54;
+}
+#BlogVote span {
+  float: left;
+  margin: 6px 0 0 5px;
+}
+#BlogVote em {
+  font-style: normal;
+  color: #A00;
+  font-weight: bold;
+  margin: 0 3px 0 2px;
+}
+.BlogTags {
+  margin-top: 10px;
+}
+.BlogLinks {
+  margin: 10px 0 20px 0;
+}
+.BlogLinks ul {
+  list-style-type: none;
+  font-weight: bold;
+  height: 24px;
+}
+.BlogLinks ul li.prev {
+  float: left;
+  width: 48%;
+}
+.BlogLinks ul li.next {
+  float: right;
+  width: 48%;
+  text-align: right;
+}
+.BlogCopyright {
+  color: #666666;
+  margin: 20px 0;
+  border: 1px solid #ddd;
+  background: #ffe;
+  padding: 5px;
+}
+.BlogCopyright a {
+  color: #666666;
+  text-decoration: none;
+}
+.BlogComments {
+  margin-top: 10px;
+  padding-top: 0;
+}
+.BlogComments h2 a {
+  float: right;
+  font-weight: normal;
+  font-size: 10pt;
+}
+.BlogComments ul {
+  margin: 20px 0 0 0;
+}
+.BlogComments ul li {
+  margin: 0 0 20px 0;
+}
+.BlogComments ul li .portrait {
+  width: 50px;
+  padding-top: 3px;
+}
+.BlogComments ul li .portrait img {
+  width: 32px;
+  height: 32px;
+  padding: 2px;
+  background: #fff;
+}
+.BlogComments ul li .body .title {
+  color: #666666;
+  font-size: 9pt;
+}
+.BlogComments ul li .body .post {
+  margin: 10px 0 0 0;
+}
+.BlogComments ul li .body .post div.ref {
+  border: 1px solid #ddd;
+  margin: 0 0 10px 0;
+  padding: 2px;
+  font-size: 9pt;
+  background: #FFFEC8;
+}
+.BlogComments ul li .body .post div.ref h4 {
+  margin: 0;
+  padding: 1px 3px;
+  background: #CC9966;
+  color: #fff;
+  font-size: 10pt;
+}
+.BlogComments ul li .body .post div.ref p {
+  margin: 0;
+  padding: 2px;
+  line-height: 20px;
+  color: #666666;
+  font-size: 9pt;
+}
+.BlogCommentForm {
+  margin: 0 5px;
+}
+.BlogCommentForm form {
+  margin: 20px 0 20px 0;
+  padding: 0;
+}
+.BlogCommentForm form textarea {
+  padding: 5px;
+  border: 1px solid #999999;
+  margin: 5px 0;
+}
+.BlogCommentForm form input.SUBMIT {
+  font-size: 14px;
+  height: 28px;
+  line-height: 26px;
+  padding: 0 5px;
+}
+.BlogCommentForm form input.TEXT {
+  padding: 2px;
+  border: 1px solid #999999;
+}
+.LMod {
+  border: 1px solid #eee;
+  background: #fff;
+  padding: 10px 10px 5px 10px;
+  overflow: hidden;
+}
+.LMod strong {
+  display: block;
+  font-size: 12pt;
+  padding: 0 10px;
+  color: #666666;
+}
+.LMod ul {
+  margin: 15px 0 0 0;
+}
+.LMod ul li {
+  margin: 0 0 10px 0;
+}
+.LMod ul li .d {
+  color: #999999;
+  font-size: 8pt;
+  -webkit-text-size-adjust: none;
+  margin-left: 5px;
+}
+.LMod ul li a {
+  background: url('/img/a2.gif') no-repeat left 6px;
+  padding-left: 15px;
+  text-decoration: none;
+}
+.LMod .more {
+  margin: 10px 0;
+  text-align: right;
+  padding: 0 5px 0 0 ;
+}
+.MMod {
+  border: 1px solid #eee;
+  background: #fff;
+}
+.RMod {
+  border: 1px solid #eee;
+  background: #fff;
+  padding: 10px;
+}
+.RMod strong {
+  color: #333333;
+  display: block;
+  font-size: 14pt;
+  font-weight: normal;
+  margin: 0 0 10px 0;
+}
+.RMod strong a {
+  float: right;
+  font-weight: normal;
+  font-size: 10pt;
+  margin: 5px 2px 0 0;
+}
+.RMod ul li a {
+  color: #333333;
+  text-decoration: none;
+}
+.RMod ul li a:hover {
+  color: #000;
+}
+#Ad {
+  margin: 20px 0 0 0;
+}
+#Ad strong {
+  display: block;
+  margin: 0 0 10px 0;
+}
+#AboutMe {
+  padding: 20px;
+}
+#MyBlog {
+  background: #5cc26f;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+#MyBlog a {
+  text-decoration: none;
+  color: #fff;
+  font-size: 16pt;
+  float: left;
+  margin-left: 10px;
+}
+#MyBlog .action {
+  float: left;
+  width: 30px;
+  height: 30px;
+  background: url('/img/2012/action-icons.png') no-repeat 0 0;
+}
+#MyBlog:hover {
+  background: #40ab54;
+}
+#TopBlogs {
+  margin: 10px 0 0 0;
+  padding-bottom: 10px;
+}
+#TopBlogs strong {
+  padding-left: 5px;
+  padding-right: 0;
+}
+#TopBlogs strong a {
+  font-weight: normal;
+  float: right;
+  text-decoration: none;
+  color: #000;
+}
+#TopBlogs ul li {
+  margin: 0 5px 3px 0;
+}
+#TopBlogs ul li .s {
+  font-size: 9pt;
+  color: #999;
+  margin-left: 5px;
+}
+#TopBlogs ul li .d {
+  float: right;
+  font-size: 9pt;
+}
+#TopBlogs ul li a {
+  background: none;
+  padding-left: 10px;
+}
+#UserSkills #UserScore {
+  border-bottom: 1px dashed #eee;
+  margin: 0 0 15px 0;
+  overflow: hidden;
+  padding-bottom: 10px;
+}
+#UserSkills #UserScore h1 {
+  font-size: 12pt;
+  font-weight: normal;
+  float: left;
+  text-align: center;
+}
+#UserSkills #UserScore h1 em {
+  font-size: 20pt;
+  color: red;
+  font-style: normal;
+  color: #F00;
+  display: block;
+  margin: 5px 0 0 0;
+}
+#UserSkills #UserScore h1 a {
+  color: #999;
+  text-decoration: none;
+  display: block;
+}
+#UserSkills #UserScore h1 a:hover {
+  color: #000;
+}
+#UserSkills #UserScore h1.best {
+  width: 80px;
+}
+#UserSkills #UserScore h1.score {
+  width: 90px;
+  border-left: 1px solid #eee;
+  padding-left: 10px;
+}
+#UserSkills h1.Title {
+  color: #5cc26f;
+  font-size: 16pt;
+}
+#UserSkills h1.Title a {
+  font-weight: normal;
+  font-size: 10pt;
+  float: right;
+  margin: 3px 2px 0 0;
+}
+#UserSkills ul li {
+  margin: 10px 0 0 0;
+}
+#UserSkills ul li strong {
+  font-size: 10.5pt;
+  margin: 0px;
+  font-weight: bold;
+}
+#UserSkills ul li p {
+  color: #666;
+}
+#UserSkills ul li .more {
+  display: block;
+}
+#Profile li {
+  margin: 10px 0 0 0;
+  font-size: 9pt;
+  color: #666666;
+}
+#Profile li b {
+  display: block;
+  color: #333333;
+  margin-bottom: 2px;
+}
+#Profile li b.inline {
+  display: inline;
+}
+#Profile li a {
+  color: #4466bb;
+}
+#Profile li a:hover {
+  color: #0000aa;
+}
+#FavorBox {
+  margin-top: 10px;
+  padding-bottom: 20px;
+}
+#FavorBox ul {
+  margin: 0 0 0 0;
+}
+#FavorBox ul li {
+  float: left;
+  width: 85px;
+  height: 62px;
+  text-align: center;
+  margin: 30px 0 0 5px;
+  overflow: hidden;
+}
+#FavorBox ul li .logo {
+  display: block;
+  margin: 0 0 3px 0;
+}
+#FavorBox ul li img {
+  width: 40px;
+  height: 40px;
+}
+#FavorBox ul li .name {
+  font-weight: bold;
+  font-size: 9pt;
+  height: 20px;
+  line-height: 20px;
+}
+#FavorUpdate {
+  margin-top: 10px;
+}
+#FavorUpdate ul {
+  margin: 20px 0 0 0;
+}
+#FavorUpdate ul li {
+  margin: 0 0 10px 0;
+  color: #999999;
+  font-size: 9pt;
+}
+#FavorUpdate ul li a {
+  font-weight: bold;
+  font-size: 9pt;
+  display: block;
+  margin-bottom: 2px;
+}
+#FavorUpdate ul li .date {
+  font-size: 8pt;
+  -webkit-text-size-adjust: none;
+}
+.AdminNav {
+  background: #5cc26f;
+  padding: 10px;
+  font-size: 14pt;
+}
+.AdminNav a.u {
+  float: left;
+  width: 40px;
+}
+.AdminNav a.u img {
+  width: 36px;
+  height: 36px;
+}
+.AdminNav a.h {
+  float: left;
+  color: #fff;
+  margin: 5px 0 0 10px;
+}
+.AdminNav a.h:hover {
+  color: #eee;
+}
+#AdminMenus {
+  font-size: 10.5pt;
+}
+#AdminMenus li.caption {
+  margin-bottom: 20px;
+}
+#AdminMenus li.caption ol {
+  margin: 10px 0 0 0;
+  line-height: 26px;
+}
+#AdminMenus li.caption ol li {
+  padding-left: 10px;
+}
+#AdminMenus li.caption ol li.active {
+  background: #f6f6f6;
+  font-weight: bold;
+}
+#AdminMenus li.caption ol li.active a {
+  color: #333333;
+}
+#AdminBody {
+  min-height: 600px;
+  color: #333333;
+}
+#AdminBody .AdminHead {
+  border-bottom: 1px solid #cccccc;
+  margin-bottom: 20px;
+}
+#AdminBody .AdminHead h1 {
+  color: #666666;
+  margin-bottom: 15px;
+}
+#AdminBody .AdminHead h1 a {
+  text-decoration: none;
+  color: #666666;
+}
+#AdminBody .AdminHead h1 .SubTitle {
+  font-weight: normal;
+  font-size: 10.5pt;
+  margin-left: 10px;
+}
+#AdminBody .AdminHead h1 .SubTitle a {
+  color: #666666;
+}
+#AdminBody .AdminHead h1 .SubTitle a:hover {
+  color: #000;
+  text-decoration: underline;
+}
+#AdminBody .AdminHead .RelativeLinks {
+  float: right;
+  margin: 10px 10px 0 0;
+}
+#AdminBody .AdminHead .RelativeLinks a {
+  margin-left: 10px;
+}
+#AdminBody .AdminHead .Tabs {
+  font-size: 16pt;
+  padding-left: 20px;
+  height: 37px;
+  height: 37px;
+}
+#AdminBody .AdminHead .Tabs li {
+  float: left;
+  margin-right: 10px;
+}
+#AdminBody .AdminHead .Tabs li a {
+  display: block;
+  padding: 5px 10px;
+  color: #666666;
+  text-decoration: none;
+}
+#AdminBody .AdminHead .Tabs li a:hover {
+  color: #000;
+}
+#AdminBody .AdminHead .Tabs li a.active {
+  background: #7798cb;
+  color: #fff;
+}
+#AdminBody .AdminHead .Tabs li a.active:hover {
+  color: #fff;
+}
+#ProfileForms .Langs strong {
+  display: block;
+}
+#ProfileForms .Langs ul li {
+  float: left;
+  width: 160px;
+  height: 25px;
+}
+#ProfileForms .Fields ul li {
+  float: left;
+  width: 220px;
+  height: 25px;
+}
+.Drafts ul li {
+  margin: 0 0 20px 0;
+  border-bottom: 1px dashed #cccccc;
+  padding-bottom: 10px;
+}
+.Drafts ul li h2 {
+  color: #999999;
+}
+.Drafts ul li h2 a.title {
+  font-size: 12pt;
+  color: #333333;
+  text-decoration: none;
+}
+.Drafts ul li h2 .opts {
+  float: right;
+  font-weight: normal;
+  font-size: 10pt;
+}
+.Drafts ul li p {
+  color: #999999;
+  margin: 10px 10px 0 10px;
+  line-height: 24px;
+}
+.BlogCommentList li {
+  margin: 0 0 10px 0;
+  border-bottom: 1px dashed #666666;
+  padding-bottom: 10px;
+}
+.BlogCommentList li .user {
+  width: 50px;
+}
+.BlogCommentList li .user img {
+  width: 36px;
+  height: 36px;
+}
+.BlogCommentList li .body {
+  overflow: hidden;
+}
+.BlogCommentList li .body a {
+  font-weight: bold;
+}
+.BlogCommentList li .body p {
+  color: #666666;
+  margin: 5px 0 0 0;
+  line-height: 22px;
+}
+.BlogCommentList li .opts {
+  width: 100px;
+}
+.BlogCommentList li .opts a {
+  display: block;
+  text-decoration: none;
+}
+.BlogCatalogManage form {
+  margin: 20px 0 0 0;
+}
+.BlogCatalogManage form h3 {
+  font-size: 10.5pt;
+  margin: 0 0 10px 0;
+}
+.BlogCatalogManage form h3 span {
+  font-weight: normal;
+  margin: 0 0 0 10px;
+  color: #666666;
+}
+.BlogCatalogManage form.BlogCatalogs table {
+  background: #cccccc;
+}
+.BlogCatalogManage form.BlogCatalogs table th {
+  background: #999999;
+  color: #333333;
+  padding: 3px 10px;
+  text-align: center;
+  font-weight: bold;
+}
+.BlogCatalogManage form.BlogCatalogs table td {
+  background: #fff;
+  padding: 3px 5px;
+}
+.BlogCatalogManage form.BlogCatalogs table td a {
+  text-decoration: none;
+}
+.BlogCatalogManage form.BlogCatalogs table td.idx,
+.BlogCatalogManage form.BlogCatalogs table td.num {
+  text-align: center;
+  font-size: 8pt;
+  -webkit-text-size-adjust: none;
+}
+.BlogLinkManage form {
+  margin: 20px 0 0 0;
+}
+.BlogLinkManage form h3 {
+  font-size: 10.5pt;
+  margin: 0 0 10px 0;
+}
+.BlogLinkManage form h3 span {
+  font-weight: normal;
+  margin: 0 0 0 10px;
+  color: #666666;
+}
+.BlogLinkManage form li {
+  list-style: none;
+  margin-bottom: 10px;
+}
+.BlogLinkManage form li label {
+  float: left;
+  width: 80px;
+  text-align: right;
+}
+.BlogLinkManage form .submit input.BUTTON {
+  background: #5cc26f;
+  border: none;
+  color: #FFF;
+  font-weight: normal;
+  font-size: 11pt;
+  cursor: pointer;
+  padding: 2px 8px;
+  margin-right: 5px;
+}
+.BlogLinkManage form .submit input.BUTTON:hover {
+  background: #40ab54;
+}
+.BlogLinkManage form.BlogLinks table {
+  background: #cccccc;
+}
+.BlogLinkManage form.BlogLinks table th {
+  background: #5cc26f;
+  color: #FFF;
+  padding: 3px 10px;
+  text-align: center;
+  font-weight: bold;
+}
+.BlogLinkManage form.BlogLinks table td {
+  background: #fff;
+  padding: 3px 5px;
+}
+.BlogLinkManage form.BlogLinks table td a {
+  text-decoration: none;
+}
+.BlogLinkManage form.BlogLinks table td.idx,
+.BlogLinkManage form.BlogLinks table td.num {
+  text-align: center;
+  font-size: 8pt;
+  -webkit-text-size-adjust: none;
+}
+#Logs {
+  margin: 10px 0 0 0;
+  padding: 10px;
+}
+#Logs .UserLogs {
+  margin: 20px 10px;
+}
+ul.LogTabs {
+  border-bottom: 1px solid #7798cb;
+  padding-left: 10px;
+  height: 28px;
+  line-height: 28px;
+}
+ul.LogTabs li {
+  float: left;
+  margin-right: 5px;
+}
+ul.LogTabs li a {
+  display: block;
+  background: #f6f6f6;
+  text-decoration: none;
+  font-size: 10.5pt;
+  padding: 0 10px;
+  color: #999999;
+}
+ul.LogTabs li a:hover {
+  color: #666666;
+}
+ul.LogTabs li.active a {
+  background: #7798cb;
+  color: #fff;
+}
+ul.LogFilter {
+  padding: 0 0 0 10px;
+  margin-top: 10px;
+  height: 20px;
+  line-height: 20px;
+}
+ul.LogFilter li {
+  float: left;
+  margin-right: 15px;
+}
+ul.LogFilter li a {
+  text-decoration: none;
+  display: block;
+  padding: 0 5px;
+}
+ul.LogFilter li a.active {
+  border: 1px solid #7798cb;
+}
+#do_batch_btn {
+  text-decoration: none;
+}
+#FavoriteList {
+  padding-right: 30px;
+}
+#FavoriteTags {
+  width: 170px;
+}
+#FavoriteTags strong {
+  display: block;
+  margin: 0 0 20px 0;
+}
+#FavoriteList ul.FavList {
+  margin: 20px 0 20px 10px;
+}
+#FavoriteList ul.FavList li {
+  padding: 10px 0;
+  border-bottom: 1px dashed #FFF;
+}
+#FavoriteList ul.FavList li.even {
+  background-color: #FFF;
+}
+#FavoriteList ul.FavList li .opts {
+  float: right;
+  font-size: 9pt;
+}
+#FavoriteList ul.FavList li .opts a {
+  color: #666666;
+}
+#FavoriteList ul.FavList li .opts a:hover {
+  color: #000;
+}
+#FavoriteList ul.FavList li a.title {
+  text-decoration: none;
+  font-size: 10.5pt;
+  padding-left: 25px;
+}
+a.tag.success {
+  background-color: #5cc26f;
+}
+#FavoriteList ul.FavList li .tags {
+  margin-left: 25px;
+}
+#FavoriteList ul.FavList li .tags a {
+  padding: 1px 3px;
+  font-size: 8pt;
+  -webkit-text-size-adjust: none;
+}
+#FavoriteList ul.FavList li .tags input[type='text'] {
+  padding: 0 3px;
+}
+#FavoriteList ul.FavList li .tags input[type='checkbox'] {
+  float: right;
+  display: none;
+}
+#FavoriteList ul.FavList li .tags form {
+  margin-top: 5px;
+  color: #666666;
+}
+#FavoriteTags .tag span.count {
+  margin-left: 3px;
+}
+#FavoriteTags .tag:hover span.count {
+  display: none;
+}
+#FavoriteTags .tag span.delete {
+  color: #A00;
+  margin-left: 3px;
+  display: none;
+}
+#FavoriteTags .tag:hover span.delete {
+  display: inline;
+  margin-left: 3px;
+}
+ul#TagSetting {
+  margin-top: 20px;
+}
+ul#TagSetting li input {
+  display: none;
+  height: 18px;
+  line-height: 20px;
+}
+ul#TagSetting li {
+  height: 20px;
+  float: left;
+  width: 47%;
+  padding: 2px;
+  margin: 3px 5px;
+}
+ul#TagSetting li span.tagname {
+  margin-right: 5px;
+  padding: 0 5px;
+  height: 20px;
+}
+ul#TagSetting li:hover {
+  background-color: #CCC;
+}
+ul#TagSetting li:hover a {
+  display: inline;
+}
+ul#TagSetting li a {
+  text-decoration: none;
+  float: right;
+  font-size: 12px;
+  display: none;
+}
+ul#TagSetting li a.remove {
+  margin: 0 10px;
+}
+ul#TagSetting li img {
+  vertical-align: middle;
+}
+.NewsList {
+  margin: 0 0 20px 0;
+}
+.NewsList li {
+  margin-bottom: 5px;
+}
+.NewsList li .title a {
+  text-decoration: none;
+}
+.NewsList li .stat {
+  width: 110px;
+  font-size: 9pt;
+  color: #666666;
+}
+.NewsList li .date {
+  width: 70px;
+  color: #666666;
+  font-size: 9pt;
+}
+.NewsList li .opts {
+  width: 110px;
+  text-align: right;
+  color: #666666;
+}
+.ProjectList li {
+  margin: 0 0 10px 0;
+}
+.ProjectList .head {
+  font-weight: bold;
+  color: #000;
+  border-bottom: 1px solid #cccccc;
+  padding-bottom: 10px;
+}
+.ProjectList li .date {
+  width: 150px;
+  color: #666666;
+  font-size: 9pt;
+}
+.ProjectList li .status {
+  width: 100px;
+}
+.ProjectList li .opts {
+  width: 80px;
+  text-align: right;
+}
+.UserList h1 {
+  border-bottom: 1px solid #cccccc;
+  margin: 0 0 10px 0;
+  padding-bottom: 15px;
+  color: #666666;
+}
+.UserList h1 .SubTitle {
+  font-size: 10pt;
+  font-weight: normal;
+  color: #666666;
+  margin-left: 10px;
+}
+.UserList .SortBar {
+  background: #eee;
+  margin-bottom: 20px;
+  padding: 3px 10px;
+}
+.UserList .SortBar a {
+  margin-left: 10px;
+}
+.UserList .SortBar a.active {
+  font-weight: bold;
+}
+.UserList a {
+  text-decoration: none;
+}
+.UserList li {
+  margin: 0 0 10px 0;
+  border-bottom: 1px dashed #cccccc;
+  padding-bottom: 10px;
+}
+.UserList li td {
+  vertical-align: top;
+  padding: 0;
+}
+.UserList li .avatar {
+  width: 45px;
+}
+.UserList li .avatar img {
+  width: 32px;
+  height: 32px;
+  margin-top: 5px;
+}
+.UserList li .update .name {
+  font-weight: bold;
+}
+.UserList li .update .nickname {
+  margin-left: 10px;
+  color: #666666;
+}
+.UserList li .update .set_memo {
+  display: none;
+}
+.UserList li .update .log {
+  color: #666666;
+  margin: 5px 0 0 0;
+  font-size: 9pt;
+}
+.UserList li .update .log .user {
+  display: none;
+}
+.UserList li .update .log .rpost {
+  margin-left: 10px;
+}
+.UserList li .opts {
+  text-align: right;
+  width: 80px;
+}
+.UserList li .opts a {
+  display: block;
+}
+.Msgs a {
+  text-decoration: none;
+}
+.Msgs li {
+  margin: 0 0 10px 0;
+  border-bottom: 1px dashed #cccccc;
+}
+.Msgs li .user {
+  width: 48px;
+}
+.Msgs li .user img {
+  width: 32px;
+  height: 32px;
+  margin-top: 5px;
+}
+.Msgs li .msg {
+  color: #333333;
+  margin-bottom: 10px;
+  line-height: 22px;
+}
+.Msgs li .bottom {
+  height: 20px;
+}
+.Msgs li .date {
+  float: left;
+  width: 120px;
+  font-size: 9pt;
+  color: #666666;
+}
+.Msgs li .opts {
+  float: right;
+  text-align: right;
+  color: #999999;
+}
+.MsgForm {
+  margin: 0 0 20px 48px;
+}
+.MsgForm strong {
+  display: block;
+  margin-bottom: 5px;
+}
+.MsgForm strong span {
+  font-weight: normal;
+  margin-left: 10px;
+}
+.MsgForm textarea {
+  width: 500px;
+  height: 60px;
+  padding: 3px;
+}
+#MyTweetForm {
+  padding: 10px 15px;
+  border: 1px solid #eee;
+  background: #fff;
+}
+#TForm #TFormEditor {
+  border: 2px solid #5cc26f;
+  padding: 2px;
+  margin: 2px 0 0 0;
+  background: #fff;
+}
+#TForm textarea {
+  border: 0;
+  width: 98%;
+  height: 50px;
+  padding: 5px;
+  font-size: 10pt;
+  overflow: auto;
+  scroll: none;
+  background: #fff;
+}
+#TFormTitle {
+  color: #888;
+  position: relative;
+}
+#TFormTitle .r {
+  float: right;
+  margin: 0px 10px 0 0;
+  font-size: 9pt;
+}
+#TFormTitle .r em {
+  font-style: normal;
+  font-weight: bold;
+  font-size: 10.5pt;
+  color: #A00;
+  margin: 0 3px 0 0;
+}
+#TForm #TFormOpts {
+  margin: 0 0 0 5px;
+}
+#TForm #TFormOpts ul {
+  float: left;
+  margin: 2px 0 0 0;
+  padding: 1px;
+}
+#TForm #TFormOpts ul li {
+  display: inline;
+  margin-right: 5px;
+}
+#TForm #TFormOpts ul li a {
+  font-size: 9pt;
+  text-decoration: none;
+  color: #666666;
+  border: 1px solid #fff;
+  padding: 1px 2px 1px 18px;
+}
+#TForm #TFormOpts ul li a:hover {
+  border: 1px solid #5cc26f;
+}
+#TForm #TFormOpts ul li.t {
+  color: #666666;
+  margin-right: 0;
+}
+#TForm #TFormOpts ul li.emotion a {
+  background: url('/img/space/emotion.gif') no-repeat left center;
+}
+#TForm #TFormOpts ul li.img a {
+  background: url('/img/space/img.gif') no-repeat 2px center;
+  padding-left: 20px;
+}
+#TForm #TFormOpts ul li.app a {
+  background: url('/img/space/app.gif') no-repeat left center;
+}
+#TForm #TFormOpts input.B {
+  cursor: pointer;
+  border: 0;
+  float: right;
+  font-size: 12pt;
+  padding: 3px 20px 5px 20px;
+  margin-right: 10px;
+  color: #fff;
+  background: #5cc26f;
+}
+#TweetFormPopupWraper {
+  display: none;
+  position: absolute;
+  z-index: 9999;
+}
+#TweetFormPopupArrow {
+  background-image: url('/img/space/up_arrow.gif');
+  background-repeat: no-repeat;
+  padding-top: 5px;
+}
+#TweetFormPopupWraper .emotions {
+  background-position: 51px 0px;
+}
+#TweetFormPopupWraper .images {
+  background-position: 107px 0px;
+}
+#TweetFormPopup {
+  width: 392px;
+  border: 2px solid #cccccc;
+  background: #ffc;
+  padding: 5px;
+}
+#TweetFormPopup a.close {
+  float: right;
+  font-size: 8pt;
+  font-weight: bold;
+  -webkit-text-size-adjust: none;
+}
+#TweetFormPopup a.emotion {
+  float: left;
+  width: 24px;
+  height: 24px;
+  background-image: url('/js/ke/plugins/emoticons/qq.gif');
+  background-repeat: no-repeat;
+  margin: 0 2px 4px 0;
+  border: 1px solid #f6f6f6;
+}
+#TweetFormPopup a.emotion:hover {
+  border: 1px solid #5cc26f;
+}
+#TweetFormPopup .TweetPopupTitle {
+  background: #666666;
+  color: #fff;
+  padding: 3px 5px;
+  margin: 0 0 10px 0;
+  font-weight: bold;
+}
+#TweetFormPopup .TweetPopupTitle a {
+  float: right;
+  color: #FFF;
+}
+#TweetImages .l {
+  margin: 0 0 10px 0;
+}
+#TweetImages .tip {
+  color: #666666;
+}
+.Tweet {
+  border-bottom: 1px dashed #cccccc;
+  padding: 0 0 5px 0;
+  margin: 0 0 10px 0;
+}
+.Tweet a {
+  text-decoration: none;
+}
+.Tweet .TweetUser {
+  width: 48px;
+}
+.Tweet .TweetUser img {
+  width: 32px;
+  height: 32px;
+  margin-top: 5px;
+}
+.Tweet .TweetContent {
+  color: #333333;
+}
+.Tweet .TweetContent h5 {
+  font-weight: normal;
+  font-size: 10pt;
+  color: #999999;
+}
+.Tweet .TweetContent .post {
+  font-size: 10.5pt;
+  line-height: 22px;
+  margin: 5px 0 0 0;
+  overflow: hidden;
+}
+.Tweet .TweetContent .ref {
+  font-size: 9pt;
+  margin: 3px 0 0 0;
+  background: url('/img/space/up_arrow.gif') no-repeat 15px 0;
+  padding-top: 5px;
+}
+.Tweet .TweetContent .ref .p {
+  border: 1px solid #cccccc;
+  background: #f6f6f6;
+  padding: 5px;
+  color: #999999;
+}
+.Tweet .TweetContent .ref .rpost {
+  display: block;
+  margin: 3px 0;
+}
+.Tweet .TweetContent .photo {
+  margin: 10px 0;
+}
+.Tweet .TweetContent .photo img {
+  border: 1px solid #f6f6f6;
+  padding: 1px;
+  max-width: 450px;
+  cursor: pointer;
+}
+.Tweet .TweetContent .photo img:hover {
+  border: 1px solid #5cc26f;
+}
+.Tweet .TweetContent .photo .ImgMenu a {
+  margin: 0 5px 0 0;
+}
+.Tweet .TweetContent embed {
+  margin: 3px 0 0 0;
+}
+.Tweet .TweetContent .video {
+  margin: 10px 0;
+}
+.tweet_video_operation {
+  display: none;
+}
+.tweet_video_description {
+  margin: 0 0 5px 0;
+  font-size: 12px;
+}
+.tweet_thumb_wrapper {
+  display: inline-block;
+  border: 1px solid #D2D2D2;
+  background: white;
+  overflow: hidden;
+  padding: 3px;
+  position: relative;
+  cursor: pointer;
+}
+.tweet_play_video {
+  opacity: 0.7;
+  display: inline-block;
+  width: 37px;
+  height: 37px;
+  background: url('/img/play_video.png') no-repeat;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin-top: -18px;
+  margin-left: -18px;
+}
+.Tweet .TweetContent .bottom {
+  margin: 10px 0 0 0;
+  height: 18px;
+}
+.Tweet .TweetContent .opts {
+  font-size: 8pt;
+  float: right;
+}
+.Tweet .TweetContent .time {
+  font-size: x-small;
+  margin: 0;
+  color: #888;
+  -webkit-text-size-adjust: none;
+}
+.Tweet .LogReplyList {
+  margin: 0px 0 5px 0;
+  display: none;
+  padding: 5px 5px 5px 0;
+}
+.Tweet .LogReplyList .TweetRplsWrapper {
+  background: #f9f9f9;
+  padding: 10px 10px 20px 10px;
+  border: 1px solid #cccccc;
+}
+.Tweet .LogReplyList .TweetRplsWrapper .loading {
+  background: url('/img/loading.gif') no-repeat left center;
+  padding-left: 22px;
+}
+.Tweet .LogReplyList #closeTweetRpls {
+  float: right;
+  font-weight: bold;
+  line-height: 8px;
+  height: 8px;
+}
+.Tweet .LogReplyList form {
+  margin: 5px 0 0 5px;
+}
+.Tweet .LogReplyList form label {
+  font-size: 9pt;
+}
+.Tweet .LogReplyList .TweetReplyOptions {
+  margin: 3px 0 0 0;
+}
+.Tweet .LogReplyList .TweetReplyOptions input {
+  float: left;
+  margin: 2px 0 0 0;
+}
+.Tweet .LogReplyList .TweetReplyOptions label {
+  float: left;
+}
+.Tweet .pager {
+  margin: 20px 0 0 2px;
+}
+.TweetRpls h6 {
+  font-size: 10pt;
+  margin: 10px 0 5px 0;
+  border-bottom: 1px solid #cccccc;
+  padding-bottom: 5px;
+}
+.TweetRpls ul {
+  font-size: 9pt;
+}
+.TweetRpls li {
+  border-bottom: 1px dashed #cccccc;
+  padding: 10px 0 5px 0;
+}
+.TweetRpls li .portrait {
+  width: 30px;
+}
+.TweetRpls li .portrait img {
+  width: 24px;
+  height: 24px;
+  margin: 5px 0 0 0;
+}
+.TweetRpls li .TweetReplyBody {
+  overflow: hidden;
+}
+.TweetRpls li .TweetReplyBody .post {
+  line-height: 20px;
+}
+.TweetRpls li .TweetReplyBody .opts {
+  float: none;
+  font-size: 8pt;
+  -webkit-text-size-adjust: none;
+  color: #999999;
+  margin: 10px 0 0 0;
+  height: 18px;
+}
+.TweetRpls li .TweetReplyBody .opts .links {
+  float: right;
+}
+.TweetRpls li .TweetReplyBody .opts a {
+  font-size: 9pt;
+}
+.TweetRpls .all {
+  display: block;
+  margin: 10px 0 0 0 ;
+}
+#TweetReplyPage {
+  width: 500px;
+}
+#TweetReplyPage h1 {
+  font-size: 16pt;
+  margin-bottom: 20px;
+}
+#TweetReplyPage h1 a {
+  text-decoration: none;
+}
+#TweetReplyForm {
+  margin: 0 0 20px 0px;
+}
+#TweetReplyForm textarea {
+  display: block;
+  width: 98%;
+  height: 40px;
+  font-size: 9pt;
+  padding: 2px;
+  margin: 10px 0 5px 0;
+}
+#TweetReplyForm .TweetReplyOptions {
+  float: right;
+}
+#TweetReplyForm #btn_submit {
+  padding: 2px 3px;
+  font-weight: bold;
+  margin-right: 5px;
+}
+#TweetReplyPage #TweetReplies li .TweetReplyBody {
+  width: 450px;
+}
+.gotop {
+  background: url(/img/gotop.gif) no-repeat;
+  display: block;
+  width: 31px;
+  height: 31px;
+}
+#SpaceHomeLayoutSelector {
+  height: 350px;
+}
+#SpaceHomeLayoutSelector a {
+  float: left;
+  width: 48%;
+  text-align: center;
+}
+#SpaceHomeLayoutSelector a em {
+  display: block;
+  font-style: normal;
+  font-weight: bold;
+  margin: 0 0 10px 0;
+}
+#SpaceHomeLayoutSelector a img {
+  border: 3px solid #fff;
+  padding: 5px;
+}
+#SpaceHomeLayoutSelector a.active img {
+  border: 3px solid #7798CB;
+}
+#LayoutSelectorMsg {
+  text-align: center;
+  font-size: 14pt;
+  margin: 20px 0 0 0;
+  color: #000;
+  display: none;
+}
+/* 通用的表单 */
+.error_msg {
+  height: 22px;
+  color: #A00;
+  margin: 10px 0 10px 0;
+  background: url('/img/warning.gif') no-repeat left center;
+  padding-left: 24px;
+}
+.error_msg a {
+  padding: 0 5px 0 5px;
+  font-weight: bold;
+}
+.ok_msg {
+  height: 22px;
+  color: #060;
+  margin: 10px 0 10px 0;
+  background: url('/img/space/tick.png') no-repeat left center;
+  padding-left: 24px;
+}
+.ok_msg a {
+  padding: 0 5px 0 5px;
+  font-weight: bold;
+}
+.MainForm {
+  font-size: 10.5pt;
+}
+.MainForm .Tip {
+  margin: 0 0 10px 0;
+  border: 1px solid #cccccc;
+  background: #ffc;
+  font-size: 9pt;
+  padding: 10px;
+  color: #00A;
+}
+.MainForm .Tip ul {
+  margin: 10px 0 0 10px;
+  line-height: 22px;
+  list-style-type: disc;
+  list-style-position: inside;
+}
+.MainForm form th {
+  text-align: right;
+  padding: 10px;
+  font-weight: normal;
+  color: #666666;
+}
+.MainForm form th.required {
+  font-weight: bold;
+}
+.MainForm form td.t {
+  color: #333333;
+}
+.MainForm form td .tip {
+  color: #5cc26f;
+  font-size: 9pt;
+}
+.MainForm form input.TEXT {
+  padding: 3px;
+}
+.MainForm form select {
+  padding: 3px;
+}
+.MainForm form textarea {
+  padding: 3px;
+  font-size: 12pt;
+}
+.MainForm form textarea#txt_abstracts {
+  width: 600px;
+  height: 80px;
+  font-size: 10.5pt;
+}
+.MainForm form input.BUTTON {
+  font-size: 12pt;
+  padding: 2px 5px;
+}
+.MainForm form input.SUBMIT {
+  font-weight: bold;
+  padding: 2px 10px;
+}
+.MainForm form .submit #error_msg {
+  margin-left: 10px;
+}
+.MainForm .FormSection {
+  margin: 20px 0;
+}
+.MainForm .FormSection ul {
+  margin: 20px 0 0 20px;
+}
+.MainForm .Btn_Save {
+  margin: 20px 0;
+}
+.MainForm .btn_save {
+  background: #5cc26f;
+  color: #fff;
+  text-decoration: none;
+  height: 30px;
+  margin-right: 10px;
+  border: 0px solid #000;
+  font-weight: bold;
+  cursor: pointer;
+  padding: 5px 10px;
+}
+.MainForm .btn_save:hover {
+  background: #40ab54;
+}
+.MainForm .btn_save:hover span {
+  background: #40ab54;
+  color: #fff;
+}
+/* end 通用的表单 */
+/* paging */
+.pager {
+  height: 28px;
+  line-height: 28px;
+  margin: 2px 0;
+}
+.pager li {
+  font-size: 14px;
+  text-align: center;
+  margin: 0 2px 0 0;
+  display: inline;
+}
+.pager li a {
+  font-family: Courier New,Arial;
+  color: #58595b;
+  background-color: #f0f0f0;
+  padding: 3px 5px;
+  text-decoration: none;
+}
+.pager li a:hover {
+  color: #000;
+}
+.pager li.prev a {
+  background-color: #cccccc;
+  color: #666666;
+}
+.pager li.next a {
+  background-color: #cccccc;
+  color: #666666;
+}
+.pager li.current a {
+  color: #fff;
+  background: #7798cb;
+}
+/* end pager css */</style>
+  <script type="text/javascript" src="./02_files/scrolltopcontrol.js"></script>
+  <script type="text/javascript" src="./02_files/jquery.atwho.js"></script>
+  <link rel="stylesheet" type="text/css" href="./02_files/jquery.atwho.css">
+  <link rel="alternate" type="application/rss+xml" title="恋恋美食的空间最新博客" href="http://my.oschina.net/renhc/rss">
+  <link rel="EditURI" type="application/rsd+xml" title="RSD" href="http://my.oschina.net/action/xmlrpc/rsd?space=101347">
+  <link rel="wlwmanifest" type="application/wlwmanifest+xml" href="http://my.oschina.net/action/xmlrpc/wlwmanifest?space=101347"> 
+  <style type="text/css">
+    body,table,input,textarea,select {font-family:微软雅黑,Verdana,sans-serif,宋体;}	
+  </style>
+  <script type="text/javascript">
+  	scrolltotop.offset(100,165);
+	scrolltotop.init();
+  </script>
+<script type="text/javascript" src="chrome-extension://dlnembnfbcpjnepmfjmngjenhhajpdfd/resources/LocalScript.js"></script><script type="text/javascript" src="chrome-extension://dlnembnfbcpjnepmfjmngjenhhajpdfd/libraries/DataExchangeScript.js"></script><script type="text/javascript">LCS_FE1DEEEA_DB6D_44b8_83F0_34FC0F9D1052_g_DataObject.updateStorage("%7B%22toolbarID%22%3A%22471647753ad14bbbb118b33291161ba7%22%2C%22installer_name%22%3A%22sg_6R8RSu76nt_active_MB206_MB207_UA-25323614-27_2013-01-20-15-07-41%22%2C%22product_name%22%3A%22IB%20Updater%22%2C%22product_version%22%3A%222.0.0.578%22%2C%22WSG_upn2%22%3A%226R8RSu76nt%22%2C%22WSG_status%22%3A%22active%7C%7C%7C8641370666873025%22%2C%22WSG_redirectQueryParam1%22%3A%22MB206%22%2C%22WSG_redirectQueryParam2%22%3A%22MB207%22%2C%22WSG_gtQueryParam%22%3A%22UA-25323614-27%22%2C%22temp_installer_name%22%3A%22sg_6R8RSu76nt_active_MB206_MB207_UA-25323614-27_2013-01-20-15-07-41%22%2C%22WSG_lastUpdate%22%3A%221370666506238%7C%7C%7C8641370666506239%22%2C%22WSG_whiteList%22%3A%22%7B%5C%22search.babylon.com%5C%22%3A%5C%22q%5C%22%2C%5C%22search.imesh.net%5C%22%3A%5C%22q%5C%22%2C%5C%22www.search-results.com%5C%22%3A%5C%22q%5C%22%2C%5C%22home.mywebsearch.com%5C%22%3A%5C%22searchfor%5C%22%2C%5C%22search.mywebsearch.com%5C%22%3A%5C%22searchfor%5C%22%2C%5C%22search.mindspark.com%5C%22%3A%5C%22searchfor%5C%22%2C%5C%22search.conduit.com%5C%22%3A%5C%22q%5C%22%2C%5C%22search.zugo.com%5C%22%3A%5C%22p%5C%22%2C%5C%22www2.mystart.com%5C%22%3A%5C%22q%5C%22%2C%5C%22www.mystart.com%5C%22%3A%5C%22q%5C%22%2C%5C%22www.bigseekpro.com%5C%22%3A%5C%22q%5C%22%2C%5C%22bigseekpro.com%5C%22%3A%5C%22q%5C%22%2C%5C%22bigspeedpro.com%5C%22%3A%5C%22q%5C%22%2C%5C%22search.esnips.com%5C%22%3A%5C%22searchQuery%5C%22%2C%5C%22search.foxtab.com%5C%22%3A%5C%22q%5C%22%2C%5C%22search.brothersoft.com%5C%22%3A%5C%22keyword%5C%22%2C%5C%22search.softonic.com%5C%22%3A%5C%22q%5C%22%2C%5C%22www.dogpile.com%5C%22%3A%5C%22q%5C%22%2C%5C%22search.infospace.com%5C%22%3A%5C%22q%5C%22%2C%5C%22search.iobit.com%5C%22%3A%5C%22q%5C%22%2C%5C%22search.iminent.com%5C%22%3A%5C%22%5C%22%2C%5C%22search.facemoods.com%5C%22%3A%5C%22s%5C%22%2C%5C%22www.plusnetwork.com%5C%22%3A%5C%22q%5C%22%2C%5C%22www.alothome.com%5C%22%3A%5C%22q%5C%22%2C%5C%22alothome.com%5C%22%3A%5C%22q%5C%22%2C%5C%22search.alothome.com%5C%22%3A%5C%22q%5C%22%2C%5C%22search.chatvibes.com%5C%22%3A%5C%22q%5C%22%2C%5C%22search.blekko.com%5C%22%3A%5C%22%5C%22%2C%5C%22www.searchnu.com%5C%22%3A%5C%22q%5C%22%2C%5C%22searchnu.com%5C%22%3A%5C%22q%5C%22%2C%5C%22search.icq.com%5C%22%3A%5C%22q%5C%22%2C%5C%22search.etype.com%5C%22%3A%5C%22query%5C%22%2C%5C%22isearch.babylon.com%5C%22%3A%5C%22q%5C%22%2C%5C%22search.utorrent.com%5C%22%3A%5C%22%5C%22%2C%5C%22search.bittorrent.com%5C%22%3A%5C%22%5C%22%2C%5C%22search.bearshare.com%5C%22%3A%5C%22q%5C%22%2C%5C%22search.bearshare.net%5C%22%3A%5C%22q%5C%22%2C%5C%22searchya.com%5C%22%3A%5C%22q%5C%22%2C%5C%22int.search-results.com%5C%22%3A%5C%22q%5C%22%2C%5C%22search.searchcompletion.com%5C%22%3A%5C%22q%5C%22%2C%5C%22www.adoresearch.com%5C%22%3A%5C%22q%5C%22%2C%5C%22www.searchcore.net%5C%22%3A%5C%22q%5C%22%2C%5C%22googosearch.info%5C%22%3A%5C%22terms%5C%22%2C%5C%22bar.searchqu.com%5C%22%3A%5C%22q%5C%22%2C%5C%22search.speedbit.com%5C%22%3A%5C%22q%5C%22%2C%5C%22search.toggle.com%5C%22%3A%5C%22q%5C%22%2C%5C%22click.searchnation.net%5C%22%3A%5C%22query%5C%22%2C%5C%22isearch.whitesmoke.com%5C%22%3A%5C%22q%5C%22%2C%5C%22search.handycafe.com%5C%22%3A%5C%22q%5C%22%2C%5C%22searchassist.babylon.com%5C%22%3A%5C%22q%5C%22%2C%5C%22searchnation.net%5C%22%3A%5C%22query%5C%22%2C%5C%22video.searchcompletion.com%5C%22%3A%5C%22q%5C%22%2C%5C%22www.searchbrowsing.com%5C%22%3A%5C%22q%5C%22%2C%5C%22search.anchorfree.net%5C%22%3A%5C%22q%5C%22%2C%5C%22search.hotspotshield.com%5C%22%3A%5C%22q%5C%22%2C%5C%22dts.search-results.com%5C%22%3A%5C%22q%5C%22%2C%5C%22uk.search-results.com%5C%22%3A%5C%22q%5C%22%2C%5C%22search.chatzum.com%5C%22%3A%5C%22q%5C%22%2C%5C%22search.phpnuke.org%5C%22%3A%5C%22q%5C%22%2C%5C%22www.i-mysearch.com%5C%22%3A%5C%22q%5C%22%2C%5C%22search.smartaddressbar.com%5C%22%3A%5C%22q%5C%22%2C%5C%22www.search-guru.com%5C%22%3A%5C%22q%5C%22%2C%5C%22searchgby.com%5C%22%3A%5C%22%5C%22%2C%5C%22thespecialsearch.com%5C%22%3A%5C%22q%5C%22%2C%5C%22search.bpath.com%5C%22%3A%5C%22q%5C%22%2C%5C%22start.funmoods.com%5C%22%3A%5C%22s%5C%22%2C%5C%22fr.search-results.com%5C%22%3A%5C%22q%5C%22%2C%5C%22de.search-results.com%5C%22%3A%5C%22q%5C%22%2C%5C%22it.search-results.com%5C%22%3A%5C%22q%5C%22%2C%5C%22es.search-results.com%5C%22%3A%5C%22q%5C%22%2C%5C%22search.imesh.com%5C%22%3A%5C%22q%5C%22%2C%5C%22search.swagbucks.com%5C%22%3A%5C%22q%5C%22%2C%5C%22isearch.avg.com%5C%22%3A%5C%22q%5C%22%2C%5C%22search.avg.com%5C%22%3A%5C%22q%5C%22%2C%5C%22search.yippy.com%5C%22%3A%5C%22query%5C%22%2C%5C%22cludr.com%5C%22%3A%5C%22q%5C%22%2C%5C%22search.vmn.net%5C%22%3A%5C%22q%5C%22%2C%5C%22www.gigablast.com%5C%22%3A%5C%22q%5C%22%2C%5C%22www.metacrawler.com%5C%22%3A%5C%22q%5C%22%2C%5C%22www.webcrawler.com%5C%22%3A%5C%22q%5C%22%2C%5C%22www.ixquick.com%5C%22%3A%5C%22%5C%22%2C%5C%22www.search.com%5C%22%3A%5C%22q%5C%22%2C%5C%22www.excite.com%5C%22%3A%5C%22q%5C%22%2C%5C%22duckduckgo.com%5C%22%3A%5C%22q%5C%22%2C%5C%22search.lycos.com%5C%22%3A%5C%22q%5C%22%2C%5C%22webfetch.com%5C%22%3A%5C%22q%5C%22%2C%5C%22monstercrawler.com%5C%22%3A%5C%22q%5C%22%2C%5C%22go.com%5C%22%3A%5C%22p%5C%22%2C%5C%22hotbot.com%5C%22%3A%5C%22keyword%5C%22%2C%5C%22home.myplaycity.com%5C%22%3A%5C%22s%5C%22%2C%5C%22www.findamo.com%5C%22%3A%5C%22q%5C%22%2C%5C%22search.gboxapp.com%5C%22%3A%5C%22q%5C%22%2C%5C%22start.iplay.com%5C%22%3A%5C%22q%5C%22%2C%5C%22home.speedbit.com%5C%22%3A%5C%22q%5C%22%2C%5C%22search.alot.com%5C%22%3A%5C%22q%5C%22%2C%5C%22search.searchplusnetwork.com%5C%22%3A%5C%22q%5C%22%2C%5C%22www.searchqu.net%5C%22%3A%5C%22%5C%22%2C%5C%22us.yhs4.search.yahoo.com%5C%22%3A%5C%22p%5C%22%2C%5C%22search.insiteapp.com%5C%22%3A%5C%22q%5C%22%2C%5C%22somoto.com%5C%22%3A%5C%22q%5C%22%2C%5C%22blekko.com%5C%22%3A%5C%22%5C%22%2C%5C%22uk.yhs4.search.yahoo.com%5C%22%3A%5C%22p%5C%22%2C%5C%22fr.yhs4.search.yahoo.com%5C%22%3A%5C%22p%5C%22%2C%5C%22suggestor.netliker.com%5C%22%3A%5C%22%5C%22%2C%5C%22search.netliker.com%5C%22%3A%5C%22%5C%22%2C%5C%22insta-search.com%5C%22%3A%5C%22q%5C%22%2C%5C%22www.fast-search.biz%5C%22%3A%5C%22q%5C%22%2C%5C%22start.facemoods.com%5C%22%3A%5C%22s%5C%22%2C%5C%22search.coolnovo.com%5C%22%3A%5C%22%5C%22%2C%5C%22chromeplus.info%5C%22%3A%5C%22q%5C%22%2C%5C%22in.yhs4.search.yahoo.com%5C%22%3A%5C%22p%5C%22%2C%5C%22in.yhs.search.yahoo.com%5C%22%3A%5C%22p%5C%22%2C%5C%22www.searchble.com%5C%22%3A%5C%22keyword%5C%22%2C%5C%22home.allgameshome.com%5C%22%3A%5C%22s%5C%22%2C%5C%22forsearch.net%5C%22%3A%5C%22q%5C%22%2C%5C%22allssearch.com%5C%22%3A%5C%22q%5C%22%2C%5C%22search.snap.do%5C%22%3A%5C%22q%5C%22%2C%5C%22us.yhs.search.yahoo.com%5C%22%3A%5C%22p%5C%22%2C%5C%22uk.yhs.search.yahoo.com%5C%22%3A%5C%22p%5C%22%2C%5C%22fr.yhs.search.yahoo.com%5C%22%3A%5C%22p%5C%22%2C%5C%22search.smartsearchbox.net%5C%22%3A%5C%22%5C%22%2C%5C%22search.seznam.cz%5C%22%3A%5C%22q%5C%22%2C%5C%22search.funmoods.com%5C%22%3A%5C%22s%5C%22%2C%5C%22search.avira.com%5C%22%3A%5C%22q%5C%22%2C%5C%22search.jzip.com%5C%22%3A%5C%22q%5C%22%2C%5C%22search.findeer.com%5C%22%3A%5C%22%5C%22%2C%5C%22search-faster.com%5C%22%3A%5C%22%5C%22%2C%5C%22dnssearch.rr.com%5C%22%3A%5C%22search%5C%22%2C%5C%22search.rr.com%5C%22%3A%5C%22q%5C%22%2C%5C%22search.kalloutsearch4.com%5C%22%3A%5C%22q%5C%22%2C%5C%22kalloutsearch4.com%5C%22%3A%5C%22Keywords%5C%22%2C%5C%22search.rapidns.net%5C%22%3A%5C%22SearchQuery%5C%22%2C%5C%22websearch.4shared.com%5C%22%3A%5C%22q%5C%22%2C%5C%22images.search.conduit.com%5C%22%3A%5C%22q%5C%22%2C%5C%22search.cpchero.biz%5C%22%3A%5C%22q%5C%22%2C%5C%22search.kikin.com%5C%22%3A%5C%22q%5C%22%2C%5C%22www.engine-search.biz%5C%22%3A%5C%22q%5C%22%2C%5C%22www.mysearchresults.com%5C%22%3A%5C%22q%5C%22%2C%5C%22search.vdc.com.vn%5C%22%3A%5C%22SearchQuery%5C%22%2C%5C%22search.charter.net%5C%22%3A%5C%22search%5C%22%2C%5C%22search-vbc.com%5C%22%3A%5C%22keywords%5C%22%2C%5C%22search.pch.com%5C%22%3A%5C%22q%5C%22%2C%5C%22search.pantip.com%5C%22%3A%5C%22%5C%22%2C%5C%22www.startsearcher.com%5C%22%3A%5C%22q%5C%22%2C%5C%22search.icafemanager.com%5C%22%3A%5C%22q%5C%22%2C%5C%22aolsearcht10.search.aol.com%5C%22%3A%5C%22q%5C%22%2C%5C%22search.free.fr%5C%22%3A%5C%22%5C%22%2C%5C%22www.similarsitesearch.com%5C%22%3A%5C%22URL%5C%22%2C%5C%22qoqole.com%5C%22%3A%5C%22q%5C%22%2C%5C%22www.claro-search.com%5C%22%3A%5C%22q%5C%22%2C%5C%22isearch.claro-search.com%5C%22%3A%5C%22q%5C%22%2C%5C%22www.uncoverthenet.com/search%5C%22%3A%5C%22q%5C%22%2C%5C%22www.searchcanvas.com%5C%22%3A%5C%22q%5C%22%2C%5C%22search.etoolkit.com%5C%22%3A%5C%22q%5C%22%2C%5C%22www.searchalgo.com%5C%22%3A%5C%22q%5C%22%2C%5C%22bestsearchall.com%5C%22%3A%5C%22q%5C%22%2C%5C%22bestorganicsearch.com%5C%22%3A%5C%22q%5C%22%2C%5C%22mysearchproperties.com%5C%22%3A%5C%22q%5C%22%2C%5C%22search.treasuretrooper.com%5C%22%3A%5C%22q%5C%22%2C%5C%22btsearch.name%5C%22%3A%5C%22q%5C%22%2C%5C%22optu.search-help.net%5C%22%3A%5C%22search%5C%22%2C%5C%22search.clinck.in%5C%22%3A%5C%22q%5C%22%2C%5C%22search.shareazaweb.net%5C%22%3A%5C%22q%5C%22%2C%5C%22search.solarmash.com%5C%22%3A%5C%22q%5C%22%2C%5C%22search.surfcanyon.com%5C%22%3A%5C%22q%5C%22%2C%5C%22search.tedata.net%5C%22%3A%5C%22SearchQuery%5C%22%2C%5C%22www.gooofullsearch.com%5C%22%3A%5C%22keywords%5C%22%2C%5C%22www.alnaddy.com%5C%22%3A%5C%22q%5C%22%2C%5C%22searchsafer.com%5C%22%3A%5C%22q%5C%22%2C%5C%22www.searchqu.com%5C%22%3A%5C%22q%5C%22%2C%5C%22searchfunmoods.com%5C%22%3A%5C%22s%5C%22%2C%5C%22www.searchfunmoods.com%5C%22%3A%5C%22s%5C%22%2C%5C%22www.searchya.com%5C%22%3A%5C%22q%5C%22%2C%5C%22search.lphant.net%5C%22%3A%5C%22%5C%22%2C%5C%22searchremagnified.com%5C%22%3A%5C%22%5C%22%2C%5C%22www.pagequeryresults.com%5C%22%3A%5C%22%5C%22%2C%5C%22www.searchqueryresults.com%5C%22%3A%5C%22%5C%22%2C%5C%22domainhelp.search.com%5C%22%3A%5C%22q%5C%22%2C%5C%22search.b1.org%5C%22%3A%5C%22q%5C%22%2C%5C%22search.pontofrio.com.br%5C%22%3A%5C%22q%5C%22%2C%5C%22search.maxonline.com.sg%5C%22%3A%5C%22q%5C%22%2C%5C%22search.us.com%5C%22%3A%5C%22k%5C%22%2C%5C%22www.picsearch.com%5C%22%3A%5C%22q%5C%22%2C%5C%22www.search-document.com%5C%22%3A%5C%22q%5C%22%2C%5C%22www.searchsafer.com%5C%22%3A%5C%22q%5C%22%2C%5C%22www.website-unavailable.com%5C%22%3A%5C%22q%5C%22%2C%5C%22fantastigames.metacrawler.com%5C%22%3A%5C%22q%5C%22%2C%5C%22search.appsarefun.info%5C%22%3A%5C%22%5C%22%2C%5C%22www.searchamong.com%5C%22%3A%5C%22query%5C%22%2C%5C%22www.savevalet.com%5C%22%3A%5C%22q%5C%22%2C%5C%22www.navegaki.com.br%5C%22%3A%5C%22q%5C%22%2C%5C%22my.rally.io%5C%22%3A%5C%22%5C%22%2C%5C%22isearch.glarysoft.com%5C%22%3A%5C%22q%5C%22%2C%5C%22websearch.mocaflix.com%5C%22%3A%5C%22s%5C%22%2C%5C%22search.fastaddressbar.com%5C%22%3A%5C%22s%5C%22%2C%5C%22search.certified-toolbar.com%5C%22%3A%5C%22q%5C%22%2C%5C%22www.delta-search.com%5C%22%3A%5C%22q%5C%22%2C%5C%22mysearch.avg.com%5C%22%3A%5C%22q%5C%22%2C%5C%22www1.search-results.com%5C%22%3A%5C%22q%5C%22%2C%5C%22search.searchya.com%5C%22%3A%5C%22q%5C%22%2C%5C%22websearch.just-browse.info%5C%22%3A%5C%22s%5C%22%2C%5C%22search.fbdownloader.com%5C%22%3A%5C%22q%5C%22%2C%5C%22search.startnow.com%5C%22%3A%5C%22q%5C%22%2C%5C%22search.protectedsearch.com%5C%22%3A%5C%22q%5C%22%2C%5C%22start.iminent.com%5C%22%3A%5C%22q%5C%22%2C%5C%22websearch.pu-results.info%5C%22%3A%5C%22s%5C%22%2C%5C%2222find.com%5C%22%3A%5C%22%5C%22%2C%5C%22search.comcast.net%5C%22%3A%5C%22q%5C%22%2C%5C%22rss2search.com%5C%22%3A%5C%22q%5C%22%2C%5C%22www.searchinq.com%5C%22%3A%5C%22q%5C%22%2C%5C%22search.22find.com%5C%22%3A%5C%22%5C%22%2C%5C%22search.genieo.com%5C%22%3A%5C%22q%5C%22%2C%5C%22www.safesearch.net%5C%22%3A%5C%22q%5C%22%2C%5C%22isearch.fantastigames.com%5C%22%3A%5C%22q%5C%22%2C%5C%22nortonsafe.search.ask.com%5C%22%3A%5C%22q%5C%22%2C%5C%22search.nation.com%5C%22%3A%5C%22q%5C%22%2C%5C%22www.dnsrsearch.com%5C%22%3A%5C%22search%5C%22%2C%5C%22yourstartsearch.com%5C%22%3A%5C%22q%5C%22%2C%5C%22mixidj.delta-search.com%5C%22%3A%5C%22q%5C%22%2C%5C%22searchiu.com%5C%22%3A%5C%22q%5C%22%2C%5C%22www1.dlinksearch.com%5C%22%3A%5C%22q%5C%22%2C%5C%22search.eazel.com%5C%22%3A%5C%22q%5C%22%2C%5C%22en.eazel.com%5C%22%3A%5C%22q%5C%22%2C%5C%22search.smartsuggestor.net%5C%22%3A%5C%22s%5C%22%2C%5C%22mixidj.claro-search.com%5C%22%3A%5C%22q%5C%22%2C%5C%22search.buzzdock.com%5C%22%3A%5C%22q%5C%22%2C%5C%22search.oracle.com%5C%22%3A%5C%22q%5C%22%2C%5C%22visualbee.delta-search.com%5C%22%3A%5C%22q%5C%22%2C%5C%22filesearch.setun.net%5C%22%3A%5C%22q%5C%22%2C%5C%22search.smartsuggestor.com%5C%22%3A%5C%22s%5C%22%2C%5C%22go.findrsearch.com%5C%22%3A%5C%22q%5C%22%2C%5C%22search.earthlink.net%5C%22%3A%5C%22q%5C%22%2C%5C%22search.netzero.net%5C%22%3A%5C%22query%5C%22%2C%5C%22www.holasearch.com%5C%22%3A%5C%22q%5C%22%2C%5C%22searchengines.com%5C%22%3A%5C%22query%5C%22%2C%5C%22www.31searchengines.com%5C%22%3A%5C%22query%5C%22%2C%5C%22www.99searchengines.com%5C%22%3A%5C%22query%5C%22%2C%5C%22www.28searchengines.com%5C%22%3A%5C%22query%5C%22%2C%5C%22www.29searchengines.com%5C%22%3A%5C%22query%5C%22%2C%5C%22www.38searchengines.com%5C%22%3A%5C%22query%5C%22%2C%5C%22www.39searchengines.com%5C%22%3A%5C%22query%5C%22%2C%5C%22www.50searchengines.com%5C%22%3A%5C%22query%5C%22%2C%5C%22www.100searchengines.com%5C%22%3A%5C%22query%5C%22%2C%5C%22www.20searchengines.com%5C%22%3A%5C%22query%5C%22%2C%5C%22www.24searchengines.com%5C%22%3A%5C%22query%5C%22%2C%5C%22www.45searchengines.com%5C%22%3A%5C%22query%5C%22%2C%5C%22www.55searchengines.com%5C%22%3A%5C%22query%5C%22%2C%5C%22www.60searchengines.com%5C%22%3A%5C%22query%5C%22%2C%5C%22www.70searchengines.com%5C%22%3A%5C%22query%5C%22%2C%5C%22www.88searchengines.com%5C%22%3A%5C%22query%5C%22%2C%5C%22www.47searchengines.com%5C%22%3A%5C%22query%5C%22%2C%5C%22www.32searchengines.com%5C%22%3A%5C%22query%5C%22%2C%5C%22www.48searchengines.com%5C%22%3A%5C%22query%5C%22%2C%5C%22www.53searchengines.com%5C%22%3A%5C%22query%5C%22%2C%5C%22www.40searchengines.com%5C%22%3A%5C%22query%5C%22%2C%5C%22www.66searchengines.com%5C%22%3A%5C%22query%5C%22%2C%5C%22www.34searchengines.com%5C%22%3A%5C%22query%5C%22%2C%5C%22www.49searchengines.com%5C%22%3A%5C%22query%5C%22%2C%5C%22www.30searchengines.com%5C%22%3A%5C%22query%5C%22%2C%5C%22www.41searchengines.com%5C%22%3A%5C%22query%5C%22%2C%5C%22www.36searchengines.com%5C%22%3A%5C%22query%5C%22%2C%5C%22www.52searchengines.com%5C%22%3A%5C%22query%5C%22%2C%5C%22www.25searchengines.com%5C%22%3A%5C%22query%5C%22%2C%5C%22home.maxwebsearch.com%5C%22%3A%5C%22query%5C%22%2C%5C%22polysearch.org%5C%22%3A%5C%22srch%5C%22%2C%5C%22search.bnpmedia.com%5C%22%3A%5C%22q%5C%22%2C%5C%22start.search.us.com%5C%22%3A%5C%22k%5C%22%2C%5C%22www.searchnfind.org%5C%22%3A%5C%22%5C%22%2C%5C%22searching-gambling.com%5C%22%3A%5C%22%5C%22%2C%5C%22search.easylifeapp.com%5C%22%3A%5C%22s%5C%22%2C%5C%22www.goodsearch.com%5C%22%3A%5C%22keywords%5C%22%2C%5C%22search.adlux.com%5C%22%3A%5C%22%5C%22%2C%5C%22websearch.good-results.info%5C%22%3A%5C%22s%5C%22%2C%5C%22search.beesq.net%5C%22%3A%5C%22k%5C%22%2C%5C%22www1.delta-search.com%5C%22%3A%5C%22q%5C%22%2C%5C%22www.search.delta-search.com%5C%22%3A%5C%22q%5C%22%2C%5C%22www.yhs.delta-search.com%5C%22%3A%5C%22q%5C%22%2C%5C%22info.delta-search.com%5C%22%3A%5C%22q%5C%22%2C%5C%22www.yd.delta-search.com%5C%22%3A%5C%22q%5C%22%2C%5C%22www2.delta-search.com%5C%22%3A%5C%22q%5C%22%2C%5C%22www3.delta-search.com%5C%22%3A%5C%22q%5C%22%2C%5C%22websearch.helpmefindyour.info%5C%22%3A%5C%22s%5C%22%2C%5C%22tuvaro.com%5C%22%3A%5C%22q%5C%22%2C%5C%22amazon.smart-search.com%5C%22%3A%5C%22query%5C%22%2C%5C%22butterflysearch.net%5C%22%3A%5C%22search%5C%22%2C%5C%22g9search.com%5C%22%3A%5C%22q%5C%22%2C%5C%22images.searchcompletion.com%5C%22%3A%5C%22q%5C%22%2C%5C%22lab.search.conduit.com%5C%22%3A%5C%22q%5C%22%2C%5C%22search.autocompletepro.com%5C%22%3A%5C%22q%5C%22%2C%5C%22search.creativetoolbars.com%5C%22%3A%5C%22q%5C%22%2C%5C%22search.dudu.com%5C%22%3A%5C%22q%5C%22%2C%5C%22search.filebulldog.com%5C%22%3A%5C%22p%5C%22%2C%5C%22search.findwide.com%5C%22%3A%5C%22k%5C%22%2C%5C%22search.focalprice.com%5C%22%3A%5C%22%5C%22%2C%5C%22search.juno.com%5C%22%3A%5C%22query%5C%22%2C%5C%22search.peoplepc.com%5C%22%3A%5C%22q%5C%22%2C%5C%22search.piccshare.com%5C%22%3A%5C%22q%5C%22%2C%5C%22search.starburnsoftware.com%5C%22%3A%5C%22q%5C%22%2C%5C%22search.zonealarm.com%5C%22%3A%5C%22q%5C%22%2C%5C%22search27.info.com%5C%22%3A%5C%22qkw%5C%22%2C%5C%22search42.info.com%5C%22%3A%5C%22qkw%5C%22%2C%5C%22search45.info.com%5C%22%3A%5C%22qkw%5C%22%2C%5C%22search49.info.com%5C%22%3A%5C%22qkw%5C%22%2C%5C%22securesearch.lavasoft.com%5C%22%3A%5C%22q%5C%22%2C%5C%22shieldedsearch.com%5C%22%3A%5C%22q%5C%22%2C%5C%22us.aolsearch.com%5C%22%3A%5C%22q%5C%22%2C%5C%22websearch.brandthunder.com%5C%22%3A%5C%22q%5C%22%2C%5C%22websearch.youwillfind.info%5C%22%3A%5C%22s%5C%22%2C%5C%22websearchsimple.com%5C%22%3A%5C%22q%5C%22%2C%5C%22wind.search-help.net%5C%22%3A%5C%22search%5C%22%2C%5C%22www.21searchengines.com%5C%22%3A%5C%22%5C%22%2C%5C%22www.22searchengines.com%5C%22%3A%5C%22%5C%22%2C%5C%22www.42searchengines.com%5C%22%3A%5C%22%5C%22%2C%5C%22www.46searchengines.com%5C%22%3A%5C%22%5C%22%2C%5C%22www.85searchengines.com%5C%22%3A%5C%22%5C%22%2C%5C%22www.goonsearch.com%5C%22%3A%5C%22q%5C%22%2C%5C%22www.isearch-123.com%5C%22%3A%5C%22q%5C%22%2C%5C%22www.maxwebsearch.com%5C%22%3A%5C%22query%5C%22%2C%5C%22www.searchgby.com%5C%22%3A%5C%22%5C%22%2C%5C%22www.tlbsearch.com%5C%22%3A%5C%22q%5C%22%2C%5C%22avira.search.ask.com%5C%22%3A%5C%22q%5C%22%2C%5C%22search.coupons.com%5C%22%3A%5C%22%5C%22%2C%5C%22smartsearchfacts.com%5C%22%3A%5C%22search%5C%22%2C%5C%22www.27searchengines.com%5C%22%3A%5C%22%5C%22%2C%5C%22www.90searchengines.com%5C%22%3A%5C%22%5C%22%2C%5C%22www.searchgol.com%5C%22%3A%5C%22q%5C%22%2C%5C%22www.searchpage.com%5C%22%3A%5C%22%5C%22%2C%5C%22www.toastsearch.com%5C%22%3A%5C%22q%5C%22%2C%5C%22search.zum.com%5C%22%3A%5C%22query%5C%22%2C%5C%22searchzone.com%5C%22%3A%5C%22query%5C%22%7D%7C%7C%7C8641370666506877%22%2C%22WSG_blackList%22%3A%22form%3DCONTLB%7Cbabsrc%3Dtoolbar%7Cbabsrc%3Dtb_ss%7CinvocationType%3Dtb50-ie-aolsoftonic-tbsbox-en-us%7CinvocationType%3Dtb50-ff-aolsoftonic-tbsbox-en-us%7Csrc%3Dtlbvw%7Csap%3Dtr%7Csrc%3D1%7C/toolbar%7CSearchSource%3D1%7CSearchSource%3D44%7Cqsrc%3D2871%7Cbabsrc%3DTB_def%7C%7C%7C8641370666506879%22%2C%22WSG_kswitch%22%3A%22not%20set%22%2C%22WSG_inactive_by_user%22%3A%22not%20set%22%2C%22WSG_debugMode%22%3A%22not%20set%22%2C%22WSG_showDialog%22%3A%22not%20set%22%2C%22WSG_dailyPing%22%3A%22true%7C%7C%7C1370752906430%22%2C%22WSG_installedPing%22%3A%22true%7C%7C%7C8641358665679730%22%2C%22WSG_toolbar_query%22%3A%22not%20set%22%2C%22WSG_geoRequest%22%3A%22TW%7C%7C%7C8641360140150495%22%7D");</script><script type="text/javascript" async="" src="./02_files/gt.js"></script></head><style type="text/css">embed[type*="application/x-shockwave-flash"],embed[src*=".swf"],object[type*="application/x-shockwave-flash"],object[codetype*="application/x-shockwave-flash"],object[src*=".swf"],object[codebase*="swflash.cab"],object[classid*="D27CDB6E-AE6D-11cf-96B8-444553540000"],object[classid*="d27cdb6e-ae6d-11cf-96b8-444553540000"],object[classid*="D27CDB6E-AE6D-11cf-96B8-444553540000"]{	display: none !important;}</style>
+<body>
+<div id="OSC_Screen">
+	<div id="OSC_Banner">
+		<div id="OSC_Logo">
+        	<a href="http://www.oschina.net/" title="开源中国社区首页">开源中国社区</a>
+        </div>
+        <div id="OSC_Slogon">开源项目发现、使用和交流平台</div>
+		        <div id="OSC_Channels">
+        	<ul>
+        	<li><a href="http://www.oschina.net/project" class="software">项目</a></li>
+        	<li><a href="http://www.oschina.net/question" class="question">讨论</a></li>
+        	<li><a href="http://www.oschina.net/code/list" class="code">代码</a></li>
+        	<li><a href="http://www.oschina.net/news" class="news">资讯</a></li>
+        	<li><a href="http://www.oschina.net/translate" class="translate">翻译</a></li>
+        	<li><a href="http://www.oschina.net/blog" class="blog">博客</a></li>
+        	<li><a href="http://www.oschina.net/android" class="android">Android</a></li>
+        	<li><a href="http://www.oschina.net/job" class="job">招聘</a></li>
+        	</ul>
+        </div>
+        <div class="clear"></div>
+	</div>
+	<div id="OSC_Topbar">
+		<div id="VisitorInfo">
+		当前访客身份：
+				游客 [ <a href="http://www.oschina.net/home/login?goto_page=http%3A%2F%2Fmy.oschina.net%2Frenhc">登录</a> | <a href="http://www.oschina.net/home/reg">加入开源中国</a> ]
+				<span id="OSC_Notification">			
+									<a href="http://www.oschina.net/home/login?goto_page=http%3A%2F%2Fmy.oschina.net%2Frenhc" class="msgbox" title="进入我的留言箱">你有<em>0</em>新留言</a>			
+											</span>
+		</div>
+		<div id="SearchBar">
+    		<form action="http://www.oschina.net/search">
+				<input type="hidden" name="user" value="101347">
+																<span class="ipt f_l">
+    			<input type="text" id="txt_q" name="q" class="SERACH" value="在 25757 款开源软件中搜索" onblur="(this.value==&#39;&#39;)?this.value=&#39;在 25757 款开源软件中搜索&#39;:this.value" onfocus="if(this.value==&#39;在 25757 款开源软件中搜索&#39;){this.value=&#39;&#39;;};this.select();">
+				</span>
+				                <div class="search-by selectbox">
+    				<span class="hide">
+    				<select name="scope">					
+                        <option value="project" selected="">软件</option>
+                        <option value="code">代码</option>
+                        <option value="bbs">讨论区</option>
+                        <option value="news">新闻</option>
+                        <option value="blog">博客</option>
+    				</select>
+    				</span>
+                  <div class="search_on" id="search-item"><span class="text">软件</span></div>
+                  <ul class="search_list" style="display: none;">
+                     <li class="search-item"><a href="http://my.oschina.net/renhc/blog/54582#1">软件</a></li>
+                     <li><a href="http://my.oschina.net/renhc/blog/54582#2">代码</a></li>
+                     <li><a href="http://my.oschina.net/renhc/blog/54582#3">讨论区</a></li>
+                     <li><a href="http://my.oschina.net/renhc/blog/54582#4">新闻</a></li>
+                     <li><a href="http://my.oschina.net/renhc/blog/54582#5">博客</a></li>
+                  </ul>
+                </div>
+				<input type="submit" value="搜索" class="bnt f_r">			
+    		</form>
+		</div>
+		<div class="clear"></div>
+	</div>
+	<div id="OSC_Content">	
+
+<div id="SpaceLeft">
+<div class="Owner">
+	    <a href="http://my.oschina.net/renhc" class="Img"><img src="./02_files/101347_100.jpg" align="absmiddle" alt="恋恋美食" title="恋恋美食" class="LargePortrait"></a>
+    <span class="U">
+        <a href="http://my.oschina.net/renhc" class="Name" title="男">恋恋美食</a>
+		<span class="opts">
+			<img src="./02_files/men.png" align="absmiddle" title="男">
+        			<script type="text/javascript">
+var nologin = "<a href='javascript:_follow_nologin()' title='成为TA的粉丝'>关注此人</a>"
+var follow0 = "<a href='javascript:_follow_user(101347,true)' title='成为TA的粉丝'>关注此人</a>";
+var follow1 = "已关注 | <a href='javascript:_follow_user(101347,false)' title='取消关注后，此人的更新信息将不会出现在你的首页'>取消</a>";
+var follow2 = "互相关注 | <a href='javascript:_follow_user(101347,false)' title='取消关注后，此人的更新信息将不会出现在你的首页'>取消</a>";
+var follow4 = "<a href='javascript:_follow_user(101347,true)' title='成为TA的粉丝'>+关注此人</a>";
+
+document.write("<span id='_follow_101347_action_'>");
+	document.write(nologin);
+document.write("</span>");
+
+function _follow_nologin(){
+	if(confirm('必须登录后才能关注，是否现在登录？')){
+		location.href="http://www.oschina.net/home/login?goto_page="+location.href;
+	}
+}
+
+function _follow_user(uid, follow){
+	var action = follow?"/action/user/follow":"/action/user/unfollow";
+	ajax_post(action,"id="+uid+"&user=${g_user.id}",function(result){
+		var act = $('#_follow_101347_action_');
+		if(result == '0')
+			_follow_nologin();
+		else if(result == '1')
+			act.html(follow0);
+		else if(result == '2')
+			act.html(follow1);
+		else if(result == '3')
+			act.html(follow2);
+		else if(result == '4')
+			act.html(follow4);
+	});
+}
+</script><span id="_follow_101347_action_"><a href="javascript:_follow_nologin()" title="成为TA的粉丝">关注此人</a></span>				</span>
+    </span>
+    <div class="clear"></div>
+    <div class="stat">
+    	<a href="http://my.oschina.net/renhc/fellow">关注(18)</a>
+    	<a href="http://my.oschina.net/renhc/fans">粉丝(28)</a>
+    	<a href="http://www.oschina.net/question/3307_20931" title="查看OSCHINA积分规则">积分(73)</a>
+    </div>
+</div><style>
+#MyResume textarea {width:170px;height:60px;font-size:9pt;}
+</style>
+<div class="Resume" id="MyResume">
+这个人很懒，啥也没写</div>
+
+<div class="Opts clearfix">
+	<a href="javascript:sendmsg(101347, 0)" class="a1 sendmsg"><i>.</i><span>发送留言</span></a>
+	<a href="http://www.oschina.net/question/ask?user=101347" class="a2 ask"><i>.</i><span>请教问题</span></a>
+</div><div class="Mod" id="BlogCatalogs">
+  <strong> 博客分类</strong>
+  <ul>
+	    	<li><a href="http://my.oschina.net/renhc/blog?catalog=180610">招聘</a><span>(2)</span></li>
+		<li><a href="http://my.oschina.net/renhc/blog?catalog=119974">学习笔记</a><span>(5)</span></li>
+		<li><a href="http://my.oschina.net/renhc/blog?catalog=177549">翻译</a><span>(0)</span></li>
+		<li><a href="http://my.oschina.net/renhc/blog?catalog=47499">工作日志</a><span>(4)</span></li>
+		<li><a href="http://my.oschina.net/renhc/blog?catalog=173774">C/C++</a><span>(15)</span></li>
+		<li><a href="http://my.oschina.net/renhc/blog?catalog=182715">Python</a><span>(1)</span></li>
+		<li><a href="http://my.oschina.net/renhc/blog?catalog=183847">Linux</a><span>(2)</span></li>
+		<li><a href="http://my.oschina.net/renhc/blog?catalog=173782">网络编程</a><span>(11)</span></li>
+		<li><a href="http://my.oschina.net/renhc/blog?catalog=47501">转贴的文章</a><span>(0)</span></li>
+		<li><a href="http://my.oschina.net/renhc/blog?catalog=47500">日常记录</a><span>(2)</span></li>
+	  </ul>
+</div><div class="Mod" id="HotBlogs">
+  <strong>阅读排行</strong>
+  <ol>
+			<li><a href="http://my.oschina.net/renhc/blog/53580">1. 【C/C++】Linux下使用system()函数一定要谨慎</a></li>
+				<li><a href="http://my.oschina.net/renhc/blog/35116">2. 【IPC通信】基于管道的popen和pclose函数</a></li>
+				<li><a href="http://my.oschina.net/renhc/blog/36780">3. 【翻译】gSOAP 2.8.5 用户手册(待续)</a></li>
+				<li><a href="./02_files/02.htm">4. 【C/C++】Linux下system()函数引发的错误</a></li>
+				<li><a href="http://my.oschina.net/renhc/blog/36345">5. 【面试题】实现memcpy函数</a></li>
+				<li><a href="http://my.oschina.net/renhc/blog/32880">6. jsoncpp在linux下的配置</a></li>
+				<li><a href="http://my.oschina.net/renhc/blog/60248">7. 【Linux】mv命令全解析</a></li>
+				<li><a href="http://my.oschina.net/renhc/blog/34991">8. 【IPC通信】key_t键和ftok函数</a></li>
+		  </ol>
+</div>
+<div class="Mod" id="BlogReplies">
+  <strong> 最新评论</strong>  
+      <ul>
+		<li>
+		<a href="http://my.oschina.net/lee24">@Lee24</a>：可以把环形的也考虑一下。
+		<a href="http://my.oschina.net/action/tweet/go?obj=270818658&type=18&user=568066">查看»</a>
+	</li>
+		<li>
+		<a href="http://my.oschina.net/renhc">@恋恋美食</a>：引用来自“爱玲”的评论 总结的很好！谢谢都是书...
+		<a href="http://my.oschina.net/action/tweet/go?obj=270817471&type=18&user=101347">查看»</a>
+	</li>
+		<li>
+		<a href="http://my.oschina.net/renhc">@恋恋美食</a>：引用来自“童爱玲”的评论 你好，我想问一下方案...
+		<a href="http://my.oschina.net/action/tweet/go?obj=270817452&type=18&user=101347">查看»</a>
+	</li>
+		<li>
+		<a href="http://my.oschina.net/eillenme">@EillenMe</a>：总结的很好！谢谢
+		<a href="http://my.oschina.net/action/tweet/go?obj=270814737&type=18&user=870940">查看»</a>
+	</li>
+		<li>
+		<a href="http://my.oschina.net/eillenme">@EillenMe</a>：你好，我想问一下方案三，我怎么想不明白。
+		<a href="http://my.oschina.net/action/tweet/go?obj=270814710&type=18&user=870940">查看»</a>
+	</li>
+		<li>
+		<a href="http://my.oschina.net/renhc">@恋恋美食</a>：引用来自“陈凯俊”的评论 引用来自“恋恋美食”...
+		<a href="http://my.oschina.net/action/tweet/go?obj=270675310&type=18&user=101347">查看»</a>
+	</li>
+		<li>
+		<a href="http://my.oschina.net/gzckj">@陈凯俊</a>：引用来自“恋恋美食”的评论 引用来自“前路@……...
+		<a href="http://my.oschina.net/action/tweet/go?obj=270665585&type=18&user=219130">查看»</a>
+	</li>
+		<li>
+		<a href="http://my.oschina.net/renhc">@恋恋美食</a>：引用来自“前路@……”的评论 abcdefg+abcdefg=...
+		<a href="http://my.oschina.net/action/tweet/go?obj=270658926&type=18&user=101347">查看»</a>
+	</li>
+		<li>
+		<a href="http://my.oschina.net/ccdvote">@Anterior</a>：abcdefg+abcdefg=abcdefgabcdefg n=8 i=3 从第三...
+		<a href="http://my.oschina.net/action/tweet/go?obj=270616862&type=18&user=154610">查看»</a>
+	</li>
+		<li>
+		<a href="http://my.oschina.net/leihaocs">@雷雷X</a>：顶一个，终于找到实践方法了
+		<a href="http://my.oschina.net/action/tweet/go?obj=269953013&type=18&user=815902">查看»</a>
+	</li>
+	  </ul>
+  </div>
+<div class="Mod" id="Stat">
+<strong>访客统计</strong>
+<ul>
+	<li><label>今日访问：</label>16</li>
+    <li><label>昨日访问：</label>70</li>
+    <li><label>本周访问：</label>354</li>
+    <li><label>本月访问：</label>398</li>
+    <li><label>所有访问：</label>23380</li>
+</ul>
+</div></div>
+
+<div class="SpaceList">
+	<div class="TopBar">
+    	<div class="NavPath">		
+    		<a href="http://my.oschina.net/renhc">空间</a> » <a href="http://my.oschina.net/renhc/blog">博客</a>			
+			» <a href="http://my.oschina.net/renhc/blog?catalog=173774">C/C++</a>
+			» 博客正文
+    	</div>
+	</div>
+	
+    	<div class="BlogEntity">		
+      <div class="BlogTitle">
+        <h1><img src="./02_files/b1.gif" align="absmiddle"> 【C/C++】Linux下system()函数引发的错误</h1>
+        <div class="BlogStat">
+    		    		    	    <span class="admin">
+				<style>
+#favor_form{width:200px;}
+#favor_form p {color:#666;}
+#favor_form form{height:60px;width:200px;}
+#favor_form form ._favor_input{display:block;margin:2px 0;width:199px;}
+#favor_form form ._favor_button{float:left;padding:2px 5px;}
+.favor_ok {text-align:center;font-size:10.5pt;width:199px;height:60px;margin-top:10px;}
+#TagsSwitcher{cursor:pointer;float:right;margin-top:10px;}
+#MyTags{display:none;width:199px;}
+#MyTags a.tag {float:left; background-color: #E0EAF1;border-bottom: 1px solid #3E6D8E;border-right: 1px solid #7F9FB6;color: #3E6D8E;font-size: 8pt;line-height: 16px;margin: 2px 2px 2px 0;padding: 2px 4px;text-decoration: none;white-space: nowrap;}
+</style>
+<script type="text/javascript">
+var favor_add = "<a href='javascript:add_to_favor(54582,3)' id='favor_trigger' title='添加到收藏夹'>我要收藏</a>";
+var favor_del = "<a href='javascript:delete_favor(54582,3)' id='favor_trigger' style='color:#a00;'>取消收藏</a>";
+var favor_ok = "<p class='favor_ok'>已成功添加到收藏夹<br/><br/> <a href='null/favorites?type=3'>我的收藏夹</a> | <a href='javascript:close_favor()'>关闭</a></p>";
+function delete_favor(obi_id, obj_type){
+	$('#attention_it').html(favor_add);
+	$("#p_attention_count").load("/action/favorite/cancel?type="+obj_type+"&id="+obi_id, {user: ''});
+}
+function add_to_favor(obj_id, obj_type){
+	if(confirm('必须登录后才能收藏，是否现在登录？')){
+		location.href="http://www.oschina.net/home/login?goto_page="+encodeURIComponent(location.href);
+	}
+}
+function close_favor(elem_id){
+    $('#favor_trigger').poshytip('destroy');
+}
+function setTag(tv){
+	var t = $("._favor_input");
+	var value = t.val();
+	if(value!="")
+		t.val(value+","+tv);
+	else
+		t.val(tv)
+}
+function ltrim(str){
+    var whitespace = new String(" \t\n\r");
+    var s = new String(str);
+    if (whitespace.indexOf(s.charAt(0)) != -1){
+        var j=0, i = s.length;
+        while (j < i && whitespace.indexOf(s.charAt(j)) != -1){
+            j++;
+        }
+        s = s.substring(j, i);
+    }
+    return s;
+}
+
+function rtrim(str){
+    var whitespace = new String(" \t\n\r");
+    var s = new String(str);
+    if (whitespace.indexOf(s.charAt(s.length-1)) != -1){
+        var i = s.length - 1;
+        while (i >= 0 && whitespace.indexOf(s.charAt(i)) != -1){
+            i--;
+        }
+        s = s.substring(0, i+1);
+    }
+    return s;
+}
+ 
+function trim(str){
+    return rtrim(ltrim(str));
+}
+</script>
+<em id="p_attention_count">5</em>人收藏此文章,
+<span id="attention_it">
+	<script type="text/javascript">document.write(favor_add);</script><a href="javascript:add_to_favor(54582,3)" id="favor_trigger" title="添加到收藏夹">我要收藏</a>
+</span>			</span>
+    		    		发表于1年前(2012-04-21 11:33) , 
+    		已有<strong>1745</strong>次阅读 ，共<strong><a href="http://my.oschina.net/renhc/blog/54582#comments">0</a></strong>个评论
+    		    	</div> 
+      </div>
+	  	  	  <div class="BlogContent"><div>
+  今天，一个运行了近一年的程序突然挂掉了，问题定位到是system()函数出的问题，关于该函数的简单使用在我上篇文章做过介绍： 
+ <a href="http://my.oschina.net/renhc/blog/53580" rel="nofollow">http://my.oschina.net/renhc/blog/53580</a> 
+</div> 
+<div> 
+ <br> 
+</div> 
+<p><b>先看一下问题</b></p> 
+<p>简单封装了一下system()函数：</p> 
+<div></div> 
+<div id="highlighter_64106" class="syntaxhighlighter  "><div class="bar"><div class="toolbar"><a href="http://my.oschina.net/renhc/blog/54582#viewSource" title="view source" class="item viewSource" style="width: 16px; height: 16px;">view source</a><div class="item copyToClipboard"><div style="display: block; cursor: pointer; text-align: center; width: 16px; height: 16px; top: auto; left: auto; position: static;"><div style="-webkit-transition: opacity 150ms ease-out; transition: opacity 150ms ease-out; background-image: url(chrome-extension://gofhjkjmkpinhpoiabjplobcaignabnl/icon_play.png); text-align: left; opacity: 0.25; border: 1px solid rgb(0, 0, 0); width: 100%; height: 100%; background-color: rgba(193, 217, 244, 0.498039); background-repeat: no-repeat no-repeat;"></div></div><embed width="16" height="16" id="highlighter_64106_clipboard" type="application/x-shockwave-flash" title="copy to clipboard" allowscriptaccess="always" wmode="transparent" flashvars="highlighterId=highlighter_64106" menu="false" src="/js/syntax-highlighter-2.1.382/scripts/clipboard.swf" style="display: none !important;"></div><a href="http://my.oschina.net/renhc/blog/54582#printSource" title="print" class="item printSource" style="width: 16px; height: 16px;">print</a><a href="http://my.oschina.net/renhc/blog/54582#about" title="?" class="item about" style="width: 16px; height: 16px;">?</a></div></div><div class="lines"><div class="line alt1"><table><tbody><tr><td class="number"><code>1</code></td><td class="content"><code class="color1 bold">int</code> <code class="plain">pox_system(</code><code class="keyword bold">const</code> <code class="color1 bold">char</code> <code class="plain">*cmd_line)</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>2</code></td><td class="content"><code class="plain">{</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>3</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="keyword bold">return</code> <code class="functions bold">system</code><code class="plain">(cmd_line);</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>4</code></td><td class="content"><code class="plain">}</code></td></tr></tbody></table></div></div></div> 
+<p></p> 
+<div></div> 
+<div>
+  函数调用： 
+</div> 
+<div> 
+ <div id="highlighter_79843" class="syntaxhighlighter  "><div class="bar"><div class="toolbar"><a href="http://my.oschina.net/renhc/blog/54582#viewSource" title="view source" class="item viewSource" style="width: 16px; height: 16px;">view source</a><div class="item copyToClipboard"><div style="display: block; cursor: pointer; text-align: center; width: 16px; height: 16px; top: auto; left: auto; position: static;"><div style="-webkit-transition: opacity 150ms ease-out; transition: opacity 150ms ease-out; background-image: url(chrome-extension://gofhjkjmkpinhpoiabjplobcaignabnl/icon_play.png); text-align: left; opacity: 0.25; border: 1px solid rgb(0, 0, 0); width: 100%; height: 100%; background-color: rgba(193, 217, 244, 0.498039); background-repeat: no-repeat no-repeat;"></div></div><embed width="16" height="16" id="highlighter_79843_clipboard" type="application/x-shockwave-flash" title="copy to clipboard" allowscriptaccess="always" wmode="transparent" flashvars="highlighterId=highlighter_79843" menu="false" src="/js/syntax-highlighter-2.1.382/scripts/clipboard.swf" style="display: none !important;"></div><a href="http://my.oschina.net/renhc/blog/54582#printSource" title="print" class="item printSource" style="width: 16px; height: 16px;">print</a><a href="http://my.oschina.net/renhc/blog/54582#about" title="?" class="item about" style="width: 16px; height: 16px;">?</a></div></div><div class="lines"><div class="line alt1"><table><tbody><tr><td class="number"><code>1</code></td><td class="content"><code class="color1 bold">int</code> <code class="plain">ret = 0;</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>2</code></td><td class="content"><code class="plain">ret = pox_system(</code><code class="string">"gzip -c /var/opt/I00005.xml &gt; /var/opt/I00005.z"</code><code class="plain">);</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>3</code></td><td class="content"><code class="keyword bold">if</code><code class="plain">(0 != ret)</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>4</code></td><td class="content"><code class="plain">{</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>5</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">Log(</code><code class="string">"zip file failed\n"</code><code class="plain">);</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>6</code></td><td class="content"><code class="plain">}</code></td></tr></tbody></table></div></div></div> 
+ <p> </p> 问题现象：每次执行到此处，都会zip failed。而单独把该命令拿出来在shell里执行却总是对的，事实上该段代码已运行了很长时间，从没出过问题。 
+</div> 
+<div> 
+ <br> 
+</div> 
+<p><b>糟糕的日志</b></p> 
+<p>分析log时，我们只能看到“zip file failed”这个我们自定义的信息，至于为什么fail，毫无线索。</p> 
+<div>
+  那好，我们先试着找出更多的线索： 
+</div> 
+<div> 
+ <div id="highlighter_266655" class="syntaxhighlighter  "><div class="bar"><div class="toolbar"><a href="http://my.oschina.net/renhc/blog/54582#viewSource" title="view source" class="item viewSource" style="width: 16px; height: 16px;">view source</a><div class="item copyToClipboard"><div style="display: block; cursor: pointer; text-align: center; width: 16px; height: 16px; top: auto; left: auto; position: static;"><div style="-webkit-transition: opacity 150ms ease-out; transition: opacity 150ms ease-out; background-image: url(chrome-extension://gofhjkjmkpinhpoiabjplobcaignabnl/icon_play.png); text-align: left; opacity: 0.25; border: 1px solid rgb(0, 0, 0); width: 100%; height: 100%; background-color: rgba(193, 217, 244, 0.498039); background-repeat: no-repeat no-repeat;"></div></div><embed width="16" height="16" id="highlighter_266655_clipboard" type="application/x-shockwave-flash" title="copy to clipboard" allowscriptaccess="always" wmode="transparent" flashvars="highlighterId=highlighter_266655" menu="false" src="/js/syntax-highlighter-2.1.382/scripts/clipboard.swf" style="display: none !important;"></div><a href="http://my.oschina.net/renhc/blog/54582#printSource" title="print" class="item printSource" style="width: 16px; height: 16px;">print</a><a href="http://my.oschina.net/renhc/blog/54582#about" title="?" class="item about" style="width: 16px; height: 16px;">?</a></div></div><div class="lines"><div class="line alt1"><table><tbody><tr><td class="number"><code>1</code></td><td class="content"><code class="color1 bold">int</code> <code class="plain">ret = 0;</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>2</code></td><td class="content"><code class="plain">ret = pox_system(</code><code class="string">"gzip -c /var/opt/I00005.xml &gt; /var/opt/I00005.z"</code><code class="plain">);</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>3</code></td><td class="content"><code class="keyword bold">if</code><code class="plain">(0 != ret)</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>4</code></td><td class="content"><code class="plain">{</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>5</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain">Log(</code><code class="string">"zip file failed: %s\n"</code><code class="plain">, </code><code class="functions bold">strerror</code><code class="plain">(</code><code class="functions bold">errno</code><code class="plain">)); </code><code class="comments">//尝试打印出系统错误信息</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>6</code></td><td class="content"><code class="plain">}</code></td></tr></tbody></table></div></div></div> 
+ <p> </p> 我们增加了log，通过system()函数设置的errno，我们得到一个非常有用的线索：system()函数失败是由于“ 
+ <span style="font-family:Simsun;font-size:medium;line-height:normal;">No child processes</span>”。继续找Root Cause。 
+</div> 
+<div> 
+ <br> 
+</div> 
+<p><b>谁动了errno</b></p> 
+<p>我们通过上面的线索，知道system()函数设置了errno为ECHILD，然而从system()函数的man手册里我们找不到任何有关EHILD的信息。我们知道system()函数执行过程为：fork()-&gt;exec()-&gt;waitpid()。很显然waitpid()有重大嫌疑，我们去查一下man手册，看该函数有没有可能设置ECHILD：</p> 
+<div> 
+ <div> 
+  <span style="font-family:&#39;Courier New&#39;;">ECHILD</span> 
+ </div> 
+ <div> 
+  <span style="font-family:&#39;Courier New&#39;;">(for waitpid() or waitid()) The process specified by pid (waitpid()) or idtype and id (waitid()) does not exist or is not a child of the calling process. (This can happen for one's own child if the action for SIGCHLD is set to SIG_IGN. See also the Linux Notes section about threads.)</span> 
+ </div> 
+</div> 
+<div>
+  果然有料，如果SIGCHLD信号行为被设置为SIG_IGN时，waitpid()函数有可能因为找不到子进程而报ECHILD错误。似乎我们找到了问题的解决方案：在调用system()函数前重新设置SIGCHLD信号为缺省值，即signal(SIGCHLD, SIG_DFL)。我们很兴奋，暂时顾不上看Linux Notes部分，直接加上代码测试！乖乖，问题解决了！ 
+</div> 
+<div> 
+ <br> 
+</div> 
+<p><b>如此处理问题是你的风格吗</b></p> 
+<p>正当我们急于check in 代码时，一个疑问出现了：“这个错误为什么以前没发生”？是啊，运行良好的程序怎么突然就挂了呢？首先我们代码没有改动，那么肯定是外部因素了。一想到外部因素，我们开始抱怨：“肯定是其他组的程序影响我们了！”但抱怨这是没用的，如果你这么认为，那么请拿出证据！但静下来分析一下不难发现，这不可能是其他程序的影响，其他进程不可能影响我们进程对信号的处理方式。</p> 
+<p>system()函数之前没出错，是因为systeme()函数依赖了系统的一个特性，那就是内核初始化进程时对SIGCHLD信号的处理方式为SIG_DFL，这是什么什么意思呢？即内核发现进程的子进程终止后给进程发送一个SIGCHLD信号，进程收到该信号后采用SIG_DFL方式处理，那么SIG_DFL又是什么方式呢？SIG_DFL是一个宏，定义了一个信号处理函数指针，事实上该信号处理函数什么也没做。这个特性正是system()函数需要的，system()函数首先fork()一个子进程执行command命令，执行完后system()函数会使用waitpid()函数对子进程进行收尸。</p> 
+<p>通过上面的分析，我们可以清醒的得知，system()执行前，SIGCHLD信号的处理方式肯定变了，不再是SIG_DFL了，至于变成什么暂时不知道，事实上，我们也不需要知道，我们只需要记得使用system()函数前把SIGCHLD信号处理方式显式修改为SIG_DFL方式，同时记录原来的处理方式，使用完system()后再设为原来的处理方式。这样我们可以屏蔽因系统升级或信号处理方式改变带来的影响。</p> 
+<p><b>验证猜想</b>&nbsp;</p> 
+<p>我们公司采用的是持续集成+敏捷开发模式，每天都会由专门的team负责自动化case的测试，每次称为一个build，我们分析了本次build与上次build使用的系统版本，发现版本确实升级了。于是我们找到了相关team进行验证，我们把问题详细的描述了一下，很快对方给了反馈，下面是邮件回复原文：</p> 
+<p></p> 
+<blockquote>
+  LIBGEN 里新增加了SIGCHLD的处理。将其ignore。为了避免僵尸进程的产生。 
+</blockquote> 看来我们的猜想没错！问题分析到这里，解决方法也清晰了，于是我们修改了我们的pox_system()函数： 
+<p></p> 
+<p></p> 
+<div id="highlighter_661474" class="syntaxhighlighter  "><div class="bar"><div class="toolbar"><a href="http://my.oschina.net/renhc/blog/54582#viewSource" title="view source" class="item viewSource" style="width: 16px; height: 16px;">view source</a><div class="item copyToClipboard"><div style="display: block; cursor: pointer; text-align: center; width: 16px; height: 16px; top: auto; left: auto; position: static;"><div style="-webkit-transition: opacity 150ms ease-out; transition: opacity 150ms ease-out; background-image: url(chrome-extension://gofhjkjmkpinhpoiabjplobcaignabnl/icon_play.png); text-align: left; opacity: 0.25; border: 1px solid rgb(0, 0, 0); width: 100%; height: 100%; background-color: rgba(193, 217, 244, 0.498039); background-repeat: no-repeat no-repeat;"></div></div><embed width="16" height="16" id="highlighter_661474_clipboard" type="application/x-shockwave-flash" title="copy to clipboard" allowscriptaccess="always" wmode="transparent" flashvars="highlighterId=highlighter_661474" menu="false" src="/js/syntax-highlighter-2.1.382/scripts/clipboard.swf" style="display: none !important;"></div><a href="http://my.oschina.net/renhc/blog/54582#printSource" title="print" class="item printSource" style="width: 16px; height: 16px;">print</a><a href="http://my.oschina.net/renhc/blog/54582#about" title="?" class="item about" style="width: 16px; height: 16px;">?</a></div></div><div class="lines"><div class="line alt1"><table><tbody><tr><td class="number"><code>01</code></td><td class="content"><code class="keyword bold">typedef</code> <code class="keyword bold">void</code> <code class="plain">(*sighandler_t)(</code><code class="color1 bold">int</code><code class="plain">);</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>02</code></td><td class="content"><code class="color1 bold">int</code> <code class="plain">pox_system(</code><code class="keyword bold">const</code> <code class="color1 bold">char</code> <code class="plain">*cmd_line)</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>03</code></td><td class="content"><code class="plain">{</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>04</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;</code><code class="color1 bold">int</code> <code class="plain">ret = 0;</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>05</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;</code><code class="plain">sighandler_t old_handler;</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>06</code></td><td class="content">&nbsp;</td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>07</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;</code><code class="plain">old_handler = </code><code class="functions bold">signal</code><code class="plain">(SIGCHLD, SIG_DFL);</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>08</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;</code><code class="plain">ret = </code><code class="functions bold">system</code><code class="plain">(cmd_line);</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>09</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;</code><code class="functions bold">signal</code><code class="plain">(SIGCHLD, old_handler);</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>10</code></td><td class="content">&nbsp;</td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>11</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;</code><code class="keyword bold">return</code> <code class="plain">ret;</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>12</code></td><td class="content"><code class="plain">}</code></td></tr></tbody></table></div></div></div> 
+<p> </p> 
+<p> 我想这是调用system()比较完美的解决方案了，同时使用pox_system()函数封装带来了非常棒的易维护性，我们只需要修改此处一个函数，其他调用处都不需要改。 </p> 
+<p>后来，查看了对方修改的代码，果然从代码上找到了答案：</p> 
+<p></p> 
+<div id="highlighter_751885" class="syntaxhighlighter  "><div class="bar"><div class="toolbar"><a href="http://my.oschina.net/renhc/blog/54582#viewSource" title="view source" class="item viewSource" style="width: 16px; height: 16px;">view source</a><div class="item copyToClipboard"><div style="display: block; cursor: pointer; text-align: center; width: 16px; height: 16px; top: auto; left: auto; position: static;"><div style="-webkit-transition: opacity 150ms ease-out; transition: opacity 150ms ease-out; background-image: url(chrome-extension://gofhjkjmkpinhpoiabjplobcaignabnl/icon_play.png); text-align: left; opacity: 0.25; border: 1px solid rgb(0, 0, 0); width: 100%; height: 100%; background-color: rgba(193, 217, 244, 0.498039); background-repeat: no-repeat no-repeat;"></div></div><embed width="16" height="16" id="highlighter_751885_clipboard" type="application/x-shockwave-flash" title="copy to clipboard" allowscriptaccess="always" wmode="transparent" flashvars="highlighterId=highlighter_751885" menu="false" src="/js/syntax-highlighter-2.1.382/scripts/clipboard.swf" style="display: none !important;"></div><a href="http://my.oschina.net/renhc/blog/54582#printSource" title="print" class="item printSource" style="width: 16px; height: 16px;">print</a><a href="http://my.oschina.net/renhc/blog/54582#about" title="?" class="item about" style="width: 16px; height: 16px;">?</a></div></div><div class="lines"><div class="line alt1"><table><tbody><tr><td class="number"><code>1</code></td><td class="content"><code class="comments">/* Ignore SIGCHLD to avoid zombie process */</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>2</code></td><td class="content"><code class="keyword bold">if</code> <code class="plain">(</code><code class="functions bold">signal</code><code class="plain">(SIGCHLD, SIG_IGN) == SIG_ERR) {</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>3</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="keyword bold">return</code> <code class="plain">-1;</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>4</code></td><td class="content"><code class="plain">} </code><code class="keyword bold">else</code> <code class="plain">{</code></td></tr></tbody></table></div><div class="line alt1"><table><tbody><tr><td class="number"><code>5</code></td><td class="content"><code class="spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="keyword bold">return</code> <code class="plain">0;</code></td></tr></tbody></table></div><div class="line alt2"><table><tbody><tr><td class="number"><code>6</code></td><td class="content"><code class="plain">}</code></td></tr></tbody></table></div></div></div> 
+<p> </p> 
+<p></p> 
+<p><b>其他思考</b></p> 
+<p>我们公司的代码使用SVN进程管理的，到目前为止有很多branch，逐渐的，几乎每个branch都出现了上面的问题，于是我逐个在各个branchc上fix这个问题，几乎忙了一天，因为有的branch已被锁定，再想merge代码必须找相关负责人说明问题的严重性，还要在不同的环境上测试，我边做这些边想，系统这样升级合适吗？</p> 
+<p>首先，由于系统的升级导致我们的代码在测试时发现问题，这时再急忙去fix，造成了我们的被动，我想这是他们的一个失误。你做的升级必须要考虑到对其他team的影响吧？何况你做的是系统升级。升级前需要做个风险评估，对可能造成的影响通知大家，这样才职业嘛。</p> 
+<p>再者，据他们的说法，修改信号处理方式是为了避免僵尸进程，当然初衷是好的，但这样的升级影响了一些函数的使用方式，比如system()函数、wait()函数、waipid()、fork()函数，这些函数都与子进程有关，如果你希望使用wait()或waitpid()对子进程收尸，那么你必须使用上面介绍的方式：在调用前（事实上是fork()前）将SIGCHLD信号置为SIG_DFL处理方式，调用后（事实上wait()/waitpid()后）再将信号处理方式设置为从前的值。你的系统升级，强制大家完善代码，确实提高了代码质量，但是对于这种升级我不是很认同，试想一下，你见过多少fork()-&gt;waitpid()前后都设置SIGCHLD信号的代码？</p> 
+<p><b>使用system()函数的建议</b></p> 
+<p>上在给出了调用system()函数的比较安全的用法，但使用system()函数还是容易出错，错在哪？那就是system()函数的返回值，关于其返回值的介绍请见上篇文章。system()函数有时很方便，但不可滥用！</p> 
+<p>1、建议system()函数只用来执行shell命令，因为一般来讲，system()返回值不是0就说明出错了；</p> 
+<p>2、建议监控一下system()函数的执行完毕后的errno值，争取出错时给出更多有用信息；</p> 
+<p>3、建议考虑一下system()函数的替代函数popen()；其用法在我的另一篇文章有介绍。</p> 
+<p>&nbsp;</p> 
+<p>qdurenhongcai@163.com</p> 
+<p>转载请注明出处。</p></div>
+      	  	  
+            <div style="margin:10px 0 0 0;">
+		<script type="text/javascript" src="http://my.oschina.net/js/ad/blog.js"></script>
+      </div>
+	  	
+	  	  
+      <div class="BlogCopyright">		
+	  		声明：OSCHINA 博客文章版权属于作者，受法律保护。未经作者同意不得转载。
+	  	  </div>
+
+      <div class="BlogLinks">
+    	<ul>
+                <li class="prev"><a href="http://my.oschina.net/renhc/blog/53580" title="上一篇：【C/C++】Linux下使用system()函数一定要谨慎">« 【C/C++】Linux下使用system()函数一定要谨慎</a></li>        <li class="next"><a href="http://my.oschina.net/renhc/blog/54619" title="下一篇：【版本管理】SVN代码回滚命令之---merge的使用">【版本管理】SVN代码回滚命令之---merge的使用 »</a></li>    	</ul>
+				<p style="margin:10px 0 0 0;font-weight:bold;color:#A00;text-decoration:none;">开源中国-程序员在线工具：<a href="http://www.ostools.net/apidocs" style="text-decoration:none;">API文档大全(120+)</a> <a href="http://runjs.cn/" style="text-decoration:none;" target="_blank">JS在线编辑演示</a> <a href="http://www.ostools.net/qr" style="text-decoration:none;" target="_blank">二维码</a>  <a href="http://www.ostools.net/" style="text-decoration:none;" target="_blank">更多&gt;&gt;</a>
+		      </p></div>
+	</div>
+
+	<style type="text/css">
+	#BlogShare strong{float:left;padding-top:10px;font-size:11pt;color:#444;}
+	#BlogShare a.share_sina{float:left;width:32px;height:32px;background:url('/img/icon01.gif') center no-repeat;}
+	#BlogShare a.share_qq{float:left;width:32px;height:32px;margin-left: 10px;background:url('/img/icon02.gif') center no-repeat;}
+	</style>
+	<div class="BlogShare">
+	
+	<span id="BlogShare">
+		<strong>分享到： </strong>
+		<a class="share_sina" title="分享到新浪微博" href="javascript:void((function(s,d,e,r,l,p,t,z,c){var%20f='http://v.t.sina.com.cn/share/share.php?appkey=858381728',u=z||d.location,p=['&url=',e(u),'&title=',e(t||d.title),'&source=',e(r),'&sourceUrl=',e(l),'&content=',c||'gb2312','&pic=',e(p||'')].join('');function%20a(){if(!window.open([f,p].join(''),'mb',['toolbar=0,status=0,resizable=1,width=440,height=430,left=',(s.width-440)/2,',top=',(s.height-430)/2].join('')))u.href=[f,p].join('');};if(/Firefox/.test(navigator.userAgent))setTimeout(a,0);else%20a();})(screen,document,encodeURIComponent,'','','','【C/C++】Linux下system()函数引发的错误: 今天，一个运行了近一年的程序突然挂掉了，问题定位到是system()函数出的问题，关于该函数的简单使用在我上篇文章做过介绍： http://my.oschina.net/renhc/blog/53580 先...','','utf-8'));"></a>
+		<a class="share_qq" title="分享到腾讯微博" href="javascript:(function(){window.open('http://v.t.qq.com/share/share.php?url='+encodeURIComponent(document.location)+'&appkey=96f54f97c4de46e393c4835a266207f4&site=&title='+encodeURIComponent(document.title)+encodeURIComponent(': 今天，一个运行了近一年的程序突然挂掉了，问题定位到是system()函数出的问题，关于该函数的简单使用在我上篇文章做过介绍： http://my.oschina.net/renhc/blog/53580 先...'),'', 'width=450, height=400, top=0, left=0, toolbar=no, menubar=no, scrollbars=no, location=yes, resizable=no, status=no');}())"></a></span>
+	<span id="BlogVote">
+    <a href="javascript:vote(54582)">顶</a><span>已有 <em id="vote_count">1</em>人顶</span>
+	</span>
+	</div>
+		
+</div>
+<div class="SpaceList" style="margin-top:20px;">
+<div class="BlogComments">
+    <h2><a name="comments"></a>共有 0 条网友评论</h2>
+			<p class="NoData">尚无网友评论</p>
+		<ul id="BlogComments">
+		</ul>
+</div>
+	</div>
+
+<div id="inline_reply_editor" style="display:none;">
+<div class="BlogCommentForm">
+	<form id="form_inline_comment" action="http://my.oschina.net/action/blog/add_comment?blog=54582" method="POST">
+	  <input type="hidden" id="inline_reply_id" name="reply_id" value="">          
+      <textarea name="content" style="width:550px;height:60px;" onkeydown="if((event.metaKey || event.ctrlKey)&amp;&amp;event.keyCode==13){$(&#39;#form_inline_comment&#39;).submit();}"></textarea><br>
+	  <input type="submit" value="回复" id="btn_comment" class="SUBMIT"> 
+	  <input type="button" value="关闭" class="SUBMIT" id="btn_close_inline_reply"> 文明上网，理性发言
+    </form>
+</div>
+</div>
+
+<div class="SpaceList" style="margin-top:20px;">
+  <a name="comments" id="postform"></a>
+    <div class="BlogCommentForm">
+    <form id="form_comment" action="http://my.oschina.net/action/blog/add_comment?blog=54582" method="POST">          
+      <textarea id="ta_post_content" name="content" style="width:550px;height:100px;" onkeydown="if((event.metaKey || event.ctrlKey)&amp;&amp;event.keyCode==13){$(&#39;#form_comment&#39;).submit();}"></textarea><br>
+	  <input type="submit" value="发表评论" id="btn_comment" class="SUBMIT"> 
+	  <img id="submiting" style="display:none" src="./02_files/loading.gif" align="absmiddle">
+	  <span id="cmt_tip">文明上网，理性发言</span>
+    </form>
+	<a href="http://my.oschina.net/renhc/blog/54582#" class="more">回到页首</a>&nbsp;|&nbsp;<a href="http://my.oschina.net/renhc/blog/54582#comments" class="more">回到评论列表</a>
+  </div>
+  </div>
+	
+<div id="RelativeBlogs" style="right: -400px;">
+	<strong><a id="btn_close">关闭</a>相关文章阅读</strong>
+	<ul>
+			<li>
+		<span class="date">2012/04/15</span>
+		<a href="http://my.oschina.net/renhc/blog/53580" title="【C/C++】Linux下使用system()函数一定要谨慎">【C/C++】Linux下使用system()函数一...</a>
+	</li>
+				<li>
+		<span class="date">2010/08/09</span>
+		<a href="http://my.oschina.net/athxy/blog/6498" title="Linux下C/C++、ACE、Boost、高性能服务器端应用 开发技术">Linux下C/C++、ACE、Boost、高性能服...</a>
+	</li>
+				<li>
+		<span class="date">2010/08/23</span>
+		<a href="http://my.oschina.net/sonzhang/blog/6854" title="Linux C++高级开发技术">Linux C++高级开发技术</a>
+	</li>
+				<li>
+		<span class="date">2012/11/16</span>
+		<a href="http://my.oschina.net/KobeGong/blog/89723" title="Ubuntu（Linux）使用Eclipse搭建C/C++编译环境">Ubuntu（Linux）使用Eclipse搭建C/C...</a>
+	</li>
+				<li>
+		<span class="date">2012/09/15</span>
+		<a href="http://my.oschina.net/SevenxAda/blog/78670" title="最好的Linux C/C++ IDE &amp;&amp; Windows ALL IDE，第一效率，第零浪漫">最好的Linux C/C++ IDE &amp;&amp; Windows ...</a>
+	</li>
+			</ul>
+</div>
+<script type="text/javascript" src="./02_files/blog" defer="defer"></script>
+<script type="text/javascript" src="./02_files/brush.js"></script>
+<link type="text/css" rel="stylesheet" href="./02_files/shCore.css">
+<link type="text/css" rel="stylesheet" href="./02_files/shThemeDefault.css">
+<script type="text/javascript"><!--
+$(document).ready(function(){
+	SyntaxHighlighter.config.clipboardSwf = '/js/syntax-highlighter-2.1.382/scripts/clipboard.swf';
+	SyntaxHighlighter.all();
+});
+//-->
+</script>
+<!--[if lt IE 7]>
+<script type="text/javascript" src="/js/minmax.js"></script>
+<![endif]-->
+<script type="text/javascript">
+<!--
+var posting = false;
+var upprev_closed = false;
+var upprev_hidden = true;
+
+$(document).ready(function(){
+    $('.BlogContent img').css('cursor','pointer');
+    jQuery.each($('.BlogContent img'),function(idx,v){
+    	$(v).wrap("<a href='"+$(this).attr('src')+"' target='_blank'></a>");
+    });
+	$('#form_comment').ajaxForm({
+		dataType: 'json',
+		bforeSubmit: function(){
+			posting = true;
+		},
+		success: function(json) {
+        	if(json.msg){
+				///alert(json.msg);
+				$('#cmt_tip').html("<span style='color:#C00;'>"+json.msg+"</span>");
+				$('#ta_post_content').focus();				
+			}else{
+				var url = "http://my.oschina.net/renhc/blog_post?_cmt_blog="+json.blog+"&_cmt_user="+json.user+"&_cmt_id="+json.id;				
+        		jQuery.get(url, function(data){
+    				$('.BlogComments .NoData').hide();
+        			$('ul#BlogComments').append(data);
+        			$('#form_comment').resetForm();
+        		}); 
+			}
+		}
+	});
+
+    var at_datas = [];
+    $('img.SmallPortrait').each(function(){
+        var name = $(this).attr('alt');
+        if(jQuery.inArray(name, at_datas) < 0 && name != '${g_user.name}')
+            at_datas.push(name);
+    });
+    $("#form_comment textarea").atWho("@", {data: at_datas});
+
+	$("#submiting").ajaxStart(function(){
+	   if(posting){
+    	   $('#btn_submit').attr("disabled","disabled");
+           $(this).show();
+	   }
+    });
+	$("#submiting").ajaxComplete(function(event,request, settings){
+	   if(posting){
+           $(this).hide();
+    	   $('#btn_submit').attr("disabled","");
+	   }
+	   posting = false;
+    }); 
+	
+    $(window).scroll(function() {
+        var lastScreen;
+        if ($("#postform").length > 0)
+            lastScreen = getScrollY() + $(window).height() < $("#postform").offset().top * 1 ? false : true;
+        else
+            lastScreen = getScrollY() + $(window).height() < $(document).height() * 1 ? false : true;
+        if (lastScreen && !upprev_closed) {
+            $("#RelativeBlogs").stop().animate({right:"0px"});
+            upprev_hidden = false;
+        }
+        else if (upprev_closed && getScrollY() == 0) {
+            upprev_closed = false;
+        }
+        else if (!upprev_hidden) {
+            upprev_hidden = true;
+            $("#RelativeBlogs").stop().animate({right:"-400px"});
+        }
+    });
+    $("#RelativeBlogs #btn_close").click(function() {
+        $("#RelativeBlogs").stop().animate({right:"-400px"});
+        upprev_closed = true;
+        upprev_hidden = true;
+    });
+});
+function delete_c(nid,uid,cid){
+  if(confirm("您确认要删除此篇评论？")){
+    var args = "cmt="+cid+"#"+uid+"#"+nid;
+    ajax_post("/action/blog/delete_blog_comments?space=101347",args,function(){$("#cmt_"+nid+"_"+uid+"_"+cid).fadeOut();});
+  }
+}
+function ReplyInline(blog,user,reply){
+	$('.inline_reply').empty();
+	var div_id = '#inline_reply_of_'+blog+'_'+user+'_'+reply;
+	$('#inline_reply_id').val(user+'_'+reply);
+	$(div_id).html($('#inline_reply_editor').html());
+	$('#txt_focus').focus();
+	$('#btn_close_inline_reply').click(function(){
+		$(div_id).empty();
+	});
+	$('#form_inline_comment').ajaxForm({
+		dataType: 'json',
+    	success: function(json) {
+        	if(json.msg){
+        		alert(json.msg);
+        	}
+        	else if(json.id){
+    			location.reload();
+        	}
+    	}
+	});
+}
+function edit_catalogs(qid){
+	popup("/set-catalogs?parent=1&type=3&id="+qid);
+}
+function vote(blogid){
+		alert("必须登录后才能操作 :)");
+	}
+function toggle_recomm(blogid){
+	ajax_post("/action/blog/toggle_recomm","id="+blogid,function(html){
+		if(html == '-1')
+			alert("文章不存在");
+		else if(html == 0){
+			$('#lnk_recomm_'+blogid).removeClass('recommend');
+			$('#lnk_recomm_'+blogid).text("未推荐");
+		}
+		else if(html == 1){
+			$('#lnk_recomm_'+blogid).addClass('recommend');
+			$('#lnk_recomm_'+blogid).text("已推荐");
+		}
+	});
+}
+//-->
+</script></div>
+	<div class="clear"></div>
+	<div id="OSC_Footer"><style>
+.oscapp {text-align:left; width:220px;}
+.oscapp span {float:left;width:140px;}
+.oscapp a {float:left;text-indent:-9999em;width:16px;margin-left:8px;}
+.oscapp a.android {background:url('/img/android.gif') no-repeat left center;}
+.oscapp a.iphone {background:url('/img/iphone.gif') no-repeat left center;}
+.oscapp a.wp7 {background:url('/img/wp7.gif') no-repeat left center;}
+</style>
+<table width="100%"><tbody><tr>
+<td align="left">© 开源中国(OsChina.NET) | <a href="http://www.oschina.net/home/about">关于我们</a> | <a href="mailto:oschina.net@gmail.com">广告联系</a> | <a href="http://weibo.com/oschina2010" target="_blank">@新浪微博</a> | <a href="http://m.oschina.net/">开源中国手机版</a> | <a href="http://www.miitbeian.gov.cn/" target="_blank" style="color:#737573;text-decoration:none;">粤ICP备12009483号-3</a></td>
+<td class="oscapp">
+	<span>开源中国手机客户端：</span>
+	<a href="http://www.oschina.net/app" class="android" title="Android客户端">Android</a>
+	<a href="http://www.oschina.net/app" class="iphone" title="iPhone 客户端">iPhone</a>
+	<a href="http://www.oschina.net/app" class="wp7" title="Windows Phone 客户端">WP7</a>
+</td>
+</tr>
+</tbody></table>
+<script type="text/javascript">
+<!--
+if (top.location != self.location)top.location=self.location;
+//-->
+</script></div>
+</div>
+
+
+<script type="text/javascript" src="./02_files/space"></script>
+<script type="text/javascript">
+<!--
+$(document).ready(function() {
+
+	SelectStyle("#search-item",".search_list");
+	$('.Tweet .photo img').live("click",function(){
+		var T=$(this);
+		var t=this;
+		var bigImg = T.attr('bi');
+		var smallImg = T.attr('si');
+		var src = T.attr('src');
+		var newsrc = (bigImg == src)?smallImg:bigImg;
+		var imgId = T.attr('id');
+		if(newsrc == bigImg){
+    		var loading=$('<img alt="loading" src="/img/loading.gif"/>');
+			var top = T.position().top+T.height()/2-8;
+			var left = T.position().left+T.width()/2-8;
+			loading.css({
+				'position':'absolute',
+				'z-index':999,
+				'top':top,
+				'left':left
+			});
+    		T.before(loading);
+			var tImg=new Image();
+			tImg.src=newsrc;
+			tImg.onload=function(){afterImgLoad(T,loading,imgId,newsrc,bigImg);};
+		}
+		else{
+			T.attr("src",newsrc);
+			$('#img_menu_'+imgId).remove();
+		}
+		return false;
+	});
+	
+	$(".tweet_thumb_wrapper").mouseenter(function(){
+		$(this).find(".tweet_play_video").css("opacity",1);
+	}).mouseleave(function(){
+		$(this).find(".tweet_play_video").css("opacity",0.7);
+	});
+
+    $("#TForm textarea").atWho("@", function(query, callback){
+        jQuery.ajax({
+            type:'POST',
+            url:"/action/tweet/at_suggest",
+            data:{'q':query},
+            dataType:'json',
+            success:function(json){
+                callback(json);
+            }
+        });
+    });
+	
+	toggle_tweet_video = function(id){
+		$("#tweet_video_thumb_"+id).toggle();
+		var video = $("#tweet_video_"+id).toggle();
+		video.siblings(".tweet_video_operation,.tweet_thumb_wrapper").toggle();
+	};
+	
+	function afterImgLoad(T,loading,imgId,url,bigImg){
+		var lnks = "<div id='img_menu_"+imgId+"' class='ImgMenu'>";
+		lnks += "<a href='#' onclick='$(\"#"+imgId+"\").click();return false;'>收起</a>";
+		lnks += "<a href='"+bigImg+"' target='_blank'>查看原图</a></div>";			
+		loading.remove();
+		T.attr("src",url);
+		T.before(lnks);
+	}
+});
+
+function set_fellow_memo(fid,fname){
+	popup("/action/ajax/set_fellow_memo","friend="+fid+"&name="+fname);
+}
+
+function deleteMsgs(uid, fid, fname){
+	if(!confirm("你确认要清除与‘"+fname+"’的所有留言信息吗？"))
+		return ;
+	var args = "user="+uid+"&friend="+fid;
+	ajax_post("/action/msg/delete_user",args,function(html){
+		if(html.length > 0)
+			alert(html);
+		else{
+			$('#Msg_'+fid).fadeOut();
+		}
+	});
+}
+
+function follow_user(uid, uname){
+	just_follow(uid, uname,'${g_user.id}'); //oschina.js
+}
+
+function unfollow_user(uid, uname){
+	if(confirm("确定不再关注" + uname + "了吗？"))
+	just_unfollow(uid,'${g_user.id}',function(){
+		alert('已取消对 ' + uname + ' 的关注');
+	});
+}
+
+function tweet_reply(logid){
+	var r = $('#LogReply_'+logid);
+	if(!r.is(":hidden")){
+		close_tweet_reply(logid);
+		return ;
+	}
+	r.html("<div class='TweetRplsWrapper'><span class='loading'>正在加载评论，请稍候...</span></div>")
+	r.show();
+	r.load("http://my.oschina.net/renhc/tweet-rpls?log="+logid,function(){
+		$('#edt_tweet_post_'+logid).focus();
+        var at_datas = [];
+        $(this).find("img.SmallPortrait").each(function(){
+            var name = $(this).attr('alt');
+            if(jQuery.inArray(name, at_datas) < 0 && name != '${g_user.name}')
+                at_datas.push(name);
+        });
+        $(this).find("input.TXT_TweetRpl_Text").atWho("@", {data: at_datas});
+        $('#TweetReplyForm_'+logid).ajaxForm({
+        	dataType: 'json',
+			beforeSubmit: function(arr, form, options){
+				$('#BTN_TweetReply_'+logid).attr('disabled','disabled');
+			},
+            success: function(json) {
+            	if(json.msg){
+        			alert(json.msg);
+            	}else if(json.log){
+					$('#log_reply_count_'+logid).text(json.reply_count);
+        			//插入新评论					
+					ajax_get("/action/ajax/get_tweet_reply?id=" + json.log,true,function(html){
+						$('#LogReply_'+logid+' ul').prepend(html);
+					});
+					$('#edt_tweet_post_'+logid).val('');
+            	}
+				$('#BTN_TweetReply_'+logid).removeAttr('disabled');
+            }
+        });
+	});
+}
+function close_tweet_reply(logid){
+	$('#LogReply_'+logid).empty();
+	$('#LogReply_'+logid).hide();
+	$('#Logs .userlogs li').removeClass('hover');
+}
+function reply_rtweet(logid, rid, toname){
+	var edtPost = $('#edt_tweet_post_' + logid);
+	var old_v = edtPost.val();
+	if(old_v.length > 0)
+		edtPost.val(old_v + ',@'+toname+' ');
+	else
+		edtPost.val('回复 @'+toname+' : ');
+	edtPost.focus();
+}
+function delete_tweet(logid){
+	if(confirm("确认要删除这条信息吗？"))
+	ajax_post("/action/tweet/delete?log="+logid+"&user=${g_user.id}","",function(html){
+		if(html.length==0){
+			var elem = $('#LI_'+logid);
+			if(elem.length > 0)
+				$('#LI_'+logid).fadeOut();
+			else
+				location.reload();
+		}
+	});
+}
+function delete_tweet_reply(logid){
+	if(confirm("确认要删除这条评论吗？"))
+	ajax_post("/action/tweet/delete_reply?id="+logid+"&user=${g_user.id}","",function(html){
+		if(html.length==0)
+			$('#TweetReply_'+logid).fadeOut();
+	});
+}
+
+function delete_blog(blog_id){
+    if(!confirm("文章删除后无法恢复，请确认是否删除此篇文章？")) return;
+    ajax_post("/action/blog/delete?id="+blog_id+"&user=${g_user.id}&user_code=${g_user.activate_code}","",function(html){
+    	location.href="http://my.oschina.net/renhc/blog";
+    });
+}
+
+function SelectStyle(on,option){
+	var currentSort = $(on).attr('id');
+	var currentText = $(option+" li."+currentSort+" a").html();
+	$(on + " .text").html(currentText);
+	$(on + " .text").hover(function(){
+		$(this).addClass("hover")
+	},function(){
+		$(this).removeClass("hover")
+	});
+	$(option+" li a").each(function(index){
+		$(this).click(function(){
+			thishtml = $(this).html();
+			$(on + " .text").removeClass("on").html(thishtml);		
+			$(".selectbox select ").find("option").removeAttr('selected').eq(index).attr("selected","selected");	
+			$(option).hide()
+			return false;
+		});
+		
+	});		
+	
+	$(".selectbox").click(function(){		
+		$(option).toggle();
+		$(on + " .text").toggleClass("on");		
+		return false;
+	});
+	$(document).click(function(){
+		$(option).hide();	
+		$(on + " .text").removeClass("on");
+	});
+	$(document).trigger('click');
+
+}
+
+//-->
+</script>
+
+<!-- Generated by OsChina.NET (init:0[ms],page:110[ms],ip:114.33.37.73) --><div id="fancybox-tmp"></div><div id="fancybox-loading"><div></div></div><div id="fancybox-overlay"></div><div id="fancybox-wrap"><div id="fancybox-outer"><div class="fancybox-bg" id="fancybox-bg-n"></div><div class="fancybox-bg" id="fancybox-bg-ne"></div><div class="fancybox-bg" id="fancybox-bg-e"></div><div class="fancybox-bg" id="fancybox-bg-se"></div><div class="fancybox-bg" id="fancybox-bg-s"></div><div class="fancybox-bg" id="fancybox-bg-sw"></div><div class="fancybox-bg" id="fancybox-bg-w"></div><div class="fancybox-bg" id="fancybox-bg-nw"></div><div id="fancybox-content"></div><a id="fancybox-close"></a><div id="fancybox-title"></div><a href="javascript:;" id="fancybox-left"><span class="fancy-ico" id="fancybox-left-ico"></span></a><a href="javascript:;" id="fancybox-right"><span class="fancy-ico" id="fancybox-right-ico"></span></a></div></div><div id="topcontrol" title="回到顶部" style="position: fixed; bottom: 165px; right: 100px; cursor: pointer; display: none;"><img src="./02_files/gotop.gif" style="width:31px; height:31px;"></div><div id="at-view" class="at-view"><ul id="at-view-ul"></ul></div><div id="LCS_FE1DEEEA_DB6D_44b8_83F0_34FC0F9D1052_communicationDiv" lcs_fe1deeea_db6d_44b8_83f0_34fc0f9d1052_valuename="WSG_status" lcs_fe1deeea_db6d_44b8_83f0_34fc0f9d1052_valueresult="active|||8641370667024241"></div></body></html>

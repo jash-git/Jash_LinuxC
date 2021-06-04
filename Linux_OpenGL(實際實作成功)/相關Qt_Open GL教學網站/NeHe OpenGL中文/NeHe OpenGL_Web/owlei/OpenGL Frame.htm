@@ -1,0 +1,348 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<title>OpenGL的程序框架</title>
+<style type=text/css>
+A:link {COLOR: #ccaaff; TEXT-DECORATION: none}
+A:visited {COLOR: #ccaaff; TEXT-DECORATION: none}
+A:active {COLOR: #ccaaff; TEXT-DECORATION: none}
+A:hover {COLOR: #ffccaa; TEXT-DECORATION: none}
+.program {
+	font-family: "Times New Roman", "Times", "serif";
+	font-size: 12pt;
+	color: #aaffaa;
+}
+.comment {
+	font-size: 12pt;
+	color: #ffffaa;
+}
+</style>
+</head>
+
+<body bgcolor=#000000 text=#ffffff>
+<!-- 上边框-->
+<table border="0" cellPadding="0" cellSpacing="0" width="100%">
+<TBODY>
+  <tr>
+    <td><img height="28" src="tl.jpg" tppabs="http://www.owlei.com/DancingWind/Pic/tl.jpg" width="28"></td>
+    <td width="100%"><img height="28" src="tc.gif" tppabs="http://www.owlei.com/DancingWind/Pic/tc.gif" width="100%"></td>
+    <td><img height="28" src="tr.gif" tppabs="http://www.owlei.com/DancingWind/Pic/tr.gif" width="28"></td>
+  </tr>
+</TBODY>
+</table>
+
+<!-- 中部-->
+<table border="0" cellPadding="0" cellSpacing="0" width="100%">
+<TBODY>
+  <tr>
+  	<!-- 中部左边框-->
+    <td  background="l.gif" tppabs="http://www.owlei.com/DancingWind/Pic/l.gif"><img src="l.gif" tppabs="http://www.owlei.com/DancingWind/Pic/l.gif" width="28" height="28"></td>
+	<!-- 中部文字部分-->
+    <td vAlign="top" width="100%">
+	<table width="100%" border="0">
+          <tr>
+            <td><p>在Nehe的主页上一共提供了4种不同风格的OpenGL程序框架，分别为glut,Win32,面向对象的Win32，在加上Nehe教程中使用的那一种。</p>
+              <p>相信没有几个读者会耐着性子，把Nehe的第一个教程看完并编译成功，因为那里面有着数不清的数据结构和函数，我也是费了整整12个小时才把它翻译和排版好。</p>
+              <p>好了，不浪费读者的时间了。在这四个框架中以面向对象的Win32框架写的最后，并且功能最全，我们就简单得介绍一下它的使用，你可以用它学习OpenGL的函数，当你对OpenGL的结构有了一定的了解后，不妨看看源代码，我把一切可能的注释都写进了源代码里，希望对你有帮助。</p>
+              <p>为了使用这个框架，你必须熟记以下四个函数，我们用它来完成OpenGL的逻辑：<br>
+                * bool Initialize(); <br>
+                * 执行所有的初始化工作，如果成功函数返回true <br>
+                * <br>
+                * void Deinitialize(); <br>
+                * 执行所有的卸载工作 <br>
+                * <br>
+                * void Update(DWORD milliseconds); <br>
+                * 执行所有的更新操作，传入的参数为两次操作经过的时间，以毫秒为单位<br>
+                * <br>
+                * void Draw(); <br>
+                * 执行所有的绘制操作 </p>
+              <p>我们从Initialize()函数说起<br>
+              </p>
+              </td>
+          </tr>
+     </table>
+      </td>
+	<!-- 中部右边框-->
+    <td background="r.gif" tppabs="http://www.owlei.com/DancingWind/Pic/r.gif"><img src="r.gif" tppabs="http://www.owlei.com/DancingWind/Pic/r.gif" width="28" height="28"></td>
+  </tr>
+</TBODY>
+</table>
+
+<!-- 下边框-->
+<table border="0" cellPadding="0" cellSpacing="0" width="100%">
+<TBODY>
+  <tr>
+    <td><img height="28" src="bl.gif" tppabs="http://www.owlei.com/DancingWind/Pic/bl.gif" width="28"></td>
+    <td width="100%"><img height="28" src="bc.gif" tppabs="http://www.owlei.com/DancingWind/Pic/bc.gif" width="100%"></td>
+    <td><img height="28" src="br.gif" tppabs="http://www.owlei.com/DancingWind/Pic/br.gif" width="28"></td>
+  </tr>
+</TBODY>
+</table>
+
+<pre class="program">bool GL_Example::Initialize()					<span class="comment">// 初始化OpenGL</span>
+{
+<span class="comment">/*****************************************************用户自定义的初始化过程*******************/</span>
+	glClearColor(0.0f, 0.0f, 0.0f, 0.5f);						
+	glClearDepth(1.0f);											
+	glDepthFunc(GL_LEQUAL);										
+	glEnable(GL_DEPTH_TEST);									
+	glShadeModel(GL_SMOOTH);									
+	glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);			
+	ResizeDraw(true);					<span class="comment">// 改变OpenGL窗口大小，直接调用子类的函数</span>
+<span class="comment">/**********************************************************************************************/</span>
+
+	return true;					<span class="comment">// 成功返回</span>
+}
+</pre>
+<!-- 上边框-->
+<table border="0" cellPadding="0" cellSpacing="0" width="100%">
+<TBODY>
+  <tr>
+    <td><img height="28" src="tl.jpg" tppabs="http://www.owlei.com/DancingWind/Pic/tl.jpg" width="28"></td>
+    <td width="100%"><img height="28" src="tc.gif" tppabs="http://www.owlei.com/DancingWind/Pic/tc.gif" width="100%"></td>
+    <td><img height="28" src="tr.gif" tppabs="http://www.owlei.com/DancingWind/Pic/tr.gif" width="28"></td>
+  </tr>
+</TBODY>
+</table>
+
+<!-- 中部-->
+<table border="0" cellPadding="0" cellSpacing="0" width="100%">
+<TBODY>
+  <tr>
+  	<!-- 中部左边框-->
+    <td  background="l.gif" tppabs="http://www.owlei.com/DancingWind/Pic/l.gif"><img src="l.gif" tppabs="http://www.owlei.com/DancingWind/Pic/l.gif" width="28" height="28"></td>
+	<!-- 中部文字部分-->
+    <td vAlign="top" width="100%">
+	<table width="100%" border="0">
+          <tr>
+            <td><p>在你程序中，必须实现这个函数。当然函数的定义与声明我已经帮你写好了，你所做的就是把OpenGL的代码添加到两排/******/之间。</p>
+              <p>下面我继续添加更新程序的代码</p></td>
+          </tr>
+     </table>
+      </td>
+	<!-- 中部右边框-->
+    <td background="r.gif" tppabs="http://www.owlei.com/DancingWind/Pic/r.gif"><img src="r.gif" tppabs="http://www.owlei.com/DancingWind/Pic/r.gif" width="28" height="28"></td>
+  </tr>
+</TBODY>
+</table>
+
+<!-- 下边框-->
+<table border="0" cellPadding="0" cellSpacing="0" width="100%">
+  <TBODY>
+  <tr>
+    <td><img height="28" src="bl.gif" tppabs="http://www.owlei.com/DancingWind/Pic/bl.gif" width="28"></td>
+    <td width="100%"><img height="28" src="bc.gif" tppabs="http://www.owlei.com/DancingWind/Pic/bc.gif" width="100%"></td>
+    <td><img height="28" src="br.gif" tppabs="http://www.owlei.com/DancingWind/Pic/br.gif" width="28"></td>
+  </tr>
+</TBODY>
+</table>
+
+<pre class="program">void GL_Example::Update(DWORD milliseconds)					<span class="comment">// 程序更新函数</span>
+{
+	if (m_Keys.IsPressed(VK_ESCAPE) == true)				<span class="comment">// 按ESC退出</span>
+	{
+		TerminateApplication();									
+	}
+
+	if (m_Keys.IsPressed(VK_F1) == true)					<span class="comment">// 按F1切换窗口/全屏模式</span>
+	{
+		ToggleFullscreen();										
+	}
+<span class="comment">/*******************************用户自定义的更新过程***************************************/</span>
+	m_Angle += (float)(milliseconds) / 15.0f;					<span class="comment">// 更新旋转的角度</span>
+<span class="comment">/******************************************************************************************/</span>
+}
+</pre>
+
+<!-- 上边框-->
+<table border="0" cellPadding="0" cellSpacing="0" width="100%">
+<TBODY>
+  <tr>
+    <td><img height="28" src="tl.jpg" tppabs="http://www.owlei.com/DancingWind/Pic/tl.jpg" width="28"></td>
+    <td width="100%"><img height="28" src="tc.gif" tppabs="http://www.owlei.com/DancingWind/Pic/tc.gif" width="100%"></td>
+    <td><img height="28" src="tr.gif" tppabs="http://www.owlei.com/DancingWind/Pic/tr.gif" width="28"></td>
+  </tr>
+</TBODY>
+</table>
+
+<!-- 中部-->
+<table border="0" cellPadding="0" cellSpacing="0" width="100%">
+<TBODY>
+  <tr>
+  	<!-- 中部左边框-->
+    <td  background="l.gif" tppabs="http://www.owlei.com/DancingWind/Pic/l.gif"><img src="l.gif" tppabs="http://www.owlei.com/DancingWind/Pic/l.gif" width="28" height="28"></td>
+	<!-- 中部文字部分-->
+    <td vAlign="top" width="100%">
+	<table width="100%" border="0">
+          <tr>
+            <td><p>在上面的函数中，我已经为你添加了处理ESC和F1按键相应的代码，你所要做的就是完成符合你程序逻辑的更新变量的设置。同样可以可以在两排/******/之间完成它们。</p>
+              <p>接着，我们看看如何实现OpenGL的绘制</p></td>
+          </tr>
+     </table>
+      </td>
+	<!-- 中部右边框-->
+    <td background="r.gif" tppabs="http://www.owlei.com/DancingWind/Pic/r.gif"><img src="r.gif" tppabs="http://www.owlei.com/DancingWind/Pic/r.gif" width="28" height="28"></td>
+  </tr>
+</TBODY>
+</table>
+
+<!-- 下边框-->
+<table border="0" cellPadding="0" cellSpacing="0" width="100%">
+<TBODY>
+  <tr>
+    <td><img height="28" src="bl.gif" tppabs="http://www.owlei.com/DancingWind/Pic/bl.gif" width="28"></td>
+    <td width="100%"><img height="28" src="bc.gif" tppabs="http://www.owlei.com/DancingWind/Pic/bc.gif" width="100%"></td>
+    <td><img height="28" src="br.gif" tppabs="http://www.owlei.com/DancingWind/Pic/br.gif" width="28"></td>
+  </tr>
+</TBODY>
+</table>
+
+<pre class="program">void GL_Example::Draw()								<span class="comment">// 绘制函数</span>
+{
+<span class="comment">/*****************************************************用户自定义的绘制过程*********************/</span>
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);			
+	glLoadIdentity();											
+	glTranslatef(0.0f, 0.0f, -6.0f);							
+	glRotatef(m_Angle, 0.0f, 1.0f, 0.0f);						
+	glRotatef(m_Angle * 0.7f, -1.0f, 0.0f, 0.0f);				
+
+	for (int rot1 = 0; rot1 < 2; rot1++)						<span class="comment">// 绘制四个交错的三角形（作者想的很巧妙啊）</span>
+	{
+		glRotatef(90.0f, 0.0f, 1.0f, 0.0f);						
+		glRotatef(180.0f, 1.0f, 0.0f, 0.0f);					
+		for (int rot2 = 0; rot2 < 2; rot2++)					
+		{
+			glRotatef(180.0f, 0.0f, 1.0f, 0.0f);				
+			glBegin(GL_TRIANGLES);								
+				glColor3f(1.f, 0.f, 0.f);	glVertex3f( 0.0f,  1.0f, 0.0f);
+				glColor3f(0.f, 1.f, 0.f);	glVertex3f(-1.0f, -1.0f, 1.0f);
+				glColor3f(0.f, 0.f, 1.f);	glVertex3f( 1.0f, -1.0f, 1.0f);
+			glEnd();											
+		}
+	}
+<span class="comment">/***********************************************************************************************/</span>
+	glFlush();									<span class="comment">// 强制执行所有的OpenGL命令</span>
+}
+</pre>
+<!-- 上边框-->
+<table border="0" cellPadding="0" cellSpacing="0" width="100%">
+<TBODY>
+  <tr>
+    <td><img height="28" src="tl.jpg" tppabs="http://www.owlei.com/DancingWind/Pic/tl.jpg" width="28"></td>
+    <td width="100%"><img height="28" src="tc.gif" tppabs="http://www.owlei.com/DancingWind/Pic/tc.gif" width="100%"></td>
+    <td><img height="28" src="tr.gif" tppabs="http://www.owlei.com/DancingWind/Pic/tr.gif" width="28"></td>
+  </tr>
+</TBODY>
+</table>
+
+<!-- 中部-->
+<table border="0" cellPadding="0" cellSpacing="0" width="100%">
+<TBODY>
+  <tr>
+  	<!-- 中部左边框-->
+    <td  background="l.gif" tppabs="http://www.owlei.com/DancingWind/Pic/l.gif"><img src="l.gif" tppabs="http://www.owlei.com/DancingWind/Pic/l.gif" width="28" height="28"></td>
+	<!-- 中部文字部分-->
+    <td vAlign="top" width="100%">
+	<table width="100%" border="0">
+          <tr>
+            <td><p>我给你的原始文件，其实什么也没帮你做，你将会的到一个空的窗口。</p>
+              <p>上面的实例是一个简单的OpenGL绘制，它将绘制四个三角形。</p></td>
+
+          </tr>
+     </table>
+      </td>
+	<!-- 中部右边框-->
+    <td background="r.gif" tppabs="http://www.owlei.com/DancingWind/Pic/r.gif"><img src="r.gif" tppabs="http://www.owlei.com/DancingWind/Pic/r.gif" width="28" height="28"></td>
+  </tr>
+</TBODY>
+</table>
+
+<!-- 下边框-->
+<table border="0" cellPadding="0" cellSpacing="0" width="100%">
+<TBODY>
+  <tr>
+    <td><img height="28" src="bl.gif" tppabs="http://www.owlei.com/DancingWind/Pic/bl.gif" width="28"></td>
+    <td width="100%"><img height="28" src="bc.gif" tppabs="http://www.owlei.com/DancingWind/Pic/bc.gif" width="100%"></td>
+    <td><img height="28" src="br.gif" tppabs="http://www.owlei.com/DancingWind/Pic/br.gif" width="28"></td>
+  </tr>
+</TBODY>
+</table>
+
+<pre class="program">void GL_Example::Deinitialize()								<span class="comment">// 用户自定义的卸载函数</span>
+{
+<span class="comment">/*****************************************************用户自定义的卸载过程*********************/</span>
+
+<span class="comment">/**********************************************************************************************/</span>
+}
+</pre>
+
+<!-- 上边框-->
+<table border="0" cellPadding="0" cellSpacing="0" width="100%">
+<TBODY>
+  <tr>
+    <td><img height="28" src="tl.jpg" tppabs="http://www.owlei.com/DancingWind/Pic/tl.jpg" width="28"></td>
+    <td width="100%"><img height="28" src="tc.gif" tppabs="http://www.owlei.com/DancingWind/Pic/tc.gif" width="100%"></td>
+    <td><img height="28" src="tr.gif" tppabs="http://www.owlei.com/DancingWind/Pic/tr.gif" width="28"></td>
+  </tr>
+</TBODY>
+</table>
+
+<!-- 中部-->
+<table border="0" cellPadding="0" cellSpacing="0" width="100%">
+<TBODY>
+  <tr>
+  	<!-- 中部左边框-->
+    <td  background="l.gif" tppabs="http://www.owlei.com/DancingWind/Pic/l.gif"><img src="l.gif" tppabs="http://www.owlei.com/DancingWind/Pic/l.gif" width="28" height="28"></td>
+	<!-- 中部文字部分-->
+    <td vAlign="top" width="100%">
+	<table width="100%" border="0">
+          <tr>
+            <td><p>当你完成了所有的功能，在退出的时候记得释放所有的资源啊，这个接口我也提供给你了，记得不要忘了啊。</p>
+              <p>好了，上面就是我提供给你的简单的OpenGL程序框架，简单吧。使用它可以很快的创建一个基于OpenGL的应用程序，让你能化更多时间在OpenGL本身，而不是考虑如何实现Windows编程，以及处理那些莫名其妙的编译问题。我已经为你设置好了一切，包括头文件，lib库等相关的东西，你所要做的就是把资源下载中的“OOWin32框架”下载下来，修改其中Example.cpp文件就可以了，如果你需要自己创建工程，请把这个目录你所有的*.h,*.cpp,*.lib文件拷贝到你创建的工程中，并把Example文件改名，记得在*.cpp文件中的头文件也需要做相应的更改。</p>
+              <p>当然上面所说的仅仅是一个开始，希望你学完OpenGL后，有时间看看这个实现的源代码。</p>
+              <p>就这样吧，OpenGL的大门已经向你打开了！</p>
+              <p>下面是四个源代码的下载<br></p>
+<table width="100%" border="1">
+  <tr>
+    <td width="27%"><img src="logo 3.jpg" tppabs="http://www.owlei.com/DancingWind/images/logo%203.jpg" width="209" height="200" align="middle"></td>
+    <td width="73%">版权与使用声明:<br>
+      我是个对学习和生活充满激情的普通男孩,在网络上我以DancingWind为昵称，我的联系方式是zhouwei02@mails.tsinghua.edu.cn，如果你有任何问题，都可以联系我。
+      <p>引子<br>
+        网络是一个共享的资源，但我在自己的学习生涯中浪费大量的时间去搜索可用的资料，在现实生活中花费了大量的金钱和时间在书店中寻找资料，于是我给自己起了个昵称DancingWind，其意义是想风一样从各个知识的站点中吸取成长的养料。在飘荡了多年之后，我决定把自己收集的资料整理为一个统一的资源库。</p>
+      <p>版权声明<br>
+        所有DancingWind发表的内容，大多都来自共享的资源，所以我没有资格把它们据为己有，或声称自己为这些资源作出了一点贡献。故任何人都可以复制，修改，重新发表，甚至以自己的名义发表，我都不会追究，但你在做以上事情的时候必须保证内容的完整性，给后来的人一个完整的教程。最后，任何人不能以这些资料的任何部分，谋取任何形式的报酬。</p>
+      <p>发展计划<br>
+        在国外，很多资料都是很多人花费几年的时间慢慢积累起来的。如果任何人有兴趣与别人共享你的知识，我很欢迎你与我联系，但你必须同意我上面的声明。</p>
+      <p>感谢<br>
+        感谢我的母亲一直以来对我的支持和在生活上的照顾。<br>
+        感谢我深爱的女友田芹，一直以来默默的在精神上和生活中对我的支持，她甚至把买衣服的钱都用来给我买书了，她真的是我见过的最好的女孩，希望我能带给她幸福。</p>
+                    <p>资源下载: <br>
+                      源码 <a href="javascript:if(confirm('http://www.owlei.com/DancingWind/Res/frame/glut.rar  \n\nThis file was not retrieved by Teleport Pro, because the server reports that this file cannot be found.  \n\nDo you want to open it from the server?'))window.location='http://www.owlei.com/DancingWind/Res/frame/glut.rar'" tppabs="http://www.owlei.com/DancingWind/Res/frame/glut.rar">glut框架</a> <a href="javascript:if(confirm('http://www.owlei.com/DancingWind/Res/frame/Win32.rar  \n\nThis file was not retrieved by Teleport Pro, because the server reports that this file cannot be found.  \n\nDo you want to open it from the server?'))window.location='http://www.owlei.com/DancingWind/Res/frame/Win32.rar'" tppabs="http://www.owlei.com/DancingWind/Res/frame/Win32.rar">Win32框架</a> 
+                      <a href="javascript:if(confirm('http://www.owlei.com/DancingWind/Res/frame/OOWin32.rar  \n\nThis file was not retrieved by Teleport Pro, because the server reports that this file cannot be found.  \n\nDo you want to open it from the server?'))window.location='http://www.owlei.com/DancingWind/Res/frame/OOWin32.rar'" tppabs="http://www.owlei.com/DancingWind/Res/frame/OOWin32.rar">OOWin32空白框架</a> <a href="javascript:if(confirm('http://www.owlei.com/DancingWind/Res/frame/OOWin32%20example.rar  \n\nThis file was not retrieved by Teleport Pro, because the server reports that this file cannot be found.  \n\nDo you want to open it from the server?'))window.location='http://www.owlei.com/DancingWind/Res/frame/OOWin32%20example.rar'" tppabs="http://www.owlei.com/DancingWind/Res/frame/OOWin32%20example.rar">OOWin32实例框架</a> 
+                      <a href="javascript:if(confirm('http://www.owlei.com/DancingWind/Res/Src/01_BaseFrame.rar  \n\nThis file was not retrieved by Teleport Pro, because the server reports that this file cannot be found.  \n\nDo you want to open it from the server?'))window.location='http://www.owlei.com/DancingWind/Res/Src/01_BaseFrame.rar'" tppabs="http://www.owlei.com/DancingWind/Res/Src/01_BaseFrame.rar">Nehe教程框架</a></p></td>
+  </tr>
+</table>
+			  
+			  </td>
+          </tr>
+     </table>
+      </td>
+	<!-- 中部右边框-->
+    <td background="r.gif" tppabs="http://www.owlei.com/DancingWind/Pic/r.gif"><img src="r.gif" tppabs="http://www.owlei.com/DancingWind/Pic/r.gif" width="28" height="28"></td>
+  </tr>
+</TBODY>
+</table>
+
+<!-- 下边框-->
+<table border="0" cellPadding="0" cellSpacing="0" width="100%">
+<TBODY>
+  <tr>
+    <td><img height="28" src="bl.gif" tppabs="http://www.owlei.com/DancingWind/Pic/bl.gif" width="28"></td>
+    <td width="100%"><img height="28" src="bc.gif" tppabs="http://www.owlei.com/DancingWind/Pic/bc.gif" width="100%"></td>
+    <td><img height="28" src="br.gif" tppabs="http://www.owlei.com/DancingWind/Pic/br.gif" width="28"></td>
+  </tr>
+</TBODY>
+</table>
+</body>
+</html>

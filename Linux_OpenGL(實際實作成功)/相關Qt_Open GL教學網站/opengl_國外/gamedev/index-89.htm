@@ -1,0 +1,456 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+    dir="ltr"
+    xml:lang="en"
+    lang="en">
+  <head>
+    <title>NeHe Productions: Reading Simple Data From a Caligari TrueSpace File</title>
+
+    <link rel="stylesheet" type="text/css" href="public_base.css" tppabs="http://nehe.gamedev.net/static/css/public_base.css" />
+    <link type="text/css" rel="stylesheet" href="shThemeMidnight.css" tppabs="http://nehe.gamedev.net/static/css/syntax_highlighter/shThemeMidnight.css"/>
+    
+    <link rel="alternate" type="application/atom+xml" title="Atom feed" href="index-1.htm" tppabs="http://nehe.gamedev.net/atom/" />
+    <link rel="alternate" type="application/rss+xml" title="RSS feed" href="index-2.htm" tppabs="http://nehe.gamedev.net/rss/" />
+    
+    <meta name="author" content="Luke Benstead + Carsten Haubold" />
+    <meta name="description" content="OpenGL Tutorials, Demos, Games and More..." />
+    <meta name="keywords" content="opengl, tutorial, article, demo, game, blend, texturemap, lighting, contest, 3D" />
+
+    
+    
+
+    
+
+</script>
+
+
+    
+    
+    
+    
+        
+        <script type='text/javascript'>
+        var googletag = googletag || {};
+        googletag.cmd = googletag.cmd || [];
+        (function() {
+        var gads = document.createElement('script');
+        gads.async = true;
+        gads.type = 'text/javascript';
+        var useSSL = 'https:' == document.location.protocol;
+        gads.src = (useSSL ? 'https:' : 'http:') + 
+        '//www.googletagservices.com/tag/js/gpt.js';
+        var node = document.getElementsByTagName('script')[0];
+        node.parentNode.insertBefore(gads, node);
+        })();
+        </script>
+
+        <script type='text/javascript'>
+        googletag.cmd.push(function() {
+        googletag.defineSlot('/1004699/Leaderboard_NeHe', [728, 90], 'div-gpt-ad-1327940144417-0').addService(googletag.pubads());
+        googletag.defineSlot('/1004699/Skyscraper_NeHe', [160, 600], 'div-gpt-ad-1327940144417-1').addService(googletag.pubads());
+        googletag.pubads().enableSingleRequest();
+        googletag.enableServices();
+        });
+        </script>
+    
+    
+
+    
+  </head>
+
+  <body>
+    
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "all.js#xfbml=1"/*tpa=http://connect.facebook.net/en_GB/all.js#xfbml=1*/;
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+
+
+    <table cellpadding="0" cellspacing="0" border="0" id="layout_table">
+    <tr><td>
+        <div id="header">
+                <a href="index.htm" tppabs="http://nehe.gamedev.net/"><img class="logo" class="logo" src="nehe.png" tppabs="http://nehe.gamedev.net/static/images/nehe.png" border="0" alt="Nehe" /></a>
+        </div>            
+    </td></tr>
+    <tr><td colspan="2">
+            
+<div class="navbar">
+    <a href="index.htm" tppabs="http://nehe.gamedev.net/">HOME</a>
+    <a href="javascript:if(confirm('http://twitter.com/  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://twitter.com/#!/nehegl'" tppabs="http://twitter.com/#!/nehegl">TWITTER</a>  
+    <a href="javascript:if(confirm('http://www.facebook.com/pages/NeHe/300582493323181  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://www.facebook.com/pages/NeHe/300582493323181'" tppabs="http://www.facebook.com/pages/NeHe/300582493323181">FACEBOOK</a>     
+    <a href="index-2.htm" tppabs="http://nehe.gamedev.net/rss/">RSS</a>    
+    <a href="index-1.htm" tppabs="http://nehe.gamedev.net/atom/">ATOM</a>    
+    <a href="javascript:if(confirm('http://www.gamedev.net/forum/27-nehe-productions/page__forum_title__NeHe+Productions  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://www.gamedev.net/forum/27-nehe-productions/page__forum_title__NeHe+Productions'" tppabs="http://www.gamedev.net/forum/27-nehe-productions/page__forum_title__NeHe+Productions">FORUM</a>    
+</div>
+    
+    </td></tr>
+    <tr>
+        <td class="col1">
+
+            
+<div id="article_container">
+
+
+<h1 class="article-header">Reading Simple Data From a Caligari TrueSpace File</h1>
+<div class="social-media">
+<!-- Place this tag where you want the +1 button to render -->
+<div class="g-plusone" data-size="medium" data-width="120" data-annotation="inline"></div>
+<div class="fb-like" data-send="false" data-layout="button_count" data-width="60" data-show-faces="false" data-colorscheme="dark" data-font="arial"></div>
+</div>
+<div style="clear:both;"></div>
+<p><strong><span style="text-decoration: underline;">The Basics:</span></strong></p>
+<p>There are two types of trueSpace file, *.scn and *.cob. These are Caligari Scenes, and Caligari Objects, respectively. The actual data in the files is not too complicated, because each file is a series of "chunks". Each chunk represents a different type of information. This allows us to scan through every chunk, only reading in the ones that are relevant.</p>
+<!-- break -->
+<p><strong><span style="text-decoration: underline;">What We Need:</span></strong></p>
+<p>The official specification for trueSpace files is 82 pages long. The font is 10pts. For anyone wanting to be able to import simple objects, this is very daunting. Even looking through the file for a while won't get you very far, there are masses of chunks, each more confusing than the last.</p>
+<p>But don't give up! It is actually very simple to read the objects, it is done in a few steps:</p>
+<ol>
+<li>Read the file header, make sure it is valid.</li>
+<li>Iterate through the chunk headers, looking for the PolH (Polygon) chunks.</li>
+<li>Ignore all others, but read data from the PolH chunks, adding them to a list of simple structures.</li>
+<li>Make sure the chunk isn't a 'End' chunk, if it is, close the file.</li>
+<li>(Optional) Create a new file, go through your object structures, and write them in your own way.</li>
+</ol>
+<p><strong><span style="text-decoration: underline;">Getting Started:</span></strong></p>
+<p>Create a new *.h file, call it something like "CaligariObjects.h". The first part is the inclusion guard. Then I typedef the BYTE symbol, which I like (although feel free to use the actual type name. The same goes for LPCTSTR).</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">#ifndef __CALIGARI_OBJECTS_H__
+#define __CALIGARI_OBJECTS_H__
+
+#include &lt;vector&gt;						// We Need This Later
+
+typedef unsigned char BYTE;					// My Strange Ways
+typedef const char* LPCTSTR;					// Microsoft Made Me Strange
+
+static const F_HOLE	= 0x08;					// (bit 3) Flags Used By Caligari Objects (Irrelevant)
+static const F_BACKCULL	= 0x10;					// (bit 4) Flags Used By Caligari Objects (Irrelevant)
+
+typedef struct tagCALIGARI_HEADER
+{
+	char	szIdentifier[9];				// Always "Caligari "
+	char	szVersion[6];					// V00.01 Or Whatever Version The File Comes From
+	char	chMode;						// A: ASCII, B: BINARY. We Will Only Read Binary Files
+	char	szBitMode[2];					// LH: Little Endian, HL: Big Endian (Irrelevant)
+	char	szBlank[13];					// Blank Space
+	char	chNewLine;					// '\n' Char
+} CALIGARI_HEADER;
+</pre>
+<p>Next you'll need a 'chunk header'. This comes at the top of every chunk in the file.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">typedef struct tagCHUNK_HEADER
+{
+	char	szChunkType[4];					// Identifies The Chunk Type
+	short	sMajorVersion;					// Version
+	short	sMinorVersion;					// Version
+	long	lChunkID;					// Identifier: Each Chunk Is Unique
+	long	lParentID;					// Parent, Some Chunks Own Each Other
+	long	lDataBytes;					// Number Of Bytes In Data
+} CHUNK_HEADER;
+</pre>
+<p>A stream of data follows each chunk header. Sometimes this is ints, and floats etc, but lots of chunks contain the same type of data, such as position and axis data. Here is the structure that is used to give a chunk it's name (not all chunks have names).</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">typedef struct tagCHUNK_NAME
+{
+	short	sNameDupecount;					// Dupecount
+	short	sStringLen;					// Length Of String
+	char*	szName;						// Name
+} CHUNK_NAME;
+</pre>
+<p>A lot of chunks that represent actual objects in the scenes can define their own axies.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">typedef struct tagCHUNK_AXES
+{
+	float	fCentre[3];					// x,y,z, Center
+	float	fDirectionX[3];					// x,y,z, Coords Direction Of Local x
+	float	fDirectionY[3];					// x,y,z, Coords Direction Of Local y
+	float	fDirectionZ[3];					// x,y,z, Coords Direction Of Local z
+} CHUNK_AXES;
+</pre>
+<p>A four by four matrix defines the position of chunks, but only the first three lines are saved, the last line is always assumed to be [0, 0, 0, 1].</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">typedef struct tagCHUNK_POSITION
+{
+	float	fFirstRow[4];
+	float	fSecondRow[4];
+	float	fThirdRow[4];
+} CHUNK_POSITION;
+</pre>
+<p>Before we actually create an object class, we need to define a few simple data types. A face is basically a series of long ints, which represent positions in the vertex and UV arrays, there is usually only 3 or four pairs.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">struct FACE
+{
+	BYTE	byFlags;					// Flags
+	short	sCount;						// Number Of Vertices
+	short	sMatIndex;					// Material Index
+	long*	pVertexUVIndex;					// long Index To Vertex, long Index To UV
+};
+</pre>
+<p>Some might say that representing a vertex in a struct is overkill, but it doesn't incur any memory cost, and due to the added simplicity you can actually get a significant speed increase. The same applies to the UV coord structure. This approach means that if you make a huge change, like adding the w coordinate to all vertices (for homogenous coordinates) you can easily change the code.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">struct VERTEX
+{
+	float x, y, z;
+};
+struct UV
+{
+	float u, v;
+};
+</pre>
+<p>Now we create the actual TrueSpace object class. Later you could include the name and position, but this serves well as a starting point.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">class FC_CaligariObject
+{
+public:
+	FC_CaligariObject()		{m_pFaces = NULL, m_pVertices = NULL, m_pUV = NULL;}	
+	virtual ~FC_CaligariObject()	{delete [] m_pFaces; delete [] m_pVertices; delete [] m_pUV;}
+	int	m_nFaceCount;
+	FACE*	m_pFaces;
+	int	m_nVertexCount;
+	VERTEX*	m_pVertices;
+	int	m_nUVCount;
+	UV*	m_pUV;
+
+	BYTE	m_byDrawFlags[4];
+	BYTE	m_byRadiositySetting[2];
+}; 
+</pre>
+<p>We've included the vector template, now typedef it for readability, and declare the big function we will use.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">using namespace std;
+typedef vector&lt;FC_CaligariObject*&gt; cob_vector;
+bool ReadObjects(LPCTSTR lpszFileName, cob_vector* pDestination);
+
+#endif
+</pre>
+<p>Now we create the loading function. Any file can contain a number of objects, so the best way to manage this is to use some sort of container for each object. Containers are a touchy subject, some people like the standard libraries, some people like MFC ones, and others use their own. In my opinion the standard library containers are that fastest and best.</p>
+<p>Now create a new *.cpp file, call it something like "CaligariObjects.cpp", and the following, including the header we've created, and starting the implementation of the function we've declared.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">#include &lt;CaligariObjects.h&gt;					// Or Whatever Your Header Is
+
+bool ReadObjects(LPCTSTR lpszFileName, cob_vector* pDestination)
+{	
+</pre>
+<p>We first try to open the specified file.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	FILE* pFile = fopen(lpszFileName, "rb");
+	if(!pFile)
+		return false;		
+</pre>
+<p>Now we move the file pointer to the beginning of the chunk data.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	// Get To The Beginning Of Real Data
+	fseek(pFile, sizeof(CALIGARI_HEADER), SEEK_SET);
+</pre>
+<p>Now we loop though every chunk, storing the data temporarily in 'ch'.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	CHUNK_HEADER ch;
+	char chName[5];
+	do
+	{
+ 		// Read The Header	
+		fread(&amp;ch, sizeof(CHUNK_HEADER), 1, pFile);
+</pre>
+<p>We only want "PolH" chunks, so here we test to see if we have one.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">if(strcmp(ch.szChunkType, "PolH") == 0)				// Is It A Poly?
+</pre>
+<p>We will need a new caligari object, and we create it on the heap. It will later be added to the vector.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">			FC_CaligariObject* pOb = new FC_CaligariObject;
+</pre>
+<p>This section reads the chunk name data into a struct, but doesn't use it. Later on, you may want to name your objects so this has been included for detail.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">			CHUNK_NAME cn;
+			// Read The Name Info			
+			fread(&amp;cn, sizeof(short) * 2, 1, pFile);
+			// Get Memory For The String			
+			cn.szName = new char[cn.sStringLen + 1];
+
+			// Read The String			
+			fread(cn.szName, sizeof(char), cn.sStringLen, pFile);
+			// Zero Terminate			
+			cn.szName[cn.sStringLen] = '\0';
+</pre>
+<p>I cannot find a way to easily implement the local axis system (if anyone can, please e-mail me), but we read the data anyway, just in case you want to use it in your own implementation.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">			CHUNK_AXES ax;				// Read The Local Axies
+			fread(&amp;ax, sizeof(ax), 1, pFile);
+</pre>
+<p>Now we read the position. Try as I might, I am not good enough to translate this into simple data (like a translate x, y and z factor, a scale x, y, and z factor etc) so the objects I load are always at the origin, not rotated or scaled. If you find a way to make this matrix into simple values like those described, please e-mail me.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;"> 			// Read The Position
+			CHUNK_POSITION ps;
+			fread(&amp;ps, sizeof(ps), 1, pFile);
+</pre>
+<p>Don't be worried if this looks complex. First we read the number of vertices, then we get space for them (using the new operator), and then we get 'fread' to read them into our array, all at once.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">			// Read Number Of Verticies
+			fread(&amp;pOb-&gt;m_nVertexCount, sizeof(int), 1, pFile);
+			// Get Space For Them
+			pOb-&gt;m_pVertices = new VERTEX[pOb-&gt;m_nVertexCount];
+			// This Reads All The Vertices
+			fread(&amp;pOb-&gt;m_pVertices, sizeof(VERTEX), pOb-&gt;m_nVertexCount, pFile);	
+</pre>
+<p>Exactly the same as before applies to our UVs.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	 		// Read UV Count
+			fread(&amp;pOb-&gt;m_nUVCount, sizeof(int),1,pFile);
+		 	// alloc Space For Them
+			pOb-&gt;m_pUV = new UV[pOb-&gt;m_nUVCount];
+			// Read Every UV
+			fread(pOb-&gt;m_pUV, sizeof(UV), pOb-&gt;m_nUVCount, pFile);	
+</pre>
+<p>Here we get the number of faces and get memory for them, but they are slightly more difficult to read in, so we have to use another loop.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">		 	// Read Faces
+			fread(&amp;pOb-&gt;m_nFaceCount, sizeof(int),1,pFile);
+			// alloc Space
+			pOb-&gt;m_pFaces = new FACE[pOb-&gt;m_nFaceCount];
+
+			for(int i=0; i&lt;pOb-&gt;m_nFaceCount; i++)
+			{
+</pre>
+<p>TrueSpace faces can be of different types. In the interest of simplicity, we will ignore the special 'hole' faces (which are holes in the previous face) however, when we do read these faces, we check their type, as some have extra data.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">				// Read Face Type
+				FACE* pFace = &amp;pOb-&gt;m_pFaces[i];
+				fread(&amp;pFace-&gt;byFlags, sizeof(BYTE), 1, pFile);	
+
+ 				// Read Vertex Count
+				fread(&amp;pFace-&gt;sCount, sizeof(short), 1, pFile);
+				
+				 // Do We Read A Material Number?
+				if((pFace-&gt;byFlags&amp;F_HOLE) == 0)
+					fread(&amp;pFace-&gt;sMatIndex, sizeof(short), 1, pFile);
+</pre>
+<p>This is where we read the actual indices. Each one is actually a pair of 'longs' which are indices into the vertex and UV array, respectively.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">				// Vertex And UV
+				pFace-&gt;pVertexUVIndex = new long[pFace-&gt;sCount * 2];
+				fread(pFace-&gt;pVertexUVIndex, sizeof(long), pFace-&gt;sCount * 2, pFile);
+			}
+</pre>
+<p>We want to be able to read any version, so we must check the chunk version ID, and depending on the version, we might read extra data.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">			// Any Extra Stuff?
+			if(ch.sMinorVersion &gt; 4)
+			{
+				// We Have Flags To Read
+				fread(&amp;pOb-&gt;m_byDrawFlags, sizeof(BYTE) * 4, 1 ,pFile);
+				if(ch.sMinorVersion &gt; 5 &amp;&amp; ch.sMinorVersion &lt; 8)
+					fread(&amp;pOb-&gt;m_byRadiositySetting, sizeof(BYTE) * 2, 1, pFile);
+			}
+			pDestination-&gt;push_back(pOb);
+		}
+		else
+			fseek(pFile, ch.lDataBytes, SEEK_CUR);
+
+		memcpy(chName, ch.szChunkType, 4);
+		chName[4] = '\0';
+	} while(strcmp(chName, "END ") != 0);
+
+	return true;
+}
+</pre>
+<p>The easiest way to use this code is in an example. Create a new workspace, call it 'test' or something, and then add the CaligariObjects.h and CaligariObjects.cpp files to it.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">//	Working Example Of TrueSpace Loading Code
+//			Code Created By Dave Kerr
+
+#include &lt;iostream&gt;						// If You Get An Error, #include &lt;iostream.h&gt; Instead
+#include "CaligariObjects.h"					// The Structures Defined Earlier
+
+using namespace std;
+
+int main(int argc, char* argv[])
+{
+cout &lt;&lt; "Caligari loading code tester.\nPlease enter file path: ";
+char szFilePath[255];
+cin &gt;&gt; szFilePath;
+
+cout &lt;&lt; "Attempting to load '"&lt;&amp;ltszFilePath&lt;&lt;"'. . .\n";
+
+cob_vector cobs;
+
+if(!ReadObjects(szFilePath, &amp;cobs))
+{
+cout &lt;&lt; "Failed to open the file.\n";
+return 0;
+}
+
+cout &lt;&lt; "Success! Showing object data . . .\n";
+for(cob_vector::iterator i = cobs.begin(); i &lt; cobs.end(); i++)
+{
+cout &lt;&lt; "Object:\n"&lt;&lt; (*i)-&gt;m_nFaceCount &lt;&lt; " faces.\n";
+cout &lt;&lt; (*i)-&gt;m_nVertexCount &lt;&lt; " vertices.\n";
+cout &lt;&lt; (*i)-&gt;m_nUVCount &lt;&lt; " UV coords.\n";
+}
+
+return 0;
+}
+</pre>
+<p>Now you have the simple objects. They can very easily be drawn and implemented, but that would add too much to the tutorial. If anyone can find solutions to the problems concerning local axis and (the serious problem) the position/translation/scale matrix, please e-mail me.</p>
+<p><a href="mailto:focus_business@hotmail.com">Dave Kerr</a> - <a href="javascript:if(confirm('http://www.focus.esmartweb.com/  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://www.focus.esmartweb.com/'" tppabs="http://www.focus.esmartweb.com/" target="_blank">http://www.focus.esmartweb.com</a></p>
+
+
+</div>
+</div>
+
+
+
+            <div style="width:728px;padding:0px;margin:auto; margin-top: 10px;">
+            
+
+    
+                <!-- Leaderboard_NeHe -->
+                <div id='div-gpt-ad-1327940144417-0' style='width:728px; height:90px;'>
+                <script type='text/javascript'>
+                googletag.cmd.push(function() { googletag.display('div-gpt-ad-1327940144417-0'); });
+                </script>
+                </div>
+            
+
+                           
+            </div>   
+        </td>
+        <td class="col2">
+            
+
+
+
+
+<div style="text-align: center; padding:10px;">
+
+<script type='text/javascript'>
+    GA_googleFillSlot("Skyscraper_NeHe");
+</script>
+
+</div>
+            
+        </td>
+    </table>
+    <div id="footer">
+        <p>
+            
+    
+    © 1997-2012 Gamedev . All rights reserved.<br/>
+
+			NeHe™ and NeHe Productions™ are trademarks of GameDev.net, LLC<br/>
+			OpenGL® is a registered trademark of Silicon Graphics Inc.<br/>
+		</p>        
+		<br/>
+    </div>
+
+    
+    
+	    <script type="text/javascript" src="shCore.js" tppabs="http://nehe.gamedev.net/static/js/syntax_highlighter/shCore.js"></script>
+        <script type="text/javascript" src="shBrushCpp.js" tppabs="http://nehe.gamedev.net/static/js/syntax_highlighter/shBrushCpp.js"></script>
+	    <script type="text/javascript" src="shBrushJScript.js" tppabs="http://nehe.gamedev.net/static/js/syntax_highlighter/shBrushJScript.js"></script>
+	    <script type="text/javascript">SyntaxHighlighter.all();</script>
+    
+
+    <!-- Place this render call where appropriate -->
+    <script type="text/javascript">
+      (function() {
+        var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+        po.src = 'plusone.js'/*tpa=https://apis.google.com/js/plusone.js*/;
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+      })();
+    </script>    
+
+    
+<!-- GoogleAnalytics code -->
+<script src="urchin.js" tppabs="http://www.google-analytics.com/urchin.js" type="text/javascript">
+</script>
+<script type="text/javascript">
+_uacct = "UA-279474-2"; // Gamedev
+urchinTracker();
+_uff = 0; // Reset for second account
+_uacct = "UA-24180731-1"; // Non-GD
+urchinTracker();
+</script> 
+  </body>
+</html>

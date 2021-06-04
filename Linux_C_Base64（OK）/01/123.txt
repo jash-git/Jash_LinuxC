@@ -1,0 +1,203 @@
+http://hi.baidu.com/wangpeng1314/item/c348450ff53bc16ed55a11ac
+//base64.h
+#include<stdio.h>
+#include<stdlib.h>
+#include<unistd.h>
+#include<string.h>
+
+extern char *base64_decode(const char*,char **);
+
+extern char *base64_encode(const char*,char **);
+///////////////////////////////////////////////////////////////////////////////////////
+//base64.c
+#include "base64.h"
+
+static char base64_table[255];
+
+void base64_tableinit()
+
+{
+
+   int i,j;
+
+   bzero(base64_table,255);
+
+        for(j=0,i='A';i<='Z';i++) /*填base64編碼表*/
+
+                base64_table[i]=j++;
+
+        for(i='a';i<='z';i++)
+
+                base64_table[i]=j++;
+
+        for(i='0';i<='9';i++)
+
+                base64_table[i]=j++;
+
+        base64_table['+']=j++;
+
+        base64_table['/']=j++;
+
+        base64_table['=']=j;
+
+}
+
+char *base64_decode(const char *cptr,char **rptr)
+
+{
+
+        char *res;
+
+        int clen,len;
+
+        static int init=0;
+
+        if(cptr==NULL)
+
+                return NULL;
+
+        len=strlen(cptr);
+
+        if(len%4) /*編了碼的字元絕對是4的倍數*/
+
+                return NULL;
+
+        if(!init)
+
+          {
+
+                init=1;
+
+                base64_tableinit();
+
+          }
+
+        clen=len/4;
+
+        if((res=malloc(len-clen))==NULL)
+
+                return NULL;
+
+        for(*rptr=res;clen--;)
+
+          {
+
+                *res=base64_table[*cptr++]<<2&0xfc;         /*cptr後六位移動到最高位*/
+
+                *res++|=base64_table[*cptr]>>4;               /*跟著下個字元低兩位元給res低兩位*/
+
+        *res=base64_table[*cptr++]<<4&0xf0;               /*填充res高四位其他清0*/
+
+                *res++|=base64_table[*cptr]>>2&0x0f;    /*字元前六位移到低六位取低四位*/
+
+                *res=base64_table[*cptr++]<<6;
+
+                if(*cptr!='=')                                                 /*=號乎略*/
+
+                   *res++|=base64_table[*cptr++];
+
+          }
+
+        return *rptr;
+
+}
+
+char *base64_encode(const char *cptr,char **rptr)
+
+{
+
+        char *res;
+
+        int i,clen,len;
+
+        len=strlen(cptr);
+
+        clen=len/3;
+
+        if(cptr==NULL||(res=malloc(clen+3*2+len))==NULL)
+
+                  return NULL;
+
+        for(*rptr=res;clen--;)
+
+          {
+
+                *res++=*cptr>>2&0x3f;          /*取ptr高6位放入res低6位*/
+
+                *res=*cptr++<<4&0x30;          /*移動ptr最低2位到高6位然後清0其 它位*/
+
+                *res++|=*cptr>>4;                  /*取ptr高4位給res低4位*/
+
+                *res=(*cptr++&0x0f)<<2;        /*取ptr低4位移動到高6位*/
+
+                *res++|=*cptr>>6;                  /*取ptr高2位給res低2位*/
+
+                *res++=*cptr++&0x3f;
+
+          }
+
+        if(i=len%3)                                       /*處理多餘字元只有兩種情況多一個或者兩個字元*/
+
+          {
+
+                if(i==1)                                    /*根據base64編碼補=號*/
+
+                  {
+
+                        *res++=*cptr>>2&0x3f;
+
+                        *res++=*cptr<<4&0x30;
+
+                        *res++='=';
+
+                        *res++='=';
+
+                  }
+
+                else
+
+                  {
+
+                        *res++=*cptr>>2&0x3f;
+
+                        *res=*cptr++<<4&0x30;
+
+                        *res++|=*cptr>>4;
+
+                        *res++=(*cptr&0x0f)<<2;
+
+                        *res++='=';
+
+                  }
+
+          }
+
+        *res='=';                                               /*保證最後結位為=結束原因是因為base64裏有為0的編碼*/
+
+        for(res=*rptr;*res!='=';res++)
+
+       *res="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/="[*res];
+
+        rptr[0][strlen(*rptr)-1]='\0';                 /*去掉最後一個=號*/
+
+        return *rptr;
+
+}
+
+//main.c
+#include "base64.h"
+
+int main(void)
+{
+    char *src="abc";
+    char *buf;
+    base64_encode(src,&buf);
+    printf("base64 encode:%s\n",buf);
+    char *dec_buf;
+    base64_decode(buf,&dec_buf);
+    printf("base64 decode:%s\n",dec_buf);
+
+    free(buf);
+    free(dec_buf);
+    return 0;
+}

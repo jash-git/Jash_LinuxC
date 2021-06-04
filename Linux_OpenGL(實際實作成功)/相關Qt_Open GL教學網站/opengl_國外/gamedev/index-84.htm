@@ -1,0 +1,810 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+    dir="ltr"
+    xml:lang="en"
+    lang="en">
+  <head>
+    <title>NeHe Productions: 3D Lens Flare With Occlusion Testing</title>
+
+    <link rel="stylesheet" type="text/css" href="public_base.css" tppabs="http://nehe.gamedev.net/static/css/public_base.css" />
+    <link type="text/css" rel="stylesheet" href="shThemeMidnight.css" tppabs="http://nehe.gamedev.net/static/css/syntax_highlighter/shThemeMidnight.css"/>
+    
+    <link rel="alternate" type="application/atom+xml" title="Atom feed" href="index-1.htm" tppabs="http://nehe.gamedev.net/atom/" />
+    <link rel="alternate" type="application/rss+xml" title="RSS feed" href="index-2.htm" tppabs="http://nehe.gamedev.net/rss/" />
+    
+    <meta name="author" content="Luke Benstead + Carsten Haubold" />
+    <meta name="description" content="OpenGL Tutorials, Demos, Games and More..." />
+    <meta name="keywords" content="opengl, tutorial, article, demo, game, blend, texturemap, lighting, contest, 3D" />
+
+    
+    
+
+    
+
+</script>
+
+
+    
+    
+    
+    
+        
+        <script type='text/javascript'>
+        var googletag = googletag || {};
+        googletag.cmd = googletag.cmd || [];
+        (function() {
+        var gads = document.createElement('script');
+        gads.async = true;
+        gads.type = 'text/javascript';
+        var useSSL = 'https:' == document.location.protocol;
+        gads.src = (useSSL ? 'https:' : 'http:') + 
+        '//www.googletagservices.com/tag/js/gpt.js';
+        var node = document.getElementsByTagName('script')[0];
+        node.parentNode.insertBefore(gads, node);
+        })();
+        </script>
+
+        <script type='text/javascript'>
+        googletag.cmd.push(function() {
+        googletag.defineSlot('/1004699/Leaderboard_NeHe', [728, 90], 'div-gpt-ad-1327940144417-0').addService(googletag.pubads());
+        googletag.defineSlot('/1004699/Skyscraper_NeHe', [160, 600], 'div-gpt-ad-1327940144417-1').addService(googletag.pubads());
+        googletag.pubads().enableSingleRequest();
+        googletag.enableServices();
+        });
+        </script>
+    
+    
+
+    
+  </head>
+
+  <body>
+    
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "all.js#xfbml=1"/*tpa=http://connect.facebook.net/en_GB/all.js#xfbml=1*/;
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+
+
+    <table cellpadding="0" cellspacing="0" border="0" id="layout_table">
+    <tr><td>
+        <div id="header">
+                <a href="index.htm" tppabs="http://nehe.gamedev.net/"><img class="logo" class="logo" src="nehe.png" tppabs="http://nehe.gamedev.net/static/images/nehe.png" border="0" alt="Nehe" /></a>
+        </div>            
+    </td></tr>
+    <tr><td colspan="2">
+            
+<div class="navbar">
+    <a href="index.htm" tppabs="http://nehe.gamedev.net/">HOME</a>
+    <a href="javascript:if(confirm('http://twitter.com/  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://twitter.com/#!/nehegl'" tppabs="http://twitter.com/#!/nehegl">TWITTER</a>  
+    <a href="javascript:if(confirm('http://www.facebook.com/pages/NeHe/300582493323181  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://www.facebook.com/pages/NeHe/300582493323181'" tppabs="http://www.facebook.com/pages/NeHe/300582493323181">FACEBOOK</a>     
+    <a href="index-2.htm" tppabs="http://nehe.gamedev.net/rss/">RSS</a>    
+    <a href="index-1.htm" tppabs="http://nehe.gamedev.net/atom/">ATOM</a>    
+    <a href="javascript:if(confirm('http://www.gamedev.net/forum/27-nehe-productions/page__forum_title__NeHe+Productions  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://www.gamedev.net/forum/27-nehe-productions/page__forum_title__NeHe+Productions'" tppabs="http://www.gamedev.net/forum/27-nehe-productions/page__forum_title__NeHe+Productions">FORUM</a>    
+</div>
+    
+    </td></tr>
+    <tr>
+        <td class="col1">
+
+            
+<div id="article_container">
+
+
+<h1 class="article-header">3D Lens Flare With Occlusion Testing</h1>
+<div class="social-media">
+<!-- Place this tag where you want the +1 button to render -->
+<div class="g-plusone" data-size="medium" data-width="120" data-annotation="inline"></div>
+<div class="fb-like" data-send="false" data-layout="button_count" data-width="60" data-show-faces="false" data-colorscheme="dark" data-font="arial"></div>
+</div>
+<div style="clear:both;"></div>
+<p>Hi everyone its me again with another tutorial. In this one I will be showing you how to do lens flares by extending the glCamera class. If you look at a lens flare you will notice that they all share one thing in common. They all seem to move through the center of the screen. With this in mind you could actually just throw out the z coordinate and make your flares all 2D. The only problem with this approach is without a z coordinate how do you find out if the camera is looking at the light source or not? In this tutorial we will be making 3D lens flares so get ready for a little bit of math. We will need to add a few things to the camera class in order to pull this off. First off we need a set of functions to see if a point or sphere is inside the current viewing volume of the camera. Next we need a set of textures to use for the flares and finally we need to do this with out killing the processor!</p>
+<p>I'm somewhat embarrassed to admit it but there was a bug in the last Camera class that needs some fixing. Before we get started here is the code that fixes the bug. The SetPerspective function needs to be changed to the following.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">void glCamera::SetPrespective()
+{
+	GLfloat Matrix[16];
+	glVector v;
+
+	// Going To Use glRotate To Calculate Our Direction Vector
+	glRotatef(m_HeadingDegrees, 0.0f, 1.0f, 0.0f);
+	glRotatef(m_PitchDegrees, 1.0f, 0.0f, 0.0f);
+
+	// Get The Resulting Matrix From OpenGL It Will Have Our
+	// Direction Vector In The 3rd Row
+	glGetFloatv(GL_MODELVIEW_MATRIX, Matrix);
+
+	// Get The Direction Vector From The Matrix. Element 10 Must
+	// Be Inverted!
+	m_DirectionVector.i = Matrix[8];
+	m_DirectionVector.j = Matrix[9];
+	m_DirectionVector.k = -Matrix[10];
+
+	// Ok Erase The Results Of The Last Computation
+	glLoadIdentity();
+
+	// Rotate The Scene To Get The Right Orientation
+	glRotatef(m_PitchDegrees, 1.0f, 0.0f, 0.0f);
+	glRotatef(m_HeadingDegrees, 0.0f, 1.0f, 0.0f);
+
+	// Scale The Direction By Our Speed
+	v = m_DirectionVector;
+	v *= m_ForwardVelocity;
+
+	// Increment Our Position By The Vector
+	m_Position.x += v.i;
+	m_Position.y += v.j;
+	m_Position.z += v.k;
+
+	// Translate To Our New Position
+	glTranslatef(-m_Position.x, -m_Position.y, -m_Position.z);
+}
+</pre>
+<p>Ok now we can get down to business. We will be using 4 separate textures to make our lens flare. The first texture we need is what I call a Big Glow texture. Our light source will be surrounded with a hazy glow. This texture will always be located at the light source position. The next texture is the Streaks Texture. This texture surrounds our light source with streaks moving outwards. This texture will also be located at the light source position. The Glow texture (not the Big Glow) this is the more solid looking texture and will dynamically move across the screen. The Glow texture is similar to the Big Glow texture however I have noticed that using a more defined texture here looks better than simply using the Big Glow. And finally we will need a Halo texture. These are the hollow looking rings for the flare and will dynamically move across the screen according to the camera's orientation and position. There are a few other types of textures you can use for lens flares if you like its up to you. See the references at the end of the tutorial for additional information. Below are some examples of these textures.</p>
+<table border="0" align="center">
+<tbody>
+<tr>
+<td align="center">Big Glow<br /><br /><img src="big_glow.jpg" tppabs="http://nehe.gamedev.net/_admin/article/edit/16007/extras/lesson44/big_glow.jpg" alt="" /></td>
+<td width="100px">&nbsp;</td>
+<td align="center">Streaks<br /><br /><img src="streaks.jpg" tppabs="http://nehe.gamedev.net/_admin/article/edit/16007/extras/lesson44/streaks.jpg" alt="" /></td>
+</tr>
+<tr>
+<td align="center">Glow<br /><br /><img src="glow.jpg" tppabs="http://nehe.gamedev.net/_admin/article/edit/16007/extras/lesson44/glow.jpg" alt="" /></td>
+<td width="100px">&nbsp;</td>
+<td align="center">Halo<br /><br /><img src="halo.jpg" tppabs="http://nehe.gamedev.net/_admin/article/edit/16007/extras/lesson44/halo.jpg" alt="" /></td>
+</tr>
+</tbody>
+</table>
+<p>Now that you have an idea of what we will be drawing let's talk about when we need to draw the lens flares. Obviously we do not want to draw the lens flares when we are not looking at the light source so we need to find a way to get the viewing volume or frustum from OpenGL. We could do this by combining the modelview and projection matrices then finding the clipping planes that OpenGL uses. Another approach to detecting if a point is in view is to use extensions. We could use GL_HP_occlusion_test or GL_NV_occlusion_query extensions to find out if a vertex is in view of the camera but not everyone has these extension so we will limit ourselves to the old fashioned way in this tutorial. Below is the UpdateFrustum Function.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">void glCamera::UpdateFrustum()
+{
+	GLfloat	clip[16];
+	GLfloat	proj[16];
+	GLfloat	modl[16];
+	GLfloat	t;
+
+	// Get The Current PROJECTION Matrix From OpenGL
+	glGetFloatv( GL_PROJECTION_MATRIX, proj );
+
+	// Get The Current MODELVIEW Matrix From OpenGL
+	glGetFloatv( GL_MODELVIEW_MATRIX, modl );
+
+	// Combine The Two Matrices (Multiply Projection By Modelview)
+	clip[ 0] = modl[ 0] * proj[ 0] + modl[ 1] * proj[ 4] + modl[ 2] * proj[ 8] + modl[ 3] * proj[12];
+	clip[ 1] = modl[ 0] * proj[ 1] + modl[ 1] * proj[ 5] + modl[ 2] * proj[ 9] + modl[ 3] * proj[13];
+	clip[ 2] = modl[ 0] * proj[ 2] + modl[ 1] * proj[ 6] + modl[ 2] * proj[10] + modl[ 3] * proj[14];
+	clip[ 3] = modl[ 0] * proj[ 3] + modl[ 1] * proj[ 7] + modl[ 2] * proj[11] + modl[ 3] * proj[15];
+
+	clip[ 4] = modl[ 4] * proj[ 0] + modl[ 5] * proj[ 4] + modl[ 6] * proj[ 8] + modl[ 7] * proj[12];
+	clip[ 5] = modl[ 4] * proj[ 1] + modl[ 5] * proj[ 5] + modl[ 6] * proj[ 9] + modl[ 7] * proj[13];
+	clip[ 6] = modl[ 4] * proj[ 2] + modl[ 5] * proj[ 6] + modl[ 6] * proj[10] + modl[ 7] * proj[14];
+	clip[ 7] = modl[ 4] * proj[ 3] + modl[ 5] * proj[ 7] + modl[ 6] * proj[11] + modl[ 7] * proj[15];
+
+	clip[ 8] = modl[ 8] * proj[ 0] + modl[ 9] * proj[ 4] + modl[10] * proj[ 8] + modl[11] * proj[12];
+	clip[ 9] = modl[ 8] * proj[ 1] + modl[ 9] * proj[ 5] + modl[10] * proj[ 9] + modl[11] * proj[13];
+	clip[10] = modl[ 8] * proj[ 2] + modl[ 9] * proj[ 6] + modl[10] * proj[10] + modl[11] * proj[14];
+	clip[11] = modl[ 8] * proj[ 3] + modl[ 9] * proj[ 7] + modl[10] * proj[11] + modl[11] * proj[15];
+
+	clip[12] = modl[12] * proj[ 0] + modl[13] * proj[ 4] + modl[14] * proj[ 8] + modl[15] * proj[12];
+	clip[13] = modl[12] * proj[ 1] + modl[13] * proj[ 5] + modl[14] * proj[ 9] + modl[15] * proj[13];
+	clip[14] = modl[12] * proj[ 2] + modl[13] * proj[ 6] + modl[14] * proj[10] + modl[15] * proj[14];
+	clip[15] = modl[12] * proj[ 3] + modl[13] * proj[ 7] + modl[14] * proj[11] + modl[15] * proj[15];
+
+	// Extract The Numbers For The RIGHT Plane
+	m_Frustum[0][0] = clip[ 3] - clip[ 0];
+	m_Frustum[0][1] = clip[ 7] - clip[ 4];
+	m_Frustum[0][2] = clip[11] - clip[ 8];
+	m_Frustum[0][3] = clip[15] - clip[12];
+
+	// Normalize The Result
+	t = GLfloat(sqrt( m_Frustum[0][0] * m_Frustum[0][0] + m_Frustum[0][1] * m_Frustum[0][1] + m_Frustum[0][2] * m_Frustum[0][2] ));
+	m_Frustum[0][0] /= t;
+	m_Frustum[0][1] /= t;
+	m_Frustum[0][2] /= t;
+	m_Frustum[0][3] /= t;
+
+	// Extract The Numbers For The LEFT Plane
+	m_Frustum[1][0] = clip[ 3] + clip[ 0];
+	m_Frustum[1][1] = clip[ 7] + clip[ 4];
+	m_Frustum[1][2] = clip[11] + clip[ 8];
+	m_Frustum[1][3] = clip[15] + clip[12];
+
+	// Normalize The Result
+	t = GLfloat(sqrt( m_Frustum[1][0] * m_Frustum[1][0] + m_Frustum[1][1] * m_Frustum[1][1] + m_Frustum[1][2] * m_Frustum[1][2] ));
+	m_Frustum[1][0] /= t;
+	m_Frustum[1][1] /= t;
+	m_Frustum[1][2] /= t;
+	m_Frustum[1][3] /= t;
+
+	// Extract The BOTTOM Plane
+	m_Frustum[2][0] = clip[ 3] + clip[ 1];
+	m_Frustum[2][1] = clip[ 7] + clip[ 5];
+	m_Frustum[2][2] = clip[11] + clip[ 9];
+	m_Frustum[2][3] = clip[15] + clip[13];
+
+	// Normalize The Result
+	t = GLfloat(sqrt( m_Frustum[2][0] * m_Frustum[2][0] + m_Frustum[2][1] * m_Frustum[2][1] + m_Frustum[2][2] * m_Frustum[2][2] ));
+	m_Frustum[2][0] /= t;
+	m_Frustum[2][1] /= t;
+	m_Frustum[2][2] /= t;
+	m_Frustum[2][3] /= t;
+
+	// Extract The TOP Plane
+	m_Frustum[3][0] = clip[ 3] - clip[ 1];
+	m_Frustum[3][1] = clip[ 7] - clip[ 5];
+	m_Frustum[3][2] = clip[11] - clip[ 9];
+	m_Frustum[3][3] = clip[15] - clip[13];
+
+	// Normalize The Result
+	t = GLfloat(sqrt( m_Frustum[3][0] * m_Frustum[3][0] + m_Frustum[3][1] * m_Frustum[3][1] + m_Frustum[3][2] * m_Frustum[3][2] ));
+	m_Frustum[3][0] /= t;
+	m_Frustum[3][1] /= t;
+	m_Frustum[3][2] /= t;
+	m_Frustum[3][3] /= t;
+
+	// Extract The FAR Plane
+	m_Frustum[4][0] = clip[ 3] - clip[ 2];
+	m_Frustum[4][1] = clip[ 7] - clip[ 6];
+	m_Frustum[4][2] = clip[11] - clip[10];
+	m_Frustum[4][3] = clip[15] - clip[14];
+
+	// Normalize The Result
+	t = GLfloat(sqrt( m_Frustum[4][0] * m_Frustum[4][0] + m_Frustum[4][1] * m_Frustum[4][1] + m_Frustum[4][2] * m_Frustum[4][2] ));
+	m_Frustum[4][0] /= t;
+	m_Frustum[4][1] /= t;
+	m_Frustum[4][2] /= t;
+	m_Frustum[4][3] /= t;
+
+	// Extract The NEAR Plane
+	m_Frustum[5][0] = clip[ 3] + clip[ 2];
+	m_Frustum[5][1] = clip[ 7] + clip[ 6];
+	m_Frustum[5][2] = clip[11] + clip[10];
+	m_Frustum[5][3] = clip[15] + clip[14];
+
+	// Normalize The Result
+	t = GLfloat(sqrt( m_Frustum[5][0] * m_Frustum[5][0] + m_Frustum[5][1] * m_Frustum[5][1] + m_Frustum[5][2] * m_Frustum[5][2] ));
+	m_Frustum[5][0] /= t;
+	m_Frustum[5][1] /= t;
+	m_Frustum[5][2] /= t;
+	m_Frustum[5][3] /= t;
+}
+</pre>
+<p>This function is a beast! I'm sure you can see now why there are extensions that do this sort of thing! Although the math is really straightforward the shear length is what makes it nasty. In the above function there are 190 operations (multiplication's, additions, subtractions, divisions) plus 6 square roots. Since we will need to call this function every time we draw the scene it will be worth the effort to optimize it. Below is an optimized version of this function that has a couple of trade off's. As long as we do not rotate or translate the projection matrix the below function will work for getting the clipping planes for the viewing volume / frustum.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">void glCamera::UpdateFrustumFaster()
+{
+	GLfloat   clip[16];
+	GLfloat   proj[16];
+	GLfloat   modl[16];
+	GLfloat   t;
+
+	// Get The Current PROJECTION Matrix From OpenGL
+	glGetFloatv( GL_PROJECTION_MATRIX, proj );
+
+	// Get The Current MODELVIEW Matrix From OpenGL
+	glGetFloatv( GL_MODELVIEW_MATRIX, modl );
+
+	// Combine The Two Matrices (Multiply Projection By Modelview) 
+	// But Keep In Mind This Function Will Only Work If You Do NOT
+	// Rotate Or Translate Your Projection Matrix
+	clip[ 0] = modl[ 0] * proj[ 0];
+	clip[ 1] = modl[ 1] * proj[ 5];
+	clip[ 2] = modl[ 2] * proj[10] + modl[ 3] * proj[14];
+	clip[ 3] = modl[ 2] * proj[11];
+
+	clip[ 4] = modl[ 4] * proj[ 0];
+	clip[ 5] = modl[ 5] * proj[ 5];
+	clip[ 6] = modl[ 6] * proj[10] + modl[ 7] * proj[14];
+	clip[ 7] = modl[ 6] * proj[11];
+
+	clip[ 8] = modl[ 8] * proj[ 0];
+	clip[ 9] = modl[ 9] * proj[ 5];
+	clip[10] = modl[10] * proj[10] + modl[11] * proj[14];
+	clip[11] = modl[10] * proj[11];
+
+	clip[12] = modl[12] * proj[ 0];
+	clip[13] = modl[13] * proj[ 5];
+	clip[14] = modl[14] * proj[10] + modl[15] * proj[14];
+	clip[15] = modl[14] * proj[11];
+
+	// Extract The Numbers For The RIGHT Plane
+	m_Frustum[0][0] = clip[ 3] - clip[ 0];
+	m_Frustum[0][1] = clip[ 7] - clip[ 4];
+	m_Frustum[0][2] = clip[11] - clip[ 8];
+	m_Frustum[0][3] = clip[15] - clip[12];
+
+	// Normalize The Result
+	t = GLfloat(sqrt( m_Frustum[0][0] * m_Frustum[0][0] + m_Frustum[0][1] * m_Frustum[0][1] + m_Frustum[0][2] * m_Frustum[0][2] ));
+	m_Frustum[0][0] /= t;
+	m_Frustum[0][1] /= t;
+	m_Frustum[0][2] /= t;
+	m_Frustum[0][3] /= t;
+
+	// Extract The Numbers For The LEFT Plane
+	m_Frustum[1][0] = clip[ 3] + clip[ 0];
+	m_Frustum[1][1] = clip[ 7] + clip[ 4];
+	m_Frustum[1][2] = clip[11] + clip[ 8];
+	m_Frustum[1][3] = clip[15] + clip[12];
+
+	// Normalize The Result
+	t = GLfloat(sqrt( m_Frustum[1][0] * m_Frustum[1][0] + m_Frustum[1][1] * m_Frustum[1][1] + m_Frustum[1][2] * m_Frustum[1][2] ));
+	m_Frustum[1][0] /= t;
+	m_Frustum[1][1] /= t;
+	m_Frustum[1][2] /= t;
+	m_Frustum[1][3] /= t;
+
+	// Extract The BOTTOM Plane
+	m_Frustum[2][0] = clip[ 3] + clip[ 1];
+	m_Frustum[2][1] = clip[ 7] + clip[ 5];
+	m_Frustum[2][2] = clip[11] + clip[ 9];
+	m_Frustum[2][3] = clip[15] + clip[13];
+
+	// Normalize The Result
+	t = GLfloat(sqrt( m_Frustum[2][0] * m_Frustum[2][0] + m_Frustum[2][1] * m_Frustum[2][1] + m_Frustum[2][2] * m_Frustum[2][2] ));
+	m_Frustum[2][0] /= t;
+	m_Frustum[2][1] /= t;
+	m_Frustum[2][2] /= t;
+	m_Frustum[2][3] /= t;
+
+	// Extract The TOP Plane
+	m_Frustum[3][0] = clip[ 3] - clip[ 1];
+	m_Frustum[3][1] = clip[ 7] - clip[ 5];
+	m_Frustum[3][2] = clip[11] - clip[ 9];
+	m_Frustum[3][3] = clip[15] - clip[13];
+
+	// Normalize The Result
+	t = GLfloat(sqrt( m_Frustum[3][0] * m_Frustum[3][0] + m_Frustum[3][1] * m_Frustum[3][1] + m_Frustum[3][2] * m_Frustum[3][2] ));
+	m_Frustum[3][0] /= t;
+	m_Frustum[3][1] /= t;
+	m_Frustum[3][2] /= t;
+	m_Frustum[3][3] /= t;
+
+	// Extract The FAR Plane
+	m_Frustum[4][0] = clip[ 3] - clip[ 2];
+	m_Frustum[4][1] = clip[ 7] - clip[ 6];
+	m_Frustum[4][2] = clip[11] - clip[10];
+	m_Frustum[4][3] = clip[15] - clip[14];
+
+	// Normalize The Result
+	t = GLfloat(sqrt( m_Frustum[4][0] * m_Frustum[4][0] + m_Frustum[4][1] * m_Frustum[4][1] + m_Frustum[4][2] * m_Frustum[4][2] ));
+	m_Frustum[4][0] /= t;
+	m_Frustum[4][1] /= t;
+	m_Frustum[4][2] /= t;
+	m_Frustum[4][3] /= t;
+
+	// Extract The NEAR Plane
+	m_Frustum[5][0] = clip[ 3] + clip[ 2];
+	m_Frustum[5][1] = clip[ 7] + clip[ 6];
+	m_Frustum[5][2] = clip[11] + clip[10];
+	m_Frustum[5][3] = clip[15] + clip[14];
+
+	// Normalize The Result
+	t = GLfloat(sqrt( m_Frustum[5][0] * m_Frustum[5][0] + m_Frustum[5][1] * m_Frustum[5][1] + m_Frustum[5][2] * m_Frustum[5][2] ));
+	m_Frustum[5][0] /= t;
+	m_Frustum[5][1] /= t;
+	m_Frustum[5][2] /= t;
+	m_Frustum[5][3] /= t;
+}
+</pre>
+<p>It's still a beast but this function has roughly half as many operations as the first function (102). The optimization is a simple one. I just took out all the multiplication's that are usually zeroed when combining the projection and modelview matrices. If you really want to optimize this function then use an extension in its place. The extension will do the same thing but will do it much faster because the calculation will more than likely take place in the video hardware. Anyway calling either of the UpdateFrustum functions every time we draw the scene is going to give us a performance hit but we will gain one nice advantage from it. We can now tell if the camera can see an object or point. If you have several different objects in your scene it will be to your benefit to only draw the ones that are currently in the viewing volume. This is useful when you have a lot of terrain to draw so you don't bog OpenGL down by sending it every single vertex. Below is a function that checks to see if a point is in the viewing volume. There is also a SphereInFrustum function in the class but I will not list it here because the two functions are almost identical.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">BOOL glCamera::PointInFrustum(glPoint p)
+{
+	int i;
+	// The Idea Behind This Algorithum Is That If The Point
+	// Is Inside All 6 Clipping Planes Then It Is Inside Our
+	// Viewing Volume So We Can Return True.
+	for(i = 0; i &lt; 6; i++)
+	{
+		if(m_Frustum[i][0] * p.x + m_Frustum[i][1] * p.y + m_Frustum[i][2] * p.z + m_Frustum[i][3] &lt;= 0)
+		{
+			return(FALSE);
+		}
+	}
+	return(TRUE);
+}
+</pre>
+<p>Now we will ask OGL to project some geometry for us using the gluProject function. Practically we ask OGL to guess where a point in space will be projected in our current viewport, using arbitrary viewport and transform matrices we pass to the function. If we pass to the function the current matrices (retrievede with the glGet funcs) we will have the real position on screen where the dot will be drawn. The interesting part is that we also get a Z value back, this means that reading the REAL buffer for Z values we can discover if the flare is in front or if it's occluded by some objects.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">// ########## New Stuff by rIO.Spinning Kids ##########
+bool glCamera::IsOccluded(glPoint p)
+{
+	GLint viewport[4];							// Space For Viewport Data
+	GLdouble mvmatrix[16], projmatrix[16];					// Space For Transform Matrix
+	GLdouble winx, winy, winz;						// Space For Returned Projected Coords
+	GLdouble flareZ;							// Here We Will Store The Transformed Flare Z
+	GLfloat bufferZ;							// Here We Will Store The Read Z From The Buffer
+
+	glGetIntegerv (GL_VIEWPORT, viewport);					// Get Actual Viewport
+	glGetDoublev (GL_MODELVIEW_MATRIX, mvmatrix);				// Get Actual Model View Matrix
+	glGetDoublev (GL_PROJECTION_MATRIX, projmatrix);			// Get Actual Projection Matrix
+
+	// This Asks OGL To Guess The 2D Position Of A 3D Point Inside The Viewport
+	gluProject(p.x, p.y, p.z, mvmatrix, projmatrix, viewport, &amp;winx, &amp;winy, &amp;winz);
+	flareZ = winz;
+
+	// We Read Back One Pixel From The Depth Buffer (Exactly Where Our Flare Should Be Drawn)
+	glReadPixels(winx, winy,1,1,GL_DEPTH_COMPONENT, GL_FLOAT, &amp;bufferZ);
+
+	// If The Buffer Z Is Lower Than Our Flare Guessed Z Then Don't Draw
+	// This Means There Is Something In Front Of Our Flare
+	if (bufferZ &lt; flareZ)
+		return true;
+	else
+		return false;
+}
+</pre>
+<p>Now we need to address another problem that we are going to have. Since we are creating 3D lens flares if we draw our flares on texture mapped quads they may not always be facing the camera. This is bad because our flares can appear flat if we are looking at the light source from the side. Instead of using texture mapped quads we could use point sprites. Point sprites are nice because instead of sending OpenGL four points with texture coordinates you only have to send a single point and you don't have to specify the texture coordinates. Point sprites are great for particle engines and they are equally great for lens flares. Since we only have to keep up with a single point the only thing we have to do is find out where we need to draw the points and call the appropriate drawing code. The disadvantage of point sprites is they are currently only implemented as an extension (GL_NV_point_sprite). To keep the tutorial so everyone can run it I will again be avoiding extensions here. One way we can make sure all our flares are always facing the camera is to simply reverse the rotations we used when setting our perspective. This works well but will break down if the camera ever gets behind the light source. To avoid this we are going to say the camera will never be allowed to get behind the light source by continually moving the light source as we move the camera. This will give us an extra side effect of making the light source appear infinitely far away and also allowing the flares to adjust a little when moving in a straight line. Enough talk below is the code for getting the necessary vectors and points.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	GLfloat Length = 0.0f;
+
+	// Draw The Flare Only If The Light Source Is In Our Line Of Sight
+	if(SphereInFrustum(m_LightSourcePos, 1.0f) == TRUE)
+	{
+		vLightSourceToCamera = m_Position - m_LightSourcePos;		// Lets Compute The Vector That Points To
+										// The Camera From The Light Source.
+
+		Length = vLightSourceToCamera.Magnitude();			// Save The Length We Will Need It In A Minute
+
+		ptIntersect = m_DirectionVector * Length;			// Now Lets Find A Point Along The Cameras Direction
+										// Vector That We Can Use As An Intersection Point
+										// Lets Translate Down This Vector The Same Distance
+										// That The Camera Is. Away From The Light Source.
+		ptIntersect += m_Position;
+
+		vLightSourceToIntersect = ptIntersect - m_LightSourcePos;	// Lets Compute The Vector That Points To The Intersect
+										// Point From The Light Source
+		Length = vLightSourceToIntersect.Magnitude();			// Save The Length We Will Need It Later
+		vLightSourceToIntersect.Normalize();				// Normalize The Vector So Its Unit Length
+</pre>
+<p>First we need to find out the distance between the light source and the camera. Next we will need an intersection point along the cameras direction vector. The distance between the intersection point and the camera needs to be the same distance from the light source to camera. Now that we have the intersection point we can now find a vector to draw all the lens flares by. Below is a picture representing this.</p>
+<center><img src="illustration.jpg" tppabs="http://nehe.gamedev.net/_admin/article/edit/16007/extras/lesson44/illustration.jpg" alt="" /></center>
+<p><br /> Now that we have a direction vector to draw the lens flares off of all that is left is to draw the halos and glows. Below is the code that draws the flares along the vector. We create a new point by moving x number of units down the vLightSourceToIntersect vector and then add that to the Light Sources Position.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">		glEnable(GL_BLEND);
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE);
+		glDisable(GL_DEPTH_TEST);
+		glEnable(GL_TEXTURE_2D);
+
+		// ########## New Stuff by rIO.Spinning Kids ##########
+
+		if (!IsOccluded(m_LightSourcePos))				// Check If The Center Of The Flare Is Occluded
+		{
+			// Render The Large Hazy Glow
+			RenderBigGlow(0.60f, 0.60f, 0.8f, 1.0f, m_LightSourcePos, 16.0f);
+			// Render The Streaks
+			RenderStreaks(0.60f, 0.60f, 0.8f, 1.0f, m_LightSourcePos, 16.0f);
+			// Render The Small Glow
+			RenderGlow(0.8f, 0.8f, 1.0f, 0.5f, m_LightSourcePos, 3.5f);
+
+			pt = vLightSourceToIntersect * (Length * 0.1f);		// Lets Compute A Point That Is 20%
+			pt += m_LightSourcePos;					// Away From The Light Source In The
+										// Direction Of The Intersection Point
+		
+			RenderGlow(0.9f, 0.6f, 0.4f, 0.5f, pt, 0.6f);		// Render The Small Glow
+
+			pt = vLightSourceToIntersect * (Length * 0.15f);	// Lets Compute A Point That Is 30%
+			pt += m_LightSourcePos;					// Away From The Light Source In The
+										// Direction Of The Intersection Point
+		
+			RenderHalo(0.8f, 0.5f, 0.6f, 0.5f, pt, 1.7f);		// Render The Halo
+		
+			pt = vLightSourceToIntersect * (Length * 0.175f);	// Lets Compute A Point That Is 35%
+			pt += m_LightSourcePos;					// Away From The Light Source In The
+										// Direction Of The Intersection Point
+		
+			RenderHalo(0.9f, 0.2f, 0.1f, 0.5f, pt, 0.83f);		// Render The Halo
+
+			pt = vLightSourceToIntersect * (Length * 0.285f);	// Lets Compute A Point That Is 57%
+			pt += m_LightSourcePos;					// Away From The Light Source In The
+										// Direction Of The Intersection Point
+		
+			RenderHalo(0.7f, 0.7f, 0.4f, 0.5f, pt, 1.6f);		// Render The Halo
+		
+			pt = vLightSourceToIntersect * (Length * 0.2755f);	// Lets Compute A Point That Is 55.1%
+			pt += m_LightSourcePos;					// Away From The Light Source In The
+										// Direction Of The Intersection Point
+		
+			RenderGlow(0.9f, 0.9f, 0.2f, 0.5f, pt, 0.8f);		// Render The Small Glow
+
+			pt = vLightSourceToIntersect * (Length * 0.4775f);	// Lets Compute A Point That Is 95.5%
+			pt += m_LightSourcePos;					// Away From The Light Source In The
+										// Direction Of The Intersection Point
+		
+			RenderGlow(0.93f, 0.82f, 0.73f, 0.5f, pt, 1.0f);	// Render The Small Glow
+		
+			pt = vLightSourceToIntersect * (Length * 0.49f);	// Lets Compute A Point That Is 98%
+			pt += m_LightSourcePos;					// Away From The Light Source In The
+										// Direction Of The Intersection Point
+		
+			RenderHalo(0.7f, 0.6f, 0.5f, 0.5f, pt, 1.4f);		// Render The Halo
+
+			pt = vLightSourceToIntersect * (Length * 0.65f);	// Lets Compute A Point That Is 130%
+			pt += m_LightSourcePos;					// Away From The Light Source In The
+										// Direction Of The Intersection Point
+		
+			RenderGlow(0.7f, 0.8f, 0.3f, 0.5f, pt, 1.8f);		// Render The Small Glow
+		
+			pt = vLightSourceToIntersect * (Length * 0.63f);	// Lets Compute A Point That Is 126%
+			pt += m_LightSourcePos;					// Away From The Light Source In The
+										// Direction Of The Intersection Point
+		
+			RenderGlow(0.4f, 0.3f, 0.2f, 0.5f, pt, 1.4f);		// Render The Small Glow
+
+			pt = vLightSourceToIntersect * (Length * 0.8f);		// Lets Compute A Point That Is 160%
+			pt += m_LightSourcePos;					// Away From The Light Source In The
+										// Direction Of The Intersection Point
+		
+			RenderHalo(0.7f, 0.5f, 0.5f, 0.5f, pt, 1.4f);		// Render The Halo
+		
+			pt = vLightSourceToIntersect * (Length * 0.7825f);	// Lets Compute A Point That Is 156.5%
+			pt += m_LightSourcePos;					// Away From The Light Source In The
+										// Direction Of The Intersection Point
+		
+			RenderGlow(0.8f, 0.5f, 0.1f, 0.5f, pt, 0.6f);		// Render The Small Glow
+
+			pt = vLightSourceToIntersect * (Length * 1.0f);		// Lets Compute A Point That Is 200%
+			pt += m_LightSourcePos;					// Away From The Light Source In The
+										// Direction Of The Intersection Point
+		
+			RenderHalo(0.5f, 0.5f, 0.7f, 0.5f, pt, 1.7f);		// Render The Halo
+		
+			pt = vLightSourceToIntersect * (Length * 0.975f);	// Lets Compute A Point That Is 195%
+			pt += m_LightSourcePos;					// Away From The Light Source In The
+										// Direction Of The Intersection Point
+		
+			RenderGlow(0.4f, 0.1f, 0.9f, 0.5f, pt, 2.0f);		// Render The Small Glow
+		}
+
+		glDisable(GL_BLEND );
+		glEnable(GL_DEPTH_TEST);
+		glDisable(GL_TEXTURE_2D);
+</pre>
+<p>Below are the RenderBigGlow, RenderStreaks, RenderGlow and RenderHalo functions. The functions are identical with the exception of the texture they are binding too.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">void glCamera::RenderHalo(GLfloat r, GLfloat g, GLfloat b, GLfloat a, glPoint p, GLfloat scale)
+{
+	glPoint q[4];
+
+	// Basically We Are Just Going To Make A 2D Box
+	// From Four Points We Don't Need A Z Coord Because
+	// We Are Rotating The Camera By The Inverse So The 
+	// Texture Mapped Quads Will Always Face Us.
+	q[0].x = (p.x - scale);							// Set The x Coordinate -scale Units From The Center Point.
+	q[0].y = (p.y - scale);							// Set The y Coordinate -scale Units From The Center Point.
+	q[1].x = (p.x - scale);							// Set The x Coordinate -scale Units From The Center Point.
+	q[1].y = (p.y + scale);							// Set The y Coordinate scale Units From The Center Point.
+	q[2].x = (p.x + scale);							// Set The x Coordinate scale Units From The Center Point.
+	q[2].y = (p.y - scale);							// Set The y Coordinate -scale Units From The Center Point.
+	q[3].x = (p.x + scale);							// Set The x Coordinate scale Units From The Center Point.
+	q[3].y = (p.y + scale);							// Set The y Coordinate scale Units From The Center Point.
+
+	glPushMatrix();								// Save The Model View Matrix
+	glTranslatef(p.x, p.y, p.z);						// Translate To Our Point
+	glRotatef(-m_HeadingDegrees, 0.0f, 1.0f, 0.0f);
+	glRotatef(-m_PitchDegrees, 1.0f, 0.0f, 0.0f);
+	glBindTexture(GL_TEXTURE_2D, m_HaloTexture);				// Bind To The Big Glow Texture
+	glColor4f(r, g, b, a);							// Set The Color Since The Texture Is A Gray Scale
+	glBegin(GL_TRIANGLE_STRIP);						// Draw The Big Glow On A Triangle Strip
+		glTexCoord2f(0.0f, 0.0f);					
+		glVertex2f(q[0].x, q[0].y);
+		glTexCoord2f(0.0f, 1.0f);
+		glVertex2f(q[1].x, q[1].y);
+		glTexCoord2f(1.0f, 0.0f);
+		glVertex2f(q[2].x, q[2].y);
+		glTexCoord2f(1.0f, 1.0f);
+		glVertex2f(q[3].x, q[3].y);
+	glEnd();										
+	glPopMatrix();								// Restore The Model View Matrix
+}
+
+void glCamera::RenderGlow(GLfloat r, GLfloat g, GLfloat b, GLfloat a, glPoint p, GLfloat scale)
+{
+	glPoint q[4];
+
+	// Basically We Are Just Going To Make A 2D Box
+	// From Four Points We Don't Need A Z Coord Because
+	// We Are Rotating The Camera By The Inverse So The 
+	// Texture Mapped Quads Will Always Face Us.
+	q[0].x = (p.x - scale);							// Set The x Coordinate -scale Units From The Center Point.
+	q[0].y = (p.y - scale);							// Set The y Coordinate -scale Units From The Center Point.
+	q[1].x = (p.x - scale);							// Set The x Coordinate -scale Units From The Center Point.
+	q[1].y = (p.y + scale);							// Set The y Coordinate scale Units From The Center Point.
+	q[2].x = (p.x + scale);							// Set The x Coordinate scale Units From The Center Point.
+	q[2].y = (p.y - scale);							// Set The y Coordinate -scale Units From The Center Point.
+	q[3].x = (p.x + scale);							// Set The x Coordinate scale Units From The Center Point.
+	q[3].y = (p.y + scale);							// Set The y Coordinate scale Units From The Center Point.
+
+	glPushMatrix();								// Save The Model View Matrix
+	glTranslatef(p.x, p.y, p.z);						// Translate To Our Point
+	glRotatef(-m_HeadingDegrees, 0.0f, 1.0f, 0.0f);
+	glRotatef(-m_PitchDegrees, 1.0f, 0.0f, 0.0f);
+	glBindTexture(GL_TEXTURE_2D, m_GlowTexture);				// Bind To The Big Glow Texture
+	glColor4f(r, g, b, a);							// Set The Color Since The Texture Is A Gray Scale
+	glBegin(GL_TRIANGLE_STRIP);						// Draw The Big Glow On A Triangle Strip
+		glTexCoord2f(0.0f, 0.0f);					
+		glVertex2f(q[0].x, q[0].y);
+		glTexCoord2f(0.0f, 1.0f);
+		glVertex2f(q[1].x, q[1].y);
+		glTexCoord2f(1.0f, 0.0f);
+		glVertex2f(q[2].x, q[2].y);
+		glTexCoord2f(1.0f, 1.0f);
+		glVertex2f(q[3].x, q[3].y);
+	glEnd();										
+	glPopMatrix();								// Restore The Model View Matrix
+}
+
+void glCamera::RenderBigGlow(GLfloat r, GLfloat g, GLfloat b, GLfloat a, glPoint p, GLfloat scale)
+{
+	glPoint q[4];
+
+	// Basically We Are Just Going To Make A 2D Box
+	// From Four Points We Don't Need A Z Coord Because
+	// We Are Rotating The Camera By The Inverse So The 
+	// Texture Mapped Quads Will Always Face Us.
+	q[0].x = (p.x - scale);							// Set The x Coordinate -scale Units From The Center Point.
+	q[0].y = (p.y - scale);							// Set The y Coordinate -scale Units From The Center Point.
+	q[1].x = (p.x - scale);							// Set The x Coordinate -scale Units From The Center Point.
+	q[1].y = (p.y + scale);							// Set The y Coordinate scale Units From The Center Point.
+	q[2].x = (p.x + scale);							// Set The x Coordinate scale Units From The Center Point.
+	q[2].y = (p.y - scale);							// Set The y Coordinate -scale Units From The Center Point.
+	q[3].x = (p.x + scale);							// Set The x Coordinate scale Units From The Center Point.
+	q[3].y = (p.y + scale);							// Set The y Coordinate scale Units From The Center Point.
+
+	glPushMatrix();								// Save The Model View Matrix
+	glTranslatef(p.x, p.y, p.z);						// Translate To Our Point
+	glRotatef(-m_HeadingDegrees, 0.0f, 1.0f, 0.0f);
+	glRotatef(-m_PitchDegrees, 1.0f, 0.0f, 0.0f);
+	glBindTexture(GL_TEXTURE_2D, m_BigGlowTexture);				// Bind To The Big Glow Texture
+	glColor4f(r, g, b, a);							// Set The Color Since The Texture Is A Gray Scale
+	glBegin(GL_TRIANGLE_STRIP);						// Draw The Big Glow On A Triangle Strip
+		glTexCoord2f(0.0f, 0.0f);					
+		glVertex2f(q[0].x, q[0].y);
+		glTexCoord2f(0.0f, 1.0f);
+		glVertex2f(q[1].x, q[1].y);
+		glTexCoord2f(1.0f, 0.0f);
+		glVertex2f(q[2].x, q[2].y);
+		glTexCoord2f(1.0f, 1.0f);
+		glVertex2f(q[3].x, q[3].y);
+	glEnd();										
+	glPopMatrix();								// Restore The Model View Matrix
+}
+
+void glCamera::RenderStreaks(GLfloat r, GLfloat g, GLfloat b, GLfloat a, glPoint p, GLfloat scale)
+{
+	glPoint q[4];
+
+	// Basically We Are Just Going To Make A 2D Box
+	// From Four Points We Don't Need A Z Coord Because
+	// We Are Rotating The Camera By The Inverse So The 
+	// Texture Mapped Quads Will Always Face Us.
+	q[0].x = (p.x - scale);							// Set The x Coordinate -scale Units From The Center Point.
+	q[0].y = (p.y - scale);							// Set The y Coordinate -scale Units From The Center Point.
+	q[1].x = (p.x - scale);							// Set The x Coordinate -scale Units From The Center Point.
+	q[1].y = (p.y + scale);							// Set The y Coordinate scale Units From The Center Point.
+	q[2].x = (p.x + scale);							// Set The x Coordinate scale Units From The Center Point.
+	q[2].y = (p.y - scale);							// Set The y Coordinate -scale Units From The Center Point.
+	q[3].x = (p.x + scale);							// Set The x Coordinate scale Units From The Center Point.
+	q[3].y = (p.y + scale);							// Set The y Coordinate scale Units From The Center Point.
+
+	glPushMatrix();								// Save The Model View Matrix
+	glTranslatef(p.x, p.y, p.z);						// Translate To Our Point
+	glRotatef(-m_HeadingDegrees, 0.0f, 1.0f, 0.0f);
+	glRotatef(-m_PitchDegrees, 1.0f, 0.0f, 0.0f);
+	glBindTexture(GL_TEXTURE_2D, m_StreakTexture);				// Bind To The Big Glow Texture
+	glColor4f(r, g, b, a);							// Set The Color Since The Texture Is A Gray Scale
+	glBegin(GL_TRIANGLE_STRIP);						// Draw The Big Glow On A Triangle Strip
+		glTexCoord2f(0.0f, 0.0f);					
+		glVertex2f(q[0].x, q[0].y);
+		glTexCoord2f(0.0f, 1.0f);
+		glVertex2f(q[1].x, q[1].y);
+		glTexCoord2f(1.0f, 0.0f);
+		glVertex2f(q[2].x, q[2].y);
+		glTexCoord2f(1.0f, 1.0f);
+		glVertex2f(q[3].x, q[3].y);
+	glEnd();										
+	glPopMatrix();								// Restore The Model View Matrix
+}
+</pre>
+<p>You can use the 'W', 'S', 'A', and 'D' keys to change the direction the camera is pointed in. The '1' and '2' keys will toggle information on / off. 'Z' gives the camera a constant forward velocity. 'C' gives the camera a constant backward velocity and 'X' will stop the camera from moving at all.</p>
+<p>That is all for this tutorial. All questions, comments, and complaints are welcome. Just click on my name below to email me. Of course I'm not the first person to do lens flares and below are some links that I found helpful when writing this tutorial. Also before closing I need to send a thanks to Dave Steere, Cameron Tidwell, Bert Sammons, and Brannon Martindale for their feed back and helping me test out the code on different hardware. Thanks guys! Hope everyone enjoys the tutorial.</p>
+<p>Other Resources:<br /> <a href="javascript:if(confirm('http://nehe.gamedev.net/data/lessons/http://www.gamedev.net/reference/articles/article874.asp  \n\nThis file was not retrieved by Teleport Pro, because the server reports that this file cannot be found.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev.net/data/lessons/http://www.gamedev.net/reference/articles/article874.asp'" tppabs="http://nehe.gamedev.net/data/lessons/http://www.gamedev.net/reference/articles/article874.asp" target="_blank">/data/lessons/http://www.gamedev.net/reference/articles/article874.asp</a><br /> <a href="javascript:if(confirm('http://nehe.gamedev.net/data/lessons/http://www.gamedev.net/reference/articles/article813.asp  \n\nThis file was not retrieved by Teleport Pro, because the server reports that this file cannot be found.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev.net/data/lessons/http://www.gamedev.net/reference/articles/article813.asp'" tppabs="http://nehe.gamedev.net/data/lessons/http://www.gamedev.net/reference/articles/article813.asp" target="_blank">/data/lessons/http://www.gamedev.net/reference/articles/article813.asp</a><br /> <a href="javascript:if(confirm('http://nehe.gamedev.net/data/lessons/http://www.opengl.org/developers/code/mjktips/lensflare/  \n\nThis file was not retrieved by Teleport Pro, because the server reports that this file cannot be found.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev.net/data/lessons/http://www.opengl.org/developers/code/mjktips/lensflare/'" tppabs="http://nehe.gamedev.net/data/lessons/http://www.opengl.org/developers/code/mjktips/lensflare/" target="_blank">/data/lessons/http://www.opengl.org/developers/code/mjktips/lensflare/</a><br /> <a href="javascript:if(confirm('http://nehe.gamedev.net/data/lessons/http://www.markmorley.com/opengl/frustumculling.html  \n\nThis file was not retrieved by Teleport Pro, because the server reports that this file cannot be found.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev.net/data/lessons/http://www.markmorley.com/opengl/frustumculling.html'" tppabs="http://nehe.gamedev.net/data/lessons/http://www.markmorley.com/opengl/frustumculling.html" target="_blank">/data/lessons/http://www.markmorley.com/opengl/frustumculling.html</a><br /> <a href="javascript:if(confirm('http://nehe.gamedev.net/data/lessons/http://oss.sgi.com/projects/ogl-sample/registry/HP/occlusion_test.txt  \n\nThis file was not retrieved by Teleport Pro, because the server reports that this file cannot be found.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev.net/data/lessons/http://oss.sgi.com/projects/ogl-sample/registry/HP/occlusion_test.txt'" tppabs="http://nehe.gamedev.net/data/lessons/http://oss.sgi.com/projects/ogl-sample/registry/HP/occlusion_test.txt" target="_blank">/data/lessons/http://oss.sgi.com/projects/ogl-sample/registry/HP/occlusion_test.txt</a><br /> <a href="javascript:if(confirm('http://nehe.gamedev.net/data/lessons/http://oss.sgi.com/projects/ogl-sample/registry/NV/occlusion_query.txt  \n\nThis file was not retrieved by Teleport Pro, because the server reports that this file cannot be found.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev.net/data/lessons/http://oss.sgi.com/projects/ogl-sample/registry/NV/occlusion_query.txt'" tppabs="http://nehe.gamedev.net/data/lessons/http://oss.sgi.com/projects/ogl-sample/registry/NV/occlusion_query.txt" target="_blank">/data/lessons/http://oss.sgi.com/projects/ogl-sample/registry/NV/occlusion_query.txt</a></p>
+<p>- Cheers</p>
+<p><strong><a href="mailto:vichollis@comcast.netVic">Vic Hollis</a></strong></p>
+<p><strong><span style="text-decoration: underline;">NOTES from Dario Corno a.k.a. rIO of Spinning Kids:</span></strong></p>
+<p>I've added some test to check for occluders objects in front of the lens flare. This way the flare will be switched off when an object is in front of it.</p>
+<p>The new code should be well commented, and it is all marked with the # NEW STUFF # string, so if you want to check it out just do a search for "NEW STUFF" in the program.</p>
+<p>The modifications are:</p>
+<ul>
+<li>A new function in glCamera class, called IsOccluded, returning a boolean if the parameter point is behind an object</li>
+<li>Some new variables to hold the gluCylinder (used as occluder)</li>
+<li>Some new drawing code in glDraw to draw the occluder object</li>
+<li>Some new unloading code to release the quadric for the cylinder</li>
+</ul>
+<p>That's all, hope you find the modified version interesting!</p>
+<p>P.S: Left as an home exercise... Would be good to test more than one point near the flare position, to make it fade instead of just disappearing.</p>
+<p>* DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/vc/lesson44.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/vc/lesson44.zip'" tppabs="http://nehe.gamedev.net/data/lessons/vc/lesson44.zip">Visual C++</a> Code For This Lesson.</p>
+<p>* DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/bcb6/lesson44_bcb6.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/bcb6/lesson44_bcb6.zip'" tppabs="http://nehe.gamedev.net/data/lessons/bcb6/lesson44_bcb6.zip">Borland C++ Builder 6</a> Code For This Lesson. ( Conversion by <a href="mailto:conglth@hotmail.com">Le Thanh Cong</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/delphi/lesson44.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/delphi/lesson44.zip'" tppabs="http://nehe.gamedev.net/data/lessons/delphi/lesson44.zip">Delphi</a> Code For This Lesson. ( Conversion by <a href="mailto:michal_praha@seznam.cz">Michal Tucek</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/devc/lesson44.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/devc/lesson44.zip'" tppabs="http://nehe.gamedev.net/data/lessons/devc/lesson44.zip">Dev C++</a> Code For This Lesson. ( Conversion by <a href="mailto:michael@mudsplat.com">Michael Small</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/cwarrior/lesson44.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/cwarrior/lesson44.zip'" tppabs="http://nehe.gamedev.net/data/lessons/cwarrior/lesson44.zip">Code Warrior 5.3</a> Code For This Lesson. ( Conversion by <a href="mailto:DelusionalBeing@hotmail.com">Scott Lupton</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/python/lesson44.tar.gz  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/python/lesson44.tar.gz'" tppabs="http://nehe.gamedev.net/data/lessons/python/lesson44.tar.gz">Python</a> Code For This Lesson. ( Conversion by <a href="mailto:bleair@comcast.net">Brian Leair</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/vs_net/lesson44.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/vs_net/lesson44.zip'" tppabs="http://nehe.gamedev.net/data/lessons/vs_net/lesson44.zip">Visual Studio .NET</a> Code For This Lesson. ( Conversion by <a href="mailto:webmaster@joachimrohde.de">Joachim Rohde</a> )</p>
+<p>* DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/extras/lesson44/lesson44_with_extensions.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/extras/lesson44/lesson44_with_extensions.zip'" tppabs="http://nehe.gamedev.net/data/lessons/extras/lesson44/lesson44_with_extensions.zip">Lesson 44 - With Extension Support</a> (VC++).</p>
+<p><strong><span><a href="index-83.htm" tppabs="http://nehe.gamedev.net/data/lessons/lesson.asp?lesson=43">&lt; Lesson 43</a></span></strong><strong><span><a href="index-85.htm" tppabs="http://nehe.gamedev.net/data/lessons/lesson.asp?lesson=45">Lesson 45 &gt;</a></span></strong></p>
+
+
+</div>
+</div>
+
+
+
+            <div style="width:728px;padding:0px;margin:auto; margin-top: 10px;">
+            
+
+    
+                <!-- Leaderboard_NeHe -->
+                <div id='div-gpt-ad-1327940144417-0' style='width:728px; height:90px;'>
+                <script type='text/javascript'>
+                googletag.cmd.push(function() { googletag.display('div-gpt-ad-1327940144417-0'); });
+                </script>
+                </div>
+            
+
+                           
+            </div>   
+        </td>
+        <td class="col2">
+            
+
+
+
+
+<div style="text-align: center; padding:10px;">
+
+<script type='text/javascript'>
+    GA_googleFillSlot("Skyscraper_NeHe");
+</script>
+
+</div>
+            
+        </td>
+    </table>
+    <div id="footer">
+        <p>
+            
+    
+    © 1997-2012 Gamedev . All rights reserved.<br/>
+
+			NeHe™ and NeHe Productions™ are trademarks of GameDev.net, LLC<br/>
+			OpenGL® is a registered trademark of Silicon Graphics Inc.<br/>
+		</p>        
+		<br/>
+    </div>
+
+    
+    
+	    <script type="text/javascript" src="shCore.js" tppabs="http://nehe.gamedev.net/static/js/syntax_highlighter/shCore.js"></script>
+        <script type="text/javascript" src="shBrushCpp.js" tppabs="http://nehe.gamedev.net/static/js/syntax_highlighter/shBrushCpp.js"></script>
+	    <script type="text/javascript" src="shBrushJScript.js" tppabs="http://nehe.gamedev.net/static/js/syntax_highlighter/shBrushJScript.js"></script>
+	    <script type="text/javascript">SyntaxHighlighter.all();</script>
+    
+
+    <!-- Place this render call where appropriate -->
+    <script type="text/javascript">
+      (function() {
+        var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+        po.src = 'plusone.js'/*tpa=https://apis.google.com/js/plusone.js*/;
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+      })();
+    </script>    
+
+    
+<!-- GoogleAnalytics code -->
+<script src="urchin.js" tppabs="http://www.google-analytics.com/urchin.js" type="text/javascript">
+</script>
+<script type="text/javascript">
+_uacct = "UA-279474-2"; // Gamedev
+urchinTracker();
+_uff = 0; // Reset for second account
+_uacct = "UA-24180731-1"; // Non-GD
+urchinTracker();
+</script> 
+  </body>
+</html>

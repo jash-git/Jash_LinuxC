@@ -1,0 +1,1370 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+    dir="ltr"
+    xml:lang="en"
+    lang="en">
+  <head>
+    <title>NeHe Productions: Bump-Mapping, Multi-Texturing &amp; Extensions</title>
+
+    <link rel="stylesheet" type="text/css" href="public_base.css" tppabs="http://nehe.gamedev.net/static/css/public_base.css" />
+    <link type="text/css" rel="stylesheet" href="shThemeMidnight.css" tppabs="http://nehe.gamedev.net/static/css/syntax_highlighter/shThemeMidnight.css"/>
+    
+    <link rel="alternate" type="application/atom+xml" title="Atom feed" href="index-1.htm" tppabs="http://nehe.gamedev.net/atom/" />
+    <link rel="alternate" type="application/rss+xml" title="RSS feed" href="index-2.htm" tppabs="http://nehe.gamedev.net/rss/" />
+    
+    <meta name="author" content="Luke Benstead + Carsten Haubold" />
+    <meta name="description" content="OpenGL Tutorials, Demos, Games and More..." />
+    <meta name="keywords" content="opengl, tutorial, article, demo, game, blend, texturemap, lighting, contest, 3D" />
+
+    
+    
+
+    
+
+</script>
+
+
+    
+    
+    
+    
+        
+        <script type='text/javascript'>
+        var googletag = googletag || {};
+        googletag.cmd = googletag.cmd || [];
+        (function() {
+        var gads = document.createElement('script');
+        gads.async = true;
+        gads.type = 'text/javascript';
+        var useSSL = 'https:' == document.location.protocol;
+        gads.src = (useSSL ? 'https:' : 'http:') + 
+        '//www.googletagservices.com/tag/js/gpt.js';
+        var node = document.getElementsByTagName('script')[0];
+        node.parentNode.insertBefore(gads, node);
+        })();
+        </script>
+
+        <script type='text/javascript'>
+        googletag.cmd.push(function() {
+        googletag.defineSlot('/1004699/Leaderboard_NeHe', [728, 90], 'div-gpt-ad-1327940144417-0').addService(googletag.pubads());
+        googletag.defineSlot('/1004699/Skyscraper_NeHe', [160, 600], 'div-gpt-ad-1327940144417-1').addService(googletag.pubads());
+        googletag.pubads().enableSingleRequest();
+        googletag.enableServices();
+        });
+        </script>
+    
+    
+
+    
+  </head>
+
+  <body>
+    
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "all.js#xfbml=1"/*tpa=http://connect.facebook.net/en_GB/all.js#xfbml=1*/;
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+
+
+    <table cellpadding="0" cellspacing="0" border="0" id="layout_table">
+    <tr><td>
+        <div id="header">
+                <a href="index.htm" tppabs="http://nehe.gamedev.net/"><img class="logo" class="logo" src="nehe.png" tppabs="http://nehe.gamedev.net/static/images/nehe.png" border="0" alt="Nehe" /></a>
+        </div>            
+    </td></tr>
+    <tr><td colspan="2">
+            
+<div class="navbar">
+    <a href="index.htm" tppabs="http://nehe.gamedev.net/">HOME</a>
+    <a href="javascript:if(confirm('http://twitter.com/  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://twitter.com/#!/nehegl'" tppabs="http://twitter.com/#!/nehegl">TWITTER</a>  
+    <a href="javascript:if(confirm('http://www.facebook.com/pages/NeHe/300582493323181  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://www.facebook.com/pages/NeHe/300582493323181'" tppabs="http://www.facebook.com/pages/NeHe/300582493323181">FACEBOOK</a>     
+    <a href="index-2.htm" tppabs="http://nehe.gamedev.net/rss/">RSS</a>    
+    <a href="index-1.htm" tppabs="http://nehe.gamedev.net/atom/">ATOM</a>    
+    <a href="javascript:if(confirm('http://www.gamedev.net/forum/27-nehe-productions/page__forum_title__NeHe+Productions  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://www.gamedev.net/forum/27-nehe-productions/page__forum_title__NeHe+Productions'" tppabs="http://www.gamedev.net/forum/27-nehe-productions/page__forum_title__NeHe+Productions">FORUM</a>    
+</div>
+    
+    </td></tr>
+    <tr>
+        <td class="col1">
+
+            
+<div id="article_container">
+
+
+<h1 class="article-header">Bump-Mapping, Multi-Texturing &amp; Extensions</h1>
+<div class="social-media">
+<!-- Place this tag where you want the +1 button to render -->
+<div class="g-plusone" data-size="medium" data-width="120" data-annotation="inline"></div>
+<div class="fb-like" data-send="false" data-layout="button_count" data-width="60" data-show-faces="false" data-colorscheme="dark" data-font="arial"></div>
+</div>
+<div style="clear:both;"></div>
+<p>This lesson was written by Jens Schneider. It is loosely based on Lesson 06, though lots of changes were made. In this lesson you will learn:</p>
+<ul>
+<li>How to control your graphic-accelerator's multitexture-features.</li>
+<li>How to do a "fake" Emboss Bump Mapping.</li>
+<li>How to do professional looking logos that "float" above your rendered scene using blending.</li>
+<li>Basics about multi-pass rendering techniques.</li>
+<li>How to do matrix-transformations efficiently.</li>
+</ul>
+<p>Since at least three of the above four points can be considered "advanced rendering techniques", you should already have a general understanding of OpenGLs rendering pipeline. You should know most commands already used in these tutorials, and you should be familiar with vector-maths. Every now and then youll encounter a block that reads begin theory(...) as header and end theory(...) as an ending. These sections try to teach you theory about the issue(s) mentioned in parenthesis. This is to ensure that, if you already know about the issue, you can easily skip them. If you encounter problems while trying to understand the code, consider going back to the theory sections.</p>
+<p>Last but not least: This lesson consists out of more than 1,200 lines of code, of which large parts are not only boring but also known among those that read earlier tutorials. Thus I will not comment each line, only the crux. If you encounter something like this &gt;</p>
+<p>Here we go:</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">#include &lt;windows.h&gt;								// Header File For Windows
+#include &lt;stdio.h&gt;								// Header File For Standard Input/Output
+#include &lt;gl\gl.h&gt;								// Header File For The OpenGL32 Library
+#include &lt;gl\glu.h&gt;								// Header File For The GLu32 Library
+#include &lt;gl\glaux.h&gt;								// Header File For The GLaux Library
+#include "glext.h"								// Header File For Multitexturing
+#include &lt;string.h&gt;								// Header File For The String Library
+#include &lt;math.h&gt;								// Header File For The Math Library
+</pre>
+<p>The GLfloat MAX_EMBOSS specifies the "strength" of the Bump Mapping-Effect. Larger values strongly enhance the effect, but reduce visual quality to the same extent by leaving so-called "artefacts" at the edges of the surfaces.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">#define MAX_EMBOSS (GLfloat)0.01f						// Maximum Emboss-Translate. Increase To Get Higher Immersion
+</pre>
+<p>Ok, now lets prepare the use of the GL_ARB_multitexture extension. Its quite simple:</p>
+<p>Most accelerators have more than just one texture-unit nowadays. To benefit of this feature, youll have to check for GL_ARB_multitexture-support, which enables you to map two or more different textures to one OpenGL-primitive in just one pass. Sounds not too powerful, but it is! Nearly all the time if youre programming something, putting another texture on that object results in higher visual quality. Since you usually need multiple "passes" consisting out of interleaved texture-selection and drawing geometry, this can quickly become expensive. But dont worry, this will become clearer later on.</p>
+<p>Now back to code: __ARB_ENABLE is used to override multitexturing for a special compile-run entirely. If you want to see your OpenGL-extensions, just un-comment the #define EXT_INFO. Next, we want to check for our extensions during run-time to ensure our code stays portable. So we need space for some strings. These are the following two lines. Now we want to distinguish between being able to do multitexture and using it, so we need another two flags. Last, we need to know how many texture-units are present(were going to use only two of them, though). At least one texture-unit is present on any OpenGL-capable accelerator, so we initialize maxTexelUnits with 1.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">#define __ARB_ENABLE true							// Used To Disable ARB Extensions Entirely
+// #define EXT_INFO								// Uncomment To See Your Extensions At Start-Up?
+#define MAX_EXTENSION_SPACE 10240						// Characters For Extension-Strings
+#define MAX_EXTENSION_LENGTH 256						// Maximum Characters In One Extension-String
+bool multitextureSupported=false;						// Flag Indicating Whether Multitexturing Is Supported
+bool useMultitexture=true;							// Use It If It Is Supported?
+GLint maxTexelUnits=1;								// Number Of Texel-Pipelines. This Is At Least 1.
+</pre>
+<p>The following lines are needed to link the extensions to C++ function calls. Just treat the PFN-who-ever-reads-this as pre-defined datatype able to describe function calls. Since we are unsure if well get the functions to these prototypes, we set them to NULL. The commands glMultiTexCoordifARB map to the well-known glTexCoordif, specifying i-dimensional texture-coordinates. Note that these can totally substitute the glTexCoordif-commands. Since we only use the GLfloat-version, we only need prototypes for the commands ending with an "f". Other are also available ("fv", "i", etc.). The last two prototypes are to set the active texture-unit that is currently receiving texture-bindings ( glActiveTextureARB() ) and to determine which texture-unit is associated with the ArrayPointer-command (a.k.a. Client-Subset, thus glClientActiveTextureARB). By the way: ARB is an abbreviation for "Architectural Review Board". Extensions with ARB in their name are not required by an OpenGL-conformant implementation, but they are expected to be widely supported. Currently, only the multitexture-extension has made it to ARB-status. This may be treated as sign for the tremendous impact regarding speed multitexturing has on several advanced rendering techniques.</p>
+<p>The lines ommitted are GDI-context handles etc.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">PFNGLMULTITEXCOORD1FARBPROC	glMultiTexCoord1fARB	= NULL;
+PFNGLMULTITEXCOORD2FARBPROC	glMultiTexCoord2fARB	= NULL;
+PFNGLMULTITEXCOORD3FARBPROC	glMultiTexCoord3fARB	= NULL;
+PFNGLMULTITEXCOORD4FARBPROC	glMultiTexCoord4fARB	= NULL;
+PFNGLACTIVETEXTUREARBPROC	glActiveTextureARB	= NULL;
+PFNGLCLIENTACTIVETEXTUREARBPROC	glClientActiveTextureARB= NULL;
+</pre>
+<p>We need global variables:</p>
+<ul>
+<li>filter specifies what filter to use. Refer to Lesson 06. Well usually just take GL_LINEAR, so we initialise with 1.</li>
+<li>texture holds our base-texture, three times, one per filter.</li>
+<li>bump holds our bump maps</li>
+<li>invbump holds our inverted bump maps. This is explained later on in a theory-section.</li>
+<li>The Logo-things hold textures for several billboards that will be added to rendering output as a final pass.</li>
+<li>The Light...-stuff contains data on our OpenGL light-source.</li>
+</ul>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">GLuint  filter=1;								// Which Filter To Use
+GLuint  texture[3];								// Storage For 3 Textures
+GLuint  bump[3];								// Our Bumpmappings
+GLuint  invbump[3];								// Inverted Bumpmaps
+GLuint  glLogo;									// Handle For OpenGL-Logo
+GLuint  multiLogo;								// Handle For Multitexture-Enabled-Logo
+GLfloat LightAmbient[]	= { 0.2f, 0.2f, 0.2f};					// Ambient Light Is 20% White
+GLfloat LightDiffuse[]	= { 1.0f, 1.0f, 1.0f};					// Diffuse Light Is White
+GLfloat LightPosition[]	= { 0.0f, 0.0f, 2.0f};					// Position Is Somewhat In Front Of Screen
+GLfloat Gray[]		= { 0.5f, 0.5f, 0.5f, 1.0f};
+</pre>
+<p>The next block of code contains the numerical representation of a textured cube built out of GL_QUADS. Each five numbers specified represent one set of 2D-texture-coordinates one set of 3D-vertex-coordinates. This is to build the cube using for-loops, since we need that cube several times. The data-block is followed by the well-known WndProc()-prototype from former lessons.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">// Data Contains The Faces Of The Cube In Format 2xTexCoord, 3xVertex.
+// Note That The Tesselation Of The Cube Is Only Absolute Minimum.
+
+GLfloat data[]= {
+	// FRONT FACE
+	0.0f, 0.0f,		-1.0f, -1.0f, +1.0f,
+	1.0f, 0.0f,		+1.0f, -1.0f, +1.0f,
+	1.0f, 1.0f,		+1.0f, +1.0f, +1.0f,
+	0.0f, 1.0f,		-1.0f, +1.0f, +1.0f,
+	// BACK FACE
+	1.0f, 0.0f,		-1.0f, -1.0f, -1.0f,
+	1.0f, 1.0f,		-1.0f, +1.0f, -1.0f,
+	0.0f, 1.0f,		+1.0f, +1.0f, -1.0f,
+	0.0f, 0.0f,		+1.0f, -1.0f, -1.0f,
+	// Top Face
+	0.0f, 1.0f,		-1.0f, +1.0f, -1.0f,
+	0.0f, 0.0f,		-1.0f, +1.0f, +1.0f,
+	1.0f, 0.0f,		+1.0f, +1.0f, +1.0f,
+	1.0f, 1.0f,		+1.0f, +1.0f, -1.0f,
+	// Bottom Face
+	1.0f, 1.0f,		-1.0f, -1.0f, -1.0f,
+	0.0f, 1.0f,		+1.0f, -1.0f, -1.0f,
+	0.0f, 0.0f,		+1.0f, -1.0f, +1.0f,
+	1.0f, 0.0f,		-1.0f, -1.0f, +1.0f,
+	// Right Face
+	1.0f, 0.0f,		+1.0f, -1.0f, -1.0f,
+	1.0f, 1.0f,		+1.0f, +1.0f, -1.0f,
+	0.0f, 1.0f,		+1.0f, +1.0f, +1.0f,
+	0.0f, 0.0f,		+1.0f, -1.0f, +1.0f,
+	// Left Face
+	0.0f, 0.0f,		-1.0f, -1.0f, -1.0f,
+	1.0f, 0.0f,		-1.0f, -1.0f, +1.0f,
+	1.0f, 1.0f,		-1.0f, +1.0f, +1.0f,
+	0.0f, 1.0f,		-1.0f, +1.0f, -1.0f
+};
+
+LRESULT CALLBACK WndProc(HWND, UINT, WPARAM, LPARAM);				// Declaration For WndProc
+</pre>
+<p>The next block of code is to determine extension-support during run-time.</p>
+<p>First, we can assume that we have a long string containing all supported extensions as \n-seperated sub-strings. So all we need to do is to search for a \n and start comparing string with search until we encounter another \n or until string doesnt match search anymore. In the first case, return a true for "found", in the other case, take the next sub-string until you encounter the end of string. Youll have to watch a little bit at the beginning of string, since it does not begin with a newline-character.</p>
+<p>By the way: A common rule is to ALWAYS check during runtime for availability of a given extension!</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">bool isInString(char *string, const char *search) {
+	int pos=0;
+	int maxpos=strlen(search)-1;
+	int len=strlen(string);
+	char *other;
+	for (int i=0; i&lt;len; i++) {
+		if ((i==0) || ((i&gt;1) &amp;&amp; string[i-1]=='\n')) {			// New Extension Begins Here!
+			other=&amp;string[i];
+			pos=0;							// Begin New Search
+			while (string[i]!='\n') {				// Search Whole Extension-String
+				if (string[i]==search[pos]) pos++;		// Next Position
+				if ((pos&gt;maxpos) &amp;&amp; string[i+1]=='\n') return true;	// We Have A Winner!
+				i++;
+			}
+		}
+	}
+	return false;								// Sorry, Not Found!
+}
+</pre>
+<p>Now we have to fetch the extension-string and convert it to be \n-separated in order to search it for our desired extension. If we find a sub-string GL_ARB_multitexture in it, this feature is supported. But we only can use it, if __ARB_ENABLE is also true. Last but not least we need GL_EXT_texture_env_combine to be supported. This extension introduces new ways how the texture-units interact. We need this, since GL_ARB_multitexture only feeds the output from one texture unit to the one with the next higher number. So we rather check for this extension than using another complex blending equation (that would not exactly do the same effect!) If all extensions are supported and we are not overridden, well first determine how much texture-units are available, saving them in maxTexelUnits. Then we have to link the functions to our names. This is done by the wglGetProcAdress()-calls with a string naming the function call as parameter and a prototype-cast to ensure well get the correct function type.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">bool initMultitexture(void) {
+	char *extensions;
+	extensions=strdup((char *) glGetString(GL_EXTENSIONS));			// Fetch Extension String
+	int len=strlen(extensions);
+	for (int i=0; i&lt;len; i++)						// Separate It By Newline Instead Of Blank
+		if (extensions[i]==' ') extensions[i]='\n';
+
+#ifdef EXT_INFO
+	MessageBox(hWnd,extensions,"supported GL extensions",MB_OK | MB_ICONINFORMATION);
+#endif
+
+	if (isInString(extensions,"GL_ARB_multitexture")			// Is Multitexturing Supported?
+		&amp;&amp; __ARB_ENABLE							// Override Flag
+		&amp;&amp; isInString(extensions,"GL_EXT_texture_env_combine"))		// texture-environment-combining supported?
+	{&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+		glGetIntegerv(GL_MAX_TEXTURE_UNITS_ARB,&amp;maxTexelUnits);
+		glMultiTexCoord1fARB = (PFNGLMULTITEXCOORD1FARBPROC) wglGetProcAddress("glMultiTexCoord1fARB");
+		glMultiTexCoord2fARB = (PFNGLMULTITEXCOORD2FARBPROC) wglGetProcAddress("glMultiTexCoord2fARB");
+		glMultiTexCoord3fARB = (PFNGLMULTITEXCOORD3FARBPROC) wglGetProcAddress("glMultiTexCoord3fARB");
+		glMultiTexCoord4fARB = (PFNGLMULTITEXCOORD4FARBPROC) wglGetProcAddress("glMultiTexCoord4fARB");
+		glActiveTextureARB   = (PFNGLACTIVETEXTUREARBPROC) wglGetProcAddress("glActiveTextureARB");
+		glClientActiveTextureARB= (PFNGLCLIENTACTIVETEXTUREARBPROC) wglGetProcAddress("glClientActiveTextureARB");
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+#ifdef EXT_INFO
+		MessageBox(hWnd,"The GL_ARB_multitexture extension will be used.","feature supported!",MB_OK | MB_ICONINFORMATION);
+#endif
+
+		return true;
+	}
+	useMultitexture=false;							// We Can't Use It If It Isn't Supported!
+	return false;
+}
+</pre>
+<p>InitLights() just initialises OpenGL-Lighting and is called by InitGL() later on.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">void initLights(void) {
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; glLightfv(GL_LIGHT1, GL_AMBIENT, LightAmbient);				// Load Light-Parameters into GL_LIGHT1
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; glLightfv(GL_LIGHT1, GL_DIFFUSE, LightDiffuse);
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; glLightfv(GL_LIGHT1, GL_POSITION, LightPosition);
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; glEnable(GL_LIGHT1);
+}
+</pre>
+<p>Here we load LOTS of textures. Since auxDIBImageLoad() has an error-handler of its own and since LoadBMP() wasnt much predictable without a try-catch-block, I just kicked it. But now to our loading-routine. First, we load the base-bitmap and build three filtered textures out of it ( GL_NEAREST, GL_LINEAR and GL_LINEAR_MIPMAP_NEAREST). Note that I only use one data-structure to hold bitmaps, since we only need one at a time to be open. Over that I introduced a new data-structure called alpha here. It is to hold the alpha-layer of textures, so that I can save RGBA Images as two bitmaps: one 24bpp RGB and one 8bpp greyscale Alpha. For the status-indicator to work properly, we have to delete the Image-block after every load to reset it to NULL.</p>
+<p>Note also, that I use GL_RGB8 instead of just "3" when specifying texture-type. This is to be more conformant to upcoming OpenGL-ICD releases and should always be used instead of just another number. I marked it in <strong>BOLD for you</strong>.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">int LoadGLTextures() {								// Load Bitmaps And Convert To Textures
+	bool status=true;							// Status Indicator
+	AUX_RGBImageRec *Image=NULL;						// Create Storage Space For The Texture
+	char *alpha=NULL;
+
+	// Load The Tile-Bitmap for Base-Texture
+	if (Image=auxDIBImageLoad("Data/Base.bmp")) {
+		glGenTextures(3, texture);					// Create Three Textures
+
+		// Create Nearest Filtered Texture
+		glBindTexture(GL_TEXTURE_2D, texture[0]);
+		glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_NEAREST);
+		glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_NEAREST);
+		glTexImage2D(GL_TEXTURE_2D, 0, &lt;b&gt;GL_RGB8&lt;/b&gt;, Image-&gt;sizeX, Image-&gt;sizeY, 0, GL_RGB, GL_UNSIGNED_BYTE, Image-&gt;data);
+
+		// Create Linear Filtered Texture
+		glBindTexture(GL_TEXTURE_2D, texture[1]);
+		glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_LINEAR);
+		glTexImage2D(GL_TEXTURE_2D, 0, &lt;b&gt;GL_RGB8&lt;/b&gt;, Image-&gt;sizeX, Image-&gt;sizeY, 0, GL_RGB, GL_UNSIGNED_BYTE, Image-&gt;data);
+
+		// Create MipMapped Texture
+		glBindTexture(GL_TEXTURE_2D, texture[2]);
+		glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_LINEAR_MIPMAP_NEAREST);
+		gluBuild2DMipmaps(GL_TEXTURE_2D, &lt;b&gt;GL_RGB8&lt;/b&gt;, Image-&gt;sizeX, Image-&gt;sizeY, GL_RGB, GL_UNSIGNED_BYTE, Image-&gt;data);
+	}
+	else status=false;
+
+	if (Image) {								// If Texture Exists
+		if (Image-&gt;data) delete Image-&gt;data;				// If Texture Image Exists
+		delete Image;
+		Image=NULL;
+	}
+</pre>
+<p>Now well load the Bump Map. For reasons discussed later, it has to have only 50% luminance, so we have to scale it in the one or other way. I chose to scale it using the glPixelTransferf()-commands, that specifies how data from bitmaps is converted to textures on pixel-basis. I use it to scale the RGB components of bitmaps to 50%. You should really have a look at the glPixelTransfer()-command family if youre not already using them in your programs. Theyre all quite useful.</p>
+<p>Another issue is, that we dont want to have our bitmap repeated over and over in the texture. We just want it once, mapping to texture-coordinates (s,t)=(0.0f, 0.0f) thru (s,t)=(1.0f, 1.0f). All other texture-coordinates should be mapped to plain black. This is accomplished by the two glTexParameteri()-calls that are fairly self-explanatory and "clamp" the bitmap in s and t-direction.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	// Load The Bumpmaps
+	if (Image=auxDIBImageLoad("Data/Bump.bmp")) {
+		glPixelTransferf(GL_RED_SCALE,0.5f);				// Scale RGB By 50%, So That We Have Only
+		glPixelTransferf(GL_GREEN_SCALE,0.5f);				// Half Intenstity
+		glPixelTransferf(GL_BLUE_SCALE,0.5f);
+		glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_WRAP_S,GL_CLAMP);	// No Wrapping, Please!
+		glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_WRAP_T,GL_CLAMP);
+		glGenTextures(3, bump);						// Create Three Textures
+
+		// Create Nearest Filtered Texture
+		&gt;&lt;
+
+		// Create Linear Filtered Texture
+		&gt;&lt;
+
+		// Create MipMapped Texture
+		&gt;&lt;
+</pre>
+<p>Youll already know this sentence by now: For reasons discussed later, we have to build an inverted Bump Map, luminance at most 50% once again. So we subtract the bumpmap from pure white, which is {255, 255, 255} in integer representation. Since we do NOT set the RGB-Scaling back to 100% (took me about three hours to figure out that this was a major error in my first version!), the inverted bumpmap will be scaled once again to 50% luminance.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">		for (int i=0; i&lt;3*Image-&gt;sizeX*Image-&gt;sizeY; i++)		// Invert The Bumpmap
+			Image-&gt;data[i]=255-Image-&gt;data[i];
+
+		glGenTextures(3, invbump);					// Create Three Textures
+
+		// Create Nearest Filtered Texture
+		&gt;&lt;
+
+		// Create Linear Filtered Texture
+		&gt;&lt;
+
+		// Create MipMapped Texture
+		&gt;&lt;
+	}
+	else status=false;
+	if (Image) {								// If Texture Exists
+		if (Image-&gt;data) delete Image-&gt;data;				// If Texture Image Exists
+		delete Image;
+		Image=NULL;
+	}
+</pre>
+<p>Loading the Logo-Bitmaps is pretty much straightforward except for the RGB-A recombining, which should be self-explanatory enough for you to understand. Note that the texture is built from the <strong>alpha</strong>-memoryblock, not from the Image-memoryblock! Only one filter is used here.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	// Load The Logo-Bitmaps
+	if (Image=auxDIBImageLoad("Data/OpenGL_ALPHA.bmp")) {
+		alpha=new char[4*Image-&gt;sizeX*Image-&gt;sizeY];
+		// Create Memory For RGBA8-Texture
+		for (int a=0; a&lt;Image-&gt;sizeX*Image-&gt;sizeY; a++)
+			alpha[4*a+3]=Image-&gt;data[a*3];				// Pick Only Red Value As Alpha!
+		if (!(Image=auxDIBImageLoad("Data/OpenGL.bmp"))) status=false;
+		for (a=0; a&lt;Image-&gt;sizeX*Image-&gt;sizeY; a++) {
+			alpha[4*a]=Image-&gt;data[a*3];				// R
+			alpha[4*a+1]=Image-&gt;data[a*3+1];			// G
+			alpha[4*a+2]=Image-&gt;data[a*3+2];			// B
+		}
+
+		glGenTextures(1, &amp;glLogo);					// Create One Textures
+
+		// Create Linear Filtered RGBA8-Texture
+		glBindTexture(GL_TEXTURE_2D, glLogo);
+		glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_LINEAR);
+		glTexImage2D(GL_TEXTURE_2D, 0, &lt;b&gt;GL_RGBA8&lt;/b&gt;, Image-&gt;sizeX, Image-&gt;sizeY, 0, GL_RGBA, GL_UNSIGNED_BYTE, &lt;b&gt;alpha&lt;/b&gt;);
+		delete alpha;
+	}
+	else status=false;
+
+	if (Image) {								// If Texture Exists
+		if (Image-&gt;data) delete Image-&gt;data;				// If Texture Image Exists
+		delete Image;
+		Image=NULL;
+	}
+
+	// Load The "Extension Enabled"-Logo
+	if (Image=auxDIBImageLoad("Data/multi_on_alpha.bmp")) {
+		alpha=new char[4*Image-&gt;sizeX*Image-&gt;sizeY];			// Create Memory For RGBA8-Texture
+		&gt;&lt;
+		glGenTextures(1, &amp;multiLogo);					// Create One Textures
+		// Create Linear Filtered RGBA8-Texture
+		&gt;&lt;
+		delete alpha;
+	}
+	else status=false;
+
+	if (Image) {								// If Texture Exists
+		if (Image-&gt;data) delete Image-&gt;data;				// If Texture Image Exists
+		delete Image;
+		Image=NULL;
+	}
+	return status;								// Return The Status
+}
+</pre>
+<p>Next comes nearly the only unmodified function ReSizeGLScene(). Ive omitted it here. It is followed by a function doCube() that draws a cube, complete with normalized normals. Note that this version only feeds texture-unit #0, since glTexCoord2f(s,t) is the same thing as glMultiTexCoord2f(GL_TEXTURE0_ARB,s,t). Note also that the cube could be done using interleaved arrays, but this is definitely another issue. Note also that this cube CAN NOT be done using a display list, since display-lists seem to use an internal floating point accuracy different from GLfloat. Since this leads to several nasty effects, generally referred to as "decaling"-problems, I kicked display lists. I assume that a general rule for multipass algorithms is to do the entire geometry with or without display lists. So never dare mixing even if it seems to run on your hardware, since it wont run on any hardware!</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">GLvoid ReSizeGLScene(GLsizei width, GLsizei height)
+// Resize And Initialize The GL Window
+&gt;&lt;
+
+void doCube (void) {
+	int i;
+	glBegin(GL_QUADS);
+		// Front Face
+		glNormal3f( 0.0f, 0.0f, +1.0f);
+		for (i=0; i&lt;4; i++) {
+			glTexCoord2f(data[5*i],data[5*i+1]);
+			glVertex3f(data[5*i+2],data[5*i+3],data[5*i+4]);
+		}
+		// Back Face
+		glNormal3f( 0.0f, 0.0f,-1.0f);
+		for (i=4; i&lt;8; i++) {
+			glTexCoord2f(data[5*i],data[5*i+1]);
+			glVertex3f(data[5*i+2],data[5*i+3],data[5*i+4]);
+		}
+		// Top Face
+		glNormal3f( 0.0f, 1.0f, 0.0f);
+		for (i=8; i&lt;12; i++) {
+			glTexCoord2f(data[5*i],data[5*i+1]);
+			glVertex3f(data[5*i+2],data[5*i+3],data[5*i+4]);
+		}
+		// Bottom Face
+		glNormal3f( 0.0f,-1.0f, 0.0f);
+		for (i=12; i&lt;16; i++) {
+			glTexCoord2f(data[5*i],data[5*i+1]);
+			glVertex3f(data[5*i+2],data[5*i+3],data[5*i+4]);
+		}
+		// Right Face
+		glNormal3f( 1.0f, 0.0f, 0.0f);
+		for (i=16; i&lt;20; i++) {
+			glTexCoord2f(data[5*i],data[5*i+1]);
+			glVertex3f(data[5*i+2],data[5*i+3],data[5*i+4]);
+		}
+		// Left Face
+		glNormal3f(-1.0f, 0.0f, 0.0f);
+		for (i=20; i&lt;24; i++) {
+			glTexCoord2f(data[5*i],data[5*i+1]);
+			glVertex3f(data[5*i+2],data[5*i+3],data[5*i+4]);
+		}
+	glEnd();
+}
+</pre>
+<p>Time to initialize OpenGL. All as in Lesson 06, except that I call initLights() instead of setting them here. Oh, and of course Im calling Multitexture-setup, here!</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">int InitGL(GLvoid)								// All Setup For OpenGL Goes Here
+{
+	multitextureSupported=initMultitexture();
+	if (!LoadGLTextures()) return false;					// Jump To Texture Loading Routine
+	glEnable(GL_TEXTURE_2D);						// Enable Texture Mapping
+	glShadeModel(GL_SMOOTH);						// Enable Smooth Shading
+	glClearColor(0.0f, 0.0f, 0.0f, 0.5f);					// Black Background
+	glClearDepth(1.0f);							// Depth Buffer Setup
+	glEnable(GL_DEPTH_TEST);						// Enables Depth Testing
+	glDepthFunc(GL_LEQUAL);							// The Type Of Depth Testing To Do
+	glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);			// Really Nice Perspective Calculations
+
+	initLights();								// Initialize OpenGL Light
+	return true								// Initialization Went OK
+}
+</pre>
+<p>Here comes about 95% of the work. All references like "for reasons discussed later" will be solved in the following block of theory.</p>
+<p><strong><span style="text-decoration: underline;">Begin Theory ( Emboss Bump Mapping )</span></strong></p>
+<p>If you have a Powerpoint-viewer installed, it is highly recommended that you download the following presentation:</p>
+<p><a href="javascript:if(confirm('http://nehe.gamedev.net/data/lessons/extras/lesson22/EmbossBumpMapping.ppt  \n\nThis file was not retrieved by Teleport Pro, because the server reports that this file cannot be found.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev.net/data/lessons/extras/lesson22/EmbossBumpMapping.ppt'" tppabs="http://nehe.gamedev.net/data/lessons/extras/lesson22/EmbossBumpMapping.ppt">Emboss Bump Mapping by Michael I. Gold, nVidia Corp. [.ppt, 309K]</a></p>
+<p>For those without Powerpoint-viewer, Ive tried to convert the information contained in the document to .html-format. Here it comes:</p>
+<p><strong><span style="text-decoration: underline;">Emboss Bump Mapping</span></strong></p>
+<p>Michael I. Gold</p>
+<p>NVidia Corporation</p>
+<p><strong><span style="text-decoration: underline;">Bump Mapping</span></strong></p>
+<p>Real Bump Mapping Uses Per-Pixel Lighting.</p>
+<ul type="disc">
+<li>Lighting calculation at each pixel based on perturbed normal vectors.</li>
+<li>Computationally expensive.</li>
+<li>For more information see: Blinn, J. : Simulation of Wrinkled Surfaces, Computer Graphics. 12,3 (August 1978) 286-292.</li>
+<li>For information on the web go to: <a href="javascript:if(confirm('http://nehe.gamedev.net/data/lessons/http://www.r3.nu/~cass/thesis/thesis.html  \n\nThis file was not retrieved by Teleport Pro, because the server reports that this file cannot be found.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev.net/data/lessons/http://www.r3.nu/~cass/thesis/thesis.html'" tppabs="http://nehe.gamedev.net/data/lessons/http://www.r3.nu/~cass/thesis/thesis.html">/data/lessons/http://www.r3.nu/~cass/thesis/thesis.html</a> to see Cass Everitts Orthogonal Illumination Thesis. (rem.: Jens)</li>
+</ul>
+<p><strong><span style="text-decoration: underline;">Emboss Bump Mapping</span></strong></p>
+<p>Emboss Bump Mapping Is A Hack</p>
+<ul type="disc">
+<li>Diffuse lighting only, no specular component</li>
+<li>Under-sampling artefacts (may result in blurry motion, rem.: Jens)</li>
+<li>Possible on todays consumer hardware (as shown, rem.: Jens)</li>
+<li>If it looks good, do it!</li>
+</ul>
+<p><strong><span style="text-decoration: underline;">Diffuse Lighting Calculation</span></strong></p>
+<p>C=(L*N) x Dl x Dm</p>
+<ul type="disc">
+<li>L is light vector</li>
+<li>N is normal vector</li>
+<li>Dl is light diffuse color</li>
+<li>Dm is material diffuse color</li>
+<li>Bump Mapping changes N per pixel</li>
+<li>Emboss Bump Mapping approximates (L*N)</li>
+</ul>
+<p><strong><span style="text-decoration: underline;">Approximate Diffuse Factor L*N</span></strong></p>
+<p>Texture Map Represents Heightfield</p>
+<ul type="disc">
+<li>[0,1] represents range of bump function</li>
+<li>First derivate represents slope m (Note that m is only 1D. Imagine m to be the inf.-norm of grad(s,t) to a given set of coordinates (s,t)!, rem.: Jens)</li>
+<li>m increases / decreases base diffuse factor Fd</li>
+<li>(Fd+m) approximates (L*N) per pixel</li>
+</ul>
+<p><strong><span style="text-decoration: underline;">Approximate Derivative</span></strong></p>
+<p>Embossing Approximates Derivative</p>
+<ul type="disc">
+<li>Lookup height H0 at point (s,t)</li>
+<li>Lookup height H1 at point slightly perturbed toward light source (s+ds,t+dt)</li>
+<li>Subtract original height H0 from perturbed height H1</li>
+<li>Difference represents instantaneous slope m=H1-H0</li>
+</ul>
+<p><strong><span style="text-decoration: underline;">Compute The Bump</span></strong></p>
+<p><img src="image002-1.jpg" tppabs="http://nehe.gamedev.net/data/lessons/extras/lesson22/image002.jpg" alt="" width="140" height="48" /></p>
+<p>1) Original bump (H0).</p>
+<p><img src="image004-1.jpg" tppabs="http://nehe.gamedev.net/data/lessons/extras/lesson22/image004.jpg" alt="" width="216" height="91" /></p>
+<p>2) Original bump (H0) overlaid with second bump (H1) slightly perturbed toward light source.</p>
+<p><img src="image006-1.jpg" tppabs="http://nehe.gamedev.net/data/lessons/extras/lesson22/image006.jpg" alt="" width="173" height="48" /></p>
+<p>3) Substract original bump from second (H0-H1). This leads to brightened (B) and darkened (D) areas.</p>
+<p><strong><span style="text-decoration: underline;">Compute The Lighting</span></strong></p>
+<p>Evaluate Fragment Color Cf</p>
+<ul type="disc">
+<li>Cf = (L*N) x Dl x Dm</li>
+<li>(L*N) ~ (Fd + (H1-H0))</li>
+<li>Dm x Dl is encoded in surface texture Ct. Could control Dl seperately, if youre clever. (we control it using OpenGL-Lighting!, rem.: Jens)</li>
+<li>Cf = (Fd + (H0-H1) x Ct</li>
+</ul>
+<p><strong><span style="text-decoration: underline;">Is That All? Its So Easy!</span></strong></p>
+<p>Were Not Quite Done Yet. We Still Must:</p>
+<ul type="disc">
+<li>Build a texture (using a painting program, rem.: Jens)</li>
+<li>Calculate texture coordinate offsets (ds,dt)</li>
+<li>Calculate diffuse Factor Fd (is controlled using OpenGL-Lighting!, rem.: Jens)</li>
+<li>Both are derived from normal N and light vector L (in our case, only (ds,dt) are calculated explicitly!, rem.: Jens)</li>
+<li>Now we have to do some math</li>
+</ul>
+<p><strong><span style="text-decoration: underline;">Building A Texture</span></strong></p>
+<p>Conserve Textures!</p>
+<ul type="disc">
+<li>Current multitexture-hardware only supports two textures! (By now, not true anymore, but nevertheless you should read this!, rem.: Jens)</li>
+<li>Bump Map in ALPHA channel (not the way we do it, could implement it yourself as an exercise if you have TNT-chipset rem.: Jens)</li>
+<li>Maximum bump = 1.0</li>
+<li>Level ground = 0.5</li>
+<li>Maximum depression = 0.0</li>
+<li>Surface color in RGB channels</li>
+<li>Set internal format to GL_RGBA8 !!</li>
+</ul>
+<p><strong><span style="text-decoration: underline;">Calculate Texture Offsets</span></strong></p>
+<p>Rotate Light Vector Into Normal Space</p>
+<ul type="disc">
+<li>Need Normal coordinate system</li>
+<li>Derive coordinate system from normal and up vector (we pass the texCoord directions to our offset generator explicitly, rem.: Jens)</li>
+<li>Normal is z-axis</li>
+<li>Cross-product is x-axis</li>
+<li>Throw away "up" vector, derive y-axis as cross-product of x- and z-axis</li>
+<li>Build 3x3 matrix Mn from axes</li>
+<li>Transform light vector into normal space.(Mn is also called an orthonormal basis. Think of Mn*v as to "express" v in means of a basis describing tangent space rather than in means of the standard basis. Note also that orthonormal bases are invariant against-scaling resulting in no loss of normalization when multiplying vectors! rem.: Jens)</li>
+</ul>
+<p><strong><span style="text-decoration: underline;">Calculate Texture Offsets (Contd)</span></strong></p>
+<p>Use Normal-Space Light Vector For Offsets</p>
+<ul type="disc">
+<li>L = Mn x L</li>
+<li>Use Lx, Ly for (ds,dt)</li>
+<li>Use Lz for diffuse factor! (Rather not! If youre no TNT-owner, use OpenGL-Lighting instead, since you have to do one additional pass anyhow!, rem.: Jens)</li>
+<li>If light vector is near normal, Lx, Ly are small.</li>
+<li>If light vector is near tangent plane, Lx, Ly are large.</li>
+<li>What if Lz is less than zero?</li>
+<li>Light is on opposite side from normal</li>
+<li>Fade contribution toward zero.</li>
+</ul>
+<p><strong><span style="text-decoration: underline;">Implementation On TNT</span></strong></p>
+<p>Calculate Vectors, Texcoords On The Host</p>
+<ul type="disc">
+<li>Pass diffuse factor as vertex alpha</li>
+<li>Could use vertex color for light diffuse color</li>
+<li>H0 and surface color from texture unit 0</li>
+<li>H1 from texture unit 1 (same texture, different coordinates)</li>
+<li>ARB_multitexture extension</li>
+<li>Combines extension (more precisely: the NVIDIA_multitexture_combiners extension, featured by all TNT-family cards, rem.: Jens)</li>
+</ul>
+<p><strong><span style="text-decoration: underline;">Implementation on TNT (Cont'd)</span></strong></p>
+<p>Combiner 0 Alpha-Setup:</p>
+<ul type="disc">
+<li>(1-T0a) + T1a - 0.5 (T0a stands for "texture-unit 0, alpha channel", rem.: Jens)</li>
+<li>(T1a-T0a) maps to (-1,1), but hardware clamps to (0,1)</li>
+<li>0.5 bias balances the loss from clamping (consider using 0.5 scale, since you can use a wider variety of bump maps, rem.: Jens)</li>
+<li>Could modulate light diffuse color with T0c</li>
+<li>Combiner 0 rgb-setup:</li>
+<li>(T0c * C0a + T0c * Fda - 0.5 )*2</li>
+<li>0.5 bias balances the loss from clamping</li>
+<li>scale by 2 brightens the image</li>
+</ul>
+<p><strong><span style="text-decoration: underline;">End Theory ( Emboss Bump Mapping )</span></strong></p>
+<p>Though were doing it a little bit different than the TNT-Implementation to enable our program to run on ALL accelerators, we can learn two or three things here. One thing is, that bump mapping is a multi-pass algorithm on most cards (not on TNT-family, where it can be implemented in one 2-texture pass.) You should now be able to imagine how nice multitexturing really is. Well now implement a 3-pass non-multitexture algorithm, that can be (and will be) developed into a 2-pass multitexture algorithm.</p>
+<p>By now you should be aware, that well have to do some matrix-matrix-multiplication (and matrix-vector-multiplication, too). But thats nothing to worry about: OpenGL will do the matrix-matrix-multiplication for us (if tweaked right) and the matrix-vector-multiplication is really easy-going: VMatMult(M,v) multiplies matrix M with vector v and stores the result back in v: v:=M*v. All Matrices and vectors passed have to be in homogenous-coordinates resulting in 4x4 matrices and 4-dim vectors. This is to ensure conformity to OpenGL in order to multiply own vectors with OpenGL-matrices right away.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">// Calculates v=vM, M Is 4x4 In Column-Major, v Is 4dim. Row (i.e. "Transposed")
+void VMatMult(GLfloat *M, GLfloat *v) {
+	GLfloat res[3];
+	res[0]=M[ 0]*v[0]+M[ 1]*v[1]+M[ 2]*v[2]+M[ 3]*v[3];
+	res[1]=M[ 4]*v[0]+M[ 5]*v[1]+M[ 6]*v[2]+M[ 7]*v[3];
+	res[2]=M[ 8]*v[0]+M[ 9]*v[1]+M[10]*v[2]+M[11]*v[3];
+	v[0]=res[0];
+	v[1]=res[1];
+	v[2]=res[2];
+	v[3]=M[15];								// Homogenous Coordinate
+}
+</pre>
+<p><strong><span style="text-decoration: underline;">Begin Theory ( Emboss Bump Mapping Algorithms )</span></strong></p>
+<p>Here well discuss two different algorithms. I found the first one several days ago under:<br /> <a href="javascript:if(confirm('http://nehe.gamedev.net/data/lessons/http://www.nvidia.com/marketing/Developer/DevRel.nsf/TechnicalDemosFrame?OpenPage  \n\nThis file was not retrieved by Teleport Pro, because the server reports that this file cannot be found.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev.net/data/lessons/http://www.nvidia.com/marketing/Developer/DevRel.nsf/TechnicalDemosFrame?OpenPage'" tppabs="http://nehe.gamedev.net/data/lessons/http://www.nvidia.com/marketing/Developer/DevRel.nsf/TechnicalDemosFrame?OpenPage"> /data/lessons/http://www.nvidia.com/marketing/Developer/DevRel.nsf/TechnicalDemosFrame?OpenPage</a></p>
+<p>The program is called GL_BUMP and was written by Diego T&aacute;rtara in 1999.<br /> It implements really nice looking bump mapping, though it has some drawbacks.<br />But first, lets have a look at T&aacute;rtaras Algorithm:</p>
+<ol>
+<li>All vectors have to be EITHER in object OR world space</li>
+<li>Calculate vector v from current vertex to light position</li>
+<li>Normalize v</li>
+<li>Project v into tangent space. (This is the plane touching the surface in the current vertex. Typically, if working with flat surfaces, this is the surface itself).</li>
+<li>Offset (s,t)-coordinates by the projected vs x and y component</li>
+</ol>
+<p>This looks not bad! It is basically the Algorithm introduced by Michael I. Gold above. But it has a major drawback: T&aacute;rtara only does the projection for a xy-plane! This is not sufficient for our purposes since it simplifies the projection step to just taking the xy-components of v and discarding the z-component.</p>
+<p>But his implementation does the diffuse lighting the same way well do it: by using OpenGLs built-in lighting. Since we cant use the combiners-method Gold suggests (we want our programs to run anywhere, not just on TNT-cards!), we cant store the diffuse factor in the alpha channel. Since we already have a 3-pass non-multitexture / 2-pass multitexture problem, why not apply OpenGL-Lighting to the last pass to do all the ambient light and color stuff for us? This is possible (and looks quite well) only because we have no complex geometry, so keep this in mind. If youd render several thousands of bump mapped triangles, try to invent something new!</p>
+<p>Furthermore, he uses multitexturing, which is, as we shall see, not as easy as you might have thought regarding this special case.</p>
+<p>But now to our Implementation. It looks quite the same to the above Algorithm, except for the projection step, where we use an own approach:</p>
+<ul type="disc">
+<li>We use OBJECT COORDINATES, this means we dont apply the modelview matrix to our calculations. This has a nasty side-effect: since we want to rotate the cube, object-coordinates of the cube dont change, world-coordinates (also referred to as eye-coordinates) do. But our light-position should not be rotated with the cube, it should be just static, meaning that its world-coordinates dont change. To compensate, well apply a trick commonly used in computer graphics: Instead of transforming each vertex to worldspace in advance to computing the bumps, well just transform the light into object-space by applying the inverse of the modelview-matrix. This is very cheap in this case since we know exactly how the modelview-matrix was built step-by-step, so an inversion can also be done step-by-step. Well come back later to that issue.</li>
+<li>We calculate the current vertex c on our surface (simply by looking it up in data).</li>
+<li>Then well calculate a normal n with length 1 (We usually know n for each face of a cube!). This is important, since we can save computing time by requesting normalized vectors. Calculate the light vector v from c to the light position l</li>
+<li>If theres work to do, build a matrix Mn representing the orthonormal projection. This is done as f</li>
+<li>Calculate out texture coordinate offset by multiplying the supplied texture-coordinate directions s and t each with v and MAX_EMBOSS: ds = s*v*MAX_EMBOSS, dt=t*v*MAX_EMBOSS. Note that s, t and v are vectors while MAX_EMBOSS isnt.</li>
+<li>Add the offset to the texture-coordinates in pass 2.</li>
+</ul>
+<p><strong><span style="text-decoration: underline;">Why this is good:</span></strong></p>
+<ul type="disc">
+<li>Fast (only needs one squareroot and a couple of MULs per vertex)!</li>
+<li>Looks very nice!</li>
+<li>This works with all surfaces, not just planes.</li>
+<li>This runs on all accelerators.</li>
+<li>Is glBegin/glEnd friendly: Does not need any "forbidden" GL-commands.</li>
+</ul>
+<p><strong><span style="text-decoration: underline;">Drawback:</span></strong></p>
+<ul type="disc">
+<li>Not fully physical correct.</li>
+<li>Leaves minor artefacts.</li>
+</ul>
+<p><img src="image008-1.jpg" tppabs="http://nehe.gamedev.net/data/lessons/extras/lesson22/image008.jpg" alt="" width="412" height="243" /></p>
+<p>This figure shows where our vectors are located. You can get t and s by simply subtracting adjacent vertices, but be sure to have them point in the right direction and to normalize them. The blue spot marks the vertex where texCoord2f(0.0f,0.0f) is mapped to.</p>
+<p><strong><span style="text-decoration: underline;">End Theory ( Emboss Bump Mapping Algorithms )</span></strong></p>
+<p>Lets have a look to texture-coordinate offset generation, first. The function is called SetUpBumps(), since this actually is what it does:</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">// Sets Up The Texture-Offsets
+// n : Normal On Surface. Must Be Of Length 1
+// c : Current Vertex On Surface
+// l : Lightposition
+// s : Direction Of s-Texture-Coordinate In Object Space (Must Be Normalized!)
+// t : Direction Of t-Texture-Coordinate In Object Space (Must Be Normalized!)
+void SetUpBumps(GLfloat *n, GLfloat *c, GLfloat *l, GLfloat *s, GLfloat *t) {
+	GLfloat v[3];								// Vector From Current Position To Light
+	GLfloat lenQ;								// Used To Normalize
+	// Calculate v From Current Vertex c To Lightposition And Normalize v
+	v[0]=l[0]-c[0];
+	v[1]=l[1]-c[1];
+	v[2]=l[2]-c[2];
+	lenQ=(GLfloat) sqrt(v[0]*v[0]+v[1]*v[1]+v[2]*v[2]);
+	v[0]/=lenQ;
+	v[1]/=lenQ;
+	v[2]/=lenQ;
+	// Project v Such That We Get Two Values Along Each Texture-Coordinate Axis
+	c[0]=(s[0]*v[0]+s[1]*v[1]+s[2]*v[2])*MAX_EMBOSS;
+	c[1]=(t[0]*v[0]+t[1]*v[1]+t[2]*v[2])*MAX_EMBOSS;
+}
+</pre>
+<p>Doesnt look that complicated anymore, eh? But theory is necessary to understand and control this effect. (I learned THAT myself during writing this tutorial).</p>
+<p>I always like logos to be displayed while presentational programs are running. Well have two of them right now. Since a call to doLogo() resets the GL_MODELVIEW-matrix, this has to be called as final rendering pass.</p>
+<p>This function displays two logos: An OpenGL-Logo and a multitexture-Logo, if this feature is enabled. The logos are alpha-blended and are sort of semi-transparent. Since they have an alpha-channel, I blend them using GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA, as suggested by all OpenGL-documentation. Since they are all co-planar, we do not have to z-sort them before. The numbers that are used for the vertices are "empirical" (a.k.a. try-and-error) to place them neatly into the screen edges. Well have to enable blending and disable lighting to avoid nasty effects. To ensure theyre in front of all, just reset the GL_MODELVIEW-matrix and set depth-function to GL_ALWAYS.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">void doLogo(void) {
+	// MUST CALL THIS LAST!!!, Billboards The Two Logos
+	glDepthFunc(GL_ALWAYS);
+	glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
+	glEnable(GL_BLEND);
+	glDisable(GL_LIGHTING);
+	glLoadIdentity();
+	glBindTexture(GL_TEXTURE_2D,glLogo);
+	glBegin(GL_QUADS);
+		glTexCoord2f(0.0f,0.0f);	glVertex3f(0.23f, -0.4f,-1.0f);
+		glTexCoord2f(1.0f,0.0f);	glVertex3f(0.53f, -0.4f,-1.0f);
+		glTexCoord2f(1.0f,1.0f);	glVertex3f(0.53f, -0.25f,-1.0f);
+		glTexCoord2f(0.0f,1.0f);	glVertex3f(0.23f, -0.25f,-1.0f);
+	glEnd();
+	if (useMultitexture) {
+		glBindTexture(GL_TEXTURE_2D,multiLogo);
+		glBegin(GL_QUADS);
+			glTexCoord2f(0.0f,0.0f);	glVertex3f(-0.53f, -0.25f,-1.0f);
+			glTexCoord2f(1.0f,0.0f);	glVertex3f(-0.33f, -0.25f,-1.0f);
+			glTexCoord2f(1.0f,1.0f);	glVertex3f(-0.33f, -0.15f,-1.0f);
+			glTexCoord2f(0.0f,1.0f);	glVertex3f(-0.53f, -0.15f,-1.0f);
+		glEnd();
+	}
+}
+</pre>
+<p>Here comes the function for doing the bump mapping without multitexturing. Its a three-pass implementation. As a first step, the GL_MODELVIEW matrix is inverted by applying to the identity-matrix all steps later applied to the GL_MODELVIEW in reverse order and inverted. The result is a matrix that "undoes" the GL_MODELVIEW if applied to an object. We fetch it from OpenGL by simply using glGetFloatv(). Remember that the matrix has to be an array of 16 and that the matrix is "transposed"!</p>
+<p>By the way: If you dont exactly know how the modelview was built, consider using world-space, since matrix-inversion is complicated and costly. But if youre doing large amounts of vertices inverting the modelview with a more generalized approach could be faster.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">bool doMesh1TexelUnits(void) {
+	GLfloat c[4]={0.0f,0.0f,0.0f,1.0f};					// Holds Current Vertex
+	GLfloat n[4]={0.0f,0.0f,0.0f,1.0f};					// Normalized Normal Of Current Surface
+	GLfloat s[4]={0.0f,0.0f,0.0f,1.0f};					// s-Texture Coordinate Direction, Normalized
+	GLfloat t[4]={0.0f,0.0f,0.0f,1.0f};					// t-Texture Coordinate Direction, Normalized
+	GLfloat l[4];								// Holds Our Lightposition To Be Transformed Into Object Space
+	GLfloat Minv[16];							// Holds The Inverted Modelview Matrix To Do So
+	int i;
+
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);			// Clear The Screen And The Depth Buffer
+
+	// Build Inverse Modelview Matrix First. This Substitutes One Push/Pop With One glLoadIdentity();
+	// Simply Build It By Doing All Transformations Negated And In Reverse Order
+	glLoadIdentity();
+	glRotatef(-yrot,0.0f,1.0f,0.0f);
+	glRotatef(-xrot,1.0f,0.0f,0.0f);
+	glTranslatef(0.0f,0.0f,-z);
+	glGetFloatv(GL_MODELVIEW_MATRIX,Minv);
+	glLoadIdentity();
+	glTranslatef(0.0f,0.0f,z);
+	glRotatef(xrot,1.0f,0.0f,0.0f);
+	glRotatef(yrot,0.0f,1.0f,0.0f);
+
+	// Transform The Lightposition Into Object Coordinates:
+	l[0]=LightPosition[0];
+	l[1]=LightPosition[1];
+	l[2]=LightPosition[2];
+	l[3]=1.0f;								// Homogenous Coordinate
+	VMatMult(Minv,l);
+</pre>
+<p><span style="text-decoration: underline;">First Pass:</span></p>
+<ul type="disc">
+<li>Use bump-texture</li>
+<li>Disable Blending</li>
+<li>Disable Lighting</li>
+<li>Use non-offset texture-coordinates</li>
+<li>Do the geometry</li>
+</ul>
+<p>This will render a cube only consisting out of bump map.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	glBindTexture(GL_TEXTURE_2D, bump[filter]);
+	glDisable(GL_BLEND);
+	glDisable(GL_LIGHTING);
+	doCube();
+</pre>
+<p><span style="text-decoration: underline;">Second Pass:</span></p>
+<ul type="disc">
+<li>Use inverted bump-texture</li>
+<li>Enable Blending GL_ONE, GL_ONE</li>
+<li>Keep Lighting disabled</li>
+<li>Use offset texture-coordinates (This means that you call SetUpBumps() before each face of the cube</li>
+<li>Do the geometry</li>
+</ul>
+<p>This will render a cube with the correct emboss bump mapping, but without colors.</p>
+<p>You could save computing time by just rotating the lightvector into inverted direction. However, this didnt work out correctly, so we do it the plain way: rotate each normal and center-point the same way we rotate our geometry!</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	glBindTexture(GL_TEXTURE_2D,invbump[filter]);
+	glBlendFunc(GL_ONE,GL_ONE);
+	glDepthFunc(GL_LEQUAL);
+	glEnable(GL_BLEND);
+
+	glBegin(GL_QUADS);
+		// Front Face
+		n[0]=0.0f;
+		n[1]=0.0f;
+		n[2]=1.0f;
+		s[0]=1.0f;
+		s[1]=0.0f;
+		s[2]=0.0f;
+		t[0]=0.0f;
+		t[1]=1.0f;
+		t[2]=0.0f;
+		for (i=0; i&lt;4; i++) {
+			c[0]=data[5*i+2];
+			c[1]=data[5*i+3];
+			c[2]=data[5*i+4];
+			SetUpBumps(n,c,l,s,t);
+			glTexCoord2f(data[5*i]+c[0], data[5*i+1]+c[1]);
+			glVertex3f(data[5*i+2], data[5*i+3], data[5*i+4]);
+		}
+		// Back Face
+		n[0]=0.0f;
+		n[1]=0.0f;
+		n[2]=-1.0f;
+		s[0]=-1.0f;
+		s[1]=0.0f;
+		s[2]=0.0f;
+		t[0]=0.0f;
+		t[1]=1.0f;
+		t[2]=0.0f;
+		for (i=4; i&lt;8; i++) {
+			c[0]=data[5*i+2];
+			c[1]=data[5*i+3];
+			c[2]=data[5*i+4];
+			SetUpBumps(n,c,l,s,t);
+			glTexCoord2f(data[5*i]+c[0], data[5*i+1]+c[1]);
+			glVertex3f(data[5*i+2], data[5*i+3], data[5*i+4]);
+		}
+		// Top Face
+		n[0]=0.0f;
+		n[1]=1.0f;
+		n[2]=0.0f;
+		s[0]=1.0f;
+		s[1]=0.0f;
+		s[2]=0.0f;
+		t[0]=0.0f;
+		t[1]=0.0f;
+		t[2]=-1.0f;
+		for (i=8; i&lt;12; i++) {
+			c[0]=data[5*i+2];
+			c[1]=data[5*i+3];
+			c[2]=data[5*i+4];
+			SetUpBumps(n,c,l,s,t);
+			glTexCoord2f(data[5*i]+c[0], data[5*i+1]+c[1]);
+			glVertex3f(data[5*i+2], data[5*i+3], data[5*i+4]);
+		}
+		// Bottom Face
+		n[0]=0.0f;
+		n[1]=-1.0f;
+		n[2]=0.0f;
+		s[0]=-1.0f;
+		s[1]=0.0f;
+		s[2]=0.0f;
+		t[0]=0.0f;
+		t[1]=0.0f;
+		t[2]=-1.0f;
+		for (i=12; i&lt;16; i++) {
+			c[0]=data[5*i+2];
+			c[1]=data[5*i+3];
+			c[2]=data[5*i+4];
+			SetUpBumps(n,c,l,s,t);
+			glTexCoord2f(data[5*i]+c[0], data[5*i+1]+c[1]);
+			glVertex3f(data[5*i+2], data[5*i+3], data[5*i+4]);
+		}
+		// Right Face
+		n[0]=1.0f;
+		n[1]=0.0f;
+		n[2]=0.0f;
+		s[0]=0.0f;
+		s[1]=0.0f;
+		s[2]=-1.0f;
+		t[0]=0.0f;
+		t[1]=1.0f;
+		t[2]=0.0f;
+		for (i=16; i&lt;20; i++) {
+			c[0]=data[5*i+2];
+			c[1]=data[5*i+3];
+			c[2]=data[5*i+4];
+			SetUpBumps(n,c,l,s,t);
+			glTexCoord2f(data[5*i]+c[0], data[5*i+1]+c[1]);
+			glVertex3f(data[5*i+2], data[5*i+3], data[5*i+4]);
+		}
+		// Left Face
+		n[0]=-1.0f;
+		n[1]=0.0f;
+		n[2]=0.0f;
+		s[0]=0.0f;
+		s[1]=0.0f;
+		s[2]=1.0f;
+		t[0]=0.0f;
+		t[1]=1.0f;
+		t[2]=0.0f;
+		for (i=20; i&lt;24; i++) {
+			c[0]=data[5*i+2];
+			c[1]=data[5*i+3];
+			c[2]=data[5*i+4];
+			SetUpBumps(n,c,l,s,t);
+			glTexCoord2f(data[5*i]+c[0], data[5*i+1]+c[1]);
+			glVertex3f(data[5*i+2], data[5*i+3], data[5*i+4]);
+		}
+	glEnd();
+</pre>
+<p><span style="text-decoration: underline;">Third Pass:</span></p>
+<ul type="disc">
+<li>Use (colored) base-texture</li>
+<li>Enable Blending GL_DST_COLOR, GL_SRC_COLOR</li>
+<li>This blending equation multiplies by 2: (Cdst*Csrc)+(Csrc*Cdst)=2(Csrc*Cdst)!</li>
+<li>Enable Lighting to do the ambient and diffuse stuff</li>
+<li>Reset GL_TEXTURE-matrix to go back to "normal" texture coordinates</li>
+<li>Do the geometry</li>
+</ul>
+<p>This will finish cube-rendering, complete with lighting. Since we can switch back and forth between multitexturing and non-multitexturing, we have to reset the texture-environment to "normal" GL_MODULATE first. We only do the third pass, if the user doesnt want to see just the emboss.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	if (!emboss) {
+		glTexEnvf (GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
+		glBindTexture(GL_TEXTURE_2D,texture[filter]);
+		glBlendFunc(GL_DST_COLOR,GL_SRC_COLOR);
+		glEnable(GL_LIGHTING);
+		doCube();
+	}
+</pre>
+<p><span style="text-decoration: underline;">Last Pass:</span></p>
+<ul type="disc">
+<li>update geometry (esp. rotations)</li>
+<li>do the Logos</li>
+</ul>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	xrot+=xspeed;
+	yrot+=yspeed;
+	if (xrot&gt;360.0f) xrot-=360.0f;
+	if (xrot&lt;0.0f) xrot+=360.0f;
+	if (yrot&gt;360.0f) yrot-=360.0f;
+	if (yrot&lt;0.0f) yrot+=360.0f;
+
+	/* LAST PASS: Do The Logos! */
+	doLogo();
+	return true;								// Keep Going
+}
+</pre>
+<p>This function will do the whole mess in 2 passes with multitexturing support. We support two texel-units. More would be extreme complicated due to the blending equations. Better trim to TNT instead. Note that almost the only difference to doMesh1TexelUnits() is, that we send two sets of texture-coordinates for each vertex!</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">bool doMesh2TexelUnits(void) {
+	GLfloat c[4]={0.0f,0.0f,0.0f,1.0f};					// Holds Current Vertex
+	GLfloat n[4]={0.0f,0.0f,0.0f,1.0f};					// Normalized Normal Of Current Surface
+	GLfloat s[4]={0.0f,0.0f,0.0f,1.0f};					// s-Texture Coordinate Direction, Normalized
+	GLfloat t[4]={0.0f,0.0f,0.0f,1.0f};					// t-Texture Coordinate Direction, Normalized
+	GLfloat l[4];								// Holds Our Lightposition To Be Transformed Into Object Space
+	GLfloat Minv[16];							// Holds The Inverted Modelview Matrix To Do So
+	int i;
+
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);			// Clear The Screen And The Depth Buffer
+
+	// Build Inverse Modelview Matrix First. This Substitutes One Push/Pop With One glLoadIdentity();
+	// Simply Build It By Doing All Transformations Negated And In Reverse Order
+	glLoadIdentity();
+	glRotatef(-yrot,0.0f,1.0f,0.0f);
+	glRotatef(-xrot,1.0f,0.0f,0.0f);
+	glTranslatef(0.0f,0.0f,-z);
+	glGetFloatv(GL_MODELVIEW_MATRIX,Minv);
+	glLoadIdentity();
+	glTranslatef(0.0f,0.0f,z);
+
+	glRotatef(xrot,1.0f,0.0f,0.0f);
+	glRotatef(yrot,0.0f,1.0f,0.0f);
+
+	// Transform The Lightposition Into Object Coordinates:
+	l[0]=LightPosition[0];
+	l[1]=LightPosition[1];
+	l[2]=LightPosition[2];
+	l[3]=1.0f;								// Homogenous Coordinate
+	VMatMult(Minv,l);
+</pre>
+<p><span style="text-decoration: underline;">First Pass:</span></p>
+<ul type="disc">
+<li>No Blending</li>
+<li>No Lighting</li>
+</ul>
+<p>Set up the texture-combiner 0 to</p>
+<ul type="disc">
+<li>Use bump-texture</li>
+<li>Use not-offset texture-coordinates</li>
+<li>Texture-Operation GL_REPLACE, resulting in texture just being drawn</li>
+</ul>
+<p>Set up the texture-combiner 1 to</p>
+<ul type="disc">
+<li>Offset texture-coordinates</li>
+<li>Texture-Operation GL_ADD, which is the multitexture-equivalent to ONE, ONE- blending.</li>
+</ul>
+<p>This will render a cube consisting out of the grey-scale erode map.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	// TEXTURE-UNIT #0
+	glActiveTextureARB(GL_TEXTURE0_ARB);
+	glEnable(GL_TEXTURE_2D);
+	glBindTexture(GL_TEXTURE_2D, bump[filter]);
+	glTexEnvf (GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_COMBINE_EXT);
+	glTexEnvf (GL_TEXTURE_ENV, GL_COMBINE_RGB_EXT, GL_REPLACE);
+
+	// TEXTURE-UNIT #1
+	glActiveTextureARB(GL_TEXTURE1_ARB);
+	glEnable(GL_TEXTURE_2D);
+	glBindTexture(GL_TEXTURE_2D, invbump[filter]);
+	glTexEnvf (GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_COMBINE_EXT);
+	glTexEnvf (GL_TEXTURE_ENV, GL_COMBINE_RGB_EXT, GL_ADD);
+
+	// General Switches
+	glDisable(GL_BLEND);
+	glDisable(GL_LIGHTING);
+</pre>
+<p>Now just render the faces one by one, as already seen in doMesh1TexelUnits(). Only new thing: Uses glMultiTexCoor2fARB() instead of just glTexCoord2f(). Note that you must specify which texture-unit you mean by the first parameter, which must be GL_TEXTUREi_ARB with i in [0..31]. (What hardware has 32 texture-units? And what for?)</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	glBegin(GL_QUADS);
+		// Front Face
+		n[0]=0.0f;
+		n[1]=0.0f;
+		n[2]=1.0f;
+		s[0]=1.0f;
+		s[1]=0.0f;
+		s[2]=0.0f;
+		t[0]=0.0f;
+		t[1]=1.0f;
+		t[2]=0.0f;
+		for (i=0; i&lt;4; i++) {
+			c[0]=data[5*i+2];
+			c[1]=data[5*i+3];
+			c[2]=data[5*i+4];
+			SetUpBumps(n,c,l,s,t);
+			glMultiTexCoord2fARB(GL_TEXTURE0_ARB,data[5*i], data[5*i+1]);
+			glMultiTexCoord2fARB(GL_TEXTURE1_ARB,data[5*i]+c[0], data[5*i+1]+c[1]);
+			glVertex3f(data[5*i+2], data[5*i+3], data[5*i+4]);
+		}
+		// Back Face
+		n[0]=0.0f;
+		n[1]=0.0f;
+		n[2]=-1.0f;
+		s[0]=-1.0f;
+		s[1]=0.0f;
+		s[2]=0.0f;
+		t[0]=0.0f;
+		t[1]=1.0f;
+		t[2]=0.0f;
+		for (i=4; i&lt;8; i++) {
+			c[0]=data[5*i+2];
+			c[1]=data[5*i+3];
+			c[2]=data[5*i+4];
+			SetUpBumps(n,c,l,s,t);
+			glMultiTexCoord2fARB(GL_TEXTURE0_ARB,data[5*i], data[5*i+1]);
+			glMultiTexCoord2fARB(GL_TEXTURE1_ARB,data[5*i]+c[0], data[5*i+1]+c[1]);
+			glVertex3f(data[5*i+2], data[5*i+3], data[5*i+4]);
+		}
+		// Top Face
+		n[0]=0.0f;
+		n[1]=1.0f;
+		n[2]=0.0f;
+		s[0]=1.0f;
+		s[1]=0.0f;
+		s[2]=0.0f;
+		t[0]=0.0f;
+		t[1]=0.0f;
+		t[2]=-1.0f;
+		for (i=8; i&lt;12; i++) {
+			c[0]=data[5*i+2];
+			c[1]=data[5*i+3];
+			c[2]=data[5*i+4];
+			SetUpBumps(n,c,l,s,t);
+			glMultiTexCoord2fARB(GL_TEXTURE0_ARB,data[5*i], data[5*i+1]);
+			glMultiTexCoord2fARB(GL_TEXTURE1_ARB,data[5*i]+c[0], data[5*i+1]+c[1]);
+			glVertex3f(data[5*i+2], data[5*i+3], data[5*i+4]);
+		}
+		// Bottom Face
+		n[0]=0.0f;
+		n[1]=-1.0f;
+		n[2]=0.0f;
+		s[0]=-1.0f;
+		s[1]=0.0f;
+		s[2]=0.0f;
+		t[0]=0.0f;
+		t[1]=0.0f;
+		t[2]=-1.0f;
+		for (i=12; i&lt;16; i++) {
+			c[0]=data[5*i+2];
+			c[1]=data[5*i+3];
+			c[2]=data[5*i+4];
+			SetUpBumps(n,c,l,s,t);
+			glMultiTexCoord2fARB(GL_TEXTURE0_ARB,data[5*i], data[5*i+1]);
+			glMultiTexCoord2fARB(GL_TEXTURE1_ARB,data[5*i]+c[0], data[5*i+1]+c[1]);
+			glVertex3f(data[5*i+2], data[5*i+3], data[5*i+4]);
+		}
+		// Right Face
+		n[0]=1.0f;
+		n[1]=0.0f;
+		n[2]=0.0f;
+		s[0]=0.0f;
+		s[1]=0.0f;
+		s[2]=-1.0f;
+		t[0]=0.0f;
+		t[1]=1.0f;
+		t[2]=0.0f;
+		for (i=16; i&lt;20; i++) {
+			c[0]=data[5*i+2];
+			c[1]=data[5*i+3];
+			c[2]=data[5*i+4];
+			SetUpBumps(n,c,l,s,t);
+			glMultiTexCoord2fARB(GL_TEXTURE0_ARB,data[5*i], data[5*i+1]);
+			glMultiTexCoord2fARB(GL_TEXTURE1_ARB,data[5*i]+c[0], data[5*i+1]+c[1]);
+			glVertex3f(data[5*i+2], data[5*i+3], data[5*i+4]);
+		}
+		// Left Face
+		n[0]=-1.0f;
+		n[1]=0.0f;
+		n[2]=0.0f;
+		s[0]=0.0f;
+		s[1]=0.0f;
+		s[2]=1.0f;
+		t[0]=0.0f;
+		t[1]=1.0f;
+		t[2]=0.0f;
+		for (i=20; i&lt;24; i++) {
+			c[0]=data[5*i+2];
+			c[1]=data[5*i+3];
+			c[2]=data[5*i+4];
+			SetUpBumps(n,c,l,s,t);
+			glMultiTexCoord2fARB(GL_TEXTURE0_ARB,data[5*i], data[5*i+1]);
+			glMultiTexCoord2fARB(GL_TEXTURE1_ARB,data[5*i]+c[0], data[5*i+1]+c[1]);
+			glVertex3f(data[5*i+2], data[5*i+3], data[5*i+4]);
+		}
+	glEnd();
+</pre>
+<p><span style="text-decoration: underline;">Second Pass</span></p>
+<ul type="disc">
+<li>Use the base-texture</li>
+<li>Enable Lighting</li>
+<li>No offset texturre-coordinates =&gt; reset GL_TEXTURE-matrix</li>
+<li>Reset texture environment to GL_MODULATE in order to do OpenGLLighting (doesnt work otherwise!)</li>
+</ul>
+<p>This will render our complete bump-mapped cube.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	glActiveTextureARB(GL_TEXTURE1_ARB);
+	glDisable(GL_TEXTURE_2D);
+	glActiveTextureARB(GL_TEXTURE0_ARB);
+	if (!emboss) {
+		glTexEnvf (GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
+		glBindTexture(GL_TEXTURE_2D,texture[filter]);
+		glBlendFunc(GL_DST_COLOR,GL_SRC_COLOR);
+		glEnable(GL_BLEND);
+		glEnable(GL_LIGHTING);
+		doCube();
+	}
+</pre>
+<p><span style="text-decoration: underline;">Last Pass</span></p>
+<ul type="disc">
+<li>Update Geometry (esp. rotations)</li>
+<li>Do The Logos</li>
+</ul>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	xrot+=xspeed;
+	yrot+=yspeed;
+	if (xrot&gt;360.0f) xrot-=360.0f;
+	if (xrot&lt;0.0f) xrot+=360.0f;
+	if (yrot&gt;360.0f) yrot-=360.0f;
+	if (yrot&lt;0.0f) yrot+=360.0f;
+
+	/* LAST PASS: Do The Logos! */
+	doLogo();
+	return true;								// Keep Going
+}
+</pre>
+<p>Finally, a function to render the cube without bump mapping, so that you can see what difference this makes!</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">bool doMeshNoBumps(void) {
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);			// Clear The Screen And The Depth Buffer
+	glLoadIdentity();							// Reset The View
+	glTranslatef(0.0f,0.0f,z);
+
+	glRotatef(xrot,1.0f,0.0f,0.0f);
+	glRotatef(yrot,0.0f,1.0f,0.0f);
+
+	if (useMultitexture) {
+		glActiveTextureARB(GL_TEXTURE1_ARB);
+		glDisable(GL_TEXTURE_2D);
+		glActiveTextureARB(GL_TEXTURE0_ARB);
+	}
+
+	glDisable(GL_BLEND);
+	glBindTexture(GL_TEXTURE_2D,texture[filter]);
+	glBlendFunc(GL_DST_COLOR,GL_SRC_COLOR);
+	glEnable(GL_LIGHTING);
+	doCube();
+
+	xrot+=xspeed;
+	yrot+=yspeed;
+	if (xrot&gt;360.0f) xrot-=360.0f;
+	if (xrot&lt;0.0f) xrot+=360.0f;
+	if (yrot&gt;360.0f) yrot-=360.0f;
+	if (yrot&lt;0.0f) yrot+=360.0f;
+
+	/* LAST PASS: Do The Logos! */
+	doLogo();
+	return true;								// Keep Going
+}
+</pre>
+<p>All the drawGLScene() function has to do is to determine which doMesh-function to call:</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">bool DrawGLScene(GLvoid)							// Here's Where We Do All The Drawing
+{
+	if (bumps) {
+		if (useMultitexture &amp;&amp; maxTexelUnits&gt;1)
+			return doMesh2TexelUnits();
+		else return doMesh1TexelUnits();	}
+	else return doMeshNoBumps();
+}
+</pre>
+<p>Kills the GLWindow, not modified (thus omitted):</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">GLvoid KillGLWindow(GLvoid)							// Properly Kill The Window
+&gt;&lt;
+</pre>
+<p>Creates the GLWindow, not modified (thus omitted):</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">BOOL CreateGLWindow(char* title, int width, int height, int bits, bool fullscreenflag)
+&gt;&lt;
+</pre>
+<p>Windows main-loop, not modified (thus omitted):</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">LRESULT CALLBACK WndProc(	HWND hWnd,					// Handle For This Window
+				UINT uMsg,					// Message For This Window
+				WPARAM wParam,					// Additional Message Information
+				LPARAM lParam)					// Additional Message Information
+&gt;&lt;
+</pre>
+<p>Windows main-function, added some keys:</p>
+<ul type="disc">
+<li>E: Toggle Emboss / Bumpmapped Mode</li>
+<li>M: Toggle Multitexturing</li>
+<li>B: Toggle Bumpmapping. This Is Mutually Exclusive With Emboss Mode</li>
+<li>F: Toggle Filters. Youll See Directly That GL_NEAREST Isnt For Bumpmapping</li>
+<li>CURSOR-KEYS: Rotate The Cube</li>
+</ul>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">int WINAPI WinMain(	HINSTANCE hInstance,					// Instance
+			HINSTANCE hPrevInstance,				// Previous Instance
+			LPSTR lpCmdLine,					// Command Line Parameters
+			int nCmdShow)						// Window Show State
+{
+
+	&gt;&lt;
+
+				if (keys['E'])
+				{
+					keys['E']=false;
+					emboss=!emboss;
+				}
+
+				if (keys['M'])
+				{
+					keys['M']=false;
+					useMultitexture=((!useMultitexture) &amp;&amp; multitextureSupported);
+				}
+
+				if (keys['B'])
+				{
+					keys['B']=false;
+					bumps=!bumps;
+				}
+
+				if (keys['F'])
+				{
+					keys['F']=false;
+					filter++;
+					filter%=3;
+				}
+
+				if (keys[VK_PRIOR])
+				{
+					z-=0.02f;
+				}
+
+				if (keys[VK_NEXT])
+				{
+					z+=0.02f;
+				}
+
+				if (keys[VK_UP])
+				{
+					xspeed-=0.01f;
+				}
+
+				if (keys[VK_DOWN])
+				{
+					xspeed+=0.01f;
+				}
+
+				if (keys[VK_RIGHT])
+				{
+					yspeed+=0.01f;
+				}
+
+				if (keys[VK_LEFT])
+				{
+					yspeed-=0.01f;
+				}
+			}
+		}
+	}
+	// Shutdown
+	KillGLWindow();								// Kill The Window
+	return (msg.wParam);							// Exit The Program
+}
+</pre>
+<p>Now that you managed this tutorial some words about generating textures and bumpmapped objects before you start to program mighty games and wonder why bumpomapping isnt that fast or doesnt look that good:</p>
+<ul type="disc">
+<li>You shouldnt use textures of 256x256 as done in this lesson. This slows things down a lot. Only do so if demonstrating visual capabilities (like in tutorials).</li>
+<li>A bumpmapped cube is not usual. A rotated cube far less. The reason for this is the viewing angle: The steeper it gets, the more visual distortion due to filtering you get. Nearly all multipass algorithms are very affected by this. To avoid the need for high-resolution textures, reduce the minimum viewing angle to a sensible value or reduce the bandwidth of viewing angles and pre-filter you texture to perfectly fit that bandwidth.</li>
+<li>You should first have the colored-texture. The bumpmap can be often derived from it using an average paint-program and converting it to grey-scale.</li>
+<li>The bumpmap should be "sharper" and higher in contrast than the color-texture. This is usually done by applying a "sharpening filter" to the texture and might look strange at first, but believe me: you can sharpen it A LOT in order to get first class visual appearance.</li>
+<li>The bumpmap should be centered around 50%-grey (RGB=127,127,127), since this means "no bump at all", brighter values represent ing bumps and lower "scratches". This can be achieved using "histogram" functions in some paint-programs.</li>
+<li>The bumpmap can be one fourth in size of the color-texture without "killing" visual appearance, though youll definitely see the difference.</li>
+</ul>
+<p>Now you should at least have a basic understanding of the issued covered in this tutorial. I hope you have enjoyed reading it.</p>
+<p>If you have questions and / or suggestions regarding this lesson, you can <a href="mailto:schneider@glhint.de">mail me</a> or stop by my website at <a href="javascript:if(confirm('http://nehe.gamedev.net/data/lessons/http://www.glhint.de  \n\nThis file was not retrieved by Teleport Pro, because the server reports that this file cannot be found.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev.net/data/lessons/http://www.glhint.de'" tppabs="http://nehe.gamedev.net/data/lessons/http://www.glhint.de" target="_blank">/data/lessons/http://www.glhint.de</a>.</p>
+<p>Thanks must go to:</p>
+<ul type="disc">
+<li>Michael I. Gold for his Bump Mapping Documentation</li>
+<li>Diego T&aacute;rtara for his example code</li>
+<li>NVidia for putting great examples on the WWW</li>
+<li>And last but not least to NeHe who helped me learn a lot about OpenGL.</li>
+</ul>
+<p><strong>Jens Schneider</strong></p>
+<p><strong>Jeff Molofee</strong> (<strong>NeHe</strong>)</p>
+<p>* DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/vc/lesson22.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/vc/lesson22.zip'" tppabs="http://nehe.gamedev.net/data/lessons/vc/lesson22.zip">Visual C++</a> Code For This Lesson.</p>
+<p>* DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/bcb6/lesson22_bcb6.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/bcb6/lesson22_bcb6.zip'" tppabs="http://nehe.gamedev.net/data/lessons/bcb6/lesson22_bcb6.zip">Borland C++ Builder 6</a> Code For This Lesson. ( Conversion by <a href="mailto:christian@tugzip.com">Christian Kindahl</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/cwarrior/lesson22.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/cwarrior/lesson22.zip'" tppabs="http://nehe.gamedev.net/data/lessons/cwarrior/lesson22.zip">Code Warrior 5.3</a> Code For This Lesson. ( Conversion by <a href="mailto:DelusionalBeing@hotmail.com">Scott Lupton</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/delphi/lesson22.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/delphi/lesson22.zip'" tppabs="http://nehe.gamedev.net/data/lessons/delphi/lesson22.zip">Delphi</a> Code For This Lesson. ( Conversion by <a href="mailto:michal_praha@seznam.cz">Michal Tucek</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/devc/lesson22.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/devc/lesson22.zip'" tppabs="http://nehe.gamedev.net/data/lessons/devc/lesson22.zip">Dev C++</a> Code For This Lesson. ( Conversion by <a href="mailto:danprogram@hotmail.com">Dan</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/glut/lesson22.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/glut/lesson22.zip'" tppabs="http://nehe.gamedev.net/data/lessons/glut/lesson22.zip">GLut</a> Code For This Lesson. ( Conversion by <a href="mailto:bruce@smart.inf.br">Bruce Barrera</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/java/lesson22.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/java/lesson22.zip'" tppabs="http://nehe.gamedev.net/data/lessons/java/lesson22.zip">Java</a> Code For This Lesson. ( Conversion by <a href="mailto:jeff@consunet.com.au">Jeff Kirby</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/jogl/lesson22.jar  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/jogl/lesson22.jar'" tppabs="http://nehe.gamedev.net/data/lessons/jogl/lesson22.jar">JoGL</a> Code For This Lesson. ( Conversion by <a href="mailto:abezrati@hotmail.com">Abdul Bezrati</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/linux/lesson22.tar.gz  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/linux/lesson22.tar.gz'" tppabs="http://nehe.gamedev.net/data/lessons/linux/lesson22.tar.gz">Linux</a> Code For This Lesson. ( Conversion by <a href="mailto:lucriz@inwind.it">Luca Rizzuti</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/linuxsdl/lesson22.tar.gz  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/linuxsdl/lesson22.tar.gz'" tppabs="http://nehe.gamedev.net/data/lessons/linuxsdl/lesson22.tar.gz">Linux/SDL</a> Code For This Lesson. ( Conversion by <a href="mailto:leggett@eecs.tulane.edu">Ti Leggett</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/lwjgl/lesson22.jar  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/lwjgl/lesson22.jar'" tppabs="http://nehe.gamedev.net/data/lessons/lwjgl/lesson22.jar">LWJGL</a> Code For This Lesson. ( Conversion by <a href="mailto:mark.bernard@rogers.com">Mark Bernard</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev.net/data/lessons/mac/lesson22.sit  \n\nThis file was not retrieved by Teleport Pro, because the server reports that this file cannot be found.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev.net/data/lessons/mac/lesson22.sit'" tppabs="http://nehe.gamedev.net/data/lessons/mac/lesson22.sit">Mac OS</a> Code For This Lesson. ( Conversion by <a href="mailto:classic@sover.net">Morgan Aldridge</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/macosxcocoa/lesson22.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/macosxcocoa/lesson22.zip'" tppabs="http://nehe.gamedev.net/data/lessons/macosxcocoa/lesson22.zip">Mac OS X/Cocoa</a> Code For This Lesson. ( Conversion by <a href="mailto:blb@pobox.com">Bryan Blackburn</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/openil/lesson22.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/openil/lesson22.zip'" tppabs="http://nehe.gamedev.net/data/lessons/openil/lesson22.zip">Visual C++ / OpenIL</a> Code For This Lesson. ( Conversion by <a href="mailto:doomwiz@ticnet.com">Denton Woods</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/vs_net/lesson22.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/vs_net/lesson22.zip'" tppabs="http://nehe.gamedev.net/data/lessons/vs_net/lesson22.zip">Visual Studio .NET</a> Code For This Lesson. ( Conversion by <a href="mailto:ultimatezeus@hotmail.com">Grant James</a> )</p>
+<p>&nbsp;</p>
+<p><strong><span><a href="index-141.htm" tppabs="http://nehe.gamedev.net/data/lessons/lesson.asp?lesson=21">&lt; Lesson 21</a></span></strong><strong><span><a href="index-63.htm" tppabs="http://nehe.gamedev.net/data/lessons/lesson.asp?lesson=23">Lesson 23 &gt;</a></span></strong></p>
+
+
+</div>
+</div>
+
+
+
+            <div style="width:728px;padding:0px;margin:auto; margin-top: 10px;">
+            
+
+    
+                <!-- Leaderboard_NeHe -->
+                <div id='div-gpt-ad-1327940144417-0' style='width:728px; height:90px;'>
+                <script type='text/javascript'>
+                googletag.cmd.push(function() { googletag.display('div-gpt-ad-1327940144417-0'); });
+                </script>
+                </div>
+            
+
+                           
+            </div>   
+        </td>
+        <td class="col2">
+            
+
+
+
+
+<div style="text-align: center; padding:10px;">
+
+<script type='text/javascript'>
+    GA_googleFillSlot("Skyscraper_NeHe");
+</script>
+
+</div>
+            
+        </td>
+    </table>
+    <div id="footer">
+        <p>
+            
+    
+    © 1997-2012 Gamedev . All rights reserved.<br/>
+
+			NeHe™ and NeHe Productions™ are trademarks of GameDev.net, LLC<br/>
+			OpenGL® is a registered trademark of Silicon Graphics Inc.<br/>
+		</p>        
+		<br/>
+    </div>
+
+    
+    
+	    <script type="text/javascript" src="shCore.js" tppabs="http://nehe.gamedev.net/static/js/syntax_highlighter/shCore.js"></script>
+        <script type="text/javascript" src="shBrushCpp.js" tppabs="http://nehe.gamedev.net/static/js/syntax_highlighter/shBrushCpp.js"></script>
+	    <script type="text/javascript" src="shBrushJScript.js" tppabs="http://nehe.gamedev.net/static/js/syntax_highlighter/shBrushJScript.js"></script>
+	    <script type="text/javascript">SyntaxHighlighter.all();</script>
+    
+
+    <!-- Place this render call where appropriate -->
+    <script type="text/javascript">
+      (function() {
+        var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+        po.src = 'plusone.js'/*tpa=https://apis.google.com/js/plusone.js*/;
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+      })();
+    </script>    
+
+    
+<!-- GoogleAnalytics code -->
+<script src="urchin.js" tppabs="http://www.google-analytics.com/urchin.js" type="text/javascript">
+</script>
+<script type="text/javascript">
+_uacct = "UA-279474-2"; // Gamedev
+urchinTracker();
+_uff = 0; // Reset for second account
+_uacct = "UA-24180731-1"; // Non-GD
+urchinTracker();
+</script> 
+  </body>
+</html>

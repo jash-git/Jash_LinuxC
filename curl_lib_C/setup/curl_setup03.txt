@@ -1,0 +1,18 @@
+jash@jash-VirtualBox:~$ cd Qt_project/
+jash@jash-VirtualBox:~/Qt_project$ gcc simple.c -o simple
+/tmp/cc2rzzKO.o: In function `main':
+simple.c:(.text+0x82): undefined reference to `curl_easy_init'
+simple.c:(.text+0xb1): undefined reference to `curl_easy_setopt'
+simple.c:(.text+0xbd): undefined reference to `curl_easy_perform'
+simple.c:(.text+0xcd): undefined reference to `curl_easy_cleanup'
+collect2: ld returned 1 exit status
+jash@jash-VirtualBox:~/Qt_project$ curl-config --cflags
+
+jash@jash-VirtualBox:~/Qt_project$ curl-config --libs
+-lcurl -Wl,-Bsymbolic-functions
+jash@jash-VirtualBox:~/Qt_project$ curl-config --feature | grep SSL
+SSL
+jash@jash-VirtualBox:~/Qt_project$ curl-config --version
+libcurl 7.21.0
+jash@jash-VirtualBox:~/Qt_project$ gcc simple.c -o simple -lcurl -Wl,-Bsymbolic-functions
+jash@jash-VirtualBox:~/Qt_project$ 

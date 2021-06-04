@@ -1,0 +1,548 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<!-- 这篇文章由Dancingwind翻译，作者的联系方式zhouwei02@mails.tsinghua.edu.cn -->
+<HTML><HEAD><TITLE>NeHe OpenGL教程第四十课，DancingWind翻译</TITLE>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<style type=text/css>
+A:link {COLOR: #ccaaff; TEXT-DECORATION: none}
+A:visited {COLOR: #ccaaff; TEXT-DECORATION: none}
+A:active {COLOR: #ccaaff; TEXT-DECORATION: none}
+A:hover {COLOR: #ffccaa; TEXT-DECORATION: none}
+</style>
+</head>
+<body bgcolor=#000000 text=#ffffff><table border=0 cellpadding=0
+cellspacing=0 width="100%"><tr><td width=326 height=130><img
+src="logo.png" tppabs="http://www.owlei.com/DancingWind/Pic/logo.png" width=326 height=130></td>
+    <td valign=middle align=center
+width="75%"><font color=#ffccaa size=+3><b><i>第40课</i></b></font></td>
+  </tr></table>
+  <!-- 上边框-->
+<table border="0" cellPadding="0" cellSpacing="0" width="100%">
+<TBODY>
+  <tr>
+    <td><img height="28" src="tl.jpg" tppabs="http://www.owlei.com/DancingWind/Pic/tl.jpg" width="28"></td>
+    <td width="100%"><img height="28" src="tc.gif" tppabs="http://www.owlei.com/DancingWind/Pic/tc.gif" width="100%"></td>
+    <td><img height="28" src="tr.gif" tppabs="http://www.owlei.com/DancingWind/Pic/tr.gif" width="28"></td>
+  </tr>
+</TBODY>
+</table>
+
+<!-- 中部-->
+<table border="0" cellPadding="0" cellSpacing="0" width="100%">
+<TBODY>
+  <tr>
+  	<!-- 中部左边框-->
+    <td  background="l.gif" tppabs="http://www.owlei.com/DancingWind/Pic/l.gif"><img src="l.gif" tppabs="http://www.owlei.com/DancingWind/Pic/l.gif" width="28" height="28"></td>
+	<!-- 中部文字部分-->
+    <td vAlign="top" width="100%">
+	<table width="100%" border="0">
+          <tr>
+            <td width="31%"><img src="lesson40.jpg" tppabs="http://www.owlei.com/DancingWind/Pic/lesson40.jpg" width="240" height="180"></td>
+            <td width="69%"><p><FONT class=head>绳子的模拟:</FONT></p>
+              <p><font size="3">怎样模拟一根绳子呢，把它想象成一个个紧密排列的点，怎么样有了思路了吧，在这一课你你将学会怎样建模，简单吧，你能模拟更多。</FONT></p></td>
+          </tr>
+     </table>
+      </td>
+	<!-- 中部右边框-->
+    <td background="r.gif" tppabs="http://www.owlei.com/DancingWind/Pic/r.gif"><img src="r.gif" tppabs="http://www.owlei.com/DancingWind/Pic/r.gif" width="28" height="28"></td>
+  </tr>
+</TBODY>
+</table>
+
+<!-- 下边框-->
+<table border="0" cellPadding="0" cellSpacing="0" width="100%">
+<TBODY>
+  <tr>
+    <td><img height="28" src="bl.gif" tppabs="http://www.owlei.com/DancingWind/Pic/bl.gif" width="28"></td>
+    <td width="100%"><img height="28" src="bc.gif" tppabs="http://www.owlei.com/DancingWind/Pic/bc.gif" width="100%"></td>
+    <td><img height="28" src="br.gif" tppabs="http://www.owlei.com/DancingWind/Pic/br.gif" width="28"></td>
+  </tr>
+</TBODY>
+</table>
+  <table border=0 cellpadding=0
+cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28
+height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100%
+height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28
+height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0
+width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td
+width=100% valign=top><u>绳索模拟</u> <BR> <BR>
+      在这个教程里我们将模拟一段绳索，我们是在39课的基础上进行的。<BR> <BR>
+      在物理模拟中，我们必须设置各个物理量，就像它们在自然界中的行为一样。模拟中的运动并不一定和自然界相同，我们使用的运动模型，必须和我们需要模拟的目的有关，目的决定了它的精确度。要知道我们的目标不是模拟原子和分子，也不是模拟成千上万的粒子系。首先我们需要确定我们模拟的目标，才能创建我们的物理模型。它和下面内容相关：<BR> 
+      <BR> <FONT color=#ffffaa>1. 运动的数学表示<BR>
+      2. 执行模拟的计算机的速度</FONT><BR> <BR> <U>1. 运动的数学表示:</U> <BR> <BR>
+      这个问题决定了我们使用何种数学方程来模拟运动，使用经典力学还是量子力学。<BR> <BR> <U>2. 执行模拟的计算机的速度:</U> <BR> 
+      <BR>
+      计算机的速度决定了我们可以模拟的精度。<BR> <BR> <U>设计绳索的物理模型:</U> <BR> <BR>
+      我们在经典力学和高于500Mhz的计算机上模拟这个问题。首先我们需要设定需要的精度，我们使用一系列互相用弹簧连接的质点来模拟绳索，精度决定了我们用多少个点来模拟，当然越多越精确。在下面我决定用50或100个点来模拟绳子一段3或4m长的绳子，换句话说，我们的模拟精度就是3到8厘米。<BR> 
+      <BR> <U>设计运动模型:</U> <BR> <BR>
+      在绳子中，施加给各个质点的力来自于自身的质量和相连的内力（参见大学里的普通力学）。如下我们用&quot;O&quot;表示质点，“—”表示连接质点的弹簧。 
+      <PRE><font color="#ffffaa">O----O----O----O
+1    2    3    4
+</font></PRE>
+      <p>弹簧的力学公式如下: <BR>
+        <BR>
+        <FONT color=#aaffaa>力 = -k * x</FONT><BR>
+        <FONT 
+      color=#ffffaa>k: 弹性系数<BR>
+        x: 相距平衡位置的位移</FONT><BR>
+        <BR>
+        上面的公式说明，如果相邻点的距离为平衡距离，那么它们不受到任何力的作用。如果我们设置平衡位置为5cm，那么100个点的绳子长5m。如果相连质点之间的位置小于5cm，它们受到排斥力。<BR>
+        <BR>
+        上面的公式只是一个基础，现在我们可以加上摩擦力，如果没有这项，那么绳子将永远动下去。<BR>
+        <BR>
+        <U>弹簧类:</U> <BR>
+        <BR>
+        这个类包含相连接的两个物体，它们之间具有作用力。</p>
+      </TD>
+    <TD background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><IMG 
+    src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></TD></TR></TABLE>
+<TABLE cellSpacing=0 cellPadding=0 width="100%" border=0>
+  <TBODY>
+  <TR>
+    <TD><IMG height=28 src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28></TD>
+    <TD width="100%"><IMG height=28 src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" 
+      width="100%"></TD>
+    <TD><IMG height=28 src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" 
+width=28></TD></TR></TBODY></TABLE>
+<FONT color=#aaffaa size=3> 
+<PRE>class Spring									
+{										
+public:
+	Mass* mass1;								<FONT color=#ffffaa>// 质点1</FONT>
+	Mass* mass2;								<FONT color=#ffffaa>// 质点2</FONT>
+
+	float springConstant;							<FONT color=#ffffaa>// 弹性系数</FONT>
+	float springLength;							<FONT color=#ffffaa>//弹簧长度 </FONT>
+	float frictionConstant;							<FONT color=#ffffaa>//摩擦系数</FONT>
+
+	Spring(Mass* mass1, Mass* mass2,
+		<FONT color=#ffffaa>// 构造函数</FONT>
+		float springConstant, float springLength, float frictionConstant)
+	{
+		this-&gt;springConstant = springConstant;			
+		this-&gt;springLength = springLength;				
+		this-&gt;frictionConstant = frictionConstant;			
+
+		this-&gt;mass1 = mass1;						
+		this-&gt;mass2 = mass2;						
+	}
+
+	void solve()								<FONT color=#ffffaa>// 计算各个物体的受力</FONT>
+	{
+		Vector3D springVector = mass1-&gt;pos - mass2-&gt;pos;		
+		
+		float r = springVector.length();					<FONT color=#ffffaa>// 计算两个物体之间的距离</FONT>
+
+		Vector3D force;							
+		
+		if (r != 0)							<FONT color=#ffffaa>// 计算力</FONT>
+			force += -(springVector / r) * (r - springLength) * springConstant;
+		...
+</PRE>
+</FONT> <FONT color=#aaffaa size=3> 
+<PRE>
+		force += -(mass1-&gt;vel - mass2-&gt;vel) * frictionConstant;		<FONT color=#ffffaa>// 加上摩擦力</FONT>
+		mass1-&gt;applyForce(force);					<FONT color=#ffffaa>	// 给物体1施加力</FONT>
+		mass2-&gt;applyForce(-force);					<FONT color=#ffffaa>	// 给物体2施加力</FONT>
+	}									</PRE>
+</FONT> 
+<TABLE cellSpacing=0 cellPadding=0 width="100%" border=0>
+  <TBODY>
+  <TR>
+    <TD><IMG height=28 src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28></TD>
+    <TD width="100%"><IMG height=28 src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" 
+      width="100%"></TD>
+    <TD><IMG height=28 src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" 
+width=28></TD></TR></TBODY></TABLE>
+<TABLE cellSpacing=0 cellPadding=0 width="100%" border=0>
+  <TBODY>
+  <TR>
+    <TD background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><IMG 
+    src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></TD>
+      <TD vAlign=top width="100%">下面我们把绳子钉在墙上，所以我们的模拟就多了一个万有引力，空气摩擦力。万有引力的公式如下：<BR> 
+        <BR> <FONT color=#aaffaa>力 = (重力加速度) * 质量</FONT> <BR> <BR>
+        万有引力会作用在每一个质点上，地面也会给每个物体一个作用力。在我们的模型中将考虑绳子和地面之间的接触，地面给绳子向上的力，并提供摩擦力。<BR> 
+        <BR> <U>设置模拟的初始值</U><BR> <BR>
+        现在我们已经设置好模拟环境了，长度单位是m，时间单位是秒，质量单位是kg。<BR> <BR>
+        为了设置初始值，我们必须提供供模拟开始的参数。我们定义一下参数：<BR> <BR> <FONT color=#ffffaa>1. 重力加速度: 
+        9.81 m/s/s 垂直向下<BR>
+        2. 质点个数: 80<BR>
+        3. 相连质点的距离: 5 cm (0.05 meters)<BR>
+        4. 质量: 50 克(0.05 kg)<BR>
+        5. 绳子开始处于垂直状态</FONT><BR> <BR>
+        下面计算绳子受到的力<BR> <BR> <FONT 
+      color=#aaffaa>f = (绳子质量) * (重力加速度) = (4 kg) * (9.81) ~= 40 N</FONT> <BR> 
+        <BR>
+        弹簧必须平衡这个力 40 N，它伸长1cm，计算弹性系数: <BR> <BR> <FONT color=#aaffaa>合力= -k * x 
+        = -k * 0.01 m</FONT> <BR> <BR>
+        合力应该为0 : <BR> <BR> <FONT 
+      color=#aaffaa>40 N + (-k * 0.01 meters) = 0</FONT> <BR> <BR>
+        弹性系数 k 为: <BR> <BR> <FONT color=#aaffaa>k = 4000 N / m</FONT> <BR> <BR>
+        设置弹簧的摩擦系数: <BR> <BR> <FONT 
+      color=#aaffaa>springFrictionConstant = 0.2 N/(m/s)</FONT> <BR> <BR>
+        下面我们看看这个绳索类：<BR> <BR> <TABLE border=0>
+          <TBODY>
+            <TR> 
+              <TD><FONT color=#aaffaa>1. virtual void init()</FONT></TD>
+              <TD>---&gt; </TD>
+              <TD><FONT color=#ffffaa>重置力</FONT></TD>
+            </TR>
+            <TR></TR>
+            <TR> 
+              <TD><FONT color=#aaffaa>2. virtual void solve()</FONT></TD>
+              <TD>---&gt; </TD>
+              <TD><FONT color=#ffffaa>计算各个质点的力</FONT></TD>
+            </TR>
+            <TR></TR>
+            <TR> 
+              <TD><FONT color=#aaffaa>3. virtual void simulate(float dt)</FONT></TD>
+              <TD>---&gt; </TD>
+              <TD><FONT color=#ffffaa>模拟一次</FONT></TD>
+            </TR>
+            <TR></TR>
+            <TR> 
+              <TD><FONT color=#aaffaa>4. virtual void operate(float dt)</FONT></TD>
+              <TD>---&gt; </TD>
+              <TD><FONT color=#ffffaa>执行一次操作</FONT></TD>
+            </TR>
+          </TBODY>
+        </TABLE>
+        <BR>
+        绳索类如下所示 : </TD>
+    <TD background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><IMG 
+    src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></TD></TR></TBODY></TABLE>
+<TABLE cellSpacing=0 cellPadding=0 width="100%" border=0>
+  <TBODY>
+  <TR>
+    <TD><IMG height=28 src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28></TD>
+    <TD width="100%"><IMG height=28 src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" 
+      width="100%"></TD>
+    <TD><IMG height=28 src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" 
+width=28></TD></TR></TBODY></TABLE>
+<FONT color=#aaffaa size=3> 
+<PRE>class RopeSimulation : public Simulation					<FONT color=#ffffaa>//绳索类</FONT>
+{
+public:
+	Spring** springs;							<FONT color=#ffffaa>// 弹簧类结构的数组的指针</FONT>
+
+	Vector3D gravitation;						<FONT color=#ffffaa>// 万有引力</FONT>
+
+	Vector3D ropeConnectionPos;						<FONT color=#ffffaa>// 绳索的连接点</FONT>
+	
+	Vector3D ropeConnectionVel;						<FONT color=#ffffaa>//连接点的速度，我们使用这个移动绳子</FONT>
+
+	float groundRepulsionConstant;					<FONT color=#ffffaa>//地面的反作用力</FONT>
+	
+	float groundFrictionConstant;					<FONT color=#ffffaa>//地面的摩擦系数</FONT>
+	
+	float groundAbsorptionConstant;					<FONT color=#ffffaa>//地面的缓冲力</FONT>
+	
+	float groundHeight;						<FONT color=#ffffaa>//地面高度</FONT>
+
+	float airFrictionConstant;						<FONT color=#ffffaa>//空气的摩擦系数</FONT></PRE>
+</FONT> 
+<TABLE cellSpacing=0 cellPadding=0 width="100%" border=0>
+  <TBODY>
+  <TR>
+    <TD><IMG height=28 src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28></TD>
+    <TD width="100%"><IMG height=28 src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" 
+      width="100%"></TD>
+    <TD><IMG height=28 src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" 
+width=28></TD></TR></TBODY></TABLE>
+<TABLE cellSpacing=0 cellPadding=0 width="100%" border=0>
+  <TBODY>
+  <TR>
+    <TD background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><IMG 
+    src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></TD>
+      <TD vAlign=top width="100%">下面是它的构造函数</TD>
+    <TD background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><IMG 
+    src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></TD></TR></TBODY></TABLE>
+<TABLE cellSpacing=0 cellPadding=0 width="100%" border=0>
+  <TBODY>
+  <TR>
+    <TD><IMG height=28 src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28></TD>
+    <TD width="100%"><IMG height=28 src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" 
+      width="100%"></TD>
+    <TD><IMG height=28 src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" 
+width=28></TD></TR></TBODY></TABLE>
+<FONT color=#aaffaa size=3> 
+<PRE>	RopeSimulation(								
+		int numOfMasses,					
+		float m,							
+		float springConstant,					
+		float springLength,						
+		float springFrictionConstant,					
+		Vector3D gravitation,						
+		float airFrictionConstant,				
+		float groundRepulsionConstant,				
+		float groundFrictionConstant,				
+		float groundAbsorptionConstant,				
+		float groundHeight						
+		) : Simulation(numOfMasses, m)			
+	{
+		this-&gt;gravitation = gravitation;
+		
+		this-&gt;airFrictionConstant = airFrictionConstant;
+
+		this-&gt;groundFrictionConstant = groundFrictionConstant;
+		this-&gt;groundRepulsionConstant = groundRepulsionConstant;
+		this-&gt;groundAbsorptionConstant = groundAbsorptionConstant;
+		this-&gt;groundHeight = groundHeight;
+
+		for (int a = 0; a &lt; numOfMasses; ++a)				<FONT color=#ffffaa>// 设置质点位置</FONT>
+		{
+			masses[a]-&gt;pos.x = a * springLength;			
+			masses[a]-&gt;pos.y = 0;					
+			masses[a]-&gt;pos.z = 0;					
+		}
+
+		springs = new Spring*[numOfMasses - 1];			
+		
+		for (a = 0; a &lt; numOfMasses - 1; ++a)				<FONT color=#ffffaa>//创建各个质点之间的模拟弹簧</FONT>
+		{
+			springs[a] = new Spring(masses[a], masses[a + 1], 
+				springConstant, springLength, springFrictionConstant);
+		}
+	}
+</PRE>
+</FONT> 
+<TABLE cellSpacing=0 cellPadding=0 width="100%" border=0>
+  <TBODY>
+  <TR>
+    <TD><IMG height=28 src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28></TD>
+    <TD width="100%"><IMG height=28 src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" 
+      width="100%"></TD>
+    <TD><IMG height=28 src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" 
+width=28></TD></TR></TBODY></TABLE>
+<TABLE cellSpacing=0 cellPadding=0 width="100%" border=0>
+  <TBODY>
+  <TR>
+    <TD background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><IMG 
+    src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></TD>
+      <TD vAlign=top width="100%">计算施加给各个质点的力</TD>
+    <TD background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><IMG 
+    src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></TD></TR></TBODY></TABLE>
+<TABLE cellSpacing=0 cellPadding=0 width="100%" border=0>
+  <TBODY>
+  <TR>
+    <TD><IMG height=28 src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28></TD>
+    <TD width="100%"><IMG height=28 src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" 
+      width="100%"></TD>
+    <TD><IMG height=28 src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" 
+width=28></TD></TR></TBODY></TABLE>
+<FONT color=#aaffaa size=3> 
+<PRE>	void solve()								<FONT color=#ffffaa>// 计算施加给各个质点的力</FONT>
+	{
+		for (int a = 0; a &lt; numOfMasses - 1; ++a)			<FONT color=#ffffaa>// 弹簧施加给各个物体的力</FONT>
+		{
+			springs[a]-&gt;solve();					
+		}
+
+		for (a = 0; a &lt; numOfMasses; ++a)				<FONT color=#aaffaa size=3><FONT color=#ffffaa>// 计算各个物体受到的其它的力</FONT></FONT>
+		{
+			masses[a]-&gt;applyForce(gravitation * masses[a]-&gt;m);	<FONT color=#ffffaa>// 万有引力</FONT>
+			<FONT color=#ffffaa>// 空气的摩擦力</FONT>
+			masses[a]-&gt;applyForce(-masses[a]-&gt;vel * airFrictionConstant);
+
+			if (masses[a]-&gt;pos.y &lt; groundHeight)			<FONT color=#ffffaa>// 计算地面对质点的作用</FONT>
+			{
+				Vector3D v;					
+
+				v = masses[a]-&gt;vel;				<FONT color=#ffffaa>// </FONT><FONT color=#aaffaa size=3><FONT color=#ffffaa>返回速度</FONT></FONT>
+				v.y = 0;					<FONT color=#ffffaa>// y方向的速度为0</FONT>
+
+<FONT color=#ffffaa>		// 计算地面给质点的力</FONT>
+				masses[a]-&gt;applyForce(-v * groundFrictionConstant);
+
+				v = masses[a]-&gt;vel;				
+				v.x = 0;					
+				v.z = 0;					
+
+				if (v.y &lt; 0)					<FONT color=#ffffaa>// 计算地面的缓冲力</FONT>
+
+					masses[a]-&gt;applyForce(-v * groundAbsorptionConstant);
+				
+				<FONT color=#ffffaa>// 计算地面的反作用力</FONT>
+				Vector3D force = Vector3D(0, groundRepulsionConstant, 0) * 
+					(groundHeight - masses[a]-&gt;pos.y);
+
+				masses[a]-&gt;applyForce(force);			<FONT color=#ffffaa>// 施加地面对质点的力</FONT>
+			}
+		}
+	}
+</PRE>
+</FONT> 
+<TABLE cellSpacing=0 cellPadding=0 width="100%" border=0>
+  <TBODY>
+  <TR>
+    <TD><IMG height=28 src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28></TD>
+    <TD width="100%"><IMG height=28 src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" 
+      width="100%"></TD>
+    <TD><IMG height=28 src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" 
+width=28></TD></TR></TBODY></TABLE>
+<TABLE cellSpacing=0 cellPadding=0 width="100%" border=0>
+  <TBODY>
+  <TR>
+    <TD background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><IMG 
+    src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></TD>
+      <TD vAlign=top width="100%">下面的代码完成整个模拟过程</TD>
+    <TD background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><IMG 
+    src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></TD></TR></TBODY></TABLE>
+<TABLE cellSpacing=0 cellPadding=0 width="100%" border=0>
+  <TBODY>
+  <TR>
+    <TD><IMG height=28 src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28></TD>
+    <TD width="100%"><IMG height=28 src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" 
+      width="100%"></TD>
+    <TD><IMG height=28 src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" 
+width=28></TD></TR></TBODY></TABLE>
+<FONT color=#aaffaa size=3> 
+<PRE>	void simulate(float dt)						<FONT color=#ffffaa>// 模拟一次</FONT>
+	{
+		Simulation::simulate(dt);					<FONT color=#ffffaa>// 调用基类的模拟函数</FONT>
+
+		ropeConnectionPos += ropeConnectionVel * dt;			<FONT color=#ffffaa>// 计算绳子的连接点</FONT>
+
+		if (ropeConnectionPos.y &lt; groundHeight)				
+		{
+			ropeConnectionPos.y = groundHeight;
+			ropeConnectionVel.y = 0;
+		}
+
+		masses[0]-&gt;pos = ropeConnectionPos;				<FONT color=#ffffaa>// 更新绳子的连接点和速度</FONT>
+		masses[0]-&gt;vel = ropeConnectionVel;				
+	}
+</PRE>
+</FONT> <FONT color=#aaffaa size=3>
+<PRE>	void setRopeConnectionVel(Vector3D ropeConnectionVel)			
+	{
+		this-&gt;ropeConnectionVel = ropeConnectionVel;
+	}
+</PRE>
+</FONT>
+<TABLE cellSpacing=0 cellPadding=0 width="100%" border=0>
+  <TBODY>
+  <TR>
+    <TD><IMG height=28 src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28></TD>
+    <TD width="100%"><IMG height=28 src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" 
+      width="100%"></TD>
+    <TD><IMG height=28 src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" 
+width=28></TD></TR></TBODY></TABLE>
+<TABLE cellSpacing=0 cellPadding=0 width="100%" border=0>
+  <TBODY>
+  <TR>
+    <TD background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><IMG 
+    src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></TD>
+      <TD vAlign=top width="100%">有了上面的类，我们可以很方便的模拟绳子，代码如下：</TD>
+    <TD background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><IMG 
+    src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></TD></TR></TBODY></TABLE>
+<TABLE cellSpacing=0 cellPadding=0 width="100%" border=0>
+  <TBODY>
+  <TR>
+    <TD><IMG height=28 src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28></TD>
+    <TD width="100%"><IMG height=28 src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" 
+      width="100%"></TD>
+    <TD><IMG height=28 src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" 
+width=28></TD></TR></TBODY></TABLE>
+<FONT color=#aaffaa size=3> 
+<PRE>RopeSimulation* ropeSimulation =
+	new RopeSimulation(
+		80,								<FONT color=#ffffaa>// 80 质点</FONT>
+		0.05f,								<FONT color=#ffffaa>// 每个质点50g</FONT>
+		10000.0f,								<FONT color=#ffffaa>// 弹性系数</FONT>
+		0.05f,								<FONT color=#ffffaa>// 质点之间的距离</FONT>
+		0.2f,								<FONT color=#ffffaa>// 弹簧的内摩擦力</FONT>
+		Vector3D(0, -9.81f, 0),						<FONT color=#ffffaa>// 万有引力</FONT>
+		0.02f,								<FONT color=#ffffaa>// 空气摩擦力</FONT>
+		100.0f,								<FONT color=#ffffaa>// 地面反作用系数</FONT>
+		0.2f,								<FONT color=#ffffaa>// 地面摩擦系数</FONT>
+		2.0f,								<FONT color=#ffffaa>// 地面缓冲系数</FONT>
+		-1.5f);								<FONT color=#ffffaa>// 地面高度</FONT>
+</PRE>
+</FONT> 
+<TABLE cellSpacing=0 cellPadding=0 width="100%" border=0>
+  <TBODY>
+  <TR>
+    <TD><IMG height=28 src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28></TD>
+    <TD width="100%"><IMG height=28 src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" 
+      width="100%"></TD>
+    <TD><IMG height=28 src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" 
+width=28></TD></TR></TBODY></TABLE>
+<TABLE cellSpacing=0 cellPadding=0 width="100%" border=0>
+  <TBODY>
+  <TR>
+    <TD background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><IMG 
+    src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></TD>
+      <TD vAlign=top width="100%">下面的代码在程序中执行绳子的模拟</TD>
+    <TD background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><IMG 
+    src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></TD></TR></TBODY></TABLE>
+<TABLE cellSpacing=0 cellPadding=0 width="100%" border=0>
+  <TBODY>
+  <TR>
+    <TD><IMG height=28 src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28></TD>
+    <TD width="100%"><IMG height=28 src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" 
+      width="100%"></TD>
+    <TD><IMG height=28 src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" 
+width=28></TD></TR></TBODY></TABLE><FONT color=#aaffaa size=3>
+<PRE>float dt = milliseconds / 1000.0f;						<FONT color=#ffffaa>// 经过的秒数</FONT>
+
+float maxPossible_dt = 0.002f;						<FONT color=#ffffaa>// 模拟间隔</FONT>
+
+int numOfIterations = (int)(dt / maxPossible_dt) + 1;				<FONT color=#ffffaa>// 模拟次数</FONT>
+if (numOfIterations != 0)							
+	dt = dt / numOfIterations;						
+
+for (int a = 0; a &lt; numOfIterations; ++a)					<FONT color=#ffffaa>// 执行模拟</FONT>
+	ropeSimulation-&gt;operate(dt);
+</PRE>
+</FONT>
+<TABLE cellSpacing=0 cellPadding=0 width="100%" border=0>
+  <TBODY>
+  <TR>
+    <TD><IMG height=28 src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28></TD>
+    <TD width="100%"><IMG height=28 src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" 
+      width="100%"></TD>
+    <TD><IMG height=28 src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" 
+width=28></TD></TR></TBODY></TABLE>
+<TABLE cellSpacing=0 cellPadding=0 width="100%" border=0>
+  <TBODY>
+  <TR>
+    <TD background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><IMG 
+    src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></TD>
+      <TD vAlign=top width="100%"><p>　</p>
+        <p>我相信这一个教会了你很多，从最开始的模型的建立，到完成最后的代码。有了这个基础，相信你会创造出很多更有意思的代码！</p>
+<table width="100%" border="1">
+  <tr>
+    <td width="27%"><img src="logo 3.jpg" tppabs="http://www.owlei.com/DancingWind/images/logo%203.jpg" width="209" height="200" align="middle"></td>
+    <td width="73%">版权与使用声明:<br>
+      我是个对学习和生活充满激情的普通男孩,在网络上我以DancingWind为昵称，我的联系方式是zhouwei02@mails.tsinghua.edu.cn，如果你有任何问题，都可以联系我。
+      <p>引子<br>
+        网络是一个共享的资源，但我在自己的学习生涯中浪费大量的时间去搜索可用的资料，在现实生活中花费了大量的金钱和时间在书店中寻找资料，于是我给自己起了个昵称DancingWind，其意义是想风一样从各个知识的站点中吸取成长的养料。在飘荡了多年之后，我决定把自己收集的资料整理为一个统一的资源库。</p>
+      <p>版权声明<br>
+        所有DancingWind发表的内容，大多都来自共享的资源，所以我没有资格把它们据为己有，或声称自己为这些资源作出了一点贡献。故任何人都可以复制，修改，重新发表，甚至以自己的名义发表，我都不会追究，但你在做以上事情的时候必须保证内容的完整性，给后来的人一个完整的教程。最后，任何人不能以这些资料的任何部分，谋取任何形式的报酬。</p>
+      <p>发展计划<br>
+        在国外，很多资料都是很多人花费几年的时间慢慢积累起来的。如果任何人有兴趣与别人共享你的知识，我很欢迎你与我联系，但你必须同意我上面的声明。</p>
+              <p>感谢<br>
+                感谢我的母亲一直以来对我的支持和在生活上的照顾。<br>
+                感谢我深爱的女友田芹，一直以来默默的在精神上和生活中对我的支持，她甚至把买衣服的钱都用来给我买书了，她真的是我见过的最好的女孩，希望我能带给她幸福。</p>
+              <p>资源下载: <br>
+                文档 <a href="javascript:if(confirm('http://www.owlei.com/DancingWind/Res/mht/NeHe%20OpenGL%20Chinese%20Course%2040.mht  \n\nThis file was not retrieved by Teleport Pro, because the server reports that this file cannot be found.  \n\nDo you want to open it from the server?'))window.location='http://www.owlei.com/DancingWind/Res/mht/NeHe%20OpenGL%20Chinese%20Course%2040.mht'" tppabs="http://www.owlei.com/DancingWind/Res/mht/NeHe%20OpenGL%20Chinese%20Course%2040.mht">网页格式</a> 
+                <a href="javascript:if(confirm('http://www.owlei.com/DancingWind/Res/pdf/OpenGL_Nehe_Course_Tutorial_40.pdf  \n\nThis file was not retrieved by Teleport Pro, because the server reports that this file cannot be found.  \n\nDo you want to open it from the server?'))window.location='http://www.owlei.com/DancingWind/Res/pdf/OpenGL_Nehe_Course_Tutorial_40.pdf'" tppabs="http://www.owlei.com/DancingWind/Res/pdf/OpenGL_Nehe_Course_Tutorial_40.pdf">PDF格式</a><br>
+                源码 <a href="javascript:if(confirm('http://www.owlei.com/DancingWind/Res/Src/40_Robe.rar  \n\nThis file was not retrieved by Teleport Pro, because the server reports that this file cannot be found.  \n\nDo you want to open it from the server?'))window.location='http://www.owlei.com/DancingWind/Res/Src/40_Robe.rar'" tppabs="http://www.owlei.com/DancingWind/Res/Src/40_Robe.rar">RAR格式</a></p></td>
+  </tr>
+</table>
+        <FONT face=Tahoma,Verdana,sans-serif 
+      size=-1><table border="0" width="100%">
+            <td width="50%" align="left"><b><font size="-1"> <a href="Tutorial_39.htm" tppabs="http://www.owlei.com/DancingWind/Course/Tutorial_39.htm">< 
+              第39课 </a></font></b></td>
+            <td width="50%" align="right"><b><font size="-1"> <a href="Tutorial_41.htm" tppabs="http://www.owlei.com/DancingWind/Course/Tutorial_41.htm">第41课 
+              ></a></font></b></td>
+</table>
+</font></td><td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr>
+</table><table border=0 cellpadding=0 cellspacing=0 width="100%">
+<tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td>
+<td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td>
+<td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr>
+</table>
+</body>
+</html>

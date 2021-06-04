@@ -1,0 +1,642 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<!-- 这篇文章由Dancingwind翻译，作者的联系方式zhouwei02@mails.tsinghua.edu.cn -->
+
+<html>
+<head>
+<title>NeHe OpenGL教程第二十七课，DancingWind翻译</title>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<style type=text/css>
+A:link {COLOR: #ccaaff; TEXT-DECORATION: none}
+A:visited {COLOR: #ccaaff; TEXT-DECORATION: none}
+A:active {COLOR: #ccaaff; TEXT-DECORATION: none}
+A:hover {COLOR: #ffccaa; TEXT-DECORATION: none}
+</style>
+</head>
+
+<br><br>
+
+<body bgcolor=#000000 text=#ffffff><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td width=326 height=130><img src="logo.png" tppabs="http://www.owlei.com/DancingWind/Pic/logo.png" width=326 height=130></td>
+    <td valign=middle align=center width="75%"><font color=#ffccaa size=+3><b><i>第27课</i></b></font></td>
+  </tr></table>
+  <!-- 上边框-->
+<table border="0" cellPadding="0" cellSpacing="0" width="100%">
+<TBODY>
+  <tr>
+    <td><img height="28" src="tl.jpg" tppabs="http://www.owlei.com/DancingWind/Pic/tl.jpg" width="28"></td>
+    <td width="100%"><img height="28" src="tc.gif" tppabs="http://www.owlei.com/DancingWind/Pic/tc.gif" width="100%"></td>
+    <td><img height="28" src="tr.gif" tppabs="http://www.owlei.com/DancingWind/Pic/tr.gif" width="28"></td>
+  </tr>
+</TBODY>
+</table>
+
+<!-- 中部-->
+<table border="0" cellPadding="0" cellSpacing="0" width="100%">
+<TBODY>
+  <tr>
+  	<!-- 中部左边框-->
+    <td  background="l.gif" tppabs="http://www.owlei.com/DancingWind/Pic/l.gif"><img src="l.gif" tppabs="http://www.owlei.com/DancingWind/Pic/l.gif" width="28" height="28"></td>
+	<!-- 中部文字部分-->
+    <td vAlign="top" width="100%">
+	<table width="100%" border="0">
+          <tr>
+            <td width="25%"><img src="lesson27.jpg" tppabs="http://www.owlei.com/DancingWind/Pic/lesson27.jpg" width="240" height="180"></td>
+            <td width="75%"><p><FONT 
+              class=head>影子:</FONT></p>
+              <p><font size="3">这是一个高级的主题，请确信你已经熟练的掌握了基本的OpenGL，并熟悉蒙板缓存。当然它会给你留下深刻的印象的。</FONT></p></td>
+          </tr>
+     </table>
+      </td>
+	<!-- 中部右边框-->
+    <td background="r.gif" tppabs="http://www.owlei.com/DancingWind/Pic/r.gif"><img src="r.gif" tppabs="http://www.owlei.com/DancingWind/Pic/r.gif" width="28" height="28"></td>
+  </tr>
+</TBODY>
+</table>
+
+<!-- 下边框-->
+<table border="0" cellPadding="0" cellSpacing="0" width="100%">
+<TBODY>
+  <tr>
+    <td><img height="28" src="bl.gif" tppabs="http://www.owlei.com/DancingWind/Pic/bl.gif" width="28"></td>
+    <td width="100%"><img height="28" src="bc.gif" tppabs="http://www.owlei.com/DancingWind/Pic/bc.gif" width="100%"></td>
+    <td><img height="28" src="br.gif" tppabs="http://www.owlei.com/DancingWind/Pic/br.gif" width="28"></td>
+  </tr>
+</TBODY>
+</table>
+  <table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>欢迎来到另一个有些复杂的课程，阴影。这一课的效果好的有些让人不可思议，阴影可以变形，混合在其他的物体上。<br>
+      这一课要求你必须对OpenGL比较了解，它假设你知道许多OpenGL的知识，你必须知道蒙板缓存，基本的OpenGL步骤。如果你对这些不太熟悉，我建议你可以看看前面的教程。当然，在这一课里，我们用到了很多数学知识，请准备好一本数学手册在你的身边。<br>
+      首先我们定义阴影体可以延伸的距离。</td>
+    <td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table><font color=#aaffaa size=3><pre>
+<font color=#ffffaa>// 定义阴影体可以延伸的距离</font>
+#define INFINITY	100
+</pre></font><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>下面定义一个3D顶点结构</td>
+    <td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table>
+<font color=#aaffaa size=3>
+<pre>
+<font color=#ffffaa>// 3D顶点结构</font>
+struct sPoint
+{
+	GLfloat x, y, z;
+};
+</pre>
+</font>
+<table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>定义一个平面结构</td>
+    <td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table>
+<font color=#aaffaa size=3>
+<pre>
+<font color=#ffffaa>// 平面方程为: ax + by + cz + d = 0</font>
+struct sPlaneEq
+{
+	GLfloat a, b, c, d;
+};
+</pre>
+</font>
+<table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>下面定义一个用来投影的三角形的结构 
+      <ul>
+        <li>3个整形索引指定了模型中三角形的三个顶点</li>
+        <li>第二个变量指定了三角形面的法线</li>
+        <li>平面方程描述了三角所在的平面</li>
+        <li>临近的3个顶点索引，指定了与这个三角形相邻的三个顶点</li>
+        <li>最后一个变量指定这个三角形是否投出阴影</li>
+      </ul>
+      </td>
+    <td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table>
+<font color=#aaffaa size=3> 
+<pre>
+<font color=#ffffaa>// 描述一个模型表面的结构</font>
+struct sPlane
+{
+	unsigned int p[3];			<font color=#ffffaa>// 3个整形索引指定了模型中三角形的三个顶点</font>
+	sPoint normals[3];			<font color=#ffffaa>// 第二个变量指定了三角形面的法线</font>
+	unsigned int neigh[3]; <font color=#ffffaa>		// 与本三角形三个边相邻的面的索引</font>
+	sPlaneEq PlaneEq;			<font color=#ffffaa>// 平面方程描述了三角所在的平面</font>
+	bool visible;			<font color=#ffffaa>// 最后一个变量指定这个三角形是否投出阴影?</font>
+};
+</pre>
+</font> 
+<table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>最后我们用下面的结构描述一个产生阴影的物体。</td>
+    <td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table>
+<font color=#aaffaa size=3> 
+<pre>struct glObject{<br>	GLuint nPlanes, nPoints;<br>	sPoint points[100];<br>	sPlane planes[200];<br>};</pre>
+</font>
+<table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>下面的代码用来读取模型，它的代码本身就解释了它的功能。它从文件中读取数据，并把顶点和索引存储在上面定义的结构中，并把所有的临近顶点初始化为-1，它代表这没有任何顶点与它相邻，我们将在以后计算它。</td>
+    <td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table><font color=#aaffaa size=3>
+<pre>
+bool readObject( const char *filename, glObject*o)
+{
+  FILE *file;
+  unsigned int i;
+
+  file = fopen(st, "r");
+  if (!file) return FALSE;
+  <font color=#ffffaa>//读取顶点</font>
+  fscanf(file, "%d", &(o->nPoints));
+  for (i=1;i<=o->nPoints;i++){
+    fscanf(file, "%f", &(o->points[i].x));
+    fscanf(file, "%f", &(o->points[i].y));
+    fscanf(file, "%f", &(o->points[i].z));
+  }
+ <font color=#ffffaa> //读取三角形面</font>
+  fscanf(file, "%d", &(o->nPlanes));
+  for (i=0;i<o->nPlanes;i++){
+    fscanf(file, "%d", &(o->planes[i].p[0]));
+    fscanf(file, "%d", &(o->planes[i].p[1]));
+    fscanf(file, "%d", &(o->planes[i].p[2]));
+	<font color=#ffffaa>//读取每个顶点的法线</font>
+    fscanf(file, "%f", &(o->planes[i].normals[0].x));
+    fscanf(file, "%f", &(o->planes[i].normals[0].y));
+    fscanf(file, "%f", &(o->planes[i].normals[0].z));
+    fscanf(file, "%f", &(o->planes[i].normals[1].x));
+    fscanf(file, "%f", &(o->planes[i].normals[1].y));
+    fscanf(file, "%f", &(o->planes[i].normals[1].z));
+    fscanf(file, "%f", &(o->planes[i].normals[2].x));
+    fscanf(file, "%f", &(o->planes[i].normals[2].y));
+    fscanf(file, "%f", &(o->planes[i].normals[2].z));
+  }
+	return true;
+}
+</pre>
+</font><font color=#aaffaa size=3></font>
+<table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td><td width=100% valign=top><p>现在从setConnectivity函数开始,事情变得越来越复杂了,这个函数用来查找每个面的相邻的顶点,下面是它的伪代码: 
+      </p>
+      </td><td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table>
+<font color=#aaffaa size=3>
+<pre>对于模型中的每一个面A<br>	对于面A中的每一条边<br>		如果我们不只到这条边相邻的顶点<br>			那么对于模型中除了面A外的每一个面B<br>				对于面B中的每一条边<br>					如果面A的边和面B的边是同一条边,那么这两个面相邻<br>						设置面A和面B的相邻属性</pre>
+</font>
+<table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>下面的代码完成上面伪代码中最后两行的内容,你先获得每个面中边的两个顶点,然后检测他们是否相邻,如果是则设置各自的相邻顶点信息</td>
+    <td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table>
+<font color=#aaffaa size=3> 
+<pre>
+	int vertA1 = pFaceA->vertexIndices[edgeA];
+	int vertA2 = pFaceA->vertexIndices[( edgeA+1 )%3];
+
+	int vertB1 = pFaceB->vertexIndices[edgeB];
+	int vertB2 = pFaceB->vertexIndices[( edgeB+1 )%3];
+
+	<font color=#ffffaa>// 测试他们是否为同一边,如果是则设置相应的相邻顶点信息</font>
+	if (( vertA1 == vertB1 && vertA2 == vertB2 ) || ( vertA1 == vertB2 && vertA2 == vertB1 ))
+	{
+		pFaceA->neighbourIndices[edgeA] = faceB;
+		pFaceB->neighbourIndices[edgeB] = faceA;
+		edgeFound = true;
+		break;
+	}
+</pre>
+</font>
+<table border=0 cellpadding=0 cellspacing=0 width="100%">
+  <tr>
+    <td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td>
+    <td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td>
+    <td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td>
+  </tr>
+</table>
+<table border=0 cellpadding=0 cellspacing=0 width="100%">
+  <tr>
+    <td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>完整的SetConnectivity函数的代码如下</td>
+    <td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td>
+  </tr>
+</table>
+<table border=0 cellpadding=0 cellspacing=0 width="100%">
+  <tr>
+    <td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td>
+    <td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td>
+    <td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td>
+  </tr>
+</table>
+<pre>
+<font color=#aaffaa size="3">
+<font color=#ffffaa>// 设置相邻顶点信息</font>
+inline void SetConnectivity(glObject *o){
+	unsigned int p1i, p2i, p1j, p2j;
+	unsigned int P1i, P2i, P1j, P2j;
+	unsigned int i,j,ki,kj;
+
+	<font color=#ffffaa>//对于模型中的每一个面A</font>
+	for(i=0;i<o->nPlanes-1;i++)
+	{
+		<font color=#ffffaa>//对于除了此面的其它的面B</font>
+		for(j=i+1;j<o->nPlanes;j++)
+		{
+			<font color=#ffffaa>//对于面A中的每一个相邻的顶点</font>
+			for(ki=0;ki<3;ki++)
+			{
+				<font color=#ffffaa>//如果这个相邻的顶点没有被设置</font>
+				if(!o->planes[i].neigh[ki])
+				{
+					for(kj=0;kj<3;kj++)
+					{
+						p1i=ki;
+						p1j=kj;
+						p2i=(ki+1)%3;
+						p2j=(kj+1)%3;
+
+						p1i=o->planes[i].p[p1i];
+						p2i=o->planes[i].p[p2i];
+						p1j=o->planes[j].p[p1j];
+						p2j=o->planes[j].p[p2j];
+				
+						<font color=#ffffaa>//如果面A的边P1i->P1j和面B的边P2i->P2j为同一条边，则又下面的公式的P1i=P1j，并且P2i=P2j</font>
+						P1i=((p1i+p2i)-abs(p1i-p2i))/2;
+						P2i=((p1i+p2i)+abs(p1i-p2i))/2;
+						P1j=((p1j+p2j)-abs(p1j-p2j))/2;
+						P2j=((p1j+p2j)+abs(p1j-p2j))/2;
+
+						<font color=#ffffaa>//记录与这个边相邻的面的索引</font>
+						if((P1i==P1j) && (P2i==P2j))
+						{
+							o->planes[i].neigh[ki] = j+1;	  
+							o->planes[j].neigh[kj] = i+1;	  
+						}
+					}
+				}
+			}
+		}
+	}
+}
+</font></pre>
+<font color=#aaffaa size=3> </font> 
+<table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>下面的函数用来绘制模型</td>
+    <td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table><font color=#aaffaa size=3><pre>
+<font color=#ffffaa>// 绘制模型，像以前一样它绘制组成模型的三角形</font>
+void drawObject( const ShadowedObject& object )
+{
+	glBegin( GL_TRIANGLES );
+	for ( int i = 0; i < object.nFaces; i++ )
+	{
+		const Face& face = object.pFaces[i];
+
+		for ( int j = 0; j < 3; j++ )
+		{
+			const Point3f& vertex = object.pVertices[face.vertexIndices[j]];
+
+			glNormal3f( face.normals[j].x, face.normals[j].y, face.normals[j].z );
+			glVertex3f( vertex.x, vertex.y, vertex.z );
+		}
+	}
+	glEnd();
+}
+</pre></font><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>下面的函数用来计算平面的方程参数</td>
+    <td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table><font color=#aaffaa size=3>
+<pre>
+void calculatePlane( const ShadowedObject& object, Face& face )
+{
+	<font color=#ffffaa>// 获得平面的三个顶点</font>
+	const Point3f& v1 = object.pVertices[face.vertexIndices[0]];
+	const Point3f& v2 = object.pVertices[face.vertexIndices[1]];
+	const Point3f& v3 = object.pVertices[face.vertexIndices[2]];
+
+	face.planeEquation.a = v1.y*(v2.z-v3.z) + v2.y*(v3.z-v1.z) + v3.y*(v1.z-v2.z);
+	face.planeEquation.b = v1.z*(v2.x-v3.x) + v2.z*(v3.x-v1.x) + v3.z*(v1.x-v2.x);
+	face.planeEquation.c = v1.x*(v2.y-v3.y) + v2.x*(v3.y-v1.y) + v3.x*(v1.y-v2.y);
+	face.planeEquation.d = -( v1.x*( v2.y*v3.z - v3.y*v2.z ) +
+				v2.x*(v3.y*v1.z - v1.y*v3.z) +
+				v3.x*(v1.y*v2.z - v2.y*v1.z) );
+}
+</pre>
+</font><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>你还可以呼吸么?好的,我们继续:) 接下来你将学习如何去投影,castShadow函数几乎用到了所有OpenGL的功能,完成这个函数后,把它传递到doShadowPass函数来通过两个渲染通道绘制出阴影.<br>
+      首先,我们看看哪些面面对着灯光,我们可以通过灯光位置和平面方程计算出.如果灯光到平面的位置大于0,则位于灯光的上方,否则位于灯光的下方(如果有什么问题,翻一下你高中的解析几何).</td>
+    <td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table><font color=#aaffaa size=3>
+<pre>
+void castShadow( ShadowedObject& object, GLfloat *lightPosition )
+{
+	<font color=#ffffaa>// 设置哪些面在灯光的前面</font>
+	for ( int i = 0; i < object.nFaces; i++ )
+	{
+		const Plane& plane = object.pFaces[i].planeEquation;
+
+		GLfloat side = plane.a*lightPosition[0]+
+			plane.b*lightPosition[1]+
+			plane.c*lightPosition[2]+
+			plane.d;
+
+		if ( side > 0 )
+			object.pFaces[i].visible = true;
+		else
+			object.pFaces[i].visible = false;
+	}
+</pre>
+</font><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>下面设置必要的状态来渲染阴影.<br>
+      首先,禁用灯光和绘制颜色,因为我们不计算光照,这样可以节约计算量.<br>
+      接着,设置深度缓存,深度测试还是需要的,但我们不希望我们的阴影体向实体一样具有深度,所以关闭深度缓存.<br>
+      最后我们启用蒙板缓存,让阴影体的位置在蒙板中被设置为1.</td>
+    <td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table><font color=#aaffaa size=3>
+<pre>	glDisable( GL_LIGHTING );					<font color=#ffffaa>// 关闭灯光</font>
+	glColorMask( GL_FALSE, GL_FALSE, GL_FALSE, GL_FALSE );		<font color=#ffffaa>// 关闭颜色缓存的写入</font>	
+	glDepthFunc( GL_LEQUAL );					<font color=#ffffaa>// 设置深度比较函数</font>
+	glDepthMask( GL_FALSE );					<font color=#ffffaa>// 关闭深度缓存的写入</font>	
+	glEnable( GL_STENCIL_TEST );				<font color=#ffffaa>// 使用蒙板缓存</font>
+	glStencilFunc( GL_ALWAYS, 1, 0xFFFFFFFFL );	<font color=#ffffaa>		// 设置蒙板函数</font>
+</pre>
+</font><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>现在到了阴影被实际渲染得地方了,我们使用了下面提到的doShadowPass函数,它用来绘制阴影体的边界面.我们通过两个步骤来绘制阴影体,首先使用前向面增加阴影体在蒙板缓存中的值,接着使用后向面减少阴影体在蒙板缓存中的值.</td>
+    <td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table>
+<font color=#aaffaa size=3> 
+<pre>	<font color=#ffffaa>// 如果是逆时针（即面向视点）的多边形，通过了蒙板和深度测试，则把蒙板的值增加1</font>
+	glFrontFace( GL_CCW );
+	glStencilOp( GL_KEEP, GL_KEEP, GL_INCR );
+	doShadowPass( object, lightPosition );
+	<font color=#ffffaa>// 如果是顺时针（即背向视点）的多边形，通过了蒙板和深度测试，则把蒙板的值减少1</font>
+	glFrontFace( GL_CW );
+	glStencilOp( GL_KEEP, GL_KEEP, GL_DECR );
+	doShadowPass( object, lightPosition );
+</pre>
+</font> 
+<table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>为了更好的理解这两个步骤,我建议你把第二步注释掉看看效果,如下所示: <FONT face=Tahoma,Verdana,sans-serif size=-1><br>
+      <br>
+      <table border="0" align="center">
+        <tr align="center" valign="top"> 
+          <td><img src="pass1.jpg" tppabs="http://www.owlei.com/DancingWind/Pic/pass1.jpg" width="200" height="150"></td>
+          <td><img src="pass2.jpg" tppabs="http://www.owlei.com/DancingWind/Pic/pass2.jpg" width="200" height="150"></td>
+        </tr>
+        <tr align="center" valign="top"> 
+          <td>图 1: 步骤1</td>
+          <td>图 2: 步骤2</td>
+        </tr>
+      </table>
+      <br>
+      <br>
+      </font>最后一步就是把阴影体所在的位置绘制上阴影的颜色</td>
+    <td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table><font color=#aaffaa size=3>
+<pre>
+	glFrontFace( GL_CCW );
+	glColorMask( GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE );	
+
+	<font color=#ffffaa>// 把阴影绘制上颜色</font>
+	glColor4f( 0.0f, 0.0f, 0.0f, 0.4f );
+	glEnable( GL_BLEND );
+	glBlendFunc( GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA );
+	glStencilFunc( GL_NOTEQUAL, 0, 0xFFFFFFFFL );
+	glStencilOp( GL_KEEP, GL_KEEP, GL_KEEP );
+	glPushMatrix();
+	glLoadIdentity();
+	glBegin( GL_TRIANGLE_STRIP );
+		glVertex3f(-0.1f, 0.1f,-0.10f);
+		glVertex3f(-0.1f,-0.1f,-0.10f);
+		glVertex3f( 0.1f, 0.1f,-0.10f);
+		glVertex3f( 0.1f,-0.1f,-0.10f);
+	glEnd();
+	glPopMatrix();
+}
+</pre>
+</font><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>下面的部分我们绘制构成阴影体边界的四边形,当我们循环所有的三角形面的时候,我们检测它是否是边界边,如果是我们绘制从灯光到这个边界边的射线,并衍生它用来构成四边形.
+<p>这里要用一个蛮力,我们检测物体模型中每一个三角形面,找出其边界并连接灯光到边界的直线,把直线延长出一定的距离,构成阴影体.</p>
+      <p>下面的代码完成这些功能,它看起来并没有想象的复杂.</p></td>
+    <td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table>
+<pre>
+<font color=#aaffaa size=3>void doShadowPass(glObject *o, float *lp)
+{
+	unsigned int	i, j, k, jj;
+	unsigned int	p1, p2;
+	sPoint			v1, v2;
+
+	<font color=#ffffaa>//对模型中的每一个面</font>
+	for (i=0; i<o->nPlanes;i++)
+	{	
+		<font color=#ffffaa>//如果面在灯光的前面</font>
+		if (o->planes[i].visible)
+		{
+			<font color=#ffffaa>//对于被灯光照射的面的每一个相邻的面</font>
+			for (j=0;j<3;j++)
+			{
+				k = o->planes[i].neigh[j];
+				<font color=#ffffaa>//如果面不存在，或不被灯光照射，那么这个边是边界</font>
+				if ((!k) || (!o->planes[k-1].visible))
+				{
+					<font color=#ffffaa>// 获得面的两个顶点</font>
+					p1 = o->planes[i].p[j];
+					jj = (j+1)%3;
+					p2 = o->planes[i].p[jj];
+
+					<font color=#ffffaa>//计算边的顶点到灯光的方向，并放大100倍</font>
+					v1.x = (o->points[p1].x - lp[0])*100;
+					v1.y = (o->points[p1].y - lp[1])*100;
+					v1.z = (o->points[p1].z - lp[2])*100;
+
+					v2.x = (o->points[p2].x - lp[0])*100;
+					v2.y = (o->points[p2].y - lp[1])*100;
+					v2.z = (o->points[p2].z - lp[2])*100;
+					
+					<font color=#ffffaa>//绘制构成阴影体边界的面</font>
+					glBegin(GL_TRIANGLE_STRIP);
+						glVertex3f(o->points[p1].x,
+									o->points[p1].y,
+									o->points[p1].z);
+						glVertex3f(o->points[p1].x + v1.x,
+									o->points[p1].y + v1.y,
+									o->points[p1].z + v1.z);
+
+						glVertex3f(o->points[p2].x,
+									o->points[p2].y,
+									o->points[p2].z);
+						glVertex3f(o->points[p2].x + v2.x,
+									o->points[p2].y + v2.y,
+									o->points[p2].z + v2.z);
+					glEnd();
+				}
+			}
+		}
+	}
+
+}
+</font>
+</pre>
+<table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>既然我们已经能绘制阴影了,那么我们开始绘制我们的场景吧</td>
+    <td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table><font color=#aaffaa size=3>
+<pre>
+bool drawGLScene()
+{
+	GLmatrix16f Minv;
+	GLvector4f wlp, lp;
+
+	<font color=#ffffaa>// 清空缓存</font>
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
+
+	glLoadIdentity();							<font color=#ffffaa>// 设置灯光，并绘制球</font>
+	glTranslatef(0.0f, 0.0f, -20.0f);				
+	glLightfv(GL_LIGHT1, GL_POSITION, LightPos);			
+	glTranslatef(SpherePos[0], SpherePos[1], SpherePos[2]);		
+	gluSphere(q, 1.5f, 32, 16);					</pre>
+</font><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>下面我们计算灯光在物体坐标系中的位置</td>
+    <td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table><font color=#aaffaa size=3>
+<pre>
+	glLoadIdentity();						
+	glRotatef(-yrot, 0.0f, 1.0f, 0.0f);				
+	glRotatef(-xrot, 1.0f, 0.0f, 0.0f);				
+	glTranslatef(-ObjPos[0], -ObjPos[1], -ObjPos[2]);		
+	glGetFloatv(GL_MODELVIEW_MATRIX,Minv);				<font color=#ffffaa>// 计算从世界坐标系变化到物体坐标系中的坐标</font>
+	lp[0] = LightPos[0];						<font color=#ffffaa>// 保存灯光的位置</font>
+	lp[1] = LightPos[1];						
+	lp[2] = LightPos[2];						
+	lp[3] = LightPos[3];						
+	VMatMult(Minv, lp);						<font color=#ffffaa>// 计算最后灯光的位置</font>
+</pre>
+</font><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>下面绘制房间，物体和它的阴影</td>
+    <td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table><font color=#aaffaa size=3>
+<pre>
+	glLoadIdentity();		
+	glTranslatef(0.0f, 0.0f, -20.0f);				
+	DrawGLRoom();							<font color=#ffffaa>// 绘制房间</font>
+	glTranslatef(ObjPos[0], ObjPos[1], ObjPos[2]);			
+	glRotatef(xrot, 1.0f, 0.0f, 0.0f);				
+	glRotatef(yrot, 0.0f, 1.0f, 0.0f);				
+	DrawGLObject(obj);						<font color=#ffffaa>	// 绘制物体</font>
+	CastShadow(&amp;obj, lp);						<font color=#ffffaa>// 绘制物体的阴影</font>
+</pre>
+</font><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>下面的代码绘制一个黄色的球代表了灯光的位置</td>
+    <td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table><font color=#aaffaa size=3>
+<pre>
+	glColor4f(0.7f, 0.4f, 0.0f, 1.0f);				
+	glDisable(GL_LIGHTING);						
+	glDepthMask(GL_FALSE);						
+	glTranslatef(lp[0], lp[1], lp[2]);				
+	gluSphere(q, 0.2f, 16, 8);					
+	glEnable(GL_LIGHTING);						
+	glDepthMask(GL_TRUE);						</pre>
+</font><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>最后设置物体的控制</td>
+    <td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table><font color=#aaffaa size=3>
+<pre>
+	xrot += xspeed;							<font color=#ffffaa>// 增加X轴选择速度</font>
+	yrot += yspeed;							<font color=#ffffaa>// 增加Y轴选择速度</font>
+
+	glFlush();							<font color=#ffffaa>// 强制OpenGL完成所有的命令</font>
+	return TRUE;							<font color=#ffffaa>// 成功返回</font>
+}
+</pre>
+</font><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>绘制房间墙面</td>
+    <td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table><font color=#aaffaa size=3>
+<pre>
+void DrawGLRoom()								<font color=#ffffaa>// 绘制房间(盒装) </font>
+{
+	glBegin(GL_QUADS);							<font color=#ffffaa>// 绘制四边形</font>
+		<font color=#ffffaa>// 地面</font>
+		glNormal3f(0.0f, 1.0f, 0.0f);				<font color=#ffffaa>// 法线向上</font>
+		glVertex3f(-10.0f,-10.0f,-20.0f);			
+		glVertex3f(-10.0f,-10.0f, 20.0f);			
+		glVertex3f( 10.0f,-10.0f, 20.0f);			
+		glVertex3f( 10.0f,-10.0f,-20.0f);			
+		<font color=#ffffaa>// 天花板</font>
+		glNormal3f(0.0f,-1.0f, 0.0f);				<font color=#ffffaa>// 法线向下</font>
+		glVertex3f(-10.0f, 10.0f, 20.0f);			
+		glVertex3f(-10.0f, 10.0f,-20.0f);			
+		glVertex3f( 10.0f, 10.0f,-20.0f);			
+		glVertex3f( 10.0f, 10.0f, 20.0f);			
+		<font color=#ffffaa>// 前面</font>
+		glNormal3f(0.0f, 0.0f, 1.0f);				<font color=#ffffaa>// 法线向后</font>
+		glVertex3f(-10.0f, 10.0f,-20.0f);			
+		glVertex3f(-10.0f,-10.0f,-20.0f);			
+		glVertex3f( 10.0f,-10.0f,-20.0f);			
+		glVertex3f( 10.0f, 10.0f,-20.0f);			
+		<font color=#ffffaa>// 后面</font>
+		glNormal3f(0.0f, 0.0f,-1.0f);				<font color=#ffffaa>// 法线向前</font>
+		glVertex3f( 10.0f, 10.0f, 20.0f);			
+		glVertex3f( 10.0f,-10.0f, 20.0f);			
+		glVertex3f(-10.0f,-10.0f, 20.0f);			
+		glVertex3f(-10.0f, 10.0f, 20.0f);			
+		<font color=#ffffaa>// 左面</font>
+		glNormal3f(1.0f, 0.0f, 0.0f);				<font color=#ffffaa>// 法线向右</font>
+		glVertex3f(-10.0f, 10.0f, 20.0f);			
+		glVertex3f(-10.0f,-10.0f, 20.0f);			
+		glVertex3f(-10.0f,-10.0f,-20.0f);			
+		glVertex3f(-10.0f, 10.0f,-20.0f);			
+		<font color=#ffffaa>// 右面</font>
+		glNormal3f(-1.0f, 0.0f, 0.0f);				<font color=#ffffaa>// 法线向左</font>
+		glVertex3f( 10.0f, 10.0f,-20.0f);			
+		glVertex3f( 10.0f,-10.0f,-20.0f);		
+		glVertex3f( 10.0f,-10.0f, 20.0f);			
+		glVertex3f( 10.0f, 10.0f, 20.0f);			
+	glEnd();								<font color=#ffffaa>// 结束绘制</font>
+}
+</pre>
+</font><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top><p>下面的函数完成矩阵M与向量V的乘法M=M*V</p>
+      </td>
+    <td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table><font color=#aaffaa size=3>
+<pre>
+void VMatMult(GLmatrix16f M, GLvector4f v)
+{
+	GLfloat res[4];							<font color=#ffffaa>// 保存中间计算结果</font>
+	res[0]=M[ 0]*v[0]+M[ 4]*v[1]+M[ 8]*v[2]+M[12]*v[3];
+	res[1]=M[ 1]*v[0]+M[ 5]*v[1]+M[ 9]*v[2]+M[13]*v[3];
+	res[2]=M[ 2]*v[0]+M[ 6]*v[1]+M[10]*v[2]+M[14]*v[3];
+	res[3]=M[ 3]*v[0]+M[ 7]*v[1]+M[11]*v[2]+M[15]*v[3];
+	v[0]=res[0];							<font color=#ffffaa>// 把结果保存在V中</font>
+	v[1]=res[1];
+	v[2]=res[2];
+	v[3]=res[3];							
+}
+</pre>
+</font><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>下面的函数用来初始化模型对象</td>
+    <td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table><font color=#aaffaa size=3>
+<pre>
+int InitGLObjects()							<font color=#ffffaa>// 初始化模型对象</font>
+{
+	if (!ReadObject("Data/Object2.txt", &amp;obj))				<font color=#ffffaa>// 读取模型数据</font>
+	{
+		return FALSE;						<font color=#ffffaa>// 返回失败</font>
+	}
+
+	SetConnectivity(&amp;obj);						<font color=#ffffaa>// 设置相邻顶点的信息</font>
+
+	for ( int i=0;i < obj.nPlanes;i++)				<font color=#ffffaa>	// 计算每个面的平面参数</font>
+		CalcPlane(obj, &amp;obj.planes[i]);			
+
+	return TRUE;							<font color=#ffffaa>//成功返回</font>
+}
+
+</pre>
+</font><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>其他的函数我们不做过多解释了,这会分散你的注意力,好好享受阴影带给你的快感吧. <p>下面还有一些说明:<br>
+        球体不会产生阴影,因为我们没有设置其投影.<br>
+        如果你发现程序很慢,买块好的显卡吧.</p>
+      <p>最后我希望你喜欢它,如果有什么好的建议,请告诉我. 
+      <table width="100%" border="1">
+  <tr>
+    <td width="27%"><img src="logo 3.jpg" tppabs="http://www.owlei.com/DancingWind/images/logo%203.jpg" width="209" height="200" align="middle"></td>
+    <td width="73%">版权与使用声明:<br>
+      我是个对学习和生活充满激情的普通男孩,在网络上我以DancingWind为昵称，我的联系方式是zhouwei02@mails.tsinghua.edu.cn，如果你有任何问题，都可以联系我。
+      <p>引子<br>
+        网络是一个共享的资源，但我在自己的学习生涯中浪费大量的时间去搜索可用的资料，在现实生活中花费了大量的金钱和时间在书店中寻找资料，于是我给自己起了个昵称DancingWind，其意义是想风一样从各个知识的站点中吸取成长的养料。在飘荡了多年之后，我决定把自己收集的资料整理为一个统一的资源库。</p>
+      <p>版权声明<br>
+        所有DancingWind发表的内容，大多都来自共享的资源，所以我没有资格把它们据为己有，或声称自己为这些资源作出了一点贡献。故任何人都可以复制，修改，重新发表，甚至以自己的名义发表，我都不会追究，但你在做以上事情的时候必须保证内容的完整性，给后来的人一个完整的教程。最后，任何人不能以这些资料的任何部分，谋取任何形式的报酬。</p>
+      <p>发展计划<br>
+        在国外，很多资料都是很多人花费几年的时间慢慢积累起来的。如果任何人有兴趣与别人共享你的知识，我很欢迎你与我联系，但你必须同意我上面的声明。</p>
+            <p>感谢<br>
+              感谢我的母亲一直以来对我的支持和在生活上的照顾。<br>
+              感谢我深爱的女友田芹，一直以来默默的在精神上和生活中对我的支持，她甚至把买衣服的钱都用来给我买书了，她真的是我见过的最好的女孩，希望我能带给她幸福。</p>
+            <p>资源下载: <br>
+              文档 <a href="javascript:if(confirm('http://www.owlei.com/DancingWind/Res/mht/NeHe%20OpenGL%20Chinese%20Course%2027.mht  \n\nThis file was not retrieved by Teleport Pro, because the server reports that this file cannot be found.  \n\nDo you want to open it from the server?'))window.location='http://www.owlei.com/DancingWind/Res/mht/NeHe%20OpenGL%20Chinese%20Course%2027.mht'" tppabs="http://www.owlei.com/DancingWind/Res/mht/NeHe%20OpenGL%20Chinese%20Course%2027.mht">网页格式</a> 
+              <a href="javascript:if(confirm('http://www.owlei.com/DancingWind/Res/pdf/OpenGL_Nehe_Course_Tutorial_27.pdf  \n\nThis file was not retrieved by Teleport Pro, because the server reports that this file cannot be found.  \n\nDo you want to open it from the server?'))window.location='http://www.owlei.com/DancingWind/Res/pdf/OpenGL_Nehe_Course_Tutorial_27.pdf'" tppabs="http://www.owlei.com/DancingWind/Res/pdf/OpenGL_Nehe_Course_Tutorial_27.pdf">PDF格式</a><br>
+              源码 <a href="javascript:if(confirm('http://www.owlei.com/DancingWind/Res/Src/27_Shadow.rar  \n\nThis file was not retrieved by Teleport Pro, because the server reports that this file cannot be found.  \n\nDo you want to open it from the server?'))window.location='http://www.owlei.com/DancingWind/Res/Src/27_Shadow.rar'" tppabs="http://www.owlei.com/DancingWind/Res/Src/27_Shadow.rar">RAR格式</a></p></td>
+  </tr>
+</table>	
+      <table border="0" width="100%">
+        <td width="50%" align="left"><b><font size="-1"><a href="Tutorial_26.htm" tppabs="http://www.owlei.com/DancingWind/Course/Tutorial_26.htm">< 
+          <font face="Tahoma,Verdana,sans-serif">第</font>26<font face="Tahoma,Verdana,sans-serif">课</font></a></font></b></td>
+        <td width="50%" align="right"><b><font size="-1"><a href="Tutorial_28.htm" tppabs="http://www.owlei.com/DancingWind/Course/Tutorial_28.htm"><font face="Tahoma,Verdana,sans-serif">第</font>28<font face="Tahoma,Verdana,sans-serif">课</font> 
+          ></a></font></b></td>
+      </table>
+      </font></td>
+    <td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table>
+
+</body>
+</html>

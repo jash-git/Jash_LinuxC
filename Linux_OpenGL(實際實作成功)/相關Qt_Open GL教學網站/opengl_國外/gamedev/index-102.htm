@@ -1,0 +1,1002 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+    dir="ltr"
+    xml:lang="en"
+    lang="en">
+  <head>
+    <title>NeHe Productions: Another Way to Handle Input</title>
+
+    <link rel="stylesheet" type="text/css" href="public_base.css" tppabs="http://nehe.gamedev.net/static/css/public_base.css" />
+    <link type="text/css" rel="stylesheet" href="shThemeMidnight.css" tppabs="http://nehe.gamedev.net/static/css/syntax_highlighter/shThemeMidnight.css"/>
+    
+    <link rel="alternate" type="application/atom+xml" title="Atom feed" href="index-1.htm" tppabs="http://nehe.gamedev.net/atom/" />
+    <link rel="alternate" type="application/rss+xml" title="RSS feed" href="index-2.htm" tppabs="http://nehe.gamedev.net/rss/" />
+    
+    <meta name="author" content="Luke Benstead + Carsten Haubold" />
+    <meta name="description" content="OpenGL Tutorials, Demos, Games and More..." />
+    <meta name="keywords" content="opengl, tutorial, article, demo, game, blend, texturemap, lighting, contest, 3D" />
+
+    
+    
+
+    
+
+</script>
+
+
+    
+    
+    
+    
+        
+        <script type='text/javascript'>
+        var googletag = googletag || {};
+        googletag.cmd = googletag.cmd || [];
+        (function() {
+        var gads = document.createElement('script');
+        gads.async = true;
+        gads.type = 'text/javascript';
+        var useSSL = 'https:' == document.location.protocol;
+        gads.src = (useSSL ? 'https:' : 'http:') + 
+        '//www.googletagservices.com/tag/js/gpt.js';
+        var node = document.getElementsByTagName('script')[0];
+        node.parentNode.insertBefore(gads, node);
+        })();
+        </script>
+
+        <script type='text/javascript'>
+        googletag.cmd.push(function() {
+        googletag.defineSlot('/1004699/Leaderboard_NeHe', [728, 90], 'div-gpt-ad-1327940144417-0').addService(googletag.pubads());
+        googletag.defineSlot('/1004699/Skyscraper_NeHe', [160, 600], 'div-gpt-ad-1327940144417-1').addService(googletag.pubads());
+        googletag.pubads().enableSingleRequest();
+        googletag.enableServices();
+        });
+        </script>
+    
+    
+
+    
+  </head>
+
+  <body>
+    
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "all.js#xfbml=1"/*tpa=http://connect.facebook.net/en_GB/all.js#xfbml=1*/;
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+
+
+    <table cellpadding="0" cellspacing="0" border="0" id="layout_table">
+    <tr><td>
+        <div id="header">
+                <a href="index.htm" tppabs="http://nehe.gamedev.net/"><img class="logo" class="logo" src="nehe.png" tppabs="http://nehe.gamedev.net/static/images/nehe.png" border="0" alt="Nehe" /></a>
+        </div>            
+    </td></tr>
+    <tr><td colspan="2">
+            
+<div class="navbar">
+    <a href="index.htm" tppabs="http://nehe.gamedev.net/">HOME</a>
+    <a href="javascript:if(confirm('http://twitter.com/  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://twitter.com/#!/nehegl'" tppabs="http://twitter.com/#!/nehegl">TWITTER</a>  
+    <a href="javascript:if(confirm('http://www.facebook.com/pages/NeHe/300582493323181  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://www.facebook.com/pages/NeHe/300582493323181'" tppabs="http://www.facebook.com/pages/NeHe/300582493323181">FACEBOOK</a>     
+    <a href="index-2.htm" tppabs="http://nehe.gamedev.net/rss/">RSS</a>    
+    <a href="index-1.htm" tppabs="http://nehe.gamedev.net/atom/">ATOM</a>    
+    <a href="javascript:if(confirm('http://www.gamedev.net/forum/27-nehe-productions/page__forum_title__NeHe+Productions  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://www.gamedev.net/forum/27-nehe-productions/page__forum_title__NeHe+Productions'" tppabs="http://www.gamedev.net/forum/27-nehe-productions/page__forum_title__NeHe+Productions">FORUM</a>    
+</div>
+    
+    </td></tr>
+    <tr>
+        <td class="col1">
+
+            
+<div id="article_container">
+
+
+<h1 class="article-header">Another Way to Handle Input</h1>
+<div class="social-media">
+<!-- Place this tag where you want the +1 button to render -->
+<div class="g-plusone" data-size="medium" data-width="120" data-annotation="inline"></div>
+<div class="fb-like" data-send="false" data-layout="button_count" data-width="60" data-show-faces="false" data-colorscheme="dark" data-font="arial"></div>
+</div>
+<div style="clear:both;"></div>
+<p><strong><span style="text-decoration: underline;">AKA Pointers Are Your Friends</span></strong></p>
+<p>Before we begin, to read this article you must know:</p>
+<ul>
+<li>What a Windows Message is and how it can be handled</li>
+<li>What a Function Pointer is</li>
+</ul>
+<p>In this article I'm going to explain another way to handle input apart from the traditional keys[ ] array. I used to mess up the code with the keys[ ] because I always add new keys or even keyboard modes when I'm coding. One incorrect brace can drive the compiler mad. So, my aim is to make a system where you can just register a key and its function. It will support several keyboard modes (menu mode, game mode, limbo mode,..). I will also add a function for text editing and a function to scan what number a key has.</p>
+<!-- break -->
+<p>Source code can be found at the end of this article... with that said... here we go...</p>
+<p>First, we make a header file:</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">// kbdctrl.h
+
+#ifndef kbdctrl
+#define kbdctrl
+	void KC_init( LRESULT (*)(HWND, UINT , WPARAM ,LPARAM));
+	void KC_SetMode(int);
+	int KC_GetMode (void);
+	void KC_SetKey(int, void( *)(int, int));
+	void KC_SetKey(char, void( *)(int, int));
+	void KC_SetMouse(int, void( *)(int, int));
+	void KC_Editor(char *, int, bool *);
+	void KC_Scan(int *, bool *);
+	LRESULT KC_Parse(HWND,UINT,WPARAM,LPARAM);
+#endif
+</pre>
+<p>Then, the source file.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">// kbdctrl.cpp
+
+#include &lt;windows.h&gt;
+#include "kbdctrl.h"
+</pre>
+<p>The principle is simple, but the syntax is not. The base of our system is a two dimensional array of pointers: the first index number is the mode, the second indicates the key the function is bound to, the value is a pointer to the function bound to that key. All the functions must return void and accept two integers as argument. Ill reserve space for 8 modes, 256 keyboard keys and 10 mouse keys. (The keyword static can be omitted).</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	static void ( *event_ptr[8][266])(int, int);
+</pre>
+<p>As you see, the syntax is rather odd; this is why function pointers are used so seldom.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">static LRESULT ( *nextproc)(HWND, UINT , WPARAM ,LPARAM) = &amp;DefWindowProc;
+</pre>
+<p>This variable will hold the pointer to the next Windows message handler. All unprocessed messages will be directed to it. It is DefWindowProc (the default handler) by default.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">static int curmod = 0;
+</pre>
+<p>This int holds the number of the current mode (between 0 and 7).</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">static bool editor = false;					// Is The Editor Active
+static char *ed_string;						// Pointer To The String Containing The Typed Data
+static int ed_offset = 0;					// Cursor Position, The Index Of The NEXT Character In The String
+static int ed_length = 0;					// Length Of ed_string
+static bool *ed_done;						// Pointer To The Variable That Is Set To True If Enter Is Pressed (And The Editor Ends)
+</pre>
+<p>These are the global variables used by the editor mode.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">static bool scan = false;					// Is The Scanner Active
+static bool *sc_done;						// Pointer To The Variable Set To True If A Key Has Been Pressed
+static int *sc_value;						// Pointer To The Variable Holding The Value Of The Key
+</pre>
+<p>For the scan mode.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">void KC_EXEC(int pos, int x, int y)
+{
+	if(event_ptr[curmod][pos] != NULL)
+		(*event_ptr[curmod][pos])(x,y);
+}
+</pre>
+<p>This little function invokes the pos function in the current mode with parameters x and y if the pointer is not null. If the pointer is null, there is no function and no execution is needed.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">void KC_init(LRESULT(*next)(HWND, UINT , WPARAM ,LPARAM))
+{
+	nextproc = next;
+}
+</pre>
+<p>This function is used to register the Windows message handler that can handle the unprocessed messages.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">void KC_SetMode(int mod)
+{
+	curmod = mod;
+}
+
+int KC_GetMode (void)
+{
+	return curmod;
+}
+</pre>
+<p>Two functions to get and set the mode.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">void KC_SetKey(int token, void( *event)(int, int))
+{
+	event_ptr[curmod][token] = event;
+}
+</pre>
+<p>This function binds a function to a key: token holds the key number and void(*event)(int,int) holds a pointer to a function.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">void KC_SetKey(char token, void( *event)(int, int))
+{
+	event_ptr[curmod][token] = event;
+}
+</pre>
+<p>This function is an overloaded version of the former and can be altered if the conversion char-int is incorrect.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">void KC_SetMouse(int token, void( *event)(int, int))
+{
+	// ********************************************
+	// 	mouse tokens:	+0 double-click
+	// 			+1 pressed
+	// 			+2 released
+	// 
+	// 	[0-2] left [3-5] right [6-8] middle
+	// 
+	// 			 9 mouse moved
+	// ********************************************
+	// 	No Scrolling Support Yet
+	// ********************************************
+
+	event_ptr[curmod][token+256] = event;
+}
+</pre>
+<p>This function is used to register a mouse key:</p>
+<table style="width: 300px;" border="1">
+<tbody>
+<tr>
+<td class="back2"><span class="text">0</span></td>
+<td class="back2"><span class="text">left double-click</span></td>
+</tr>
+<tr>
+<td class="back2"><span class="text">1</span></td>
+<td class="back2"><span class="text">left pressed</span></td>
+</tr>
+<tr>
+<td class="back2"><span class="text">2</span></td>
+<td class="back2"><span class="text">left released</span></td>
+</tr>
+<tr>
+<td class="back2"><span class="text">3</span></td>
+<td class="back2"><span class="text">right double-click</span></td>
+</tr>
+<tr>
+<td class="back2"><span class="text">4</span></td>
+<td class="back2"><span class="text">right pressed</span></td>
+</tr>
+<tr>
+<td class="back2"><span class="text">5</span></td>
+<td class="back2"><span class="text">right released</span></td>
+</tr>
+<tr>
+<td class="back2"><span class="text">6</span></td>
+<td class="back2"><span class="text">middle double-click</span></td>
+</tr>
+<tr>
+<td class="back2"><span class="text">7</span></td>
+<td class="back2"><span class="text">middle pressed</span></td>
+</tr>
+<tr>
+<td class="back2"><span class="text">8</span></td>
+<td class="back2"><span class="text">middle released</span></td>
+</tr>
+<tr>
+<td class="back2"><span class="text">9</span></td>
+<td class="back2"><span class="text">mouse moved</span></td>
+</tr>
+</tbody>
+</table>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">void KC_Editor(char *str, int len, bool *done)
+{
+	ed_string	= str;
+	ed_offset	= 0;
+	ed_length	= len;
+	ed_done		= done;
+	editor		= true;
+}
+
+void KC_Scan(int *val, bool *done)
+{
+	sc_value	= val;
+	sc_done		= done;
+	scan		= true;
+}
+</pre>
+<p>These two functions register the values for the editor and scanner and enable them. The use of these functions might need a little explanation. Because we cant wait for the functions to return data (the engine must go on), the data and state are stored in a variable the parent function can access (the pointer is passed, not the value). When the *done is true, the parent function knows the correct value is in the variable (str[ ] and *val) and can take the appropriate steps.</p>
+<p>Now the big one...</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">LRESULT KC_Parse(HWND hWnd,UINT uMsg,WPARAM wParam,LPARAM lParam)
+</pre>
+<p>The KC_Parse funtion is to be used as a Windows message handler, this explains the rather odd data types used as return value and arguments.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">{
+	if(scan)
+	{
+		if(uMsg == WM_KEYDOWN)
+		{
+			*sc_value	= wParam;
+			*sc_done	= true;
+			scan		= false;
+			return 0;
+		}
+	}
+</pre>
+<p>This is clear, I guess, if we are in scan mode and a key is held down, store the key number and set *sc_done to true, so the parent function knows the number is ready. 0 is returned, so, when in scan mode, there is no other mouse or keyboard input possible.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	else
+	{
+		if(editor)
+		{
+</pre>
+<p>If in editor mode...</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">			if(uMsg == WM_CHAR)
+			{
+</pre>
+<p>and a WM_CHAR message is received (this message contains a character, not a key number, so it can be used like that).</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">				if(wParam == VK_RETURN)
+				{
+					editor		= false;
+					*ed_done	= true;
+					return 0;
+				}
+</pre>
+<p>If enter is pressed, end editor mode, and tell the parent the string is ready (AND return null).</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">				if((wParam == VK_BACK) &amp;&amp; (ed_offset != 0) )
+				{
+					ed_string[--ed_offset] = NULL;
+					return 0;
+				}
+</pre>
+<p>If backspace is pressed and the cursor is not on the 0th position, set the previous character in the string to null and point the offset(cursor position) to it. (AND return 0).</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">				if(ed_offset &lt; ed_length)
+				{
+					ed_string[ed_offset++] = wParam;
+				}
+</pre>
+<p>If the string isnt full (offset &lt; length and not offset</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">				return 0;
+			}
+		}
+</pre>
+<p>return 0, so, that if in editor mode, a character message ends the function. The KEYDOWN message (that always comes with the character message) is not processed because of the else statement on the next line. This, in short, means that all keyboard commands are blocked, BUT, mouse input is still processed.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">		else
+		{
+			switch (uMsg)
+			{
+				case WM_KEYDOWN:
+				{
+					KC_EXEC(wParam,1,0);	// Send 1,0
+					return 0;
+				}
+
+				case WM_KEYUP:
+				{
+					KC_EXEC(wParam,0,0);	// Send 0,0
+					return 0;
+				}
+			};
+		}
+</pre>
+<p>So, when we arent in edit mode, keyboard input is processed. A KEYDOWN message executes the function corresponding with the key code, NOT to the character code (they often match, but not always). The function gets 1,0 as parameters. If a KEYUP is received, the parameters are 0,0.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">		switch (uMsg)					// Check For Windows Messages
+		{
+			case WM_LBUTTONDBLCLK:
+			{
+				KC_EXEC(256,LOWORD(lParam),HIWORD(lParam));
+				return 0;
+			}
+
+			case WM_LBUTTONDOWN:
+			{
+				KC_EXEC(257,LOWORD(lParam),HIWORD(lParam));
+				return 0;
+			}
+
+			case WM_LBUTTONUP:
+			{
+				KC_EXEC(258,LOWORD(lParam),HIWORD(lParam));
+				return 0;
+			}
+
+			case WM_MBUTTONDBLCLK:
+			{
+				KC_EXEC(259,LOWORD(lParam),HIWORD(lParam));
+				return 0;
+			}
+
+			case WM_MBUTTONDOWN:
+			{
+				KC_EXEC(260,LOWORD(lParam),HIWORD(lParam));
+				return 0;
+			}
+
+			case WM_MBUTTONUP:
+			{
+				KC_EXEC(261,LOWORD(lParam),HIWORD(lParam));
+				return 0;
+			}
+       
+			case WM_RBUTTONDBLCLK:
+			{
+				KC_EXEC(262,LOWORD(lParam),HIWORD(lParam));
+				return 0;
+			}
+
+			case WM_RBUTTONDOWN:
+			{
+				KC_EXEC(263,LOWORD(lParam),HIWORD(lParam));
+				return 0;
+			}
+
+			case WM_RBUTTONUP:
+			{
+				KC_EXEC(264,LOWORD(lParam),HIWORD(lParam));
+				return 0;
+			}
+
+			case WM_MOUSEMOVE:
+			{
+				KC_EXEC(265,LOWORD(lParam),HIWORD(lParam));
+				return 0;
+			}
+</pre>
+<p>The mouse code. If a message is received, the corresponding function is executed. The parameters are the x and y position of the mouse relative to the upper left corner of the window. (for the LOWORD and HIGHWORD stuff, please refer to MSDN).</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">		};
+	}
+
+	return ( *nextproc)(hWnd,uMsg,wParam,lParam);
+}
+</pre>
+<p>The unprocessed messages are sent to the next handler (DefWindowProc by default).</p>
+<p>So, to make the use clear, I will implement a NeHe program using some misc functions, and full 3D movement. It, however, is only a test suit I used for tracing bugs, so it isnt exactly esthetical (if any one wants to make something more fancy, please do so and let me know).</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">#include &lt;stdlib.h&gt;
+#include &lt;stdio.h&gt;
+#include &lt;windows.h&gt;						// Header File For Windows
+#include &lt;stdio.h&gt;						// Header File For Standard Input/Output
+#include &lt;gl\gl.h&gt;						// Header File For The OpenGL32 Library
+#include &lt;gl\glu.h&gt;						// Header File For The GLu32 Library
+#include &lt;gl\glaux.h&gt;						// Header File For The Glaux Library
+#include &lt;math.h&gt;
+#include "kbdctrl.h"
+
+#define STRIDE 2						// Length Of One pace
+
+#define piover180 0.01745329252f
+
+GLYPHMETRICSFLOAT gmf[96];
+
+GLuint fontbase;
+</pre>
+<p>Variables for 3D movement.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">GLfloat xpos,ypos,zpos;
+GLfloat xrot, yrot;
+
+bool    done;
+bool	active		= TRUE;					// Window Active Flag Set To TRUE By Default
+bool	fullscreen	= TRUE;					// Fullscreen Flag Set To Fullscreen Mode By Default
+
+GLfloat modif = 2.0f;
+</pre>
+<p>Mouse sensitivity (the smaller the more sensitive).</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">bool	test		= false;
+</pre>
+<p>Enable or disable the test data output.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">LRESULT	CALLBACK WndProc(HWND, UINT, WPARAM, LPARAM);		// Declaration For WndProc
+void func1 (int, int);						// When F1 Is Pressed, This Function Is Needed
+
+
+GLvoid BuildFont(GLvoid)					// Build Our Bitmap Font
+{
+	HFONT	font;						// Windows Font ID
+	HFONT	oldfont;					// Used For Good House Keeping
+	
+	fontbase = glGenLists(96);				// Storage For 96 Characters ( NEW )
+
+	font = CreateFont(	-10,
+				0,				// Width Of Font
+           			0,				// Angle Of Escapement
+				0,				// Orientation Angle
+				FW_BOLD,			// Font Weight
+				FALSE,				// Italic
+				FALSE,				// Underline
+				FALSE,				// Strikeout
+				ANSI_CHARSET,			// Character Set Identifier
+				OUT_TT_PRECIS,			// Output Precision
+				CLIP_DEFAULT_PRECIS,		// Clipping Precision
+				ANTIALIASED_QUALITY,		// Output Quality
+				FF_DONTCARE|DEFAULT_PITCH,	// Family And Pitch
+				"Courier New");			// Font Name
+	
+	oldfont = (HFONT)SelectObject(hDC, font);		// Selects The Font We Want
+	wglUseFontOutlines(hDC, 32, 96,fontbase,0.0f,0.0f,WGL_FONT_POLYGONS,gmf);
+	SelectObject(hDC, oldfont);				// Selects The Font We Want
+	DeleteObject(font);					// Delete The Font
+}
+
+GLvoid KillFont(GLvoid)						// Delete The Font List
+{
+	glDeleteLists(fontbase, 96);				// Delete All 96 Characters ( NEW )
+}
+</pre>
+<p>The buildfont and killfont functions, they are explained in lesson 13 and 14 of the NeHe Tuts.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">GLvoid glPrint(GLfloat xpos, GLfloat ypos, GLfloat zpos, GLfloat scale, char *string)
+{
+</pre>
+<p>An adapted glPrint function, with scaling (making the font bigger or smaller).</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	glPushAttrib(GL_LIST_BIT);				// Pushes The Display List Bits
+	glPushMatrix();						// Pushes The Matrix
+	glListBase(fontbase - 32);				// Sets The Base Character to 32
+	glTranslatef(xpos,ypos,zpos);
+	glScalef(scale,scale,1.0f);
+	glCallLists(strlen(string), GL_UNSIGNED_BYTE, string);	// Draws The Display List Text
+	glPopMatrix();						// Pops The Matrix
+	glPopAttrib();						// Pops The Display List Bits
+}
+</pre>
+<p>This should be clear.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">void mousemove (int x, int y)
+{
+	xrot += (x-320)/modif;
+	yrot += (y-240)/modif;
+}
+</pre>
+<p>The simplest mouse function there is, unfortunately, to simple to work</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">void straferight (int x, int y)
+{
+	GLfloat  cosx = cos(xrot * piover180);
+	xpos += STRIDE * cos(yrot * piover180) * cosx;
+	zpos += STRIDE * sin(yrot * piover180) * cosx;
+}
+
+void strafeleft (int x, int y)
+{
+	GLfloat cosx = cos(xrot * piover180);
+	xpos -= STRIDE * cos(yrot * piover180) * cosx;
+	zpos -= STRIDE * sin(yrot * piover180) * cosx;
+}
+</pre>
+<p>Functions for strafe left and right, and no y movement (for the math, it isnt to hard to find that out, so, take a piece of paper and get it done)</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">void downmove(int x, int y)
+{
+	GLfloat cosx = cos(xrot * piover180);
+	xpos += STRIDE * sin(yrot * piover180) * cosx;
+	ypos -= STRIDE * sin(xrot * piover180);
+	zpos += STRIDE * cos(yrot * piover180) * cosx;
+}
+	
+void upmove(int x, int y)
+{	
+	GLfloat  cosx = cos(xrot * piover180);
+	xpos -= STRIDE * sin(yrot * piover180) * cosx;
+	ypos += STRIDE * sin(xrot * piover180);
+	zpos -= STRIDE * cos(yrot * piover180) * cosx;
+}
+</pre>
+<p>Moving forward and backward</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">void MO_mousemove(int x, int y)
+{
+</pre>
+<p>This is a more decent mouse function.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	static int MO_x, MO_y;
+</pre>
+<p>The keyword static might need some explanation: if a variable is declared static, it is allocated statically, so each time you call this function, the value is still there from the last run. The only way of removing it from memory is program termination. It has all the properties of a global variable, except that it is only visible in this function. The variable hold the position the cursor had when the function was called the last time.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	yrot += (MO_x - x) /modif;
+	xrot += (MO_y - y) /modif;
+</pre>
+<p>The x and y movements are calculated relative to the last time the function was used and dived by the speed modifier.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	if(x &lt; 20 || x &gt; 620 || y &lt; 20 || y &gt; 460)
+	{	
+		MO_x = 320;
+		MO_y = 240;
+		SetCursorPos(320,240);
+	}
+</pre>
+<p>If the cursor approaches on of the borders of the window, reset it to the center.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	else
+	{
+		MO_x = x;
+		MO_y = y;
+	}
+}
+</pre>
+<p>If not, store the current position for the next run.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">void stop(int x, int y)
+{
+	done=TRUE;						// End The Main Loop
+}
+
+void AN_act(int x, int y)
+{
+	KC_SetMode(1);						// Go To Mode 2
+}
+
+void act(int x, int y)
+{
+	ShowCursor(true);					// Show The Cursor
+	KC_SetMode(0);						// Go To Mode 0
+}
+
+void modif_up(int x, int y)
+{
+	modif += 0.1f;						// Lower Mouse Speed
+}
+
+void modif_down(int x, int y)
+{
+	modif -= 0.1f;						// Raise Mouse Speed
+}
+
+void MO_act(int x, int y)
+{
+	ShowCursor(false); 					// Hide Cursor
+	KC_SetMode(2);						// Go To Mode 2
+}
+
+void reset(int x, int y)					// Reset Movement
+{
+	xrot = 0.0f;
+	yrot = 0.0f;
+	xpos = 0.0f;
+	ypos = 0.0f;
+	zpos = 0.0f;
+}
+</pre>
+<p>Some more functions to be bound to the keys, most of them are self-explanatory.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">void oneshot(int x, int y)
+{
+	static bool active = false;
+	if(!active &amp;&amp; x == 1)
+	{
+		active = true;
+		test=!test;
+	}
+
+	if(x == 0)
+	{
+		active = false;
+	}
+}
+</pre>
+<p>This is the one shot function, it is used to switch (holding the button only triggers it once). Once more, I use a static variable and not a global. It is not, like it might seem, set to false each time the function is triggered, but only when the program is started.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">void ED_act(int x, int y)
+{
+</pre>
+<p>This one is tricky, it has its own main loop, so seems to stop the engine and go on on its own.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	KC_SetMode(3);
+</pre>
+<p>The mode is set to three, (an empty one, so no input is processed except the edit line)</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	bool ED_done = false;
+	char ED_string [30];
+</pre>
+<p>The two variables need by the editor: the string and the status.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	memset (ED_string,NULL,30);
+</pre>
+<p>Fill the string with 0 (otherwise it might do weird things).</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	KC_Editor(ED_string,30,&amp;ED_done);
+</pre>
+<p>Start the editor.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	MSG msg;
+
+	while(!ED_done)						// Loop That Runs While done=FALSE
+	{
+		if (PeekMessage(&amp;msg,NULL,0,0,PM_REMOVE))	// Is There A Message Waiting?
+		{
+			if (msg.message==WM_QUIT)		// Have We Received A Quit Message?
+			{
+				done=TRUE;			// If So done=TRUE
+			}
+			else					// If Not, Deal With Window Messages
+			{
+				TranslateMessage(&amp;msg);		// Translate The Message
+				DispatchMessage(&amp;msg);		// Dispatch The Message
+			}
+		}
+		else						// If There Are No Messages
+		{
+			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+			glLoadIdentity();
+			glPrint(0.0f,0.0f,-20.0f,0.5f, ED_string);
+
+			SwapBuffers(hDC);			// Swap Buffers (Double Buffering)
+		}
+	}
+
+	KC_SetMode(2);
+ }  
+</pre>
+<p>The special main loop, going as long as the editor hasnt given an OK and printing out the string (see tutorial 1).</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">GLvoid StartKC(GLvoid)
+{
+	KC_SetMode(0);						// Mode Is Set To 0, Mode With Crappy Mouse Movement
+	KC_SetKey(VK_F1, &amp;func1);				// Register F1
+	KC_SetKey(VK_UP, &amp;upmove);
+	KC_SetKey(VK_DOWN, &amp;downmove);
+	KC_SetKey(VK_LEFT, &amp;strafeleft);
+	KC_SetKey(VK_RIGHT, &amp;straferight);
+	KC_SetMouse(9, &amp;mousemove);				// Register Mouse Movement
+	KC_SetKey(VK_ESCAPE, &amp;stop);				// Register Escape
+	KC_SetKey('A', &amp;act);					// Register A Key To Mode 0
+	KC_SetKey('Z', &amp;AN_act);				// Register Z Key To Mode 1
+	KC_SetKey('E', &amp;MO_act);				// Register E Key To Mode 3 
+	KC_SetKey('R', &amp;reset);					// Register R Key To Reset
+	KC_SetKey('T', &amp;oneshot);				// Register T Key To The Switch Function
+	KC_SetKey('Y', &amp;ED_act);				// Register Y Key To The Editor (And The Special Main Loop)
+	KC_SetMode(1);						// Mode Is Set To 1, Beter Mouse Movement
+	KC_SetKey(VK_F1, &amp;func1);
+	KC_SetKey(VK_UP, &amp;upmove);
+	KC_SetKey(VK_DOWN, &amp;downmove);
+	KC_SetKey(VK_LEFT, &amp;strafeleft);
+	KC_SetKey(VK_RIGHT, &amp;straferight);
+	KC_SetMouse(9, &amp;MO_mousemove);
+	KC_SetKey(VK_ESCAPE, &amp;stop);
+	KC_SetKey('A', &amp;act);
+	KC_SetKey('Z', &amp;AN_act);
+	KC_SetKey('E', &amp;MO_act);
+	KC_SetKey('R', &amp;reset);
+	KC_SetKey('T', &amp;oneshot);
+	KC_SetMode(2);						// Mode Is Set To Two, Up And Down Are Now Used For Altering Scroll Speed
+	KC_SetKey(VK_F1, &amp;func1);
+	KC_SetKey(VK_UP, &amp;modif_up);
+	KC_SetKey(VK_DOWN, &amp;modif_down);
+	KC_SetMouse(9, &amp;MO_mousemove);
+	KC_SetKey(VK_ESCAPE, &amp;stop);
+	KC_SetKey('A', &amp;act);
+	KC_SetKey('Z', &amp;AN_act);
+	KC_SetKey('E', &amp;MO_act);
+	KC_SetKey('R', &amp;reset);
+	KC_SetKey('T', &amp;oneshot);
+
+   	// Mode 3 Is Empty To Block Mouse Input In Editor Mode
+}
+</pre>
+<p>Registration of the keys and their functions.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">int InitGL(GLvoid)						// All Setup For OpenGL Goes Here
+{
+	glEnable(GL_TEXTURE_2D);				// Enable Texture Mapping ( NEW )
+	glShadeModel(GL_SMOOTH);				// Enable Smooth Shading
+	glClearColor(0.0f, 0.0f, 0.0f, 0.5f);			// Black Background
+	glClearDepth(1.0f);					// Depth Buffer Setup
+	glEnable(GL_DEPTH_TEST);				// Enables Depth Testing
+	glDepthFunc(GL_LEQUAL);					// The Type Of Depth Testing To Do
+	glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);	// Really Nice Perspective Calculations
+	StartKC();
+	BuildFont();
+	return TRUE;						// Initialization Went OK
+}
+</pre>
+<p>Two lines must be inserted: StartKC(); and BuildFont();</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">int DrawGLScene(GLvoid)						// Here's Where We Do All The Drawing
+{
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);	// Clear The Screen And The Depth Buffer
+	glLoadIdentity();					// Reset The View
+</pre>
+<p>Clear the buffers and reset view.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	if(test)
+	{
+		char str[50];
+		sprintf(str, "%d %f ", KC_GetMode(), modif);
+		glPrint(0.0f,0.0f,-10.0f,0.5f, str);
+		sprintf(str, "%f  %f", xrot, yrot);
+		glPrint(-2.0f,-2.0f,-10.0f,0.5f, str);
+	}
+</pre>
+<p>If test mode is on, print out the mode and mouse modification variable an under it the x and y rotation.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	glRotatef(-xrot,1.0,0.0,0.0);
+	glRotatef(-yrot,0.0,1.0,0.0);
+	glTranslatef(-xpos, -ypos, -zpos);
+</pre>
+<p>Transformations for 3D movement (all following code should move correct).</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	glBegin(GL_LINES);
+	glColor3f(1.0f,0.0f,0.0f);
+	glVertex3f(-10.0f, 0.0f , 0.0f);
+	glColor3f(0.0f,1.0f,0.0f);
+	glVertex3f(10.0f, 0.0f , 0.0f);
+	glColor3f(0.0f,1.0f,0.0f);
+	glVertex3f(0.0f, -10.0f , 0.0f);
+	glColor3f(0.0f,0.0f,1.0f);
+	glVertex3f(0.0f, 10.0f , 0.0f);
+	glColor3f(1.0f,0.0f,1.0f);
+	glVertex3f(0.0f, 0.0f , -10.0f);
+	glColor3f(1.0f,1.0f,0.0f);
+	glVertex3f(0.0f, 0.0f , 10.0f);
+	glEnd();
+</pre>
+<p>A very simple cross indicating the axis.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	glColor3f(1.0f,0.0f,0.0f);
+	glPrint(0.0f,0.0f,0.0f,5.0f, "help");
+	glPrint(0.0f,1.0f,12.0f,5.0f, "help2");
+</pre>
+<p>Two times the word help, to see if you are moving upward down or not.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	return TRUE;						// Keep Going
+}
+</pre>
+<p>On the end of the KillGLWindow, the line.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	KillFont();
+</pre>
+<p>Must be inserted.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">void func1 (int x, int y)
+{
+	static bool active = false;
+
+	if(!active &amp;&amp; x == 1)
+	{
+		active = true;
+		KillGLWindow();					// Kill Our Current Window
+		fullscreen=!fullscreen;				// Toggle Fullscreen / Windowed Mode
+
+		// Recreate Our OpenGL Window
+		CreateGLWindow("NeHe's Texture Mapping Tutorial",640,480,16,fullscreen)
+	}
+
+	if(x == 0)
+	{
+		active = false;
+	}
+}
+</pre>
+<p>A switch function for the F1 key.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">LRESULT CALLBACK WndProc(	HWND	hWnd,			// Handle For This Window
+				UINT	uMsg,			// Message For This Window
+				WPARAM	wParam,			// Additional Message Information
+				LPARAM	lParam)			// Additional Message Information
+{
+	switch (uMsg)						// Check For Windows Messages
+	{
+		case WM_ACTIVATE:				// Watch For Window Activate Message
+		{
+			if (!HIWORD(wParam))			// Check Minimization State
+			{
+				active=TRUE;			// Program Is Active
+			}
+			else
+			{
+				active=FALSE;			// Program Is No Longer Active
+			}
+
+			return 0;				// Return To The Message Loop
+		}
+
+		case WM_SYSCOMMAND:				// Intercept System Commands
+		{
+			switch (wParam)				// Check System Calls
+			{
+				case SC_SCREENSAVE:		// Screensaver Trying To Start?
+				case SC_MONITORPOWER:		// Monitor Trying To Enter Powersave?
+				return 0;			// Prevent From Happening
+			}
+			break;					// Exit
+		}
+
+		case WM_CLOSE:					// Did We Receive A Close Message?
+		{
+			PostQuitMessage(0);			// Send A Quit Message
+			return 0;				// Jump Back
+		}
+
+		case WM_SIZE:					// Resize The OpenGL Window
+		{
+			// LoWord=Width, HiWord=Height
+			ReSizeGLScene(LOWORD(lParam),HIWORD(lParam));
+			return 0;				// Jump Back
+		}
+	}
+
+	// Pass All Unhandled Messages To DefWindowProc
+	return KC_Parse(hWnd,uMsg,wParam,lParam);
+}
+</pre>
+<p>the altered WndProc, passing all unprocessed message to the parser</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">int WINAPI WinMain(	HINSTANCE	hInstance,		// Instance
+			HINSTANCE	hPrevInstance,		// Previous Instance
+			LPSTR		lpCmdLine,		// Command Line Parameters
+			int		nCmdShow)		// Window Show State
+{
+	MSG msg;						// Windows Message Structure
+	done=FALSE;						// Bool Variable To Exit Loop
+
+	// Ask The User Which Screen Mode They Prefer
+	if (MessageBox(NULL,"Would You Like To Run In Fullscreen Mode?", "Start FullScreen?",MB_YESNO|MB_ICONQUESTION)==IDNO)
+	{
+		fullscreen=FALSE;				// Windowed Mode
+	}
+
+	// Create Our OpenGL Window
+	if (!CreateGLWindow("NeHe's Texture Mapping Tutorial",640,480,16,fullscreen))
+	{
+		return 0;					// Quit If Window Was Not Created
+	}
+
+	while(!done)						// Loop That Runs While done=FALSE
+	{
+		if (PeekMessage(&amp;msg,NULL,0,0,PM_REMOVE))	// Is There A Message Waiting?
+		{
+			if (msg.message==WM_QUIT)		// Have We Received A Quit Message?
+			{
+				done=TRUE;			// If So done=TRUE
+			}
+			else					// If Not, Deal With Window Messages
+			{
+				TranslateMessage(&amp;msg);		// Translate The Message
+				DispatchMessage(&amp;msg);		// Dispatch The Message
+			}
+		}
+		else						// If There Are No Messages
+		{
+			// Draw The Scene.  Watch For ESC Key And Quit Messages From DrawGLScene()
+			if ((active &amp;&amp; !DrawGLScene()))		// Active?  Was There A Quit Received?
+			{
+				done=TRUE;			// ESC or DrawGLScene Signalled A Quit
+			}
+			else					// Not Time To Quit, Update Screen
+			{
+				SwapBuffers(hDC);		// Swap Buffers (Double Buffering)
+			}
+		}
+	}
+
+	// Shutdown
+	KillGLWindow();						// Kill The Window
+	return (msg.wParam);					// Exit The Program
+}
+</pre>
+<p>The WinMain, no longer handling the keyboard.</p>
+<p>So, to end, I would like to discuss some obvious modifications of the code:</p>
+<p>-adepting the number of modes: just changing the array were it was declared.<br /> -single mode use: changing the array, the exec function and the SetKey and SetMouse functions, removing the curmod variable and the GetMode and SetMode.<br /> -usage as a class (when different modes have their own main loop and their own instance of the class): just make the static global variables private and non static (some might be used static, such as the nextproc) and make the functions public members.</p>
+<p><a href="mailto:w_deborger@hotmail.com">Wouter De Borger</a></p>
+<p>PS. The edit command always prints the key character as first character. This can be avoided in two ways. If you will never trigger the edit function with the mouse, the initial offset can be set to 1 and a new filter added before the if(ed_offset &lt; ed_length)</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">if(ed_offset &lt; 0)
+{
+	ed_offset++;
+	return 0;
+}
+</pre>
+<p>The other solution is using postmessage(hWnd, WM_CHAR, VK_RETURN,0); after starting the editor.</p>
+<p>* <a href="javascript:if(confirm('http://nehe.gamedev.net/_admin/article/edit/25005/extras/article14/article14.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a path excluded by the site\'s Robot Exclusion parameters.  (Teleport Pro\'s compliance with this system is optional; see the Project Properties, Netiquette page.)  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev.net/_admin/article/edit/25005/extras/article14/article14.zip'" tppabs="http://nehe.gamedev.net/_admin/article/edit/25005/extras/article14/article14.zip">Download Code</a> For This Article</p>
+
+
+</div>
+</div>
+
+
+
+            <div style="width:728px;padding:0px;margin:auto; margin-top: 10px;">
+            
+
+    
+                <!-- Leaderboard_NeHe -->
+                <div id='div-gpt-ad-1327940144417-0' style='width:728px; height:90px;'>
+                <script type='text/javascript'>
+                googletag.cmd.push(function() { googletag.display('div-gpt-ad-1327940144417-0'); });
+                </script>
+                </div>
+            
+
+                           
+            </div>   
+        </td>
+        <td class="col2">
+            
+
+
+
+
+<div style="text-align: center; padding:10px;">
+
+<script type='text/javascript'>
+    GA_googleFillSlot("Skyscraper_NeHe");
+</script>
+
+</div>
+            
+        </td>
+    </table>
+    <div id="footer">
+        <p>
+            
+    
+    © 1997-2012 Gamedev . All rights reserved.<br/>
+
+			NeHe™ and NeHe Productions™ are trademarks of GameDev.net, LLC<br/>
+			OpenGL® is a registered trademark of Silicon Graphics Inc.<br/>
+		</p>        
+		<br/>
+    </div>
+
+    
+    
+	    <script type="text/javascript" src="shCore.js" tppabs="http://nehe.gamedev.net/static/js/syntax_highlighter/shCore.js"></script>
+        <script type="text/javascript" src="shBrushCpp.js" tppabs="http://nehe.gamedev.net/static/js/syntax_highlighter/shBrushCpp.js"></script>
+	    <script type="text/javascript" src="shBrushJScript.js" tppabs="http://nehe.gamedev.net/static/js/syntax_highlighter/shBrushJScript.js"></script>
+	    <script type="text/javascript">SyntaxHighlighter.all();</script>
+    
+
+    <!-- Place this render call where appropriate -->
+    <script type="text/javascript">
+      (function() {
+        var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+        po.src = 'plusone.js'/*tpa=https://apis.google.com/js/plusone.js*/;
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+      })();
+    </script>    
+
+    
+<!-- GoogleAnalytics code -->
+<script src="urchin.js" tppabs="http://www.google-analytics.com/urchin.js" type="text/javascript">
+</script>
+<script type="text/javascript">
+_uacct = "UA-279474-2"; // Gamedev
+urchinTracker();
+_uff = 0; // Reset for second account
+_uacct = "UA-24180731-1"; // Non-GD
+urchinTracker();
+</script> 
+  </body>
+</html>

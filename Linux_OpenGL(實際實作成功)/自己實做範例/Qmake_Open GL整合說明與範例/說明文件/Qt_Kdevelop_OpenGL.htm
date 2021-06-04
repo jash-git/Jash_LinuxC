@@ -1,0 +1,769 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<!-- saved from url=(0048)http://www.loveunix.net/viewarticle.php?id=29629 -->
+<HTML><HEAD><TITLE>Qt & Kdevelop技巧集 - LoveUnix.net - 中国UNIX/LINUX 技术门户 - 文章 - 系统与网络区 - 程序设计</TITLE>
+<META http-equiv=Content-Type content="text/html; charset=gb2312">
+<META 
+content=Aix|Linux|Freebsd|Solaris|Sco|HP|SUN|informix|mysql|oracle|编程|新闻|免费UNIX下载 
+name=keywords>
+<META 
+content="Qt &amp; Kdevelop技巧集 -  LoveUnix.net - 中国UNIX/LINUX 技术门户 - 文章 - 系统与网络区 - 程序设计" 
+name=description><LINK title=RSS href="http://www.loveunix.net/rss.php" 
+type=application/rss+xml rel=alternate>
+<STYLE type=text/css>A {
+	COLOR: #384072; TEXT-DECORATION: none
+}
+TD {
+	FONT-SIZE: 12px; LINE-HEIGHT: 18px; FONT-FAMILY: Geneva, Arial, Helvetica, sans-serif
+}
+BODY {
+	FONT-SIZE: 12px; MARGIN: 0px; LINE-HEIGHT: 18px; FONT-FAMILY: Geneva, Arial, Helvetica, sans-serif; BACKGROUND-COLOR: #ececec
+}
+.title {
+	FONT-WEIGHT: bold; FONT-SIZE: 20px; LINE-HEIGHT: 32px
+}
+.logo {
+	FONT-WEIGHT: bold; FONT-SIZE: 17px; COLOR: #000000; FONT-FAMILY: "Verdana", "Arial", "Helvetica", "sans-serif"
+}
+.big {
+	FONT-WEIGHT: bold; FONT-SIZE: 14px; TEXT-DECORATION: none
+}
+.bold {
+	FONT-WEIGHT: bold; TEXT-DECORATION: none
+}
+.boldbig {
+	FONT-WEIGHT: bold; FONT-SIZE: 14px; TEXT-DECORATION: none
+}
+.af {
+	COLOR: #ffffff
+}
+.big1 {
+	FONT-SIZE: 14px; TEXT-DECORATION: none
+}
+.message {
+	FONT-SIZE: 14px; LINE-HEIGHT: 22px
+}
+.mycode {
+	MARGIN: 0px
+}
+TEXTAREA {
+	FONT-SIZE: 12px
+}
+INPUT {
+	FONT-SIZE: 12px
+}
+BLOCKQUOTE {
+	BORDER-RIGHT: #d0d0d0 1px solid; PADDING-RIGHT: 5px; BORDER-TOP: #d0d0d0 1px solid; PADDING-LEFT: 5px; FONT-SIZE: 12px; PADDING-BOTTOM: 5px; MARGIN-LEFT: 20px; BORDER-LEFT: #d0d0d0 1px solid; MARGIN-RIGHT: 20px; PADDING-TOP: 5px; BORDER-BOTTOM: #d0d0d0 1px solid; BACKGROUND-COLOR: #ffffff
+}
+.code {
+	PADDING-RIGHT: 5px; PADDING-LEFT: 5px; PADDING-BOTTOM: 5px; MARGIN-LEFT: 20px; MARGIN-RIGHT: 20px; PADDING-TOP: 5px; BACKGROUND-COLOR: #ffffff
+}
+.style1 {
+	COLOR: #990066
+}
+IMG {
+	BORDER-RIGHT: 0px; BORDER-TOP: 0px; BORDER-LEFT: 0px; BORDER-BOTTOM: 0px
+}
+.big {
+	FONT-SIZE: 14px
+}
+.name {
+	FONT-WEIGHT: bold; FONT-SIZE: 24px; COLOR: red; LINE-HEIGHT: 34px
+}
+.quotetop {
+	FONT-WEIGHT: bold; MARGIN: 0px auto; WIDTH: 100%; COLOR: #000000
+}
+.quotemain {
+	BORDER-RIGHT: #dddddd 1px inset; PADDING-RIGHT: 5px; BORDER-TOP: #dddddd 1px inset; PADDING-LEFT: 5px; PADDING-BOTTOM: 5px; MARGIN: 0px auto 8px; BORDER-LEFT: #dddddd 1px inset; WIDTH: 100%; COLOR: #465584; PADDING-TOP: 5px; BORDER-BOTTOM: #dddddd 1px inset; FONT-FAMILY: Courier New; BACKGROUND-COLOR: #fffffc
+}
+.codetop {
+	FONT-WEIGHT: bold; MARGIN: 0px auto; WIDTH: 100%; COLOR: #000000
+}
+.codemain {
+	BORDER-RIGHT: #dddddd 1px inset; PADDING-RIGHT: 5px; BORDER-TOP: #dddddd 1px inset; PADDING-LEFT: 5px; PADDING-BOTTOM: 5px; MARGIN: 0px auto 8px; BORDER-LEFT: #dddddd 1px inset; WIDTH: 100%; COLOR: #465584; PADDING-TOP: 5px; BORDER-BOTTOM: #dddddd 1px inset; FONT-FAMILY: Courier New; BACKGROUND-COLOR: #e9f1f8
+}
+</STYLE>
+
+<SCRIPT language=JavaScript> 
+<!--
+function checkAll(str,checked) {
+    var a = document.getElementsByName(str);
+    var n = a.length;
+
+    for (var i = 0; i < n; i++) {
+        a[i].checked = checked;
+    }
+    em_size(str);
+}
+
+function download(str, i, first) {
+    var a = document.getElementsByName(str);
+    var n = a.length;
+
+    for (var i = i; i < n; i++) {
+        if(a[i].checked) {
+            window.location=a[i].value;
+            if (first)
+                timeout = 6000;
+            else
+                timeout = 500;
+            i++;
+            window.setTimeout("download('"+str+"', "+i+", 0)", timeout);
+            break;
+        }
+    }
+
+}
+
+function copy(str) {
+    var a = document.getElementsByName(str);
+    var n = a.length;
+    var ed2kcopy = document.getElementById("ed2kcopy_"+str)
+    ed2kcopy.innerHTML = ""
+    for (var i = 0; i < n; i++) {
+        if(a[i].checked)
+        {
+            ed2kcopy.innerHTML += a[i].value;
+            ed2kcopy.innerHTML += "<br />";
+        }
+    }
+        var rng = document.body.createTextRange();
+        rng.moveToElementText(ed2kcopy)
+        rng.scrollIntoView();
+        rng.select();
+        rng.execCommand("Copy");
+        rng.collapse(false);
+}
+
+function em_size(str) {
+    var a = document.getElementsByName(str);
+    var n = a.length;
+    try {
+        var input_checkall = document.getElementById("checkall_"+str);
+        var size = 0;
+        input_checkall.checked = true ;
+        for (var i=0; i < n; i++) {
+            if (a[i].checked) {
+                var piecesArray = a[i].value.split( "|" );
+                size += piecesArray[3]*1;
+            } else {
+                input_checkall.checked = false;
+            }
+        }
+        test = document.getElementById("size_"+str);
+        test.innerHTML = gen_size(size, 3, 2);
+    } catch (e) {
+
+    }
+}
+
+function gen_size(val, li, sepa ) {
+    sep = Math.pow(10, sepa); //小数点后的位数
+    li = Math.pow(10, li); //开始截断的长度
+    retval  = val;
+    unit    = 'Bytes';
+    if (val >= li*1000000000) {
+        val = Math.round( val / (1099511627776/sep) ) / sep;
+        unit  = 'TB';
+    } else if (val >= li*1000000) {
+        val = Math.round( val / (1073741824/sep) ) / sep;
+        unit  = 'GB';
+    } else if (val >= li*1000) {
+        val = Math.round( val / (1048576/sep) ) / sep;
+        unit  = 'MB';
+    } else if (val >= li) {
+        val = Math.round( val / (1024/sep) ) / sep;
+        unit  = 'KB';
+    }
+    return val + unit;
+}
+//-->
+</SCRIPT>
+
+<META content="MSHTML 6.00.2900.3157" name=GENERATOR></HEAD>
+<BODY>
+<TABLE cellSpacing=0 cellPadding=0 width=760 align=center bgColor=#ffffff 
+border=0>
+  <TBODY>
+  <TR>
+    <TD height=80>
+      <TABLE cellSpacing=0 cellPadding=0 width="100%" bgColor=#d7e2ef 
+        border=0><TBODY>
+        <TR>
+        <TR>
+          <TD bgColor=#666666 height=1></TD></TR>
+        <TR>
+          <TD align=right>
+            <TABLE cellSpacing=1 cellPadding=1 width="100%" border=0>
+              <TBODY>
+              <TR>
+                <TD>
+                  <SCRIPT src="Qt_Kdevelop_OpenGL.files/function.htm" 
+                  type=text/javascript></SCRIPT>
+
+                <TD align=right>&nbsp; <A 
+                  href="http://www.loveunix.net/index.php">首页</A> |&nbsp; <A 
+                  href="http://www.loveunix.net/articlelist.php">文章</A> |&nbsp; 
+                  <A href="http://www.loveunix.net/piclist.php">图片</A> |&nbsp; 
+                  <A href="http://www.loveunix.net/softlist.php">下载</A> 
+                  &nbsp;|&nbsp; <A 
+                  href="http://www.loveunix.net/html/s.html">搜索</A> 
+                  &nbsp;|&nbsp; <A href="http://bbs.loveunix.net/index.php" 
+                  target=_blank }?><STRONG><FONT 
+                  color=#ff0000>论坛</FONT></STRONG></A> &nbsp;|&nbsp; <A 
+                  href="http://bbs.loveunix.net/viewthread.php?tid=52349" 
+                  target=_blank }?><STRONG><FONT 
+                  color=#ff0000>爱心</FONT></STRONG></A> &nbsp;|&nbsp; <A 
+                  href="http://www.loveunix.cn/" target=_blank }?><STRONG><FONT 
+                  color=#ff0000>博客</FONT></STRONG></A> </TD>
+                <TD align=right width=10>&nbsp;</TD></TR></TBODY></TABLE></TD></TR>
+        <TR>
+          <TD bgColor=#666666 height=1></TD></TR></TBODY></TABLE>
+      <TABLE cellSpacing=2 cellPadding=2 width="100%" border=0>
+        <TBODY>
+        <TR>
+          <TD width=180><IMG height=60 src="Qt_Kdevelop_OpenGL.files/logo.gif" 
+            width=180 border=0></TD>
+          <TD width=5></TD>
+          <TD width=475><A 
+            href="http://www.loveunix.net/viewarticle.php?id=29629#bottom"><EMBED 
+            src=http://bbs.loveunix.net//image/ibmad_www.swf width=480 height=60 
+            type=application/x-shockwave-flash ?></EMBED></A></TD>
+          <TD>
+            <TABLE cellSpacing=2 cellPadding=2 align=center border=0>
+              <TBODY>
+              <TR>
+                <TD><A style="CURSOR: hand" 
+                  onclick='this.style.behavior="url(#default#homepage)";this.setHomePage("http://www.loveunix.net");' 
+                  href="http://www.loveunix.net/viewarticle.php?id=29629#">设为首页</A></TD></TR>
+              <TR>
+                <TD><A title=LoveUnix.net 
+                  href='javascript:window.external.addfavorite("http://www.loveunix.net","%20LoveUnix.net%20-%20中国UNIX/LINUX%20技术门户");' 
+                  技术门户 LINUX 中国UNIX ->收藏本站</A></TD></TR>
+              <TR>
+                <TD><A title=订阅站点最新帖子 href="http://www.loveunix.net/rss.php" 
+                  target=_blank>订阅信息</A></TD></TR></TBODY></TABLE></TD></TR></TBODY></TABLE></TD></TR>
+  <TR>
+    <TD bgColor=#84a5cc height=1></TD></TR></TBODY></TABLE>
+<TABLE cellSpacing=0 cellPadding=0 width=760 align=center bgColor=#ffffff 
+border=0>
+  <TBODY>
+  <TR>
+    <TD bgColor=#eeeeee height=25>
+      <TABLE cellSpacing=0 cellPadding=3 width="100%" align=center border=0>
+        <TBODY>
+        <TR bgColor=#ebecf5>
+          <TD width="11.1%">&nbsp;<A 
+            href="http://www.loveunix.net/articlelist.php?id=6"><FONT 
+            color=#000000>AIX &amp; I5</FONT></A></TD>
+          <TD width="11.1%">&nbsp;<A 
+            href="http://www.loveunix.net/articlelist.php?id=68"><FONT 
+            color=#000000>PC Server</FONT></A></TD>
+          <TD width="11.1%">&nbsp;<A 
+            href="http://www.loveunix.net/articlelist.php?id=5"><FONT 
+            color=#000000>UNIX&amp;LINUX</FONT></A></TD>
+          <TD width="11.1%">&nbsp;<A 
+            href="http://www.loveunix.net/articlelist.php?id=35"><FONT 
+            color=#000000>存储备份</FONT></A></TD>
+          <TD width="11.1%">&nbsp;<A 
+            href="http://www.loveunix.net/articlelist.php?id=37"><FONT 
+            color=#000000>网络安全</FONT></A></TD>
+          <TD width="11.1%">&nbsp;<A 
+            href="http://www.loveunix.net/articlelist.php?id=9"><FONT 
+            color=#000000>程序设计</FONT></A></TD>
+          <TD width="11.1%">&nbsp;<A 
+            href="http://www.loveunix.net/articlelist.php?id=70"><FONT 
+            color=#000000>DB2家族</FONT></A></TD>
+          <TD width="11.1%">&nbsp;<A 
+            href="http://www.loveunix.net/articlelist.php?id=28"><FONT 
+            color=#000000>数据库版</FONT></A></TD>
+          <TD width="11.1%">&nbsp;<A 
+            href="http://www.loveunix.net/articlelist.php?id=36"><FONT 
+            color=#000000>中 间 件 </FONT></A></TD></TR>
+        <TR bgColor=#ffffff>
+          <TD width="11.1%">&nbsp;<A 
+            href="http://www.loveunix.net/articlelist.php?id=23"><FONT 
+            color=#000000>前程无忧</FONT></A></TD>
+          <TD width="11.1%">&nbsp;<A 
+            href="http://www.loveunix.net/articlelist.php?id=10"><FONT 
+            color=#000000>行业应用</FONT></A></TD>
+          <TD width="11.1%">&nbsp;<A 
+            href="http://www.loveunix.net/articlelist.php?id=69"><FONT 
+            color=#000000>产品信息</FONT></A></TD>
+          <TD width="11.1%">&nbsp;<A 
+            href="http://www.loveunix.net/articlelist.php?id=48"><FONT 
+            color=#000000>行业入门</FONT></A></TD>
+          <TD width="11.1%">&nbsp;<A 
+            href="http://www.loveunix.net/articlelist.php?id=12"><FONT 
+            color=#000000>开心太平洋</FONT></A></TD>
+          <TD width="11.1%">&nbsp;<A 
+            href="http://www.loveunix.net/articlelist.php?id=65"><FONT 
+            color=#000000>墨香雅韵</FONT></A></TD>
+          <TD width="11.1%">&nbsp;<A 
+            href="http://www.loveunix.net/articlelist.php?id=60"><FONT 
+            color=#000000>免费下载</FONT></A></TD>
+          <TD width="11.1%">&nbsp;<A 
+            href="http://www.loveunix.net/articlelist.php?id=2"><FONT 
+            color=#000000>共建家园</FONT></A></TD>
+          <TD width="11.1%">&nbsp;<A 
+            href="http://www.loveunix.net/articlelist.php?id=66"><FONT 
+            color=#000000>博客专区</FONT></A></TD></TR></TBODY></TABLE></TD></TR>
+  <TR>
+    <TD bgColor=#84a5cc height=1></TD></TR></TBODY></TABLE>
+<SCRIPT language=JavaScript>
+function dozoom(size){
+document.getElementById('zoom').style.fontSize=size+'px'
+}
+</SCRIPT>
+
+<TABLE cellSpacing=0 cellPadding=0 width=760 align=center bgColor=#ffffff 
+border=0>
+  <TBODY>
+  <TR>
+    <TD>
+      <TABLE cellSpacing=0 cellPadding=0 width="98%" align=center border=0>
+        <TBODY>
+        <TR>
+          <TD>
+            <TABLE cellSpacing=0 cellPadding=0 width="98%" border=0>
+              <TBODY>
+              <TR>
+                <TD>
+                  <TABLE cellSpacing=0 cellPadding=0 width="100%" align=center 
+                  bgColor=#ffffff border=0>
+                    <TBODY>
+                    <TR>
+                      <TD width=15>&nbsp;<IMG height=11 
+                        src="Qt_Kdevelop_OpenGL.files/dot.gif" width=9></TD>
+                      <TD height=25>您的位置：&nbsp;&nbsp;<A 
+                        href="http://www.loveunix.net/index.php">首页</A> &gt;&gt; 
+                        <A href="http://www.loveunix.net/articlelist.php">文章</A> 
+                        &gt;&gt; <A 
+                        href="http://www.loveunix.net/articlelist.php?id=51">系统与网络区</A> 
+                        &gt;&gt; <A 
+                        href="http://www.loveunix.net/articlelist.php?id=9">程序设计</A> 
+                        &gt;&gt; 查看内容 </TD>
+                      <TD>
+                        <DIV align=right><A href="http://bbs.loveunix.net/" 
+                        target=_blank><IMG 
+                        src="Qt_Kdevelop_OpenGL.files/bbsload.gif" 
+                        border=0></A></DIV></TD></TR></TBODY></TABLE></TD></TR>
+              <TR>
+                <TD bgColor=#999999 height=2></TD></TR>
+              <TR>
+                <TD>&nbsp;</TD></TR>
+              <TR>
+                <TD class=title align=middle>Qt &amp;amp; Kdevelop技巧集</TD></TR>
+              <TR>
+                <TD>&nbsp;</TD></TR>
+              <TR>
+                <TD bgColor=#666666 height=1></TD></TR>
+              <TR>
+                <TD bgColor=#cedbe5>
+                  <TABLE cellSpacing=0 cellPadding=0 width="100%" border=0>
+                    <TBODY>
+                    <TR>
+                      <TD align=middle>作者: carol&nbsp;&nbsp;发布日期: 2004-5-18 
+                        &nbsp;&nbsp; 查看数:
+                        <SCRIPT language=JavaScript 
+                        src="C:\Documents and Settings\Administrator\My Documents\Qt_Kdevelop_OpenGL.files\function(1).htm" 
+                        type=text/JavaScript></SCRIPT>
+                         &nbsp;&nbsp; 出自: 
+                  http://www.loveunix.net</TD></TR></TBODY></TABLE></TD></TR>
+              <TR>
+                <TD>&nbsp;</TD></TR>
+              <TR>
+                <TD>
+                  <TABLE style="TABLE-LAYOUT: fixed; WORD-WRAP: break-word" 
+                  cellSpacing=2 cellPadding=2 width="100%" border=0>
+                    <TBODY>
+                    <TR>
+                      <TD class=message id=zoom>日期：2004年1月21日 星期三 天气：晴朗 
+                        作者：在黑暗中举起探索的火炬<BR>Qt&amp;Kdevelop技巧集(原创) 
+                        <BR>发表：2004-1-21 13:39:23 出处：你的博客网(yourblog.org) 
+                        <BR><BR>link: <A 
+                        href="http://www.yourblog.org/Data/20041/2201.html" 
+                        target=_blank>http://www.yourblog.org/Data/20041/2201.html</A><BR><BR>作者blog上得好文章不少，推荐 
+<!--emo&:wub:--><IMG style="VERTICAL-ALIGN: middle" 
+                        alt=wub.gif src="" border=0><!--endemo--> 
+                        <BR>--------------------------------------------------------------------------------<BR><BR>1． 
+                        如何在Qt程序中加入OpenGL支持。 
+                        <BR>在QT程序中加入OpenGL支持很简单，只需要在Kdevelop连接的库中加入“-lGL 
+                        -lGLU”即可，如果需要glut支持，还可以加入“-lglut”。具体操作是在kdevelop集成编译环境中按下”F7”，在弹出的对话框中选择“Linker”一项，在输入栏输入你想添加的库即可，写法与gcc/g++一致。 
+                        <BR>一般在类QGLWidget中使用OpenGL,调用此类的头文件是qgl.h,具体写法请参考qt例程中的gear,texture,box等程序(在RedHat7.2中,它们在/usr/lib/qt-2.3.1/doc/examples下). 
+                        <BR><BR>2． 检验linux/Unix环境是否支持OpenGL. 
+                        <BR>Qt中的QGLFormat类可以帮助我们轻易检验系统是否支持OpenGL，载入头文件（#include 
+                        &lt;qgl.h&gt;）后，我们就可以使用QGLFormat的静态函数hasOpenGL来检验，具体写法如下例： 
+                        <BR>if (!QGLFormat::hasOpenGL()) //Test OpenGL 
+                        Environment <BR>{ <BR>qWarning( "This system has no 
+                        OpenGL support. Exiting." );//弹出警告对话框 <BR>return -1; 
+                        <BR>} <BR><BR>3.获得屏幕的高和宽. 
+                        <BR>一般我们可以通过QT的Qapplication类来获得系统的一些信息,载入头文件(#include 
+                        &lt;qapplication.h&gt;)我们就可以调用它,下例是使主程序充满整个屏幕的代码: 
+                        <BR>Gui_MainForm gui_mainform; <BR>a.setMainWidget( 
+                        &amp;gui_mainform ); <BR>gui_mainform.resize( 
+                        QApplication::desktop()-&gt;width(), 
+                        QApplication::desktop()-&gt;height() ); 
+                        gui_mainform.show(); <BR><BR>4.关于信号和槽. 
+                        <BR>信号和槽机制是QT库的重要特性,可以说不了解它就不了解Qt.此机制能在各类间建立方便快捷的通信联系,只要类中加载了Q_OBJECT宏并用connect函数正确连接在一起即可,具体写法这里就不赘述了.但本人在使用过程中发现使用此机制容易破坏程序的结构性和封装性,速度也不是很让人满意,尤其是在跨多类调用时.鄙人的一孔之见是: 
+                        信号和槽机制不可不用,但不可多用. <BR><BR>5.QT程序中界面的设计. 
+                        <BR>尽管Kdevelop是一个优秀的集成编译环境,可遗憾的是它不是一个可视化的编译环境,好在有Qdesigner来帮助我们完成界面设计,该程序的使用很简单,使用过VB,VC和Delphi的程序员能很快其操作方式,操作完成后存盘会生成一个扩展名为”ui”的文件,你接下来的任务就是把它解析成cpp和h文件,假设文件名为myform.ui,解析方法如下: 
+                        <BR>$uic myform.ui –I myform.h –o myform..cpp 
+                        //这句生成cpp文件 <BR>$uic myform.ui –o myform.h //这句生成h文件. 
+                        <BR><BR>6.由pro文件生成Makefile. 
+                        <BR>对于Linux/Unix程序员来说编写Makefile文件是一项令人烦恼的任务,而qt程序员就没有这样的烦恼,一句$qmake 
+                        –o Makefile 
+                        myprogram.pro就可以轻松愉快的完成任务,而pro文件的编写也很容易,其核心是h和cpp文件的简单列表.具体写法请参考一下qt自带的样例和教程吧(在RedHat7.2中,它在/usr/lib/qt-2.3.1/doc/examples下),相对Makefile文件简直没有什么难度. 
+                        <BR><BR>7.主组件的选择. 
+                        <BR>一般我们在编程是使用继承Qwidget类的类作为主组件,这当然未可厚非.但在制作典型的多文档和单文档程序时我们有更好的选择—QmainWindow类,它可以方便的管理其中的菜单工具条主窗口和状态条等,在窗体几何属性发生变化时也能完美的实现内部组件缩放,这比用传统的几何布局类来管理要方便得多,而且不用写什么代码.关于它的具体细节请查阅QT的帮组文档,这里就不赘述了. 
+                        <BR><BR>8.菜单项中加入Checked项. 
+                        <BR>在QT中,菜单项中加入Checked有点麻烦,具体写法如下: <BR>1&gt; 
+                        定义int型成员变量,并在创建菜单项中写: <BR>displayGeometryMode=new 
+                        QPopupMenu(this); //这里创建弹出菜单组displayGeometryMode 
+                        <BR>m_menuIDWire=displayGeometryMode-&gt;insertItem("Wire",this,SLOT(slt_Change2WireMode()));.//创建弹出菜单子项 
+                        <BR>displayGeometryMode-&gt;setItemChecked(m_ 
+                        menuIDWire,true);//设定此子项为选择状态 <BR><BR>2&gt; 再在槽函数中写: 
+                        <BR>displayGeometryMode-&gt;setItemChecked(m_menuIDWire,false);//这里设定此子项为非选择状态 
+                        <BR><BR>9.截获程序即将退出的信号. 
+                        <BR>有些时候我们需要在程序即将退出时进行一些处理,如保存文件等等.如何截获程序退出的信号呢?还是要用到Qapplication类的aboutToQuit()信号,程序中可以这样写: 
+                        <BR>connect(qApp,SIGNAL(aboutToQuit()),this,SLOT(Slot_SaveActions())); 
+                        <BR>在槽函数Slot_SaveActions()就可以进行相关处理了,注意,使用全局对象qApp需要加载头文件(#include 
+                        &lt;qapplication.h&gt;). <BR><BR>10.弹出标准文件对话框. 
+                        <BR>在程序中弹出文件对话框是很容易处理的,举例如下: <BR>QString filter="Txt 
+                        files(*.txt)\n" //设置文件过滤,缺省显示文本文件 <BR>"All files(*)" ; 
+                        //可选择显示所有文件 <BR>QString 
+                        Filepathname=QFileDialog::getOpenFileName(" 
+                        ",filter,this);//弹出对话框,这句需要加载头文件(#include &lt; 
+                        qfiledialog.h &gt;) <BR><BR><BR>11.将当前日期时间转化为标准Qstring. 
+                        <BR>QDateTime currentdatetime 
+                        =QDateTime::currentDateTime();//需要加载头文件(#include &lt; 
+                        qdatetime.h &gt;) <BR>QString 
+                        strDateTime=currentdatetime.toString(); <BR><BR>12.设置定时器 
+                        <BR>所有Qobject的子类在设置定时器时都不必加载一个Qtimer对象,因为这样造成了资源浪费且需要书写多余的函数,很不方便.最好的办法是重载timerEvent函数,具体写法如下: 
+                        <BR>class Gui_DlgViewCtrlDatum : public QDialog <BR>{ 
+                        <BR>Q_OBJECT <BR>public: <BR>Gui_DlgViewCtrlDatum( 
+                        QWidget* parent = 0, const char* name = 0, bool modal = 
+                        FALSE, WFlags fl = 0 ); <BR>~Gui_DlgViewCtrlDatum(); 
+                        <BR>protected: <BR>void timerEvent( QTimerEvent * ); 
+                        <BR>}; <BR>void Gui_DlgViewCtrlDatum::timerEvent( 
+                        QTimerEvent *e ) <BR>{ <BR>//statements <BR>} 
+                        <BR>再在Gui_DlgViewCtrlDatum的构造函数中设置时间间隔: 
+                        <BR>startTimer(50);//单位为毫秒 
+                        <BR><BR>这样,每隔50毫秒,函数timerEvent便会被调用一次. 
+                        <BR><BR>13.最方便的几何布局类QGridLayout 
+                        <BR>在QT的几何布局类中,笔者认为QgridLayout使用最为方便,举例如下: 
+                        <BR>QGridLayout* layout=new 
+                        QGridLayout(this,10,10);//创建一个10*10的QgridLayout实例 
+                        <BR>layout-&gt;addMultiCellWidget(gui_dlgslab_glwnd,1,8,0,7);//将OpenGL窗口固定在QgridLayout中的(1,0)单元格到(8,7)单元格中 
+                        <BR>layout-&gt;addMultiCellWidget(Slider1,0,9,8,8);//将一个slider固定在单元格(0,8)到(9,8)中 
+                        <BR>layout-&gt;addWidget(UpLimitLbl,1,9);//将一个label(UpLimitLbl)固定在单元格(1,9)中 
+                        <BR>这样,无论窗体大小如何改变,它们的布局方式都不会发生改变,这比反复使用QvboxLayout和QhboxLayout要方便快捷许多. 
+                        <BR>注:使用几何布局类需要调用头文件(#include &lt;qlayout.h&gt;) 
+                        <BR><BR>14.字符串类Qstring和字符串链表类QstringList. 
+                        <BR>Qstring是Qt中标准字符串类,下面列出它的一些常用函数: 
+                        <BR>toInt():将字符串转化成int类型. <BR>ToFloat():将字符串转化成float类型. 
+                        <BR>ToDouble():将字符串转化成double类型. <BR>Left(n):从左起取n个字符 
+                        <BR>Right(n):从右起取n个字符 
+                        <BR>SetNum(n):将实数n(包括int,float,double等)转化为Qsting型. 
+                        <BR><BR>QstringList是大家比较少使用的类,它可以看成Qstring组成的链表(QT中标准链表类Qlist的函数对它都适用,它的单个节点是Qstring类型的),特别适合与处理文本,下面一段代码就可见其方便快捷: 
+                        <BR>Qstring strtmp=”abc|b|c|d”; <BR>QstringList 
+                        strlsttmp; <BR>Strlsttmp =QStringList::split("|", 
+                        strtmp); <BR>For(unsigned int I=0;I&lt; 
+                        Strlsttmp.count();I++) <BR>{ <BR>cout&lt;&lt; 
+                        Strlsttmp.at(I); <BR>} <BR>结果输出为:abc b c 
+                        d,也就是说,通过一个函数split,一行文本就被符号”|”自动分割成了单个字符串.这在文本处理时特别省力.(请参考c语言大全第四版中用”strtok”函数分割文本的例程,将双方比较一下) 
+                        <BR><BR>15. QGLWidget类如何加入鼠标支持. 
+                        <BR>QGLWidget类加入鼠标支持需要重载以下函数: <BR>void 
+                        mousePressEvent(QMouseEvent*); <BR>void 
+                        mouseMoveEvent(QMouseEvent*); <BR>void 
+                        mouseReleaseEvent(QMouseEvent*); <BR>请具体看一个实例: <BR>class 
+                        Gui_WgtMain_GLWnd : public QGLWidget { <BR>Q_OBJECT 
+                        <BR>public: <BR>Gui_WgtMain_GLWnd(QWidget *parent=0, 
+                        const char *name=0); <BR>~Gui_WgtMain_GLWnd(); 
+                        <BR>protected: <BR>void initializeGL(); <BR>void 
+                        paintGL(); <BR>void resizeGL( int w, int h ); <BR>void 
+                        mousePressEvent(QMouseEvent*); <BR>void 
+                        mouseMoveEvent(QMouseEvent*); <BR>void 
+                        mouseReleaseEvent(QMouseEvent*); <BR>private: <BR>int 
+                        m_nCnt; <BR>}; <BR>void 
+                        Gui_WgtMain_GLWnd::mousePressEvent(QMouseEvent* e) <BR>{ 
+                        <BR>//statements <BR>} <BR>void Gui_WgtMain_GLWnd:: 
+                        mouseMoveEvent (QMouseEvent* e) <BR>{ <BR>//statements 
+                        <BR>} <BR>void Gui_WgtMain_GLWnd:: mouseReleaseEvent 
+                        (QMouseEvent* e) <BR>{ <BR>//statements <BR>} <BR>其中, 
+                        e-&gt;x();e-&gt;y();可以获得鼠标的位置, 
+                        e-&gt;button()可以取得鼠标按键的状态(左中右键以及ctrl,alt,shift等组合键),灵活使用他们就可以在用鼠标操作OpenGL画面了. 
+                        <BR><BR>16.由ui文件生成.h和.cpp文件 <BR>生成.cpp文件 <BR>$uic 
+                        myform.ui -i myform.h -o myform.cpp <BR><BR>生成.h文件 
+                        <BR>$uic myform.ui -o myform.h</TD></TR></TBODY></TABLE></TD></TR>
+              <TR>
+                <TD>&nbsp;</TD></TR>
+              <TR>
+                <TD>
+                  <TABLE style="TABLE-LAYOUT: fixed; WORD-WRAP: break-word" 
+                  cellSpacing=2 cellPadding=2 width="100%" border=0>
+                    <TBODY>
+                    <TR>
+                      <TD><EMBED 
+                        src=http://bbs.loveunix.net/image/ibmad_bbs.swf 
+                        width=760 height=70 
+                        type=application/x-shockwave-flash></EMBED> 
+                        <STYLE type=text/css>.BLNK {
+	FONT-WEIGHT: bold; FONT-SIZE: 14px
+}
+</STYLE>
+
+                        <SCRIPT type=text/javascript>
+    var j,color=new Array("RED","BLUE", "BLACK");
+    j=0;
+    function blinkText(){
+        var sections=document.getElementsByTagName("font");
+        for(var i=0;i<sections.length;i++){
+            var section=sections[i];
+            if(section.getAttribute("blink")=="yes"){
+                section.style.color=color[j];
+            }
+        }
+        setTimeout("blinkText()",2000);
+        j=(j+1)%3                		
+    }
+    blinkText();
+</SCRIPT>
+                      </TD></TR></TBODY></TABLE></TD></TR>
+              <TR>
+                <TD>&nbsp;</TD></TR>
+              <TR>
+                <TD bgColor=#cedbe5 height=2></TD></TR>
+              <TR>
+                <TD>&nbsp;</TD></TR>
+              <TR>
+                <TD align=right><A 
+                  href="http://bbs.loveunix.net/viewthread.php?tid=29629" 
+                  target=_blank>【论坛浏览】</A>&nbsp;<A 
+                  href="http://www.loveunix.net/viewarticle.php?id=29629#reply">【我来说两句】</A>&nbsp;<A 
+                  href="javascript:window.print()">【打印】</A>&nbsp;<A 
+                  href="javascript:dozoom(16)">【大】</A>&nbsp;<A 
+                  href="javascript:dozoom(14)">【中】</A>&nbsp;<A 
+                  href="javascript:dozoom(12)">【小】</A>&nbsp;<A 
+                  href="javascript:window.close()">【关闭】</A></TD></TR>
+              <TR>
+                <TD>&nbsp;</TD></TR>
+              <TR>
+                <TD>&nbsp;</TD></TR>
+              <TR>
+                <TD>
+                  <TABLE cellSpacing=1 cellPadding=3 width="100%" 
+                  bgColor=#00468c border=0>
+                    <TBODY>
+                    <TR>
+                      <TD><FONT color=#ffffff>我来说两句</FONT></TD></TR>
+                    <TR>
+                      <TD bgColor=#ffffff><A name=reply></A>
+                        <TABLE 
+                        style="TABLE-LAYOUT: fixed; WORD-WRAP: break-word" 
+                        cellSpacing=4 cellPadding=4 width="100%" align=right 
+                        border=0>
+                          <FORM name=form1 
+                          action=http://www.loveunix.net/function.php?action=reply 
+                          method=post>
+                          <TBODY>
+                          <TR>
+                            <TD>请遵守国家法律和互联网法规。<BR>您要为您所发的言论的后果负责，故请各位遵纪守法并注意语言文明。</TD></TR>
+                          <TR>
+                            <TD>注意：系统启用了静态/缓存功能，您的回复可能不能立即显示。</TD></TR>
+                          <TR>
+                            <TD><INPUT id=tid type=hidden value=29629 
+                              name=tid> <INPUT id=fid type=hidden value=9 
+                              name=fid> <INPUT id=replysubmit type=submit value=我来说两句 name=replysubmit></TD></TR></FORM></TBODY></TABLE></TD></TR></TBODY></TABLE></TD></TR></TBODY></TABLE></TD>
+          <TD vAlign=top width=140 bgColor=#cedbe5>
+            <TABLE cellSpacing=0 cellPadding=4 width="100%" border=0>
+              <TBODY>
+              <TR>
+                <TD bgColor=#00468c><FONT 
+color=#ffffff>&nbsp;热点主题</FONT></TD></TR>
+              <TR>
+                <TD bgColor=#999999 height=1></TD></TR>
+              <TR>
+                <TD height=5></TD></TR>
+              <TR>
+                <TD>
+                  <TABLE style="TABLE-LAYOUT: fixed; WORD-WRAP: break-word" 
+                  cellSpacing=1 cellPadding=1 width="100%" border=0>
+                    <TBODY>
+                    <TR>
+                      <TD vAlign=top width=13>·</TD>
+                      <TD><A title=在linxu下显示bmp或其它格式的图片 
+                        href="http://www.loveunix.net/viewarticle.php?id=29732" 
+                        target=_blank>在linxu下显示bmp或其它格式的图片</A></TD></TR>
+                    <TR>
+                      <TD vAlign=top width=13>·</TD>
+                      <TD><A title=C语言的高手！帮我写一个学生成绩管理程序帮帮我吧！！ 
+                        href="http://www.loveunix.net/viewarticle.php?id=29639" 
+                        target=_blank>C语言的高手！帮我写一个学生成绩管理程序帮帮我吧！</A></TD></TR>
+                    <TR>
+                      <TD vAlign=top width=13>·</TD>
+                      <TD><A title=在某一进程中如何得到本进程的进程名,并更改它? 
+                        href="http://www.loveunix.net/viewarticle.php?id=29761" 
+                        target=_blank>在某一进程中如何得到本进程的进程名,并更改它?</A></TD></TR>
+                    <TR>
+                      <TD vAlign=top width=13>·</TD>
+                      <TD><A title=Unix系列shell程序编写(上) 
+                        href="http://www.loveunix.net/viewarticle.php?id=29953" 
+                        target=_blank>Unix系列shell程序编写(上)</A></TD></TR>
+                    <TR>
+                      <TD vAlign=top width=13>·</TD>
+                      <TD><A title="Eclipse 相关的一些资源" 
+                        href="http://www.loveunix.net/viewarticle.php?id=30274" 
+                        target=_blank>Eclipse 相关的一些资源</A></TD></TR>
+                    <TR>
+                      <TD vAlign=top width=13>·</TD>
+                      <TD><A title=网络编程基础篇之Perl 
+                        href="http://www.loveunix.net/viewarticle.php?id=29859" 
+                        target=_blank>网络编程基础篇之Perl</A></TD></TR>
+                    <TR>
+                      <TD vAlign=top width=13>·</TD>
+                      <TD><A title=Unix系列shell程序编写(下) 
+                        href="http://www.loveunix.net/viewarticle.php?id=29955" 
+                        target=_blank>Unix系列shell程序编写(下)</A></TD></TR>
+                    <TR>
+                      <TD vAlign=top width=13>·</TD>
+                      <TD><A title="[转贴]CVS 简单教程" 
+                        href="http://www.loveunix.net/viewarticle.php?id=29917" 
+                        target=_blank>[转贴]CVS 简单教程</A></TD></TR>
+                    <TR>
+                      <TD vAlign=top width=13>·</TD>
+                      <TD><A title="[问题]Mac 下写的函数,  Win 无法正常编译" 
+                        href="http://www.loveunix.net/viewarticle.php?id=29720" 
+                        target=_blank>[问题]Mac 下写的函数, Win 无法正常编译</A></TD></TR>
+                    <TR>
+                      <TD vAlign=top width=13>·</TD>
+                      <TD><A title=J2EE应用程序部署的一些建议 
+                        href="http://www.loveunix.net/viewarticle.php?id=30253" 
+                        target=_blank>J2EE应用程序部署的一些建议</A></TD></TR></TBODY></TABLE></TD></TR>
+              <TR>
+                <TD height=5></TD></TR></TBODY></TABLE>
+            <TABLE cellSpacing=0 cellPadding=4 width="100%" border=0>
+              <TBODY>
+              <TR>
+                <TD bgColor=#00468c><FONT 
+color=#ffffff>&nbsp;最新主题</FONT></TD></TR>
+              <TR>
+                <TD bgColor=#999999 height=1></TD></TR>
+              <TR>
+                <TD height=5></TD></TR>
+              <TR>
+                <TD>
+                  <TABLE style="TABLE-LAYOUT: fixed; WORD-WRAP: break-word" 
+                  cellSpacing=1 cellPadding=1 width="100%" border=0>
+                    <TBODY>
+                    <TR>
+                      <TD vAlign=top width=13>·</TD>
+                      <TD><A title=关于32位应用向64位应用移植的问题 
+                        href="http://www.loveunix.net/viewarticle.php?id=30370" 
+                        target=_blank>关于32位应用向64位应用移植的问题</A></TD></TR>
+                    <TR>
+                      <TD vAlign=top width=13>·</TD>
+                      <TD><A title=新手求助 
+                        href="http://www.loveunix.net/viewarticle.php?id=30362" 
+                        target=_blank>新手求助</A></TD></TR>
+                    <TR>
+                      <TD vAlign=top width=13>·</TD>
+                      <TD><A title=从十进制正整数转化为十六进制的算法（帮偶看看） 
+                        href="http://www.loveunix.net/viewarticle.php?id=30358" 
+                        target=_blank>从十进制正整数转化为十六进制的算法（帮偶看看）</A></TD></TR>
+                    <TR>
+                      <TD vAlign=top width=13>·</TD>
+                      <TD><A title=如何自动实现su某一个用户~~help~~ 
+                        href="http://www.loveunix.net/viewarticle.php?id=30285" 
+                        target=_blank>如何自动实现su某一个用户~~help~~</A></TD></TR>
+                    <TR>
+                      <TD vAlign=top width=13>·</TD>
+                      <TD><A title="Eclipse 相关的一些资源" 
+                        href="http://www.loveunix.net/viewarticle.php?id=30274" 
+                        target=_blank>Eclipse 相关的一些资源</A></TD></TR>
+                    <TR>
+                      <TD vAlign=top width=13>·</TD>
+                      <TD><A title=J2EE应用程序部署的一些建议 
+                        href="http://www.loveunix.net/viewarticle.php?id=30253" 
+                        target=_blank>J2EE应用程序部署的一些建议</A></TD></TR>
+                    <TR>
+                      <TD vAlign=top width=13>·</TD>
+                      <TD><A title="ipb hyper版升级到ipb 2.0的操作" 
+                        href="http://www.loveunix.net/viewarticle.php?id=30201" 
+                        target=_blank>ipb hyper版升级到ipb 2.0的操作</A></TD></TR>
+                    <TR>
+                      <TD vAlign=top width=13>·</TD>
+                      <TD><A title=实际问题需要请教! 
+                        href="http://www.loveunix.net/viewarticle.php?id=30179" 
+                        target=_blank>实际问题需要请教!</A></TD></TR>
+                    <TR>
+                      <TD vAlign=top width=13>·</TD>
+                      <TD><A title=请问如何统计新闻的点击数 
+                        href="http://www.loveunix.net/viewarticle.php?id=30172" 
+                        target=_blank>请问如何统计新闻的点击数</A></TD></TR>
+                    <TR>
+                      <TD vAlign=top width=13>·</TD>
+                      <TD><A title=请问有没有sco下的perl 
+                        href="http://www.loveunix.net/viewarticle.php?id=30134" 
+                        target=_blank>请问有没有sco下的perl</A></TD></TR></TBODY></TABLE></TD></TR>
+              <TR>
+                <TD height=5></TD></TR></TBODY></TABLE>
+            <TABLE cellSpacing=1 cellPadding=3 width="100%" align=center 
+            border=0>
+              <TBODY>
+              <TR>
+                <TD bgColor=#00468c><FONT 
+              color=#ffffff>&nbsp;网络资源推荐</FONT></TD></TR>
+              <TR>
+                <TD>
+                  <TABLE style="TABLE-LAYOUT: fixed; WORD-WRAP: break-word" 
+                  cellSpacing=2 cellPadding=2 width="100%" align=right 
+                    border=0><TBODY>
+                    <TR>
+                      <TD><A href="http://moli121.b2b.hc360.com/" 
+                        target=_blank><FONT 
+                        color=red><B>verisign服务器证书给您信心，让您安心畅游网络世界，产品热销中。</B></FONT></A></TD></TR></TBODY></TABLE></TD></TR></TBODY></TABLE></TD></TR></TBODY></TABLE></TD></TR></TBODY></TABLE>
+<TABLE cellSpacing=0 cellPadding=0 width=760 align=center bgColor=#ffffff 
+border=0>
+  <TBODY>
+  <TR>
+    <TD bgColor=#666666 height=1></TD></TR>
+  <TR>
+    <TD height=20></TD></TR></TBODY></TABLE>
+<TABLE cellSpacing=0 cellPadding=0 width=760 align=center bgColor=#ffffff 
+border=0>
+  <TBODY>
+  <TR>
+    <TD height=20>
+      <TABLE cellSpacing=2 cellPadding=0 width="98%" align=center border=0>
+        <TBODY>
+        <TR>
+          <TD align=middle>
+            <TABLE 
+            style="BORDER-RIGHT: #8c8e7b 1px solid; BORDER-TOP: #8c8e7b 1px solid; BACKGROUND: #ffffff; BORDER-LEFT: #8c8e7b 1px solid; BORDER-BOTTOM: #8c8e7b 1px solid; FONT-FAMILY: Tahoma, Verdana" 
+            cellSpacing=1 cellPadding=1>
+              <TBODY>
+              <TR>
+                <TD 
+                  style="FONT-SIZE: 7pt; BACKGROUND: #ff6500; COLOR: #ffffff">&nbsp;XML&nbsp;</TD>
+                <TD style="FONT-SIZE: 7pt; BACKGROUND: #8c8e7b">&nbsp;<A 
+                  title=订阅站点最新帖子 href="http://www.loveunix.net/rss.php" 
+                  target=_blank><FONT color=#ffffff>RSS 2.0</FONT></A>&nbsp;</TD>
+                <TD style="FONT-SIZE: 7pt; BACKGROUND: #8c8e7b">&nbsp;<A 
+                  title=通过手机访问站点 href="http://www.loveunix.net/wap.php" 
+                  target=_blank><FONT color=#ffffff>WAP</FONT></A>&nbsp;</TD>
+                <TD style="FONT-SIZE: 7pt; BACKGROUND: #8c8e7b">&nbsp;<A 
+                  href="http://www.loveunix.net/viewarticle.php?id=29629#top"><FONT 
+                  color=#ffffff>TOP</FONT></A>&nbsp;</TD></TR></TBODY></TABLE></TD></TR>
+        <TR>
+          <TD align=middle>&nbsp;&nbsp;LoveUnix.net Powered by Discuz! And 
+            SupSite&#8482; <FONT color=#ff3300>V4.0</FONT><BR>&nbsp; &nbsp; <A 
+            href="http://www.miibeian.gov.cn/" target=_blank><FONT 
+            color=#ff0000>京ICP备05005823号</FONT></A>
+            <SCRIPT language=javascript src="Qt_Kdevelop_OpenGL.files/239741.js" 
+            type=text/javascript></SCRIPT>
+             <NOSCRIPT><A href="http://www.51.la/?239741" target=_blank><IMG 
+            style="BORDER-RIGHT: medium none; BORDER-TOP: medium none; BORDER-LEFT: medium none; BORDER-BOTTOM: medium none" 
+            alt=我要啦免费统计 src="Qt_Kdevelop_OpenGL.files/s.gif"></A></NOSCRIPT> 
+        <TR>
+          <TD 
+align=middle>&nbsp;</TD></TR></TBODY></TABLE></TD></TR></TBODY></TABLE></BODY></HTML>

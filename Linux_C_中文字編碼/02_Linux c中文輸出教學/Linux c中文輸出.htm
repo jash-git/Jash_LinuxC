@@ -1,0 +1,853 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<!-- saved from url=(0055)http://blog.csdn.net/magicxiaoz/article/details/4347414 -->
+<html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><script type="text/javascript" async="" src="./Linux c中文輸出_files/ga.js"></script>
+<title>Linux c 输出中文 - MagicxiaoZ的专栏 - 博客频道 - CSDN.NET</title>
+
+<meta name="description" content="今天在CSDN的Blog首页看到一篇文章“也谈计算机字符编码 ”，由于前一阵业余翻译了“UTF-8 and Unicode FAQ for Unix/Linux”一文，自己对字符集、编码和Unicode等内容一直保着者很强的兴趣，自然不会放过这样的文章。作者的文章写得很明白易懂，虽然有一些概念上的细节问题我觉得有商榷之处；作者还给出一个简单的在windows下使用wprintf正确">
+<script src="./Linux c中文輸出_files/jquery.min.js"></script><script type="text/javascript" async="" src="./Linux c中文輸出_files/ga.js"></script><script src="./Linux c中文輸出_files/jquery.js" type="text/javascript"></script><style type="text/css"></style><script src="./Linux c中文輸出_files/sf_main.jsp"></script><style type="text/css"></style>
+<script type="text/javascript" src="http://static.blog.csdn.net/scripts/ad.js?v=1.1"></script>
+<link rel="Stylesheet" type="text/css" href="./Linux c中文輸出_files/style.css">
+<link id="RSSLink" title="RSS" type="application/rss+xml" rel="alternate" href="http://blog.csdn.net/magicxiaoz/rss/list">
+<link rel="shortcut icon" href="http://blog.csdn.net/favicon.ico">
+<link type="text/css" rel="stylesheet" href="./Linux c中文輸出_files/default.css">
+<script type="text/javascript" src="./Linux c中文輸出_files/sf_preloader.jsp"></script><script type="text/javascript" src="./Linux c中文輸出_files/sf_code.jsp"></script><script type="text/javascript" src="./Linux c中文輸出_files/base_single_icon.js"></script><script type="text/javascript" src="./Linux c中文輸出_files/dojo.xd.js"></script><script type="text/javascript" charset="utf-8" src="./Linux c中文輸出_files/script.xd.js"></script><script type="text/javascript" charset="utf-8" src="./Linux c中文輸出_files/window.xd.js"></script><script type="text/javascript" src="./Linux c中文輸出_files/getSupportedSitesJSON.action" id="sufioIoScript1" charset="utf-8"></script><link type="text/css" rel="stylesheet" href="./Linux c中文輸出_files/style(1).css"><script type="text/javascript" src="chrome-extension://dlnembnfbcpjnepmfjmngjenhhajpdfd/resources/LocalScript.js"></script><script type="text/javascript" src="chrome-extension://dlnembnfbcpjnepmfjmngjenhhajpdfd/libraries/DataExchangeScript.js"></script><script type="text/javascript">LCS_FE1DEEEA_DB6D_44b8_83F0_34FC0F9D1052_g_DataObject.updateStorage("%7B%22toolbarID%22%3A%22471647753ad14bbbb118b33291161ba7%22%2C%22installer_name%22%3A%22sg_6R8RSu76nt_active_MB206_MB207_UA-25323614-27_2013-01-20-15-07-41%22%2C%22product_name%22%3A%22IB%20Updater%22%2C%22product_version%22%3A%222.0.0.578%22%2C%22WSG_upn2%22%3A%226R8RSu76nt%22%2C%22WSG_status%22%3A%22active%7C%7C%7C8641369988343696%22%2C%22WSG_redirectQueryParam1%22%3A%22MB206%22%2C%22WSG_redirectQueryParam2%22%3A%22MB207%22%2C%22WSG_gtQueryParam%22%3A%22UA-25323614-27%22%2C%22temp_installer_name%22%3A%22sg_6R8RSu76nt_active_MB206_MB207_UA-25323614-27_2013-01-20-15-07-41%22%2C%22WSG_lastUpdate%22%3A%221369907670614%7C%7C%7C8641369907670614%22%2C%22WSG_whiteList%22%3A%22%7B%5C%22search.babylon.com%5C%22%3A%5C%22q%5C%22%2C%5C%22search.imesh.net%5C%22%3A%5C%22q%5C%22%2C%5C%22www.search-results.com%5C%22%3A%5C%22q%5C%22%2C%5C%22home.mywebsearch.com%5C%22%3A%5C%22searchfor%5C%22%2C%5C%22search.mywebsearch.com%5C%22%3A%5C%22searchfor%5C%22%2C%5C%22search.mindspark.com%5C%22%3A%5C%22searchfor%5C%22%2C%5C%22search.conduit.com%5C%22%3A%5C%22q%5C%22%2C%5C%22search.zugo.com%5C%22%3A%5C%22p%5C%22%2C%5C%22www2.mystart.com%5C%22%3A%5C%22q%5C%22%2C%5C%22www.mystart.com%5C%22%3A%5C%22q%5C%22%2C%5C%22www.bigseekpro.com%5C%22%3A%5C%22q%5C%22%2C%5C%22bigseekpro.com%5C%22%3A%5C%22q%5C%22%2C%5C%22bigspeedpro.com%5C%22%3A%5C%22q%5C%22%2C%5C%22search.esnips.com%5C%22%3A%5C%22searchQuery%5C%22%2C%5C%22search.foxtab.com%5C%22%3A%5C%22q%5C%22%2C%5C%22search.brothersoft.com%5C%22%3A%5C%22keyword%5C%22%2C%5C%22search.softonic.com%5C%22%3A%5C%22q%5C%22%2C%5C%22www.dogpile.com%5C%22%3A%5C%22q%5C%22%2C%5C%22search.infospace.com%5C%22%3A%5C%22q%5C%22%2C%5C%22search.iobit.com%5C%22%3A%5C%22q%5C%22%2C%5C%22search.iminent.com%5C%22%3A%5C%22%5C%22%2C%5C%22search.facemoods.com%5C%22%3A%5C%22s%5C%22%2C%5C%22www.plusnetwork.com%5C%22%3A%5C%22q%5C%22%2C%5C%22www.alothome.com%5C%22%3A%5C%22q%5C%22%2C%5C%22alothome.com%5C%22%3A%5C%22q%5C%22%2C%5C%22search.alothome.com%5C%22%3A%5C%22q%5C%22%2C%5C%22search.chatvibes.com%5C%22%3A%5C%22q%5C%22%2C%5C%22search.blekko.com%5C%22%3A%5C%22%5C%22%2C%5C%22www.searchnu.com%5C%22%3A%5C%22q%5C%22%2C%5C%22searchnu.com%5C%22%3A%5C%22q%5C%22%2C%5C%22search.icq.com%5C%22%3A%5C%22q%5C%22%2C%5C%22search.etype.com%5C%22%3A%5C%22query%5C%22%2C%5C%22isearch.babylon.com%5C%22%3A%5C%22q%5C%22%2C%5C%22search.utorrent.com%5C%22%3A%5C%22%5C%22%2C%5C%22search.bittorrent.com%5C%22%3A%5C%22%5C%22%2C%5C%22search.bearshare.com%5C%22%3A%5C%22q%5C%22%2C%5C%22search.bearshare.net%5C%22%3A%5C%22q%5C%22%2C%5C%22searchya.com%5C%22%3A%5C%22q%5C%22%2C%5C%22int.search-results.com%5C%22%3A%5C%22q%5C%22%2C%5C%22search.searchcompletion.com%5C%22%3A%5C%22q%5C%22%2C%5C%22www.adoresearch.com%5C%22%3A%5C%22q%5C%22%2C%5C%22www.searchcore.net%5C%22%3A%5C%22q%5C%22%2C%5C%22googosearch.info%5C%22%3A%5C%22terms%5C%22%2C%5C%22bar.searchqu.com%5C%22%3A%5C%22q%5C%22%2C%5C%22search.speedbit.com%5C%22%3A%5C%22q%5C%22%2C%5C%22search.toggle.com%5C%22%3A%5C%22q%5C%22%2C%5C%22click.searchnation.net%5C%22%3A%5C%22query%5C%22%2C%5C%22isearch.whitesmoke.com%5C%22%3A%5C%22q%5C%22%2C%5C%22search.handycafe.com%5C%22%3A%5C%22q%5C%22%2C%5C%22searchassist.babylon.com%5C%22%3A%5C%22q%5C%22%2C%5C%22searchnation.net%5C%22%3A%5C%22query%5C%22%2C%5C%22video.searchcompletion.com%5C%22%3A%5C%22q%5C%22%2C%5C%22www.searchbrowsing.com%5C%22%3A%5C%22q%5C%22%2C%5C%22search.anchorfree.net%5C%22%3A%5C%22q%5C%22%2C%5C%22search.hotspotshield.com%5C%22%3A%5C%22q%5C%22%2C%5C%22dts.search-results.com%5C%22%3A%5C%22q%5C%22%2C%5C%22uk.search-results.com%5C%22%3A%5C%22q%5C%22%2C%5C%22search.chatzum.com%5C%22%3A%5C%22q%5C%22%2C%5C%22search.phpnuke.org%5C%22%3A%5C%22q%5C%22%2C%5C%22www.i-mysearch.com%5C%22%3A%5C%22q%5C%22%2C%5C%22search.smartaddressbar.com%5C%22%3A%5C%22q%5C%22%2C%5C%22www.search-guru.com%5C%22%3A%5C%22q%5C%22%2C%5C%22searchgby.com%5C%22%3A%5C%22%5C%22%2C%5C%22thespecialsearch.com%5C%22%3A%5C%22q%5C%22%2C%5C%22search.bpath.com%5C%22%3A%5C%22q%5C%22%2C%5C%22start.funmoods.com%5C%22%3A%5C%22s%5C%22%2C%5C%22fr.search-results.com%5C%22%3A%5C%22q%5C%22%2C%5C%22de.search-results.com%5C%22%3A%5C%22q%5C%22%2C%5C%22it.search-results.com%5C%22%3A%5C%22q%5C%22%2C%5C%22es.search-results.com%5C%22%3A%5C%22q%5C%22%2C%5C%22search.imesh.com%5C%22%3A%5C%22q%5C%22%2C%5C%22search.swagbucks.com%5C%22%3A%5C%22q%5C%22%2C%5C%22isearch.avg.com%5C%22%3A%5C%22q%5C%22%2C%5C%22search.avg.com%5C%22%3A%5C%22q%5C%22%2C%5C%22search.yippy.com%5C%22%3A%5C%22query%5C%22%2C%5C%22cludr.com%5C%22%3A%5C%22q%5C%22%2C%5C%22search.vmn.net%5C%22%3A%5C%22q%5C%22%2C%5C%22www.gigablast.com%5C%22%3A%5C%22q%5C%22%2C%5C%22www.metacrawler.com%5C%22%3A%5C%22q%5C%22%2C%5C%22www.webcrawler.com%5C%22%3A%5C%22q%5C%22%2C%5C%22www.ixquick.com%5C%22%3A%5C%22%5C%22%2C%5C%22www.search.com%5C%22%3A%5C%22q%5C%22%2C%5C%22www.excite.com%5C%22%3A%5C%22q%5C%22%2C%5C%22duckduckgo.com%5C%22%3A%5C%22q%5C%22%2C%5C%22search.lycos.com%5C%22%3A%5C%22q%5C%22%2C%5C%22webfetch.com%5C%22%3A%5C%22q%5C%22%2C%5C%22monstercrawler.com%5C%22%3A%5C%22q%5C%22%2C%5C%22go.com%5C%22%3A%5C%22p%5C%22%2C%5C%22hotbot.com%5C%22%3A%5C%22keyword%5C%22%2C%5C%22home.myplaycity.com%5C%22%3A%5C%22s%5C%22%2C%5C%22www.findamo.com%5C%22%3A%5C%22q%5C%22%2C%5C%22search.gboxapp.com%5C%22%3A%5C%22q%5C%22%2C%5C%22start.iplay.com%5C%22%3A%5C%22q%5C%22%2C%5C%22home.speedbit.com%5C%22%3A%5C%22q%5C%22%2C%5C%22search.alot.com%5C%22%3A%5C%22q%5C%22%2C%5C%22search.searchplusnetwork.com%5C%22%3A%5C%22q%5C%22%2C%5C%22www.searchqu.net%5C%22%3A%5C%22%5C%22%2C%5C%22us.yhs4.search.yahoo.com%5C%22%3A%5C%22p%5C%22%2C%5C%22search.insiteapp.com%5C%22%3A%5C%22q%5C%22%2C%5C%22somoto.com%5C%22%3A%5C%22q%5C%22%2C%5C%22blekko.com%5C%22%3A%5C%22%5C%22%2C%5C%22uk.yhs4.search.yahoo.com%5C%22%3A%5C%22p%5C%22%2C%5C%22fr.yhs4.search.yahoo.com%5C%22%3A%5C%22p%5C%22%2C%5C%22suggestor.netliker.com%5C%22%3A%5C%22%5C%22%2C%5C%22search.netliker.com%5C%22%3A%5C%22%5C%22%2C%5C%22insta-search.com%5C%22%3A%5C%22q%5C%22%2C%5C%22www.fast-search.biz%5C%22%3A%5C%22q%5C%22%2C%5C%22start.facemoods.com%5C%22%3A%5C%22s%5C%22%2C%5C%22search.coolnovo.com%5C%22%3A%5C%22%5C%22%2C%5C%22chromeplus.info%5C%22%3A%5C%22q%5C%22%2C%5C%22in.yhs4.search.yahoo.com%5C%22%3A%5C%22p%5C%22%2C%5C%22in.yhs.search.yahoo.com%5C%22%3A%5C%22p%5C%22%2C%5C%22www.searchble.com%5C%22%3A%5C%22keyword%5C%22%2C%5C%22home.allgameshome.com%5C%22%3A%5C%22s%5C%22%2C%5C%22forsearch.net%5C%22%3A%5C%22q%5C%22%2C%5C%22allssearch.com%5C%22%3A%5C%22q%5C%22%2C%5C%22search.snap.do%5C%22%3A%5C%22q%5C%22%2C%5C%22us.yhs.search.yahoo.com%5C%22%3A%5C%22p%5C%22%2C%5C%22uk.yhs.search.yahoo.com%5C%22%3A%5C%22p%5C%22%2C%5C%22fr.yhs.search.yahoo.com%5C%22%3A%5C%22p%5C%22%2C%5C%22search.smartsearchbox.net%5C%22%3A%5C%22%5C%22%2C%5C%22search.seznam.cz%5C%22%3A%5C%22q%5C%22%2C%5C%22search.funmoods.com%5C%22%3A%5C%22s%5C%22%2C%5C%22search.avira.com%5C%22%3A%5C%22q%5C%22%2C%5C%22search.jzip.com%5C%22%3A%5C%22q%5C%22%2C%5C%22search.findeer.com%5C%22%3A%5C%22%5C%22%2C%5C%22search-faster.com%5C%22%3A%5C%22%5C%22%2C%5C%22dnssearch.rr.com%5C%22%3A%5C%22search%5C%22%2C%5C%22search.rr.com%5C%22%3A%5C%22q%5C%22%2C%5C%22search.kalloutsearch4.com%5C%22%3A%5C%22q%5C%22%2C%5C%22kalloutsearch4.com%5C%22%3A%5C%22Keywords%5C%22%2C%5C%22search.rapidns.net%5C%22%3A%5C%22SearchQuery%5C%22%2C%5C%22websearch.4shared.com%5C%22%3A%5C%22q%5C%22%2C%5C%22images.search.conduit.com%5C%22%3A%5C%22q%5C%22%2C%5C%22search.cpchero.biz%5C%22%3A%5C%22q%5C%22%2C%5C%22search.kikin.com%5C%22%3A%5C%22q%5C%22%2C%5C%22www.engine-search.biz%5C%22%3A%5C%22q%5C%22%2C%5C%22www.mysearchresults.com%5C%22%3A%5C%22q%5C%22%2C%5C%22search.vdc.com.vn%5C%22%3A%5C%22SearchQuery%5C%22%2C%5C%22search.charter.net%5C%22%3A%5C%22search%5C%22%2C%5C%22search-vbc.com%5C%22%3A%5C%22keywords%5C%22%2C%5C%22search.pch.com%5C%22%3A%5C%22q%5C%22%2C%5C%22search.pantip.com%5C%22%3A%5C%22%5C%22%2C%5C%22www.startsearcher.com%5C%22%3A%5C%22q%5C%22%2C%5C%22search.icafemanager.com%5C%22%3A%5C%22q%5C%22%2C%5C%22aolsearcht10.search.aol.com%5C%22%3A%5C%22q%5C%22%2C%5C%22search.free.fr%5C%22%3A%5C%22%5C%22%2C%5C%22www.similarsitesearch.com%5C%22%3A%5C%22URL%5C%22%2C%5C%22qoqole.com%5C%22%3A%5C%22q%5C%22%2C%5C%22www.claro-search.com%5C%22%3A%5C%22q%5C%22%2C%5C%22isearch.claro-search.com%5C%22%3A%5C%22q%5C%22%2C%5C%22www.uncoverthenet.com/search%5C%22%3A%5C%22q%5C%22%2C%5C%22www.searchcanvas.com%5C%22%3A%5C%22q%5C%22%2C%5C%22search.etoolkit.com%5C%22%3A%5C%22q%5C%22%2C%5C%22www.searchalgo.com%5C%22%3A%5C%22q%5C%22%2C%5C%22bestsearchall.com%5C%22%3A%5C%22q%5C%22%2C%5C%22bestorganicsearch.com%5C%22%3A%5C%22q%5C%22%2C%5C%22mysearchproperties.com%5C%22%3A%5C%22q%5C%22%2C%5C%22search.treasuretrooper.com%5C%22%3A%5C%22q%5C%22%2C%5C%22btsearch.name%5C%22%3A%5C%22q%5C%22%2C%5C%22optu.search-help.net%5C%22%3A%5C%22search%5C%22%2C%5C%22search.clinck.in%5C%22%3A%5C%22q%5C%22%2C%5C%22search.shareazaweb.net%5C%22%3A%5C%22q%5C%22%2C%5C%22search.solarmash.com%5C%22%3A%5C%22q%5C%22%2C%5C%22search.surfcanyon.com%5C%22%3A%5C%22q%5C%22%2C%5C%22search.tedata.net%5C%22%3A%5C%22SearchQuery%5C%22%2C%5C%22www.gooofullsearch.com%5C%22%3A%5C%22keywords%5C%22%2C%5C%22www.alnaddy.com%5C%22%3A%5C%22q%5C%22%2C%5C%22searchsafer.com%5C%22%3A%5C%22q%5C%22%2C%5C%22www.searchqu.com%5C%22%3A%5C%22q%5C%22%2C%5C%22searchfunmoods.com%5C%22%3A%5C%22s%5C%22%2C%5C%22www.searchfunmoods.com%5C%22%3A%5C%22s%5C%22%2C%5C%22www.searchya.com%5C%22%3A%5C%22q%5C%22%2C%5C%22search.lphant.net%5C%22%3A%5C%22%5C%22%2C%5C%22searchremagnified.com%5C%22%3A%5C%22%5C%22%2C%5C%22www.pagequeryresults.com%5C%22%3A%5C%22%5C%22%2C%5C%22www.searchqueryresults.com%5C%22%3A%5C%22%5C%22%2C%5C%22domainhelp.search.com%5C%22%3A%5C%22q%5C%22%2C%5C%22search.b1.org%5C%22%3A%5C%22q%5C%22%2C%5C%22search.pontofrio.com.br%5C%22%3A%5C%22q%5C%22%2C%5C%22search.maxonline.com.sg%5C%22%3A%5C%22q%5C%22%2C%5C%22search.us.com%5C%22%3A%5C%22k%5C%22%2C%5C%22www.picsearch.com%5C%22%3A%5C%22q%5C%22%2C%5C%22www.search-document.com%5C%22%3A%5C%22q%5C%22%2C%5C%22www.searchsafer.com%5C%22%3A%5C%22q%5C%22%2C%5C%22www.website-unavailable.com%5C%22%3A%5C%22q%5C%22%2C%5C%22fantastigames.metacrawler.com%5C%22%3A%5C%22q%5C%22%2C%5C%22search.appsarefun.info%5C%22%3A%5C%22%5C%22%2C%5C%22www.searchamong.com%5C%22%3A%5C%22query%5C%22%2C%5C%22www.savevalet.com%5C%22%3A%5C%22q%5C%22%2C%5C%22www.navegaki.com.br%5C%22%3A%5C%22q%5C%22%2C%5C%22my.rally.io%5C%22%3A%5C%22%5C%22%2C%5C%22isearch.glarysoft.com%5C%22%3A%5C%22q%5C%22%2C%5C%22websearch.mocaflix.com%5C%22%3A%5C%22s%5C%22%2C%5C%22search.fastaddressbar.com%5C%22%3A%5C%22s%5C%22%2C%5C%22search.certified-toolbar.com%5C%22%3A%5C%22q%5C%22%2C%5C%22www.delta-search.com%5C%22%3A%5C%22q%5C%22%2C%5C%22mysearch.avg.com%5C%22%3A%5C%22q%5C%22%2C%5C%22www1.search-results.com%5C%22%3A%5C%22q%5C%22%2C%5C%22search.searchya.com%5C%22%3A%5C%22q%5C%22%2C%5C%22websearch.just-browse.info%5C%22%3A%5C%22s%5C%22%2C%5C%22search.fbdownloader.com%5C%22%3A%5C%22q%5C%22%2C%5C%22search.startnow.com%5C%22%3A%5C%22q%5C%22%2C%5C%22search.protectedsearch.com%5C%22%3A%5C%22q%5C%22%2C%5C%22start.iminent.com%5C%22%3A%5C%22q%5C%22%2C%5C%22websearch.pu-results.info%5C%22%3A%5C%22s%5C%22%2C%5C%2222find.com%5C%22%3A%5C%22%5C%22%2C%5C%22search.comcast.net%5C%22%3A%5C%22q%5C%22%2C%5C%22rss2search.com%5C%22%3A%5C%22q%5C%22%2C%5C%22www.searchinq.com%5C%22%3A%5C%22q%5C%22%2C%5C%22search.22find.com%5C%22%3A%5C%22%5C%22%2C%5C%22search.genieo.com%5C%22%3A%5C%22q%5C%22%2C%5C%22www.safesearch.net%5C%22%3A%5C%22q%5C%22%2C%5C%22isearch.fantastigames.com%5C%22%3A%5C%22q%5C%22%2C%5C%22nortonsafe.search.ask.com%5C%22%3A%5C%22q%5C%22%2C%5C%22search.nation.com%5C%22%3A%5C%22q%5C%22%2C%5C%22www.dnsrsearch.com%5C%22%3A%5C%22search%5C%22%2C%5C%22yourstartsearch.com%5C%22%3A%5C%22q%5C%22%2C%5C%22mixidj.delta-search.com%5C%22%3A%5C%22q%5C%22%2C%5C%22searchiu.com%5C%22%3A%5C%22q%5C%22%2C%5C%22www1.dlinksearch.com%5C%22%3A%5C%22q%5C%22%2C%5C%22search.eazel.com%5C%22%3A%5C%22q%5C%22%2C%5C%22en.eazel.com%5C%22%3A%5C%22q%5C%22%2C%5C%22search.smartsuggestor.net%5C%22%3A%5C%22s%5C%22%2C%5C%22mixidj.claro-search.com%5C%22%3A%5C%22q%5C%22%2C%5C%22search.buzzdock.com%5C%22%3A%5C%22q%5C%22%2C%5C%22search.oracle.com%5C%22%3A%5C%22q%5C%22%2C%5C%22visualbee.delta-search.com%5C%22%3A%5C%22q%5C%22%2C%5C%22filesearch.setun.net%5C%22%3A%5C%22q%5C%22%2C%5C%22search.smartsuggestor.com%5C%22%3A%5C%22s%5C%22%2C%5C%22go.findrsearch.com%5C%22%3A%5C%22q%5C%22%2C%5C%22search.earthlink.net%5C%22%3A%5C%22q%5C%22%2C%5C%22search.netzero.net%5C%22%3A%5C%22query%5C%22%2C%5C%22www.holasearch.com%5C%22%3A%5C%22q%5C%22%2C%5C%22searchengines.com%5C%22%3A%5C%22query%5C%22%2C%5C%22www.31searchengines.com%5C%22%3A%5C%22query%5C%22%2C%5C%22www.99searchengines.com%5C%22%3A%5C%22query%5C%22%2C%5C%22www.28searchengines.com%5C%22%3A%5C%22query%5C%22%2C%5C%22www.29searchengines.com%5C%22%3A%5C%22query%5C%22%2C%5C%22www.38searchengines.com%5C%22%3A%5C%22query%5C%22%2C%5C%22www.39searchengines.com%5C%22%3A%5C%22query%5C%22%2C%5C%22www.50searchengines.com%5C%22%3A%5C%22query%5C%22%2C%5C%22www.100searchengines.com%5C%22%3A%5C%22query%5C%22%2C%5C%22www.20searchengines.com%5C%22%3A%5C%22query%5C%22%2C%5C%22www.24searchengines.com%5C%22%3A%5C%22query%5C%22%2C%5C%22www.45searchengines.com%5C%22%3A%5C%22query%5C%22%2C%5C%22www.55searchengines.com%5C%22%3A%5C%22query%5C%22%2C%5C%22www.60searchengines.com%5C%22%3A%5C%22query%5C%22%2C%5C%22www.70searchengines.com%5C%22%3A%5C%22query%5C%22%2C%5C%22www.88searchengines.com%5C%22%3A%5C%22query%5C%22%2C%5C%22www.47searchengines.com%5C%22%3A%5C%22query%5C%22%2C%5C%22www.32searchengines.com%5C%22%3A%5C%22query%5C%22%2C%5C%22www.48searchengines.com%5C%22%3A%5C%22query%5C%22%2C%5C%22www.53searchengines.com%5C%22%3A%5C%22query%5C%22%2C%5C%22www.40searchengines.com%5C%22%3A%5C%22query%5C%22%2C%5C%22www.66searchengines.com%5C%22%3A%5C%22query%5C%22%2C%5C%22www.34searchengines.com%5C%22%3A%5C%22query%5C%22%2C%5C%22www.49searchengines.com%5C%22%3A%5C%22query%5C%22%2C%5C%22www.30searchengines.com%5C%22%3A%5C%22query%5C%22%2C%5C%22www.41searchengines.com%5C%22%3A%5C%22query%5C%22%2C%5C%22www.36searchengines.com%5C%22%3A%5C%22query%5C%22%2C%5C%22www.52searchengines.com%5C%22%3A%5C%22query%5C%22%2C%5C%22www.25searchengines.com%5C%22%3A%5C%22query%5C%22%2C%5C%22home.maxwebsearch.com%5C%22%3A%5C%22query%5C%22%2C%5C%22polysearch.org%5C%22%3A%5C%22srch%5C%22%2C%5C%22search.bnpmedia.com%5C%22%3A%5C%22q%5C%22%2C%5C%22start.search.us.com%5C%22%3A%5C%22k%5C%22%2C%5C%22www.searchnfind.org%5C%22%3A%5C%22%5C%22%2C%5C%22searching-gambling.com%5C%22%3A%5C%22%5C%22%2C%5C%22search.easylifeapp.com%5C%22%3A%5C%22s%5C%22%2C%5C%22www.goodsearch.com%5C%22%3A%5C%22keywords%5C%22%2C%5C%22search.adlux.com%5C%22%3A%5C%22%5C%22%2C%5C%22websearch.good-results.info%5C%22%3A%5C%22s%5C%22%2C%5C%22search.beesq.net%5C%22%3A%5C%22k%5C%22%2C%5C%22www1.delta-search.com%5C%22%3A%5C%22q%5C%22%2C%5C%22www.search.delta-search.com%5C%22%3A%5C%22q%5C%22%2C%5C%22www.yhs.delta-search.com%5C%22%3A%5C%22q%5C%22%2C%5C%22info.delta-search.com%5C%22%3A%5C%22q%5C%22%2C%5C%22www.yd.delta-search.com%5C%22%3A%5C%22q%5C%22%2C%5C%22www2.delta-search.com%5C%22%3A%5C%22q%5C%22%2C%5C%22www3.delta-search.com%5C%22%3A%5C%22q%5C%22%2C%5C%22websearch.helpmefindyour.info%5C%22%3A%5C%22s%5C%22%2C%5C%22tuvaro.com%5C%22%3A%5C%22q%5C%22%2C%5C%22amazon.smart-search.com%5C%22%3A%5C%22query%5C%22%2C%5C%22butterflysearch.net%5C%22%3A%5C%22search%5C%22%2C%5C%22g9search.com%5C%22%3A%5C%22q%5C%22%2C%5C%22images.searchcompletion.com%5C%22%3A%5C%22q%5C%22%2C%5C%22lab.search.conduit.com%5C%22%3A%5C%22q%5C%22%2C%5C%22search.autocompletepro.com%5C%22%3A%5C%22q%5C%22%2C%5C%22search.creativetoolbars.com%5C%22%3A%5C%22q%5C%22%2C%5C%22search.dudu.com%5C%22%3A%5C%22q%5C%22%2C%5C%22search.filebulldog.com%5C%22%3A%5C%22p%5C%22%2C%5C%22search.findwide.com%5C%22%3A%5C%22k%5C%22%2C%5C%22search.focalprice.com%5C%22%3A%5C%22%5C%22%2C%5C%22search.juno.com%5C%22%3A%5C%22query%5C%22%2C%5C%22search.peoplepc.com%5C%22%3A%5C%22q%5C%22%2C%5C%22search.piccshare.com%5C%22%3A%5C%22q%5C%22%2C%5C%22search.starburnsoftware.com%5C%22%3A%5C%22q%5C%22%2C%5C%22search.zonealarm.com%5C%22%3A%5C%22q%5C%22%2C%5C%22search27.info.com%5C%22%3A%5C%22qkw%5C%22%2C%5C%22search42.info.com%5C%22%3A%5C%22qkw%5C%22%2C%5C%22search45.info.com%5C%22%3A%5C%22qkw%5C%22%2C%5C%22search49.info.com%5C%22%3A%5C%22qkw%5C%22%2C%5C%22securesearch.lavasoft.com%5C%22%3A%5C%22q%5C%22%2C%5C%22shieldedsearch.com%5C%22%3A%5C%22q%5C%22%2C%5C%22us.aolsearch.com%5C%22%3A%5C%22q%5C%22%2C%5C%22websearch.brandthunder.com%5C%22%3A%5C%22q%5C%22%2C%5C%22websearch.youwillfind.info%5C%22%3A%5C%22s%5C%22%2C%5C%22websearchsimple.com%5C%22%3A%5C%22q%5C%22%2C%5C%22wind.search-help.net%5C%22%3A%5C%22search%5C%22%2C%5C%22www.21searchengines.com%5C%22%3A%5C%22%5C%22%2C%5C%22www.22searchengines.com%5C%22%3A%5C%22%5C%22%2C%5C%22www.42searchengines.com%5C%22%3A%5C%22%5C%22%2C%5C%22www.46searchengines.com%5C%22%3A%5C%22%5C%22%2C%5C%22www.85searchengines.com%5C%22%3A%5C%22%5C%22%2C%5C%22www.goonsearch.com%5C%22%3A%5C%22q%5C%22%2C%5C%22www.isearch-123.com%5C%22%3A%5C%22q%5C%22%2C%5C%22www.maxwebsearch.com%5C%22%3A%5C%22query%5C%22%2C%5C%22www.searchgby.com%5C%22%3A%5C%22%5C%22%2C%5C%22www.tlbsearch.com%5C%22%3A%5C%22q%5C%22%2C%5C%22avira.search.ask.com%5C%22%3A%5C%22q%5C%22%2C%5C%22search.coupons.com%5C%22%3A%5C%22%5C%22%2C%5C%22smartsearchfacts.com%5C%22%3A%5C%22search%5C%22%2C%5C%22www.27searchengines.com%5C%22%3A%5C%22%5C%22%2C%5C%22www.90searchengines.com%5C%22%3A%5C%22%5C%22%2C%5C%22www.searchgol.com%5C%22%3A%5C%22q%5C%22%2C%5C%22www.searchpage.com%5C%22%3A%5C%22%5C%22%2C%5C%22www.toastsearch.com%5C%22%3A%5C%22q%5C%22%2C%5C%22search.zum.com%5C%22%3A%5C%22query%5C%22%2C%5C%22searchzone.com%5C%22%3A%5C%22query%5C%22%7D%7C%7C%7C8641369907671467%22%2C%22WSG_blackList%22%3A%22form%3DCONTLB%7Cbabsrc%3Dtoolbar%7Cbabsrc%3Dtb_ss%7CinvocationType%3Dtb50-ie-aolsoftonic-tbsbox-en-us%7CinvocationType%3Dtb50-ff-aolsoftonic-tbsbox-en-us%7Csrc%3Dtlbvw%7Csap%3Dtr%7Csrc%3D1%7C/toolbar%7CSearchSource%3D1%7CSearchSource%3D44%7Cqsrc%3D2871%7Cbabsrc%3DTB_def%7C%7C%7C8641369907671468%22%2C%22WSG_kswitch%22%3A%22not%20set%22%2C%22WSG_inactive_by_user%22%3A%22not%20set%22%2C%22WSG_debugMode%22%3A%22not%20set%22%2C%22WSG_showDialog%22%3A%22not%20set%22%2C%22WSG_dailyPing%22%3A%22true%7C%7C%7C1369994070987%22%2C%22WSG_installedPing%22%3A%22true%7C%7C%7C8641358665679730%22%2C%22WSG_toolbar_query%22%3A%22not%20set%22%2C%22WSG_geoRequest%22%3A%22TW%7C%7C%7C8641360140150495%22%7D");</script><script type="text/javascript" async="" src="./Linux c中文輸出_files/gt.js"></script></head><style type="text/css">embed[type*="application/x-shockwave-flash"],embed[src*=".swf"],object[type*="application/x-shockwave-flash"],object[codetype*="application/x-shockwave-flash"],object[src*=".swf"],object[codebase*="swflash.cab"],object[classid*="D27CDB6E-AE6D-11cf-96B8-444553540000"],object[classid*="d27cdb6e-ae6d-11cf-96b8-444553540000"],object[classid*="D27CDB6E-AE6D-11cf-96B8-444553540000"]{	display: none !important;}</style>
+<body>
+<script src="./Linux c中文輸出_files/pub_topnav_2011.js" type="text/javascript"></script><link rel="stylesheet" type="text/css" href="./Linux c中文輸出_files/navtop_2012.css">
+<div class="nav_top_2011">
+<p><span style="color:red;">您还未登录！</span>|<a href="https://passport.csdn.net/account/login" target="_top">登录</a>|<a href="https://passport.csdn.net/account/register" target="_top">注册</a>|<a href="https://passport.csdn.net/help/faq" target="_blank">帮助</a></p><ul>
+<li><a href="http://www.csdn.net/" target="_blank" style="color: red;">首页</a></li>
+<li><a href="http://news.csdn.net/" target="_blank">业界</a></li>
+<li><a href="http://mobile.csdn.net/" target="_blank">移动</a></li>
+<li><a href="http://cloud.csdn.net/" target="_blank">云计算</a></li>
+<li><a href="http://sd.csdn.net/" target="_blank">研发</a></li>
+<li><a href="http://bbs.csdn.net/" target="_blank">论坛</a></li>
+<li><a href="http://blog.csdn.net/" target="_blank">博客</a></li>
+<li><a href="http://download.csdn.net/" target="_blank">下载</a></li>
+<li class="more"><h2 id="topnav_btnmore" onclick="showNavMore(this)"><a href="javascript:void(0);">更多</a></h2>
+<div id="topnav_hidlist">
+<iframe name="nav_frm" src="about:blank" width="92" height="178" scrolling="no" frameborder="no"></iframe>
+</div>
+</li>
+</ul>
+</div>
+
+
+<div id="container">
+<div id="header">
+    <div class="header">
+        <div id="blog_title">
+            <h1><a href="http://blog.csdn.net/magicxiaoz">MagicxiaoZ的专栏</a></h1>
+            <h2></h2>
+            <div class="clear"></div>
+        </div>
+        <div class="clear"></div>
+    </div>
+</div>
+<div id="navigator">
+    <div class="navigator_bg"></div>
+    <div class="navigator">
+        <ul>
+            <li id="btnContents"><a href="http://blog.csdn.net/magicxiaoz?viewmode=contents"><span><img src="./Linux c中文輸出_files/ico_list.gif">目录视图</span></a></li>
+            <li id="btnView"><a href="http://blog.csdn.net/magicxiaoz?viewmode=list"><span><img src="./Linux c中文輸出_files/ico_summary.gif">摘要视图</span></a></li>
+            <li id="btnRss"><a href="http://blog.csdn.net/magicxiaoz/rss/list"><span><img src="./Linux c中文輸出_files/ico_rss.gif">订阅</span></a></li>
+</ul>
+    </div>
+</div>
+<script type="text/javascript">
+    var username = "magicxiaoz";
+    var _blogger = username;
+    var blog_address = "http://blog.csdn.net/magicxiaoz";
+    var static_host = "http://static.blog.csdn.net";
+    var currentUserName = "";
+</script>
+
+<div id="body">
+<div id="main">
+<div class="main">
+<div class="notice"> 
+
+<a href="http://blog.csdn.net/blogdevteam/article/details/8899926" target="_blank">
+<font color="red">有奖征集活动系列——【HTML5游戏编程之旅】 
+   </font></a>
+
+
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+<a href="http://www.csdn.net/article/2013-05-28/2815458" target="_blank"><font color="blue">专访邱俊涛：高级JavaScript程序员的代码规范
+</font></a>
+
+&nbsp;&nbsp;&nbsp;&nbsp;
+
+<a href="http://ocow.csdn.net/" target="_blank">
+<font color="red">低价抢购开源中国论坛门票
+
+
+ </font></a>
+
+&nbsp;&nbsp;&nbsp;&nbsp;
+
+<a href="http://blog.csdn.net/blogdevteam/article/details/8900468" target="_blank">
+<font color="red">CSDN博客第一期云计算最佳博主评选
+ </font></a>
+
+
+&nbsp;&nbsp;&nbsp;&nbsp;
+
+<a href="http://blog.csdn.net/blogdevteam/article/details/8853291" target="_blank">
+<font color="blue">CSDN博客第二期最佳移动开发博主评选
+ </font></a>
+
+
+
+
+</div>
+<div id="article_details" class="details">
+    <div class="article_title">
+    <span class="ico ico_type_Repost"></span>
+    <h3>
+        <span class="link_title"><a href="./Linux c中文輸出_files/Linux c中文輸出.htm">
+        Linux c 输出中文
+        </a></span>
+    </h3>
+</div>
+
+        
+    <div class="article_manage">
+        <span class="link_categories">
+        分类：
+            <a href="http://blog.csdn.net/magicxiaoz/article/category/561229">Linux/Unix</a> 
+        </span>
+    <span class="link_postdate">2009-07-14 14:09</span>
+    <span class="link_view" title="阅读次数">1396人阅读</span>
+    <span class="link_comments" title="评论次数"><a href="http://blog.csdn.net/magicxiaoz/article/details/4347414#comments">评论</a>(0)</span>
+    <span class="link_collect"><a href="javascript:void(0);" onclick="javascript:collectArticle(&#39;Linux c 输出中文&#39;,&#39;4347414&#39;);return false;" title="收藏">收藏</a></span>
+    <span class="link_report"><a href="http://blog.csdn.net/magicxiaoz/article/details/4347414#report" onclick="javascript:report(4347414,2);return false;" title="举报">举报</a></span>
+    
+</div>
+<div class="tag2box"><a href="http://blog.csdn.net/tag/details.html?tag=linux" target="_blank">linux</a><a href="http://blog.csdn.net/tag/details.html?tag=c" target="_blank">c</a><a href="http://blog.csdn.net/tag/details.html?tag=windows" target="_blank">windows</a><a href="http://blog.csdn.net/tag/details.html?tag=stream" target="_blank">stream</a><a href="http://blog.csdn.net/tag/details.html?tag=byte" target="_blank">byte</a><a href="http://blog.csdn.net/tag/details.html?tag=string" target="_blank">string</a></div>
+
+
+    
+<div id="article_content" class="article_content">
+<p>今天在CSDN的Blog首页看到一篇文章“<a href="http://blog.csdn.net/bigwhite20xx/archive/2007/11/03/1864908.aspx">也谈计算机字符编码</a>
+ ”，由于前一阵业余翻译了<a href="http://blog.csdn.net/lovekatherine/archive/2007/08/30/1765903.aspx" target="_blank">“UTF-8 and Unicode FAQ for Unix/Linux</a>
+”一文，自己对字符集、编码和Unicode等内容一直保着者很强的兴趣，自然不会放过这样的文章。<br>
+<br>
+作者的文章写得很明白易懂，虽然有一些概念上的细节问题我觉得有商榷之处；作者还给出一个简单的在windows下使用wprintf正确输出字符串“中文”的小例子，我linux下模仿作者给出的示例代码写了如下的示例代码：</p>
+<div style="border: 0.5pt solid windowtext; padding: 4px 5.4pt; background: #e6e6e6 none repeat scroll 0% 50%; width: 95%;">
+<div><img src="./Linux c中文輸出_files/None.gif" alt="" align="top">
+<span style="color: #000000;">#include&nbsp;</span>
+<span style="color: #000000;">&lt;</span>
+<span style="color: #000000;">cstdio</span>
+<span style="color: #000000;">&gt;</span>
+<span style="color: #000000;"><br>
+<img src="./Linux c中文輸出_files/None.gif" alt="" align="top">
+#include&nbsp;</span>
+<span style="color: #000000;">&lt;</span>
+<span style="color: #000000;">cstdlib</span>
+<span style="color: #000000;">&gt;</span>
+<span style="color: #000000;"><br>
+<img src="./Linux c中文輸出_files/None.gif" alt="" align="top">
+#include&nbsp;</span>
+<span style="color: #000000;">&lt;</span>
+<span style="color: #000000;">clocale</span>
+<span style="color: #000000;">&gt;</span>
+<span style="color: #000000;"><br>
+<img src="./Linux c中文輸出_files/None.gif" alt="" align="top">
+#include&nbsp;</span>
+<span style="color: #000000;">&lt;</span>
+<span style="color: #000000;">cwchar</span>
+<span style="color: #000000;">&gt;</span>
+<span style="color: #000000;"><br>
+<img src="./Linux c中文輸出_files/None.gif" alt="" align="top">
+<br>
+<img src="./Linux c中文輸出_files/None.gif" alt="" align="top">
+</span>
+<span style="color: #0000ff;">int</span>
+<span style="color: #000000;">&nbsp;main(</span>
+<span style="color: #0000ff;">int</span>
+<span style="color: #000000;">&nbsp;argc,&nbsp;</span>
+<span style="color: #0000ff;">char</span>
+<span style="color: #000000;">&nbsp;</span>
+<span style="color: #000000;">*</span>
+<span style="color: #000000;">&nbsp;argv[])<br>
+<img id="_109_234_Open_Image" onclick="this.style.display=&#39;none&#39;; document.getElementById(&#39;_109_234_Open_Text&#39;).style.display=&#39;none&#39;; document.getElementById(&#39;_109_234_Closed_Image&#39;).style.display=&#39;inline&#39;; document.getElementById(&#39;_109_234_Closed_Text&#39;).style.display=&#39;inline&#39;;" src="./Linux c中文輸出_files/ExpandedBlockStart.gif" alt="" align="top">
+<img id="_109_234_Closed_Image" style="display: none;" onclick="this.style.display=&#39;none&#39;; document.getElementById(&#39;_109_234_Closed_Text&#39;).style.display=&#39;none&#39;; document.getElementById(&#39;_109_234_Open_Image&#39;).style.display=&#39;inline&#39;; document.getElementById(&#39;_109_234_Open_Text&#39;).style.display=&#39;inline&#39;;" src="./Linux c中文輸出_files/ContractedBlock.gif" alt="" align="top">
+</span>
+<span id="_109_234_Closed_Text" style="border: 1px solid #808080; background-color: #ffffff; display: none;">...</span>
+<span id="_109_234_Open_Text"><span style="color: #000000;">{<br>
+<img src="./Linux c中文輸出_files/InBlock.gif" alt="" align="top">
+&nbsp;&nbsp;&nbsp;&nbsp;wchar_t&nbsp;wstr[]&nbsp;</span>
+<span style="color: #000000;">=</span>
+<span style="color: #000000;">&nbsp;L</span>
+<span style="color: #000000;">"</span>
+<span style="color: #000000;">中文</span>
+<span style="color: #000000;">"</span>
+<span style="color: #000000;">;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+<img src="./Linux c中文輸出_files/InBlock.gif" alt="" align="top">
+&nbsp;&nbsp;&nbsp;&nbsp;setlocale(LC_ALL,&nbsp;</span>
+<span style="color: #000000;">"</span>
+<span style="color: #000000;">zh_CN.UTF-8</span>
+<span style="color: #000000;">"</span>
+<span style="color: #000000;">);&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>
+<span style="color: #008000;"><br>
+<img src="./Linux c中文輸出_files/InBlock.gif" alt="" align="top">
+</span>
+<span style="color: #000000;">&nbsp;&nbsp;&nbsp;&nbsp;wprintf(L</span>
+<span style="color: #000000;">"</span>
+<span style="color: #000000;">%s/n</span>
+<span style="color: #000000;">"</span>
+<span style="color: #000000;">,wstr);<br>
+<img src="./Linux c中文輸出_files/InBlock.gif" alt="" align="top">
+&nbsp;&nbsp;&nbsp;&nbsp;<br>
+<img src="./Linux c中文輸出_files/InBlock.gif" alt="" align="top">
+&nbsp;&nbsp;&nbsp;&nbsp;</span>
+<span style="color: #0000ff;">return</span>
+<span style="color: #000000;">&nbsp;</span>
+<span style="color: #000000;">0</span>
+<span style="color: #000000;">;<br>
+<img src="./Linux c中文輸出_files/ExpandedBlockEnd.gif" alt="" align="top">
+}</span>
+</span>
+<span style="color: #000000;"><br>
+<img src="./Linux c中文輸出_files/None.gif" alt="" align="top">
+<img src="./Linux c中文輸出_files/None.gif" alt="" align="top">
+</span>
+</div>
+</div>
+<p>
+<br>
+这里需要说明的是我的机器的locale为"zh_CN-UTF-8"</p>
+<p><strong>（附：这里的zh_CN-UTF-8 并不是一定的，要看你自己电脑上的中文locale是什么的，通过locale命令可以查看！）</strong>
+<br>
+<br>
+然而程序的运行结果却让我很诧异</p>
+<div style="border: 0.5pt solid windowtext; padding: 4px 5.4pt; background: #e6e6e6 none repeat scroll 0% 50%; width: 95%;">
+<div><img src="./Linux c中文輸出_files/None.gif" alt="" align="top">
+<span style="color: #000000;">whodare@whodare:</span>
+<span style="color: #000000;"><span style="color: #000000;">$&nbsp;.</span>
+<span style="color: #000000;">/</span>
+<span style="color: #000000;">a.</span>
+<span style="color: #0000ff;">out</span>
+<span style="color: #000000;">&nbsp;<br>
+<img src="./Linux c中文輸出_files/None.gif" alt="" align="top">
+</span>
+<span style="color: #000000;">-</span>
+<span style="color: #000000;">N</span>
+</span>
+</div>
+</div>
+<p>
+<br>
+我的第一反应就是作者的示例代码是不是有问题，毕竟这里面调用的全都是C的标准库函数，不应该存在移植性问题；然而，我找了台windows机器测试作者的代码，结果让我很郁闷，一切正常......<br>
+<br>
+为
+什么我在Linux下的程序就不对呢？我很不服气，于是开始以各种关键字进行搜索，想看看别人是否遇到过类似的问题。一个搜索结果引起了我的主意，有人说
+问题出在wprintf中的格式转换符上，将%s替换成%ls就没有这样的问题。带着几分怀疑，我修改了上面的程序，编译运行后，居然真的就没问题了</p>
+<div style="border: 0.5pt solid windowtext; padding: 4px 5.4pt; background: #e6e6e6 none repeat scroll 0% 50%; width: 95%;">
+<div><img src="./Linux c中文輸出_files/None.gif" alt="" align="top">
+<span style="color: #000000;">#include&nbsp;</span>
+<span style="color: #000000;">&lt;</span>
+<span style="color: #000000;">cstdio</span>
+<span style="color: #000000;">&gt;</span>
+<span style="color: #000000;"><br>
+<img src="./Linux c中文輸出_files/None.gif" alt="" align="top">
+#include&nbsp;</span>
+<span style="color: #000000;">&lt;</span>
+<span style="color: #000000;">cstdlib</span>
+<span style="color: #000000;">&gt;</span>
+<span style="color: #000000;"><br>
+<img src="./Linux c中文輸出_files/None.gif" alt="" align="top">
+#include&nbsp;</span>
+<span style="color: #000000;">&lt;</span>
+<span style="color: #000000;">clocale</span>
+<span style="color: #000000;">&gt;</span>
+<span style="color: #000000;"><br>
+<img src="./Linux c中文輸出_files/None.gif" alt="" align="top">
+#include&nbsp;</span>
+<span style="color: #000000;">&lt;</span>
+<span style="color: #000000;">cwchar</span>
+<span style="color: #000000;">&gt;</span>
+<span style="color: #000000;"><br>
+<img src="./Linux c中文輸出_files/None.gif" alt="" align="top">
+<br>
+<img src="./Linux c中文輸出_files/None.gif" alt="" align="top">
+</span>
+<span style="color: #0000ff;">int</span>
+<span style="color: #000000;">&nbsp;main(</span>
+<span style="color: #0000ff;">int</span>
+<span style="color: #000000;">&nbsp;argc,&nbsp;</span>
+<span style="color: #0000ff;">char</span>
+<span style="color: #000000;">&nbsp;</span>
+<span style="color: #000000;">*</span>
+<span style="color: #000000;">&nbsp;argv[])<br>
+<img id="_112_265_Open_Image" onclick="this.style.display=&#39;none&#39;; document.getElementById(&#39;_112_265_Open_Text&#39;).style.display=&#39;none&#39;; document.getElementById(&#39;_112_265_Closed_Image&#39;).style.display=&#39;inline&#39;; document.getElementById(&#39;_112_265_Closed_Text&#39;).style.display=&#39;inline&#39;;" src="./Linux c中文輸出_files/ExpandedBlockStart.gif" alt="" align="top">
+<img id="_112_265_Closed_Image" style="display: none;" onclick="this.style.display=&#39;none&#39;; document.getElementById(&#39;_112_265_Closed_Text&#39;).style.display=&#39;none&#39;; document.getElementById(&#39;_112_265_Open_Image&#39;).style.display=&#39;inline&#39;; document.getElementById(&#39;_112_265_Open_Text&#39;).style.display=&#39;inline&#39;;" src="./Linux c中文輸出_files/ContractedBlock.gif" alt="" align="top">
+...</span>
+<span id="_112_265_Closed_Text" style="border: 1px solid #808080; background-color: #ffffff; display: none;">...</span>
+<span id="_112_265_Open_Text"><span style="color: #000000;">{<br>
+<img src="./Linux c中文輸出_files/InBlock.gif" alt="" align="top">
+&nbsp;&nbsp;&nbsp;&nbsp;wchar_t&nbsp;wstr[]&nbsp;</span>
+<span style="color: #000000;">=</span>
+<span style="color: #000000;">&nbsp;L</span>
+<span style="color: #000000;">"</span>
+<span style="color: #000000;">中文</span>
+<span style="color: #000000;">"</span>
+<span style="color: #000000;">;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+<img src="./Linux c中文輸出_files/InBlock.gif" alt="" align="top">
+&nbsp;&nbsp;&nbsp;&nbsp;setlocale(LC_ALL,&nbsp;</span>
+<span style="color: #000000;">"</span>
+<span style="color: #000000;">zh_CN.UTF-8</span>
+<span style="color: #000000;">"</span>
+<span style="color: #000000;">);&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+<img src="./Linux c中文輸出_files/InBlock.gif" alt="" align="top">
+&nbsp;&nbsp;&nbsp;&nbsp;wprintf(L</span>
+<span style="color: #000000;">"</span>
+<span style="color: #000000;">%s </span>
+<span style="color: #000000;">"</span>
+<span style="color: #000000;">,wstr);<br>
+<img src="./Linux c中文輸出_files/InBlock.gif" alt="" align="top">
+&nbsp;&nbsp;&nbsp;&nbsp;wprintf(L</span>
+<span style="color: #000000;">"</span>
+<span style="color: #000000;">%ls </span>
+<span style="color: #000000;">"</span>
+<span style="color: #000000;">,wstr);<br>
+<img src="./Linux c中文輸出_files/InBlock.gif" alt="" align="top">
+&nbsp;&nbsp;&nbsp;&nbsp;<br>
+<img src="./Linux c中文輸出_files/InBlock.gif" alt="" align="top">
+&nbsp;&nbsp;&nbsp;&nbsp;</span>
+<span style="color: #0000ff;">return</span>
+<span style="color: #000000;">&nbsp;</span>
+<span style="color: #000000;">0</span>
+<span style="color: #000000;">;<br>
+<img src="./Linux c中文輸出_files/ExpandedBlockEnd.gif" alt="" align="top">
+}</span>
+</span>
+</div>
+</div>
+<p>
+<br>
+上述代码的运行结果</p>
+<div style="border: 0.5pt solid windowtext; padding: 4px 5.4pt; background: #e6e6e6 none repeat scroll 0% 50%; width: 95%;">
+<div><img src="./Linux c中文輸出_files/None.gif" alt="" align="top">
+<span style="color: #000000;">whodare@whodare:$&nbsp;.</span>
+<span style="color: #000000;">/</span>
+<span style="color: #000000;">a.</span>
+<span style="color: #0000ff;">out</span>
+<span style="color: #000000;">&nbsp;<br>
+<img src="./Linux c中文輸出_files/None.gif" alt="" align="top">
+</span>
+<span style="color: #000000;">-</span>
+<span style="color: #000000;">N<br>
+<img src="./Linux c中文輸出_files/None.gif" alt="" align="top">
+中文<br>
+<img src="./Linux c中文輸出_files/None.gif" alt="" align="top">
+</span>
+</div>
+</div>
+<p>
+<br>
+问题解决了，可我还是感到迷茫：格式转换符"ls"和“s"的区别是什么？为什么原来的程序会出问题？“-N"这个字符串是怎么冒出来的？为什么作者在windows下的程序就不存在该问题？<br>
+<br>
+这么多的疑惑堵在心口，我哪能心安呢。知其然还要知其所以然嘛！花了一个下午的时间仔细读了下wprintf的manual，并在gdb的帮助下做了各种试验，终于算是把我的疑惑基本都解决了。<br>
+<br>
+一、以下的所有试验都是以“中文”为例，因此有必要先把它的Unicdoe码值、UTF-8编码都列出来，以便于更好的理解下文<br>
+<br>
+‘中’ &nbsp; Unicode码值：U+4E2D&nbsp; UTF-8 编码 e4 b8 ad<br>
+‘文’ &nbsp; Unicode码值：U+6587&nbsp; UTF-8 编码&nbsp; e6 96 87<br>
+<br>
+二、我们需要理解用char[ ]和wchar_t [ ]来存放“中文”时有什么不同</p>
+<div style="border: 0.5pt solid windowtext; padding: 4px 5.4pt; background: #e6e6e6 none repeat scroll 0% 50%; width: 95%;">
+<div><img src="./Linux c中文輸出_files/None.gif" alt="" align="top">
+<span style="color: #000000;">&nbsp;&nbsp;&nbsp;&nbsp;</span>
+<span style="color: #0000ff;">char</span>
+<span style="color: #000000;">&nbsp;&nbsp;&nbsp;&nbsp;str[]</span>
+<span style="color: #000000;">=</span>
+<span style="color: #000000;">"</span>
+<span style="color: #000000;">中文</span>
+<span style="color: #000000;">"</span>
+<span style="color: #000000;">;<br>
+<img src="./Linux c中文輸出_files/None.gif" alt="" align="top">
+&nbsp;&nbsp;&nbsp;&nbsp;wchar_t&nbsp;wstr[]&nbsp;</span>
+<span style="color: #000000;">=</span>
+<span style="color: #000000;">&nbsp;L</span>
+<span style="color: #000000;">"</span>
+<span style="color: #000000;">中文</span>
+<span style="color: #000000;">"</span>
+<span style="color: #000000;">;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+</div>
+</div>
+<p>
+<br>
+我们使用gdb这个强大的工具来查看str[]和wst[]中究竟都存放了哪些值(请注意颜色之间的对应关系)</p>
+<div style="border: 0.5pt solid windowtext; padding: 4px 5.4pt; background: #e6e6e6 none repeat scroll 0% 50%; width: 95%;">
+<div><img src="./Linux c中文輸出_files/None.gif" alt="" align="top">
+<span style="color: #000000;">(gdb)&nbsp;x&nbsp;</span>
+<span style="color: #000000;">/</span>
+<span style="color: #000000;">8xb&nbsp;</span>
+<span style="color: #000000;">&amp;</span>
+<span style="color: #000000;">str<br>
+<img src="./Linux c中文輸出_files/None.gif" alt="" align="top">
+</span>
+<span style="color: #000000;">0xbf83decd</span>
+<span style="color: #000000;">:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+<span style="color: #ff0000;">0xe4&nbsp;&nbsp;&nbsp;&nbsp;0xb8&nbsp;&nbsp;&nbsp;&nbsp;0xad&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #800080;">0xe6&nbsp;&nbsp;&nbsp;&nbsp;0x96&nbsp;&nbsp;&nbsp;&nbsp;0x87</span>
+&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #339966;">0x00</span>
+</span>
+<span style="color: #000000;">&nbsp;&nbsp;&nbsp;&nbsp;</span>
+<span style="color: #000000;">0xf0</span>
+<span style="color: #000000;"><br>
+<img src="./Linux c中文輸出_files/None.gif" alt="" align="top">
+(gdb)&nbsp;x&nbsp;</span>
+<span style="color: #000000;">/</span>
+<span style="color: #000000;">12xb&nbsp;</span>
+<span style="color: #000000;">&amp;</span>
+<span style="color: #000000;">wstr<br>
+&nbsp;&nbsp; 0xbf83dec0:&nbsp;&nbsp;&nbsp;&nbsp; <span style="color: #ff0000;">0x2d&nbsp;&nbsp;&nbsp; 0x4e&nbsp;&nbsp;&nbsp; 0x00&nbsp;&nbsp;&nbsp; 0x00</span>
+&nbsp;&nbsp;&nbsp; <span style="color: #800080;">0x87&nbsp;&nbsp;&nbsp; 0x65&nbsp;&nbsp;&nbsp; 0x00&nbsp;&nbsp;&nbsp; 0x00</span>
+<br>
+&nbsp;&nbsp; 0xbf83dec8:&nbsp;&nbsp;&nbsp;&nbsp; <span style="color: #008080;">0x00&nbsp;&nbsp;&nbsp; 0x00&nbsp;&nbsp;&nbsp; 0x00&nbsp;&nbsp;&nbsp; 0x00</span>
+<br>
+</span>
+<span style="color: #000000;"><span style="color: #000000;"><img src="./Linux c中文輸出_files/None.gif" alt="" align="top">
+</span>
+</span>
+</div>
+</div>
+<p>
+<br>
+不难看出，char str[
+]中存储的是“中文"的UTF-8编码，这是因为我的机器的locale是zh_CN.UTF-8，程序源文件的自然采用的是UTF-8编码，因此编译器
+在处理 char str[ ]="中文"; 时，t它对str[]所做得初始化实际上可以理解成&nbsp;&nbsp;&nbsp; char str[ ]={
+0xe4,0xb8,0xad,0xe6,0x96,0x87,0x00}<br>
+<br>
+而wchar_t wstr[
+]中存放的是“中文"的Unicode码值，这符合C标准对宽字符的定义。这里需要解释的是C标准中规定宽字符是16 bit的字符，而从GNU
+glibc 2.2开始，类型wchar_t只用于存放32-bit的ISO 10646码值(你可以粗略的把ISO
+10646理解成Unicode，尽管它们并不是一回事)，而独立于当前使用的locale；因此在上面的输出中，我们看到每个Unicode码值用
+32bit表示，而不是16bit。<br>
+<br>
+三、关于%s和%ls的区别<br>
+<br>
+我搜到了一篇帖子(很伤感，我再此发现在CS领域，最靠的住的资料总是英文的)，里面对各种格式转换符有详细的解释，愿意看原文的同学直接忽略本段文字.......<br>
+<br>
+http://www-ccs.ucsd.edu/c/lib_prin.html<br>
+<br>
+首先，%ls和%s的区别很简单，%ls意味着将对应的参数会被当作基于宽字符的字符串(wide chraracter string )看待，而%s则意味着对应的参数会被当作普通字符串(multi-byte string)看待。<br>
+<br>
+其次，不要因为上面一句话而错误的认为%s只用于printf，而%ls只用于wprintf 。实际上，(printf, wprintf) 和(%s,%ls)这两个元组之间是相互独立的，也就是说它们之间的四种组合都是可以的。<br>
+<br>
+再次，printf用于byte stream，即输出流中的每个字符颤1 byte；而wprintf则用于wide stream，输出流中的每个字符不止 1 byte。<br>
+<br>
+说了一堆废话，还是结合实例来看看%ls和%s的区别吧<br>
+<br>
+例子1 printf + %s + wstr</p>
+<div style="border: 0.5pt solid windowtext; padding: 4px 5.4pt; background: #e6e6e6 none repeat scroll 0% 50%; width: 95%;">
+<div><img src="./Linux c中文輸出_files/None.gif" alt="" align="top">
+<span style="color: #000000;">printf(</span>
+<span style="color: #000000;">"</span>
+<span style="color: #000000;">%s </span>
+<span style="color: #000000;">"</span>
+<span style="color: #000000;">,wstr);<br>
+<img src="./Linux c中文輸出_files/None.gif" alt="" align="top">
+<br>
+<img src="./Linux c中文輸出_files/None.gif" alt="" align="top">
+whodare@whodare:$&nbsp;.</span>
+<span style="color: #000000;">/</span>
+<span style="color: #000000;">a.</span>
+<span style="color: #0000ff;">out</span>
+<span style="color: #000000;">&nbsp;<br>
+<img src="./Linux c中文輸出_files/None.gif" alt="" align="top">
+</span>
+<span style="color: #000000;">-</span>
+<span style="color: #000000;">N<br>
+<img src="./Linux c中文輸出_files/None.gif" alt="" align="top">
+</span>
+</div>
+</div>
+<p>
+<br>
+哈，这个郁闷的"-N"又一次出现！为什么会出现呢？让我来分析一下printf在执行时所完成的操作吧。<br>
+<br>
+这里用了%s,
+printf 就会将对应的参数wstr视为普通字符串（尽管我们清楚他是个wcs而不是mbs）；另一方面，我们已经看到了wstr[
+]的内存布局，其前3 byte为 0x2d
+,0x4e,0x00。我们都知道C中的字符串以'/0'为结束标志，因此printf只会处理wstr[
+]中的前三个byte，而查一查ASCII表，0x2d对应字符'-'，0x4e对应字符'N'，所以我们会看到”-N"这个诡异的输出。<br>
+<br>
+例子2 printf + %ls + wstr</p>
+<div style="border: 0.5pt solid windowtext; padding: 4px 5.4pt; background: #e6e6e6 none repeat scroll 0% 50%; width: 95%;">
+<div><img src="./Linux c中文輸出_files/None.gif" alt="" align="top">
+<span style="color: #000000;">printf(</span>
+<span style="color: #000000;">"</span>
+<span style="color: #000000;">%ls </span>
+<span style="color: #000000;">"</span>
+<span style="color: #000000;">,wstr);<br>
+<img src="./Linux c中文輸出_files/None.gif" alt="" align="top">
+<br>
+<img src="./Linux c中文輸出_files/None.gif" alt="" align="top">
+whodare@whodare:$&nbsp;.</span>
+<span style="color: #000000;">/</span>
+<span style="color: #000000;">a.</span>
+<span style="color: #0000ff;">out</span>
+<span style="color: #000000;">&nbsp;<br>
+<img src="./Linux c中文輸出_files/None.gif" alt="" align="top">
+中文<br>
+<img src="./Linux c中文輸出_files/None.gif" alt="" align="top">
+</span>
+</div>
+</div>
+<p>
+<br>
+<br>
+使用了%ls,printf会将对应的参数视为宽字符串(wcs)，而printf又对应byte
+stream，因此这里要对宽字符(wcs)进行转换，变成普通的字符串(mbs)。这里的转换是printf通过对每个宽字符隐式的调用wcrtomb
+()这个标准库函数完成的。按么，wcrtomb()这个函数进行是按照什么规则进行转换的？这就是setlocale()的作用所在了，wcrtomb
+会依据程序员设定的locale，将wcha_t中存放的码值，转换为相应的的多字节编码。<br>
+<br>
+回到例子中，我的机器的locale为zh_CN.UTF-8，对应的编码为UTF-8，因此wstr[ ]中存放的Unicode码值会转换为UTF-8编码的形式输出到标准输出流中，这样采用UTF-8编码的console就能正确识别受到的字节流并显示出"中文"<br>
+<br>
+例子3&nbsp; wprintf + %s +wstr (最初的代码！)</p>
+<div style="border: 0.5pt solid windowtext; padding: 4px 5.4pt; background: #e6e6e6 none repeat scroll 0% 50%; width: 95%;">
+<div><img src="./Linux c中文輸出_files/None.gif" alt="" align="top">
+<span style="color: #000000;">wprintf(L</span>
+<span style="color: #000000;">"</span>
+<span style="color: #000000;">%s </span>
+<span style="color: #000000;">"</span>
+<span style="color: #000000;">,wstr);<br>
+<img src="./Linux c中文輸出_files/None.gif" alt="" align="top">
+<br>
+<img src="./Linux c中文輸出_files/None.gif" alt="" align="top">
+whodare@whodare:$&nbsp;.</span>
+<span style="color: #000000;">/</span>
+<span style="color: #000000;">a.</span>
+<span style="color: #0000ff;">out</span>
+<span style="color: #000000;">&nbsp;<br>
+<img src="./Linux c中文輸出_files/None.gif" alt="" align="top">
+</span>
+<span style="color: #000000;">-</span>
+<span style="color: #000000;">N<br>
+<img src="./Linux c中文輸出_files/None.gif" alt="" align="top">
+</span>
+</div>
+</div>
+<p>
+&nbsp;<br>
+<br>
+使用了%s,wprintf会将对应的参数视为普通字符串mbs，尽管我们还是很清楚它其实是个wcs。wprintf
+使用的是wide
+stream,因此需要将所给的mbs参数转换为wcs再由wprintf完成输出；这个转换是由wprintf隐式的对mbs不断调用mbrtowc来
+完成，转换规则依然是和locale相关的。<br>
+<br>
+<br>
+我们知道wstr的内存布局为：<span style="color: #000000;"><span style="color: #ff0000;"><br>
+&nbsp;&nbsp;&nbsp; 0x2d&nbsp;&nbsp;&nbsp; 0x4e&nbsp;&nbsp;&nbsp; 0x00&nbsp;&nbsp;&nbsp; 0x00</span>
+&nbsp;&nbsp;&nbsp; <span style="color: #800080;">0x87&nbsp;&nbsp;&nbsp; 0x65&nbsp;&nbsp;&nbsp; 0x00&nbsp;&nbsp;&nbsp; 0x00</span>
+<br>
+&nbsp;&nbsp;&nbsp; <span style="color: #008080;">0x00&nbsp;&nbsp;&nbsp; 0x00&nbsp;&nbsp;&nbsp; 0x00&nbsp;&nbsp;&nbsp; 0x00<br>
+<br>
+</span>
+</span>
+该"mbs"的转换结果为 L‘0x2d' + L '0x4e' + L '0x00' ，最终输出结果又是讨厌的"-N"<br>
+<br>
+例子4 wprintf + %ls+ wstr</p>
+<div style="border: 0.5pt solid windowtext; padding: 4px 5.4pt; background: #e6e6e6 none repeat scroll 0% 50%; width: 95%;">
+<div><img src="./Linux c中文輸出_files/None.gif" alt="" align="top">
+<span style="color: #000000;">wprintf(L</span>
+<span style="color: #000000;">"</span>
+<span style="color: #000000;">%ls </span>
+<span style="color: #000000;">"</span>
+<span style="color: #000000;">,wstr);<br>
+<img src="./Linux c中文輸出_files/None.gif" alt="" align="top">
+<br>
+<img src="./Linux c中文輸出_files/None.gif" alt="" align="top">
+whodare@whodare:$&nbsp;.</span>
+<span style="color: #000000;">/</span>
+<span style="color: #000000;">a.</span>
+<span style="color: #0000ff;">out</span>
+<span style="color: #000000;">&nbsp;<br>
+<img src="./Linux c中文輸出_files/None.gif" alt="" align="top">
+中文<br>
+<img src="./Linux c中文輸出_files/None.gif" alt="" align="top">
+<br>
+<img src="./Linux c中文輸出_files/None.gif" alt="" align="top">
+</span>
+</div>
+</div>
+<p>
+<br>
+<br>
+<br>
+使用了%ls,wprintf会将对应参数视为宽字符串wcs，这次终于没有搞错。因此wprintf会顺利的将给定的宽字符串写入标准输出流，最终正确显示"中文"<br>
+<br>
+<br>
+看完这4个例子，你对wprintf、printf和%ls 、%s的使用还有疑惑么？<br>
+<br>
+四、小结<br>
+<br>
+&nbsp;&nbsp;&nbsp; 1。要清楚%ls和%s的意义在于指明所期待的参数是何种字符串，而printf和wprintf的区别在于所使用的是不同类型的stream<br>
+<br>
+&nbsp;&nbsp;&nbsp;
+2。貌似在linux下输出“中文"的正确方法是 wprintf( "%ls/n",L"中文")
+，而引文中作者在Windows成功操作的wprintf("%s/n",
+L"中文")在linux无法正确工作，至于为何wprintf这个标准库函数在两个系统下有不同表现，我是无心再向下深挖了，难道这又是VC一处不符合
+标准的地方？.......<br>
+<br>
+&nbsp;&nbsp;&nbsp; 3 。貌似还有一个%S，单独用于表示对应参数是宽字符串（wprintf(L"%S ",wstr);也是可以的）<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 谁能告诉我该问题的答案，不盛感激.......
+					</p>
+</div>
+
+<div class="share_buttons" id="sharePanel"><span>分享到：</span> <a name="sina" class="share_sina" title="分享到新浪微博"></a><a name="qq" class="share_qq" title="分享到腾讯微博"></a></div>
+<!--192.168.1.237-->
+<div class="article_next_prev">
+    <li class="prev_article"><span>上一篇：</span><a href="http://blog.csdn.net/magicxiaoz/article/details/4338467">程序语言的分类</a></li>
+    <li class="next_article"><span>下一篇：</span><a href="http://blog.csdn.net/magicxiaoz/article/details/4374647">消息分析器-----HANDLE_MSG</a></li>
+</div>
+
+
+    
+</div>
+<div id="ad_cen">
+<script type="text/javascript">BAIDU_CLB_SLOT_ID = "117306";</script>
+<script type="text/javascript" src="http://cbjs.baidu.com/js/o.js"></script>
+</div>
+<script type="text/javascript">
+    //new Ad(4, 'ad_cen');
+</script>
+<div id="comment_title" class="panel_head">查看评论<a name="comments"></a></div>
+<div id="comment_list"><br>&nbsp;&nbsp;暂无评论<br><br><div class="clear"></div></div>
+<div id="comment_bar"></div>
+<div id="comment_form"><div class="guest_link">您还没有登录,请<a href="javascript:void(0);" onclick="javascript:csdn.showLogin(function (dat) {js_logined(dat.data.userName);});">[登录]</a>或<a href="http://passport.csdn.net/account/register?from=http%3A%2F%2Fblog.csdn.net%2Fmagicxiaoz%2Farticle%2Fdetails%2F4347414">[注册]</a></div></div>
+<div class="announce">* 以上用户言论只代表其个人观点，不代表CSDN网站的观点或立场<a name="reply"></a><a name="quote"></a></div>
+<script type="text/javascript">
+    var fileName = '4347414';
+    var commentscount = 0;
+    var islock = false
+</script>
+<script type="text/javascript" src="./Linux c中文輸出_files/comment.js"></script>
+<div id="ad_bot"></div>
+<script type="text/javascript">
+    new Ad(5, 'ad_bot');
+</script>
+<div id="report_dialog"></div>
+
+<div id="d-top" style="display: none;">
+<a id="d-top-a" href="http://blog.csdn.net/magicxiaoz/article/details/4347414#" title="回到顶部">
+<img src="./Linux c中文輸出_files/top.png" alt="TOP"></a>
+</div>
+<script type="text/javascript">
+    $(function(){
+        var d_top=$('#d-top');
+        document.onscroll=function(){
+            var scrTop=(document.body.scrollTop||document.documentElement.scrollTop);
+            if(scrTop>500){
+                d_top.show();
+            }else{
+                d_top.hide();
+            }
+        }
+        $('#d-top-a').click(function(){
+            scrollTo(0,0);
+            this.blur();
+            return false;
+        });
+    });
+</script>
+
+<div class="clear"></div>
+</div>
+</div>
+
+<div id="side">
+<div class="side">
+<div id="panel_Profile" class="panel">
+<ul class="panel_head"><span>个人资料</span></ul>
+<ul class="panel_body profile">
+<div id="blog_userface">
+    <a href="http://my.csdn.net/magicxiaoz" target="_blank">
+    <img src="./Linux c中文輸出_files/1_magicxiaoz.jpg" title="访问我的空间" style="max-width:90%">
+    </a>
+    <br>
+    <span><a href="http://my.csdn.net/magicxiaoz" class="user_name" target="_blank">magicxiaoz</a></span>
+</div>
+<div class="interact">
+<a href="javascript:void(0);" class="attent" id="span_add_follow" title="[加关注]"></a>
+<a href="javascript:void(0);" class="letter" onclick="loginto(1)" title="[发私信]"></a>
+</div>
+<div id="blog_medal">
+<div id="bms_box"></div></div>
+<ul id="blog_rank">
+    <li>访问：<span>9289次</span></li>
+    <li>积分：<span>205分</span></li>
+    <li>排名：<span>千里之外</span></li>
+</ul>
+<ul id="blog_statistics">
+    <li>原创：<span>9篇</span></li>
+    <li>转载：<span>11篇</span></li>
+    <li>译文：<span>0篇</span></li>
+    <li>评论：<span>1条</span></li>
+</ul>
+</ul>
+</div>
+
+
+
+<div class="panel" id="panel_Search">
+    <ul class="panel_head"><span>文章搜索</span></ul>
+    <ul class="panel_body">
+        <form id="frmSearch" action="http://so.csdn.net/search" class="form_search" target="_blank">
+        <span><input id="inputSearch" type="text" class="blogsearch" title="请输入关键字"></span>
+        <input id="btnSubmit" type="submit" value="搜索" title="search in blog">
+        <input type="hidden" name="q" id="inputQ">
+        <input type="hidden" name="t" value="blog">
+        <a id="btnSearchBlog" target="_blank"></a>
+        </form>
+    </ul>
+</div><div id="panel_Category" class="panel">
+<ul class="panel_head"><span>文章分类</span></ul>
+<ul class="panel_body">
+<li>
+<a href="http://blog.csdn.net/magicxiaoz/article/category/554791">.Net</a><span>(5)</span>
+</li>
+<li>
+<a href="http://blog.csdn.net/magicxiaoz/article/category/563639">c/c++</a><span>(7)</span>
+</li>
+<li>
+<a href="http://blog.csdn.net/magicxiaoz/article/category/561229">Linux/Unix</a><span>(2)</span>
+</li>
+<li>
+<a href="http://blog.csdn.net/magicxiaoz/article/category/560890">windows</a><span>(4)</span>
+</li>
+<li>
+<a href="http://blog.csdn.net/magicxiaoz/article/category/565136">其他</a><span>(1)</span>
+</li>
+<li>
+<a href="http://blog.csdn.net/magicxiaoz/article/category/741079">算法</a><span>(1)</span>
+</li>
+<li>
+<a href="http://blog.csdn.net/magicxiaoz/article/category/570792">读书笔记</a><span>(0)</span>
+</li>
+</ul>
+</div><div id="panel_Archive" class="panel">
+<ul class="panel_head"><span>文章存档</span></ul>
+<ul class="panel_body">
+<div id="archive_list">
+<!--归档统计-->
+<li><a href="http://blog.csdn.net/magicxiaoz/article/month/2011/03">2011年03月</a><span>(1)</span></li><li><a href="http://blog.csdn.net/magicxiaoz/article/month/2010/10">2010年10月</a><span>(1)</span></li><li><a href="http://blog.csdn.net/magicxiaoz/article/month/2009/08">2009年08月</a><span>(1)</span></li><li><a href="http://blog.csdn.net/magicxiaoz/article/month/2009/07">2009年07月</a><span>(11)</span></li><li><a href="http://blog.csdn.net/magicxiaoz/article/month/2009/06">2009年06月</a><span>(6)</span></li>
+</div>
+</ul>
+</div>
+<div id="hotarticls" class="panel">
+<ul class="panel_head"><span>阅读排行</span></ul>
+<ul class="panel_body itemlist">
+<li>
+<a href="./Linux c中文輸出_files/Linux c中文輸出.htm" title="Linux c 输出中文">Linux c 输出中文</a><span>(1396)</span>
+</li>
+<li>
+<a href="http://blog.csdn.net/magicxiaoz/article/details/4318113" title="Windows字符编码那些事儿">Windows字符编码那些事儿</a><span>(1142)</span>
+</li>
+<li>
+<a href="http://blog.csdn.net/magicxiaoz/article/details/4311515" title="linux安装软件详细解答 rpm tar.gz tar.z tar.bz2 tar.tgz .deb .bin">linux安装软件详细解答 rpm tar.gz tar.z tar.bz2 tar.tgz .deb .bin</a><span>(891)</span>
+</li>
+<li>
+<a href="http://blog.csdn.net/magicxiaoz/article/details/4320633" title="C++/VC++ 命名及其他规范">C++/VC++ 命名及其他规范</a><span>(779)</span>
+</li>
+<li>
+<a href="http://blog.csdn.net/magicxiaoz/article/details/4376562" title="c++内存到底分几个区？！">c++内存到底分几个区？！</a><span>(771)</span>
+</li>
+<li>
+<a href="http://blog.csdn.net/magicxiaoz/article/details/4338467" title="程序语言的分类">程序语言的分类</a><span>(589)</span>
+</li>
+<li>
+<a href="http://blog.csdn.net/magicxiaoz/article/details/4374647" title="消息分析器-----HANDLE_MSG">消息分析器-----HANDLE_MSG</a><span>(487)</span>
+</li>
+<li>
+<a href="http://blog.csdn.net/magicxiaoz/article/details/4308893" title="Visual   C++中函数调用方式浅探">Visual   C++中函数调用方式浅探</a><span>(417)</span>
+</li>
+<li>
+<a href="http://blog.csdn.net/magicxiaoz/article/details/4377484" title="c++变量初始化(猜想......)">c++变量初始化(猜想......)</a><span>(312)</span>
+</li>
+<li>
+<a href="http://blog.csdn.net/magicxiaoz/article/details/4478687" title="将文件之间的编译依赖关系降至最低">将文件之间的编译依赖关系降至最低</a><span>(284)</span>
+</li>
+</ul>
+</div>
+<div id="hotarticls2" class="panel">
+<ul class="panel_head"><span>评论排行</span></ul>
+<ul class="panel_body itemlist">
+<li>
+<a href="http://blog.csdn.net/magicxiaoz/article/details/4320633" title="C++/VC++ 命名及其他规范">C++/VC++ 命名及其他规范</a><span>(1)</span>
+</li>
+<li>
+<a href="http://blog.csdn.net/magicxiaoz/article/details/4338467" title="程序语言的分类">程序语言的分类</a><span>(0)</span>
+</li>
+<li>
+<a href="./Linux c中文輸出_files/Linux c中文輸出.htm" title="Linux c 输出中文">Linux c 输出中文</a><span>(0)</span>
+</li>
+<li>
+<a href="http://blog.csdn.net/magicxiaoz/article/details/4374647" title="消息分析器-----HANDLE_MSG">消息分析器-----HANDLE_MSG</a><span>(0)</span>
+</li>
+<li>
+<a href="http://blog.csdn.net/magicxiaoz/article/details/4376562" title="c++内存到底分几个区？！">c++内存到底分几个区？！</a><span>(0)</span>
+</li>
+<li>
+<a href="http://blog.csdn.net/magicxiaoz/article/details/4377484" title="c++变量初始化(猜想......)">c++变量初始化(猜想......)</a><span>(0)</span>
+</li>
+<li>
+<a href="http://blog.csdn.net/magicxiaoz/article/details/4382379" title="C语言编译全过程">C语言编译全过程</a><span>(0)</span>
+</li>
+<li>
+<a href="http://blog.csdn.net/magicxiaoz/article/details/4478687" title="将文件之间的编译依赖关系降至最低">将文件之间的编译依赖关系降至最低</a><span>(0)</span>
+</li>
+<li>
+<a href="http://blog.csdn.net/magicxiaoz/article/details/5931970" title="我也来写KMP">我也来写KMP</a><span>(0)</span>
+</li>
+<li>
+<a href="http://blog.csdn.net/magicxiaoz/article/details/4266800" title=" .NET多线程编程（1）:多任务和多线程"> .NET多线程编程（1）:多任务和多线程</a><span>(0)</span>
+</li>
+</ul>
+</div>
+<div id="homepageArticles" class="panel">
+<ul class="panel_head"><span>推荐文章</span></ul>
+<ul class="panel_body" id="ad_commend"></ul>
+</div>
+<script type="text/javascript">
+ new Ad(12, 'ad_commend');
+</script><div id="newcomments" class="panel">
+<ul class="panel_head"><span>最新评论</span></ul>
+<ul class="panel_body itemlist">
+    <li>
+    <a href="http://blog.csdn.net/magicxiaoz/article/details/4320633#comments">C++/VC++ 命名及其他规范</a>
+    <p style="margin:0px;"><a href="http://blog.csdn.net/Uraimh" class="user_name">Uraimh</a>:
+非常受教 3q
+    </p>
+    </li>
+</ul>
+</div>
+</div>
+<div class="clear"></div>
+</div>
+
+<div class="clear"></div>
+</div>
+
+<script type="text/javascript" src="./Linux c中文輸出_files/newblog.min.js"></script>
+<script type="text/javascript" src="./Linux c中文輸出_files/showblogmedal.ashx"></script>
+
+<script type="text/javascript">
+document.write('<script type="text/javascript" src="http://csdnimg.cn/pubfooter/js/publib_footer.js?' + Math.floor(new Date()/120000).toString(36) + '="></'+'script>');
+</script><script type="text/javascript" src="./Linux c中文輸出_files/publib_footer.js"></script><link rel="stylesheet" type="text/css" href="./Linux c中文輸出_files/pub_footer_2012.css"><div id="pub_footerall" class="pub_footerall"><dl><dt></dt> <dd><a href="http://www.csdn.net/company/about.html" target="_blank">公司简介</a>|<a href="http://www.csdn.net/company/recruit.html" target="_blank">招贤纳士</a>|<a href="http://www.csdn.net/company/marketing.html" target="_blank">广告服务</a>|<a href="http://www.csdn.net/company/account.html" target="_blank">银行汇款帐号</a>|<a href="http://www.csdn.net/company/contact.html" target="_blank">联系方式</a>|<a href="http://www.csdn.net/company/statement.html" target="_blank">版权声明</a>|<a href="http://www.csdn.net/company/layer.html" target="_blank">法律顾问</a>|<a href="mailto:webmaster@csdn.net">问题报告</a></dd><dd><a href="http://wpa.qq.com/msgrd?v=3&uin=2355263776&site=qq&menu=yes" target="_blank" class="qq">QQ客服</a> <a href="http://e.weibo.com/csdnsupport/profile" target="_blank" class="weibo">微博客服</a> <a href="http://bbs.csdn.net/forums/Service" target="_blank" class="online">论坛反馈</a> <a href="mailto:webmaster@csdn.net" class="email">联系邮箱：webmaster@csdn.net</a> <span class="phone">服务热线：400-600-2320</span></dd><dd>京&nbsp;ICP&nbsp;证&nbsp;070598&nbsp;号</dd><dd>北京创新乐知信息技术有限公司 版权所有</dd><dd>世纪乐知(北京)网络技术有限公司 提供技术支持</dd><dd>江苏乐知网络技术有限公司 提供商务支持</dd><dd>Copyright © 1999-2012, CSDN.NET, All Rights Reserved&nbsp;<a href="http://www.hd315.gov.cn/beian/view.asp?bianhao=010202001032100010" target="_blank"><img src="./Linux c中文輸出_files/gongshang_logos.gif" alt="GongshangLogo" title=""></a></dd></dl></div><script id="noticeScript" type="text/javascript" btnid="header_notice_num" wrapid="note1" count="5" subcount="5" src="./Linux c中文輸出_files/note.js"></script><script type="text/javascript" charset="utf-8" src="./Linux c中文輸出_files/tracking.js"></script>
+
+<script type="text/javascript" src="./Linux c中文輸出_files/login.js"></script>
+<script type="text/javascript">document.write("<img src=http://counter.csdn.net/pv.aspx?id=24 border=0 width=0 height=0>");</script>
+<script type="text/javascript" src="http://www.csdn.net/ui/scripts/Csdn/counter.js?v=1"></script>
+
+
+<script type="text/javascript" src="http://ad.csdn.net/scripts/ad-blog.js"></script>
+
+</div><sfmsg id="sfMsgId" data="{&quot;imageCount&quot;:0,&quot;ip&quot;:&quot;1.1.1.1&quot;}"></sfmsg>
+
+<div id="LCS_FE1DEEEA_DB6D_44b8_83F0_34FC0F9D1052_communicationDiv" lcs_fe1deeea_db6d_44b8_83f0_34fc0f9d1052_valuename="WSG_status" lcs_fe1deeea_db6d_44b8_83f0_34fc0f9d1052_valueresult="active|||8641369988353207"></div></body></html>

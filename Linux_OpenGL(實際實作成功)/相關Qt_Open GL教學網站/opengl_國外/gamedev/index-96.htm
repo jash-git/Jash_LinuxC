@@ -1,0 +1,381 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+    dir="ltr"
+    xml:lang="en"
+    lang="en">
+  <head>
+    <title>NeHe Productions: Camera Class Tutorial</title>
+
+    <link rel="stylesheet" type="text/css" href="public_base.css" tppabs="http://nehe.gamedev.net/static/css/public_base.css" />
+    <link type="text/css" rel="stylesheet" href="shThemeMidnight.css" tppabs="http://nehe.gamedev.net/static/css/syntax_highlighter/shThemeMidnight.css"/>
+    
+    <link rel="alternate" type="application/atom+xml" title="Atom feed" href="index-1.htm" tppabs="http://nehe.gamedev.net/atom/" />
+    <link rel="alternate" type="application/rss+xml" title="RSS feed" href="index-2.htm" tppabs="http://nehe.gamedev.net/rss/" />
+    
+    <meta name="author" content="Luke Benstead + Carsten Haubold" />
+    <meta name="description" content="OpenGL Tutorials, Demos, Games and More..." />
+    <meta name="keywords" content="opengl, tutorial, article, demo, game, blend, texturemap, lighting, contest, 3D" />
+
+    
+    
+
+    
+
+</script>
+
+
+    
+    
+    
+    
+        
+        <script type='text/javascript'>
+        var googletag = googletag || {};
+        googletag.cmd = googletag.cmd || [];
+        (function() {
+        var gads = document.createElement('script');
+        gads.async = true;
+        gads.type = 'text/javascript';
+        var useSSL = 'https:' == document.location.protocol;
+        gads.src = (useSSL ? 'https:' : 'http:') + 
+        '//www.googletagservices.com/tag/js/gpt.js';
+        var node = document.getElementsByTagName('script')[0];
+        node.parentNode.insertBefore(gads, node);
+        })();
+        </script>
+
+        <script type='text/javascript'>
+        googletag.cmd.push(function() {
+        googletag.defineSlot('/1004699/Leaderboard_NeHe', [728, 90], 'div-gpt-ad-1327940144417-0').addService(googletag.pubads());
+        googletag.defineSlot('/1004699/Skyscraper_NeHe', [160, 600], 'div-gpt-ad-1327940144417-1').addService(googletag.pubads());
+        googletag.pubads().enableSingleRequest();
+        googletag.enableServices();
+        });
+        </script>
+    
+    
+
+    
+  </head>
+
+  <body>
+    
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "all.js#xfbml=1"/*tpa=http://connect.facebook.net/en_GB/all.js#xfbml=1*/;
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+
+
+    <table cellpadding="0" cellspacing="0" border="0" id="layout_table">
+    <tr><td>
+        <div id="header">
+                <a href="index.htm" tppabs="http://nehe.gamedev.net/"><img class="logo" class="logo" src="nehe.png" tppabs="http://nehe.gamedev.net/static/images/nehe.png" border="0" alt="Nehe" /></a>
+        </div>            
+    </td></tr>
+    <tr><td colspan="2">
+            
+<div class="navbar">
+    <a href="index.htm" tppabs="http://nehe.gamedev.net/">HOME</a>
+    <a href="javascript:if(confirm('http://twitter.com/  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://twitter.com/#!/nehegl'" tppabs="http://twitter.com/#!/nehegl">TWITTER</a>  
+    <a href="javascript:if(confirm('http://www.facebook.com/pages/NeHe/300582493323181  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://www.facebook.com/pages/NeHe/300582493323181'" tppabs="http://www.facebook.com/pages/NeHe/300582493323181">FACEBOOK</a>     
+    <a href="index-2.htm" tppabs="http://nehe.gamedev.net/rss/">RSS</a>    
+    <a href="index-1.htm" tppabs="http://nehe.gamedev.net/atom/">ATOM</a>    
+    <a href="javascript:if(confirm('http://www.gamedev.net/forum/27-nehe-productions/page__forum_title__NeHe+Productions  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://www.gamedev.net/forum/27-nehe-productions/page__forum_title__NeHe+Productions'" tppabs="http://www.gamedev.net/forum/27-nehe-productions/page__forum_title__NeHe+Productions">FORUM</a>    
+</div>
+    
+    </td></tr>
+    <tr>
+        <td class="col1">
+
+            
+<div id="article_container">
+
+
+<h1 class="article-header">Camera Class Tutorial</h1>
+<div class="social-media">
+<!-- Place this tag where you want the +1 button to render -->
+<div class="g-plusone" data-size="medium" data-width="120" data-annotation="inline"></div>
+<div class="fb-like" data-send="false" data-layout="button_count" data-width="60" data-show-faces="false" data-colorscheme="dark" data-font="arial"></div>
+</div>
+<div style="clear:both;"></div>
+<p><strong><span style="text-decoration: underline;">Step 1: Planning</span></strong></p>
+<p>That's right we're not jumping right into code but I promise we will eventually. Before we start programming our camera class we should figure out what sort of stuff we want it to do. When I started writing this class I came up with a list something like this...</p>
+<!-- break -->
+<p>* Transformations based on our global coordinate system<br /> * Transformations based on our camera's local coordinate system<br /> * Ability to travel along a spline<br /> * Ability to look at and follow targets</p>
+<p>In this article I will be discussing the second, and fourth items in the list.</p>
+<p>One thing I need to say right now is that I haven't researched camera classes or even written one before. I simply thought about what I wanted to do and then coded it. Next thing I should mention is that almost all of the transformations in our camera class are going to be based on axes (axes is the plural form of axis, not the weapon) that are defined by vectors. The default orientations for the axes would be as follows:</p>
+<p>X Axis = (1.0, 0.0, 0.0)<br /> Y Axis = (0.0, 1.0, 0.0)<br /> Z Axis = (0.0, 0.0, 1.0)</p>
+<p>Here we see that the default x axes would point in the direction 1.0, 0.0, 0.0 which is one unit to the right (or left depending on how you want to look at it), zero units up and zero units forward. If you're not following me just keep reading and maybe it will come to you. Our camera will have several different modes that all affect how it will be transformed (rotated, translated). First we will have our default mode where all of our transformations are based on the default axes. Another mode will actually rotate the axes with the camera while also taking into account the previous orientation of the axes. Understand?</p>
+<p>Hold out your hand straight in front of you with your palm pointing down and your fingers pointing straight in front of you. Now rotate your hand 90 degrees so that your palm and the back of your hand are pointing left and right. Now if we were using the first mode I described and we wanted to translate the hand upwards it would move up (up being towards the ceiling above you). In the second mode I described the hand would still move up, but up would be left or right (depending on the sign of the translation, +/-). This happens because when we rotated our hand 90 degrees the axes rotated with our hand. That means that up would still be defined as the top of your hand. Therefore when we move up we would actually be moving left or right relative to our default axes. Following me so far? If not try to keep reading and things should become more clear.</p>
+<p>Here are some example pictures of what I'm trying to explain. Hopefully they'll help a little bit.</p>
+<p><img src="camerarot45-1.jpg" tppabs="http://nehe.gamedev.net/data/articles/extras/article08/camerarot45.jpg" alt="" border="1" /><img src="camerarot452-1.jpg" tppabs="http://nehe.gamedev.net/data/articles/extras/article08/camerarot452.jpg" alt="" border="1" /></p>
+<p><br /> These two pictures show a camera. The red block signifies up relative to the camera and the green block represents forward for the camera. These pictures try to show what happens when we use the second mode I described for the transformations. As you can see in the first picture the camera has been rotated 45 degrees around the forward axis (which was 0.0, 0.0, 1.0). Now take a look at the second picture and you'll see what I mean about the rotations being based on previous rotations. Notice how in the second picture the camera was rotated based on it's local axes. This is the effect that we are going to try to achieve. It is a lot easier to understand if you can simply load up a scene and start navigating around. I may release a little demo that will let you move around in a scene and try out this effect.</p>
+<p>The next two modes affect what is rotated around what. Sound strange? I'll try to clarify. We want to have our default mode where the camera's target (forward vector) will rotate. This changes which way the camera is pointing. The other mode is an orbit mode, where the camera's position rotates around a point. Here are some examples...</p>
+<p><img src="rotatemodedefault-1.jpg" tppabs="http://nehe.gamedev.net/data/articles/extras/article08/rotatemodedefault.jpg" alt="" border="1" /><img src="rotatemodeorbit-1.jpg" tppabs="http://nehe.gamedev.net/data/articles/extras/article08/rotatemodeorbit.jpg" alt="" border="1" /></p>
+<p><br /> Well, now that we have an idea of what we're doing in the next section we'll start exploring the formulas involved in achieving these effects.</p>
+<p><strong><span style="text-decoration: underline;">Step 2: Exploring Formulas</span></strong></p>
+<p>When I first started this camera class I had no idea how I was going to achieve these effects. I started flipping through a mathematics handbook and came across a formula that I thought did what I wanted. I should note that there are probably many ways to get the results we are looking for and mine may not be the best. However it works and it doesn't seem to be slow. Here is a diagram showing what the formula allows us to do.</p>
+<center><img src="transformationdiagram-1.jpg" tppabs="http://nehe.gamedev.net/data/articles/extras/article08/transformationdiagram.jpg" alt="" border="1" /></center>
+<p><br /> And here are the formulas that describe what's going on:</p>
+<p>x' = m<sub>1</sub>x + n<sub>1</sub>y + l<sub>1</sub>z<br /> y' = m<sub>2</sub>x + n<sub>2</sub>y + l<sub>2</sub>z<br /> z' = m<sub>3</sub>x + n<sub>3</sub>y + l<sub>3</sub>z</p>
+<p>The description from the book is as follows, "where the origins of the xyz and x'y'z' systems are the same and m<sub>1</sub>, n<sub>1</sub>, l<sub>1</sub>; m<sub>2</sub>, n<sub>2</sub>, l<sub>2</sub>; m<sub>3</sub>, n<sub>3</sub>, l<sub>3</sub> are the direction cosines of the x', y', z' axes relative to the x, y, z-axes respectively".</p>
+<p>Don't worry if you don't understand that description because we'll actually be using a watered down version of those formulas. Lets step back a minute and remember what we're trying to do. We want one mode where the camera is transformed based on the default axes positions, and one where the axes rotate with the camera. This formula will let us do both. If you look at the formula description you'll see it mentions directional cosines represented by the l, m, and n variables. These are the keys to our rotations. Here is a diagram showing what they are.</p>
+<center><img src="dircosine-1.jpg" tppabs="http://nehe.gamedev.net/data/articles/extras/article08/dircosine.jpg" alt="" border="1" /></center>
+<p><br /> Think of the dark line shown as an axis that we are rotating. Here are the formulas for l, m, and n which were shown in the above equation. Note that the small a symbol is Alpha, the symbol looking like a b is Beta, and the one that looks like a y is Gamma.</p>
+<p>m = cos Beta<br /> n = cos Gamma<br /> l = cos Alpha</p>
+<p>Where Alpha, Beta, Gamma are the angles which our line (or new axes) makes with the positive x, y, z-axes respectively. Now take a look at the diagram showing directional cosines again. In the diagram rotations on each axis are happening all at once. In our camera class we won't do it this way. Instead we will have three separate methods, one for rotating around the x, one for the y, and one for the z (rotateX(), rotateY(), rotateZ()). This will let us simplify our equations. Lets say we rotate around the y-axis, Gamma should always be 90 degrees. If we rotate around the x-axis, Beta should always be 90 degrees, and if we rotate around the z-axis Alpha will always be 90 degrees. Here is an example showing a rotation around the y-axis. Notice Gamma is 90 degrees.</p>
+<center><img src="moddircosine-1.jpg" tppabs="http://nehe.gamedev.net/data/articles/extras/article08/moddircosine.jpg" alt="" border="1" /></center>
+<p><br /> Ok, now we know that we can get at least one angle for each one of our equations. What about the other two? Well if we are rotating around the y-axis (the diagram above) we see that we still need Alpha and Beta. For the x-axis Beta will be the amount the camera is to be rotated, so it will be supplied as a parameter. Now we just need to find Alpha. Take a look at the diagram again. Notice that the x and z-axis are 90 degrees apart. That must mean that to find Alpha all we have to do is take 90 degrees and add the amount we are rotating around the y axis. Lets do a little example assuming that the user wants to rotate 45 degrees around the y-axis.</p>
+<p>Gamma = 90 degrees (the new x, and z-axes will still form a 90 degree angle with the y-axis)<br /> Beta = 45 degrees (angle supplied by the user as a parameter)<br /> Alpha = 90 - 45 = 45 degrees</p>
+<p>It's that simple. We now know all the angles we need to figure out the new x-axis. We can then take these angles and plug them into our equation to find our new axes! Here's how we do it. Since we were rotating 45 degrees around our y-axis the z and x-axes will change. This means we need to calculate the x, y, and z positions for both the z and x-axes for a total of six calculations. Remember that m = cos Beta, and n = cos Gamma, l = cos Alpha.</p>
+<p>x'.x = m<sub>1</sub>x.x + n<sub>1</sub>y.x + l<sub>1</sub>z.x<br /> x'.x = cos(45)(1) + cos(90)(0) + cos(45)(0)<br /> x'.x = (0.7071)(1) + 0 + 0<br /> x'.x = 0.7071</p>
+<p>x'.y = m<sub>1</sub>x.y + n<sub>1</sub>y.y + l<sub>1</sub>z.y<br /> x'.y = cos(45)(0) + cos(90)(1) + cos(45)(0)<br /> x'.y = (0.7071)(0) + (0)(1) + (0.7071)(0)<br /> x'.y = 0</p>
+<p>x'.z = m<sub>1</sub>x.z + n<sub>1</sub>y.z + l<sub>1</sub>z.z<br /> x'.z = cos(45)(0) + cos(90)(0) + cos(45)(1)<br /> x'.z = (0.7071)(0) + 0 + (0.7071)(1)<br /> x'.z = 0.7071</p>
+<p>As you can see in this example we calculate the new vector for the x-axis. We took into account the current position of the axes which were 1, 0, 0 for the x-axis, 0, 1, 0 for the y-axis, and 0, 0, 1 for the z-axis. They could have been something else but for simplicity sake we just used the default. Our new x vector is 0.7071, 0, 0.7071. Our y vector will stay the same since we're rotating around it. The only thing left to find is the z-axis. First we need to figure out the values of Alpha, Beta and Gamma. We know that Gamma will still be 90 degrees. Alpha will be 45 degrees because that's how much we're rotating and Beta will be 90 + 45 = 135 degrees.</p>
+<p>z'.x = m<sub>3</sub>x.x + n<sub>3</sub>y.x + l<sub>3</sub>z.x<br /> z'.x = cos(135)(1) + cos(90)(0) + cos(45)(0)<br /> z'.x = (-0.7071)(1) + 0 + 0<br /> z'.x = -0.7071</p>
+<p>z'.y = m<sub>3</sub>x.y + n<sub>3</sub>y.y + l<sub>3</sub>z.y<br /> z'.y = cos(135)(0) + cos(90)(1) + cos(45)(0)<br /> z'.y = (-0.7071)(0) + (0)(1) + (0.7071)(0)<br /> z'.y = 0</p>
+<p>z'.z = m<sub>3</sub>x.z + n<sub>3</sub>y.z + l<sub>3</sub>z.z<br /> z'.z = cos(135)(0) + cos(90)(0) + cos(45)(1)<br /> z'.z = (-0.7071)(0) + 0 + (0.7071)(1)<br /> z'.z = 0.7071</p>
+<p>Now we have all of our new axes' vectors. Their new vectors are as follows:</p>
+<p>X Axis = (0.7071, 0.0, 0.7071)<br /> Y Axis = (0.0, 1.0, 0.0)<br /> Z Axis = (-0.7071, 0.0, 0.7071)</p>
+<p><strong><span style="text-decoration: underline;">Step 3: Optimizations</span></strong></p>
+<p>Optimizations before code? Yes, it will make the coding process so much simpler because we can cut our equations down to size. Take a look at our calculations above and you'll notice that when we rotate around the y-axis our Gamma angle is always 90 degrees. The cosine of 90 degrees is always 0. That means that we don't even have to include our Gamma angle in our equation when we rotate around the y-axis. Here are our new formulas that rotate the x and z-axes around the y-axis.</p>
+<p>x' = m<sub>1</sub>x + l<sub>1</sub>z<br /> z' = m<sub>3</sub>x + l<sub>3</sub>z</p>
+<p>Isn't that a lot simpler? For rotating around the x-axis Beta always remains the same (90 degrees). Once again since the cosine of 90 is zero we don't need to include it. So our equations for rotating around the x-axis would be:</p>
+<p>y' = n<sub>2</sub>y + l<sub>2</sub>z<br /> z' = n<sub>3</sub>y + l<sub>3</sub>z</p>
+<p>And for our z-axis:</p>
+<p>x' = m<sub>1</sub>x + n<sub>1</sub>y<br /> y' = m<sub>2</sub>x + n<sub>2</sub>y</p>
+<p>As you can see this makes our calculations simpler and faster. Now on to the code!</p>
+<p><strong><span style="text-decoration: underline;">Step 4: Implementation</span></strong></p>
+<p>Yes you finally get to look at some code. But before we jump right in we need to decide on some variables. What kind of information do we need to keep track of? I made a little list.</p>
+<p>* A target to look at (our z-axis vector)<br /> * The camera's position<br /> * The camera's up vector (y-axis vector)<br /> * The camera's right vector (x-axis vector)</p>
+<p>If you take a look at the first four variables we will need you should be able to figure out what they are since that's what we've been concentrating on so far. So how do we implement all this? Well we need some basic methods such as:</p>
+<p>rotateX(float amount)<br /> rotateY(float amount)<br /> rotateZ(float amount)</p>
+<p>moveForward(float amount)<br /> moveRight(float amount)<br /> moveLeft(float amount)</p>
+<p>setTarget(Vector target)<br /> setPosition(Vertex position)<br /> setUp(Vector up)</p>
+<p><strong><span style="text-decoration: underline;">Transformations</span></strong></p>
+<p>Here's the code for a translation...</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">void Bone :: moveForeward(float amount)
+{
+	m_position += m_target * amount;
+}
+</pre>
+<p>As you can see it is very easy to do a translation. m_target is normalized whenever it is modified so it's length here is one.</p>
+<p><strong><span style="text-decoration: underline;">Rotations</span></strong></p>
+<p>These methods should be fairly easy to understand. Keep in mind that to move left instead of right just pass a negative value (same goes for the other five methods).</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">void Camera :: rotateY(float amount)
+{
+	Vector target = m_target;
+	Vector right = m_right;
+
+	amount /= 57.2957795f;
+
+	m_target.m_xyzw[0] = (cos(1.5708f + amount) * target.m_xyzw[0]) + (cos(amount) * right.m_xyzw[0]);
+
+	m_target.m_xyzw[1] = (cos(1.5708f + amount) * target.m_xyzw[1]) + (cos(amount) * right.m_xyzw[1]);
+
+	m_target.m_xyzw[2] = (cos(1.5708f + amount) * target.m_xyzw[2]) + (cos(amount) * right.m_xyzw[2]);
+
+	m_right.m_xyzw[0]  = (cos(amount) * target.m_xyzw[0]) + (cos(1.5708f - amount) * right.m_xyzw[0]);
+
+	m_right.m_xyzw[1]  = (cos(amount) * target.m_xyzw[1]) + (cos(1.5708f - amount) * right.m_xyzw[1]);
+
+	m_right.m_xyzw[2]  = (cos(amount) * target.m_xyzw[2]) + (cos(1.5708f - amount) * right.m_xyzw[2]);
+
+	m_target.normalize();
+	m_right.normalize();
+}
+</pre>
+<p>Now I'll step through the code. If you haven't noticed this is a method for a C++ class named Camera. You'll want to write a vector class if you don't already have one.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">void Camera :: rotateY(float amount)
+{
+	Vector target = m_target;
+	Vector right = m_right;
+</pre>
+<p>The code above creates two vectors, target and right. We will use these to "freeze" the values of our current axes so that they remain constant throughout our calculations. If we used our axes variables directly they would be modified during the calculations by the calculations and we would end up with the wrong answer.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	amount /= 57.2957795f;
+</pre>
+<p>Here we divide it by 57.2957795 which converts it to radians.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	m_target.m_xyzw[0] = (cos(1.5708f + amount) * target.m_xyzw[0]) + (cos(amount) * right.m_xyzw[0]);
+</pre>
+<p>This is simply the formula we looked at earlier. Find the cos of beta (beta is 1.5708 + amount), multiply it by our current target's x value. Then find the cos of alpha (alpha is amount). Add these two numbers together and we get our new x value for target. Check out the formulas we looked at above if you can't figure out the rest of the calculations.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	m_target.normalize();
+	m_right.normalize();
+}
+</pre>
+<p>These last few lines normalize the new vectors. That's all there is to it.</p>
+<p><strong><span style="text-decoration: underline;">Following Targets</span></strong></p>
+<p>Now I will go on to explain how to get the camera to look at a coordinate in 3D space. We will be given the target as a parameter, and we will rotate the axes accordingly. If the camera is supposed to look at the target then we must orient m_target so that it points at target (note that the parameter target will be an absolute value whereas m_target is relative to the camera's position). Finding m_target is rather simple, just subtract m_position from the target parameter and the result will be a vector pointing from the camera's position to the target! Now on to the more tricky part... We need to determine where our other two axes (X and Y, or right and up) will point. A couple things have to be understood before we can do this. First of all, by taking any two axes we can create a plane. Therefore, since we have three axes we will have three planes, XY, XZ, YZ. Secondly, on each of these planes, the two axes that make up the plane are perpendicular (or, they intersect at 90 degree angles). We must preserve these relationships when we determine our new axes' positions.</p>
+<p>We will start off by determining our X axis (right vector). We know that it will be perpendicular to the YZ plane. That's all well and good, but we don't have the Y axis vector needed to form the YZ plane yet, so how can this information help us? The answer is this, we project the Z axis vector (our target vector) onto the XZ plane and use the default Y axis (0, 1, 0) as seen in the picture below. This ensures that the target and up vectors are perpendicular.</p>
+<center><img src="followingtargets1-1.jpg" tppabs="http://nehe.gamedev.net/data/articles/extras/article08/followingtargets1.jpg" alt="" border="1" /></center>
+<p><br /> Now that we have a plane formed by the default Y axis (0, 1, 0) and our projected Z axis (target vector) we can find our X axis. We can use a cross product to find the vector perpendicular to the plane formed by the default Y axis and the projected Z axis.</p>
+<center><img src="followingtargets2-1.jpg" tppabs="http://nehe.gamedev.net/data/articles/extras/article08/followingtargets2.jpg" alt="" border="1" /></center>
+<p><br /> Now that we have our X axis and our Z axis we need to find our Y axis. To do this we must back track a little. We no longer want to use our projected Z axis, but instead we'll use the target vector (relative to the camera's position) and our newly found X axis vector. These two vectors form a plane which the Y axis will be perpendicular to. Simply find the cross product of the new Z axis (target vector) and the new X axis to determine the new Y axis.</p>
+<center><img src="followingtargets3-1.jpg" tppabs="http://nehe.gamedev.net/data/articles/extras/article08/followingtargets3.jpg" alt="" border="1" /></center>
+<p><br /> Here's the code:</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">void Camera :: setTarget(Vector target)
+{
+	Vector projectedTarget;
+	
+	target = target - m_position;
+	projectedTarget = target;
+        
+	if(fabs(target.m_xyzw[0]) &lt; 0.00001f &amp;&amp; fabs(target.m_xyzw[2]) &lt; 0.00001f) {	// YZ plane
+    
+		projectedTarget.m_xyzw[0] = 0.0f;
+		projectedTarget.normalize();
+        
+		m_right = Vector(1.0f, 0.0f, 0.0f);
+		m_up = cross(projectedTarget, m_right);
+            
+		m_target = target;
+		m_right = -cross(m_target, m_up);
+	}
+        
+	else {										// XZ plane
+            
+		projectedTarget.m_xyzw[1] = 0.0f;
+		projectedTarget.normalize();
+        
+		m_up = Vector(0.0f, 1.0f, 0.0f);
+		m_right = -cross(projectedTarget, m_up);
+	
+		m_target = target;
+		m_up = cross(m_target, m_right);
+	}
+	
+	m_target.normalize();
+	m_right.normalize();
+	m_up.normalize();
+}
+</pre>
+<p>This first block of code makes a vector from the camera's position to the target.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">void Camera :: setTarget(Vector target)
+{
+	Vector projectedTarget;
+	
+	target = target - m_position;
+</pre>
+<p>The next block of code assigns the value of target to the vector projectedTarget. This vector will be projected onto either the XZ or YZ plane.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	projectedTarget = target;
+</pre>
+<p>If the X and Z components of the target are 0, a projection onto the XZ plane would create a 0, 0, 0 vector (since in order to project the vector onto the XZ plane the Y component is removed). If we were to then use this 0, 0, 0 vector to determine other vectors everything would get messed up, so we want to avoid this. This if statement catches this condition. If the if statement results in true we will project the vector onto the YZ plane.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	if(fabs(target.m_xyzw[0]) &lt; 0.00001f &amp;&amp; fabs(target.m_xyzw[2]) &lt; 0.00001f) {	// YZ plane
+</pre>
+<p>Here we project projectedTarget onto the YZ plane by removing the X component of the vector. Next we normalize it.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">		projectedTarget.m_xyzw[0] = 0.0f;
+		projectedTarget.normalize();
+</pre>
+<p>Now we find the new up vector. We do this by calculating the cross product of the default right vector (1, 0, 0) and the projected vector.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">		m_right = Vector(1.0f, 0.0f, 0.0f);
+		m_up = cross(projectedTarget, m_right);
+</pre>
+<p>Next we calculate the right vector by finding the cross product of the target and the up vector that we just found.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">		m_target = target;
+		m_right = -cross(m_target, m_up);
+	}
+</pre>
+<p>If our previous if statement evaluated to false, then we will project our vector onto the XZ plane by removing the Y component and normalizing.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	else {										// XZ plane
+            
+		projectedTarget.m_xyzw[1] = 0.0f;
+		projectedTarget.normalize();
+</pre>
+<p>Now we find the new right vector. We do this by calculating the cross product of the up vector (0, 1, 0 which is the default value) and the projectedTarget vector.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	m_up = CEGL_Vector(0.0f, 1.0f, 0.0);
+	m_right = -cross(projectedTarget, m_up);
+</pre>
+<p>Next we calculate the up vector by finding the cross product of the target and the right vector that we just found.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	m_target = target;
+	m_up = cross(m_target, m_right);
+</pre>
+<p>Finally we normalize the vectors.</p>
+<p>Last updated: August 20/2003</p>
+<p>E-mail: <a href="mailto:fredmanjr@hotmail.com">Ian Kerr</a><br /> Web Site: <a href="javascript:if(confirm('http://www.chronostorm.net/  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://www.chronostorm.net/'" tppabs="http://www.chronostorm.net/">http://www.chronostorm.net</a></p>
+
+
+</div>
+</div>
+
+
+
+            <div style="width:728px;padding:0px;margin:auto; margin-top: 10px;">
+            
+
+    
+                <!-- Leaderboard_NeHe -->
+                <div id='div-gpt-ad-1327940144417-0' style='width:728px; height:90px;'>
+                <script type='text/javascript'>
+                googletag.cmd.push(function() { googletag.display('div-gpt-ad-1327940144417-0'); });
+                </script>
+                </div>
+            
+
+                           
+            </div>   
+        </td>
+        <td class="col2">
+            
+
+
+
+
+<div style="text-align: center; padding:10px;">
+
+<script type='text/javascript'>
+    GA_googleFillSlot("Skyscraper_NeHe");
+</script>
+
+</div>
+            
+        </td>
+    </table>
+    <div id="footer">
+        <p>
+            
+    
+    © 1997-2012 Gamedev . All rights reserved.<br/>
+
+			NeHe™ and NeHe Productions™ are trademarks of GameDev.net, LLC<br/>
+			OpenGL® is a registered trademark of Silicon Graphics Inc.<br/>
+		</p>        
+		<br/>
+    </div>
+
+    
+    
+	    <script type="text/javascript" src="shCore.js" tppabs="http://nehe.gamedev.net/static/js/syntax_highlighter/shCore.js"></script>
+        <script type="text/javascript" src="shBrushCpp.js" tppabs="http://nehe.gamedev.net/static/js/syntax_highlighter/shBrushCpp.js"></script>
+	    <script type="text/javascript" src="shBrushJScript.js" tppabs="http://nehe.gamedev.net/static/js/syntax_highlighter/shBrushJScript.js"></script>
+	    <script type="text/javascript">SyntaxHighlighter.all();</script>
+    
+
+    <!-- Place this render call where appropriate -->
+    <script type="text/javascript">
+      (function() {
+        var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+        po.src = 'plusone.js'/*tpa=https://apis.google.com/js/plusone.js*/;
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+      })();
+    </script>    
+
+    
+<!-- GoogleAnalytics code -->
+<script src="urchin.js" tppabs="http://www.google-analytics.com/urchin.js" type="text/javascript">
+</script>
+<script type="text/javascript">
+_uacct = "UA-279474-2"; // Gamedev
+urchinTracker();
+_uff = 0; // Reset for second account
+_uacct = "UA-24180731-1"; // Non-GD
+urchinTracker();
+</script> 
+  </body>
+</html>

@@ -1,0 +1,318 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+    dir="ltr"
+    xml:lang="en"
+    lang="en">
+  <head>
+    <title>NeHe Productions: Bump Mapping</title>
+
+    <link rel="stylesheet" type="text/css" href="public_base.css" tppabs="http://nehe.gamedev.net/static/css/public_base.css" />
+    <link type="text/css" rel="stylesheet" href="shThemeMidnight.css" tppabs="http://nehe.gamedev.net/static/css/syntax_highlighter/shThemeMidnight.css"/>
+    
+    <link rel="alternate" type="application/atom+xml" title="Atom feed" href="index-1.htm" tppabs="http://nehe.gamedev.net/atom/" />
+    <link rel="alternate" type="application/rss+xml" title="RSS feed" href="index-2.htm" tppabs="http://nehe.gamedev.net/rss/" />
+    
+    <meta name="author" content="Luke Benstead + Carsten Haubold" />
+    <meta name="description" content="OpenGL Tutorials, Demos, Games and More..." />
+    <meta name="keywords" content="opengl, tutorial, article, demo, game, blend, texturemap, lighting, contest, 3D" />
+
+    
+    
+
+    
+
+</script>
+
+
+    
+    
+    
+    
+        
+        <script type='text/javascript'>
+        var googletag = googletag || {};
+        googletag.cmd = googletag.cmd || [];
+        (function() {
+        var gads = document.createElement('script');
+        gads.async = true;
+        gads.type = 'text/javascript';
+        var useSSL = 'https:' == document.location.protocol;
+        gads.src = (useSSL ? 'https:' : 'http:') + 
+        '//www.googletagservices.com/tag/js/gpt.js';
+        var node = document.getElementsByTagName('script')[0];
+        node.parentNode.insertBefore(gads, node);
+        })();
+        </script>
+
+        <script type='text/javascript'>
+        googletag.cmd.push(function() {
+        googletag.defineSlot('/1004699/Leaderboard_NeHe', [728, 90], 'div-gpt-ad-1327940144417-0').addService(googletag.pubads());
+        googletag.defineSlot('/1004699/Skyscraper_NeHe', [160, 600], 'div-gpt-ad-1327940144417-1').addService(googletag.pubads());
+        googletag.pubads().enableSingleRequest();
+        googletag.enableServices();
+        });
+        </script>
+    
+    
+
+    
+  </head>
+
+  <body>
+    
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "all.js#xfbml=1"/*tpa=http://connect.facebook.net/en_GB/all.js#xfbml=1*/;
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+
+
+    <table cellpadding="0" cellspacing="0" border="0" id="layout_table">
+    <tr><td>
+        <div id="header">
+                <a href="index.htm" tppabs="http://nehe.gamedev.net/"><img class="logo" class="logo" src="nehe.png" tppabs="http://nehe.gamedev.net/static/images/nehe.png" border="0" alt="Nehe" /></a>
+        </div>            
+    </td></tr>
+    <tr><td colspan="2">
+            
+<div class="navbar">
+    <a href="index.htm" tppabs="http://nehe.gamedev.net/">HOME</a>
+    <a href="javascript:if(confirm('http://twitter.com/  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://twitter.com/#!/nehegl'" tppabs="http://twitter.com/#!/nehegl">TWITTER</a>  
+    <a href="javascript:if(confirm('http://www.facebook.com/pages/NeHe/300582493323181  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://www.facebook.com/pages/NeHe/300582493323181'" tppabs="http://www.facebook.com/pages/NeHe/300582493323181">FACEBOOK</a>     
+    <a href="index-2.htm" tppabs="http://nehe.gamedev.net/rss/">RSS</a>    
+    <a href="index-1.htm" tppabs="http://nehe.gamedev.net/atom/">ATOM</a>    
+    <a href="javascript:if(confirm('http://www.gamedev.net/forum/27-nehe-productions/page__forum_title__NeHe+Productions  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://www.gamedev.net/forum/27-nehe-productions/page__forum_title__NeHe+Productions'" tppabs="http://www.gamedev.net/forum/27-nehe-productions/page__forum_title__NeHe+Productions">FORUM</a>    
+</div>
+    
+    </td></tr>
+    <tr>
+        <td class="col1">
+
+            
+<div id="article_container">
+
+
+<h1 class="article-header">Bump Mapping</h1>
+<div class="social-media">
+<!-- Place this tag where you want the +1 button to render -->
+<div class="g-plusone" data-size="medium" data-width="120" data-annotation="inline"></div>
+<div class="fb-like" data-send="false" data-layout="button_count" data-width="60" data-show-faces="false" data-colorscheme="dark" data-font="arial"></div>
+</div>
+<div style="clear:both;"></div>
+<p><strong><span style="text-decoration: underline;">What Is Bump Mapping?</span></strong></p>
+<p>Bump Mapping is a special sort of per pixel lighting (remember: OpenGL lighting is per vertex; a color is computed for each vertex and then interpolated across the triangle, quad, ). The famous lighting models (for example the OpenGL lighting) uses the normal to calculate a lighting color. Normally (at per vertex lighting) this normal is provided just like the vertex coordinate or texture coordinate. The idea behind Bump Mapping is to use different normals for each pixel (rather than for each vertex).</p>
+<p><strong><span style="text-decoration: underline;">But Why Do That?</span></strong></p>
+<p>Imagine you have a flat surface (like a triangle or a quad). The normal for this surface is equal in every point on this surface. Using different normals on a surface makes it bumpy, not straight flat. But remember we are only able to draw flat primitives like triangles or quads. So Bump Mapping is just a fake technology for rendering bumpy surfaces.</p>
+<p><strong><span style="text-decoration: underline;">But Why Using Bump Mapping?</span></strong></p>
+<p>Bump Mapping is supported in hardware on GeForce 256 (and up) and Radeon 7200 (and up). Bump Mapping can be performed in texture environment stages (see implementations) and is a very inexpensive feature for rendering a more beautiful world.</p>
+<p><strong><span style="text-decoration: underline;">Bump Mapping - How Does It Work?</span></strong></p>
+<p>There are some different bump mapping technologies:</p>
+<table border="0">
+<tbody>
+<tr>
+<td><span class="text"><strong>DP3 Bump Mapping</strong></span></td>
+<td width="20px">&nbsp;</td>
+<td><span class="text">The most used bump mapping technology.</span></td>
+</tr>
+<tr>
+<td><span class="text"><strong>Gloss Bump Mapping</strong></span></td>
+<td width="20px">&nbsp;</td>
+<td><span class="text">A technology which doesnt need DP3 Bump Mapping support in hardware, quite bad results.</span></td>
+</tr>
+<tr>
+<td><span class="text"><strong>Cross Plane Bump Mapping</strong></span></td>
+<td width="20px">&nbsp;</td>
+<td><span class="text">A technology developed by Yuriy V. Miroshnik (see reference [6]).</span></td>
+</tr>
+</tbody>
+</table>
+<p><br /> In this article Ill cover DP3 Bump Mapping</p>
+<p>First lets take a look at the OpenGL lighting equation:</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">&lt;img src="extras/article20/figure1.jpg"&gt;
+</pre>
+<p>Quite confusing, eh? :-)</p>
+<p>But we are interested in the middle part, the diffuse part only (if you dont know how OpenGL lighting works, take a look at <a href="javascript:if(confirm('http://nehe.gamedev.net/_admin/article/edit/25006/extras/article20/lecture2_9jan.pdf  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a path excluded by the site\'s Robot Exclusion parameters.  (Teleport Pro\'s compliance with this system is optional; see the Project Properties, Netiquette page.)  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev.net/_admin/article/edit/25006/extras/article20/lecture2_9jan.pdf'" tppabs="http://nehe.gamedev.net/_admin/article/edit/25006/extras/article20/lecture2_9jan.pdf" target="_blank">http://www.cs.tcd.ie/courses/baict/bass/4ict10/Hillary2003/pdf/Lecture2_9Jan.pdf</a>.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">&lt;img src="extras/article20/figure2.jpg"&gt;
+</pre>
+<p>n is the vertex normal<br /> V is the vertex coordinate<br /> P is the coordinate of light i<br /> VP is the vector from the vertex coordinate to the light i<br /> dcm is the diffuse color of the material<br /> ddi is the diffuse color of light i</p>
+<p>Remember that the vector from the vertex coordinate to the light and the vertex normal has to be normalized We have heard that DP3 Bump Mapping is performed in hardware using texture environments. But how does this work with our lighting equation above? Modern 3D Cards supports a new texture environment extension: ARB_texture_env_dot3 This extension requires ARB_texture_env_combine and adds a new texture combiner operation: DOT3_RGB_ARB (and DOT3_RGBA_ARB, but this is less important).</p>
+<p><strong><span style="text-decoration: underline;">First Of All: What Are Texture Environments?</span></strong></p>
+<p>A texture environment describes how a sampled texel of a certain texture unit is combined with the other values. There is a texture environment for each texture unit available. When a primitive is rendered (and texturing is enabled), the texture environment of the first texture is computed and the result is sent to the next texture environment. Normally all texture environments are set to GL_MODULATE, which means that the value of the last texture unit (at the first texture unit the primary color set by glColor or the color calculated by lighting is used) is multiplied by the texel of the current texture unit. The result of the last active texture unit is the color of our pixel.</p>
+<p>Here an example:<br /> The primary color is set to (1.0, 1.0, 1.0)<br /> The texel of the first texture unit is (1.0, 1.0, 0.0)<br /> The texel of the second texture unit is (0.0, 1.0, 1.0)<br /> All texture environments are set to GL_MODULATE</p>
+<p>So the output of the first texture environment is (0.5, 1.0, 1.0) * (1.0, 1.0, 0.0) = (0.5, 1.0, 0.0)<br /> The output of the second texture environment is (0.5, 1.0, 0.0) * (0.0, 1.0, 1.0) = (0.0, 1.0, 0.0)<br /> So our pixel has a color of (0.0, 1.0, 0.0) = green</p>
+<p>You also can perform much more complex environment operations using ARB_texture_env_combine (see <a href="javascript:if(confirm('http://nehe.gamedev.net/_admin/article/edit/25006/extras/article20/texture_env_combine.txt  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a path excluded by the site\'s Robot Exclusion parameters.  (Teleport Pro\'s compliance with this system is optional; see the Project Properties, Netiquette page.)  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev.net/_admin/article/edit/25006/extras/article20/texture_env_combine.txt'" tppabs="http://nehe.gamedev.net/_admin/article/edit/25006/extras/article20/texture_env_combine.txt" target="_blank">http://oss.sgi.com/projects/ogl-sample/registry/ARB/texture_env_combine.txt</a>)</p>
+<p>Before we return to Bump Mapping theres another thing which is important:</p>
+<p><strong><span style="text-decoration: underline;">Normalization Cube Maps</span></strong></p>
+<p>A cube map is a special form of a texture. Exactly there are 6 2D textures in one cube map. They represent the 6 faces of a cube (thats why they are called cube maps :-). Giving a 3D vector to a cube map it returns the texture value where this vector cuts the unit cube. Normally cube maps are used for view independent reflections. But a big advantage of cube maps is that this vector doesnt have to be normalized! So creating a special cube map which contains normalized vectors you can easily normalize a vector by passing it as a texture coordinate. See reference [4] how to calculate a normalization cube map.</p>
+<p>So, now back to our Bump Mapping problem:</p>
+<p><strong><span style="text-decoration: underline;">How Can We Use This Knowledge With OpenGL To Perform DP3 Bump Mapping?</span></strong></p>
+<p>First a simple list what we need:</p>
+<ul>
+<li>A simple texture for the material texture (a smiley or whatever you want! :-)</li>
+<li>A bump map texture (here we want the bump map to represent normalized normal vectors, where r is the x value, g is the y value and b is the z value of this vector. But these vectors are of course in a range from 0 to 1, not -1 to +1(x, y and z values are added to 1 and then divided by 2 to get the rgb values).</li>
+<li>A normalized cube map (as explained before).</li>
+</ul>
+<p>&nbsp;</p>
+<p>In this simple example we want to implement a simple version of the diffuse lighting equation (where . Is the dot product and * is a multiplication):</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">result_color = (normalized_vector_from_surface_to_light . normal_of_the_surface) * material_texture
+</pre>
+<p>Assuming we have 4 texture units (GeForce 3 and up, Radeon 8500 and up) we can do the following:</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">// Set The First Texture Unit To Normalize Our Vector From The Surface To The Light.
+// Set The Texture Environment Of The First Texture Unit To Replace It With The
+// Sampled Value Of The Normalization Cube Map.
+glActiveTextureARB(GL_TEXTURE0);
+glEnable(GL_TEXTURE_CUBE_MAP);
+glBindTexture(GL_TEXTURE_CUBE_MAP, our_normalization_cube_map);
+glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_COMBINE);
+glTexEnvi(GL_TEXTURE_ENV, GL_COMBINE_RGB, GL_REPLACE) ;
+glTexEnvi(GL_TEXTURE_ENV, GL_SOURCE0_RGB, GL_TEXTURE) ;
+
+// Set The Second Unit To The Bump Map.
+// Set The Texture Environment Of The Second Texture Unit To Perform A Dot3
+// Operation With The Value Of The Previous Texture Unit (The Normalized
+// Vector Form The Surface To The Light) And The Sampled Texture Value (The
+// Normalized Normal Vector Of Our Bump Map).
+glActiveTextureARB(GL_TEXTURE1);
+glEnable(GL_TEXTURE_2D);
+glBindTexture(GL_TEXTURE_2D, our_bump_map);
+glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_COMBINE);
+glTexEnvi(GL_TEXTURE_ENV, GL_COMBINE_RGB, GL_DOT3_RGB) ;
+glTexEnvi(GL_TEXTURE_ENV, GL_SOURCE0_RGB, GL_PREVIOUS) ;
+glTexEnvi(GL_TEXTURE_ENV, GL_SOURCE1_RGB, GL_TEXTURE) ;
+
+// Set The Third Texture Unit To Our Texture.
+// Set The Texture Environment Of The Third Texture Unit To Modulate
+// (Multiply) The Result Of Our Dot3 Operation With The Texture Value.
+glActiveTextureARB(GL_TEXTURE2);
+glEnable(GL_TEXTURE_2D);
+glBindTexture(GL_TEXTURE_2D, our_texture);
+glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
+
+// Now We Draw Our Object (Remember That We First Have To Calculate The
+// (UnNormalized) Vector From Each Vertex To Our Light).
+
+float vertex_to_light_x, vertex_to_light_y, vertex_to_light_z;
+
+glBegin(GL_QUADS);
+for (unsigned int i = 0; i &lt; 4; i++)
+	{
+	vertex_to_light_x = light_x  current_vertex_x;
+	vertex_to_light_y = light_y  current_vertex_y;
+	vertex_to_light_z = light_z  current_vertex_z;
+
+	// Passing The vector_to_light Values To Texture Unit 0.
+	// Remember The First Texture Unit Is Our Normalization Cube Map
+	// So This Vector Will Be Normalized For Dot 3 Bump Mapping.
+	glMultiTexCoord3f(GL_TEXTURE0, vertex_to_light_y, vertex_to_light_y, vertex_to_light_x);
+	// Passing The Simple Texture Coordinates To Texture Unit 1 And 2.
+	glMultiTexCoord2f(GL_TEXTURE1, current_texcoord_s, current_texcoord_t);
+	glMultiTexCoord2f(GL_TEXTURE2, current_texcoord_s, current_texcoord_t);
+
+	glVertex3f(current_vertex_x, current_vertex_y, current_vertex_z) ;
+	}
+glEnd();
+</pre>
+<p>So, thats all for creating a simple bump mapped surface.</p>
+<p>But thats not the end! We might run into big problems in this example. Here we assume that the quad we draw is parallel to the x/y plane. Remember that the normals we stored in a texture are in a static coordinate space. In the example above (if the quad we draw is paralled to the x/y plane) the coordinate space of our object is equal to the coordinate space of the normals. Imagine that we rotate the quad around the x axis. Now the z axis of the normals also has to be rotated. We didnt pay respect to this. But theres a very simple solution for this problem:</p>
+<p><strong><span style="text-decoration: underline;">Tangent Space Bump Mapping</span></strong></p>
+<p>In Tangent Space Bump Mapping we define a new coordinate system, the tangent space. This tangent space is different from vertex to vertex. We use 3 vectors to represent this tangentspace: the normal (the z axis of our tangent space), the tangent (the x axis of our tangent space) and the binormal (the y axis of our tangent space). Theres a nice picture at reference [4]. You can easily calculate these vector from the geometry date (vertex and texture coordinates) (see reference [5] for details). With these 3 vectors we can build a matrix which transforms a vector from object space to our tangent space. In the example above the tangent is (1,0,0) and the binormal is (0,1,0) and the normal is (0,0,1), so our matrix will be:</p>
+<pre>( 1,0,0 )
+( 0,1,0 )
+( 0,0,1 )
+</pre>
+<p>And this is an identity matrix so there is no need to use tangent space bump mapping.</p>
+<p>And thats it!</p>
+<p>Of course you can use vertex programs for performing the multiplication to tangent space and/or for calculation the vector from each vertex to the light.</p>
+<p>Thanks for reading!<br /> Questions and Feedback is welcome! :-)<br /> <a href="mailto:corrail@gmx.at"><strong>Florian Rudolf</strong></a><br /> ICQ# 59184081</p>
+<p>"If you want to contact my please make sure that it doesn't look like spam! I get a lot of spam mail/ICQ requests... Everything suspicious will be deleted"</p>
+<p><strong><span style="text-decoration: underline;">Demo:</span></strong></p>
+<p><a href="javascript:if(confirm('http://nehe.gamedev.net/_admin/article/edit/25006/extras/article20/bump_mapping.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a path excluded by the site\'s Robot Exclusion parameters.  (Teleport Pro\'s compliance with this system is optional; see the Project Properties, Netiquette page.)  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev.net/_admin/article/edit/25006/extras/article20/bump_mapping.zip'" tppabs="http://nehe.gamedev.net/_admin/article/edit/25006/extras/article20/bump_mapping.zip">Bump Mapping Demo For This Article</a></p>
+<p><strong><span style="text-decoration: underline;">References:</span></strong></p>
+<p>[1] - Real-Time Rendering by Eric Haines and Tomas Akenine-M&ouml;ller (ISBN 1-56881-182-9)<br /> [2] - OpenGL Specification <a href="javascript:if(confirm('ftp://ftp.sgi.com/opengl/doc/opengl1.2/opengl1.2.1.pdf  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='ftp://ftp.sgi.com/opengl/doc/opengl1.2/opengl1.2.1.pdf'" tppabs="ftp://ftp.sgi.com/opengl/doc/opengl1.2/opengl1.2.1.pdf" target="_blank">ftp://ftp.sgi.com/opengl/doc/opengl1.2/opengl1.2.1.pdf</a><br /> [3] - OpenGL Extension Registry <a href="javascript:if(confirm('http://oss.sgi.com/projects/ogl-sample/registry  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://oss.sgi.com/projects/ogl-sample/registry'" tppabs="http://oss.sgi.com/projects/ogl-sample/registry" target="_blank">http://oss.sgi.com/projects/ogl-sample/registry</a><br /> [4] - <a href="javascript:if(confirm('http://www.paulsprojects.net/tutorials/simplebump/simplebump.html  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://www.paulsprojects.net/tutorials/simplebump/simplebump.html'" tppabs="http://www.paulsprojects.net/tutorials/simplebump/simplebump.html" target="_blank">http://www.paulsprojects.net/tutorials/simplebump/simplebump.html</a></p>
+
+
+</div>
+</div>
+
+
+
+            <div style="width:728px;padding:0px;margin:auto; margin-top: 10px;">
+            
+
+    
+                <!-- Leaderboard_NeHe -->
+                <div id='div-gpt-ad-1327940144417-0' style='width:728px; height:90px;'>
+                <script type='text/javascript'>
+                googletag.cmd.push(function() { googletag.display('div-gpt-ad-1327940144417-0'); });
+                </script>
+                </div>
+            
+
+                           
+            </div>   
+        </td>
+        <td class="col2">
+            
+
+
+
+
+<div style="text-align: center; padding:10px;">
+
+<script type='text/javascript'>
+    GA_googleFillSlot("Skyscraper_NeHe");
+</script>
+
+</div>
+            
+        </td>
+    </table>
+    <div id="footer">
+        <p>
+            
+    
+    © 1997-2012 Gamedev . All rights reserved.<br/>
+
+			NeHe™ and NeHe Productions™ are trademarks of GameDev.net, LLC<br/>
+			OpenGL® is a registered trademark of Silicon Graphics Inc.<br/>
+		</p>        
+		<br/>
+    </div>
+
+    
+    
+	    <script type="text/javascript" src="shCore.js" tppabs="http://nehe.gamedev.net/static/js/syntax_highlighter/shCore.js"></script>
+        <script type="text/javascript" src="shBrushCpp.js" tppabs="http://nehe.gamedev.net/static/js/syntax_highlighter/shBrushCpp.js"></script>
+	    <script type="text/javascript" src="shBrushJScript.js" tppabs="http://nehe.gamedev.net/static/js/syntax_highlighter/shBrushJScript.js"></script>
+	    <script type="text/javascript">SyntaxHighlighter.all();</script>
+    
+
+    <!-- Place this render call where appropriate -->
+    <script type="text/javascript">
+      (function() {
+        var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+        po.src = 'plusone.js'/*tpa=https://apis.google.com/js/plusone.js*/;
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+      })();
+    </script>    
+
+    
+<!-- GoogleAnalytics code -->
+<script src="urchin.js" tppabs="http://www.google-analytics.com/urchin.js" type="text/javascript">
+</script>
+<script type="text/javascript">
+_uacct = "UA-279474-2"; // Gamedev
+urchinTracker();
+_uff = 0; // Reset for second account
+_uacct = "UA-24180731-1"; // Non-GD
+urchinTracker();
+</script> 
+  </body>
+</html>

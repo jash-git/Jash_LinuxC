@@ -1,0 +1,556 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+    dir="ltr"
+    xml:lang="en"
+    lang="en">
+  <head>
+    <title>NeHe Productions: Beautiful Landscapes By Means Of Height Mapping</title>
+
+    <link rel="stylesheet" type="text/css" href="public_base.css" tppabs="http://nehe.gamedev.net/static/css/public_base.css" />
+    <link type="text/css" rel="stylesheet" href="shThemeMidnight.css" tppabs="http://nehe.gamedev.net/static/css/syntax_highlighter/shThemeMidnight.css"/>
+    
+    <link rel="alternate" type="application/atom+xml" title="Atom feed" href="index-1.htm" tppabs="http://nehe.gamedev.net/atom/" />
+    <link rel="alternate" type="application/rss+xml" title="RSS feed" href="index-2.htm" tppabs="http://nehe.gamedev.net/rss/" />
+    
+    <meta name="author" content="Luke Benstead + Carsten Haubold" />
+    <meta name="description" content="OpenGL Tutorials, Demos, Games and More..." />
+    <meta name="keywords" content="opengl, tutorial, article, demo, game, blend, texturemap, lighting, contest, 3D" />
+
+    
+    
+
+    
+
+</script>
+
+
+    
+    
+    
+    
+        
+        <script type='text/javascript'>
+        var googletag = googletag || {};
+        googletag.cmd = googletag.cmd || [];
+        (function() {
+        var gads = document.createElement('script');
+        gads.async = true;
+        gads.type = 'text/javascript';
+        var useSSL = 'https:' == document.location.protocol;
+        gads.src = (useSSL ? 'https:' : 'http:') + 
+        '//www.googletagservices.com/tag/js/gpt.js';
+        var node = document.getElementsByTagName('script')[0];
+        node.parentNode.insertBefore(gads, node);
+        })();
+        </script>
+
+        <script type='text/javascript'>
+        googletag.cmd.push(function() {
+        googletag.defineSlot('/1004699/Leaderboard_NeHe', [728, 90], 'div-gpt-ad-1327940144417-0').addService(googletag.pubads());
+        googletag.defineSlot('/1004699/Skyscraper_NeHe', [160, 600], 'div-gpt-ad-1327940144417-1').addService(googletag.pubads());
+        googletag.pubads().enableSingleRequest();
+        googletag.enableServices();
+        });
+        </script>
+    
+    
+
+    
+  </head>
+
+  <body>
+    
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "all.js#xfbml=1"/*tpa=http://connect.facebook.net/en_GB/all.js#xfbml=1*/;
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+
+
+    <table cellpadding="0" cellspacing="0" border="0" id="layout_table">
+    <tr><td>
+        <div id="header">
+                <a href="index.htm" tppabs="http://nehe.gamedev.net/"><img class="logo" class="logo" src="nehe.png" tppabs="http://nehe.gamedev.net/static/images/nehe.png" border="0" alt="Nehe" /></a>
+        </div>            
+    </td></tr>
+    <tr><td colspan="2">
+            
+<div class="navbar">
+    <a href="index.htm" tppabs="http://nehe.gamedev.net/">HOME</a>
+    <a href="javascript:if(confirm('http://twitter.com/  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://twitter.com/#!/nehegl'" tppabs="http://twitter.com/#!/nehegl">TWITTER</a>  
+    <a href="javascript:if(confirm('http://www.facebook.com/pages/NeHe/300582493323181  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://www.facebook.com/pages/NeHe/300582493323181'" tppabs="http://www.facebook.com/pages/NeHe/300582493323181">FACEBOOK</a>     
+    <a href="index-2.htm" tppabs="http://nehe.gamedev.net/rss/">RSS</a>    
+    <a href="index-1.htm" tppabs="http://nehe.gamedev.net/atom/">ATOM</a>    
+    <a href="javascript:if(confirm('http://www.gamedev.net/forum/27-nehe-productions/page__forum_title__NeHe+Productions  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://www.gamedev.net/forum/27-nehe-productions/page__forum_title__NeHe+Productions'" tppabs="http://www.gamedev.net/forum/27-nehe-productions/page__forum_title__NeHe+Productions">FORUM</a>    
+</div>
+    
+    </td></tr>
+    <tr>
+        <td class="col1">
+
+            
+<div id="article_container">
+
+
+<h1 class="article-header">Beautiful Landscapes By Means Of Height Mapping</h1>
+<div class="social-media">
+<!-- Place this tag where you want the +1 button to render -->
+<div class="g-plusone" data-size="medium" data-width="120" data-annotation="inline"></div>
+<div class="fb-like" data-send="false" data-layout="button_count" data-width="60" data-show-faces="false" data-colorscheme="dark" data-font="arial"></div>
+</div>
+<div style="clear:both;"></div>
+<p>Welcome to another exciting tutorial! The code for this tutorial was written by Ben Humphrey, and is based on the GL framework from lesson 1. By now you should be a GL expert {grin}, and moving the code into your own base code should be a snap!</p>
+<p>This tutorial will teach you how to create cool looking terrain from a height map. For those of you that have no idea what a height map is, I will attempt a crude explanation. A height map is simply... displacement from a surface. For those of you that are still scratching your heads asking yourself "what the heck is this guy talking about!?!"... In english, our heightmap represents low and height points for our landscape. It's completely up to you to decide which shades represent low points and which shades represent high points. It's also important to note that height maps do not have to be images... you can create a height map from just about any type of data. For instance, you could use an audio stream to create a visual height map representation. If you're still confused... keep reading... it will all start to make sense as you go through the tutorial :)</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">#include &lt;windows.h&gt;						// Header File For Windows
+#include &lt;stdio.h&gt;						// Header file For Standard Input/Output ( NEW )
+#include &lt;gl\gl.h&gt;						// Header File For The OpenGL32 Library
+#include &lt;gl\glu.h&gt;						// Header File For The GLu32 Library
+#include &lt;gl\glaux.h&gt;						// Header File For The Glaux Library
+
+#pragma comment(lib, "opengl32.lib")				// Link OpenGL32.lib
+#pragma comment(lib, "glu32.lib")				// Link Glu32.lib
+</pre>
+<p>We start off by defining a few important variables. MAP_SIZE is the dimension of our map. In this tutorial, the map is 1024x1024. The STEP_SIZE is the size of each quad we use to draw the landscape. By reducing the step size, the landscape becomes smoother. It's important to note that the smaller the step size, the more of a performance hit your program will take, especially when using large height maps. The HEIGHT_RATIO is used to scale the landscape on the y-axis. A low HEIGHT_RATIO produces flatter mountains. A high HEIGHT_RATIO produces taller / more defined mountains.</p>
+<p>Further down in the code you will notice bRender. If bRender is set to true (which it is by default), we will draw solid polygons. If bRender is set to false, we will draw the landscape in wire frame.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">#define		MAP_SIZE	1024				// Size Of Our .RAW Height Map ( NEW )
+#define		STEP_SIZE	16				// Width And Height Of Each Quad ( NEW )
+#define		HEIGHT_RATIO	1.5f				// Ratio That The Y Is Scaled According To The X And Z ( NEW )
+
+HDC		hDC=NULL;					// Private GDI Device Context
+HGLRC		hRC=NULL;					// Permanent Rendering Context
+HWND		hWnd=NULL;					// Holds Our Window Handle
+HINSTANCE	hInstance;					// Holds The Instance Of The Application
+
+bool		keys[256];					// Array Used For The Keyboard Routine
+bool		active=TRUE;					// Window Active Flag Set To TRUE By Default
+bool		fullscreen=TRUE;				// Fullscreen Flag Set To TRUE By Default
+bool		bRender = TRUE;					// Polygon Flag Set To TRUE By Default ( NEW )
+</pre>
+<p>Here we make an array (g_HeightMap[ ]) of bytes to hold our height map data. Since we are reading in a .RAW file that just stores values from 0 to 255, we can use the values as height values, with 255 being the highest point, and 0 being the lowest point. We also create a variable called scaleValue for scaling the entire scene. This gives the user the ability to zoom in and out.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">BYTE g_HeightMap[MAP_SIZE*MAP_SIZE];				// Holds The Height Map Data ( NEW )
+
+float scaleValue = 0.15f;					// Scale Value For The Terrain ( NEW )
+
+LRESULT	CALLBACK WndProc(HWND, UINT, WPARAM, LPARAM);		// Declaration For WndProc
+</pre>
+<p>The ReSizeGLScene() code is the same as lesson 1 except the farthest distance has been changed from 100.0f to 500.0f.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">GLvoid ReSizeGLScene(GLsizei width, GLsizei height)		// Resize And Initialize The GL Window
+{
+... CUT ...
+}
+</pre>
+<p>The following code loads in the .RAW file. Not too complex! We open the file in Read/Binary mode. We then check to make sure the file was found and that it could be opened. If there was a problem opening the file for whatever reason, an error message will be displayed.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">// Loads The .RAW File And Stores It In pHeightMap
+void LoadRawFile(LPSTR strName, int nSize, BYTE *pHeightMap)
+{
+	FILE *pFile = NULL;
+
+	// Open The File In Read / Binary Mode.
+	pFile = fopen( strName, "rb" );
+
+	// Check To See If We Found The File And Could Open It
+	if ( pFile == NULL )	
+	{
+		// Display Error Message And Stop The Function
+		MessageBox(NULL, "Can't Find The Height Map!", "Error", MB_OK);
+		return;
+	}
+</pre>
+<p>If we've gotten this far, then it's safe to assume there were no problems opening the file. With the file open, we can now read in the data. We do this with fread(). pHeightMap is the storage location for the data (pointer to our g_Heightmap array). 1 is the number of items to load (1 byte at a time), nSize is the maximum number of items to read (the image size in bytes - width of image * height of image). Finally, pFile is a pointer to our file structure!</p>
+<p>After reading in the data, we check to see if there were any errors. We store the results in result and then check result. If an error did occur, we pop up an error message.</p>
+<p>The last thing we do is close the file with fclose(pFile).</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	// Here We Load The .RAW File Into Our pHeightMap Data Array
+	// We Are Only Reading In '1', And The Size Is (Width * Height)
+	fread( pHeightMap, 1, nSize, pFile );
+
+	// After We Read The Data, It's A Good Idea To Check If Everything Read Fine
+	int result = ferror( pFile );
+
+	// Check If We Received An Error
+	if (result)
+	{
+		MessageBox(NULL, "Failed To Get Data!", "Error", MB_OK);
+	}
+
+	// Close The File
+	fclose(pFile);
+}
+</pre>
+<p>The init code is pretty basic. We set the background clear color to black, set up depth testing, polygon smoothing, etc. After doing all that, we load in our .RAW file. To do this, we pass the filename ("Data/Terrain.raw"), the dimensions of the .RAW file (MAP_SIZE * MAP_SIZE) and finally our HeightMap array (g_HeightMap) to LoadRawFile(). This will jump to the .RAW loading code above. The .RAW file will be loaded, and the data will be stored in our Heightmap array (g_HeightMap).</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">int InitGL(GLvoid)						// All Setup For OpenGL Goes Here
+{
+	glShadeModel(GL_SMOOTH);				// Enable Smooth Shading
+	glClearColor(0.0f, 0.0f, 0.0f, 0.5f);			// Black Background
+	glClearDepth(1.0f);					// Depth Buffer Setup
+	glEnable(GL_DEPTH_TEST);				// Enables Depth Testing
+	glDepthFunc(GL_LEQUAL);					// The Type Of Depth Testing To Do
+	glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);	// Really Nice Perspective Calculations
+
+	// Here we read read in the height map from the .raw file and put it in our
+	// g_HeightMap array.  We also pass in the size of the .raw file (1024).
+
+	LoadRawFile("Data/Terrain.raw", MAP_SIZE * MAP_SIZE, g_HeightMap);	// ( NEW )
+
+	return TRUE;						// Initialization Went OK
+}
+</pre>
+<p>This is used to index into our height map array. When ever we are dealing with arrays, we want to make sure that we don't go outside of them. To make sure that doesn't happen we use %. % will prevent our x / y values from exceeding MAX_SIZE - 1.</p>
+<p>We check to make sure pHeightMap points to valid data, if not, we return 0.</p>
+<p>Otherwise, we return the value stored at x, y in our height map. By now, you should know that we have to multiply y by the width of the image MAP_SIZE to move through the data. More on this below!</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">int Height(BYTE *pHeightMap, int X, int Y)			// This Returns The Height From A Height Map Index
+{
+	int x = X % MAP_SIZE;					// Error Check Our x Value
+	int y = Y % MAP_SIZE;					// Error Check Our y Value
+
+	if(!pHeightMap) return 0;				// Make Sure Our Data Is Valid
+</pre>
+<p>We need to treat the single array like a 2D array. We can use the equation: index = (x + (y * arrayWidth) ). This is assuming we are visualizing it like: pHeightMap[x][y], otherwise it's the opposite: (y + (x * arrayWidth) ).</p>
+<p>Now that we have the correct index, we will return the height at that index (data at x, y in our array).</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	return pHeightMap[x + (y * MAP_SIZE)];			// Index Into Our Height Array And Return The Height
+}
+</pre>
+<p>Here we set the color for a vertex based on the height index. To make it darker, I start with -0.15f. We also get a ratio of the color from 0.0f to 1.0f by dividing the height by 256.0f. If there is no data this function returns without setting the color. If everything goes ok, we set the color to a shade of blue using glColor3f(0.0f, fColor, 0.0f). Try moving fColor to the red or green spots to change the color of the landscape.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">void SetVertexColor(BYTE *pHeightMap, int x, int y)		// This Sets The Color Value For A Particular Index
+{								// Depending On The Height Index
+	if(!pHeightMap) return;					// Make Sure Our Height Data Is Valid
+
+	float fColor = -0.15f + (Height(pHeightMap, x, y ) / 256.0f);
+
+	// Assign This Blue Shade To The Current Vertex
+	glColor3f(0.0f, 0.0f, fColor );
+}
+</pre>
+<p>This is the code that actually draws our landscape. X and Y will be used to loop through the height map data. x, y and z will be used to render the quads making up the landscape.</p>
+<p>As always, we check to see if the height map (pHeightMap) contains data. If not, we return without doing anything.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">void RenderHeightMap(BYTE pHeightMap[])				// This Renders The Height Map As Quads
+{
+	int X = 0, Y = 0;					// Create Some Variables To Walk The Array With.
+	int x, y, z;						// Create Some Variables For Readability
+
+	if(!pHeightMap) return;					// Make Sure Our Height Data Is Valid
+</pre>
+<p>Since we can switch between lines and quads, we check our render state with the code below. If bRender = True, then we want to render polygons, otherwise we render lines.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	if(bRender)						// What We Want To Render
+		glBegin( GL_QUADS );				// Render Polygons
+	else 
+		glBegin( GL_LINES );				// Render Lines Instead
+
+</pre>
+<p>Next we actually need to draw the terrain from the height map. To do that, we just walk the array of height data and pluck out some heights to plot our points. If we could see this happening, it would draw the columns first (Y), then draw the rows. Notice that we have a STEP_SIZE. This determines how defined our height map is. The higher the STEP_SIZE, the more blocky the terrain looks, while the lower it gets, the more rounded (smooth) it becomes. If we set STEP_SIZE = 1 it would create a vertex for every pixel in the height map. I chose 16 as a decent size. Anything too much less gets to be insane and slow. Of course, you can increase the number when you get lighting in. Then vertex lighting would cover up the blocky shape. Instead of lighting, we just put a color value associated with every poly to simplify the tutorial. The higher the polygon, the brighter the color is.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	for ( X = 0; X &lt; (MAP_SIZE-STEP_SIZE); X += STEP_SIZE )
+		for ( Y = 0; Y &lt; (MAP_SIZE-STEP_SIZE); Y += STEP_SIZE )
+		{
+			// Get The (X, Y, Z) Value For The Bottom Left Vertex
+			x = X;							
+			y = Height(pHeightMap, X, Y );	
+			z = Y;							
+
+			// Set The Color Value Of The Current Vertex
+			SetVertexColor(pHeightMap, x, z);
+
+			glVertex3i(x, y, z);			// Send This Vertex To OpenGL To Be Rendered
+
+			// Get The (X, Y, Z) Value For The Top Left Vertex
+			x = X;										
+			y = Height(pHeightMap, X, Y + STEP_SIZE );  
+			z = Y + STEP_SIZE ;							
+			
+			// Set The Color Value Of The Current Vertex
+			SetVertexColor(pHeightMap, x, z);
+
+			glVertex3i(x, y, z);			// Send This Vertex To OpenGL To Be Rendered
+
+			// Get The (X, Y, Z) Value For The Top Right Vertex
+			x = X + STEP_SIZE; 
+			y = Height(pHeightMap, X + STEP_SIZE, Y + STEP_SIZE ); 
+			z = Y + STEP_SIZE ;
+
+			// Set The Color Value Of The Current Vertex
+			SetVertexColor(pHeightMap, x, z);
+			
+			glVertex3i(x, y, z);			// Send This Vertex To OpenGL To Be Rendered
+
+			// Get The (X, Y, Z) Value For The Bottom Right Vertex
+			x = X + STEP_SIZE; 
+			y = Height(pHeightMap, X + STEP_SIZE, Y ); 
+			z = Y;
+
+			// Set The Color Value Of The Current Vertex
+			SetVertexColor(pHeightMap, x, z);
+
+			glVertex3i(x, y, z);			// Send This Vertex To OpenGL To Be Rendered
+		}
+	glEnd();
+</pre>
+<p>After we are done, we set the color back to bright white with an alpha value of 1.0f. If there were other objects on the screen, we wouldn't want them showing up BLUE :)</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	glColor4f(1.0f, 1.0f, 1.0f, 1.0f);			// Reset The Color
+}
+</pre>
+<p>For those of you who haven't used gluLookAt(), what it does is position your camera position, your view, and your up vector. Here we set the camera in a obscure position to get a good outside view of the terrain. In order to avoid using such high numbers, we would divide the terrain's vertices by a scale constant, like we do in glScalef() below.</p>
+<p>The values of gluLookAt() are as follows: The first three numbers represent where the camera is positioned. So the first three values move the camera 212 units on the x-axis, 60 units on the y-axis and 194 units on the z-axis from our center point. The next 3 values represent where we want the camera to look. In this tutorial, you will notice while running the demo that we are looking a little to the left. We are also look down towards the landscape. 186 is to the left of 212 which gives us the look to the left, and 55 is lower than 60, which gives us the appearance that we are higher than the landscape looking at it with a slight tilt (seeing a bit of the top of it). The value of 171 is how far away from the camera the object is. The last three values tell OpenGL which direction represents up. Our mountains travel upwards on the y-axis, so we set the value on the y-axis to 1. The other two values are set at 0.</p>
+<p>gluLookAt can be very intimidating when you first use it. After reading the rough explanation above you may still be confused. My best advise is to play around with the values. Change the camera position. If you were to change the y position of the camera to say 120, you would see more of the top of the landscape, because you would be looking all the way down to 55.</p>
+<p>I'm not sure if this will help, but I'm going to break into one of my highly flamed real life "example" explanations :) Lets say you are 6 feet and a bit tall. Lets also assume your eyes are at the 6 foot mark (your eyes represent the camera - 6 foot is 6 units on the y-axis). Now if you were standing in front of a wall that was only 2 feet tall (2 units on the y-axis), you would be looking DOWN at the wall and would be able to see the top of the wall. If the wall was 8 feet tall, you would be looking UP at the wall and you would NOT see the top of the wall. The view would change depending on if you were looking up or down (if you were higher than or lower than the object you are looking at). Hope that makes a bit of sense!</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">int DrawGLScene(GLvoid)						// Here's Where We Do All The Drawing
+{
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);	// Clear The Screen And The Depth Buffer
+	glLoadIdentity();					// Reset The Matrix
+	
+	// 	  Position	 View		Up Vector
+	gluLookAt(212, 60, 194,  186, 55, 171,  0, 1, 0);	// This Determines The Camera's Position And View
+</pre>
+<p>This will scale down our terrain so it's a bit easier to view and not so big. We can change this scaleValue by using the UP and DOWN arrows on the keyboard. You will notice that we mupltiply the Y scaleValue by a HEIGHT_RATIO as well. This is so the terrain appears higher and gives it more definition.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	glScalef(scaleValue, scaleValue * HEIGHT_RATIO, scaleValue);
+</pre>
+<p>If we pass the g_HeightMap data into our RenderHeightMap() function it will render the terrain in Quads. If you are going to make any use of this function, it might be a good idea to put in an (X, Y) parameter to draw it at, or just use OpenGL's matrix operations (glTranslatef() glRotate(), etc) to position the land exactly where you want it.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	RenderHeightMap(g_HeightMap);				// Render The Height Map
+
+	return TRUE;						// Keep Going
+}
+</pre>
+<p>The KillGLWindow() code is the same as lesson 1.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">GLvoid KillGLWindow(GLvoid)					// Properly Kill The Window
+{
+}
+</pre>
+<p>The CreateGLWindow() code is also the same as lesson 1.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">BOOL CreateGLWindow(char* title, int width, int height, int bits, bool fullscreenflag)
+{
+}
+</pre>
+<p>The only change in WndProc() is the addition of WM_LBUTTONDOWN. What it does is checks to see if the left mouse button was pressed. If it was, the rendering state is toggled from polygon mode to line mode, or from line mode to polygon mode.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">LRESULT CALLBACK WndProc(	HWND	hWnd,			// Handle For This Window
+				UINT	uMsg,			// Message For This Window
+				WPARAM	wParam,			// Additional Message Information
+				LPARAM	lParam)			// Additional Message Information
+{
+	switch (uMsg)						// Check For Windows Messages
+	{
+		case WM_ACTIVATE:				// Watch For Window Activate Message
+		{
+			if (!HIWORD(wParam))			// Check Minimization State
+			{
+				active=TRUE;			// Program Is Active
+			}
+			else
+			{
+				active=FALSE;			// Program Is No Longer Active
+			}
+
+			return 0;				// Return To The Message Loop
+		}
+
+		case WM_SYSCOMMAND:				// Intercept System Commands
+		{
+			switch (wParam)				// Check System Calls
+			{
+				case SC_SCREENSAVE:		// Screensaver Trying To Start?
+				case SC_MONITORPOWER:		// Monitor Trying To Enter Powersave?
+				return 0;			// Prevent From Happening
+			}
+			break;					// Exit
+		}
+
+		case WM_CLOSE:					// Did We Receive A Close Message?
+		{
+			PostQuitMessage(0);			// Send A Quit Message
+			return 0;				// Jump Back
+		}
+
+		case WM_LBUTTONDOWN:				// Did We Receive A Left Mouse Click?
+		{
+			bRender = !bRender;			// Change Rendering State Between Fill/Wire Frame
+			return 0;				// Jump Back
+		}
+
+		case WM_KEYDOWN:				// Is A Key Being Held Down?
+		{
+			keys[wParam] = TRUE;			// If So, Mark It As TRUE
+			return 0;				// Jump Back
+		}
+
+		case WM_KEYUP:					// Has A Key Been Released?
+		{
+			keys[wParam] = FALSE;			// If So, Mark It As FALSE
+			return 0;				// Jump Back
+		}
+
+		case WM_SIZE:					// Resize The OpenGL Window
+		{
+			ReSizeGLScene(LOWORD(lParam),HIWORD(lParam));	// LoWord=Width, HiWord=Height
+			return 0;				// Jump Back
+		}
+	}
+
+	// Pass All Unhandled Messages To DefWindowProc
+	return DefWindowProc(hWnd,uMsg,wParam,lParam);
+}
+</pre>
+<p>No major changes in this section of code. The only notable change is the title of the window. Everything else is the same up until we check for key presses.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">int WINAPI WinMain(	HINSTANCE	hInstance,		// Instance
+			HINSTANCE	hPrevInstance,		// Previous Instance
+			LPSTR		lpCmdLine,		// Command Line Parameters
+			int		nCmdShow)		// Window Show State
+{
+	MSG		msg;					// Windows Message Structure
+	BOOL	done=FALSE;					// Bool Variable To Exit Loop
+
+	// Ask The User Which Screen Mode They Prefer
+	if (MessageBox(NULL,"Would You Like To Run In Fullscreen Mode?", "Start FullScreen?",MB_YESNO|MB_ICONQUESTION)==IDNO)
+	{
+		fullscreen=FALSE;				// Windowed Mode
+	}
+
+	// Create Our OpenGL Window
+	if (!CreateGLWindow("NeHe &amp; Ben Humphrey's Height Map Tutorial", 640, 480, 16, fullscreen))
+	{
+		return 0;					// Quit If Window Was Not Created
+	}
+
+	while(!done)						// Loop That Runs While done=FALSE
+	{
+		if (PeekMessage(&amp;msg,NULL,0,0,PM_REMOVE))	// Is There A Message Waiting?
+		{
+			if (msg.message==WM_QUIT)		// Have We Received A Quit Message?
+			{
+				done=TRUE;			// If So done=TRUE
+			}
+			else					// If Not, Deal With Window Messages
+			{
+				TranslateMessage(&amp;msg);		// Translate The Message
+				DispatchMessage(&amp;msg);		// Dispatch The Message
+			}
+		}
+		else						// If There Are No Messages
+		{
+			// Draw The Scene.  Watch For ESC Key And Quit Messages From DrawGLScene()
+			if ((active &amp;&amp; !DrawGLScene()) || keys[VK_ESCAPE])	// Active?  Was There A Quit Received?
+			{
+				done=TRUE;			// ESC or DrawGLScene Signalled A Quit
+			}
+			else if (active)			// Not Time To Quit, Update Screen
+			{
+				SwapBuffers(hDC);		// Swap Buffers (Double Buffering)
+			}
+
+			if (keys[VK_F1])			// Is F1 Being Pressed?
+			{
+				keys[VK_F1]=FALSE;		// If So Make Key FALSE
+				KillGLWindow();			// Kill Our Current Window
+				fullscreen=!fullscreen;		// Toggle Fullscreen / Windowed Mode
+				// Recreate Our OpenGL Window
+				if (!CreateGLWindow("NeHe &amp; Ben Humphrey's Height Map Tutorial", 640, 480, 16, fullscreen))
+				{
+					return 0;		// Quit If Window Was Not Created
+				}
+			}
+</pre>
+<p>The code below lets you increase and decrease the scaleValue. By pressing the up key, the scaleValue is increased, making the landscape larger. By pressing the down key, the scaleValue is decreased making the landscape smaller.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">			if (keys[VK_UP])			// Is The UP ARROW Being Pressed?
+				scaleValue += 0.001f;		// Increase The Scale Value To Zoom In
+
+			if (keys[VK_DOWN])			// Is The DOWN ARROW Being Pressed?
+				scaleValue -= 0.001f;		// Decrease The Scale Value To Zoom Out
+		}
+	}
+
+	// Shutdown
+	KillGLWindow();						// Kill The Window
+	return (msg.wParam);					// Exit The Program
+}
+</pre>
+<p>That's all there is to creating a beautiful height mapped landscape. I hope you appreciate Ben's work! As always, if you find mistakes in the tutorial or the code, please email me, and I will attempt to correct the problem / revise the tutorial.</p>
+<p>Once you understand how the code works, play around a little. One thing you could try doing is adding a little ball that rolls across the surface. You already know the height of each section of the landscape, so adding the ball should be no problem. Other things to try: Create the heightmap manually, make it a scrolling landscape, add colors to the landscape to represent snowy peaks / water / etc, add textures, use a plasma effect to create a constantly changing landscape. The possibilities are endless :)</p>
+<p>Hope you enjoyed the tut! You can visit Ben's site at: http://www.GameTutorials.com.</p>
+<p><strong>Ben Humphrey</strong> (<strong>DigiBen</strong>)</p>
+<p><strong>Jeff Molofee</strong> (<strong>NeHe</strong>)</p>
+<p>* DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/vc/lesson34.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/vc/lesson34.zip'" tppabs="http://nehe.gamedev.net/data/lessons/vc/lesson34.zip">Visual C++</a> Code For This Lesson.</p>
+<p>* DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/bcb6/lesson34_bcb6.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/bcb6/lesson34_bcb6.zip'" tppabs="http://nehe.gamedev.net/data/lessons/bcb6/lesson34_bcb6.zip">Borland C++ Builder 6</a> Code For This Lesson. ( Conversion by <a href="mailto:christian@tugzip.com">Christian Kindahl</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/cwarrior/lesson34.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/cwarrior/lesson34.zip'" tppabs="http://nehe.gamedev.net/data/lessons/cwarrior/lesson34.zip">Code Warrior 5.3</a> Code For This Lesson. ( Conversion by <a href="mailto:DelusionalBeing@hotmail.com">Scott Lupton</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/delphi/lesson34.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/delphi/lesson34.zip'" tppabs="http://nehe.gamedev.net/data/lessons/delphi/lesson34.zip">Delphi</a> Code For This Lesson. ( Conversion by <a href="mailto:michal_praha@seznam.cz">Michal Tucek</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/devc/lesson34.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/devc/lesson34.zip'" tppabs="http://nehe.gamedev.net/data/lessons/devc/lesson34.zip">Dev C++</a> Code For This Lesson. ( Conversion by <a href="mailto:danprogram@hotmail.com">Dan</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/jogl/lesson34.jar  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/jogl/lesson34.jar'" tppabs="http://nehe.gamedev.net/data/lessons/jogl/lesson34.jar">JoGL</a> Code For This Lesson. ( Conversion by <a href="mailto:abezrati@hotmail.com">Abdul Bezrati</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/lccwin32/lccwin32_lesson34.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/lccwin32/lccwin32_lesson34.zip'" tppabs="http://nehe.gamedev.net/data/lessons/lccwin32/lccwin32_lesson34.zip">LCC Win32</a> Code For This Lesson. ( Conversion by <a href="mailto:rwishlaw@shaw.ca">Robert Wishlaw</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/linuxglx/lesson34.tar.gz  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/linuxglx/lesson34.tar.gz'" tppabs="http://nehe.gamedev.net/data/lessons/linuxglx/lesson34.tar.gz">Linux/GLX</a> Code For This Lesson. ( Conversion by <a href="mailto:Schubert_P@Yahoo.de">Patrick Schubert</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/macosxcocoa/lesson34.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/macosxcocoa/lesson34.zip'" tppabs="http://nehe.gamedev.net/data/lessons/macosxcocoa/lesson34.zip">Mac OS X/Cocoa</a> Code For This Lesson. ( Conversion by <a href="mailto:blb@pobox.com">Bryan Blackburn</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/vs_net/lesson34.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/vs_net/lesson34.zip'" tppabs="http://nehe.gamedev.net/data/lessons/vs_net/lesson34.zip">Visual Studio .NET</a> Code For This Lesson. ( Conversion by <a href="mailto:ultimatezeus@hotmail.com">Grant James</a> )</p>
+<p>&nbsp;</p>
+<p><strong><span><a href="javascript:if(confirm('http://nehe.gamedev.net/tutorial/loading_compressed_and_uncompressed_tgas/22001/  \n\nThis file was not retrieved by Teleport Pro, because it was unavailable, or its retrieval was aborted, or the project was stopped too soon.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev.net/tutorial/loading_compressed_and_uncompressed_tgas/22001/'" tppabs="http://nehe.gamedev.net/data/lessons/lesson.asp?lesson=33">&lt; Lesson 33</a></span></strong><strong><span><a href="index-75.htm" tppabs="http://nehe.gamedev.net/data/lessons/lesson.asp?lesson=35">Lesson 35 &gt;</a></span></strong></p>
+
+
+</div>
+</div>
+
+
+
+            <div style="width:728px;padding:0px;margin:auto; margin-top: 10px;">
+            
+
+    
+                <!-- Leaderboard_NeHe -->
+                <div id='div-gpt-ad-1327940144417-0' style='width:728px; height:90px;'>
+                <script type='text/javascript'>
+                googletag.cmd.push(function() { googletag.display('div-gpt-ad-1327940144417-0'); });
+                </script>
+                </div>
+            
+
+                           
+            </div>   
+        </td>
+        <td class="col2">
+            
+
+
+
+
+<div style="text-align: center; padding:10px;">
+
+<script type='text/javascript'>
+    GA_googleFillSlot("Skyscraper_NeHe");
+</script>
+
+</div>
+            
+        </td>
+    </table>
+    <div id="footer">
+        <p>
+            
+    
+    © 1997-2012 Gamedev . All rights reserved.<br/>
+
+			NeHe™ and NeHe Productions™ are trademarks of GameDev.net, LLC<br/>
+			OpenGL® is a registered trademark of Silicon Graphics Inc.<br/>
+		</p>        
+		<br/>
+    </div>
+
+    
+    
+	    <script type="text/javascript" src="shCore.js" tppabs="http://nehe.gamedev.net/static/js/syntax_highlighter/shCore.js"></script>
+        <script type="text/javascript" src="shBrushCpp.js" tppabs="http://nehe.gamedev.net/static/js/syntax_highlighter/shBrushCpp.js"></script>
+	    <script type="text/javascript" src="shBrushJScript.js" tppabs="http://nehe.gamedev.net/static/js/syntax_highlighter/shBrushJScript.js"></script>
+	    <script type="text/javascript">SyntaxHighlighter.all();</script>
+    
+
+    <!-- Place this render call where appropriate -->
+    <script type="text/javascript">
+      (function() {
+        var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+        po.src = 'plusone.js'/*tpa=https://apis.google.com/js/plusone.js*/;
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+      })();
+    </script>    
+
+    
+<!-- GoogleAnalytics code -->
+<script src="urchin.js" tppabs="http://www.google-analytics.com/urchin.js" type="text/javascript">
+</script>
+<script type="text/javascript">
+_uacct = "UA-279474-2"; // Gamedev
+urchinTracker();
+_uff = 0; // Reset for second account
+_uacct = "UA-24180731-1"; // Non-GD
+urchinTracker();
+</script> 
+  </body>
+</html>

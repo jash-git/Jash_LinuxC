@@ -1,0 +1,254 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN">
+<html>
+<head>
+<title>Untitled</title>
+<meta name="author" content="Marc-Oliver Ihm">
+<meta name="generator" content="Namo WebEditor v3.0">
+
+<script language="JavaScript">
+<!--
+function namosw_page_left(element) 
+{
+  if (navigator.appName == 'Netscape') {
+    x = element.pageX;
+  } else {
+    x = element.offsetLeft;
+    for (el = element.offsetParent; el; el = el.offsetParent)
+      x += el.offsetLeft;
+  }
+  return x;
+}
+
+function namosw_page_top(element) 
+{
+  if (navigator.appName == 'Netscape') {
+    y = element.pageY;
+  } else {
+    y = element.offsetTop;
+    for (el = element.offsetParent; el; el = el.offsetParent)
+      y += el.offsetTop;
+  }
+  return y;
+}
+
+function namosw_page_right(el) {
+  wid =  (navigator.appName == 'Netscape') ? window.innerWidth : document.body.offsetWidth;
+  return wid - namosw_page_left(el);
+}
+
+function namosw_page_bottom(el) {
+  hei =  (navigator.appName == 'Netscape') ? window.innerHeight : document.body.offsetHeight;
+  return hei - namosw_page_top(el);
+}
+
+function namosw_set_visible(el, flag) {
+  if (navigator.appName == 'Netscape') {
+    el.visibility = flag ? 'show' : 'hide';
+  } else {
+    el.style.visibility = flag ? 'visible' : 'hidden';
+  }
+}
+
+function namosw_set_pos(el, x, y)
+{
+  if (navigator.appName == 'Netscape') {
+    el.left = x;
+    el.top  = y;
+  } else {
+    el.style.pixelLeft = x;
+    el.style.pixelTop  = y;
+  }
+}
+
+function namosw_left(el) {
+  return (navigator.appName == 'Netscape') ? el.left : el.style.pixelLeft;
+}
+
+function namosw_top(el) {
+  return (navigator.appName == 'Netscape') ? el.top : el.style.pixelTop;
+}
+
+function namosw_is_relative(el) {
+  return (navigator.appName == 'Netscape') ? el.position == 'relative' : 
+                                             el.style.position == 'relative';
+}
+
+function namosw_is_space(c)
+{
+  return (c == ' ' || c == '\t' || c == '\r' || c == '\n');
+}
+
+function namosw_process_byword(list, index)
+{
+  var el = list[index];
+  if (navigator.appName == 'Netscape')
+    return;
+  if (el.byword == false && el.zoom == null)
+    return;
+
+  var dest = "";
+  var src = el.innerHTML;
+  var objNum = document.NamoAnimationObjects.length;
+  var wordi = 0, i = 0, mark;
+  while (i < src.length) {
+    mark = i;
+    while (i < src.length) {
+      while (i < src.length && namosw_is_space(src.charAt(i))) i++;
+      if    (i < src.length && src.charAt(i) != '<') break;
+      while (i < src.length && src.charAt(i) != '>') i++;
+      if    (i < src.length && src.charAt(i) == '>') i++;
+    }
+    dest += src.substring(mark, i);
+    if (i >= src.length) break;
+    dest += '<span id=\"' + el.name + 'word' + (wordi+1) + '\" style=\"position:relative\">';
+    mark = i;
+    while (i < src.length && !namosw_is_space(src.charAt(i)) && src.charAt(i) != '<') i++;
+    while (i < src.length && namosw_is_space(src.charAt(i)) == ' ') i++;
+    if (el.byword == false) while (i < src.length && src.charAt(i) != '<') i++;
+    dest += src.substring(mark, i);
+    dest += '</span>';
+    wordi++;
+  }
+  el.innerHTML = dest;
+  el.posLeft   = 0;
+  el.style.visibility = 'visible';
+
+  list[index] = namosw_new_animation_object(el.name+'word1', el.startCondObj, el.startCondTime, 
+el.startXPos, el.startYPos, el.pathType, false, el.zoom, el.stepNum);
+  for (i = 1; i < wordi; i++) {
+    list[objNum+i-1] = namosw_new_animation_object(el.name+'word'+(i+1), (el.byword ? (el.name+'word'+i) : el.startCondObj), (el.byword ? 0 : el.startCondTime), el.startXPos, el.startYPos, el.pathType, false, el.zoom, el.stepNum);
+    list[objNum+i-1].style.posLeft = 0;
+    list[objNum+i-1].style.visibility = 'visible';
+  }
+  el.startCondTime = -1;
+}
+
+function namosw_new_animation_object(name, obj, time, xpos, ypos, path, byword, zoom, stepNum) 
+{
+  var str = (navigator.appName == 'Netscape') ? 'document.'+name : 'document.all[\''+name+'\']';
+  var object;
+  object               = eval(str);
+  object.name     = name;
+  object.startCondObj  = obj;
+  object.startCondTime = time;
+  object.startXPos     = xpos;     // left, center, right
+  object.startYPos     = ypos;     // top,  center, bottom
+  object.pathType      = path;     // line, arc, spiral
+  object.byword        = byword;   // true, false
+  object.zoom          = zoom;
+  object.stepNum       = stepNum;
+  return object;
+}
+
+function namosw_animate(str) 
+{
+  var live_object_num = 0;
+  for (var i = 0; i < document.NamoAnimationObjects.length; i++) {
+    var el = document.NamoAnimationObjects[i];
+    if (el.countDown > 0) {
+      el.countDown = (0 < el.countDown-10) ? el.countDown-10 : 0;
+      live_object_num++;
+      continue;
+    }
+    if (el.countDown < 0)
+      continue;
+
+    if (el.pathType == 'line') {
+      newx = el.sx + el.step * (el.ex - el.sx) / el.stepNum;
+      newy = el.sy + el.step * (el.ey - el.sy) / el.stepNum;
+    } else if (el.pathType == 'arc') {
+      linex = el.sx + el.step * (el.ex - el.sx) / el.stepNum;
+      liney = el.sy + el.step * (el.ey - el.sy) / el.stepNum;
+
+      x = (el.ex + el.sx) / 2;
+      y = (el.ey + el.sy) / 2;
+      sinv = Math.sin(Math.PI*el.step/el.stepNum*(el.ex-el.sx > 0 ? -1:1));
+      cosv = Math.cos(Math.PI*el.step/el.stepNum);
+      newx = ((cosv*(el.sx-x) - sinv*(el.sy-y) + x) + linex) / 2;
+      newy = ((sinv*(el.sx-x) + cosv*(el.sy-y) + y) + liney) / 2;
+    } else if (el.pathType == 'spiral') {
+      sinv = Math.sin(2*Math.PI*el.step/el.stepNum);
+      cosv = Math.cos(2*Math.PI*el.step/el.stepNum);
+      r = (el.stepNum-el.step)/el.stepNum;
+      newx = el.ex + (cosv*(el.sx-el.ex) - sinv*(el.sy-el.ey))*r;
+      newy = el.ey + (sinv*(el.sx-el.ex) + cosv*(el.sy-el.ey))*r;
+    }
+    if (el.zoom == 'zoomin' && navigator.appName != 'Netscape')
+      el.style.fontSize = 50+50*el.step/el.stepNum + '%';
+    else if (el.zoom == 'zoomout' && navigator.appName != 'Netscape')
+      el.style.fontSize = 200-100*el.step/el.stepNum + '%';
+    namosw_set_pos(el, newx, newy);
+    namosw_set_visible(el, true);
+
+    if (el.step++ == el.stepNum) {
+      namosw_set_pos(el, el.ex, el.ey);
+      el.step = 0;
+      el.countDown = -1;
+      // trigger other object(self can be trigger)
+      for (var j = 0; j < document.NamoAnimationObjects.length; j++) {
+        var obj = document.NamoAnimationObjects[j];
+        if (obj.countDown < 0 && obj.startCondObj == el.name) {
+          obj.countDown = obj.startCondTime;
+          live_object_num++;
+          if (i < j) {
+            obj.countDown += 10;
+            live_object_num--;
+          }
+        }
+      }
+    } else {
+      live_object_num++;
+    }
+  }
+  if (live_object_num > 0)
+    window.setTimeout("namosw_animate();", 10);
+}
+
+function namosw_init_animation()
+{
+  var i    = 0;
+  var list = new Array;
+  list[i++] = namosw_new_animation_object('alayer1', null, 0, 'left', 'top', 'line', false, null, 20);
+  document.NamoAnimationObjects = list;
+  var length = list.length;
+  for (i = 0; i < length; i++)
+    namosw_process_byword(list, i);
+  for (i = 0; i < list.length; i++) {
+    list[i].countDown = (list[i].startCondObj == null) ? list[i].startCondTime : -1;
+    list[i].step      = 0;
+    list[i].sx        = (list[i].startXPos == 'left')  ? -namosw_page_left(list[i])  :
+   			(list[i].startXPos == 'right') ?  namosw_page_right(list[i]) : 0;
+    list[i].sy        = (list[i].startYPos == 'top')   ? -namosw_page_top(list[i])   :
+   			(list[i].startYPos == 'bottom')?  namosw_page_bottom(list[i]): 0;
+    list[i].ex      = 0;
+    list[i].ey       = 0;
+    if (!namosw_is_relative(list[i])) {
+      list[i].sx += namosw_left(list[i]);
+      list[i].sy += namosw_top(list[i]);
+      list[i].ex += namosw_left(list[i]);
+      list[i].ey += namosw_top(list[i]);
+    }
+    if (list[i].pathType == 'spiral') {
+      list[i].sx = Math.max(-200+list[i].ex, Math.min(200+list[i].ex, list[i].sx));
+      list[i].sy = Math.max(-200+list[i].ey, Math.min(200+list[i].ey, list[i].sy));
+    }
+    namosw_set_pos(list[i], list[i].sx, list[i].sy);
+    namosw_set_visible(list[i], false);
+  }
+  window.setTimeout("namosw_animate();", 10);
+}
+
+//-->
+</script>
+
+</head>
+
+<body background="flowe04.gif" tppabs="http://www.yabasic.de/sybille/images/flowe04.gif" bgcolor="white" text="black" link="blue"
+ vlink="purple" alink="red" onload="namosw_init_animation();">
+
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p id="alayer1" style="position:relative; visibility:hidden;">&nbsp;</p>
+</body>
+
+</html>

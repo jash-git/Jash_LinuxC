@@ -1,0 +1,633 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!-- saved from url=(0064)http://easy72.blogspot.tw/2009/04/big5-utf-8-c-code-example.html -->
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:b="http://www.google.com/2005/gml/b" xmlns:data="http://www.google.com/2005/gml/data" xmlns:expr="http://www.google.com/2005/gml/expr"><head profile="http://gmpg.org/xfn/11"><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<script src="./將Big5字串轉換為 UTF-8字串 (C code example)_files/cb=gapi.loaded_3" async=""></script><script src="./將Big5字串轉換為 UTF-8字串 (C code example)_files/cb=gapi.loaded_2" async=""></script><script src="./將Big5字串轉換為 UTF-8字串 (C code example)_files/cb=gapi.loaded_1" async=""></script><script src="./將Big5字串轉換為 UTF-8字串 (C code example)_files/cb=gapi.loaded_0" async=""></script><script type="text/javascript">(function() { var b=window,e="jstiming",g="tick";(function(){function d(a){this.t={};this.tick=function(a,d,c){c=void 0!=c?c:(new Date).getTime();this.t[a]=[c,d]};this[g]("start",null,a)}var a=new d;b.jstiming={Timer:d,load:a};if(b.performance&&b.performance.timing){var a=b.performance.timing,c=b[e].load,f=a.navigationStart,a=a.responseStart;0<f&&a>=f&&(c[g]("_wtsrt",void 0,f),c[g]("wtsrt_","_wtsrt",a),c[g]("tbsd_","wtsrt_"))}try{a=null,b.chrome&&b.chrome.csi&&(a=Math.floor(b.chrome.csi().pageT),c&&0<f&&(c[g]("_tbnd",void 0,b.chrome.csi().startE),
+c[g]("tbnd_","_tbnd",f))),null==a&&b.gtbExternal&&(a=b.gtbExternal.pageT()),null==a&&b.external&&(a=b.external.pageT,c&&0<f&&(c[g]("_tbnd",void 0,b.external.startE),c[g]("tbnd_","_tbnd",f))),a&&(b[e].pt=a)}catch(l){}})();b.tickAboveFold=function(d){var a=0;if(d.offsetParent){do a+=d.offsetTop;while(d=d.offsetParent)}d=a;750>=d&&b[e].load[g]("aft")};var h=!1;function k(){h||(h=!0,b[e].load[g]("firstScrollTime"))}b.addEventListener?b.addEventListener("scroll",k,!1):b.attachEvent("onscroll",k);
+ })();</script>
+<meta content="blogger" name="generator">
+<link href="http://easy72.blogspot.tw/favicon.ico" rel="icon" type="image/x-icon">
+<link href="http://easy72.blogspot.com/2009/04/big5-utf-8-c-code-example.html" rel="canonical">
+<link rel="alternate" type="application/atom+xml" title="take it easy - Atom" href="http://easy72.blogspot.com/feeds/posts/default">
+<link rel="alternate" type="application/rss+xml" title="take it easy - RSS" href="http://easy72.blogspot.com/feeds/posts/default?alt=rss">
+<link rel="service.post" type="application/atom+xml" title="take it easy - Atom" href="http://www.blogger.com/feeds/1977856215342741626/posts/default">
+
+<link rel="alternate" type="application/atom+xml" title="take it easy - Atom" href="http://easy72.blogspot.com/feeds/2751528911559474218/comments/default">
+<!--[if IE]> <script> (function() { var html5 = ("abbr,article,aside,audio,canvas,datalist,details," + "figure,footer,header,hgroup,mark,menu,meter,nav,output," + "progress,section,time,video").split(','); for (var i = 0; i < html5.length; i++) { document.createElement(html5[i]); } try { document.execCommand('BackgroundImageCache', false, true); } catch(e) {} })(); </script> <![endif]-->
+<title>take it easy: 將Big5字串轉換為 UTF-8字串 (C code example)</title>
+<link type="text/css" rel="stylesheet" href="./將Big5字串轉換為 UTF-8字串 (C code example)_files/1738504331-widget_css_bundle.css">
+<link type="text/css" rel="stylesheet" href="./將Big5字串轉換為 UTF-8字串 (C code example)_files/authorization.css">
+<style id="page-skin-1" type="text/css"><!--
+/*
+Theme Name: Aspire
+Theme URI: http://www.infocreek.com/webdesign/aspire.html
+Description: Mummy's Note Designed by <a href="http://www.infocreek.com">InfoCreek </a>.
+Version: 1.0
+Author: InfoCreek.com
+Author URI: http://www.infocreek.com/
+http://www.infocreek.com/webdesign/aspire.html
+The CSS, XHTML and design is released under the Creative Common Attribution 3.0 License (http://creativecommons.org/licenses/by/3.0/), which means you can use and modify it for any purpose.
+By downloading our themes, you agree that you:
+1)  Can not resell the theme
+2)  You may use and modify the theme but the footer link back to InfoCreek.com should be retained.
+3)  You may use the theme on personal or commercial projects as far as #2 above is met
+*/
+.comment { color: #999999; font-style: italic; }
+.pre { color: #000099; }
+.string { color: #009900; }
+.char { color: #009900; }
+.float { color: #996600; }
+.int { color: #999900; }
+.bool { color: #000000; font-weight: bold; }
+.type { color: #FF6633; }
+.flow { color: #FF0000; }
+.keyword { color: #990000; }
+.operator { color: #663300; font-weight: bold; }
+/* === Hide the NavBar === */
+.Navbar {
+visibility:hidden;
+display: none;
+}
+/* === Hide the NavBar === */
+code {
+display: block;
+font-family: 'Courier New';
+font-size: 9pt;
+overflow: auto;
+border: 1px solid #ccc;
+padding: 10px 10px 10px 21px;
+max-height: 1200px;
+line-height: 1.2em;
+letter-spacing: 0px;
+color: #000;
+background: #f0f0f0 url(http://lh5.ggpht.com/_DgOSkjb6TAQ/Sdm23QLuTLI/AAAAAAAAAZs/lZDDP2GSK7M/s800/code_bar2.PNG) left top repeat-y;
+}
+code_ret {
+display: block;
+font-family: 'Courier New';
+font-size: 9pt;
+overflow: auto;
+border: 1px solid #ccc;
+padding: 10px 10px 10px 21px;
+max-height: 1200px;
+line-height: 1.2em;
+letter-spacing: 0px;
+color: #FFFFFF;
+background: #000000  left top repeat-y;
+}
+* {margin:0px; padding:0px;}
+body {background: #DEB968 url(http://lh6.ggpht.com/_DgOSkjb6TAQ/SdsdtsVsc5I/AAAAAAAAAdE/z6xLKQQ4R3A/body-bg.jpg) center top; text-align:center; font-size:12px; color:#240f02; font-family: Verdana, Arial, Helvetica, sans-serif;}
+img {border: medium none;}
+blockquote {padding: 5px 20px; text-align: left; color:#602600}
+blockquote blockquote {padding: 2px 10px; text-align: left; color:#602600; font-style:italic;}
+a {text-decoration:none; color:#c97e00; border: 0px;}
+a:hover {text-decoration:underline; border: 0px;}
+a.u {text-decoration:underline; border: 0px;}
+a.u:hover {text-decoration:none; border: 0px;}
+a.n, a.n:hover {text-decoration:none; border: 0px;}
+a:focus, a:active {outline: none;}
+p {padding:7px 0;  line-height: 17px;}
+.border {border:1px solid red;}
+h1, h2, h3, h4 { font-family: "Trebuchet MS";}
+hr {border-left:0px solid #abb0b5; border-right:0px solid #abb0b5; border-top:1px dotted #abb0b5; border-bottom:0px solid #abb0b5; height: 1px;}
+input {font-family: 'Verdana'; color: #240f02; font-size: 11px;}
+textarea {font-family: 'Verdana'; color: #240f02; font-size: 11px;}
+select {font-family: 'Verdana'; color: #240f02; font-size: 11px;}
+.left-bg {position:absolute; left:0px; top:0px; width:50%; height:517px; margin-left:-495px; background: url(http://lh3.ggpht.com/_DgOSkjb6TAQ/SdsdvPMfApI/AAAAAAAAAdU/8MlauRq2xdU/top-left-bg-repeat.jpg) right top repeat-x;}
+.script {position:absolute; right:0px; top:104px; width:100%; height:413px; background: url(http://lh6.ggpht.com/_DgOSkjb6TAQ/Sdse5U112xI/AAAAAAAAAd0/hULrdrWApvw/left-bg.jpg) right top no-repeat;}
+.right-bg {position:absolute; right:0px; top:0px; width:50%; height:223px; background: url(http://lh5.ggpht.com/_DgOSkjb6TAQ/Sdse5J2ldlI/AAAAAAAAAds/y7qZ0GL1JTU/top-right-bg-repeat.jpg) 40px 0px repeat-x;}
+#head {position:relative; width:990px; height:250px; margin:0 auto; text-align:left; background: url(http://lh5.ggpht.com/_DgOSkjb6TAQ/Sdse5J2ldlI/AAAAAAAAAds/y7qZ0GL1JTU/top-right-bg-repeat.jpg) 90px 0px repeat-x;}
+.crack {position:absolute; left:0px; top:0px; width:990px; height:51px; background: url(http://lh3.ggpht.com/_DgOSkjb6TAQ/Sdse43ZEcfI/AAAAAAAAAdk/SvxJg61aePQ/crack.jpg) 627px 0px no-repeat;}
+.header {width:627px; height:250px; background: url(http://lh3.ggpht.com/_DgOSkjb6TAQ/Sdse4fa-eoI/AAAAAAAAAdc/xsxryo18gEU/header-bg.jpg) no-repeat;}
+.logo {position:absolute; left:0px; top:120px; width:627px;}
+.logo h1 {font: bold 27px/120% Georgia; color:#602600; padding:0 0 10px 20px; margin-right:16px;}
+.logo h1 a, .logo h1 a:hover {color:#602600; text-decoration:none;}
+.logo a b {}
+.shadow-right {position:absolute; left:627px; top:115px; width:102px; height:380px; background: url(http://lh4.ggpht.com/_DgOSkjb6TAQ/SdsgQ_-RxMI/AAAAAAAAAd8/dfmKaJF-294/right-bg.jpg) no-repeat;}
+#menu {position:absolute; left:100px; top:80px;}
+#menu ul {list-style:none;}
+#menu ul li {display:block; float:left; padding:0 17px;}
+* html #menu ul li {display:inline;}
+#menu ul li a {color:#97712c;}
+.searchbox {position:absolute; left:640px; top:100px; width:176px; font-size:11px; color:#97712c;}
+#searchform .label {display:block; padding:0px 0px 2px 5px;}
+.search {width:135px; height:20px; background: url(http://lh3.ggpht.com/_DgOSkjb6TAQ/SdsduWc25FI/AAAAAAAAAdM/d_sadz9Hvwc/search-input.gif) left top no-repeat; float:left;}
+#searchform input {border:none; background:transparent url(http://lh3.ggpht.com/_DgOSkjb6TAQ/SdsgsGhzQMI/AAAAAAAAAeE/-C-K5t6K9xk/go-button.gif) left top no-repeat; font-weight: bold; color:#ceb978; width:30px; height:20px; float:right;}
+#searchform .search #s {border:none; background:transparent; color:#ceb978; width:125px; height:auto !important; margin:3px 0 0 4px; float:left;}
+#content {position:relative; width:990px; margin:0 auto; text-align:left;}
+#main {position:relative; float:left; width:627px;}
+.content-wrapper {position:relative; width:627px; overflow=hidden;}
+.content {position:relative; width:627px; background: url(http://lh6.ggpht.com/_DgOSkjb6TAQ/SdsiCbdtC3I/AAAAAAAAAeU/bYcrM7eKl2E/content-bg.jpg);}
+.cont-r {position:relative; background: url(http://lh3.ggpht.com/_DgOSkjb6TAQ/SdsiQWBWnGI/AAAAAAAAAec/pn4Gts5ixug/border.gif) right top repeat-y;}
+.cont-l {position:relative; background: url(http://lh3.ggpht.com/_DgOSkjb6TAQ/SdsiQWBWnGI/AAAAAAAAAec/pn4Gts5ixug/border.gif) left top repeat-y;}
+.cont-bottom {position:relative; background: url(http://lh3.ggpht.com/_DgOSkjb6TAQ/Sdsig6h4T6I/AAAAAAAAAek/56i5IDqztKY/content-bottom-bg.jpg) left bottom no-repeat; top:0px; bottom:0px; height:40px; margin-top:-40px;}
+.grad-hack {position:relative; background: url(http://lh3.ggpht.com/_DgOSkjb6TAQ/Sdse4fa-eoI/AAAAAAAAAdc/xsxryo18gEU/header-bg.jpg) 0px -170px no-repeat; width:627px; overflow:hidden; margin-top:-80px; padding-bottom:20px;}
+* html .grad-hack {position:relative;min-height:200px;}
+.begin {background: url(http://lh6.ggpht.com/_DgOSkjb6TAQ/SdsivFNiWjI/AAAAAAAAAes/06ze96UyXSY/begin.gif) 10px 0px no-repeat; position:absolute; top:10px; left:0px; width:100%; height:40px; z-index:10;}
+.content h1 {font: 20px "Trebuchet MS"; color:#602600; letter-spacing:-1px; padding-top:10px;}
+.content h2 {font:bold 18px "Trebuchet MS"; color:#602600; padding:10px 0px 2px 20px;}
+.content h3 {font:bold 16px "Trebuchet MS"; color:#602600; padding:10px 0px 2px 20px;}
+.content h4 {font:bold 14px "Trebuchet MS"; color:#602600; padding:7px 0px 2px 15px;}
+.content h5 {font:bold 12px "Trebuchet MS"; color:#602600; padding:5px 0px 2px 10px;}
+.content h6 {font:bold 10px Verdana; color:#602600; padding:5px 0px 2px 0px;}
+.content h2.pagetitle {position:absolute; top:0px; right:30px; padding:0px; font-size:12px;}
+.post {padding:10px 10px 24px 10px; background: url(http://lh3.ggpht.com/_DgOSkjb6TAQ/Sdsi-W-yyJI/AAAAAAAAAe0/zI39z2L9Mjo/post-devider.jpg) bottom no-repeat;}
+* html .post {position:relative; background: url(http://lh3.ggpht.com/_DgOSkjb6TAQ/Sdsi-W-yyJI/AAAAAAAAAe0/zI39z2L9Mjo/post-devider.jpg) bottom no-repeat;}
+.content .title {padding:0px;}
+.content .date {font:normal 24px/47px Georgia; margin-right:10px; color:#ffffff; float:left; width:59px; height:56px; overflow:hidden; text-align:center; background: url(http://lh4.ggpht.com/_DgOSkjb6TAQ/SdsWV3s9mLI/AAAAAAAAAc8/1ZnW07oiNcA/date-bg.png) no-repeat;}
+.content .date .month {font: 14px/16px Arial; color:#4c2604; margin:-10px 0px 0 0; text-transform:lowercase;}
+.content h1 a, .content h1 a:hover {color:#602600; text-decoration:none;}
+.content p.author {color:#240f02; padding:0px 0px 0px 0px; font-size:11px;}
+.entry {position:relative; padding:0 0 10px 0; clear:both;}
+.entry img {border:1px solid #99ba09; margin:3px 5px; max-width:603px}
+.postmetadata {padding:5px 75px 0px 20px; text-align:right; background: url(http://lh6.ggpht.com/_DgOSkjb6TAQ/SdsjQX3pM3I/AAAAAAAAAe8/0g3IwbwDCXo/num-comm-right.jpg) 100% 5px no-repeat; margin-right:15px; clear:both;}
+* html .postmetadata {display:inline-block;}
+*:first-child+html .postmetadata {display:inline-block;}
+.postmetadata .comm-num-left {padding:5px 0px 7px 75px; float:right; background: url(http://lh4.ggpht.com/_DgOSkjb6TAQ/Sdsjeh_eqUI/AAAAAAAAAfE/9W-IRqct5-s/num-comm-left.jpg) no-repeat;}
+.content h2.center {padding:25px 0; text-align:center;}
+.navigation {position:absolute; left:10px; bottom:-22px; z-index:300; font-size:11px;}
+.navigation a, .navigation a:link, .navigation a:active  {float:left; font-size:11px; background:#ca9417 url(http://lh5.ggpht.com/_DgOSkjb6TAQ/Sdsg-L7VYXI/AAAAAAAAAeM/qEhDC0WF_bI/page-num-bg.gif) 0 0 no-repeat; line-height:16px; padding:0 4px; color:#602600; margin:0 3px 0 0; border:none;}
+.navigation a:hover {background:#602600 url(http://lh5.ggpht.com/_DgOSkjb6TAQ/Sdsg-L7VYXI/AAAAAAAAAeM/qEhDC0WF_bI/page-num-bg.gif) 0 0 no-repeat; color:#ca9417; text-decoration:none;}
+#main ul {position:relative; list-style:none; padding:5px 20px;}
+#main ul li {display:block; padding:2px 0px 2px 12px;  background: url(http://lh5.ggpht.com/_DgOSkjb6TAQ/SdskIQvg9yI/AAAAAAAAAfM/wuIdKUjAHsQ/marker.gif) 0px 7px no-repeat;}
+#main ol {padding: 5px 40px; list-style: decimal}
+#main ol li {padding:2px 0px 2px 0px;}
+#comments {}
+#comments a {}
+#comments h4 {padding-left:20px;}
+.nocomments {padding: 0 20px 30px 20px;}
+.comment-top {position:relative; background: url(http://lh3.ggpht.com/_DgOSkjb6TAQ/SdskUEQvSVI/AAAAAAAAAfU/kalGHCj32S8/comment-top.jpg) center top no-repeat; padding-top:10px;}
+.comment-bottom {position:relative; background: url(http://lh4.ggpht.com/_DgOSkjb6TAQ/Sdskfm6a89I/AAAAAAAAAfc/dTYNsT5WYDY/comment-bottom.jpg) center bottom no-repeat;}
+.message-by {padding:15px 0 5px 0; font:16px/18px "Trebushet MS"; color:#602600; text-align:center;}
+.message-count {text-align:center;}
+.message-count span {display:inline-block; border:1px solid #8a5f3b; font:12px/14px Georgia; position:relative; padding:0 5px;}
+.message-count span b.count-l {position:absolute; left:-74px; top:1px; height:14px; width:72px; line-height:0px; font-size:0px; background: url(http://lh5.ggpht.com/_DgOSkjb6TAQ/SdsktLFdJ6I/AAAAAAAAAfk/qCddxMPilHA/message-number-right.gif) left top no-repeat;}
+.message-count span b.count-r {position:absolute; right:-76px; top:1px; height:14px; width:74px; line-height:0px; font-size:0px; background: url(http://lh3.ggpht.com/_DgOSkjb6TAQ/Sdsk6mXpnlI/AAAAAAAAAfs/ALUAUm-gut0/message-number-left.gif) right top no-repeat;}
+.message-entry {position:relative; padding:10px 20px 20px 20px;}
+.message-time {font-size:11px; line-height:20px; color:#efe7c6; height:20px; width:250px; background: #b27110 url(http://lh6.ggpht.com/_DgOSkjb6TAQ/SdslQep12cI/AAAAAAAAAf0/era6ri033VA/message-time-right.gif) right top no-repeat; margin:10px 20px 0 10px;}
+.message-time span {display:block; height:20px; padding:0 25px; background: url(http://lh6.ggpht.com/_DgOSkjb6TAQ/SdsldDmufyI/AAAAAAAAAf8/-1H0fB1DaYQ/message-time-left.gif) left top no-repeat;}
+#response {position:relative;}
+#response h4 {padding:20px 0px 5px 20px;}
+#response div.form {width:100%; position:relative; border:1px solid #a4813c;}
+* html #response div.form {width:100%;}
+#response div.form #commentform {padding:10px;}
+.inputs {position:relative; width:49%; float:left;}
+.input {position:relative;}
+.input b {color:#c97e00;}
+.inputs input {position:relative; background:#ede5c3; border:1px solid #a4813c; width:99%; padding:2px; margin-bottom:5px;}
+.message {position:relative; width:49%; float:right; text-align:center;}
+.message .input {margin-bottom:0px; text-align:center;}
+.message textarea {background:#ede5c3; border:1px solid #a4813c; width:99%; height:92px; padding:1px;}
+.submit {text-align:right; margin-top:10px;}
+* html .submit {margin-top:0px;}
+*:first-child+html .submit {margin-top:0px;}
+#sidebars {position:relative; width:350px; float:right; margin-top:-66px;}
+#sidebars #searchform #s {border:1px solid #212121; background:#689330; background-image:none; color:#ffffff; width:100%; height:auto !important; margin:0px 0 0 0px;}
+#sidebar-left {width:170px; float:left; overflow:hidden;}
+#sidebar-right {width:170px; float:right; overflow:hidden;}
+#sidebars .widget {background:url(http://lh5.ggpht.com/_DgOSkjb6TAQ/SdsmDNoZdQI/AAAAAAAAAgU/qSLiSqme3mA/sidebartop.jpg) center top no-repeat; margin-top:15px; padding-top:30px}
+#sidebars .widget-content {background:url(http://www.webpagedesign.ws/aspire/sidebarbottom.jpg) center bottom no-repeat;padding:0px 10px 15px 10px;}
+#sidebars .widget h2 {position:relative; font:bold 16px "Trebuchet MS"; color:#602600; margin:0px; text-align:center; background:url(http://lh4.ggpht.com/_DgOSkjb6TAQ/SdsmCuTmwDI/AAAAAAAAAgM/cQRcedkbW9w/sidebarh2.jpg) center bottom no-repeat; padding:0px 10px 18px 10px;}
+#sidebars a {color:#602600;}
+#sidebars ul {display:inline-block; position:relative; padding:3px 0 0px 0; list-style:none; background:none}
+#sidebars ul li {display:block; position:relative; font-size: 12px; color:#240f02; padding:0px 0px}
+* html #sidebars ul li {display:inline-block;}
+*:first-child+html #sidebars ul li {display:inline-block;}
+#sidebars ul li a {color:#602600; padding:2px 0px 2px 15px; display:block; background: url(http://lh3.ggpht.com/_DgOSkjb6TAQ/SdsmDLXD8AI/AAAAAAAAAgc/Z-sSvIOpm7s/sb-marker.gif) 3px 7px no-repeat;}
+#sidebars ul li.current-cat a {color:#240f02; background:#c18c35 url(http://lh4.ggpht.com/_DgOSkjb6TAQ/SdsmDe_zr-I/AAAAAAAAAgk/Qt0Li-o_oDA/sb-marker-hover.gif) 3px 7px no-repeat;}
+#sidebars ul li a:hover {color:#240f02; background:#c18c35 url(http://lh4.ggpht.com/_DgOSkjb6TAQ/SdsmDe_zr-I/AAAAAAAAAgk/Qt0Li-o_oDA/sb-marker-hover.gif) 3px 7px no-repeat; text-decoration:none;}
+#sidebars ul li p a {color:#602600; display:inline; background: none; padding:0px;}
+#sidebars ul li p a:hover {color:#602600; display:inline; background:#c18c35 none; padding:0px;}
+#sidebars ul li ul {padding:0px 0 0px 0px; list-style:none;}
+#sidebars ul li ul li a {padding:2px 0px 2px 25px; background: url(http://lh3.ggpht.com/_DgOSkjb6TAQ/SdsmDLXD8AI/AAAAAAAAAgc/Z-sSvIOpm7s/sb-marker.gif) 13px 7px no-repeat;}
+#sidebars ul li ul li a:hover {background:#c18c35 url(http://lh4.ggpht.com/_DgOSkjb6TAQ/SdsmDe_zr-I/AAAAAAAAAgk/Qt0Li-o_oDA/sb-marker-hover.gif) 13px 7px no-repeat;}
+#recentcomments li a {background:none !important; padding:0 0 0 0;}
+.textwidget iframe {position:relative; margin:0 -5px 10px -5px;}
+.logo-bottom {position:absolute; right:30px; bottom:15px; z-index:1000;}
+a:hover abbr {border:none;}
+#footer {width:990px; margin:0 auto; text-align:left;}
+#footer a {color:#602600;}
+.copy {position:relative; padding:25px 0px 15px 0px; font-size:11px; z-index:100; width:590px; text-align:right;}
+.valid {position:absolute; right:-200px; top:22px; font-size:11px; background:#ca9417 url(http://lh5.ggpht.com/_DgOSkjb6TAQ/Sdsg-L7VYXI/AAAAAAAAAeM/qEhDC0WF_bI/page-num-bg.gif) 0 0 no-repeat; line-height:22px; padding:0 7px;}
+.ping-track {position:relative; border:1px solid #a4813c; padding:10px;}
+.up {text-transform:uppercase;}
+.center {text-align:center;}
+.l, .left {float:left;}
+.r, .right {float:right;}
+.textleft {text-align:left !important;}
+.clear {clear:both;}
+
+--></style>
+<script src="http://www.blogger.magznetwork.com/templates/mummys-note/changedate.js" type="text/javascript"></script>
+<script language="javascript" type="text/javascript">
+function hidePost(postUrl)
+{
+var label=document.getElementById("fullpost");
+if(label!=null){
+eA = document.createElement("a");
+eA.setAttribute("href",postUrl);
+eA.setAttribute("title","閱讀全文");
+eA.appendChild(document.createTextNode("..閱讀全文.."));
+eB = document.createElement("p");
+eB.setAttribute("id","read-more");
+eB.appendChild(eA);
+label.parentNode.appendChild(eB);
+label.parentNode.removeChild(label);}
+}
+</script>
+<script type="text/javascript">var a=navigator,b="userAgent",c="indexOf",f="&m=1",g="(^|&)m=",h="?",k="?m=1";function l(){var d=window.location.href,e=d.split(h);switch(e.length){case 1:return d+k;case 2:return 0<=e[1].search(g)?null:d+f;default:return null}}if(-1!=a[b][c]("Mobile")&&-1!=a[b][c]("WebKit")&&-1==a[b][c]("iPad")||-1!=a[b][c]("Opera Mini")||-1!=a[b][c]("IEMobile")){var m=l();m&&window.location.replace(m)};
+</script><script type="text/javascript">
+if (window.jstiming) window.jstiming.load.tick('headEnd');
+</script><script type="text/javascript" src="./將Big5字串轉換為 UTF-8字串 (C code example)_files/google_top_exp.js"></script><script src="./將Big5字串轉換為 UTF-8字串 (C code example)_files/summary" type="text/javascript"></script><script src="./將Big5字串轉換為 UTF-8字串 (C code example)_files/summary(1)" type="text/javascript"></script><style>.gc-bubbleDefault{background-color:transparent !important;text-align:left;padding:0 !important;margin:0 !important;border:0 !important;table-layout:auto !important}.gc-reset{background-color:transparent !important;border:0 !important;padding:0 !important;margin:0 !important;text-align:left}.pls-bubbleTop{border-bottom:1px solid #ccc !important}.pls-topTail,.pls-vertShimLeft,.pls-contentLeft{background-image:url(//ssl.gstatic.com/s2/oz/images/stars/po/bubblev1/border_3.gif) !important}.pls-topTail{background-repeat:repeat-x !important;background-position:bottom !important}.pls-vertShim{background-color:#fff !important;text-align:right}.tbl-grey .pls-vertShim{background-color:#f5f5f5 !important}.pls-vertShimLeft{background-repeat:repeat-y !important;background-position:right !important;height:4px}.pls-vertShimRight{height:4px}.pls-confirm-container .pls-vertShim{background-color:#fff3c2 !important}.pls-contentWrap{background-color:#fff !important;position:relative !important;vertical-align:top}.pls-contentLeft{background-repeat:repeat-y;background-position:right;vertical-align:top}.pls-dropRight{background-image:url(//ssl.gstatic.com/s2/oz/images/stars/po/bubblev1/bubbleDropR_3.png) !important;background-repeat:repeat-y !important;vertical-align:top}.pls-vert,.pls-tailleft,.pls-dropTR .pls-dropBR,.pls-dropBL,.pls-vert img{vertical-align:top}.pls-dropBottom{background-image:url(//ssl.gstatic.com/s2/oz/images/stars/po/bubblev1/bubbleDropB_3.png) !important;background-repeat:repeat-x !important;width:100%;vertical-align:top}.pls-topLeft{background:inherit !important;text-align:right;vertical-align:bottom}.pls-topRight{background:inherit !important;text-align:left;vertical-align:bottom}.pls-bottomLeft{background:inherit !important;text-align:right}.pls-bottomRight{background:inherit !important;text-align:left;vertical-align:top}.pls-tailtop,.pls-tailright,.pls-tailbottom,.pls-tailleft{display:none;position:relative}.pls-tailbottom,.pls-tailtop,.pls-tailright,.pls-tailleft,.pls-dropTR,.pls-dropBR,.pls-dropBL{background-image:url(//ssl.gstatic.com/s2/oz/images/stars/po/bubblev1/bubbleSprite_3.png) !important;background-repeat:no-repeat}.tbl-grey .pls-tailbottom,.tbl-grey .pls-tailtop,.tbl-grey .pls-tailright,.tbl-grey .pls-tailleft,.tbl-grey .pls-dropTR,.tbl-grey .pls-dropBR,.tbl-grey .pls-dropBL{background-image:url(//ssl.gstatic.com/s2/oz/images/stars/po/bubblev1/bubbleSprite-grey.png) !important}.pls-tailbottom{background-position:-23px 0}.pls-confirm-container .pls-tailbottom{background-position:-23px -10px}.pls-tailtop{background-position:-19px -20px}.pls-tailright{background-position:0 0}.pls-tailleft{background-position:-10px 0}.pls-tailtop{vertical-align:top}.gc-bubbleDefault td{line-height:0;font-size:0}.pls-topLeft img,.pls-topRight img,.pls-tailbottom{vertical-align:bottom}.pls-bottomLeft img,.bubbleDropTR,.pls-dropBottomL img,.pls-dropBottom img,.pls-dropBottomR img,.pls-bottomLeft{vertical-align:top}.pls-dropTR{background-position:0 -22px}.pls-dropBR{background-position:0 -27px}.pls-dropBL{background-position:0 -16px}.pls-spacertop,.pls-spacerright,.pls-spacerbottom,.pls-spacerleft{position:static !important}.pls-spinner{bottom:0;position:absolute;left:0;margin:auto;right:0;top:0}</style></head>
+<body>
+<div class="navbar section" id="navbar"><div class="widget Navbar" id="Navbar1"><script type="text/javascript">
+    function setAttributeOnload(object, attribute, val) {
+      if(window.addEventListener) {
+        window.addEventListener('load',
+          function(){ object[attribute] = val; }, false);
+      } else {
+        window.attachEvent('onload', function(){ object[attribute] = val; });
+      }
+    }
+  </script>
+<div id="navbar-iframe-container"><iframe frameborder="0" hspace="0" marginheight="0" marginwidth="0" scrolling="no" style="" tabindex="0" vspace="0" width="100%" id="navbar-iframe" name="navbar-iframe" src="./將Big5字串轉換為 UTF-8字串 (C code example)_files/navbar.htm"></iframe></div>
+<script type="text/javascript" src="./將Big5字串轉換為 UTF-8字串 (C code example)_files/plusone.js" gapi_processed="true"></script>
+<script type="text/javascript">
+        gapi.load("iframes-styles-bubble", function() {
+          if (window.iframes && iframes.open) {
+            iframes.open(
+                '//www.blogger.com/navbar.g?targetBlogID\0751977856215342741626\46blogName\75take+it+easy\46publishMode\75PUBLISH_MODE_BLOGSPOT\46navbarType\75SILVER\46layoutType\75LAYOUTS\46searchRoot\75http://easy72.blogspot.com/search\46blogLocale\75zh_TW\46v\0752\46homepageUrl\75http://easy72.blogspot.com/\46targetPostID\0752751528911559474218\46blogPostOrPageUrl\75http://easy72.blogspot.com/2009/04/big5-utf-8-c-code-example.html\46vt\75-4811273383362120037',
+                {
+                  container: "navbar-iframe-container",
+                  id: "navbar-iframe"
+                },
+                {
+                });
+          }
+        });
+      </script><script type="text/javascript">
+(function() {
+var script = document.createElement('script');
+script.type = 'text/javascript';
+script.src = '//pagead2.googlesyndication.com/pagead/js/google_top_exp.js';
+var head = document.getElementsByTagName('head')[0];
+if (head) {
+head.appendChild(script);
+}})();
+</script>
+</div></div>
+<div class="left-bg"><div class="script"></div></div>
+<div class="right-bg"></div>
+<div id="head">
+<div class="crack"></div>
+<div class="header">
+<div id="menu">
+<div class="section" id="topmenusection">
+</div>
+</div>
+<div class="logo">
+<div class="section" id="headersection"><div class="widget Header" id="Header1">
+<h1><a href="http://easy72.blogspot.tw/">take it easy</a></h1>
+</div></div>
+</div>
+</div>
+<div class="shadow-right"></div>
+<div class="searchbox">
+<form action="http://easy72.blogspot.tw/search" id="searchform" method="get">
+<div class="label">Find Entries</div>
+<div class="search"><input id="s" name="q" type="text"></div>
+<div><input id="searchsubmit" type="submit" value="GO"></div>
+</form>
+</div>
+</div>
+<div id="content">
+<div id="main">
+<div class="content-wrapper">
+<div class="section" id="mainsection"><div class="widget Blog" id="Blog1">
+<div class="content">
+<div class="cont-r">
+<div class="cont-l">
+<div class="grad-hack">
+<div class="begin"></div>
+<!-- google_ad_section_start -->
+<div class="post">
+<a name="2751528911559474218"></a>
+<div class="title">
+<div class="date">
+<script type="text/javascript">changeDate('2009年4月29日星期三');</script>
+</div>
+<h1>
+<a href="./將Big5字串轉換為 UTF-8字串 (C code example)_files/將Big5字串轉換為 UTF-8字串 (C code example).htm" rel="bookmark" title="Permanent Link to 將Big5字串轉換為 UTF-8字串 (C code example)">將Big5字串轉換為 UTF-8字串 (C code example)</a>
+<span class="item-control blog-admin pid-473350702">
+<a href="http://www.blogger.com/post-edit.g?blogID=1977856215342741626&postID=2751528911559474218&from=pencil" title="編輯文章">
+<span class="quick-edit-icon">&nbsp;</span>
+</a>
+</span>
+</h1>
+<p class="author">
+2009年4月29日星期三 
+						, Posted  
+						
+						 by 曾easy
+
+						 in 
+						
+<a href="http://easy72.blogspot.tw/search/label/Linux" rel="tag">Linux</a>,
+<a href="http://easy72.blogspot.tw/search/label/%E7%A8%8B%E5%BC%8F%E8%A8%AD%E8%A8%88" rel="tag">程式設計</a>
+</p>
+</div>
+<div class="entry">
+<p>環境: redhat 9, MySQL 5.1.32<br>需求: 使用 MySQL C API 挿入資料時中文有問題, 因為 mysql設置資料儲存為UTF-8<br>解決: 將big5字串轉成utf-8字串, 然後再將utf-8字串存成16進制再挿入MySQL<br></p><div id="fullpost"><br><code><br><br><span class="pre">#include &lt;iconv.h&gt;<br>#include &lt;string.h&gt;<br><br>#include &lt;errno.h&gt;<br><br><br>#define USR_NAME_LEN 64<br></span><span class="type"><br>char</span> user<span class="operator">[</span>USR_NAME_LEN<span class="operator">];</span><span class="comment"> //從檔案讀來的Big5字串會存在user<br></span><span class="type">char</span> wuser<span class="operator">[</span><span class="int">2</span><span class="operator">*</span><span class="keyword">sizeof</span><span class="operator">(</span>user<span class="operator">)+</span><span class="int">2</span><span class="operator">];</span><span class="keyword"><br><br>const</span><span class="type"> char</span> fromcode<span class="operator">[] =</span><span class="string"> "big5"</span><span class="operator">;</span><span class="keyword"><br>const</span><span class="type"> char</span> tocode<span class="operator">[] =</span><span class="string"> "utf-8"</span><span class="operator">;</span><br><br>iconv_t cd<span class="operator">;</span><br>size_t in_size<span class="operator"> =</span><span class="keyword"> sizeof</span><span class="operator">(</span>user<span class="operator">);</span><span class="type"><br>char</span><span class="operator"> *</span>inptr<span class="operator"> =</span> user<span class="operator">;</span><span class="type"><br><br>char</span> out<span class="operator">[</span><span class="int">2</span><span class="operator">*</span>USR_NAME_LEN<span class="operator">+</span><span class="int">1</span><span class="operator">];</span><br>size_t out_size<span class="operator"> =</span><span class="keyword"> sizeof</span><span class="operator">(</span>out<span class="operator">);</span><span class="type"><br><br>char</span><span class="operator"> *</span>outptr<span class="operator"> =</span> out<span class="operator">;</span><span class="flow"><br><br>if</span><span class="operator"> ((</span>iconv_t<span class="operator">)(-</span><span class="int">1</span><span class="operator">) == (</span>cd<span class="operator"> =</span> iconv_open<span class="operator">(</span>tocode<span class="operator">,</span> fromcode<span class="operator">))) {</span><br><br>printf<span class="operator">(</span><span class="string">"(%s)Failed to iconv_open %s to %s.\n"</span><span class="operator">,</span>strerror<span class="operator">(</span>errno<span class="operator">),</span> fromcode<span class="operator">,</span> tocode<span class="operator">);</span><br>exit<span class="operator">(</span>EXIT_FAILURE<span class="operator">);<br>}</span><span class="flow"><br><br>if</span><span class="operator"> ((</span>size_t<span class="operator">)(-</span><span class="int">1</span><span class="operator">) ==</span> iconv<span class="operator">(</span>cd<span class="operator">, &amp;</span>inptr<span class="operator">, &amp;</span>in_size<span class="operator">, &amp;</span>outptr<span class="operator">, &amp;</span>out_size<span class="operator">)) {</span><br><br>printf<span class="operator">(</span><span class="string">"Fail to convert characters to new code set.(%s)\n"</span><span class="operator">,</span> strerror<span class="operator">(</span>errno<span class="operator">));</span><br>exit<span class="operator">(</span>EXIT_FAILURE<span class="operator">);</span><br>iconv_close<span class="operator">(</span>cd<span class="operator">);<br>}</span><br><br><br></code><br>那麼使用MySQL C API便可insert中文資料了!<br><code><br><span class="type">char</span> sqlcmd<span class="operator">[</span><span class="int">512</span><span class="operator">];</span><br><br>mysql_hex_string<span class="operator">(</span>wuser<span class="operator">,</span> out<span class="operator">,</span> strlen<span class="operator">(</span>out<span class="operator">) );</span><br>DataBase<span class="operator">&lt;</span>mysql<span class="operator">&gt;</span> dataBase<span class="operator">(</span><span class="string">"127.0.0.1"</span><span class="operator">,</span><span class="string"> "root"</span><span class="operator">,</span><span class="string"> "yourpassword"</span><span class="operator">,</span><span class="string"> "dbname"</span><span class="operator">);</span><br><br>memset<span class="operator">(</span>sqlcmd<span class="operator">,</span><span class="int"> 0</span><span class="operator">,</span><span class="keyword"> sizeof</span> sqlcmd<span class="operator">);</span><br>sprintf<span class="operator">(</span>sqlcmd<span class="operator">,</span><span class="string"> "INSERT INTO tablename(username) VALUES(0x%s)"</span><span class="operator"><br><br>,</span>wuser<span class="operator">);</span><br>dataBase<span class="operator"> &lt;&lt;</span> sqlcmd<span class="operator"> ;</span><br></code><br>libiconv 只有三個functions<br>iconv_t <a target="h" href="http://www.gnu.org/software/libiconv/documentation/libiconv/iconv_open.3.html">iconv_open</a> (const char* tocode, const char* fromcode)：開啟 libiconv。<br>size_t <a target="h" href="http://www.gnu.org/software/libiconv/documentation/libiconv/iconv.3.html">iconv</a> (iconv_t cd, const char* * inbuf, size_t * inbytesleft, char* * outbuf, size_t * outbytesleft)：執行轉碼。<br>int <a target="h" href="http://www.gnu.org/software/libiconv/documentation/libiconv/iconv_close.3.html">iconv_close</a> (iconv_t cd)：做完轉碼後關閉 libiconv。<br><br><br></div><p></p>
+<div style="clear: both;"></div>
+</div>
+<div class="ping-track">
+						This entry was posted
+						
+						on 2009年4月29日星期三
+
+						at 上午11:12
+
+						and is filed under  
+						
+<a href="http://easy72.blogspot.tw/search/label/Linux" rel="tag">Linux</a>,
+<a href="http://easy72.blogspot.tw/search/label/%E7%A8%8B%E5%BC%8F%E8%A8%AD%E8%A8%88" rel="tag">程式設計</a>
+
+						. You can follow any responses to this entry through the 
+<a href="http://easy72.blogspot.com/feeds/2751528911559474218/comments/default" target="_blank" type="application/atom+xml">comments feed</a>
+.
+					</div>
+</div>
+<div class="post" id="comments">
+<h4>
+0
+意見
+</h4>
+<h4 id="respond"><a href="http://www.blogger.com/comment.g?blogID=1977856215342741626&postID=2751528911559474218" onclick="">張貼留言</a></h4>
+<div id="Blog1_backlinks-container">
+</div>
+</div>
+<!-- google_ad_section_end -->
+</div>
+<div class="cont-bottom"></div>
+</div>
+</div>
+</div>
+<div class="navigation">
+<div class="alignleft">
+<a href="http://easy72.blogspot.tw/2009/05/vim-trinity-tabbar.html" title="較新的文章">&lt;&lt; 較新的文章</a>
+</div>
+<div class="alignright">
+<a href="http://easy72.blogspot.tw/2009/04/apache2phpphpmyadmin.html" title="較舊的文章">較舊的文章 &gt;&gt;</a>
+</div>
+</div>
+</div></div>
+</div>
+</div>
+<div id="sidebars">
+<div id="sidebar-left">
+<div class="section" id="sidebarleftsection"><div class="widget HTML" id="HTML1">
+<h2 class="title">最新文章</h2>
+<div class="widget-content">
+<div id="newPosts"><ul><li><span class="item-title"><a href="http://easy72.blogspot.com/2009/11/vsftpd.html">vsftpd 安裝與設定...</a> </span></li><li><span class="item-title"><a href="http://easy72.blogspot.com/2009/11/c-macro-notes.html">C macro notes...</a> </span></li><li><span class="item-title"><a href="http://easy72.blogspot.com/2009/11/blog-post_09.html">來工研院也將近四年了 (去年文...</a> </span></li><li><span class="item-title"><a href="http://easy72.blogspot.com/2009/10/strcat.html">strcat 的實作</a> </span></li><li><span class="item-title"><a href="http://easy72.blogspot.com/2009/10/cscope-vimrc_05.html">有cscope設置的 .vim...</a> </span></li><li><span class="item-title"><a href="http://easy72.blogspot.com/2009/09/82.html">82法則</a> </span></li><li><span class="item-title"><a href="http://easy72.blogspot.com/2009/07/freeradius.html">freeradius 安裝...</a> </span></li></ul><p align="right">Recent 1-7<br>Total: 31.&nbsp;&nbsp;<a href="javascript:showRecentPosts(8);" title="Older Posts">&gt;&gt;</a></p></div>
+
+<script>
+var nPostStartIndex = 1;
+var nPostShow = 7;
+
+function showRecentPosts(nIndex) {
+  if (!nIndex)
+    nIndex = nPostStartIndex;
+  var sFeedURL = '/feeds/posts/summary?orderby=published&start-index='+nIndex+'&max-results='+(nPostShow+1)+'&alt=json-in-script&callback=generatePosts';
+  var script = document.createElement('script');
+  document.getElementById('newPosts').innerHTML = 'Loading <blink>...</blink>';
+  script.setAttribute('src', sFeedURL);
+  script.setAttribute('type', 'text/javascript');
+  document.documentElement.firstChild.appendChild(script);
+}
+
+function generatePosts(json) {
+  function compareentry(a,b) {
+    order= Date.parse(a.published.$t.replace(/^(\d{4})-(\d{2})-(\d{2})T([0-9:]*)([.0-9]*)(.)(.*)$/, '$1/$2/$3 $4 GMT')) - Date.parse(b.published.$t.replace(/^(\d{4})-(\d{2})-(\d{2})T([0-9:]*)([.0-9]*)(.)(.*)$/, '$1/$2/$3 $4 GMT'));
+    return 0-order;
+  }
+ 
+  var sHTML = '<ul>';
+  var sortentry = json.feed.entry.sort(compareentry);
+  var nIndex = parseInt(json.feed.openSearch$startIndex.$t);
+  var nTotalPost = parseInt(json.feed.openSearch$totalResults.$t);
+  for (var i = 0, Post; Post = sortentry[i]; i++) {
+    if (i >= nPostShow)
+      break;
+var title = Post.title.$t;
+if(Post.title.$t.length >10 ){
+    title = Post.title.$t.substr(0,15)+'...';
+}
+    var j = 0;
+    while (j < Post.link.length && Post.link[j].rel != "alternate")
+      j++;
+    var link = Post.link[j].href;
+    var timestamp=Post.published.$t.substr(5,5);
+    sHTML += '<li><span class="item-title"><a href="'+link+'">'+ title +'</a> </span></li>';
+  }
+  sHTML += '</ul>';
+  sHTML += generatePostLink(parseInt(json.feed.entry.length), nIndex, nTotalPost);
+  document.getElementById('newPosts').innerHTML = sHTML;
+}
+
+function generatePostLink(nFetch, nIndex, nTotalPost) {
+  var bOld = (nFetch > nPostShow);
+  if (bOld) nFetch = nPostShow;
+  var sResult = '<p align="right">Recent '+nIndex+'-'+(nIndex+nFetch-1)+'<br>Total: '+nTotalPost+'.&nbsp;&nbsp;';
+  if (nIndex > nPostStartIndex)
+    sResult += '<a href="javascript:showRecentPosts('+(nIndex-nPostShow)+');" title="Newer Posts">&lt;&lt;</a>&nbsp;&nbsp;';
+  if (bOld)
+    sResult += '<a href="javascript:showRecentPosts('+(nIndex+nPostShow)+');" title="Older Posts">&gt;&gt;</a>';
+  sResult += '</p>'; 
+  return sResult;
+}
+</script>
+
+<script language="javascript">showRecentPosts();</script>
+</div>
+<div class="clear"></div>
+<span class="widget-item-control">
+<span class="item-control blog-admin">
+<a class="quickedit" href="http://www.blogger.com/rearrange?blogID=1977856215342741626&widgetType=HTML&widgetId=HTML1&action=editWidget&sectionId=sidebarleftsection" onclick="return _WidgetManager._PopupConfig(document.getElementById(&quot;HTML1&quot;));" target="configHTML1" title="編輯">
+<img alt="" height="18" src="./將Big5字串轉換為 UTF-8字串 (C code example)_files/icon18_wrench_allbkg.png" width="18">
+</a>
+</span>
+</span>
+<div class="clear"></div>
+</div><div class="widget Profile" id="Profile1">
+<h2>關於我</h2>
+<div class="widget-content">
+<dl class="profile-datablock">
+<dt class="profile-data">
+<a class="profile-name-link g-profile" href="http://www.blogger.com/profile/12579358849478083910" rel="author" style="background-image: url(//www.blogger.com/img/logo-16.png);" data-gapiscan="true" data-onload="true" data-gapiattached="true">
+曾easy
+</a>
+</dt>
+<dd class="profile-textblock">自由。快樂</dd>
+</dl>
+<a class="profile-link" href="http://www.blogger.com/profile/12579358849478083910" rel="author">檢視我的完整簡介</a>
+<div class="clear"></div>
+<span class="widget-item-control">
+<span class="item-control blog-admin">
+<a class="quickedit" href="http://www.blogger.com/rearrange?blogID=1977856215342741626&widgetType=Profile&widgetId=Profile1&action=editWidget&sectionId=sidebarleftsection" onclick="return _WidgetManager._PopupConfig(document.getElementById(&quot;Profile1&quot;));" target="configProfile1" title="編輯">
+<img alt="" height="18" src="./將Big5字串轉換為 UTF-8字串 (C code example)_files/icon18_wrench_allbkg.png" width="18">
+</a>
+</span>
+</span>
+<div class="clear"></div>
+</div>
+</div>
+</div>
+</div>
+<div id="sidebar-right">
+<div class="section" id="sidebarrightsection"><div class="widget HTML" id="HTML2">
+<h2 class="title">最新回應</h2>
+<div class="widget-content">
+<div id="newComments"><ul><li><span class="item-title">企鵝: <a href="http://easy72.blogspot.com/2009/05/c-p-p1p.html?showComment=1243955387838#c7083247598927614563">=   = """...</a> </span></li><li><span class="item-title">企鵝: <a href="http://easy72.blogspot.com/2009/05/blog-post_14.html?showComment=1242404280000#c1174821678113627437">又看有推，
+
+但是.....</a> </span></li><li><span class="item-title"><b>曾easy</b>: <a href="http://easy72.blogspot.com/2009/04/10158210515821014.html?showComment=1240453200000#c2229310488497093164">因為... 二月倒楣吧...</a> </span></li><li><span class="item-title">Anonymous: <a href="http://easy72.blogspot.com/2009/04/10158210515821014.html?showComment=1240157580000#c5847769825450540260">好神奇喔~~~
+但是 ...</a> </span></li><li><span class="item-title">Anonymous: <a href="http://easy72.blogspot.com/2008/03/vi-vim.html?showComment=1211129160000#c3159853109333840780">@@ 可執行上次執行的...</a> </span></li><li><span class="item-title">Anonymous: <a href="http://easy72.blogspot.com/2008/03/vi-vim.html?showComment=1211128980000#c7232494658247809599">@@ 可執行上次執行的...</a> </span></li></ul><p align="right">Recent 1-6<br>Total: 6.&nbsp;&nbsp;</p></div>
+
+<script>
+var nCommentStartIndex = 1;
+var nCommentShow = 8;
+
+function showRecentComments(nIndex) {
+  if (!nIndex)
+    nIndex = nCommentStartIndex;
+  var sFeedURL = '/feeds/comments/summary?orderby=published&start-index='+nIndex+'&max-results='+(nCommentShow+1)+'&alt=json-in-script&callback=generateComments';
+  var script = document.createElement('script');
+  document.getElementById('newComments').innerHTML = 'Loading <blink>...</blink>';
+  script.setAttribute('src', sFeedURL);
+  script.setAttribute('type', 'text/javascript');
+  document.documentElement.firstChild.appendChild(script);
+}
+
+function generateComments(json) {
+  function compareentry(a,b) {
+    order= Date.parse(a.published.$t.replace(/^(\d{4})-(\d{2})-(\d{2})T([0-9:]*)([.0-9]*)(.)(.*)$/, '$1/$2/$3 $4 GMT')) - Date.parse(b.published.$t.replace(/^(\d{4})-(\d{2})-(\d{2})T([0-9:]*)([.0-9]*)(.)(.*)$/, '$1/$2/$3 $4 GMT'));
+    return 0-order;
+  }
+ 
+  var sHTML = '<ul>';
+  var sortentry = json.feed.entry.sort(compareentry);
+  var nIndex = parseInt(json.feed.openSearch$startIndex.$t);
+  var nTotalComment = parseInt(json.feed.openSearch$totalResults.$t);
+  for (var i = 0, Comment; Comment = sortentry[i]; i++) {
+    if (i >= nCommentShow)
+      break;
+    var authorname = Comment.author[0].name.$t;
+    var title = Comment.title.$t.substr(0,11);
+    var j = 0;
+    while (j < Comment.link.length && Comment.link[j].rel != "alternate")
+      j++;
+    var link = Comment.link[j].href;
+    var timestamp = Comment.published.$t.substr(0,10);
+    sHTML += '<li><span class="item-title">'+authorname+': <a href="'+link+'">'+ title +'...</a> </span></li>';
+  }
+  sHTML += '</ul>';
+  sHTML += generateCommentLink(parseInt(json.feed.entry.length), nIndex, nTotalComment);
+  document.getElementById('newComments').innerHTML = sHTML;
+}
+
+function generateCommentLink(nFetch, nIndex, nTotalComment) {
+  var bOld = (nFetch > nCommentShow);
+  if (bOld) nFetch = nCommentShow;
+  var sResult = '<p align="right">Recent '+nIndex+'-'+(nIndex+nFetch-1)+'<br>Total: '+nTotalComment+'.&nbsp;&nbsp;';
+  if (nIndex > nCommentStartIndex)
+    sResult += '<a href="javascript:showRecentComments('+(nIndex-nCommentShow)+');" title="Newer Comments">&lt;&lt;</a>&nbsp;&nbsp;';
+  if (bOld)
+    sResult += '<a href="javascript:showRecentComments('+(nIndex+nCommentShow)+');" title="Older Comments">&gt;&gt;</a>';
+  sResult += '</p>'; 
+  return sResult;
+}
+</script>
+
+<script language="javascript">showRecentComments();</script>
+</div>
+<div class="clear"></div>
+<span class="widget-item-control">
+<span class="item-control blog-admin">
+<a class="quickedit" href="http://www.blogger.com/rearrange?blogID=1977856215342741626&widgetType=HTML&widgetId=HTML2&action=editWidget&sectionId=sidebarrightsection" onclick="return _WidgetManager._PopupConfig(document.getElementById(&quot;HTML2&quot;));" target="configHTML2" title="編輯">
+<img alt="" height="18" src="./將Big5字串轉換為 UTF-8字串 (C code example)_files/icon18_wrench_allbkg.png" width="18">
+</a>
+</span>
+</span>
+<div class="clear"></div>
+</div><div class="widget Label" id="Label1">
+<h2>文章分類</h2>
+<div class="widget-content">
+<ul>
+<li>
+<a href="http://easy72.blogspot.tw/search/label/%24%24%24%20%E7%90%86%E8%B2%A1%20%24%24%24">$$$ 理財 $$$</a>
+</li>
+<li>
+<a href="http://easy72.blogspot.tw/search/label/C%20language">C language</a>
+</li>
+<li>
+<a href="http://easy72.blogspot.tw/search/label/Linux">Linux</a>
+</li>
+<li>
+<a href="http://easy72.blogspot.tw/search/label/Thread_%E5%90%8C%E6%AD%A5">Thread_同步</a>
+</li>
+<li>
+<a href="http://easy72.blogspot.tw/search/label/%E5%90%83%E5%96%9D%E7%8E%A9%E6%A8%82">吃喝玩樂</a>
+</li>
+<li>
+<a href="http://easy72.blogspot.tw/search/label/%E5%A5%BD%E6%96%87%E7%AB%A0">好文章</a>
+</li>
+<li>
+<a href="http://easy72.blogspot.tw/search/label/%E5%BF%83%E6%83%85~">心情~</a>
+</li>
+<li>
+<a href="http://easy72.blogspot.tw/search/label/%E7%9F%A5%E8%AD%98">知識</a>
+</li>
+<li>
+<a href="http://easy72.blogspot.tw/search/label/%E7%A8%8B%E5%BC%8F%E8%A8%AD%E8%A8%88">程式設計</a>
+</li>
+<li>
+<a href="http://easy72.blogspot.tw/search/label/%E9%9B%BB%E8%85%A6~%20Windows%20~">電腦~ Windows ~</a>
+</li>
+</ul>
+<div class="clear"></div>
+<span class="widget-item-control">
+<span class="item-control blog-admin">
+<a class="quickedit" href="http://www.blogger.com/rearrange?blogID=1977856215342741626&widgetType=Label&widgetId=Label1&action=editWidget&sectionId=sidebarrightsection" onclick="return _WidgetManager._PopupConfig(document.getElementById(&quot;Label1&quot;));" target="configLabel1" title="編輯">
+<img alt="" height="18" src="./將Big5字串轉換為 UTF-8字串 (C code example)_files/icon18_wrench_allbkg.png" width="18">
+</a>
+</span>
+</span>
+<div class="clear"></div>
+</div>
+</div>
+</div>
+</div>
+<div class="clear"></div>
+</div>
+<div class="clear"></div>
+</div>
+<div id="footer">
+<div class="copy">Copyright  2008 - <a href="http://easy72.blogspot.tw/">take it easy</a> - is proudly powered by <a href="http://www.blogger.com/">Blogger</a><br><a href="http://www.infocreek.com/">Website Design</a> by InfoCreek | <a href="http://www.infocreek.com/webdesign/freewordpressthemes">Free Blogger Templates</a> | Distributed by <a href="http://fractalenlightenment.blogspot.com/2007/07/valley-of-flowers.html" title="Trek to Valley of Flowers Uttaranchal, Uttarakhand,">The Valley of Flowers in India</a> of the <a href="http://fractalenlightenment.blogspot.com/" title="Fractal Enlightenment, the world as we know it">Fractal Enlightenment</a>
+</div>
+</div>
+<script type="text/javascript">
+if (window.jstiming) window.jstiming.load.tick('widgetJsBefore');
+</script><script type="text/javascript" src="./將Big5字串轉換為 UTF-8字串 (C code example)_files/4103944743-widgets.js"></script><iframe frameborder="0" id="google_top_static_frame" name="google_top_static_frame" src="./將Big5字串轉換為 UTF-8字串 (C code example)_files/blank.htm" style="height: 0px; width: 0px; position: absolute;"></iframe>
+<script type="text/javascript" src="./將Big5字串轉換為 UTF-8字串 (C code example)_files/plusone.js" gapi_processed="true"></script>
+<script type="text/javascript">
+if (typeof(BLOG_attachCsiOnload) != 'undefined' && BLOG_attachCsiOnload != null) { window['blogger_templates_experiment_id'] = "templatesV1";window['blogger_blog_id'] = '1977856215342741626';BLOG_attachCsiOnload('item_'); }_WidgetManager._Init('//www.blogger.com/rearrange?blogID\x3d1977856215342741626','//easy72.blogspot.tw/2009/04/big5-utf-8-c-code-example.html','1977856215342741626');
+_WidgetManager._SetDataContext([{'name': 'blog', 'data': {'blogId': '1977856215342741626', 'bloggerUrl': 'http://www.blogger.com', 'title': 'take it easy', 'pageType': 'item', 'url': 'http://easy72.blogspot.tw/2009/04/big5-utf-8-c-code-example.html', 'canonicalUrl': 'http://easy72.blogspot.com/2009/04/big5-utf-8-c-code-example.html', 'canonicalHomepageUrl': 'http://easy72.blogspot.com/', 'homepageUrl': 'http://easy72.blogspot.tw/', 'blogspotFaviconUrl': 'http://easy72.blogspot.tw/favicon.ico', 'enabledCommentProfileImages': true, 'adultContent': false, 'disableAdSenseWidget': false, 'analyticsAccountNumber': '', 'searchLabel': '', 'searchQuery': '', 'pageName': '將Big5字串轉換為 UTF-8字串 (C code example)', 'pageTitle': 'take it easy: 將Big5字串轉換為 UTF-8字串 (C code example)', 'encoding': 'UTF-8', 'locale': 'zh_TW', 'localeUnderscoreDelimited': 'zh_tw', 'isPrivate': false, 'isMobile': false, 'isMobileRequest': false, 'mobileClass': '', 'isPrivateBlog': false, 'languageDirection': 'ltr', 'feedLinks': '\74link rel\75\42alternate\42 type\75\42application/atom+xml\42 title\75\42take it easy - Atom\42 href\75\42http://easy72.blogspot.com/feeds/posts/default\42 /\76\n\74link rel\75\42alternate\42 type\75\42application/rss+xml\42 title\75\42take it easy - RSS\42 href\75\42http://easy72.blogspot.com/feeds/posts/default?alt\75rss\42 /\76\n\74link rel\75\42service.post\42 type\75\42application/atom+xml\42 title\75\42take it easy - Atom\42 href\75\42http://www.blogger.com/feeds/1977856215342741626/posts/default\42 /\76\n\n\74link rel\75\42alternate\42 type\75\42application/atom+xml\42 title\75\42take it easy - Atom\42 href\75\42http://easy72.blogspot.com/feeds/2751528911559474218/comments/default\42 /\76\n', 'meTag': '', 'openIdOpTag': '', 'imageSrcTag': '', 'latencyHeadScript': '\74script type\75\42text/javascript\42\76(function() { var b\75window,e\75\42jstiming\42,g\75\42tick\42;(function(){function d(a){this.t\75{};this.tick\75function(a,d,c){c\75void 0!\75c?c:(new Date).getTime();this.t[a]\75[c,d]};this[g](\42start\42,null,a)}var a\75new d;b.jstiming\75{Timer:d,load:a};if(b.performance\46\46b.performance.timing){var a\75b.performance.timing,c\75b[e].load,f\75a.navigationStart,a\75a.responseStart;0\74f\46\46a\76\75f\46\46(c[g](\42_wtsrt\42,void 0,f),c[g](\42wtsrt_\42,\42_wtsrt\42,a),c[g](\42tbsd_\42,\42wtsrt_\42))}try{a\75null,b.chrome\46\46b.chrome.csi\46\46(a\75Math.floor(b.chrome.csi().pageT),c\46\0460\74f\46\46(c[g](\42_tbnd\42,void 0,b.chrome.csi().startE),\nc[g](\42tbnd_\42,\42_tbnd\42,f))),null\75\75a\46\46b.gtbExternal\46\46(a\75b.gtbExternal.pageT()),null\75\75a\46\46b.external\46\46(a\75b.external.pageT,c\46\0460\74f\46\46(c[g](\42_tbnd\42,void 0,b.external.startE),c[g](\42tbnd_\42,\42_tbnd\42,f))),a\46\46(b[e].pt\75a)}catch(l){}})();b.tickAboveFold\75function(d){var a\0750;if(d.offsetParent){do a+\75d.offsetTop;while(d\75d.offsetParent)}d\75a;750\76\75d\46\46b[e].load[g](\42aft\42)};var h\75!1;function k(){h||(h\75!0,b[e].load[g](\42firstScrollTime\42))}b.addEventListener?b.addEventListener(\42scroll\42,k,!1):b.attachEvent(\42onscroll\42,k);\n })();\74/script\076', 'mobileHeadScript': '', 'view': '', 'dynamicViewsCommentsSrc': '//www.blogblog.com/dynamicviews/4224c15c4e7c9321/js/comments.js', 'dynamicViewsScriptSrc': '//www.blogblog.com/dynamicviews/15de8d1bfc9ff1d1', 'plusOneApiSrc': 'https://apis.google.com/js/plusone.js', 'testHtml5CssSrc': '//www.blogger.com/static/v1/widgets/2748914266-css_bundle_html5.css', 'sf': 'n', 'tf': ''}}, {'name': 'skin', 'data': {'vars': {}, 'override': ''}}, {'name': 'view', 'data': {'classic': {'name': 'classic', 'url': '/?view\75classic'}, 'flipcard': {'name': 'flipcard', 'url': '/?view\75flipcard'}, 'magazine': {'name': 'magazine', 'url': '/?view\75magazine'}, 'mosaic': {'name': 'mosaic', 'url': '/?view\75mosaic'}, 'sidebar': {'name': 'sidebar', 'url': '/?view\75sidebar'}, 'snapshot': {'name': 'snapshot', 'url': '/?view\75snapshot'}, 'timeslide': {'name': 'timeslide', 'url': '/?view\75timeslide'}}}]);
+_WidgetManager._RegisterWidget('_HTMLView', new _WidgetInfo('HTML1', 'sidebarleftsection', null, document.getElementById('HTML1'), {}, 'displayModeFull'));
+_WidgetManager._RegisterWidget('_ProfileView', new _WidgetInfo('Profile1', 'sidebarleftsection', null, document.getElementById('Profile1'), {}, 'displayModeFull'));
+_WidgetManager._RegisterWidget('_HeaderView', new _WidgetInfo('Header1', 'headersection', null, document.getElementById('Header1'), {}, 'displayModeFull'));
+_WidgetManager._RegisterWidget('_HTMLView', new _WidgetInfo('HTML2', 'sidebarrightsection', null, document.getElementById('HTML2'), {}, 'displayModeFull'));
+_WidgetManager._RegisterWidget('_LabelView', new _WidgetInfo('Label1', 'sidebarrightsection', null, document.getElementById('Label1'), {}, 'displayModeFull'));
+_WidgetManager._RegisterWidget('_NavbarView', new _WidgetInfo('Navbar1', 'navbar', null, document.getElementById('Navbar1'), {}, 'displayModeFull'));
+_WidgetManager._RegisterWidget('_BlogView', new _WidgetInfo('Blog1', 'mainsection', null, document.getElementById('Blog1'), {'cmtInteractionsEnabled': false, 'lightboxEnabled': true, 'lightboxModuleUrl': '//www.blogger.com/static/v1/jsbin/900971283-lbx__zh_tw.js', 'lightboxCssUrl': '//www.blogger.com/static/v1/v-css/4138445517-lightbox_bundle.css'}, 'displayModeFull'));
+</script>
+
+</body></html>

@@ -1,0 +1,622 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<!-- 这篇文章由Dancingwind翻译，作者的联系方式zhouwei02@mails.tsinghua.edu.cn -->
+
+<html>
+<head>
+<title>NeHe OpenGL教程第二十四课，DancingWind翻译</title>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<style type=text/css>
+A:link {COLOR: #ccaaff; TEXT-DECORATION: none}
+A:visited {COLOR: #ccaaff; TEXT-DECORATION: none}
+A:active {COLOR: #ccaaff; TEXT-DECORATION: none}
+A:hover {COLOR: #ffccaa; TEXT-DECORATION: none}
+</style>
+</head>
+
+<br><br>
+
+<body bgcolor=#000000 text=#ffffff><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td width=326 height=130><img src="logo.png" tppabs="http://www.owlei.com/DancingWind/Pic/logo.png" width=326 height=130></td>
+    <td valign=middle align=center width="75%"><font color=#ffccaa size=+3><b><i>第24课</i></b></font></td>
+  </tr></table>
+  <!-- 上边框-->
+<table border="0" cellPadding="0" cellSpacing="0" width="100%">
+<TBODY>
+  <tr>
+    <td><img height="28" src="tl.jpg" tppabs="http://www.owlei.com/DancingWind/Pic/tl.jpg" width="28"></td>
+    <td width="100%"><img height="28" src="tc.gif" tppabs="http://www.owlei.com/DancingWind/Pic/tc.gif" width="100%"></td>
+    <td><img height="28" src="tr.gif" tppabs="http://www.owlei.com/DancingWind/Pic/tr.gif" width="28"></td>
+  </tr>
+</TBODY>
+</table>
+
+<!-- 中部-->
+<table border="0" cellPadding="0" cellSpacing="0" width="100%">
+<TBODY>
+  <tr>
+  	<!-- 中部左边框-->
+    <td  background="l.gif" tppabs="http://www.owlei.com/DancingWind/Pic/l.gif"><img src="l.gif" tppabs="http://www.owlei.com/DancingWind/Pic/l.gif" width="28" height="28"></td>
+	<!-- 中部文字部分-->
+    <td vAlign="top" width="100%">
+	<table width="100%" border="0">
+          <tr>
+            <td width="29%"><img src="lesson24.jpg" tppabs="http://www.owlei.com/DancingWind/Pic/lesson24.jpg" width="240" height="180"></td>
+            <td width="71%"><p><FONT class=head>扩展，剪裁和TGA图像文件的加载:</FONT></p>
+              <p><font size="3">在这一课里，你将学会如何读取你显卡支持的OpenGL的扩展，并在你指定的剪裁区域把它显示出来。</FONT></p></td>
+          </tr>
+     </table>
+      </td>
+	<!-- 中部右边框-->
+    <td background="r.gif" tppabs="http://www.owlei.com/DancingWind/Pic/r.gif"><img src="r.gif" tppabs="http://www.owlei.com/DancingWind/Pic/r.gif" width="28" height="28"></td>
+  </tr>
+</TBODY>
+</table>
+
+<!-- 下边框-->
+<table border="0" cellPadding="0" cellSpacing="0" width="100%">
+<TBODY>
+  <tr>
+    <td><img height="28" src="bl.gif" tppabs="http://www.owlei.com/DancingWind/Pic/bl.gif" width="28"></td>
+    <td width="100%"><img height="28" src="bc.gif" tppabs="http://www.owlei.com/DancingWind/Pic/bc.gif" width="100%"></td>
+    <td><img height="28" src="br.gif" tppabs="http://www.owlei.com/DancingWind/Pic/br.gif" width="28"></td>
+  </tr>
+</TBODY>
+</table>
+  <table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>这个教程有一些难度，但它会让你学到很多东西。我听到很多朋友问我扩展方面的内容和怎样找到它们。这个教程将交给你这<br>
+      一切。<br>
+      我将教会你怎样滚动屏幕的一部分和怎样绘制直线，最重要的是从这一课起，我们将不使用AUX库，以及*.bmp文件。我将告诉你如何使用Targa(TGA)图像文件。因为它简单并且支持alpha通道，它可以使你更容易的创建酷的效果。
+      <p>接下来我们要做的第一件事就是不包含glaux.h头文件和glaux.lib库。另外，在使用glaux库时，经常会发生一些可疑的警告，现在我们可以测定告别它了。</p></td><td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table><font color=#aaffaa size=3>
+<pre>
+#include	&lt;stdarg.h&gt;								<font color=#ffffaa>// 处理可变参数的函数的头文件</font>
+#include	&lt;string.h&gt;								<font color=#ffffaa>// 处理字符串的头文件</font>
+</pre>
+</font><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>接下来我们添加一些变量，第一个为滚动参数。第二给变量记录扩展的个数，swidth和sheight记录剪切矩形的大小。base为字体显示列表的开始值。</td>
+    <td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table><font color=#aaffaa size=3>
+	
+<pre>int		scroll;									<font color=#ffffaa>// 用来滚动屏幕</font>
+int		maxtokens;								<font color=#ffffaa>// 保存扩展的个数</font>
+int		swidth;									<font color=#ffffaa>// 剪裁宽度</font>
+int		sheight;								<font color=#ffffaa>	// 剪裁高度</font>
+
+GLuint		base;									<font color=#ffffaa>// 字符显示列表的开始值</font>
+</pre>
+</font><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>现在我们创建一个数据结构用来保存TGA文件，接着我们使用这个结构来加载纹理。</td>
+    <td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table><font color=#aaffaa size=3>
+<pre>typedef	struct										<font color=#ffffaa>// 创建加载TGA图像文件结构</font>
+{
+	GLubyte	*imageData;								<font color=#ffffaa>// 图像数据指针</font>
+	GLuint	bpp;									<font color=#ffffaa>// 每个数据所占的位数（必须为24或32）</font>
+	GLuint	width;									<font color=#ffffaa>// 图像宽度</font>
+	GLuint	height;									<font color=#ffffaa>// 图像高度</font>
+	GLuint	texID;									<font color=#ffffaa>// 纹理的ID值</font>
+} TextureImage;										<font color=#ffffaa>// 结构名称</font>
+
+TextureImage	textures[1];								<font color=#ffffaa>// 保存一个纹理</font>
+</pre>
+</font><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>这个部分的代码将要加载一个TGA文件并把它转换为纹理。必须注意的是这部分代码只能加载24/32位的不压缩的TGA文件。<br>
+      这个函数包含两个参数，一个保存载入的图像，一个为将载入的文件名。<br>
+      TGA文件包含一个12个字节的文件头，载入图像后，我们用type来设置图像中像素格式在OpenGL中的对应。如果是24位的图像我们使用GL_RGB，如果是32位的图像我们使用GL_RGBA。</td>
+    <td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table><font color=#aaffaa size=3>
+<pre>
+bool LoadTGA(TextureImage *texture, char *filename)					<font color=#ffffaa>// 把TGA文件加载入内存</font>
+{
+	GLubyte		TGAheader[12]={0,0,2,0,0,0,0,0,0,0,0,0};			<font color=#ffffaa>// 无压缩的TGA文件头</font>
+	GLubyte		TGAcompare[12];						<font color=#ffffaa>// 保存读入的文件头信息</font>
+	GLubyte		header[6];						<font color=#ffffaa>// 保存最有用的图像信息，宽，高，位深</font>
+	GLuint		bytesPerPixel;						<font color=#ffffaa>// 记录每个颜色所占用的字节数</font>
+	GLuint		imageSize;						<font color=#ffffaa>// 记录文件大小</font>
+	GLuint		temp;							<font color=#ffffaa>// 临时变量</font>
+	GLuint		type=GL_RGBA;						<font color=#ffffaa>// 设置默认的格式为GL_RGBA，即32位图像</font>
+</pre>
+</font><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top><p>下面这个函数读取TGA文件，并记录文件信息。TGA文件格式如下所示： </p>
+      <p>Tga图像格式<br>
+        无颜色表 rgb 图像 </p>
+      <table width="100%" border="1">
+        <tr> 
+          <td width="6%">偏移</td>
+          <td width="9%">长度</td>
+          <td width="62%">描述</td>
+          <td width="21%">32位常用图像文件各个字节的值</td>
+        </tr>
+        <tr> 
+          <td>0</td>
+          <td>1</td>
+          <td>指出图像信息字段的长度，其取值范围是 0 到 255 ，当它为 0 时表示没有图像的信息字段。</td>
+          <td>0</td>
+        </tr>
+        <tr> 
+          <td>1</td>
+          <td>1</td>
+          <td>是否使用颜色表，0 表示没有颜色表，1 表示颜色表存在</td>
+          <td>0</td>
+        </tr>
+        <tr> 
+          <td>2</td>
+          <td>1</td>
+          <td>该字段总为 2。图像类型码，tga一共有6种格式，2表示无颜色表 rgb 图像</td>
+          <td>2</td>
+        </tr>
+        <tr> 
+          <td>3</td>
+          <td rowspan="5">5</td>
+          <td rowspan="5">颜色表规格，总为0。</td>
+          <td>0</td>
+        </tr>
+        <tr> 
+          <td>4</td>
+          <td>0</td>
+        </tr>
+        <tr> 
+          <td>5</td>
+          <td>0</td>
+        </tr>
+        <tr> 
+          <td>6</td>
+          <td>0</td>
+        </tr>
+        <tr> 
+          <td>7</td>
+          <td>0</td>
+        </tr>
+        <tr> 
+          <td colspan="4" bgcolor="#000080">8&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+            10&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 图像规格说明 
+            开始</td>
+        </tr>
+        <tr> 
+          <td> 8</td>
+          <td rowspan="2">2</td>
+          <td rowspan="2">图像 x 坐标起始位置，一般为0</td>
+          <td rowspan="2">0</td>
+        </tr>
+        <tr> 
+          <td>9</td>
+        </tr>
+        <tr> 
+          <td>10</td>
+          <td rowspan="2">2</td>
+          <td rowspan="2">图像 y 坐标起始位置，一般为0</td>
+          <td rowspan="2">0</td>
+        </tr>
+        <tr> 
+          <td>11</td>
+        </tr>
+        <tr> 
+          <td>12</td>
+          <td rowspan="2">2</td>
+          <td rowspan="2">图像宽度，以像素为单位</td>
+          <td rowspan="2">256</td>
+        </tr>
+        <tr> 
+          <td>13</td>
+        </tr>
+        <tr> 
+          <td>14</td>
+          <td rowspan="2">2</td>
+          <td rowspan="2">图像高度，以像素为单位</td>
+          <td rowspan="2">256</td>
+        </tr>
+        <tr> 
+          <td>15</td>
+        </tr>
+        <tr> 
+          <td>16</td>
+          <td>1</td>
+          <td>图像每像素存储占用位（bit）数</td>
+          <td>32</td>
+        </tr>
+        <tr> 
+          <td>17</td>
+          <td>1</td>
+          <td><p>图像描述符字节<br>
+              bits 3-0 - 每像素对应的属性位的位数，对于 TGA 24，该值为 0<br>
+              bit 4 - 保留，必须为 0<br>
+              bit 5 - 屏幕起始位置标志，0 = 原点在左下角，1 = 原点在左上角<br>
+              一般这个字节设为0x00即可<br>
+            </p></td>
+          <td>00100000<sub>(2)</sub></td>
+        </tr>
+        <tr> 
+          <td>18 </td>
+          <td>可变</td>
+          <td>图像数据域<br>
+            这里存储了（宽度）x（高度）个像素，每个像素中的 rgb 色值该色值包含整数个字节 </td>
+          <td>...</td>
+        </tr>
+      </table>
+      <p>如果一切顺利，读取文件后关闭文件。</p></td><td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table>
+<font color=#aaffaa size=3> 
+<pre>
+	FILE *file = fopen(filename, "rb");						<font color=#ffffaa>// 打开一个TGA文件</font>
+
+	if(	file==NULL ||							<font color=#ffffaa>// 文件存在么?</font>
+		fread(TGAcompare,1,sizeof(TGAcompare),file)!=sizeof(TGAcompare) ||	<font color=#ffffaa>// 是否包含12个字节的文件头?</font>
+		memcmp(TGAheader,TGAcompare,sizeof(TGAheader))!=0		||	<font color=#ffffaa>// 是否是我们需要的格式?</font>
+		fread(header,1,sizeof(header),file)!=sizeof(header))			<font color=#ffffaa>// 如果是读取下面六个图像信息</font>
+	{
+		if (file == NULL)							<font color=#ffffaa>// 文件不存在返回</font><font color=#aaffaa size=3><font color=#ffffaa>错误</font></font>
+			return false;							
+		else
+		{
+			fclose(file);						<font color=#ffffaa>// 关闭文件返回错误</font>
+			return false;							
+		}
+	}
+</pre>
+</font>
+<table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>下面的代码记录文件的宽度和高度，并判断文件是否为24位/32位TGA文件。</td>
+    <td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table><font color=#aaffaa size=3>
+<pre>
+	texture-&gt;width  = header[1] * 256 + header[0];					<font color=#ffffaa>// 记录文件高度</font>
+	texture-&gt;height = header[3] * 256 + header[2];					<font color=#ffffaa>// 记录文件宽度</font>
+
+ 	if(	texture-&gt;width	&lt;=0	||						<font color=#ffffaa>// 宽度是否小于0</font>
+		texture-&gt;height	&lt;=0	||						<font color=#ffffaa>// 高度是否小于0</font>
+		(header[4]!=24 && header[4]!=32))					<font color=#ffffaa>	// TGA文件是24/32位？</font>
+	{
+		fclose(file);								<font color=#ffffaa>// 如果失败关闭文件，返回错误</font>
+		return false;								
+	}
+</pre>
+</font><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>下面的代码记录文件的位深和加载它需要的内存大小</td>
+    <td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table><font color=#aaffaa size=3>
+<pre>
+	texture-&gt;bpp	= header[4];							<font color=#ffffaa>// 记录文件的位深</font>
+	bytesPerPixel	= texture-&gt;bpp/8;							<font color=#ffffaa>// 记录每个象素所占的字节数</font>
+	imageSize	= texture-&gt;width*texture-&gt;height*bytesPerPixel;				<font color=#ffffaa>// 计算TGA文件加载所需要的内存大小</font>
+</pre>
+</font><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>下面的代码为图像数据分配内存并载入它</td>
+    <td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table><font color=#aaffaa size=3>
+<pre>
+	texture-&gt;imageData=(GLubyte *)malloc(imageSize);				<font color=#ffffaa>// 分配内存去保存TGA数据</font>
+
+	if(	texture-&gt;imageData==NULL ||						<font color=#ffffaa>// 系统是否分配了足够的内存？</font>
+		fread(texture-&gt;imageData, 1, imageSize, file)!=imageSize)		<font color=#ffffaa>// 是否成功读入内存?</font>
+	{
+		if(texture-&gt;imageData!=NULL)					<font color=#ffffaa>// 是否有数据被加载</font>
+			free(texture-&gt;imageData);					<font color=#ffffaa>// 如果是，则释放载入的数据</font>
+
+		fclose(file);							<font color=#ffffaa>// 关闭文件</font>
+		return false;							<font color=#ffffaa>// 返回错误</font>
+	}
+</pre>
+</font><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>TGA文件中，颜色的存储顺序为BGR，而OpenGL中颜色的顺序为RGB，所以我们需要交换每个象素中R和B的值。如果一切顺利，TGA文件中的图像数据将按照OpenGL的要求存储在内存中了。</td>
+    <td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table><font color=#aaffaa size=3>
+<pre>
+	for(GLuint i=0; i&lt;int(imageSize); i+=bytesPerPixel)				<font color=#ffffaa>// 循环所有的像素</font>
+	{									<font color=#ffffaa>// 交换R和B的值</font>
+		temp=texture-&gt;imageData[i];						
+		texture-&gt;imageData[i] = texture-&gt;imageData[i + 2];		
+		texture-&gt;imageData[i + 2] = temp;				
+	}
+
+	fclose (file);								<font color=#ffffaa>// 关闭文件</font>
+</pre>
+</font><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>下面的代码创建一个纹理，并设置过滤方式为线性</td>
+    <td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table><font color=#aaffaa size=3>
+<pre>
+	<font color=#ffffaa>// 创建纹理</font>
+	glGenTextures(1, &texture[0].texID);						<font color=#ffffaa>// 创建纹理，并记录纹理ID</font>
+
+	glBindTexture(GL_TEXTURE_2D, texture[0].texID);				<font color=#ffffaa>// 绑定纹理</font>
+	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);		<font color=#ffffaa>// 设置过滤器为线性过滤</font>
+	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);		</pre>
+</font><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>判断图像的位数是否为24，如果是则设置类型为GL_RGB</td>
+    <td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table><font color=#aaffaa size=3>
+<pre>
+	if (texture[0].bpp==24)								<font color=#ffffaa>// 是否为24位图像？</font>
+	{
+		type=GL_RGB;								<font color=#ffffaa>// 如果是设置类型为GL_RGB</font>
+	}
+</pre>
+</font><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>下面的代码在OpenGL中创建一个纹理</td>
+    <td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table><font color=#aaffaa size=3><pre>
+	glTexImage2D(GL_TEXTURE_2D, 0, type, texture[0].width, texture[0].height, 0, type, GL_UNSIGNED_BYTE, texture[0].imageData);
+
+	return true;									<font color=#ffffaa>// 纹理绑定完成，成功返回</font>
+}
+</pre></font><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>下面的代码是从图像创建字体的典型的方法，这些代码将包含在后面的课程中，以显示文字。<br>
+      只有一个不同的地方，纹理0用来保存字符图像。</td>
+    <td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table>
+<font color=#aaffaa size=3> 
+<pre>
+GLvoid BuildFont(GLvoid)								<font color=#ffffaa>// 创建字体显示列表</font>
+{
+	base=glGenLists(256);							<font color=#ffffaa>// 创建256个显示列表</font>
+	glBindTexture(GL_TEXTURE_2D, textures[0].texID);				<font color=#ffffaa>// 绑定纹理</font>
+	for (int loop1=0; loop1&lt;256; loop1++)					<font color=#ffffaa>// 循环创建256个显示列表</font>
+	{
+		float cx=float(loop1%16)/16.0f;					<font color=#ffffaa>// 当前字符的X位置</font>
+		float cy=float(loop1/16)/16.0f;					<font color=#ffffaa>// 当前字符的Y位置</font>
+
+		glNewList(base+loop1,GL_COMPILE);					<font color=#ffffaa>// 开始创建显示列表</font>
+			glBegin(GL_QUADS);						<font color=#ffffaa>// 创建一个四边形用来包含字符图像</font>
+				glTexCoord2f(cx,1.0f-cy-0.0625f);			<font color=#ffffaa>// 左下方纹理坐标</font>
+				glVertex2d(0,16);					<font color=#ffffaa>// </font><font color=#aaffaa size=3><font color=#ffffaa>左下方坐标</font></font>
+				glTexCoord2f(cx+0.0625f,1.0f-cy-0.0625f);		<font color=#ffffaa>// </font><font color=#aaffaa size=3><font color=#ffffaa>右下方纹理坐标</font></font>
+				glVertex2i(16,16);					<font color=#ffffaa>// </font><font color=#aaffaa size=3><font color=#aaffaa size=3><font color=#ffffaa>右下方坐标</font></font></font>
+				glTexCoord2f(cx+0.0625f,1.0f-cy-0.001f);		<font color=#ffffaa>// </font><font color=#aaffaa size=3><font color=#ffffaa>右上方纹理坐标</font></font>
+				glVertex2i(16,0);					<font color=#ffffaa>// </font><font color=#aaffaa size=3><font color=#aaffaa size=3><font color=#ffffaa>右上方坐标</font></font></font>
+				glTexCoord2f(cx,1.0f-cy-0.001f);			<font color=#ffffaa>// </font><font color=#aaffaa size=3><font color=#ffffaa>左上方纹理坐标</font></font>
+				glVertex2i(0,0);					<font color=#ffffaa>// </font><font color=#aaffaa size=3><font color=#aaffaa size=3><font color=#ffffaa>左上方坐标</font></font></font>
+			glEnd();							<font color=#ffffaa>// 四边形创建完毕</font>
+			glTranslated(14,0,0);					<font color=#ffffaa>// 向右移动14个单位</font>
+		glEndList();							<font color=#ffffaa>// 结束创建显示列表</font>
+	}									
+}
+</pre>
+</font> 
+<table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>下面的函数用来删除显示字符的显示列表</td>
+    <td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table><font color=#aaffaa size=3>
+<pre>
+GLvoid KillFont(GLvoid)
+{
+	glDeleteLists(base,256);							<font color=#ffffaa>// 从内存中删除256个显示列表</font>
+}
+</pre>
+</font><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>glPrint函数只有一点变化，我们在Y轴方向把字符拉长一倍</td>
+    <td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table><font color=#aaffaa size=3>
+<pre>
+GLvoid glPrint(GLint x, GLint y, int set, const char *fmt, ...)
+{
+	char	text[1024];						<font color=#ffffaa>	// 保存我们的字符</font>
+	va_list	ap;								<font color=#ffffaa>// 指向第一个参数</font>
+
+	if (fmt == NULL)								<font color=#ffffaa>// 如果要显示的字符为空则返回</font>
+		return;									
+
+	va_start(ap, fmt);								<font color=#ffffaa>// 开始分析参数，并把结果写入到text中</font>
+	    vsprintf(text, fmt, ap);							
+	va_end(ap);									
+
+	if (set&gt;1)								<font color=#ffffaa>// 如果字符集大于1则使用第二个字符集</font>
+	{
+		set=1;									
+	}
+
+	glEnable(GL_TEXTURE_2D);							<font color=#ffffaa>// 使用纹理映射</font>
+	glLoadIdentity();								<font color=#ffffaa>// 重置视口矩阵</font>
+	glTranslated(x,y,0);							<font color=#ffffaa>// 平移到(x,y,0)处</font>
+	glListBase(base-32+(128*set));						<font color=#ffffaa>// 选择字符集</font>
+
+	glScalef(1.0f,2.0f,1.0f);							<font color=#ffffaa>// 沿Y轴放大一倍</font>
+
+	glCallLists(strlen(text),GL_UNSIGNED_BYTE, text);				<font color=#ffffaa>// 把字符写入到屏幕</font>
+	glDisable(GL_TEXTURE_2D);							<font color=#ffffaa>// 禁止纹理映射 </font>
+}
+</pre>
+</font><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>窗口改变大小的函数使用正投影，把视口范围设置为(0,0)-(640,480)</td>
+    <td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table><font color=#aaffaa size=3>
+<pre>
+GLvoid ReSizeGLScene(GLsizei width, GLsizei height)
+{
+	swidth=width;									<font color=#ffffaa>// 设置剪切矩形为窗口大小</font>
+	sheight=height;									
+	if (height==0)									<font color=#ffffaa>// 防止高度为0时，被0除</font>
+	{
+		height=1;								
+	}
+	glViewport(0,0,width,height);							<font color=#ffffaa>// 设置窗口可见区</font>
+	glMatrixMode(GL_PROJECTION);							
+	glLoadIdentity();								
+	glOrtho(0.0f,640,480,0.0f,-1.0f,1.0f);						<font color=#ffffaa>// 设置视口大小为640x480</font>
+	glMatrixMode(GL_MODELVIEW);							
+	glLoadIdentity();						
+}
+</pre>
+</font><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>初始化操作非常简单，我们载入字体纹理，并创建字符显示列表，如果顺利，则成功返回。</td>
+    <td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table><font color=#aaffaa size=3>
+<pre>
+int InitGL(GLvoid)				
+{
+	if (!LoadTGA(&textures[0],"Data/Font.TGA"))						<font color=#ffffaa>// 载入字体纹理</font>
+	{
+		return false;								<font color=#ffffaa>// 载入失败则返回</font>
+	}
+
+	BuildFont();									<font color=#ffffaa>// 创建字体</font>
+
+	glShadeModel(GL_SMOOTH);								<font color=#ffffaa>// 使用平滑着色</font>
+	glClearColor(0.0f, 0.0f, 0.0f, 0.5f);						<font color=#ffffaa>// 设置黑色背景</font>
+	glClearDepth(1.0f);								<font color=#ffffaa>// 设置深度缓存中的值为1</font>
+	glBindTexture(GL_TEXTURE_2D, textures[0].texID);					<font color=#ffffaa>// 绑定字体纹理</font>
+
+	return TRUE;									<font color=#ffffaa>// 成功返回</font>
+}
+</pre>
+</font><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>绘制代码几乎是全新的:)，token为一个指向字符串的指针，它将保存OpenGL扩展的全部字符串，cnt纪录扩展的个数。<br>
+      接下来清楚背景，并显示OpenGL的销售商，实现它的公司和当前的版本。</td>
+    <td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table><font color=#aaffaa size=3>
+<pre>
+int DrawGLScene(GLvoid)			
+{
+	char	*token;									<font color=#ffffaa>// 保存扩展字符串</font>
+	int	cnt=0;									<font color=#ffffaa>// 纪录扩展字符串的个数</font>
+
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);				<font color=#ffffaa>	// 清楚背景和深度缓存</font>
+
+	glColor3f(1.0f,0.5f,0.5f);							<font color=#ffffaa>	// 设置为红色</font>
+	glPrint(50,16,1,"Renderer");							
+	glPrint(80,48,1,"Vendor");						
+	glPrint(66,80,1,"Version");						</pre>
+</font><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>下面的代码显示OpenGL实现方面的相关信息，完成之后我们用蓝色在屏幕的下方写上“NeHe Productions”，当然你可以使用任何你想使用的字符，比如&quot;DancingWind 
+      Translate&quot;。</td>
+    <td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table><font color=#aaffaa size=3>
+<pre>
+	glColor3f(1.0f,0.7f,0.4f);							<font color=#ffffaa>// 设置为橘黄色</font>
+	glPrint(200,16,1,(char *)glGetString(GL_RENDERER));				<font color=#ffffaa>// 显示OpenGL的实现组织</font>
+	glPrint(200,48,1,(char *)glGetString(GL_VENDOR));				<font color=#ffffaa>// 显示销售商</font>
+	glPrint(200,80,1,(char *)glGetString(GL_VERSION));				<font color=#ffffaa>// 显示当前版本</font>
+
+	glColor3f(0.5f,0.5f,1.0f);							<font color=#ffffaa>// 设置为蓝色</font>
+	glPrint(192,432,1,"NeHe Productions");					<font color=#ffffaa>// 在屏幕的底端写上NeHe Productions字符串</font></pre>
+</font><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>现在我们绘制显示扩展名的白色线框方块，并用一个更大的白色线框方块把所有的内容包围起来。</td>
+    <td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table><font color=#aaffaa size=3>
+<pre>
+	glLoadIdentity();								<font color=#ffffaa>// 重置模型变换矩阵</font>
+	glColor3f(1.0f,1.0f,1.0f);							<font color=#ffffaa>// 设置为白色</font>
+	glBegin(GL_LINE_STRIP);					
+		glVertex2d(639,417);							
+		glVertex2d(  0,417);							
+		glVertex2d(  0,480);							
+		glVertex2d(639,480);						
+		glVertex2d(639,128);					
+	glEnd();								
+	glBegin(GL_LINE_STRIP);					
+		glVertex2d(  0,128);						
+		glVertex2d(639,128);							
+		glVertex2d(639,  1);						
+		glVertex2d(  0,  1);							
+		glVertex2d(  0,417);						
+	glEnd();									</pre>
+</font><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>glScissor函数用来设置剪裁区域，如果启用了GL_SCISSOR_TEST,绘制的内容只能在剪裁区域中显示。<br>
+      下面的代码设置窗口的中部为剪裁区域，并获得扩展名字符串。</td>
+    <td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table><font color=#aaffaa size=3>
+<pre>
+	glScissor(1	,int(0.135416f*sheight),swidth-2,int(0.597916f*sheight));	<font color=#ffffaa>// 定义剪裁区域</font>
+	glEnable(GL_SCISSOR_TEST);							<font color=#ffffaa>// 使用剪裁测试</font>
+
+	char* text=(char*)malloc(strlen((char *)glGetString(GL_EXTENSIONS))+1);		<font color=#ffffaa>// 为保存OpenGL扩展的字符串分配内存空间</font>
+	strcpy (text,(char *)glGetString(GL_EXTENSIONS));				<font color=#ffffaa>// 返回OpenGL扩展字符串</font>
+</pre>
+</font><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>下面我们创建一个循环，循环显示每个扩展名，并纪录扩展名的个数</td>
+    <td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table><font color=#aaffaa size=3>
+<pre>
+	token=strtok(text," ");								<font color=#ffffaa>// 按空格分割text字符串，并把分割后的字符串保存在token中</font>
+	while(token!=NULL)								<font color=#ffffaa>	// 如果token不为NULL</font>
+	{
+		cnt++;									<font color=#ffffaa>// 增加计数器</font>
+		if (cnt&gt;maxtokens)							<font color=#ffffaa>	// 纪录最大的扩展名数量</font>
+		{
+			maxtokens=cnt;							
+		}
+</pre>
+</font><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>现我们已经获得第一个扩展名，下一步我们把它显示在屏幕上。
+      <p>我们已经显示了三行文本，它们在Y轴上占用了3*32=96个像素的宽度，所以我们显示的第一个行文本的位置是(0,96)，一次类推第i行文本的位置是(0,96+(cnt*32)),但我们需要考虑当前滚动过的位置，默认为向上滚动，所以我们得到显示第i行文本的位置为(0,96+(cnt*32)=scroll)。</p>
+      <p>当然它们不会都显示出来，记得我们使用了剪裁，只显示(0,96)-(0,96+32*9)之间的文本，其它的都被剪裁了。</p>
+      <p>更具我们上面的讲解，显示的第一个行如下：<br>
+        1 GL_ARB_multitexture </p></td><td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table><font color=#aaffaa size=3>
+<pre>
+		glColor3f(0.5f,1.0f,0.5f);						<font color=#ffffaa>// 设置颜色为绿色</font>
+		glPrint(0,96+(cnt*32)-scroll,0,"%i",cnt);				<font color=#ffffaa>// 绘制第几个扩展名</font>
+</pre>
+</font>
+<font color=#aaffaa size=3>
+<pre>
+		glColor3f(1.0f,1.0f,0.5f);						<font color=#ffffaa>// 设置颜色为黄色</font>
+		glPrint(50,96+(cnt*32)-scroll,0,token);				<font color=#ffffaa>// 输出第i个扩展名</font>
+</pre>
+</font><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>当我们显示完所有的扩展名,我们需要检查一下是否已经分析完了所有的字符串。我们使用strtok(NULL,&quot; 
+      &quot;)函数代替strtok(text,&quot; &quot;)函数，把第一个参数设置为NULL会检查当前指针位置到字符串末尾是否包含&quot; 
+      &quot;字符，如果包含返回其位置，否则返回NULL。
+      <p>我们举例说明上面的过程，例如字符串&quot;GL_ARB_multitexture GL_EXT_abgr GL_EXT_bgra&quot;,它是以空格分割字符串的，第一次调用strtok(&quot;text&quot;,&quot; 
+        &quot;)返回text的首位置，并在空格&quot; &quot;的位置加入一个NULL。以后每次调用，删除NULL，返回空格位置的下一个位置，接着搜索下一个空格的位置，并在空格的位置加入一个NULL。直道返回NULL。</p>
+      <p>返回NULL时循环停止，表示已经显示完所有的扩展名。</p></td><td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table><font color=#aaffaa size=3><pre>
+		token=strtok(NULL," ");							<font color=#ffffaa>// 查找下一个扩展名</font>
+	}
+</pre></font><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>下面的代码让OpenGL返回到默认的渲染状态，并释放分配的内存资源</td>
+    <td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table><font color=#aaffaa size=3>
+<pre>
+	glDisable(GL_SCISSOR_TEST);								<font color=#ffffaa>// 禁用剪裁测试</font>
+
+	free (text);									<font color=#ffffaa>// 释放分配的内存</font>
+</pre>
+</font><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>下面的代码让OpenGL完成所有的任务，并返回TRUE</td>
+    <td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table><font color=#aaffaa size=3><pre>
+	glFlush();									<font color=#ffffaa>// 执行所有的渲染命令</font>
+	return TRUE;									<font color=#ffffaa>// 成功返回</font>
+}
+</pre></font><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>KillGLWindow函数基本没有变化，唯一改变的是需要删除我们创建的字体 </td>
+    <td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table>
+<table border=0 cellpadding=0 cellspacing=0 width="100%">
+  <tr>
+    <td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td>
+    <td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td>
+    <td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td>
+  </tr>
+</table>
+<font color=#aaffaa size=3> 
+<pre>
+	KillFont();									<font color=#ffffaa>// 删除字体</font>
+</pre>
+</font><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>CreateGLWindow(), 和 WndProc() 函数保持不变<br> <br>
+      在WinMain()函数中我们需要加入新的按键控制 </td>
+    <td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table>
+
+<table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td><td width=100% valign=top><p>下面的代码检查向上的箭头是否被按下，如果scroll大于0，我们把它减少2</p>
+      </td><td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table><font color=#aaffaa size=3><pre>
+				if (keys[VK_UP] && (scroll&gt;0))				<font color=#ffffaa>// 向上的箭头是否被按下?</font>
+				{
+					scroll-=2;					<font color=#ffffaa>// 如果是，减少scroll的值</font>
+				}
+</pre></font><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>如果向下的箭头被按住，并且scroll小于32*(maxtoken-9),则增加scroll的值，32是每一个字符的高度，9是可以显示的行数。</td>
+    <td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table><font color=#aaffaa size=3>
+<pre>
+				if (keys[VK_DOWN] && (scroll&lt;32*(maxtokens-9)))		<font color=#ffffaa>// 向下的箭头是否被按住</font>
+				{
+					scroll+=2;					<font color=#ffffaa>// 如果是，增加scroll的值</font>
+				}
+</pre>
+</font><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>我希望你觉得这个教程有趣，学完了这个教程你应该知道如何获得你的显卡的发售商的名称，实现OpenGL的组织和你的显卡所使用的OpenGL的版本。进一步，你应该知道你的显卡支持的扩展的名称，并熟练的使用剪切矩形和加载TGA图像。 
+      <p>如果你发现任何问题，请让我知道。我想做最好的教程，你的反馈对我很重要。</p>
+<table width="100%" border="1">
+  <tr>
+    <td width="27%"><img src="logo 3.jpg" tppabs="http://www.owlei.com/DancingWind/images/logo%203.jpg" width="209" height="200" align="middle"></td>
+    <td width="73%">版权与使用声明:<br>
+      我是个对学习和生活充满激情的普通男孩,在网络上我以DancingWind为昵称，我的联系方式是zhouwei02@mails.tsinghua.edu.cn，如果你有任何问题，都可以联系我。
+      <p>引子<br>
+        网络是一个共享的资源，但我在自己的学习生涯中浪费大量的时间去搜索可用的资料，在现实生活中花费了大量的金钱和时间在书店中寻找资料，于是我给自己起了个昵称DancingWind，其意义是想风一样从各个知识的站点中吸取成长的养料。在飘荡了多年之后，我决定把自己收集的资料整理为一个统一的资源库。</p>
+      <p>版权声明<br>
+        所有DancingWind发表的内容，大多都来自共享的资源，所以我没有资格把它们据为己有，或声称自己为这些资源作出了一点贡献。故任何人都可以复制，修改，重新发表，甚至以自己的名义发表，我都不会追究，但你在做以上事情的时候必须保证内容的完整性，给后来的人一个完整的教程。最后，任何人不能以这些资料的任何部分，谋取任何形式的报酬。</p>
+      <p>发展计划<br>
+        在国外，很多资料都是很多人花费几年的时间慢慢积累起来的。如果任何人有兴趣与别人共享你的知识，我很欢迎你与我联系，但你必须同意我上面的声明。</p>
+            <p>感谢<br>
+              感谢我的母亲一直以来对我的支持和在生活上的照顾。<br>
+              感谢我深爱的女友田芹，一直以来默默的在精神上和生活中对我的支持，她甚至把买衣服的钱都用来给我买书了，她真的是我见过的最好的女孩，希望我能带给她幸福。</p>
+            <p>资源下载: <br>
+              文档 <a href="javascript:if(confirm('http://www.owlei.com/DancingWind/Res/mht/NeHe%20OpenGL%20Chinese%20Course%2024.mht  \n\nThis file was not retrieved by Teleport Pro, because the server reports that this file cannot be found.  \n\nDo you want to open it from the server?'))window.location='http://www.owlei.com/DancingWind/Res/mht/NeHe%20OpenGL%20Chinese%20Course%2024.mht'" tppabs="http://www.owlei.com/DancingWind/Res/mht/NeHe%20OpenGL%20Chinese%20Course%2024.mht">网页格式</a> 
+              <a href="javascript:if(confirm('http://www.owlei.com/DancingWind/Res/pdf/OpenGL_Nehe_Course_Tutorial_24.pdf  \n\nThis file was not retrieved by Teleport Pro, because the server reports that this file cannot be found.  \n\nDo you want to open it from the server?'))window.location='http://www.owlei.com/DancingWind/Res/pdf/OpenGL_Nehe_Course_Tutorial_24.pdf'" tppabs="http://www.owlei.com/DancingWind/Res/pdf/OpenGL_Nehe_Course_Tutorial_24.pdf">PDF格式</a><br>
+              源码 <a href="javascript:if(confirm('http://www.owlei.com/DancingWind/Res/Src/24_TGA_Extension.rar  \n\nThis file was not retrieved by Teleport Pro, because the server reports that this file cannot be found.  \n\nDo you want to open it from the server?'))window.location='http://www.owlei.com/DancingWind/Res/Src/24_TGA_Extension.rar'" tppabs="http://www.owlei.com/DancingWind/Res/Src/24_TGA_Extension.rar">RAR格式</a></p></td>
+  </tr>
+</table>
+      <FONT face=Tahoma,Verdana,sans-serif size=-1>
+      <table border="0" width="100%">
+        <td width="50%" align="left"><b><font size="-1"><a href="Tutorial_23.htm" tppabs="http://www.owlei.com/DancingWind/Course/Tutorial_23.htm">< 
+          第23课</a></font></b></td>
+        <td width="50%" align="right"><b><font size="-1"><a href="Tutorial_25.htm" tppabs="http://www.owlei.com/DancingWind/Course/Tutorial_25.htm">第25课 
+          ></a></font></b></td>
+      </table>
+      </font></td>
+    <td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table>
+
+</body>
+</html>

@@ -1,0 +1,316 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+    dir="ltr"
+    xml:lang="en"
+    lang="en">
+  <head>
+    <title>NeHe Productions: ArcBall Rotation</title>
+
+    <link rel="stylesheet" type="text/css" href="public_base.css" tppabs="http://nehe.gamedev.net/static/css/public_base.css" />
+    <link type="text/css" rel="stylesheet" href="shThemeMidnight.css" tppabs="http://nehe.gamedev.net/static/css/syntax_highlighter/shThemeMidnight.css"/>
+    
+    <link rel="alternate" type="application/atom+xml" title="Atom feed" href="index-1.htm" tppabs="http://nehe.gamedev.net/atom/" />
+    <link rel="alternate" type="application/rss+xml" title="RSS feed" href="index-2.htm" tppabs="http://nehe.gamedev.net/rss/" />
+    
+    <meta name="author" content="Luke Benstead + Carsten Haubold" />
+    <meta name="description" content="OpenGL Tutorials, Demos, Games and More..." />
+    <meta name="keywords" content="opengl, tutorial, article, demo, game, blend, texturemap, lighting, contest, 3D" />
+
+    
+    
+
+    
+
+</script>
+
+
+    
+    
+    
+    
+        
+        <script type='text/javascript'>
+        var googletag = googletag || {};
+        googletag.cmd = googletag.cmd || [];
+        (function() {
+        var gads = document.createElement('script');
+        gads.async = true;
+        gads.type = 'text/javascript';
+        var useSSL = 'https:' == document.location.protocol;
+        gads.src = (useSSL ? 'https:' : 'http:') + 
+        '//www.googletagservices.com/tag/js/gpt.js';
+        var node = document.getElementsByTagName('script')[0];
+        node.parentNode.insertBefore(gads, node);
+        })();
+        </script>
+
+        <script type='text/javascript'>
+        googletag.cmd.push(function() {
+        googletag.defineSlot('/1004699/Leaderboard_NeHe', [728, 90], 'div-gpt-ad-1327940144417-0').addService(googletag.pubads());
+        googletag.defineSlot('/1004699/Skyscraper_NeHe', [160, 600], 'div-gpt-ad-1327940144417-1').addService(googletag.pubads());
+        googletag.pubads().enableSingleRequest();
+        googletag.enableServices();
+        });
+        </script>
+    
+    
+
+    
+  </head>
+
+  <body>
+    
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "all.js#xfbml=1"/*tpa=http://connect.facebook.net/en_GB/all.js#xfbml=1*/;
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+
+
+    <table cellpadding="0" cellspacing="0" border="0" id="layout_table">
+    <tr><td>
+        <div id="header">
+                <a href="index.htm" tppabs="http://nehe.gamedev.net/"><img class="logo" class="logo" src="nehe.png" tppabs="http://nehe.gamedev.net/static/images/nehe.png" border="0" alt="Nehe" /></a>
+        </div>            
+    </td></tr>
+    <tr><td colspan="2">
+            
+<div class="navbar">
+    <a href="index.htm" tppabs="http://nehe.gamedev.net/">HOME</a>
+    <a href="javascript:if(confirm('http://twitter.com/  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://twitter.com/#!/nehegl'" tppabs="http://twitter.com/#!/nehegl">TWITTER</a>  
+    <a href="javascript:if(confirm('http://www.facebook.com/pages/NeHe/300582493323181  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://www.facebook.com/pages/NeHe/300582493323181'" tppabs="http://www.facebook.com/pages/NeHe/300582493323181">FACEBOOK</a>     
+    <a href="index-2.htm" tppabs="http://nehe.gamedev.net/rss/">RSS</a>    
+    <a href="index-1.htm" tppabs="http://nehe.gamedev.net/atom/">ATOM</a>    
+    <a href="javascript:if(confirm('http://www.gamedev.net/forum/27-nehe-productions/page__forum_title__NeHe+Productions  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://www.gamedev.net/forum/27-nehe-productions/page__forum_title__NeHe+Productions'" tppabs="http://www.gamedev.net/forum/27-nehe-productions/page__forum_title__NeHe+Productions">FORUM</a>    
+</div>
+    
+    </td></tr>
+    <tr>
+        <td class="col1">
+
+            
+<div id="article_container">
+
+
+<h1 class="article-header">ArcBall Rotation</h1>
+<div class="social-media">
+<!-- Place this tag where you want the +1 button to render -->
+<div class="g-plusone" data-size="medium" data-width="120" data-annotation="inline"></div>
+<div class="fb-like" data-send="false" data-layout="button_count" data-width="60" data-show-faces="false" data-colorscheme="dark" data-font="arial"></div>
+</div>
+<div style="clear:both;"></div>
+<p>ArcBall Rotation Control, Revisited<br /> By Terence J. Grant (tjgrant@tatewake.com)</p>
+<p>Wouldnt it be great to rotate your model at will, just by using the mouse? With an ArcBall you can do just that. In this document, Ill touch on my implementation, and considerations for adding it to your own projects.</p>
+<p>My implementation of the ArcBall class is based on Bretton Wades, which is based on Ken Shoemakes from the Graphic Gems series of books. However, I did a little bug fixing and optimization for our purposes.</p>
+<p>The ArcBall works by mapping click coordinates in a window directly into the ArcBalls sphere coordinates, as if it were directly in front of you.</p>
+<p>To accomplish this, first we simply scale down the mouse coordinates from the range of [0...width), [0...height) to [-1...1], [1...-1]  (Keep in mind that we flip the sign of Y so that we get the correct results in OpenGL.) And this essentially looks like:</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">MousePt.X  =  ((MousePt.X / ((Width   1) / 2))  1);
+MousePt.Y  = -((MousePt.Y / ((Height  1) / 2))  1);
+</pre>
+<p>The only reason we scale the coordinates down to the range of [-1...1] is to make the math simpler; by happy coincidence this also lets the compiler do a little optimization.</p>
+<p>Next we calculate the length of the vector and determine whether or not its inside or outside of the sphere bounds. If it is within the bounds of the sphere, we return a vector from within the inside the sphere, else we normalize the point and return the closest point to outside of the sphere.</p>
+<p>Once we have both vectors, we can then calculate a vector perpendicular to the start and end vectors with an angle, which turns out to be a quaternion. With this in hand we have enough information to generate a rotation matrix from, and were home free.</p>
+<p>The ArcBall is instantiated using the following constructor. NewWidth and NewHeight are essentially the width and height of the window.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">ArcBall_t::ArcBall_t(GLfloat NewWidth, GLfloat NewHeight)
+</pre>
+<p>When the user clicks the mouse, the start vector is calculated based on where the click occurred.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">void    ArcBall_t::click(const Point2fT* NewPt)
+</pre>
+<p>When the user drags the mouse, the end vector is updated via the drag method, and if a quaternion output parameter is provided, this is updated with the resultant rotation.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">void    ArcBall_t::drag(const Point2fT* NewPt, Quat4fT* NewRot)
+</pre>
+<p>If the window size changes, we simply update the ArcBall with that information:</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">void    ArcBall_t::setBounds(GLfloat NewWidth, GLfloat NewHeight)
+</pre>
+<p>When using this in your own project, youll want some member variables of your own.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">// Final Transform
+Matrix4fT	Transform = {  1.0f,  0.0f,  0.0f,  0.0f,
+			       0.0f,  1.0f,  0.0f,  0.0f,
+			       0.0f,  0.0f,  1.0f,  0.0f,
+			       0.0f,  0.0f,  0.0f,  1.0f };
+
+Matrix3fT	LastRot   = {  1.0f,  0.0f,  0.0f,					// Last Rotation
+			       0.0f,  1.0f,  0.0f,
+			       0.0f,  0.0f,  1.0f };
+
+Matrix3fT	ThisRot   = {  1.0f,  0.0f,  0.0f,					// This Rotation
+			       0.0f,  1.0f,  0.0f,
+			       0.0f,  0.0f,  1.0f };
+
+ArcBallT	ArcBall(640.0f, 480.0f);						// ArcBall Instance
+Point2fT	MousePt;								// Current Mouse Point
+bool		isClicked  = false;							// Clicking The Mouse?
+bool		isRClicked = false;							// Clicking The Right Mouse Button?
+bool		isDragging = false;							// Dragging The Mouse?
+</pre>
+<p>Transform is our final transform- our rotation and any optional translation you may want to provide. LastRot is the last rotation we experienced at the end of a drag. ThisRot is the rotation we experience while dragging. All are initialized to identity.</p>
+<p>When we click, we start from an identity rotation state. When we drag, we are then calculating the rotation from the initial click point to the drag point. Even though we use this information to rotate the objects on screen, it is important to note that we are not actually rotating the ArcBall itself. Therefore to have cumulative rotations, we must handle this ourselves.</p>
+<p>This is where LastRot and ThisRot come into play. LastRot can be defined as all rotations up till now, whereas ThisRot can be defined by the current rotation. Every time a drag is started, ThisRot is modified by the original rotation. It is then updated to the product of itself * LastRot. (Then the final transformation is also updated.) Once a drag is stopped, LastRot is then assigned the value of ThisRot.</p>
+<p>If we didnt accumulate the rotations ourselves, the model would appear to snap to origin each time that we clicked. For instance if we rotate around the X-axis 90 degrees, then 45 degrees, we would want to see 135 degrees of rotation, not just the last 45.</p>
+<p>For the rest of the variables (except for isDragged), all you need to do is update them at the proper times based on your system. ArcBall needs its bounds reset whenever your window size changes. MousePt gets updated whenever your mouse moves, or just when the mouse button is down. isClicked / isRClicked whenever the left/right mouse button is clicked, respectively. isClicked is used to determine clicks and drags. Well use isRClicked to reset all rotations to identity.</p>
+<p>The additional system update code under NeHeGL/Windows looks something like this:</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">void ReshapeGL (int width, int height)
+{
+	. . .
+	ArcBall.setBounds((GLfloat)width, (GLfloat)height);				// Update Mouse Bounds For ArcBall
+}
+
+// Process Window Message Callbacks
+LRESULT CALLBACK WindowProc (HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
+{
+	. . .
+	// Mouse Based Messages For ArcBall
+	case WM_MOUSEMOVE:
+		MousePt.s.X = (GLfloat)LOWORD(lParam);
+		MousePt.s.Y = (GLfloat)HIWORD(lParam);
+		isClicked   = (LOWORD(wParam) &amp; MK_LBUTTON) ? true : false;
+		isRClicked  = (LOWORD(wParam) &amp; MK_RBUTTON) ? true : false;
+		break;
+
+	case WM_LBUTTONUP:   isClicked  = false; break;
+	case WM_RBUTTONUP:   isRClicked = false; break;
+	case WM_LBUTTONDOWN: isClicked  = true;  break;
+	case WM_RBUTTONDOWN: isRClicked = true;  break;
+	. . .
+}
+</pre>
+<p>Once we have the system update code in place, its time to put the click logic in place. This is very self-explanatory once you know everything above.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">if (isRClicked)										// If Right Mouse Clicked, Reset All Rotations
+{
+	// Reset Rotation
+	Matrix3fSetIdentity(&amp;LastRot);
+
+	// Reset Rotation
+	Matrix3fSetIdentity(&amp;ThisRot);
+
+	// Reset Rotation
+	Matrix4fSetRotationFromMatrix3f(&amp;Transform, &amp;ThisRot);
+}
+
+if (!isDragging)									// Not Dragging
+{
+	if (isClicked)									// First Click
+	{
+		isDragging = true;							// Prepare For Dragging
+		LastRot = ThisRot;							// Set Last Static Rotation To Last Dynamic One
+		ArcBall.click(&amp;MousePt);						// Update Start Vector And Prepare For Dragging
+	}
+}
+else
+{
+	if (isClicked)  //Still clicked, so still dragging
+	{
+		Quat4fT     ThisQuat;
+
+		ArcBall.drag(&amp;MousePt, &amp;ThisQuat);					// Update End Vector And Get Rotation As Quaternion
+		Matrix3fSetRotationFromQuat4f(&amp;ThisRot, &amp;ThisQuat);			// Convert Quaternion Into Matrix3fT
+		Matrix3fMulMatrix3f(&amp;ThisRot, &amp;LastRot);				// Accumulate Last Rotation Into This One
+		Matrix4fSetRotationFromMatrix3f(&amp;Transform, &amp;ThisRot);			// Set Our Final Transform's Rotation From This One
+	}
+	else										// No Longer Dragging
+		isDragging = false;
+}
+</pre>
+<p>This takes care of everything for us. Now all we need to do is apply the transformation to our models and were done. Its really simple:</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	glPushMatrix();									// Prepare Dynamic Transform
+	glMultMatrixf(Transform.M);							// Apply Dynamic Transform
+
+	glBegin(GL_TRIANGLES);								// Start Drawing Model
+	. . .
+	glEnd();									// Done Drawing Model
+
+	glPopMatrix();									// Unapply Dynamic Transform
+</pre>
+<p>I have included a sample, which demonstrates everything above. Youre not locked in to using my math types or functions; in fact I would suggest fitting this in to your own math system if youre confident enough. However, everything is self-contained otherwise and should work on its own.</p>
+<p>Now after seeing how simple this is, you should be well on your way to adding ArcBall to your own projects. Enjoy!</p>
+<p><a href="mailto:tjgrant@tatewake.com">Terence J. Grant</a></p>
+<p>* DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/vc/lesson48.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/vc/lesson48.zip'" tppabs="http://nehe.gamedev.net/data/lessons/vc/lesson48.zip">Visual C++</a> Code For This Lesson.</p>
+<p>* DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/bcb6/lesson48_bcb6.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/bcb6/lesson48_bcb6.zip'" tppabs="http://nehe.gamedev.net/data/lessons/bcb6/lesson48_bcb6.zip">Borland C++ Builder 6</a> Code For This Lesson. ( Conversion by <a href="mailto:conglth@hotmail.com">Le Thanh Cong</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/delphi/lesson48.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/delphi/lesson48.zip'" tppabs="http://nehe.gamedev.net/data/lessons/delphi/lesson48.zip">Delphi</a> Code For This Lesson. ( Conversion by <a href="mailto:michal_praha@seznam.cz">Michal Tucek</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/devc/lesson48.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/devc/lesson48.zip'" tppabs="http://nehe.gamedev.net/data/lessons/devc/lesson48.zip">Dev C++</a> Code For This Lesson. ( Conversion by <a href="mailto:robohog_64@hotmail.com">Victor Andr&eacute;e</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/linuxglx/lesson48.tar.gz  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/linuxglx/lesson48.tar.gz'" tppabs="http://nehe.gamedev.net/data/lessons/linuxglx/lesson48.tar.gz">Linux/GLX</a> Code For This Lesson. ( Conversion by <a href="mailto:werkt@csh.rit.edu">George Gensure</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/python/lesson48.tar.gz  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/python/lesson48.tar.gz'" tppabs="http://nehe.gamedev.net/data/lessons/python/lesson48.tar.gz">Python</a> Code For This Lesson. ( Conversion by <a href="mailto:bleair@comcast.net">Brian Leair</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/vs_net/lesson48.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/vs_net/lesson48.zip'" tppabs="http://nehe.gamedev.net/data/lessons/vs_net/lesson48.zip">Visual Studio .NET</a> Code For This Lesson. ( Conversion by <a href="mailto:webmaster@joachimrohde.de">Joachim Rohde</a> )</p>
+<p><strong><span><a href="index-87.htm" tppabs="http://nehe.gamedev.net/data/lessons/lesson.asp?lesson=47">&lt; Lesson 47</a></span></strong><strong><span>&nbsp;</span></strong></p>
+
+
+</div>
+</div>
+
+
+
+            <div style="width:728px;padding:0px;margin:auto; margin-top: 10px;">
+            
+
+    
+                <!-- Leaderboard_NeHe -->
+                <div id='div-gpt-ad-1327940144417-0' style='width:728px; height:90px;'>
+                <script type='text/javascript'>
+                googletag.cmd.push(function() { googletag.display('div-gpt-ad-1327940144417-0'); });
+                </script>
+                </div>
+            
+
+                           
+            </div>   
+        </td>
+        <td class="col2">
+            
+
+
+
+
+<div style="text-align: center; padding:10px;">
+
+<script type='text/javascript'>
+    GA_googleFillSlot("Skyscraper_NeHe");
+</script>
+
+</div>
+            
+        </td>
+    </table>
+    <div id="footer">
+        <p>
+            
+    
+    © 1997-2012 Gamedev . All rights reserved.<br/>
+
+			NeHe™ and NeHe Productions™ are trademarks of GameDev.net, LLC<br/>
+			OpenGL® is a registered trademark of Silicon Graphics Inc.<br/>
+		</p>        
+		<br/>
+    </div>
+
+    
+    
+	    <script type="text/javascript" src="shCore.js" tppabs="http://nehe.gamedev.net/static/js/syntax_highlighter/shCore.js"></script>
+        <script type="text/javascript" src="shBrushCpp.js" tppabs="http://nehe.gamedev.net/static/js/syntax_highlighter/shBrushCpp.js"></script>
+	    <script type="text/javascript" src="shBrushJScript.js" tppabs="http://nehe.gamedev.net/static/js/syntax_highlighter/shBrushJScript.js"></script>
+	    <script type="text/javascript">SyntaxHighlighter.all();</script>
+    
+
+    <!-- Place this render call where appropriate -->
+    <script type="text/javascript">
+      (function() {
+        var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+        po.src = 'plusone.js'/*tpa=https://apis.google.com/js/plusone.js*/;
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+      })();
+    </script>    
+
+    
+<!-- GoogleAnalytics code -->
+<script src="urchin.js" tppabs="http://www.google-analytics.com/urchin.js" type="text/javascript">
+</script>
+<script type="text/javascript">
+_uacct = "UA-279474-2"; // Gamedev
+urchinTracker();
+_uff = 0; // Reset for second account
+_uacct = "UA-24180731-1"; // Non-GD
+urchinTracker();
+</script> 
+  </body>
+</html>

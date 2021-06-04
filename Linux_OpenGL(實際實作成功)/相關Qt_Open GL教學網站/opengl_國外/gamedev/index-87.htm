@@ -1,0 +1,427 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+    dir="ltr"
+    xml:lang="en"
+    lang="en">
+  <head>
+    <title>NeHe Productions: CG Vertex Shader</title>
+
+    <link rel="stylesheet" type="text/css" href="public_base.css" tppabs="http://nehe.gamedev.net/static/css/public_base.css" />
+    <link type="text/css" rel="stylesheet" href="shThemeMidnight.css" tppabs="http://nehe.gamedev.net/static/css/syntax_highlighter/shThemeMidnight.css"/>
+    
+    <link rel="alternate" type="application/atom+xml" title="Atom feed" href="index-1.htm" tppabs="http://nehe.gamedev.net/atom/" />
+    <link rel="alternate" type="application/rss+xml" title="RSS feed" href="index-2.htm" tppabs="http://nehe.gamedev.net/rss/" />
+    
+    <meta name="author" content="Luke Benstead + Carsten Haubold" />
+    <meta name="description" content="OpenGL Tutorials, Demos, Games and More..." />
+    <meta name="keywords" content="opengl, tutorial, article, demo, game, blend, texturemap, lighting, contest, 3D" />
+
+    
+    
+
+    
+
+</script>
+
+
+    
+    
+    
+    
+        
+        <script type='text/javascript'>
+        var googletag = googletag || {};
+        googletag.cmd = googletag.cmd || [];
+        (function() {
+        var gads = document.createElement('script');
+        gads.async = true;
+        gads.type = 'text/javascript';
+        var useSSL = 'https:' == document.location.protocol;
+        gads.src = (useSSL ? 'https:' : 'http:') + 
+        '//www.googletagservices.com/tag/js/gpt.js';
+        var node = document.getElementsByTagName('script')[0];
+        node.parentNode.insertBefore(gads, node);
+        })();
+        </script>
+
+        <script type='text/javascript'>
+        googletag.cmd.push(function() {
+        googletag.defineSlot('/1004699/Leaderboard_NeHe', [728, 90], 'div-gpt-ad-1327940144417-0').addService(googletag.pubads());
+        googletag.defineSlot('/1004699/Skyscraper_NeHe', [160, 600], 'div-gpt-ad-1327940144417-1').addService(googletag.pubads());
+        googletag.pubads().enableSingleRequest();
+        googletag.enableServices();
+        });
+        </script>
+    
+    
+
+    
+  </head>
+
+  <body>
+    
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "all.js#xfbml=1"/*tpa=http://connect.facebook.net/en_GB/all.js#xfbml=1*/;
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+
+
+    <table cellpadding="0" cellspacing="0" border="0" id="layout_table">
+    <tr><td>
+        <div id="header">
+                <a href="index.htm" tppabs="http://nehe.gamedev.net/"><img class="logo" class="logo" src="nehe.png" tppabs="http://nehe.gamedev.net/static/images/nehe.png" border="0" alt="Nehe" /></a>
+        </div>            
+    </td></tr>
+    <tr><td colspan="2">
+            
+<div class="navbar">
+    <a href="index.htm" tppabs="http://nehe.gamedev.net/">HOME</a>
+    <a href="javascript:if(confirm('http://twitter.com/  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://twitter.com/#!/nehegl'" tppabs="http://twitter.com/#!/nehegl">TWITTER</a>  
+    <a href="javascript:if(confirm('http://www.facebook.com/pages/NeHe/300582493323181  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://www.facebook.com/pages/NeHe/300582493323181'" tppabs="http://www.facebook.com/pages/NeHe/300582493323181">FACEBOOK</a>     
+    <a href="index-2.htm" tppabs="http://nehe.gamedev.net/rss/">RSS</a>    
+    <a href="index-1.htm" tppabs="http://nehe.gamedev.net/atom/">ATOM</a>    
+    <a href="javascript:if(confirm('http://www.gamedev.net/forum/27-nehe-productions/page__forum_title__NeHe+Productions  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://www.gamedev.net/forum/27-nehe-productions/page__forum_title__NeHe+Productions'" tppabs="http://www.gamedev.net/forum/27-nehe-productions/page__forum_title__NeHe+Productions">FORUM</a>    
+</div>
+    
+    </td></tr>
+    <tr>
+        <td class="col1">
+
+            
+<div id="article_container">
+
+
+<h1 class="article-header">CG Vertex Shader</h1>
+<div class="social-media">
+<!-- Place this tag where you want the +1 button to render -->
+<div class="g-plusone" data-size="medium" data-width="120" data-annotation="inline"></div>
+<div class="fb-like" data-send="false" data-layout="button_count" data-width="60" data-show-faces="false" data-colorscheme="dark" data-font="arial"></div>
+</div>
+<div style="clear:both;"></div>
+<p>Using vertex and fragment (or pixel) shaders to do some rendering dirty work can have numerous benefits. The most obvious is the movement of some of the graphics related CPU load off the CPU and onto the GPU. Cg provides a (reasonably) simple language for writing very powerful shaders.</p>
+<p>This tutorial has multiple aims. The first is to present a simple vertex shader that actually does something, without introducing unnecessary lighting etc The second is to provide the basic mechanism for running the vertex shader with visible results using OpenGL. As such, it is aimed at the beginner interested in Cg who has a little experience in OpenGL.</p>
+<p>This tutorial is based on the Latest NeHeGL Basecode. For more information on Cg check out nVidias website (<a href="javascript:if(confirm('http://nehe.gamedev.net/data/lessons/http://developer.nvidia.com  \n\nThis file was not retrieved by Teleport Pro, because the server reports that this file cannot be found.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev.net/data/lessons/http://developer.nvidia.com'" tppabs="http://nehe.gamedev.net/data/lessons/http://developer.nvidia.com" target="_blank">developer.nvidia.com</a>) and <a href="javascript:if(confirm('http://nehe.gamedev.net/data/lessons/http://www.cgshaders.org  \n\nThis file was not retrieved by Teleport Pro, because the server reports that this file cannot be found.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev.net/data/lessons/http://www.cgshaders.org'" tppabs="http://nehe.gamedev.net/data/lessons/http://www.cgshaders.org" target="_blank">www.cgshaders.org</a> for some cool shaders.</p>
+<p>NOTE: This tutorial is not intended to teach you everything you need to know about writing vertex shaders using Cg. It is intended to teach you how to successfully load and run vertex shaders within OpenGL.</p>
+<p><span style="font-size: xx-small;"><span style="text-decoration: underline;">Setup:</span></span></p>
+<p>The first step (if it hasnt been done already) is to download the <strong>Cg Compiler</strong> from nVidia. It is important that you download version 1.1, as nVidia appear to have made changes between version 1.0 and 1.1 (different variable naming, replaced functions, etc), and code compiled for one may not necessarily work with the other.</p>
+<p>The next step is to setup the header files and library files for Cg to a place where Visual Studio can find them. Because I am inherently distrustful of installers working the way they are supposed to, I copy the library files...</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">From: C:\Program Files\NVIDIA Corporation\Cg\lib
+To:   C:\Program Files\Microsoft Visual Studio\VC98\Lib
+</pre>
+<p>and the header files (Cg sub-directory and GLext.h into the GL sub-directory)...</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">From: C:\Program Files\NVIDIA Corporation\Cg\include
+To:   C:\Program Files\Microsoft Visual Studio\VC98\Include
+</pre>
+<p>Were now ready to get on with the tutorial.</p>
+<p><span style="font-size: xx-small;"><span style="text-decoration: underline;">Cg tutorial:</span></span></p>
+<p>The information regarding Cg contained in this tutorial was obtained mostly from the Cg Toolkit Users Manual.</p>
+<p>There are a few important points that you need to remember when dealing with vertex (and later fragment) programs. The first thing to remember is that a vertex program will execute in its entirety on EVERY vertex. The only way to run the vertex program on selected vertices is to either load/unload the vertex program for each individual vertex, or to batch vertices into a stream that are affected by the vertex program, and a stream that isnt.</p>
+<p>The output of a vertex program is passed to a fragment shader, regardless of whether you have implemented and activated a fragment shader.</p>
+<p>Finally, remember that a vertex program is executed on the vertices before primitive assembly, while a fragment program is executed after rasterization. On with the tutorial.</p>
+<p>First, we need to create a blank file (save as wave.cg). We then create a structure to contain the variables and information that we want available to our shader. This code is added to the wave.cg file.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">struct appdata 
+{
+	float4 position : POSITION;
+	float4 color	: COLOR0;
+	float3 wave	: COLOR1;
+};
+</pre>
+<p>Each of the 3 variables (position, color and wave) are bound to predefined names (POSITION, COLOR0 and COLOR1 respectively). These predefined names are referred to as the binding semantics. In OpenGL, these predefined names implicitly specify the mapping of the inputs to particular hardware registers. The main program must supply the data for each of these variables. The position variable is REQUIRED, as it is used for rasterization. It is the only variable that is required as an input to the vertex program.</p>
+<p>The next step is to create a structure to contain the output which will be passed on to the fragment processor after rasterization.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">struct vfconn
+{
+	float4 HPos	: POSITION;
+	float4 Col0	: COLOR0;
+};
+</pre>
+<p>As with the inputs, each of the output variables is bound to a predefined name. Hpos represents the position transformed into homogenous clip-space. Col0 represents the color of the vertex after changes made to it by the vertex program.</p>
+<p>The only thing left to do is to write the actual vertex program, utilizing both of our newly defined structures.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">vfconn main(appdata IN,	uniform float4x4 ModelViewProj)
+{
+	vfconn OUT;									// Variable To Handle Our Output From The Vertex
+											// Shader (Goes To A Fragment Shader If Available)
+</pre>
+<p>Much as in C, we define our function as having a return type (struct vfconn), a function name (main, but can be anything we want), and the parameters. In our example, we take our struct appdata as an input (containing the current position of the vertex, the color of the vertex, and a wave value for moving the sine wave across the mesh).</p>
+<p>We also pass in a uniform parameter, which is the current modelview matrix from OpenGL (in our main program). This value typically does not change as we manipulate our vertices, and is therefore referred to as uniform. This matrix is required to transform the vertex position into homogenous clip-space.</p>
+<p>We declare a variable to hold our modified values from the vertex shader. These values are returned at the end of the function, and are passed to the fragment shader (if it exists).</p>
+<p>We now need to perform our modifications to the vertex data.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	// Change The Y Position Of The Vertex Based On Sine Waves
+	IN.position.y = ( sin(IN.wave.x + (IN.position.z / 4.0) ) + sin(IN.wave.x + (IN.position.x / 5.0) ) ) * 2.5f;
+</pre>
+<p>We change the Y position of the vertex depending on the current X / Z position of the vertex. The X and Z positions of the vertex are divided by 4.0 and 5.0 respectively to make them smoother (to see what I mean, change both of these values to 1.0).</p>
+<p>Our IN.wave variable contains an ever-increasing value which causes the sine waves to move across our mesh. This variable is specified within our main program. Therefore, we calculate the Y position of the X / Y position of the mesh as sin of the wave value + the current X or Z position. Finally, we multiple the value by 2.5 to make the waves more noticeable (higher).</p>
+<p>We now perform the required operations to determine the values to output to the fragment program.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	// Transform The Vertex Position Into Homogenous Clip-Space (Required)
+	OUT.HPos = mul(ModelViewProj, IN.position);
+
+	// Set The Color To The Value Specified In IN.color
+	OUT.Col0.xyz = IN.color.xyz;
+
+	return OUT;
+}
+</pre>
+<p>First we transform the new vertex position into homogenous clip-space. We then set our output color to the input color, which is specified in our main program. Finally, we return our values for use by a fragment shader (if we have one).</p>
+<p>Well now move on the main program which creates a triangle mesh and runs our shader on each vertex to produce a nice wave effect.</p>
+<p><span style="font-size: xx-small;"><span style="text-decoration: underline;">OpenGL tutorial:</span></span></p>
+<p>The main sequence of steps for dealing with our Cg shader is to generate our mesh, load up and compile our Cg program and then run this program on each vertex as it is being drawn.</p>
+<p>First we must get some of the necessary setup details out of the way. We need to include the necessary header files to run Cg shaders with OpenGL. After our other #include statements, we need to include the Cg and CgGL headers.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">#include &lt;cg\cg.h&gt;									// NEW: Cg Header
+#include &lt;cg\cggl.h&gt;									// NEW: Cg OpenGL Specific Header
+</pre>
+<p>Now we should be ready to setup our project and get to work. Before we start, we need to make sure that Visual Studio can find the correct libraries. The following code will do the trick!</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">#pragma comment( lib, "cg.lib" )							// Search For Cg.lib While Linking
+#pragma comment( lib, "cggl.lib" )							// Search For CgGL.lib While Linking
+</pre>
+<p>Next well create some global variables for our mesh and for toggling the CG program on / off.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">#define		SIZE	64								// Defines The Size Of The X/Z Axis Of The Mesh
+bool		cg_enable = TRUE, sp;							// Toggle Cg Program On / Off, Space Pressed?
+GLfloat		mesh[SIZE][SIZE][3];							// Our Static Mesh
+GLfloat		wave_movement = 0.0f;							// Our Variable To Move The Waves Across The Mesh
+</pre>
+<p>We define the size as 64 points on each edge of our mesh (X and Z axes). We then create an array for each vertex of our mesh. The final variable is required to make the sine waves move across our mesh.</p>
+<p>We now need to define some Cg specific global variables.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">CGcontext	cgContext;								// A Context To Hold Our Cg Program(s)
+</pre>
+<p>The first variable we need is a CGcontext. A CGcontext variable is a container for multiple Cg programs. In general, you require only one CGcontext variable regardless of the number of vertex and fragment programs you have. You can select different programs from the same CGcontext using the functions cgGetFirstProgram and cgGetNextProgram.</p>
+<p>We next define a CGprogram variable for our vertex program.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">CGprogram	cgProgram;								// Our Cg Vertex Program
+</pre>
+<p>Our CGprogram variable is used to store our vertex program. A CGprogram is essentially a handle to our vertex (or fragment) program. This is added to our CGcontext.</p>
+<p>We next need to have a variable to store our vertex profile.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">CGprofile	cgVertexProfile;							// The Profile To Use For Our Vertex Shader
+</pre>
+<p>Our CGprofile defines the most suitable profile. We next need variables that provide a connection between variables in our main program and variables in our shader.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">CGparameter	position, color, modelViewMatrix, wave;					// The Parameters Needed For Our Shader
+</pre>
+<p>Each CGparameter is essentially a handle to the corresponding parameter in our shader.</p>
+<p>Now that weve taken care of our global variables, its time to get to work on setting up our mesh and vertex program.</p>
+<p>In our Initialize function, before we call return TRUE;, we need to add our custom code.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);					// Draw Our Mesh In Wireframe Mode
+
+	// Create Our Mesh
+	for (int x = 0; x &lt; SIZE; x++)
+	{
+		for (int z = 0; z &lt; SIZE; z++)
+		{
+			mesh[x][z][0] = (float) (SIZE / 2) - x;				// We Want To Center Our Mesh Around The Origin
+			mesh[x][z][1] = 0.0f;						// Set The Y Values For All Points To 0
+			mesh[x][z][2] = (float) (SIZE / 2) - z;				// We Want To Center Our Mesh Around The Origin
+		}
+	}
+</pre>
+<p>We first call glPolygonMode to change the display to wireframe (flatshaded looks awful without correct lighting). We then traverse through our mesh, setting the X and Z values around the origin. The Y value for each point is set to 0.0f. It is interesting to note that the values generated in this step at no point change during executing.</p>
+<p>With our mesh initialization out of the way, were now ready to initialize our Cg stuff.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	// Setup Cg
+	cgContext = cgCreateContext();							// Create A New Context For Our Cg Program(s)
+
+	// Validate Our Context Generation Was Successful
+	if (cgContext == NULL)
+	{
+		MessageBox(NULL, "Failed To Create Cg Context", "Error", MB_OK);
+		return FALSE;								// We Cannot Continue
+	}
+</pre>
+<p>We first try to create a new CGcontext to store our Cg programs. If our return value is NULL, then our context creation fails. This will usually only fail due to memory allocation errors.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	cgVertexProfile = cgGLGetLatestProfile(CG_GL_VERTEX);				// Get The Latest GL Vertex Profile
+
+	// Validate Our Profile Determination Was Successful
+	if (cgVertexProfile == CG_PROFILE_UNKNOWN)
+	{
+		MessageBox(NULL, "Invalid profile type", "Error", MB_OK);
+		return FALSE;								// We Cannot Continue
+	}
+
+	cgGLSetOptimalOptions(cgVertexProfile);						// Set The Current Profile
+</pre>
+<p>We now determine the last vertex profile for use. To determine the latest fragment profile, we call cgGLGetLatestProfile with the CG_GL_FRAGMENT profile type. If our return value is CG_PROFILE_UNKNOWN, there was no appropriate profile available. With a valid profile, we can set call cgGLSetOptimalOptions. This function sets compiler arguments based on available compiler arguments, GPU and driver. These functions are used each time a new Cg program is compiler. (Essentially optimizes the compilation of the shader dependent on the current graphics hardware and drivers).</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	// Load And Compile The Vertex Shader From File
+	cgProgram = cgCreateProgramFromFile(cgContext, CG_SOURCE, "CG/Wave.cg", cgVertexProfile, "main", 0);
+
+	// Validate Success
+	if (cgProgram == NULL)
+	{
+		// We Need To Determine What Went Wrong
+		CGerror Error = cgGetError();
+
+		// Show A Message Box Explaining What Went Wrong
+		MessageBox(NULL, cgGetErrorString(Error), "Error", MB_OK);
+		return FALSE;								// We Cannot Continue
+	}
+</pre>
+<p>We now attempt to create our program from our source file. We call cgCreateProgramFromFile, which will load and compile our Cg program from the specified file. The first parameter defines which CGcontext variable our program will be attached to. The second parameter define whether our Cg code is assumed to be in a file that contains source code (CG_SOURCE), or a file which contains the object code from a pre-compiled Cg program (CG_OBJECT). The third parameter is the name of the file containing our Cg program. The fourth parameter is the latest profile for the particular type of program (use a vertex profile for vertex programs, fragment profiles for fragment programs). The fifth parameter determines the entry function of our Cg program. This function can be arbitrarily specified, and often should be something other than main. The last parameter provides for additional arguments to be passed to the Cg compiler. This is often left as NULL.</p>
+<p>If cgCreateProgramFromFile fails for any reason, we retrieve the last error by calling cgGetError. We can then get a human-readable string of the error contained in our CGerror variable by calling cgGetErrorString.</p>
+<p>Were almost finished our initialization.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	// Load The Program
+	cgGLLoadProgram(cgProgram);
+</pre>
+<p>The next step to do is to actually load our program, and prepare it for binding. All programs must be loaded before they can be bound to the current state.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	// Get Handles To Each Of Our Parameters So That
+	// We Can Change Them At Will Within Our Code
+	position	= cgGetNamedParameter(cgProgram, "IN.position");
+	color		= cgGetNamedParameter(cgProgram, "IN.color");
+	wave		= cgGetNamedParameter(cgProgram, "IN.wave");
+	modelViewMatrix	= cgGetNamedParameter(cgProgram, "ModelViewProj");
+
+	return TRUE;									// Return TRUE (Initialization Successful)
+</pre>
+<p>The final step of initialization requires our program to get handles to the variables which we wish to manipulate in our Cg program. For each CGparameter we attempt to retrieve a handle to the corresponding Cg program parameter. If a parameter does not exist, cgGetNamedParameter will return NULL.</p>
+<p>If the parameters into the Cg program are unknown, cgGetFirstParameter and cgGetNextParameter can be used to traverse the parameters of a given CGprogram.</p>
+<p>Weve finally finished with the initialization of our Cg program, so now well quickly take care of cleaning up after ourselves, and then its on to the fun of drawing.</p>
+<p>In the function Deinitialize, we need clean up our Cg program(s).</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	cgDestroyContext(cgContext);							// Destroy Our Cg Context And All Programs Contained Within It
+</pre>
+<p>We simply call cgDestroyContext for each of our CGcontext variables (we can have multiple, but theres usually only one). You can individually delete all of your CGprograms by calling cgDestoryProgram, however calling cgDestoryContext deletes all CGprograms contained by the CGcontext, and then deletes the CGcontext itself.</p>
+<p>Now we will add some code to our Update function. The following code checks to see if the spacebar is pressed and not held down. If space is press and not held down, we toggle cg_enable from true to false or from false to true.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	if (g_keys-&gt;keyDown [' '] &amp;&amp; !sp)
+	{
+		sp=TRUE;
+		cg_enable=!cg_enable;
+	}
+</pre>
+<p>The last bit of code checks to see if the spacebar has been released, and if so, it sets sp (space pressed?) to false.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	if (!g_keys-&gt;keyDown [' '])
+		sp=FALSE;
+</pre>
+<p>Now that weve dealt with all of that, its time to get down to the fun of actually drawing our mesh and running our vertex program.</p>
+<p>The final function we need to modify is the Draw function. Were going to add our code after glLoadIdentity and before glFlush.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	// Position The Camera To Look At Our Mesh From A Distance
+	gluLookAt(0.0f, 25.0f, -45.0f, 0.0f, 0.0f, 0.0f, 0, 1, 0);
+</pre>
+<p>First, we want to move our viewpoint far enough away from the origin to view our mesh. We move the camera 25 units vertically, 45 units away from the screen, and center our focal point at the origin.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	// Set The Modelview Matrix Of Our Shader To Our OpenGL Modelview Matrix
+	cgGLSetStateMatrixParameter(modelViewMatrix, CG_GL_MODELVIEW_PROJECTION_MATRIX, CG_GL_MATRIX_IDENTITY);
+</pre>
+<p>The next thing we want to do is set the model view matrix of our vertex shader to the current OpenGL modelview matrix. This needs to be done, as the position which is changed in our vertex shaders needs to transform the new position into homogenous clip-space, which is done by multiplying the new position by our modelview matrix.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	if (cg_enable)
+	{
+		cgGLEnableProfile(cgVertexProfile);					// Enable Our Vertex Shader Profile
+
+		// Bind Our Vertex Program To The Current State
+		cgGLBindProgram(cgProgram);
+</pre>
+<p>We then have to enable our vertex profile. cgGLEnableProfile enables a given profile by making the relevant OpenGL calls. cgGLBindProgram binds our program to the current state. This essentially activates our program, and subsequently runs our program on each vertex passed to the GPU. The same program will be run on each vertex until we disable our profile.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">		// Set The Drawing Color To Light Green (Can Be Changed By Shader, Etc...)
+		cgGLSetParameter4f(color, 0.5f, 1.0f, 0.5f, 1.0f);
+	}
+</pre>
+<p>Next we set the drawing color for our mesh. This value can be dynamically changed while drawing the mesh to create cool color cycling effects.</p>
+<p>Notice the check to see if cg_enable is true? If it is not, we do not deal with any of the Cg commands above. This prevents the CG code from running.</p>
+<p>Were now ready to render our mesh!</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	// Start Drawing Our Mesh
+	for (int x = 0; x &lt; SIZE - 1; x++)
+	{
+		// Draw A Triangle Strip For Each Column Of Our Mesh
+		glBegin(GL_TRIANGLE_STRIP);
+		for (int z = 0; z &lt; SIZE - 1; z++)
+		{
+			// Set The Wave Parameter Of Our Shader To The Incremented Wave Value From Our Main Program
+			cgGLSetParameter3f(wave, wave_movement, 1.0f, 1.0f);
+			glVertex3f(mesh[x][z][0], mesh[x][z][1], mesh[x][z][2]);	// Draw Vertex
+			glVertex3f(mesh[x+1][z][0], mesh[x+1][z][1], mesh[x+1][z][2]);	// Draw Vertex
+			wave_movement += 0.00001f;					// Increment Our Wave Movement
+			if (wave_movement &gt; TWO_PI)					// Prevent Crashing
+				wave_movement = 0.0f;
+		}
+		glEnd();
+	}
+</pre>
+<p>To render our mesh, we simply loop along the Z axis for each X axis (essentially we work in columns from one side of our mesh to the other). For each column, we begin a new triangle strip.</p>
+<p>For each vertex we render, we dynamically pass the value of our wave parameter of our vertex program. Because this value is determined by the wave_movement variable in our main program, which is incremented continuously, our sine waves appear to move across and down our mesh.</p>
+<p>We then pass the vertices we are currently drawing to our GPU, while the GPU will handle automatically running the our vertex program on each vertex. We slowly increment our wave_movement variable so as to get slow and smooth movement.</p>
+<p>If the value of wave_movement gets to high, we reset it back to 0 to prevent crashing. TWO_PI is defined at the top of the program.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	if (cg_enable)
+		cgGLDisableProfile(cgVertexProfile);					// Disable Our Vertex Profile
+</pre>
+<p>Once weve finished our rendering, we check to see if cg_enable is true and if so, we disable our vertex profile and continue to render anything else that we wish.</p>
+<p><a href="mailto:o.bourne@griffith.edu.au">Owen Bourne</a></p>
+<p>* DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/vc/lesson47.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/vc/lesson47.zip'" tppabs="http://nehe.gamedev.net/data/lessons/vc/lesson47.zip">Visual C++</a> Code For This Lesson.</p>
+<p>* DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/bcb6/lesson47_bcb6.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/bcb6/lesson47_bcb6.zip'" tppabs="http://nehe.gamedev.net/data/lessons/bcb6/lesson47_bcb6.zip">Borland C++ Builder 6</a> Code For This Lesson. ( Conversion by <a href="mailto:mail@bking.de">Ingo Boller</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/delphi/lesson47.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/delphi/lesson47.zip'" tppabs="http://nehe.gamedev.net/data/lessons/delphi/lesson47.zip">Delphi</a> Code For This Lesson. ( Conversion by <a href="mailto:michal_praha@seznam.cz">Michal Tucek</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/linux/lesson47.tar.gz  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/linux/lesson47.tar.gz'" tppabs="http://nehe.gamedev.net/data/lessons/linux/lesson47.tar.gz">Linux/GLut</a> Code For This Lesson. ( Conversion by <a href="mailto:foxdie@pobox.sk">Gray Fox</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/linuxglx/lesson47.tar.gz  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/linuxglx/lesson47.tar.gz'" tppabs="http://nehe.gamedev.net/data/lessons/linuxglx/lesson47.tar.gz">Linux/GLX</a> Code For This Lesson. ( Conversion by <a href="mailto:r3lik@shaw.ca">Jason Schultz</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/python/lesson47.tar.gz  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/python/lesson47.tar.gz'" tppabs="http://nehe.gamedev.net/data/lessons/python/lesson47.tar.gz">Python</a> Code For This Lesson. ( Conversion by <a href="mailto:bleair@comcast.net">Brian Leair</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/vs_net/lesson47.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/vs_net/lesson47.zip'" tppabs="http://nehe.gamedev.net/data/lessons/vs_net/lesson47.zip">Visual Studio .NET</a> Code For This Lesson. ( Conversion by <a href="mailto:webmaster@joachimrohde.de">Joachim Rohde</a> )</p>
+<p><strong><span><a href="index-86.htm" tppabs="http://nehe.gamedev.net/data/lessons/lesson.asp?lesson=46">&lt; Lesson 46</a></span></strong><strong><span><a href="index-88.htm" tppabs="http://nehe.gamedev.net/data/lessons/lesson.asp?lesson=48">Lesson 48 &gt;</a></span></strong></p>
+
+
+</div>
+</div>
+
+
+
+            <div style="width:728px;padding:0px;margin:auto; margin-top: 10px;">
+            
+
+    
+                <!-- Leaderboard_NeHe -->
+                <div id='div-gpt-ad-1327940144417-0' style='width:728px; height:90px;'>
+                <script type='text/javascript'>
+                googletag.cmd.push(function() { googletag.display('div-gpt-ad-1327940144417-0'); });
+                </script>
+                </div>
+            
+
+                           
+            </div>   
+        </td>
+        <td class="col2">
+            
+
+
+
+
+<div style="text-align: center; padding:10px;">
+
+<script type='text/javascript'>
+    GA_googleFillSlot("Skyscraper_NeHe");
+</script>
+
+</div>
+            
+        </td>
+    </table>
+    <div id="footer">
+        <p>
+            
+    
+    © 1997-2012 Gamedev . All rights reserved.<br/>
+
+			NeHe™ and NeHe Productions™ are trademarks of GameDev.net, LLC<br/>
+			OpenGL® is a registered trademark of Silicon Graphics Inc.<br/>
+		</p>        
+		<br/>
+    </div>
+
+    
+    
+	    <script type="text/javascript" src="shCore.js" tppabs="http://nehe.gamedev.net/static/js/syntax_highlighter/shCore.js"></script>
+        <script type="text/javascript" src="shBrushCpp.js" tppabs="http://nehe.gamedev.net/static/js/syntax_highlighter/shBrushCpp.js"></script>
+	    <script type="text/javascript" src="shBrushJScript.js" tppabs="http://nehe.gamedev.net/static/js/syntax_highlighter/shBrushJScript.js"></script>
+	    <script type="text/javascript">SyntaxHighlighter.all();</script>
+    
+
+    <!-- Place this render call where appropriate -->
+    <script type="text/javascript">
+      (function() {
+        var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+        po.src = 'plusone.js'/*tpa=https://apis.google.com/js/plusone.js*/;
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+      })();
+    </script>    
+
+    
+<!-- GoogleAnalytics code -->
+<script src="urchin.js" tppabs="http://www.google-analytics.com/urchin.js" type="text/javascript">
+</script>
+<script type="text/javascript">
+_uacct = "UA-279474-2"; // Gamedev
+urchinTracker();
+_uff = 0; // Reset for second account
+_uacct = "UA-24180731-1"; // Non-GD
+urchinTracker();
+</script> 
+  </body>
+</html>

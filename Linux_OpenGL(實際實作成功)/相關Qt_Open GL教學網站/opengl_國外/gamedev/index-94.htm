@@ -1,0 +1,257 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+    dir="ltr"
+    xml:lang="en"
+    lang="en">
+  <head>
+    <title>NeHe Productions: Particle Systems</title>
+
+    <link rel="stylesheet" type="text/css" href="public_base.css" tppabs="http://nehe.gamedev.net/static/css/public_base.css" />
+    <link type="text/css" rel="stylesheet" href="shThemeMidnight.css" tppabs="http://nehe.gamedev.net/static/css/syntax_highlighter/shThemeMidnight.css"/>
+    
+    <link rel="alternate" type="application/atom+xml" title="Atom feed" href="index-1.htm" tppabs="http://nehe.gamedev.net/atom/" />
+    <link rel="alternate" type="application/rss+xml" title="RSS feed" href="index-2.htm" tppabs="http://nehe.gamedev.net/rss/" />
+    
+    <meta name="author" content="Luke Benstead + Carsten Haubold" />
+    <meta name="description" content="OpenGL Tutorials, Demos, Games and More..." />
+    <meta name="keywords" content="opengl, tutorial, article, demo, game, blend, texturemap, lighting, contest, 3D" />
+
+    
+    
+
+    
+
+</script>
+
+
+    
+    
+    
+    
+        
+        <script type='text/javascript'>
+        var googletag = googletag || {};
+        googletag.cmd = googletag.cmd || [];
+        (function() {
+        var gads = document.createElement('script');
+        gads.async = true;
+        gads.type = 'text/javascript';
+        var useSSL = 'https:' == document.location.protocol;
+        gads.src = (useSSL ? 'https:' : 'http:') + 
+        '//www.googletagservices.com/tag/js/gpt.js';
+        var node = document.getElementsByTagName('script')[0];
+        node.parentNode.insertBefore(gads, node);
+        })();
+        </script>
+
+        <script type='text/javascript'>
+        googletag.cmd.push(function() {
+        googletag.defineSlot('/1004699/Leaderboard_NeHe', [728, 90], 'div-gpt-ad-1327940144417-0').addService(googletag.pubads());
+        googletag.defineSlot('/1004699/Skyscraper_NeHe', [160, 600], 'div-gpt-ad-1327940144417-1').addService(googletag.pubads());
+        googletag.pubads().enableSingleRequest();
+        googletag.enableServices();
+        });
+        </script>
+    
+    
+
+    
+  </head>
+
+  <body>
+    
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "all.js#xfbml=1"/*tpa=http://connect.facebook.net/en_GB/all.js#xfbml=1*/;
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+
+
+    <table cellpadding="0" cellspacing="0" border="0" id="layout_table">
+    <tr><td>
+        <div id="header">
+                <a href="index.htm" tppabs="http://nehe.gamedev.net/"><img class="logo" class="logo" src="nehe.png" tppabs="http://nehe.gamedev.net/static/images/nehe.png" border="0" alt="Nehe" /></a>
+        </div>            
+    </td></tr>
+    <tr><td colspan="2">
+            
+<div class="navbar">
+    <a href="index.htm" tppabs="http://nehe.gamedev.net/">HOME</a>
+    <a href="javascript:if(confirm('http://twitter.com/  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://twitter.com/#!/nehegl'" tppabs="http://twitter.com/#!/nehegl">TWITTER</a>  
+    <a href="javascript:if(confirm('http://www.facebook.com/pages/NeHe/300582493323181  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://www.facebook.com/pages/NeHe/300582493323181'" tppabs="http://www.facebook.com/pages/NeHe/300582493323181">FACEBOOK</a>     
+    <a href="index-2.htm" tppabs="http://nehe.gamedev.net/rss/">RSS</a>    
+    <a href="index-1.htm" tppabs="http://nehe.gamedev.net/atom/">ATOM</a>    
+    <a href="javascript:if(confirm('http://www.gamedev.net/forum/27-nehe-productions/page__forum_title__NeHe+Productions  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://www.gamedev.net/forum/27-nehe-productions/page__forum_title__NeHe+Productions'" tppabs="http://www.gamedev.net/forum/27-nehe-productions/page__forum_title__NeHe+Productions">FORUM</a>    
+</div>
+    
+    </td></tr>
+    <tr>
+        <td class="col1">
+
+            
+<div id="article_container">
+
+
+<h1 class="article-header">Particle Systems</h1>
+<div class="social-media">
+<!-- Place this tag where you want the +1 button to render -->
+<div class="g-plusone" data-size="medium" data-width="120" data-annotation="inline"></div>
+<div class="fb-like" data-send="false" data-layout="button_count" data-width="60" data-show-faces="false" data-colorscheme="dark" data-font="arial"></div>
+</div>
+<div style="clear:both;"></div>
+<p><strong style="text-decoration: underline;"><span style="text-decoration: underline;">Introduction</span></strong></p>
+<p>Hi, I feel I should start this tutorial with a short introduction to who I am. My name is Chris Gilbert and I have been programming for around the past 5 years. My ventures into programming started in the days of DOS with nothing more complex than batch file writing and dabbling in QBasic. Then I got a copy of Visual Basic and stuck to VB for a few years when about 2 years ago I came across C++ for the first time. I now develop almost entirely in C++.</p>
+<!-- break -->
+<p>So what is a particle system? A particle system is a concept, and it can be anything you want it to be. I mean that! A particle system can be pretty much anything you want, however as a general rule, a particle system is a collection of any number of entities, either related or unrelated, that behave according to a set of logical rules. So a particle system has two parts to it which we can identify, the entities or particles, and its logic set. A good example of a particle system would be a rain cloud. The drops of rain are the entities, and they behave according to the rule of gravity - IE yous is goin down boi. When they hit the ground, they effectively die. Most of the time, entities in a particle system have a very finite lifespan, and when they die they are re-initialised as a brand new particle.</p>
+<center><strong>"We don't try to model the outcome of the system, we try to model the system and see its outcome" - Andre LaMothe</strong></center>
+<p><br /> Let's explore the concept of particle systems a little further. I think that one of the reasons why programmers have problems understanding particle systems and their scope is because particle systems have no fixed rules and almost unlimited scope. Think about it, think about the rule that I made up about particle systems, any number of entities that just behave according to a set of rules. This could be anything from cars in a road system (Grand Theft Auto?), to stars in the sky (M$ Windows screensaver ;)), to anything!</p>
+<p>Particle systems could even go down to the atomic level with billions of particles representing an object, and that object behaving just like it would in real life! I have included that quote by Andre LaMothe because it's very true. When writing a particle system there are no fixed rules, there are no definites, you just have to tweak everything until the final effect looks good!</p>
+<p>Particles are the answer to everything, and yet nothing. Their limitation comes in the form of one thing only, how fast the CPU is. Computers just aren't fast enough to perfectly simulate objects on the atomic level in a realtime environment, and it's perfectly possible that the car system in a game such as GTA was done using something other than a particle system, but hopefully this gives you an idea of the scope of these extremely powerful objects. Just take note that it is up to you as the programmer to strike some kind of balance between how many particles there are in any given particle system, and how much CPU time is taken up handling them all.</p>
+<p>When would you use a particle system? Whenever you want to create some eye candy? ;) I play games these days and some of them impress me with their particle systems, some of them don't, but pretty much all of these games have got them! Explosions, sparks, underwater bubbles, other special fx, it's all there! I feel this is a tribute to particle systems's flexibility because their scope for modelling is amazing. Particle systems have been used back as far as I remember (Not that long ago, but still in the days of 2D DOS games!). A particle doesn't need 2 dimensions, or 3 - in fact should you so decide it a particle could have a million dimensions, but this brings me to another point: Your particles have to be represented as something. This is the -visual- aspect of a particle system. A particle system could happily waste away CPU time juggling 1000 particles modelling a rather convincing explosion, but unless the particles are actually drawn on the screen as something, it all amounts to nothing. A particle can be represented by anything. A 3d model, a single vertex, a textured quad, anything! It is up to you as the programmer to decide what should represent an entity in your particle system.</p>
+<p>Why use particle systems? Because they can take a lot of work off your shoulders. As you are programming you should be looking at every opportunity to put everything into one massive particle system! Well, realistically speaking that's not very practical. To be honest it is up to you when and why to use a particle system as the programmer.</p>
+<p>So now you know more about particle systems, let's have a short example of how to approach writing a particle system which models a rain cloud.</p>
+<p>We want the particles to:</p>
+<p>1) Initialise in a random place in the 3d world<br /> 2) Move towards the ground according to gravity<br /> 3) Die when they hit the ground, and immediately come back to life as a new particle</p>
+<p>Particle systems in a game will often look similar to the following:</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">#define MAX_PARTICLES = 1000;
+
+typedef struct tParticle1
+{
+&nbsp;&nbsp;&nbsp;&nbsp;... Properties of the particle
+}
+
+tParticle1 Particles1[MAX_PARTICLES];
+</pre>
+<p>Ok so why do we have a constant defining the maximum number of particles? In the kind of particle system I'm thinking of, it's because the entities are kept in a single 1 dimensional array and every entitity has the same attributes. In most particle systems, all the entities will have the same properties because it's (much) faster to keep several particle systems representing groups of related entities rather than one big particle system representing a group of un-related entities (By that I mean either the particles are all an instance of a single structure, or in the case that they are 'un-related' that all the particles are instances of different structures). In fact, what is often the case is that the only property un-related entities definitely share is some way of representing a given position in 2d or 3d space, which seriously limits what the rules of the particle system can use to manipulate the particle.</p>
+<p>Particle systems often (If not always) have several functions related to them, initialisation, update and rendering. Sometimes particle systems even have 2 initialisation routines associated with them, one of the routines being a one-off initialisation routine (Which when the system is created will initialise all of the particles), the other one being a general purpose initialisation function (Which works on individual particles) for when the particle has died and is being restarted. These functions are typically associated with a specific particle system because the particles in that particle system may have completely different properties and may behave in a completely different way to another particle system. The update function is where the rule set of the given particle system comes in to place. The update function might simply loop through each of the particles in the system and decrease the y coordinate of the given particle according to gravity (As is the case with our rain cloud *g*)</p>
+<p>In the case of a rain cloud (Or even, a rainy sky - for the sake of simplicity), the associated functions of the particle system might look something like:</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">initall()
+{
+	for(int i = 0; i &lt;= MAX_PARTICLES; i++)
+	{
+		Particles[i].x = rand() % WORLD_WIDTH;
+		Particles[i].y = rand() % WORLD_HEIGHT;
+		Particles[i].z = rand() % WORLD_DEPTH;
+	}
+}
+initentity(int index)
+{
+	Particles[index].x = rand() % WORLD_WIDTH;
+	Particles[index].y = rand() % WORLD_HEIGHT;
+	Particles[index].z = rand() % WORLD_DEPTH;
+}
+
+render()
+{
+	for(int i = 0; i &lt;= MAX_PARTICLES; i++)
+	{
+		draw_rain_texture(Particles[i].x, Particles[i].y, Particles[i].z);
+	}
+}
+
+update()
+{
+	for(int i = 0; i &lt;= MAX_PARTICLES; i++)
+	{
+		Particles[i].y =- (rand() % 2) - 2.5;
+		if(collisiondetect(Particles[i]))
+		{
+			initentity(i);
+			{
+			}
+		}
+	}
+}
+</pre>
+<p>And that would in theory render a rain cloud. Well, I mean this is a highly simplified and very crude particle system. I mean, the particle system doesn't even take into account wind or anything!</p>
+<p>A particle system is a simple object that merely manipulates a group of entities according to a set of rules. They can be as big or small as you like, as simple or complex as you like. They are used in games mainly to perform special effects but are by no means limited to simple special effects.</p>
+<p>So where to go from here? Hopefully by now you have a pretty good idea of what a particle system is, and you'll probably want to simulate fireworks in the night sky ;) Just a suggestion! But it is quite simple to do, and you will be presented with a problem which will require several particle systems to solve, or one very flexible particle system, or one very large very complex particle system ;) If I was going to give you some advice as to where to start approaching the problem, I would recommend you start at the beginning. Get a video and watch fireworks going off, see how closely you can emulate the effect :)</p>
+<p>Hope this helps!</p>
+<p><a href="mailto:thegilb@hotmail.com">Chris Gilbert (The Gilb)</a></p>
+
+
+</div>
+</div>
+
+
+
+            <div style="width:728px;padding:0px;margin:auto; margin-top: 10px;">
+            
+
+    
+                <!-- Leaderboard_NeHe -->
+                <div id='div-gpt-ad-1327940144417-0' style='width:728px; height:90px;'>
+                <script type='text/javascript'>
+                googletag.cmd.push(function() { googletag.display('div-gpt-ad-1327940144417-0'); });
+                </script>
+                </div>
+            
+
+                           
+            </div>   
+        </td>
+        <td class="col2">
+            
+
+
+
+
+<div style="text-align: center; padding:10px;">
+
+<script type='text/javascript'>
+    GA_googleFillSlot("Skyscraper_NeHe");
+</script>
+
+</div>
+            
+        </td>
+    </table>
+    <div id="footer">
+        <p>
+            
+    
+    © 1997-2012 Gamedev . All rights reserved.<br/>
+
+			NeHe™ and NeHe Productions™ are trademarks of GameDev.net, LLC<br/>
+			OpenGL® is a registered trademark of Silicon Graphics Inc.<br/>
+		</p>        
+		<br/>
+    </div>
+
+    
+    
+	    <script type="text/javascript" src="shCore.js" tppabs="http://nehe.gamedev.net/static/js/syntax_highlighter/shCore.js"></script>
+        <script type="text/javascript" src="shBrushCpp.js" tppabs="http://nehe.gamedev.net/static/js/syntax_highlighter/shBrushCpp.js"></script>
+	    <script type="text/javascript" src="shBrushJScript.js" tppabs="http://nehe.gamedev.net/static/js/syntax_highlighter/shBrushJScript.js"></script>
+	    <script type="text/javascript">SyntaxHighlighter.all();</script>
+    
+
+    <!-- Place this render call where appropriate -->
+    <script type="text/javascript">
+      (function() {
+        var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+        po.src = 'plusone.js'/*tpa=https://apis.google.com/js/plusone.js*/;
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+      })();
+    </script>    
+
+    
+<!-- GoogleAnalytics code -->
+<script src="urchin.js" tppabs="http://www.google-analytics.com/urchin.js" type="text/javascript">
+</script>
+<script type="text/javascript">
+_uacct = "UA-279474-2"; // Gamedev
+urchinTracker();
+_uff = 0; // Reset for second account
+_uacct = "UA-24180731-1"; // Non-GD
+urchinTracker();
+</script> 
+  </body>
+</html>

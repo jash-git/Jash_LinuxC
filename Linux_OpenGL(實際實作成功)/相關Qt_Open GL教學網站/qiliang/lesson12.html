@@ -1,0 +1,326 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<meta name="Author" content="Qi Liang">
+<meta name="Qt OpenGL Tutorial" content="http://www.qiliang.net/nehe_qt">
+<title>显示列表</title>
+<style type="text/css"><!--
+h3.fn,span.fn { margin-left: 1cm; text-indent: -1cm; }
+a:link { color: #004faf; text-decoration: none }
+a:visited { color: #672967; text-decoration: none }
+body { background: #ffffff; color: black; font-family: "Times New Roman" }
+--></style>
+</head>
+<body>
+<p align="right">[<a href="lesson11.html" tppabs="http://www.qiliang.net/nehe_qt/lesson11.html">上一课：旗的效果（波动纹理）</a>] [<a href="index.html" tppabs="http://www.qiliang.net/nehe_qt/index.html">Qt OpenGL教程主页</a>]</p>
+
+<h2 align=center>显示列表</h2>
+
+<p> <center><img src="lesson12.png" tppabs="http://www.qiliang.net/nehe_qt/lesson12.png"></center> 
+<p> 这次我将教你如何使用显示列表，显示列表将加快程序的速度，而且可以减少代码的长度。
+<p> 当你在制作游戏里的小行星场景时，每一层上至少需要两个行星，你可以用OpenGL中的多边形来构造每一个行星。聪明点的做法是做一个循环，每个循环画出行星的一个面，最终你用几十条语句画出了一个行星。每次把行星画到屏幕上都是很困难的。当你面临更复杂的物体时你就会明白了。
+<p> 那么，解决的办法是什么呢？用显示列表，你只需要一次性建立物体，你可以贴图，用颜色，想怎么弄就怎么弄。给显示列表一个名字，比如给小行星的显示列表命名为“asteroid”。现在，任何时候我想在屏幕上画出行星，我只需要调用glCallList(asteroid)。之前做好的小行星就会立刻显示在屏幕上了。因为小行星已经在显示列表里建造好了，OpenGL不会再计算如何构造它。它已经在内存中建造好了。这将大大降低CPU的使用，让你的程序跑的更快。
+<p> 那么，开始学习咯。我称这个DEMO为Q-Bert显示列表。最终这个DEMO将在屏幕上画出15个立方体。每个立方体都由一个盒子和一个顶构成，顶部是一个单独的显示列表，盒子没有顶。
+<p> 这一课是建立在第六课的基础上的，我将重写大部分的代码，这样容易看懂。下面的这些代码在所有的课程中差不多都用到了。
+
+<h3><a name="1"></a>NeHeWidget类</h3>
+<p> （由<tt>nehewidget.h</tt>展开。）
+<pre>
+class NeHeWidget : public QGLWidget
+{
+    Q_OBJECT
+
+public:
+    
+  NeHeWidget( QWidget* parent = 0, const char* name = 0, bool fs = false );
+  ~NeHeWidget();
+
+protected:
+
+  void initializeGL();
+  void paintGL();
+  void resizeGL( int width, int height );
+  
+  void keyPressEvent( QKeyEvent *e );
+  void loadGLTextures();
+  void buildLists();
+</pre>
+<p> 这个是建立显示列表的函数。
+<pre>
+protected:
+
+  bool fullscreen;
+  
+  GLfloat xRot, yRot, zRot;
+  GLuint box, top;
+</pre>
+<p> 这里是两个用来存放显示列表的指针。
+<pre>
+  GLuint xLoop, yLoop;
+</pre>
+<p> 这里是两个表示立方体位置的变量。
+<pre>
+  GLuint texture[1];
+};
+</pre>
+<p> 
+<p> （由<tt>nehewidget.cpp</tt>展开。）
+<pre>
+static GLfloat boxcol[5][3] =
+{
+  { 1.0, 0.0, 0.0 },
+  { 1.0, 0.5, 0.0 },
+  { 1.0, 1.0, 0.0 },
+  { 0.0, 1.0, 0.0 },
+  { 0.0, 1.0, 1.0 }
+};
+
+static GLfloat topcol[5][3] =
+{
+  { 0.5, 0.0, 0.0 },
+  { 0.5, 0.25, 0.0 },
+  { 0.5, 0.5, 0.0 },
+  { 0.0, 0.5, 0.0 },
+  { 0.0, 0.5, 0.5 }
+};
+</pre>
+<p> 这里是两个颜色数组。
+<pre>
+NeHeWidget::NeHeWidget( QWidget* parent, const char* name, bool fs )
+    : QGLWidget( parent, name )
+{
+  xRot = yRot = zRot = 0.0;
+  box = top = 0;
+  
+  xLoop = yLoop = 0;
+
+  fullscreen = fs;
+  setGeometry( 0, 0, 640, 480 );
+  setCaption( "NeHe's Display List Tutorial" );
+
+  if ( fullscreen )
+    showFullScreen();
+}
+</pre>
+<p> 我们需要在构造函数中给各个变量赋初值。
+<pre>
+void NeHeWidget::loadGLTextures()
+{
+  QImage tex, buf;
+  if ( !buf.load( "./data/Cube.bmp" ) )
+  {
+    qWarning( "Could not read image file, using single-color instead." );
+    QImage dummy( 128, 128, 32 );
+    dummy.fill( Qt::green.rgb() );
+    buf = dummy;
+  }
+  tex = QGLWidget::convertToGLFormat( buf );
+  
+  glGenTextures( 1, &texture[0] );
+  
+  glBindTexture( GL_TEXTURE_2D, texture[0] );
+  glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR );
+  glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR );
+  glTexImage2D( GL_TEXTURE_2D, 0, 3, tex.width(), tex.height(), 0,
+      GL_RGBA, GL_UNSIGNED_BYTE, tex.bits() );
+}
+</pre>
+<p> loadGLTextures()函数就是用来载入纹理的。
+<p> 贴图纹理的代码和之前教程里的代码是一样的。我们需要一个可以贴在立方体上的纹理。我决定使用mipmapping处理让纹理看上去光滑，因为我讨厌看见像素点。纹理的文件名是“Cube.bmp”，存放在data目录下。
+<pre>
+void NeHeWidget::buildLists()
+{
+  box = glGenLists( 2 );
+</pre>
+<p> 开始的时候我们告诉OpenGL我们要建立两个显示列表。glGenLists(2)建立了两个显示列表的空间，并返回第一个显示列表的指针。“box”指向第一个显示列表，任何时候调用“box”第一个显示列表就会显示出来。
+<p> 现在开始构造第一个显示列表。我们已经申请了两个显示列表的空间了，并且有box指针指向第一个显示列表。所以现在我们应该告诉OpenGL要建立什么类型的显示列表。
+<pre>
+  glNewList( box, GL_COMPILE );
+</pre>
+<p> 我们用glNewList()命令来做这个事情。你一定注意到了box是第一个参数，这表示OpenGL将把列表存储到box所指向的内存空间。第二个参数GL_COMPILE告诉OpenGL我们想预先在内存中构造这个列表，这样每次画的时候就不必重新计算怎么构造物体了。
+<p> GL_COMPILE类似于编程。在你写程序的时候，把它装载到编译器里，你每次运行程序都需要重新编译。而如果它已经编译成了.exe文件，那么每次你只需要点击那个.exe文件就可以运行它了，不需要编译。当OpenGL编译过显示列表后，就不需要再每次显示的时候重新编译它了。这就是为什么用显示列表可以加快速度。
+<p> 你可以在glNewList()和glEngList()中间加上任何你想加上的代码。可以设置颜色，贴图等等。唯一不能加进去的代码就是会改变显示列表的代码。显示列表一旦建立，你就不能改变它。
+<p> 比如你想加上glColor3ub( rand()%255, rand()%255, rand()%255 )，使得每一次画物体时都会有不同的颜色。但因为显示列表只会建立一次，所以每次画物体的时候颜色都不会改变。物体将会保持第一次建立显示列表时的颜色。 如果你想改变显示列表的颜色，你只有在调用显示列表之前改变颜色。后面将详细解释这一点。
+<pre>
+  glBegin( GL_QUADS );
+</pre>
+<p> 这部分的代码画出一个没有顶部的盒子，它不会出现在屏幕上，只会存储在显示列表里。
+<pre>
+    glNormal3f( 0.0, -1.0, 0.0 );
+    glTexCoord2f( 1.0, 1.0 ); glVertex3f( -1.0, -1.0, -1.0 );
+    glTexCoord2f( 0.0, 1.0 ); glVertex3f(  1.0, -1.0, -1.0 );
+    glTexCoord2f( 0.0, 0.0 ); glVertex3f(  1.0, -1.0,  1.0 );
+    glTexCoord2f( 1.0, 0.0 ); glVertex3f( -1.0, -1.0,  1.0 );
+
+    glNormal3f( 0.0, 0.0, 1.0 );
+    glTexCoord2f( 0.0, 0.0 ); glVertex3f( -1.0, -1.0,  1.0 );
+    glTexCoord2f( 1.0, 0.0 ); glVertex3f(  1.0, -1.0,  1.0 );
+    glTexCoord2f( 1.0, 1.0 ); glVertex3f(  1.0,  1.0,  1.0 );
+    glTexCoord2f( 0.0, 1.0 ); glVertex3f( -1.0,  1.0,  1.0 );
+
+    glNormal3f( 0.0, 0.0, -1.0 );
+    glTexCoord2f( 1.0, 0.0 ); glVertex3f( -1.0, -1.0, -1.0 );
+    glTexCoord2f( 1.0, 1.0 ); glVertex3f( -1.0,  1.0, -1.0 );
+    glTexCoord2f( 0.0, 1.0 ); glVertex3f(  1.0,  1.0, -1.0 );
+    glTexCoord2f( 0.0, 0.0 ); glVertex3f(  1.0, -1.0, -1.0 );
+
+    glNormal3f( 1.0, 0.0, 0.0 );
+    glTexCoord2f( 1.0, 0.0 ); glVertex3f(  1.0, -1.0, -1.0 );
+    glTexCoord2f( 1.0, 1.0 ); glVertex3f(  1.0,  1.0, -1.0 );
+    glTexCoord2f( 0.0, 1.0 ); glVertex3f(  1.0,  1.0,  1.0 );
+    glTexCoord2f( 0.0, 0.0 ); glVertex3f(  1.0, -1.0,  1.0 );
+
+    glNormal3f( -1.0, 0.0, 0.0 );
+    glTexCoord2f( 0.0, 0.0 ); glVertex3f( -1.0, -1.0, -1.0 );
+    glTexCoord2f( 1.0, 0.0 ); glVertex3f( -1.0, -1.0,  1.0 );
+    glTexCoord2f( 1.0, 1.0 ); glVertex3f( -1.0,  1.0,  1.0 );
+    glTexCoord2f( 0.0, 1.0 ); glVertex3f( -1.0,  1.0, -1.0 );
+  glEnd();
+  
+  glEndList();
+</pre>
+<p> 用glEngList()命令，我们告诉OpenGL我们已经完成了一个显示列表。在glNewList()和glEngList()之间的任何东西就是显示列表的一部分。
+<pre>
+  top = box + 1;
+</pre>
+<p> 现在我们来建立第二个显示列表。在上一个显示列表的指针上加1，就得到了第二个显示列表的指针。第二个显示列表的指针命名为“top”。
+<pre>
+  glNewList( top, GL_COMPILE );
+  
+  glBegin( GL_QUADS );
+</pre>
+<p> 这部分代码画出盒子的顶部。
+<pre>
+    glNormal3f( 0.0, 1.0, 0.0 );
+    glTexCoord2f( 0.0, 1.0 ); glVertex3f( -1.0,  1.0, -1.0 );
+    glTexCoord2f( 0.0, 0.0 ); glVertex3f( -1.0,  1.0,  1.0 );
+    glTexCoord2f( 1.0, 0.0 ); glVertex3f(  1.0,  1.0,  1.0 );
+    glTexCoord2f( 1.0, 1.0 ); glVertex3f(  1.0,  1.0, -1.0 );
+  glEnd();
+  
+  glEndList();
+</pre>
+<p> 然后告诉OpenGL第二个显示列表建立完毕。
+<pre>
+}
+</pre>
+<pre>
+void NeHeWidget::initializeGL()
+{
+  loadGLTextures();
+  buildLists();
+</pre>
+<p> 请注意代码的顺序，先读入纹理，然后建立显示列表，这样当我们建立显示列表的时候就可以将纹理贴到立方体上了。
+<pre>
+  glEnable( GL_TEXTURE_2D );
+  glShadeModel( GL_SMOOTH );
+  glClearColor( 0.0, 0.0, 0.0, 0.5 );
+  glClearDepth( 1.0 );
+  glEnable( GL_DEPTH_TEST );
+  glDepthFunc( GL_LEQUAL );
+  glEnable( GL_LIGHT0 );
+  glEnable( GL_LIGHTING );
+  glEnable( GL_COLOR_MATERIAL );
+</pre>
+<p> 上面的三行使灯光有效。Light0一般来说是在显卡中预先定义过的，如果Light0不工作，把下面那行注释掉好了。
+<p> 最后一行的GL_COLOR_MATERIAL使我们可以用颜色来贴纹理。如果没有这行代码，纹理将始终保持原来的颜色，glColor3f( r, g, b )就没有用了。总之这行代码是很有用的。
+<pre>
+  glHint( GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST );
+</pre>
+<p> 最后，设置投影校正。
+<pre>
+}
+</pre>
+<p> 现在来看绘画的代码。对数学我从来都是很头大的，没有sin，没有cos，但仍然看起来很奇怪（相信读者不会觉得头大）。首先，按惯例，清除屏幕和深度缓冲。
+<p> 然后捆绑纹理到立方体上（我知道捆绑这个词不太专业，但是……）。可以将这行放在显示列表里，但放在外边，就可以在任何时候修改它。
+<pre>
+void NeHeWidget::paintGL()
+{
+  glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
+  glBindTexture( GL_TEXTURE_2D, texture[0] );
+</pre>
+<p> 现在到了真正有趣的地方了。用一个循环，循环变量用于改变Y轴位置，在Y轴上画5个立方体，所以用从1到5的循环。
+<pre>
+  for ( yLoop = 1; yLoop < 6; yLoop++ )
+  {
+</pre>
+<p> 另外用一个循环，循环变量用于改变X轴位置。每行上的立方体数目取决于行数，所以循环方式如下。
+<pre>
+    for ( xLoop = 0; xLoop < yLoop; xLoop++ )
+    {
+</pre>
+<p> 下边的代码是移动和旋转当前坐标系到需要画出立方体的位置。（原文有很罗嗦的一大段，相信大家的数学功底都不错，就不翻译了）
+<pre>
+      glLoadIdentity();
+      glTranslatef( 1.4 + (float(xLoop) * 2.8) - (float(yLoop) * 1.4),
+          ( (6.0 - (float(yLoop)) ) * 2.4 ) - 7.0, -20.0 );
+      glRotatef( 45.0 - (2.0 * yLoop) + xRot, 1.0, 0.0, 0.0 );
+      glRotatef( 45.0 + yRot, 0.0, 1.0, 0.0 );
+</pre>
+<p> 然后在正式画盒子之前设置颜色。每个盒子用不同的颜色。
+<pre>
+      glColor3fv( boxcol[yLoop-1] );
+</pre>
+<p> 好了，颜色设置好了。现在需要做的就是画出盒子。不用写出画多边形的代码，只需要用glCallList(box)命令调用显示列表。盒子将会用glColor3fv()所设置的颜色画出来。
+<pre>
+      glCallList( box );
+</pre>
+<p> 然后用另外的颜色画顶部。搞定。
+<pre>
+      glColor3fv( topcol[yLoop-1] );
+      glCallList( top );
+    }
+  }
+}
+</pre>
+<pre>
+void NeHeWidget::keyPressEvent( QKeyEvent *e )
+{
+  switch ( e->key() )
+  {
+  case Qt::Key_Up:
+    xRot -= 0.2;
+    updateGL();
+    break;
+  case Qt::Key_Down:
+    xRot += 0.2;
+    updateGL();
+    break;
+  case Qt::Key_Left:
+    yRot -= 0.2;
+    updateGL();
+    break;
+  case Qt::Key_Right:
+    yRot += 0.2;
+    updateGL();
+    break;
+  case Qt::Key_F2:
+    fullscreen = !fullscreen;
+    if ( fullscreen )
+    {
+      showFullScreen();
+    }
+    else
+    {
+      showNormal();
+      setGeometry( 0, 0, 640, 480 );
+    }
+    update();
+    break;
+  case Qt::Key_Escape:
+    close();
+  }
+}
+</pre>
+<p> 上面就是键盘控制，用上下左右键来控制立方体的运动。
+<p> 本课程的<a href="lesson12.tar.gz" tppabs="http://www.qiliang.net/nehe_qt/source/lesson12.tar.gz">源代码</a>。
+
+<p align="right">[<a href="lesson11.html" tppabs="http://www.qiliang.net/nehe_qt/lesson11.html">上一课：旗的效果（波动纹理）</a>] [<a href="index.html" tppabs="http://www.qiliang.net/nehe_qt/index.html">Qt OpenGL教程主页</a>]</p>
+
+<p><address><hr><div align=center>
+<table width=100% cellspacing=0 border=0><tr>
+<td align=left><div align=left><a href="javascript:if(confirm('http://www.qiliang.net/  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://www.qiliang.net/'" tppabs="http://www.qiliang.net/">http://www.qiliang.net</a></div>
+<td><center><a href="mailto:cavendish@qiliang.net">mailto:cavendish@qiliang.net</a></center>
+<td align=right><div align=right>2003年3月13日</div>
+</table></div></address></body>
+</html>

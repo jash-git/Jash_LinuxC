@@ -1,0 +1,555 @@
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+    dir="ltr"
+    xml:lang="en"
+    lang="en">
+  <head>
+    <title>NeHe Productions: Volumetric Fog &amp; IPicture Image Loading</title>
+
+    <link rel="stylesheet" type="text/css" href="public_base.css" tppabs="http://nehe.gamedev.net/static/css/public_base.css" />
+    <link type="text/css" rel="stylesheet" href="shThemeMidnight.css" tppabs="http://nehe.gamedev.net/static/css/syntax_highlighter/shThemeMidnight.css"/>
+    
+    <link rel="alternate" type="application/atom+xml" title="Atom feed" href="index-1.htm" tppabs="http://nehe.gamedev.net/atom/" />
+    <link rel="alternate" type="application/rss+xml" title="RSS feed" href="index-2.htm" tppabs="http://nehe.gamedev.net/rss/" />
+    
+    <meta name="author" content="Luke Benstead + Carsten Haubold" />
+    <meta name="description" content="OpenGL Tutorials, Demos, Games and More..." />
+    <meta name="keywords" content="opengl, tutorial, article, demo, game, blend, texturemap, lighting, contest, 3D" />
+
+    
+    
+
+    
+
+</script>
+
+
+    
+    
+    
+    
+        
+        <script type='text/javascript'>
+        var googletag = googletag || {};
+        googletag.cmd = googletag.cmd || [];
+        (function() {
+        var gads = document.createElement('script');
+        gads.async = true;
+        gads.type = 'text/javascript';
+        var useSSL = 'https:' == document.location.protocol;
+        gads.src = (useSSL ? 'https:' : 'http:') + 
+        '//www.googletagservices.com/tag/js/gpt.js';
+        var node = document.getElementsByTagName('script')[0];
+        node.parentNode.insertBefore(gads, node);
+        })();
+        </script>
+
+        <script type='text/javascript'>
+        googletag.cmd.push(function() {
+        googletag.defineSlot('/1004699/Leaderboard_NeHe', [728, 90], 'div-gpt-ad-1327940144417-0').addService(googletag.pubads());
+        googletag.defineSlot('/1004699/Skyscraper_NeHe', [160, 600], 'div-gpt-ad-1327940144417-1').addService(googletag.pubads());
+        googletag.pubads().enableSingleRequest();
+        googletag.enableServices();
+        });
+        </script>
+    
+    
+
+    
+  </head>
+
+  <body>
+    
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "all.js#xfbml=1"/*tpa=http://connect.facebook.net/en_GB/all.js#xfbml=1*/;
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+
+
+    <table cellpadding="0" cellspacing="0" border="0" id="layout_table">
+    <tr><td>
+        <div id="header">
+                <a href="index.htm" tppabs="http://nehe.gamedev.net/"><img class="logo" class="logo" src="nehe.png" tppabs="http://nehe.gamedev.net/static/images/nehe.png" border="0" alt="Nehe" /></a>
+        </div>            
+    </td></tr>
+    <tr><td colspan="2">
+            
+<div class="navbar">
+    <a href="index.htm" tppabs="http://nehe.gamedev.net/">HOME</a>
+    <a href="javascript:if(confirm('http://twitter.com/  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://twitter.com/#!/nehegl'" tppabs="http://twitter.com/#!/nehegl">TWITTER</a>  
+    <a href="javascript:if(confirm('http://www.facebook.com/pages/NeHe/300582493323181  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://www.facebook.com/pages/NeHe/300582493323181'" tppabs="http://www.facebook.com/pages/NeHe/300582493323181">FACEBOOK</a>     
+    <a href="index-2.htm" tppabs="http://nehe.gamedev.net/rss/">RSS</a>    
+    <a href="index-1.htm" tppabs="http://nehe.gamedev.net/atom/">ATOM</a>    
+    <a href="javascript:if(confirm('http://www.gamedev.net/forum/27-nehe-productions/page__forum_title__NeHe+Productions  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://www.gamedev.net/forum/27-nehe-productions/page__forum_title__NeHe+Productions'" tppabs="http://www.gamedev.net/forum/27-nehe-productions/page__forum_title__NeHe+Productions">FORUM</a>    
+</div>
+    
+    </td></tr>
+    <tr>
+        <td class="col1">
+
+            
+<div id="article_container">
+
+
+<h1 class="article-header">Volumetric Fog &amp; IPicture Image Loading</h1>
+<div class="social-media">
+<!-- Place this tag where you want the +1 button to render -->
+<div class="g-plusone" data-size="medium" data-width="120" data-annotation="inline"></div>
+<div class="fb-like" data-send="false" data-layout="button_count" data-width="60" data-show-faces="false" data-colorscheme="dark" data-font="arial"></div>
+</div>
+<div style="clear:both;"></div>
+<p>Welcome to another fun filled tutorial. This time I will attempt to explain Volumetric Fog using the glFogCoordf Extension. In order to run this demo, your video card must support the "GL_EXT_fog_coord" extension. If you are not sure if your card supports this extension, you have two options... 1) download the VC++ source code, and see if it runs. 2) download lesson 24, and scroll through the list of extensions supported by your video card.</p>
+<p>This tutorial will introduce you to the NeHe IPicture code which is capable of loading BMP, EMF, GIF, ICO, JPG and WMF files from your computer or a web page. You will also learn how to use the "GL_EXT_fog_coord" extension to create some really cool looking Volumetric Fog (fog that can float in a confined space without affecting the rest of the scene).</p>
+<p>If this tutorial does not work on your machine, the first thing you should do is check to make sure you have the latest video driver installed. If you have the latest driver and the demo still does not work... you might want to purchase a new video card. A low end GeForce 2 will work just fine, and should not cost all that much. If your card doesn't support the fog extension, who's to say what other extensions it will not support?</p>
+<p>For those of you that can't run the demo, and feel excluded... keep the following in mind: Every single day I get at least 1 email requesting a new tutorial. Many of the tutorials requested are already online! People don't bother reading what is already online and end up skipping over the topic they are most interested in. Other tutorials are too complex and would require weeks worth of programming on my end. Finally, there are the tutorials that I could write, but usually avoid because I know they will not run on all cards. Now that cards such as the GeForce are cheap enough that anyone with an allowance could afford one, I can no longer justify not writing the tutorials. Truthfully, if your video card only supports basic extensions, you are missing out! And if I continue to skip over topics such as Extensions, the tutorials will lag behind!</p>
+<p>With that said... lets attack some code!!!</p>
+<p>The code starts off very similar to the old basecode, and almost identical to the new NeHeGL basecode. The only difference is the extra line of code to include the OLECTL header file. This header must be included if you want the IPICTURE code to function. If you exclude this line, you will get errors when trying to use IPicture, OleLoadPicturePath and IID_IPicture.</p>
+<p>Just like the NeHeGL basecode, we use #pragma comment ( lib, ... ) to automatically include the required library files! Notice we no longer need to include the glaux library (I'm sure many of you are cheering right now).</p>
+<p>The next three lines of code check to see if CDS_FULLSCREEN is defined. If it is not (which it isn't in most compilers), we give it a value of 4. I know many of you have emailed me to ask why you get errors when trying to compile code using CDS_FULLSCREEN in DEV C++. Include these three lines and you will not get the error!</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">#include &lt;windows.h&gt;								// Header File For Windows
+#include &lt;gl\gl.h&gt;								// Header File For The OpenGL32 Library
+#include &lt;gl\glu.h&gt;								// Header File For The GLu32 Library
+#include &lt;olectl.h&gt;								// Header File For The OLE Controls Library	(Used In BuildTexture)
+#include &lt;math.h&gt;								// Header File For The Math Library		(Used In BuildTexture)
+
+#include "NeHeGL.h"								// Header File For NeHeGL
+
+#pragma comment( lib, "opengl32.lib" )						// Search For OpenGL32.lib While Linking
+#pragma comment( lib, "glu32.lib" )						// Search For GLu32.lib While Linking
+
+#ifndef CDS_FULLSCREEN								// CDS_FULLSCREEN Is Not Defined By Some
+#define CDS_FULLSCREEN 4							// Compilers. By Defining It This Way,
+#endif										// We Can Avoid Errors
+
+GL_Window*	g_window;							// Window Structure
+Keys*		g_keys;								// Keyboard
+</pre>
+<p>In the following code, we set the color of our fog. In this case we want it to be a dark orange color. A little red (0.6f) mixed with even less green (0.3f) will give us the color we desire.</p>
+<p>The floating point variable camz will be used later in the code to position our camera inside a long and dark hallway! We will move forwards and backwards through the hallway by translating on the Z-Axis before we draw the hallway.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">// User Defined Variables
+GLfloat	fogColor[4] = {0.6f, 0.3f, 0.0f, 1.0f};					// Fog Colour 
+GLfloat camz;									// Camera Z Depth
+</pre>
+<p>Just like CDS_FULLSCREEN has a predefined value of 4... the variables GL_FOG_COORDINATE_SOURCE_EXT and GL_FOG_COORDINATE_EXT also have predefined values. As mentioned in the comments, the values were taken from the GLEXT header file. A file that is freely available on the net. Huge thanks to Lev Povalahev for creating such a valuable header file! These values must be set if you want the code to compile! The end result is that we have two new enumerants available to us (GL_FOG_COORDINATE_SOURCE_EXT &amp; GL_FOG_COORDINATE_EXT).</p>
+<p>To use the function glFogCoordfExt we need to declare a function prototype typedef that match the extensions entry point. Sounds complex, but it is not all that bad. In English... we need to tell our program the number of parameters and the the type of each parameter accepted by the function glFogCoordfEXT. In this case... we are passing one parameter to this function and it is a floating point value (a coordinate).</p>
+<p>Next we have to declare a global variable of the type of the function prototype typedef. In this case PFNGLFOGCOORDFEXTPROC. This is the first step to creating our new function (glFogCoordfEXT). It is global so that we can use the command anywhere in our code. The name we use should match the actual extension name exactly. The actual extension name is glFogCoordfEXT and the name we use is also glFogCoordfEXT.</p>
+<p>Once we use wglGetProcAddress to assign the function variable the address of the OpenGL drivers extension function, we can call glFogCoordfEXT as if it was a normal function. More on this later!</p>
+<p>The last line prepares things for our single texture.</p>
+<p>So what we have so far...</p>
+<p>We know that PFNGLFOGCOORDFEXTPROC takes one floating point value (GLfloat coord)</p>
+<p>Because glFogCoordfEXT is type PFNGLFOGCOORDFEXTPROC it's safe to say glFogCoordfEXT takes one floating point value... Leaving us with glFogCoordfEXT(GLfloat coord).</p>
+<p>Our function is defined, but will not do anything because glFogCoordfEXT is NULL at the moment (we still need to attach glFogCoordfEXT to the Address of the OpenGL driver's extension function).</p>
+<p>Really hope that all makes sense... it's very simple when you already know how it works... but describing it is extremely difficult (at least for me it is). If anyone would like to rewrite this section of text using simple / non complicated wording, please send me an email! The only way I could explain it better is through images, and at the moment I am in a rush to get this tutorial online!</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">// Variables Necessary For FogCoordfEXT
+#define GL_FOG_COORDINATE_SOURCE_EXT	0x8450					// Value Taken From GLEXT.H
+#define GL_FOG_COORDINATE_EXT		0x8451					// Value Taken From GLEXT.H
+
+typedef void (APIENTRY * PFNGLFOGCOORDFEXTPROC) (GLfloat coord);		// Declare Function Prototype
+
+PFNGLFOGCOORDFEXTPROC glFogCoordfEXT = NULL;					// Our glFogCoordfEXT Function
+
+GLuint	texture[1];								// One Texture (For The Walls)
+</pre>
+<p>Now for the fun stuff... the actual code that turns an image into a texture using the magic of IPicture :)</p>
+<p>This function requires a pathname (path to the actual image we want to load... either a filename or a Web URL) and a texture ID (for example ... texture[0]).</p>
+<p>We need to create a device context for our temporary bitmap. We also need a place to store the bitmap data (hbmpTemp), a connection to the IPicture Interface, variables to store the path (file or URL). 2 variables to store the image width, and 2 variables to store the image height. lwidth and lheight store the actual image width and height. lwidthpixels and lheightpixels stores the width and height in pixels adjusted to fit the video cards maximum texture size. The maximum texture size will be stored in glMaxTexDim.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">int BuildTexture(char *szPathName, GLuint &amp;texid)				// Load Image And Convert To A Texture
+{
+	HDC		hdcTemp;						// The DC To Hold Our Bitmap
+	HBITMAP		hbmpTemp;						// Holds The Bitmap Temporarily
+	IPicture	*pPicture;						// IPicture Interface
+	OLECHAR		wszPath[MAX_PATH+1];					// Full Path To Picture (WCHAR)
+	char		szPath[MAX_PATH+1];					// Full Path To Picture
+	long		lWidth;							// Width In Logical Units
+	long		lHeight;						// Height In Logical Units
+	long		lWidthPixels;						// Width In Pixels
+	long		lHeightPixels;						// Height In Pixels
+	GLint		glMaxTexDim ;						// Holds Maximum Texture Size
+</pre>
+<p>The next section of code takes the filename and checks to see if it's a web URL or a file path. We do this by checking to see if the filename contains http://. If the filename is a web URL, we copy the name to szPath.</p>
+<p>If the filename does not contain a URL, we get the working directory. If you had the demo saved to C:\wow\lesson41 and you tried to load data\wall.bmp the program needs to know the full path to the wall.bmp file not just that the bmp file is saved in a folder called data. GetCurrentDirectory will find the current path. The location that has both the .EXE and the 'data' folder.</p>
+<p>If the .exe was stored at "c:\wow\lesson41"... The working directory would return "c:\wow\lesson41". We need to add "\\" to the end of the working directory along with "data\wall.bmp". The "\\" represents a single "\". So if we put it all together we end up with "c:\wow\lesson41" + "\" + "data\wall.bmp"... or "c:\wow\lesson41\data\wall.bmp". Make sense?</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	if (strstr(szPathName, "http://"))					// If PathName Contains http:// Then...
+	{
+		strcpy(szPath, szPathName);					// Append The PathName To szPath
+	}
+	else									// Otherwise... We Are Loading From A File
+	{
+		GetCurrentDirectory(MAX_PATH, szPath);				// Get Our Working Directory
+		strcat(szPath, "\\");						// Append "\" After The Working Directory
+		strcat(szPath, szPathName);					// Append The PathName
+	}
+</pre>
+<p>So we have the full pathname stored in szPath. Now we need to convert the pathname from ASCII to Unicode so that OleLoadPicturePath understands the path name. The first line of code below does this for us. The result is stored in wszPath.</p>
+<p>CP_ACP means ANSI Codepage. The second parameter specifies the handling of unmapped characters (in the code below we ignore this parameter). szPath is the wide-character string to be converted. The 4th parameter is the width of the wide-character string. If this value is set to -1, the string is assumed to be NULL terminated (which it is). wszPath is where the translated string will be stored and MAX_PATH is the maximum size of our file path (256 characters).</p>
+<p>After converting the path to Unicode, we attempt to load the image using OleLoadPicturePath. If everything goes well, pPicture will point to the image data and the result code will be stored in hr.</p>
+<p>If loading fails, the program will exit.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	MultiByteToWideChar(CP_ACP, 0, szPath, -1, wszPath, MAX_PATH);		// Convert From ASCII To Unicode
+	HRESULT hr = OleLoadPicturePath(wszPath, 0, 0, 0, IID_IPicture, (void**)&amp;pPicture);
+
+	if(FAILED(hr))								// If Loading Failed
+		return FALSE;							// Return False
+</pre>
+<p>Now we need to create a temporary device context. If all goes well, hdcTemp will hold the compatible device context. If the program is unable to get a compatible device context pPicture is released, and the program exits.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	hdcTemp = CreateCompatibleDC(GetDC(0));					// Create The Windows Compatible Device Context
+	if(!hdcTemp)								// Did Creation Fail?
+	{
+		pPicture-&gt;Release();						// Decrements IPicture Reference Count
+		return FALSE;							// Return False (Failure)
+	}
+</pre>
+<p>Now it's time to query the video card and find out what the maximum texture dimension supported is. This code is important because it will attempt to make the image look good on all video cards. Not only will it resize the image to a power of 2 for you. It will make the image fit in your video cards memory. This allows you to load images with any width or height. The only drawback is that users with bad video cards will loose alot of detail when trying to view high resolution images.</p>
+<p>On to the code... we use glGetIntegerv(...) to get the maximum texture dimension (256, 512, 1024, etc) supported by the users video card. We then check to see what the actual image width is. pPicture-&gt;get_width(&amp;lwidth) is the images width.</p>
+<p>We use some fancy math to convert the image width to pixels. The result is stored in lWidthPixels. We do the same for the height. We get the image height from pPicture and store the pixel value in lHeightPixels.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	glGetIntegerv(GL_MAX_TEXTURE_SIZE, &amp;glMaxTexDim);			// Get Maximum Texture Size Supported
+	
+	pPicture-&gt;get_Width(&amp;lWidth);						// Get IPicture Width (Convert To Pixels)
+	lWidthPixels	= MulDiv(lWidth, GetDeviceCaps(hdcTemp, LOGPIXELSX), 2540);
+	pPicture-&gt;get_Height(&amp;lHeight);						// Get IPicture Height (Convert To Pixels)
+	lHeightPixels	= MulDiv(lHeight, GetDeviceCaps(hdcTemp, LOGPIXELSY), 2540);
+</pre>
+<p>Next we check to see if the image width in pixels is less than the maximum width supported by the video card.</p>
+<p>If the image width in pixels is less than the maximum width supported, we resize the image to a power of two based on the current image width in pixels. We add 0.5f so that the image is always made bigger if it's closer to the next size up. For example... If our image width was 400 and the video card supported a maximum width of 512... it would be better to make the width 512. If we made the width 256, the image would loose alot of it's detail.</p>
+<p>If the image size is larger than the maximum width supported by the video card, we set the image width to the maximum texture size supported.</p>
+<p>We do the same for the image height. The final image width and height will be stored in lWidthPixels and lHeightPixels.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	// Resize Image To Closest Power Of Two
+	if (lWidthPixels &lt;= glMaxTexDim)					// Is Image Width Less Than Or Equal To Cards Limit
+		lWidthPixels = 1 &lt;&lt; (int)floor((log((double)lWidthPixels)/log(2.0f)) + 0.5f); 
+	else									// Otherwise  Set Width To "Max Power Of Two" That The Card Can Handle
+		lWidthPixels = glMaxTexDim;
+ 
+	if (lHeightPixels &lt;= glMaxTexDim)					// Is Image Height Greater Than Cards Limit
+		lHeightPixels = 1 &lt;&lt; (int)floor((log((double)lHeightPixels)/log(2.0f)) + 0.5f);
+	else									// Otherwise  Set Height To "Max Power Of Two" That The Card Can Handle
+		lHeightPixels = glMaxTexDim;
+</pre>
+<p>Now that we have the image data loaded and we know the height and width we want to make the image, we need to create a temporary bitmap. bi will hold our bitmap header information and pBits will hold the actual image data. We want the bitmap we create to be a 32 bit bitmap with a width of lWidthPixels and a height of lHeightPixels. We want the image encoding to be RGB and the image will have just one bitplane.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	// Create A Temporary Bitmap
+	BITMAPINFO	bi = {0};						// The Type Of Bitmap We Request
+	DWORD		*pBits = 0;						// Pointer To The Bitmap Bits
+
+	bi.bmiHeader.biSize		= sizeof(BITMAPINFOHEADER);		// Set Structure Size
+	bi.bmiHeader.biBitCount		= 32;					// 32 Bit
+	bi.bmiHeader.biWidth		= lWidthPixels;				// Power Of Two Width
+	bi.bmiHeader.biHeight		= lHeightPixels;			// Make Image Top Up (Positive Y-Axis)
+	bi.bmiHeader.biCompression	= BI_RGB;				// RGB Encoding
+	bi.bmiHeader.biPlanes		= 1;					// 1 Bitplane
+</pre>
+<p>Taken from the MSDN: The CreateDIBSection function creates a DIB that applications can write to directly. The function gives you a pointer to the location of the bitmap's bit values. You can let the system allocate the memory for the bitmap.</p>
+<p>hdcTemp is our temporary device context. bi is our Bitmap Info data (header information). DIB_RGB_COLORS tells our program that we want to store RGB data, not indexes into a logical palette (each pixel will have a red, green and blue value).</p>
+<p>pBits is where the image data will be stored (points to the image data). the last two parameters can be ignored.</p>
+<p>If for any reason the program was unable to create a temporary bitmap, we clean things up and return false (which exits the program).</p>
+<p>If things go as planned, we end up with a temporary bitmap. We use SelectObject to attach the bitmap to the temporary device context.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	// Creating A Bitmap This Way Allows Us To Specify Color Depth And Gives Us Imediate Access To The Bits
+	hbmpTemp = CreateDIBSection(hdcTemp, &amp;bi, DIB_RGB_COLORS, (void**)&amp;pBits, 0, 0);
+	
+	if(!hbmpTemp)								// Did Creation Fail?
+	{
+		DeleteDC(hdcTemp);						// Delete The Device Context
+		pPicture-&gt;Release();						// Decrements IPicture Reference Count
+		return FALSE;							// Return False (Failure)
+	}
+
+	SelectObject(hdcTemp, hbmpTemp);					// Select Handle To Our Temp DC And Our Temp Bitmap Object
+</pre>
+<p>Now we need to fill our temporary bitmap with data from our image. pPicture-&gt;Render will do this for us. It will also resize the image to any size we want (in this case... lWidthPixels by lHeightPixels).</p>
+<p>hdcTemp is our temporary device context. The first two parameters after hdcTemp are the horizontal and vertical offset (the number of blank pixels to the left and from the top). We want the image to fill the entire bitmap, so we select 0 for the horizontal offset and 0 for the vertical offset.</p>
+<p>The fourth parameter is the horizontal dimension of destination bitmap and the fifth parameter is the vertical dimension. These parameters control how much the image is stretched or compressed to fit the dimensions we want.</p>
+<p>The next parameter (0) is the horizontal offset we want to read the source data from. We draw from left to right so the offset is 0. This will make sense once you see what we do with the vertical offset (hopefully).</p>
+<p>The lHeight parameter is the vertical offset. We want to read the data from the bottom of the source image to the top. By using an offset of lHeight, we move to the very bottom of the source image.</p>
+<p>lWidth is the amount to copy in the source picture. We want to copy all of the data horizontally in the source image. lWidth covers all the data from left to right.</p>
+<p>The second last parameter is a little different. It's a negative value. Negative lHeight to be exact. What this means is that we want to copy all of the data vertically, but we want to start copying from the bottom to the top. That way the image is flipped as it's copied to the destination bitmap.</p>
+<p>The last parameter is not used.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	// Render The IPicture On To The Bitmap
+	pPicture-&gt;Render(hdcTemp, 0, 0, lWidthPixels, lHeightPixels, 0, lHeight, lWidth, -lHeight, 0);
+</pre>
+<p>So now we have a new bitmap with a width of lWidthPixels and a height of lHeightPixels. The new bitmap has been flipped right side up.</p>
+<p>Unfortunately the data is stored in BGR format. So we need to swap the Red and Blue pixels to make the bitmap an RGB image. At the same time, we set the alpha value to 255. You can change this value to anything you want. This demo does not use alpha so it has no effect in this tutorial!</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	// Convert From BGR To RGB Format And Add An Alpha Value Of 255
+	for(long i = 0; i &lt; lWidthPixels * lHeightPixels; i++)			// Loop Through All Of The Pixels
+	{
+		BYTE* pPixel	= (BYTE*)(&amp;pBits[i]);				// Grab The Current Pixel
+		BYTE  temp	= pPixel[0];					// Store 1st Color In Temp Variable (Blue)
+		pPixel[0]	= pPixel[2];					// Move Red Value To Correct Position (1st)
+		pPixel[2]	= temp;						// Move Temp Value To Correct Blue Position (3rd)
+		pPixel[3]	= 255;						// Set The Alpha Value To 255
+	}
+</pre>
+<p>Finally, after all of that work, we have a bitmap image that can be used as a texture. We bind to texid, and generate the texture. We want to use linear filtering for both the min and mag (max) filters (looks nice).</p>
+<p>We get the image data from pBits. When generating the texture, we use lWidthPixels and lHeightPixels one last time to set the texture width and height.</p>
+<p>After the 2D texture has been generated, we can clean things up. We no longer need the temporary bitmap or the temporary device context. Both of these are deleted. We can also release pPicture... YAY!!!</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	glGenTextures(1, &amp;texid);						// Create The Texture
+
+	// Typical Texture Generation Using Data From The Bitmap
+	glBindTexture(GL_TEXTURE_2D, texid);					// Bind To The Texture ID
+	glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_LINEAR);		// (Modify This For The Type Of Filtering You Want)
+	glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_LINEAR);		// (Modify This For The Type Of Filtering You Want)
+
+	// (Modify This If You Want Mipmaps)	
+	glTexImage2D(GL_TEXTURE_2D, 0, 3, lWidthPixels, lHeightPixels, 0, GL_RGBA, GL_UNSIGNED_BYTE, pBits);
+
+	DeleteObject(hbmpTemp);							// Delete The Object
+	DeleteDC(hdcTemp);							// Delete The Device Context
+
+	pPicture-&gt;Release();							// Decrements IPicture Reference Count
+
+	return TRUE;								// Return True (All Good)
+}
+</pre>
+<p>The following code checks to see if the users video card support the EXT_fog_coord extension. This code can ONLY be called after your OpenGL program has a Rendering Context. If you try to call it before you set up the window, you will get errors.</p>
+<p>The first thing we do is create a string with the name of our extension.</p>
+<p>We then allocate enough memory to hold the list of OpenGL extensions supported by the users video card. The list of supported extensions is retreived with the command glGetString(GL_EXTENSIONS). The information returned is copied into glextstring.</p>
+<p>Once we have the list of supported extensions we use strstr to see if our extension (Extension_Name) is in the list of supported extensions (glextstring).</p>
+<p>If the extension is not supported, FALSE is returned and the program ends. If everything goes ok, we free glextstring (we no longer need the list of supported extensions).</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">int Extension_Init()
+{
+	char Extension_Name[] = "EXT_fog_coord";
+
+	// Allocate Memory For Our Extension String
+	char* glextstring=(char *)malloc(strlen((char *)glGetString(GL_EXTENSIONS))+1);
+	strcpy (glextstring,(char *)glGetString(GL_EXTENSIONS));		// Grab The Extension List, Store In glextstring
+
+	if (!strstr(glextstring,Extension_Name))				// Check To See If The Extension Is Supported
+		return FALSE;							// If Not, Return FALSE
+
+	free(glextstring);							// Free Allocated Memory
+</pre>
+<p>At the very top of this program we defined glFogCoordfEXT. However, the command will not work until we attach the function to the actual OpenGL extension. We do this by giving glFogCoordfEXT the address of the OpenGL Fog Extension. When we call glFogCoordfEXT, the actual extension code will run, and will receive the parameter passed to glFogCoordfEXT.</p>
+<p>Sorry, this is one of them bits of code that is very hard to explain in simple terms (at least for me).</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	// Setup And Enable glFogCoordEXT
+	glFogCoordfEXT = (PFNGLFOGCOORDFEXTPROC) wglGetProcAddress("glFogCoordfEXT");
+
+	return TRUE;
+}
+</pre>
+<p>This section of code is where we call the routine to check if the extension is supported, load our texture, and set up OpenGL.</p>
+<p>By the time we get to this section of code, our program has an RC (rendering context). This is important because you need to have a rendering context before you can check if an extension is supported by the users video card.</p>
+<p>So we call Extension_Init( ) to see if the card supports the extension. If the extension is not supported, Extension_Init( ) returns false and the check fails. This will cause the program to end. If you wanted to display some type of message box you could. Currently the program will just fail to run.</p>
+<p>If the extension is supported, we attempt to load our wall.bmp texture. The ID for this texture will be texture[0]. If for some reason the texture does not load, the program will end.</p>
+<p>Initialization is simple. We enable 2D texture mapping. We set the clear color to black. The clear depth to 1.0f. We set depth testing to less than or equal to and enable depth testing. The shademodel is set to smooth shading, and we select nicest for our perspective correction.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">BOOL Initialize (GL_Window* window, Keys* keys)					// Any GL Init Code &amp; User Initialiazation Goes Here
+{
+	g_window	= window;						// Window Values
+	g_keys		= keys;							// Key Values
+
+	// Start Of User Initialization
+	if (!Extension_Init())							// Check And Enable Fog Extension If Available
+		return FALSE;							// Return False If Extension Not Supported
+
+	if (!BuildTexture("data/wall.bmp", texture[0]))				// Load The Wall Texture
+		return FALSE;							// Return False If Loading Failed
+
+	glEnable(GL_TEXTURE_2D);						// Enable Texture Mapping
+	glClearColor (0.0f, 0.0f, 0.0f, 0.5f);					// Black Background
+	glClearDepth (1.0f);							// Depth Buffer Setup
+	glDepthFunc (GL_LEQUAL);						// The Type Of Depth Testing
+	glEnable (GL_DEPTH_TEST);						// Enable Depth Testing
+	glShadeModel (GL_SMOOTH);						// Select Smooth Shading
+	glHint (GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);			// Set Perspective Calculations To Most Accurate
+</pre>
+<p>Now for the fun stuff. We need to set up the fog. We start off by enabling fog. The rendering mode we use is linear (nice looking). The fog color is set to fogColor (orange).</p>
+<p>We then need to set the fog start position. This is the least dense section of fog. To make things simple, we will use 1.0f as the least dense value (FOG_START). We will use 0.0f as the most dense area of fog (FOG_END).</p>
+<p>According to all of the documentation I have read, setting the fog hint to GL_NICEST causes the fog to be rendered per pixel. Using GL_FASTEST will render the fog per vertex. I personally do not see a difference.</p>
+<p>The last glFogi(...) command tells OpenGL that we want to set our fog based on vertice coordinates. This allows us to position the fog anywhere in our scene without affecting the entire scene (cool!).</p>
+<p>We set the starting camz value to -19.0f. The actual hallways is 30 units in length. So -19.0f moves us almost the beginning of the hallway (the hallway is rendered from -15.0f to +15.0f on the Z axis).</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	// Set Up Fog 
+	glEnable(GL_FOG);							// Enable Fog
+	glFogi(GL_FOG_MODE, GL_LINEAR);						// Fog Fade Is Linear
+	glFogfv(GL_FOG_COLOR, fogColor);					// Set The Fog Color
+	glFogf(GL_FOG_START,  0.0f);						// Set The Fog Start (Least Dense)
+	glFogf(GL_FOG_END,    1.0f);						// Set The Fog End (Most Dense)
+	glHint(GL_FOG_HINT, GL_NICEST);						// Per-Pixel Fog Calculation
+	glFogi(GL_FOG_COORDINATE_SOURCE_EXT, GL_FOG_COORDINATE_EXT);		// Set Fog Based On Vertice Coordinates
+
+	camz =	-19.0f;								// Set Camera Z Position To -19.0f
+
+	return TRUE;								// Return TRUE (Initialization Successful)
+}
+</pre>
+<p>This section of code is called whenever a user exits the program. There is nothing to clean up so this section of code remains empty!</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">void Deinitialize (void)							// Any User DeInitialization Goes Here
+{
+}
+</pre>
+<p>Here is where we handle the keyboard interaction. Like all previous tutorials, we check to see if the ESC key is pressed. If it is, the application is terminated.</p>
+<p>If the F1 key is pressed, we toggle from fullscreen to windowed mode or from windowed mode to fullscreen.</p>
+<p>The other two keys we check for are the up and down arrow keys. If the UP key is pressed and the value of camz is less than 14.0f we increase camz. This will move the hallway towards the viewer. If we went past 14.0f, we would go right through the back wall. We don't want this to happen :)</p>
+<p>If the DOWN key is pressed and the value of camz is greater than -19.0f we decrease camz. This will move the hallway away from the viewer. If we went past -19.0f, the hallway would be too far into the screen and you would see the entrance to the hallway. Again... this wouldn't be good!</p>
+<p>The value of camz is increased and decreased based on the number of milliseconds that have passed divided by 100.0f. This should force the program to run at the same speed on all types of processors.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">void Update (DWORD milliseconds)						// Perform Motion Updates Here
+{
+	if (g_keys-&gt;keyDown [VK_ESCAPE])					// Is ESC Being Pressed?
+		TerminateApplication (g_window);				// Terminate The Program
+
+	if (g_keys-&gt;keyDown [VK_F1])						// Is F1 Being Pressed?
+		ToggleFullscreen (g_window);					// Toggle Fullscreen Mode
+
+	if (g_keys-&gt;keyDown [VK_UP] &amp;&amp; camz&lt;14.0f)				// Is UP Arrow Being Pressed?
+		camz+=(float)(milliseconds)/100.0f;				// Move Object Closer (Move Forwards Through Hallway)
+
+	if (g_keys-&gt;keyDown [VK_DOWN] &amp;&amp; camz&gt;-19.0f)				// Is DOWN Arrow Being Pressed?
+		camz-=(float)(milliseconds)/100.0f;				// Move Object Further (Move Backwards Through Hallway)
+}
+</pre>
+<p>I'm sure you are dying to get the rendering, but we still have a few things to do before we draw the hallway. First off we need to clear the screen and the depth buffer. We reset the modelview matrix and translate into the screen based on the value stored in camz.</p>
+<p>By increasing or decreasing the value of camz, the hallway will move closer or further away from the viewer. This will give the impression that the viewer is moving forward or backward through the hall... Simple but effective!</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">void Draw (void)
+{
+	glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);			// Clear Screen And Depth Buffer
+	glLoadIdentity ();							// Reset The Modelview Matrix
+
+	glTranslatef(0.0f, 0.0f, camz);						// Move To Our Camera Z Position
+</pre>
+<p>The camera is positioned, so now it is time to render the first quad. This will be the BACK wall (the wall at the end of the hallway).</p>
+<p>We want this wall to be in the thickest of the fog. If you look at the Init section of code, you will see that GL_FOG_END is the most dense section of fog... and it has a value of 1.0f.</p>
+<p>Fog is applied the same way you apply texture coordinates. GL_FOG_END has the most fog, and has a value of 1.0f. So for our first vertex we pass glFogCoordfEXT a value of 1.0f. This will give the bottom (-2.5f on the Y-Axis) left (-2.5f on the X-Axis) vertex of the furthest wall (wall you will see at the end of the tunnel) the most dense fog (1.0f).</p>
+<p>We assign 1.0f to the other 3 glFogCoordfEXT vertices as well. We want all 4 points (way in the distance) to be in dense fog.</p>
+<p>Hopefully by now you understand texture mapping coordinates and glVertex coordinates. I should not have to explain these :)</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	glBegin(GL_QUADS);							// Back Wall
+	 	glFogCoordfEXT(1.0f); glTexCoord2f(0.0f, 0.0f); glVertex3f(-2.5f,-2.5f,-15.0f);
+		glFogCoordfEXT(1.0f); glTexCoord2f(1.0f, 0.0f); glVertex3f( 2.5f,-2.5f,-15.0f);
+		glFogCoordfEXT(1.0f); glTexCoord2f(1.0f, 1.0f); glVertex3f( 2.5f, 2.5f,-15.0f);
+		glFogCoordfEXT(1.0f); glTexCoord2f(0.0f, 1.0f); glVertex3f(-2.5f, 2.5f,-15.0f);
+	glEnd();
+</pre>
+<p>So we have a texture mapped back wall in very dense fog. Now we will draw the floor. It's a little different, but once you spot the pattern it will all become very clear to you!</p>
+<p>Like all quads, the floor has 4 points. The Y value is always -2.5f. The left vertex is -2.5f, the right vertex is 2.5f, and the floor runs from -15.0f on the Z-Axis to +15.0f on the Z-Axis.</p>
+<p>We want the section of floor way in the distance to have the most fog. So once again we give these glFogCoordfEXT vertices a value of 1.0f. Notice that any vertex drawn at -15.0f has a glFogCoordfEXT value of 1.0f...?</p>
+<p>The sections of floor closest the viewer (+15.0f) will have the least amount of fog. GL_START_FOG is the least dense fog and has a value of 0.0f. So for these points we will pass a value of 0.0f to glFogCoordfEXT.</p>
+<p>What you should see if you run the program is really dense fog on the floor near the back and light fog up close. The fog is not dense enough to fill the entire hallway. It actually dies out halfway down the hall, even though GL_START_FOG is 0.0f.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	glBegin(GL_QUADS);							// Floor
+	 	glFogCoordfEXT(1.0f); glTexCoord2f(0.0f, 0.0f); glVertex3f(-2.5f,-2.5f,-15.0f);
+		glFogCoordfEXT(1.0f); glTexCoord2f(1.0f, 0.0f); glVertex3f( 2.5f,-2.5f,-15.0f);
+		glFogCoordfEXT(0.0f); glTexCoord2f(1.0f, 1.0f); glVertex3f( 2.5f,-2.5f, 15.0f);
+		glFogCoordfEXT(0.0f); glTexCoord2f(0.0f, 1.0f); glVertex3f(-2.5f,-2.5f, 15.0f);
+	glEnd();
+</pre>
+<p>The roof is drawn exactly the same way the floor was drawn, with the only difference being that the roof is drawn on the Y-Axis at 2.5f.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	glBegin(GL_QUADS);							// Roof
+		glFogCoordfEXT(1.0f); glTexCoord2f(0.0f, 0.0f); glVertex3f(-2.5f, 2.5f,-15.0f);
+		glFogCoordfEXT(1.0f); glTexCoord2f(1.0f, 0.0f); glVertex3f( 2.5f, 2.5f,-15.0f);
+		glFogCoordfEXT(0.0f); glTexCoord2f(1.0f, 1.0f); glVertex3f( 2.5f, 2.5f, 15.0f);
+		glFogCoordfEXT(0.0f); glTexCoord2f(0.0f, 1.0f); glVertex3f(-2.5f, 2.5f, 15.0f);
+	glEnd();
+</pre>
+<p>The right wall is also drawn the same way. Except the X-Axis is always 2.5f. The furthest points on the Z-Axis are still set to glFogCoordfEXT(1.0f) and the closest points on the z-Axis are still set to glFogCoordfEXT(0.0f).</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	glBegin(GL_QUADS);							// Right Wall
+		glFogCoordfEXT(0.0f); glTexCoord2f(0.0f, 0.0f); glVertex3f( 2.5f,-2.5f, 15.0f);
+		glFogCoordfEXT(0.0f); glTexCoord2f(0.0f, 1.0f); glVertex3f( 2.5f, 2.5f, 15.0f);
+		glFogCoordfEXT(1.0f); glTexCoord2f(1.0f, 1.0f); glVertex3f( 2.5f, 2.5f,-15.0f);
+		glFogCoordfEXT(1.0f); glTexCoord2f(1.0f, 0.0f); glVertex3f( 2.5f,-2.5f,-15.0f);
+	glEnd();
+</pre>
+<p>Hopefully by now you understand how things work. Anything in the distance will have more fog, and should be set to a value of 1.0f. Anything up close should be set to 0.0f.</p>
+<p>Of course you can always play around with the GL_FOG_START and GL_FOG_END values to see how they affect the scene.</p>
+<p>The effect does not look convincing if you swap the start and end values. The illusion is created by the back wall being completely orange! The effect looks best in dead ends or tight corners where the player can not face away from the fog!</p>
+<p>This type of fog effect works best when the player can see into the room that has fog, but can not actually go into the room. A good example would be a deep pit covered with some type of grate. The player could look down into the pit, but would not be able to get in to the pit.</p>
+<pre class="brush: cpp; fontsize: 100; first-line: 1;">	glBegin(GL_QUADS);							// Left Wall
+	 	glFogCoordfEXT(0.0f); glTexCoord2f(0.0f, 0.0f); glVertex3f(-2.5f,-2.5f, 15.0f);
+		glFogCoordfEXT(0.0f); glTexCoord2f(0.0f, 1.0f); glVertex3f(-2.5f, 2.5f, 15.0f);
+		glFogCoordfEXT(1.0f); glTexCoord2f(1.0f, 1.0f); glVertex3f(-2.5f, 2.5f,-15.0f);
+		glFogCoordfEXT(1.0f); glTexCoord2f(1.0f, 0.0f); glVertex3f(-2.5f,-2.5f,-15.0f);
+	glEnd();
+ 
+	glFlush ();								// Flush The GL Rendering Pipeline
+}
+</pre>
+<p>I really hope you enjoy this tutorial. It was created over a period of 3 days... 4 hours a day. Most of the time was spent writing the text you are currently reading.</p>
+<p>I wanted to make a 3D room with fog in one corner of the room. Unfortunately, I had very little time to work on the code.</p>
+<p>Even though the hallway in this tutorial is very simple, the actual fog effect is quite cool! Modifying the code for use in projects of your own should take very little effort.</p>
+<p>This tutorials shows you how to use the glFogCoordfEXT. It's fast, looks great and is very easy to use! It is important to note that this is just ONE of many different ways to create volumetric fog. The same effect can be created using blending, particles, masks, etc.</p>
+<p>As always... if you find mistakes in this tutorial let me know. If you think you can describe a section of code better (my wording is not always clear), send me an email!</p>
+<p>A lot of the text was written late at night, and although it's not an excuse, my typing gets a little worse as I get more sleepy. Please email me if you find duplicate words, spelling mistakes, etc.</p>
+<p>The original idea for this tutorial was sent to me a long time ago. Since then I have lost the original email. To the person that sent this idea in... Thank You!</p>
+<p><strong>Jeff Molofee</strong> (<strong>NeHe</strong>)</p>
+<p>* DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/vc/lesson41.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/vc/lesson41.zip'" tppabs="http://nehe.gamedev.net/data/lessons/vc/lesson41.zip">Visual C++</a> Code For This Lesson.</p>
+<p>* DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/bcb6/lesson41_bcb6.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/bcb6/lesson41_bcb6.zip'" tppabs="http://nehe.gamedev.net/data/lessons/bcb6/lesson41_bcb6.zip">Borland C++ Builder 6</a> Code For This Lesson. ( Conversion by <a href="mailto:conglth@hotmail.com">Le Thanh Cong</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/cwarrior/lesson41.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/cwarrior/lesson41.zip'" tppabs="http://nehe.gamedev.net/data/lessons/cwarrior/lesson41.zip">Code Warrior 5.3</a> Code For This Lesson. ( Conversion by <a href="mailto:DelusionalBeing@hotmail.com">Scott Lupton</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/delphi/lesson41.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/delphi/lesson41.zip'" tppabs="http://nehe.gamedev.net/data/lessons/delphi/lesson41.zip">Delphi</a> Code For This Lesson. ( Conversion by <a href="mailto:michal_praha@seznam.cz">Michal Tucek</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/devc/lesson41.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/devc/lesson41.zip'" tppabs="http://nehe.gamedev.net/data/lessons/devc/lesson41.zip">Dev C++</a> Code For This Lesson. ( Conversion by <a href="mailto:rdieffenbach@chello.nl">Rob Dieffenbach</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/linuxsdl/lesson41.tar.gz  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/linuxsdl/lesson41.tar.gz'" tppabs="http://nehe.gamedev.net/data/lessons/linuxsdl/lesson41.tar.gz">Linux/SDL</a> Code For This Lesson. ( Conversion by <a href="mailto:ant@solace.mh.se">Anthony Whitehead</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/python/lesson41.tar.gz  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/python/lesson41.tar.gz'" tppabs="http://nehe.gamedev.net/data/lessons/python/lesson41.tar.gz">Python</a> Code For This Lesson. ( Conversion by <a href="mailto:bleair@comcast.net">Brian Leair</a> )<br /> * DOWNLOAD <a href="javascript:if(confirm('http://nehe.gamedev5.net/data/lessons/vs_net/lesson41.zip  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?'))window.location='http://nehe.gamedev5.net/data/lessons/vs_net/lesson41.zip'" tppabs="http://nehe.gamedev.net/data/lessons/vs_net/lesson41.zip">Visual Studio .NET</a> Code For This Lesson. ( Conversion by <a href="mailto:webmaster@joachimrohde.de">Joachim Rohde</a> )</p>
+<p><strong><span><a href="index-80.htm" tppabs="http://nehe.gamedev.net/data/lessons/lesson.asp?lesson=40">&lt; Lesson 40</a></span></strong><strong><span><a href="index-82.htm" tppabs="http://nehe.gamedev.net/data/lessons/lesson.asp?lesson=42">Lesson 42 &gt;</a></span></strong></p>
+
+
+</div>
+</div>
+
+
+
+            <div style="width:728px;padding:0px;margin:auto; margin-top: 10px;">
+            
+
+    
+                <!-- Leaderboard_NeHe -->
+                <div id='div-gpt-ad-1327940144417-0' style='width:728px; height:90px;'>
+                <script type='text/javascript'>
+                googletag.cmd.push(function() { googletag.display('div-gpt-ad-1327940144417-0'); });
+                </script>
+                </div>
+            
+
+                           
+            </div>   
+        </td>
+        <td class="col2">
+            
+
+
+
+
+<div style="text-align: center; padding:10px;">
+
+<script type='text/javascript'>
+    GA_googleFillSlot("Skyscraper_NeHe");
+</script>
+
+</div>
+            
+        </td>
+    </table>
+    <div id="footer">
+        <p>
+            
+    
+    © 1997-2012 Gamedev . All rights reserved.<br/>
+
+			NeHe™ and NeHe Productions™ are trademarks of GameDev.net, LLC<br/>
+			OpenGL® is a registered trademark of Silicon Graphics Inc.<br/>
+		</p>        
+		<br/>
+    </div>
+
+    
+    
+	    <script type="text/javascript" src="shCore.js" tppabs="http://nehe.gamedev.net/static/js/syntax_highlighter/shCore.js"></script>
+        <script type="text/javascript" src="shBrushCpp.js" tppabs="http://nehe.gamedev.net/static/js/syntax_highlighter/shBrushCpp.js"></script>
+	    <script type="text/javascript" src="shBrushJScript.js" tppabs="http://nehe.gamedev.net/static/js/syntax_highlighter/shBrushJScript.js"></script>
+	    <script type="text/javascript">SyntaxHighlighter.all();</script>
+    
+
+    <!-- Place this render call where appropriate -->
+    <script type="text/javascript">
+      (function() {
+        var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+        po.src = 'plusone.js'/*tpa=https://apis.google.com/js/plusone.js*/;
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+      })();
+    </script>    
+
+    
+<!-- GoogleAnalytics code -->
+<script src="urchin.js" tppabs="http://www.google-analytics.com/urchin.js" type="text/javascript">
+</script>
+<script type="text/javascript">
+_uacct = "UA-279474-2"; // Gamedev
+urchinTracker();
+_uff = 0; // Reset for second account
+_uacct = "UA-24180731-1"; // Non-GD
+urchinTracker();
+</script> 
+  </body>
+</html>

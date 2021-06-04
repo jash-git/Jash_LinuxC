@@ -1,0 +1,669 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<!-- 这篇文章由Dancingwind翻译，作者的联系方式zhouwei02@mails.tsinghua.edu.cn -->
+<html>
+<head>
+<title>NeHe OpenGL教程第十课，DancingWind翻译</title>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<style type=text/css>
+A:link {COLOR: #ccaaff; TEXT-DECORATION: none}
+A:visited {COLOR: #ccaaff; TEXT-DECORATION: none}
+A:active {COLOR: #ccaaff; TEXT-DECORATION: none}
+A:hover {COLOR: #ffccaa; TEXT-DECORATION: none}
+</style>
+</head>
+
+<br><br>
+
+<body bgcolor=#000000 text=#ffffff><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td width=326 height=130><img src="logo.png" tppabs="http://www.owlei.com/DancingWind/Pic/logo.png" width=326 height=130></td>
+    <td valign=middle align=center width="75%"><font color=#ffccaa size=+3><b><i>第10课</i></b></font></td>
+  </tr></table>
+  <!-- 上边框-->
+<table border="0" cellPadding="0" cellSpacing="0" width="100%">
+<TBODY>
+  <tr>
+    <td><img height="28" src="tl.jpg" tppabs="http://www.owlei.com/DancingWind/Pic/tl.jpg" width="28"></td>
+    <td width="100%"><img height="28" src="tc.gif" tppabs="http://www.owlei.com/DancingWind/Pic/tc.gif" width="100%"></td>
+    <td><img height="28" src="tr.gif" tppabs="http://www.owlei.com/DancingWind/Pic/tr.gif" width="28"></td>
+  </tr>
+</TBODY>
+</table>
+
+<!-- 中部-->
+<table border="0" cellPadding="0" cellSpacing="0" width="100%">
+<TBODY>
+  <tr>
+  	<!-- 中部左边框-->
+    <td  background="l.gif" tppabs="http://www.owlei.com/DancingWind/Pic/l.gif"><img src="l.gif" tppabs="http://www.owlei.com/DancingWind/Pic/l.gif" width="28" height="28"></td>
+	<!-- 中部文字部分-->
+    <td vAlign="top" width="100%">
+	<table width="100%" border="0">
+          <tr>
+            <td width="25%"><img src="lesson10.jpg" tppabs="http://www.owlei.com/DancingWind/Pic/lesson10.jpg" width="240" height="180"></td>
+            <td width="75%"><p><FONT class=head>加载3D世界，并在其中漫游:</FONT></p>
+              <p><font size="3">在这一课中，你将学会如何加载3D世界，并在3D世界中漫游。这一课使用第一课的代码，当然在课程说明中我只介绍改变了代码。</FONT></p></td>
+          </tr>
+     </table>
+      </td>
+	<!-- 中部右边框-->
+    <td background="r.gif" tppabs="http://www.owlei.com/DancingWind/Pic/r.gif"><img src="r.gif" tppabs="http://www.owlei.com/DancingWind/Pic/r.gif" width="28" height="28"></td>
+  </tr>
+</TBODY>
+</table>
+
+<!-- 下边框-->
+<table border="0" cellPadding="0" cellSpacing="0" width="100%">
+<TBODY>
+  <tr>
+    <td><img height="28" src="bl.gif" tppabs="http://www.owlei.com/DancingWind/Pic/bl.gif" width="28"></td>
+    <td width="100%"><img height="28" src="bc.gif" tppabs="http://www.owlei.com/DancingWind/Pic/bc.gif" width="100%"></td>
+    <td><img height="28" src="br.gif" tppabs="http://www.owlei.com/DancingWind/Pic/br.gif" width="28"></td>
+  </tr>
+</TBODY>
+</table>
+  <table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top> 这一课是由Lionel Brits (βtelgeuse)所写的。在本课中我们只对增加的代码做解释。当然只添加课程中所写的代码，程序是不会运行的。如果您有兴趣知道下面的每一行代码是如何运行的话，请下载完整的源码，并在浏览这一课的同时，对源码进行跟踪。<br>
+      好了现在欢迎来到名不见经传的第十课。到现在为止，您应该有能力创建一个旋转的立方体或一群星星了，对3D编程也应该有些感觉了吧？但还是请等一下！不要立马冲动地要开始写个Quake<br>
+      IV，好不好...:)。只靠旋转的立方体还很难来创造一个可以决一死战的酷毙了的对手....:)。现在这些日子您所需要的是一个大一点的、更复杂些的、动态3D世界，它带有空间的六自由度和花哨的效果如镜像、入口、扭曲等等，当然还要有更快的帧显示速度。这一课就要解释一个基本的3D世界&quot;结构&quot;，以及如何在这个世界里游走。<br>
+      数据结构<br>
+      当您想要使用一系列的数字来完美的表达3D环境时，随着环境复杂度的上升，这个工作的难度也会随之上升。出于这个原因，我们必须将数据归类,使其具有更多的可操作性风格。在程序清单头部出现了sector(区段)的定义。每个3D世界基本上可以看作是sector(区段)的集合。一个sector(区段)可以是一个房间、一个立方体、或者任意一个闭合的区间。</td>
+    <td background="r.gif" tppabs="http://www.owlei.com/DancingWind/Pic/r.gif"><img src="r.gif" tppabs="http://www.owlei.com/DancingWind/Pic/r.gif" width="28" height="28"></td>
+  </tr>
+
+</table>
+
+<table border="0" cellPadding="0" cellSpacing="0" width="100%">
+<TBODY>
+  <tr>
+    <td><img height="28" src="bl.gif" tppabs="http://www.owlei.com/DancingWind/Pic/bl.gif" width="28"></td>
+    <td width="100%"><img height="28" src="bc.gif" tppabs="http://www.owlei.com/DancingWind/Pic/bc.gif" width="100%"></td>
+    <td><img height="28" src="br.gif" tppabs="http://www.owlei.com/DancingWind/Pic/br.gif" width="28"></td>
+  </tr>
+</TBODY>
+</table>
+<font color="#aaffaa" size="3"> 
+<pre>typedef struct tagSECTOR						<font color="#ffffaa">// 创建Sector区段结构</font>
+{
+	int numtriangles;						<font
+color="#ffffaa">// Sector中的三角形个数</font>
+	TRIANGLE* triangle;						<font
+color="#ffffaa">// 指向三角数组的指针</font>
+} SECTOR;								<font
+color="#ffffaa">// 命名为SECTOR</font>
+</pre>
+</font> 
+<table border="0" cellPadding="0" cellSpacing="0" width="100%">
+<TBODY>
+  <tr>
+    <td><img height="28" src="tl.jpg" tppabs="http://www.owlei.com/DancingWind/Pic/tl.jpg" width="28"></td>
+    <td width="100%"><img height="28" src="tc.gif" tppabs="http://www.owlei.com/DancingWind/Pic/tc.gif" width="100%"></td>
+    <td><img height="28" src="tr.gif" tppabs="http://www.owlei.com/DancingWind/Pic/tr.gif" width="28"></td>
+  </tr>
+</TBODY>
+</table>
+
+<table border="0" cellPadding="0" cellSpacing="0" width="100%">
+<TBODY>
+  <tr>
+    <td background="l.gif" tppabs="http://www.owlei.com/DancingWind/Pic/l.gif"><img src="l.gif" tppabs="http://www.owlei.com/DancingWind/Pic/l.gif" width="28" height="28"></td>
+      <td vAlign="top" width="100%"> 一个sector(区段)包含了一系列的多边形，所以下一个目标就是triangle(我们将只用三角形，这样写代码更容易些)。</td>
+    <td background="r.gif" tppabs="http://www.owlei.com/DancingWind/Pic/r.gif"><img src="r.gif" tppabs="http://www.owlei.com/DancingWind/Pic/r.gif" width="28" height="28"></td>
+  </tr>
+</TBODY>
+</table>
+
+<table border="0" cellPadding="0" cellSpacing="0" width="100%">
+<TBODY>
+  <tr>
+    <td><img height="28" src="bl.gif" tppabs="http://www.owlei.com/DancingWind/Pic/bl.gif" width="28"></td>
+    <td width="100%"><img height="28" src="bc.gif" tppabs="http://www.owlei.com/DancingWind/Pic/bc.gif" width="100%"></td>
+    <td><img height="28" src="br.gif" tppabs="http://www.owlei.com/DancingWind/Pic/br.gif" width="28"></td>
+  </tr>
+</TBODY>
+</table>
+<font color="#aaffaa" size="3"> 
+<pre>typedef struct tagTRIANGLE						<font color="#ffffaa">// 创建Triangle三角形结构</font>
+{
+	VERTEX vertex[3];						<font
+color="#ffffaa">// VERTEX矢量数组，大小为3</font>
+} TRIANGLE;								<font color="#ffffaa">// 命名为 TRIANGLE</font>
+</pre>
+</font> 
+<table border="0" cellPadding="0" cellSpacing="0" width="100%">
+<TBODY>
+  <tr>
+    <td><img height="28" src="tl.jpg" tppabs="http://www.owlei.com/DancingWind/Pic/tl.jpg" width="28"></td>
+    <td width="100%"><img height="28" src="tc.gif" tppabs="http://www.owlei.com/DancingWind/Pic/tc.gif" width="100%"></td>
+    <td><img height="28" src="tr.gif" tppabs="http://www.owlei.com/DancingWind/Pic/tr.gif" width="28"></td>
+  </tr>
+</TBODY>
+</table>
+
+<table border="0" cellPadding="0" cellSpacing="0" width="100%">
+<TBODY>
+  <tr>
+    <td background="l.gif" tppabs="http://www.owlei.com/DancingWind/Pic/l.gif"><img src="l.gif" tppabs="http://www.owlei.com/DancingWind/Pic/l.gif" width="28" height="28"></td>
+      <td vAlign="top" width="100%">三角形本质上是由一些(两个以上)顶点组成的多边形，顶点同时也是我们的最基本的分类单位。顶点包含了OpenGL真正感兴趣的数据。我们用3D空间中的坐标值(x,y,z)以及它们的纹理坐标(u,v)来定义三角形的每个顶点。</td>
+    <td background="r.gif" tppabs="http://www.owlei.com/DancingWind/Pic/r.gif"><img src="r.gif" tppabs="http://www.owlei.com/DancingWind/Pic/r.gif" width="28" height="28"></td>
+  </tr>
+</TBODY>
+</table>
+
+<table border="0" cellPadding="0" cellSpacing="0" width="100%">
+<TBODY>
+  <tr>
+    <td><img height="28" src="bl.gif" tppabs="http://www.owlei.com/DancingWind/Pic/bl.gif" width="28"></td>
+    <td width="100%"><img height="28" src="bc.gif" tppabs="http://www.owlei.com/DancingWind/Pic/bc.gif" width="100%"></td>
+    <td><img height="28" src="br.gif" tppabs="http://www.owlei.com/DancingWind/Pic/br.gif" width="28"></td>
+  </tr>
+</TBODY>
+</table>
+<font color="#aaffaa" size="3"> 
+<pre>typedef struct tagVERTEX						<font color="#ffffaa">// 创建Vertex顶点结构</font>
+{
+	float x, y, z;							<font
+color="#ffffaa">// 3D 坐标</font>
+	float u, v;							<font color="#ffffaa">// 纹理坐标</font>
+} VERTEX;								<font
+color="#ffffaa">// 命名为VERTEX</font>
+</pre>
+</font> 
+<table border="0" cellPadding="0" cellSpacing="0" width="100%">
+<TBODY>
+  <tr>
+    <td><img height="28" src="tl.jpg" tppabs="http://www.owlei.com/DancingWind/Pic/tl.jpg" width="28"></td>
+    <td width="100%"><img height="28" src="tc.gif" tppabs="http://www.owlei.com/DancingWind/Pic/tc.gif" width="100%"></td>
+    <td><img height="28" src="tr.gif" tppabs="http://www.owlei.com/DancingWind/Pic/tr.gif" width="28"></td>
+  </tr>
+</TBODY>
+</table>
+
+<table border="0" cellPadding="0" cellSpacing="0" width="100%">
+<TBODY>
+  <tr>
+    <td background="l.gif" tppabs="http://www.owlei.com/DancingWind/Pic/l.gif"><img src="l.gif" tppabs="http://www.owlei.com/DancingWind/Pic/l.gif" width="28" height="28"></td>
+      <td vAlign="top" width="100%"><p>载入文件<br>
+          在程序内部直接存储数据会让程序显得太过死板和无趣。从磁盘上载入世界资料，会给我们带来更多的弹性，可以让我们体验不同的世界，而不用被迫重新编译程序。另一个好处就是用户可以切换世界资料并修改它们而无需知道程序如何读入输出这些资料的。数据文件的类型我们准备使用文本格式。这样编辑起来更容易，写的代码也更少。等将来我们也许会使用二进制文件。 
+        </p>
+        <p> 问题是，怎样才能从文件中取得数据资料呢？首先，创建一个叫做SetupWorld()的新函数。把这个文件定义为filein，并且使用只读方式打开文件。我们必须在使用完毕之后关闭文件。大家一起来看看现在的代码：<br>
+        </p></td>
+    <td background="r.gif" tppabs="http://www.owlei.com/DancingWind/Pic/r.gif"><img src="r.gif" tppabs="http://www.owlei.com/DancingWind/Pic/r.gif" width="28" height="28"></td>
+  </tr>
+</TBODY>
+</table>
+
+<table border="0" cellPadding="0" cellSpacing="0" width="100%">
+<TBODY>
+  <tr>
+    <td><img height="28" src="bl.gif" tppabs="http://www.owlei.com/DancingWind/Pic/bl.gif" width="28"></td>
+    <td width="100%"><img height="28" src="bc.gif" tppabs="http://www.owlei.com/DancingWind/Pic/bc.gif" width="100%"></td>
+    <td><img height="28" src="br.gif" tppabs="http://www.owlei.com/DancingWind/Pic/br.gif" width="28"></td>
+  </tr>
+</TBODY>
+</table>
+<font color="#aaffaa" size="3"> 
+<pre><font color="#ffffaa">// 先前的定义： char* worldfile = &quot;data\\world.txt&quot;;</font>
+void SetupWorld()							<font
+color="#ffffaa">// 设置我们的世界</font>
+{
+	FILE *filein;							<font color="#ffffaa">// 工作文件</font>
+	filein = fopen(worldfile, &quot;rt&quot;);				<font
+color="#ffffaa">// 打开文件</font>
+
+	...
+	(读入数据资料))
+	...
+
+	fclose(filein);							<font
+color="#ffffaa">// 关闭文件</font>
+	return;								<font color="#ffffaa">// 返回</font>
+}
+</pre>
+</font> 
+<table border="0" cellPadding="0" cellSpacing="0" width="100%">
+<TBODY>
+  <tr>
+    <td><img height="28" src="tl.jpg" tppabs="http://www.owlei.com/DancingWind/Pic/tl.jpg" width="28"></td>
+    <td width="100%"><img height="28" src="tc.gif" tppabs="http://www.owlei.com/DancingWind/Pic/tc.gif" width="100%"></td>
+    <td><img height="28" src="tr.gif" tppabs="http://www.owlei.com/DancingWind/Pic/tr.gif" width="28"></td>
+  </tr>
+</TBODY>
+</table>
+
+<table border="0" cellPadding="0" cellSpacing="0" width="100%">
+<TBODY>
+  <tr>
+    <td background="l.gif" tppabs="http://www.owlei.com/DancingWind/Pic/l.gif"><img src="l.gif" tppabs="http://www.owlei.com/DancingWind/Pic/l.gif" width="28" height="28"></td>
+      <td vAlign="top" width="100%"> 下一个挑战是将每个单独的文本行读入变量。这有很多办法可以做到。一个问题是文件中并不是所有的行都包含有意义的信息。空行和注释不应该被读入。我们创建了一个叫做readstr()的函数。这个函数会从数据文件中读入一个有意义的行至一个已经初始化过的字符串。下面就是代码：<br></td>
+    <td background="r.gif" tppabs="http://www.owlei.com/DancingWind/Pic/r.gif"><img src="r.gif" tppabs="http://www.owlei.com/DancingWind/Pic/r.gif" width="28" height="28"></td>
+  </tr>
+</TBODY>
+</table>
+
+<table border="0" cellPadding="0" cellSpacing="0" width="100%">
+<TBODY>
+  <tr>
+    <td><img height="28" src="bl.gif" tppabs="http://www.owlei.com/DancingWind/Pic/bl.gif" width="28"></td>
+    <td width="100%"><img height="28" src="bc.gif" tppabs="http://www.owlei.com/DancingWind/Pic/bc.gif" width="100%"></td>
+    <td><img height="28" src="br.gif" tppabs="http://www.owlei.com/DancingWind/Pic/br.gif" width="28"></td>
+  </tr>
+</TBODY>
+</table>
+<font color="#aaffaa" size="3"> 
+<pre>void readstr(FILE *f,char *string)					<font color="#ffffaa">//  读入一个字符串</font>
+
+{
+	do								<font
+color="#ffffaa">// 循环开始</font>
+	{
+		fgets(string, 255, f);					<font color="#ffffaa">// 读入一行</font>
+	} while ((string[0] == '/') || (string[0] == '\n'));		<font
+color="#ffffaa">// 考察是否有必要进行处理</font>
+	return;								<font
+color="#ffffaa">// 返回</font>
+}
+</pre>
+</font> 
+<table border="0" cellPadding="0" cellSpacing="0" width="100%">
+<TBODY>
+  <tr>
+    <td><img height="28" src="tl.jpg" tppabs="http://www.owlei.com/DancingWind/Pic/tl.jpg" width="28"></td>
+    <td width="100%"><img height="28" src="tc.gif" tppabs="http://www.owlei.com/DancingWind/Pic/tc.gif" width="100%"></td>
+    <td><img height="28" src="tr.gif" tppabs="http://www.owlei.com/DancingWind/Pic/tr.gif" width="28"></td>
+  </tr>
+</TBODY>
+</table>
+
+<table border="0" cellPadding="0" cellSpacing="0" width="100%">
+<TBODY>
+  <tr>
+    <td background="l.gif" tppabs="http://www.owlei.com/DancingWind/Pic/l.gif"><img src="l.gif" tppabs="http://www.owlei.com/DancingWind/Pic/l.gif" width="28" height="28"></td>
+      <td vAlign="top" width="100%"> 下一步我们读入区段数据。这一课将只处理一个区段，不过实现一个多区段引擎也很容易。让我们将注意力转回SetupWorld()。程序必须知道区段内包含了多少个三角形。我们在数据文件中以下面这种形式定义三角形数量：<br>
+        接下来是读取三角形数量的代码：</td>
+    <td background="r.gif" tppabs="http://www.owlei.com/DancingWind/Pic/r.gif"><img src="r.gif" tppabs="http://www.owlei.com/DancingWind/Pic/r.gif" width="28" height="28"></td>
+  </tr>
+</TBODY>
+</table>
+
+<table border="0" cellPadding="0" cellSpacing="0" width="100%">
+<TBODY>
+  <tr>
+    <td><img height="28" src="bl.gif" tppabs="http://www.owlei.com/DancingWind/Pic/bl.gif" width="28"></td>
+    <td width="100%"><img height="28" src="bc.gif" tppabs="http://www.owlei.com/DancingWind/Pic/bc.gif" width="100%"></td>
+    <td><img height="28" src="br.gif" tppabs="http://www.owlei.com/DancingWind/Pic/br.gif" width="28"></td>
+  </tr>
+</TBODY>
+</table>
+<font color="#aaffaa" size="3"> 
+<pre>int numtriangles;							<font color="#ffffaa">// 区段中的三角形数量</font>
+char oneline[255];							<font
+color="#ffffaa">// 存储数据的字符串</font>
+...
+readstr(filein,oneline);						<font
+color="#ffffaa">// 读入一行数据</font>
+sscanf(oneline, &quot;NUMPOLLIES %d\n&quot;, &amp;numtriangles);			<font
+color="#ffffaa">// 读入三角形数量</font>
+</pre>
+</font> 
+<table border="0" cellPadding="0" cellSpacing="0" width="100%">
+<TBODY>
+  <tr>
+    <td><img height="28" src="tl.jpg" tppabs="http://www.owlei.com/DancingWind/Pic/tl.jpg" width="28"></td>
+    <td width="100%"><img height="28" src="tc.gif" tppabs="http://www.owlei.com/DancingWind/Pic/tc.gif" width="100%"></td>
+    <td><img height="28" src="tr.gif" tppabs="http://www.owlei.com/DancingWind/Pic/tr.gif" width="28"></td>
+  </tr>
+</TBODY>
+</table>
+
+<table border="0" cellPadding="0" cellSpacing="0" width="100%">
+<TBODY>
+  <tr>
+    <td background="l.gif" tppabs="http://www.owlei.com/DancingWind/Pic/l.gif"><img src="l.gif" tppabs="http://www.owlei.com/DancingWind/Pic/l.gif" width="28" height="28"></td>
+      <td vAlign="top" width="100%">余下的世界载入过程采用了相似的方法。接着，我们对区段进行初始化，并读入部分数据：</td>
+    <td background="r.gif" tppabs="http://www.owlei.com/DancingWind/Pic/r.gif"><img src="r.gif" tppabs="http://www.owlei.com/DancingWind/Pic/r.gif" width="28" height="28"></td>
+  </tr>
+</TBODY>
+</table>
+
+<table border="0" cellPadding="0" cellSpacing="0" width="100%">
+<TBODY>
+  <tr>
+    <td><img height="28" src="bl.gif" tppabs="http://www.owlei.com/DancingWind/Pic/bl.gif" width="28"></td>
+    <td width="100%"><img height="28" src="bc.gif" tppabs="http://www.owlei.com/DancingWind/Pic/bc.gif" width="100%"></td>
+    <td><img height="28" src="br.gif" tppabs="http://www.owlei.com/DancingWind/Pic/br.gif" width="28"></td>
+  </tr>
+</TBODY>
+</table>
+<font color="#aaffaa" size="3"> 
+<pre><font color="#ffffaa">// 先前的定义: SECTOR sector1;</font>
+char oneline[255];							<font
+color="#ffffaa">// 存储数据的字符串</font>
+int numtriangles;							<font
+color="#ffffaa">// 区段的三角形数量</font>
+float x, y, z, u, v;							<font
+color="#ffffaa">// 3D 和 纹理坐标</font>
+...
+sector1.triangle = new TRIANGLE[numtriangles];				<font
+color="#ffffaa">// 为numtriangles个三角形分配内存并设定指针</font>
+sector1.numtriangles = numtriangles;					<font
+color="#ffffaa">// 定义区段1中的三角形数量</font>
+<font color="#ffffaa">// 遍历区段中的每个三角形</font>
+for (int triloop = 0; triloop &lt; numtriangles; triloop++)		<font
+color="#ffffaa">// 遍历所有的三角形</font>
+{
+	<font color="#ffffaa">// 遍历三角形的每个顶点</font>
+	for (int vertloop = 0; vertloop &lt; 3; vertloop++)		<font
+color="#ffffaa">// 遍历所有的顶点</font>
+	{
+		readstr(filein,oneline);				<font
+color="#ffffaa">// 读入一行数据</font>
+		<font color="#ffffaa">// 读入各自的顶点数据</font>
+		sscanf(oneline, &quot;%f %f %f %f %f&quot;, &amp;x, &amp;y, &amp;z, &amp;u, &amp;v);
+		<font
+color="#ffffaa">// 将顶点数据存入各自的顶点</font>
+		sector1.triangle[triloop].vertex[vertloop].x = x;	<font
+color="#ffffaa">// 区段 1,  第 triloop 个三角形, 第  vertloop 个顶点, 值 x =x</font>
+		sector1.triangle[triloop].vertex[vertloop].y = y;	<font
+color="#ffffaa">// 区段 1,  第 triloop 个三角形, 第  vertloop 个顶点, 值 y =y</font>
+		sector1.triangle[triloop].vertex[vertloop].z = z;	<font
+color="#ffffaa">// 区段 1,  第 triloop 个三角形, 第  vertloop 个顶点, 值  z =z</font>
+		sector1.triangle[triloop].vertex[vertloop].u = u;	<font
+color="#ffffaa">// 区段 1,  第 triloop 个三角形, 第  vertloop 个顶点, 值  u =u</font>
+		sector1.triangle[triloop].vertex[vertloop].v = v;	<font
+color="#ffffaa">// 区段 1,  第 triloop 个三角形, 第  vertloop 个顶点, 值  e=v</font>
+	}
+}
+</pre>
+</font> 
+<table border="0" cellPadding="0" cellSpacing="0" width="100%">
+<TBODY>
+  <tr>
+    <td><img height="28" src="tl.jpg" tppabs="http://www.owlei.com/DancingWind/Pic/tl.jpg" width="28"></td>
+    <td width="100%"><img height="28" src="tc.gif" tppabs="http://www.owlei.com/DancingWind/Pic/tc.gif" width="100%"></td>
+    <td><img height="28" src="tr.gif" tppabs="http://www.owlei.com/DancingWind/Pic/tr.gif" width="28"></td>
+  </tr>
+</TBODY>
+</table>
+
+<table border="0" cellPadding="0" cellSpacing="0" width="100%">
+<TBODY>
+  <tr>
+    <td background="l.gif" tppabs="http://www.owlei.com/DancingWind/Pic/l.gif"><img src="l.gif" tppabs="http://www.owlei.com/DancingWind/Pic/l.gif" width="28" height="28"></td>
+      <td vAlign="top" width="100%"><font face="arial" size="-1">&nbsp;</font>数据文件中每个三角形都以如下形式声明:<br>
+        X1 Y1 Z1 U1 V1<br>
+        X2 Y2 Z2 U2 V2<br>
+        X3 Y3 Z3 U3 V3<br>
+        显示世界<br>
+        现在区段已经载入内存，我们下一步要在屏幕上显示它。到目前为止，我们所作过的都是些简单的旋转和平移。但我们的镜头始终位于原点(0，0，0)处。任何一个不错的3D引擎都会允许用户在这个世界中游走和遍历，我们的这个也一样。实现这个功能的一种途径是直接移动镜头并绘制以镜头为中心的3D环境。这样做会很慢并且不易用代码实现。我们的解决方法如下：
+		<ul>
+		<li>根据用户的指令旋转并变换镜头位置。</li>
+        <li>围绕原点，以与镜头相反的旋转方向来旋转世界。(让人产生镜头旋转的错觉)</li>
+        <li>以与镜头平移方式相反的方式来平移世界(让人产生镜头移动的错觉)。</li>
+		</ul>
+        <p>这样实现起来就很简单.<br>
+          下面从第一步开始吧(平移并旋转镜头)。<br>
+        </p>
+        </td>
+    <td background="r.gif" tppabs="http://www.owlei.com/DancingWind/Pic/r.gif"><img src="r.gif" tppabs="http://www.owlei.com/DancingWind/Pic/r.gif" width="28" height="28"></td>
+  </tr>
+</TBODY>
+</table>
+
+<table border="0" cellPadding="0" cellSpacing="0" width="100%">
+<TBODY>
+  <tr>
+    <td><img height="28" src="bl.gif" tppabs="http://www.owlei.com/DancingWind/Pic/bl.gif" width="28"></td>
+    <td width="100%"><img height="28" src="bc.gif" tppabs="http://www.owlei.com/DancingWind/Pic/bc.gif" width="100%"></td>
+    <td><img height="28" src="br.gif" tppabs="http://www.owlei.com/DancingWind/Pic/br.gif" width="28"></td>
+  </tr>
+</TBODY>
+</table>
+<font color="#aaffaa" size="3"> 
+<pre>if (keys[VK_RIGHT])							<font color="#ffffaa">// 右方向键按下了么?</font>
+{
+	yrot -= 1.5f;							<font
+color="#ffffaa">// 向左旋转场景</font>
+}
+
+if (keys[VK_LEFT])							<font
+color="#ffffaa">// 左方向键按下了么?</font>
+{
+	yrot += 1.5f;							<font
+color="#ffffaa">// 向右侧旋转场景</font>
+}
+
+if (keys[VK_UP])							<font
+color="#ffffaa">// 向上方向键按下了么?</font>
+{
+	xpos -= (float)sin(heading*piover180) * 0.05f;			<font
+color="#ffffaa">// 沿游戏者所在的X平面移动</font>
+	zpos -= (float)cos(heading*piover180) * 0.05f;			<font
+color="#ffffaa">// 沿游戏者所在的Z平面移动</font>
+	if (walkbiasangle &gt;= 359.0f)					<font
+color="#ffffaa">// 如果walkbiasangle大于</font><font color="#aaffaa" size="3"><font
+color="#ffffaa">359度</font></font>
+	{
+		walkbiasangle = 0.0f;					<font
+color="#ffffaa">// 将 walkbiasangle 设为0</font>
+	}
+	else								<font color="#ffffaa">// 否则</font>
+	{
+		 walkbiasangle+= 10;					<font
+color="#ffffaa">// 如果 walkbiasangle &lt; 359 ，则增加 10</font>
+	}
+	walkbias = (float)sin(walkbiasangle * piover180)/20.0f;		<font
+color="#ffffaa">// 使游戏者产生跳跃感</font>
+}
+
+if (keys[VK_DOWN])							<font
+color="#ffffaa">// 向下方向键按下了么？</font>
+{
+	xpos += (float)sin(heading*piover180) * 0.05f;			<font
+color="#ffffaa">// 沿游戏者所在的X平面移动</font>
+	zpos += (float)cos(heading*piover180) * 0.05f;			<font
+color="#ffffaa">// 沿游戏者所在的Z平面移动</font>
+	if (walkbiasangle &lt;= 1.0f)					<font
+color="#ffffaa">// 如果walkbiasangle小于1度</font>
+	{
+		walkbiasangle = 359.0f;					<font
+color="#ffffaa">// 使 walkbiasangle 等于 359</font>
+	}
+	else								<font color="#ffffaa">// 否则</font>
+	{
+		walkbiasangle-= 10;					<font
+color="#ffffaa">// 如果 walkbiasangle &gt; 1 减去 10</font>
+	}
+	walkbias = (float)sin(walkbiasangle * piover180)/20.0f;		<font
+color="#ffffaa">// 使游戏者产生跳跃感</font>
+}
+</pre>
+</font> 
+<table border="0" cellPadding="0" cellSpacing="0" width="100%">
+<TBODY>
+  <tr>
+    <td><img height="28" src="tl.jpg" tppabs="http://www.owlei.com/DancingWind/Pic/tl.jpg" width="28"></td>
+    <td width="100%"><img height="28" src="tc.gif" tppabs="http://www.owlei.com/DancingWind/Pic/tc.gif" width="100%"></td>
+    <td><img height="28" src="tr.gif" tppabs="http://www.owlei.com/DancingWind/Pic/tr.gif" width="28"></td>
+  </tr>
+</TBODY>
+</table>
+
+<table border="0" cellPadding="0" cellSpacing="0" width="100%">
+<TBODY>
+  <tr>
+    <td background="l.gif" tppabs="http://www.owlei.com/DancingWind/Pic/l.gif"><img src="l.gif" tppabs="http://www.owlei.com/DancingWind/Pic/l.gif" width="28" height="28"></td>
+      <td vAlign="top" width="100%"> 这个实现很简单。当左右方向键按下后，旋转变量yrot<br>
+        相应增加或减少。当前后方向键按下后，我们使用sine和cosine函数重新生成镜头位置(您需要些许三角函数学的知识:-)。Piover180<br>
+        是一个很简单的折算因子用来折算度和弧度。<br>
+        接着您可能会问：walkbias是什么意思？这是NeHe的发明的单词:-)。基本上就是当人行走时头部产生上下摆动的幅度。我们使用简单的sine正弦波来调节镜头的Y轴位置。如果不添加这个而只是前后移动的话，程序看起来就没这么棒了。<br>
+        现在，我们已经有了下面这些变量。可以开始进行步骤2和3了。由于我们的程序还不太复杂，我们无需新建一个函数，而是直接在显示循环中完成这些步骤。</td>
+    <td background="r.gif" tppabs="http://www.owlei.com/DancingWind/Pic/r.gif"><img src="r.gif" tppabs="http://www.owlei.com/DancingWind/Pic/r.gif" width="28" height="28"></td>
+  </tr>
+</TBODY>
+</table>
+
+<table border="0" cellPadding="0" cellSpacing="0" width="100%">
+<TBODY>
+  <tr>
+    <td><img height="28" src="bl.gif" tppabs="http://www.owlei.com/DancingWind/Pic/bl.gif" width="28"></td>
+    <td width="100%"><img height="28" src="bc.gif" tppabs="http://www.owlei.com/DancingWind/Pic/bc.gif" width="100%"></td>
+    <td><img height="28" src="br.gif" tppabs="http://www.owlei.com/DancingWind/Pic/br.gif" width="28"></td>
+  </tr>
+</TBODY>
+</table>
+<font color="#aaffaa" size="3"> 
+<pre>int DrawGLScene(GLvoid)							<font color="#ffffaa">// 绘制 OpenGL 场景</font>
+{
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);		<font
+color="#ffffaa">// 清除 场景 和 深度缓冲</font>
+	glLoadIdentity();						<font
+color="#ffffaa">// 重置当前矩阵</font>
+
+
+	GLfloat x_m, y_m, z_m, u_m, v_m;				<font
+color="#ffffaa">// 顶点的临时 X, Y, Z, U 和 V 的数值</font>
+	GLfloat xtrans = -xpos;						<font
+color="#ffffaa">// 用于游戏者沿X轴平移时的大小</font>
+	GLfloat ztrans = -zpos;						<font
+color="#ffffaa">// 用于游戏者沿Z轴平移时的大小</font>
+	GLfloat ytrans = -walkbias-0.25f;				<font
+color="#ffffaa">// 用于头部的上下摆动</font>
+	GLfloat sceneroty = 360.0f - yrot;				<font
+color="#ffffaa">// 位于游戏者方向的360度角</font>
+
+	int numtriangles;						<font
+color="#ffffaa">// 保有三角形数量的整数</font>
+
+	glRotatef(lookupdown,1.0f,0,0);					<font
+color="#ffffaa">// 上下旋转</font>
+	glRotatef(sceneroty,0,1.0f,0);					<font
+color="#ffffaa">// 根据游戏者正面所对方向所作的旋转</font>
+
+	glTranslatef(xtrans, ytrans, ztrans);				<font
+color="#ffffaa">// 以游戏者为中心的平移场景</font>
+	glBindTexture(GL_TEXTURE_2D, texture[filter]);			<font
+color="#ffffaa">// 根据 filter 选择的纹理</font>
+
+	numtriangles = sector1.numtriangles;				<font
+color="#ffffaa">// 取得Sector1的三角形数量</font>
+
+	<font color="#ffffaa">// 逐个处理三角形</font>
+	for (int loop_m = 0; loop_m &lt; numtriangles; loop_m++)		<font
+color="#ffffaa">// 遍历所有的三角形</font>
+	{
+		glBegin(GL_TRIANGLES);					<font
+color="#ffffaa">// 开始绘制三角形</font>
+			glNormal3f( 0.0f, 0.0f, 1.0f);			<font
+color="#ffffaa">// 指向前面的法线</font>
+			x_m = sector1.triangle[loop_m].vertex[0].x;	<font
+color="#ffffaa">// 第一点的 X 分量</font>
+			y_m = sector1.triangle[loop_m].vertex[0].y;	<font
+color="#ffffaa">// 第一点的 Y 分量</font>
+			z_m = sector1.triangle[loop_m].vertex[0].z;	<font
+color="#ffffaa">// 第一点的 Z 分量</font>
+			u_m = sector1.triangle[loop_m].vertex[0].u;	<font
+color="#ffffaa">// 第一点的 U  纹理坐标</font>
+			v_m = sector1.triangle[loop_m].vertex[0].v;	<font
+color="#ffffaa">// 第一点的 V  纹理坐标</font>
+			glTexCoord2f(u_m,v_m); glVertex3f(x_m,y_m,z_m);	<font
+color="#ffffaa">// 设置纹理坐标和顶点</font>
+
+			x_m = sector1.triangle[loop_m].vertex[1].x;	<font
+color="#ffffaa">// 第二点的 X 分量</font>
+			y_m = sector1.triangle[loop_m].vertex[1].y;	<font
+color="#ffffaa">// 第二点的 Y 分量</font>
+			z_m = sector1.triangle[loop_m].vertex[1].z;	<font
+color="#ffffaa">// 第二点的 Z 分量</font>
+			u_m = sector1.triangle[loop_m].vertex[1].u;	<font
+color="#ffffaa">// 第二点的 U  纹理坐标</font>
+			v_m = sector1.triangle[loop_m].vertex[1].v;	<font
+color="#ffffaa">// 第二点的 V  纹理坐标</font>
+			glTexCoord2f(u_m,v_m); glVertex3f(x_m,y_m,z_m);	<font
+color="#ffffaa">// 设置纹理坐标和顶点</font>
+
+			x_m = sector1.triangle[loop_m].vertex[2].x;	<font
+color="#ffffaa">// 第三点的 X 分量</font>
+			y_m = sector1.triangle[loop_m].vertex[2].y;	<font
+color="#ffffaa">// 第三点的 Y 分量</font>
+			z_m = sector1.triangle[loop_m].vertex[2].z;	<font
+color="#ffffaa">// 第三点的 Z 分量</font>
+			u_m = sector1.triangle[loop_m].vertex[2].u;	<font
+color="#ffffaa">// 第二点的 U  纹理坐标</font>
+			v_m = sector1.triangle[loop_m].vertex[2].v;	<font
+color="#ffffaa">// 第二点的 V  纹理坐标</font>
+			glTexCoord2f(u_m,v_m); glVertex3f(x_m,y_m,z_m);	<font
+color="#ffffaa">// 设置纹理坐标和顶点</font>
+		glEnd();						<font
+color="#ffffaa">// 三角形绘制结束</font>
+	}
+	return TRUE;							<font
+color="#ffffaa">// 返回</font>
+}
+</pre>
+</font> 
+<table border="0" cellPadding="0" cellSpacing="0" width="100%">
+<TBODY>
+  <tr>
+    <td><img height="28" src="tl.jpg" tppabs="http://www.owlei.com/DancingWind/Pic/tl.jpg" width="28"></td>
+    <td width="100%"><img height="28" src="tc.gif" tppabs="http://www.owlei.com/DancingWind/Pic/tc.gif" width="100%"></td>
+    <td><img height="28" src="tr.gif" tppabs="http://www.owlei.com/DancingWind/Pic/tr.gif" width="28"></td>
+  </tr>
+</TBODY>
+</table>
+
+<table border="0" cellPadding="0" cellSpacing="0" width="100%">
+<TBODY>
+  <tr>
+    <td background="l.gif" tppabs="http://www.owlei.com/DancingWind/Pic/l.gif"><img src="l.gif" tppabs="http://www.owlei.com/DancingWind/Pic/l.gif" width="28" height="28"></td>
+      <td vAlign="top" width="100%"> <p>搞定！我们已经完成了自己的第一帧画面。这绝对算不上什么Quake，但咳...,我们绝对也不是Carmack或者Abrash。运行程序时，您可以按下F、B、<br>
+          PgUp 和 PgDown 键来看看效果。PgUp /<br>
+          PgDown简单的上下倾斜镜头。如果NeHe决定保留的话，程序中使用的纹理取自于我的学校ID证件上的照片，并且做了浮雕效果....:)。<br>
+          现在您也许在考虑下一步该做什么。但还是不要考虑使用这些代码来实现完整的3D引擎，写这个程序的目的也并非如此。您也许希望您的游戏中不止存在一个Sector，尤其是实现类似入口这样的部分，您还可能需要使用多边形(超过3个顶点)。程序现在的代码实现允许载入多个Sector并剔除了背面(背向镜头不用绘制的多边形)。将来我会写个这样的教程，但这需要更多的数学知识基础。 
+        </p>
+<table width="100%" border="1">
+  <tr>
+    <td width="27%"><img src="logo 3.jpg" tppabs="http://www.owlei.com/DancingWind/images/logo%203.jpg" width="209" height="200" align="middle"></td>
+    <td width="73%">版权与使用声明:<br>
+      我是个对学习和生活充满激情的普通男孩,在网络上我以DancingWind为昵称，我的联系方式是zhouwei02@mails.tsinghua.edu.cn，如果你有任何问题，都可以联系我。
+      <p>引子<br>
+        网络是一个共享的资源，但我在自己的学习生涯中浪费大量的时间去搜索可用的资料，在现实生活中花费了大量的金钱和时间在书店中寻找资料，于是我给自己起了个昵称DancingWind，其意义是想风一样从各个知识的站点中吸取成长的养料。在飘荡了多年之后，我决定把自己收集的资料整理为一个统一的资源库。</p>
+      <p>版权声明<br>
+        所有DancingWind发表的内容，大多都来自共享的资源，所以我没有资格把它们据为己有，或声称自己为这些资源作出了一点贡献。故任何人都可以复制，修改，重新发表，甚至以自己的名义发表，我都不会追究，但你在做以上事情的时候必须保证内容的完整性，给后来的人一个完整的教程。最后，任何人不能以这些资料的任何部分，谋取任何形式的报酬。</p>
+      <p>发展计划<br>
+        在国外，很多资料都是很多人花费几年的时间慢慢积累起来的。如果任何人有兴趣与别人共享你的知识，我很欢迎你与我联系，但你必须同意我上面的声明。</p>
+              <p>感谢<br>
+                感谢我的母亲一直以来对我的支持和在生活上的照顾。<br>
+                感谢我深爱的女友田芹，一直以来默默的在精神上和生活中对我的支持，她甚至把买衣服的钱都用来给我买书了，她真的是我见过的最好的女孩，希望我能带给她幸福。</p>
+              <p>资源下载: <br>
+                文档 <a href="javascript:if(confirm('http://www.owlei.com/DancingWind/Res/mht/NeHe%20OpenGL%20Chinese%20Course%2010.mht  \n\nThis file was not retrieved by Teleport Pro, because the server reports that this file cannot be found.  \n\nDo you want to open it from the server?'))window.location='http://www.owlei.com/DancingWind/Res/mht/NeHe%20OpenGL%20Chinese%20Course%2010.mht'" tppabs="http://www.owlei.com/DancingWind/Res/mht/NeHe%20OpenGL%20Chinese%20Course%2010.mht">网页格式</a> 
+                <a href="javascript:if(confirm('http://www.owlei.com/DancingWind/Res/pdf/OpenGL_Nehe_Course_Tutorial_10.pdf  \n\nThis file was not retrieved by Teleport Pro, because the server reports that this file cannot be found.  \n\nDo you want to open it from the server?'))window.location='http://www.owlei.com/DancingWind/Res/pdf/OpenGL_Nehe_Course_Tutorial_10.pdf'" tppabs="http://www.owlei.com/DancingWind/Res/pdf/OpenGL_Nehe_Course_Tutorial_10.pdf">PDF格式</a><br>
+                源码 <a href="javascript:if(confirm('http://www.owlei.com/DancingWind/Res/Src/10_3DWorld.rar  \n\nThis file was not retrieved by Teleport Pro, because the server reports that this file cannot be found.  \n\nDo you want to open it from the server?'))window.location='http://www.owlei.com/DancingWind/Res/Src/10_3DWorld.rar'" tppabs="http://www.owlei.com/DancingWind/Res/Src/10_3DWorld.rar">RAR格式</a></p></td>
+  </tr>
+</table>
+        <table border="0" width="100%">
+<TBODY>
+      <tr>
+              <td align="left" width="50%"><a href="Tutorial_09.htm" tppabs="http://www.owlei.com/DancingWind/Course/Tutorial_09.htm"><b><font size="-1">&lt; 
+                第09课</font></b></a></td>
+              <td align="right" width="50%"><a href="Tutorial_11.htm" tppabs="http://www.owlei.com/DancingWind/Course/Tutorial_11.htm"><b><font size="-1">第11课 
+                &gt;</font></b></a></td>
+      </tr>
+</TBODY>
+    </table>
+    </td>
+    <td background="r.gif" tppabs="http://www.owlei.com/DancingWind/Pic/r.gif"><img src="r.gif" tppabs="http://www.owlei.com/DancingWind/Pic/r.gif" width="28" height="28"></td>
+  </tr>
+</TBODY>
+</table>
+
+<table border="0" cellPadding="0" cellSpacing="0" width="100%">
+  <TBODY>
+  <tr>
+    <td><img height="28" src="bl.gif" tppabs="http://www.owlei.com/DancingWind/Pic/bl.gif" width="28"></td>
+    <td width="100%"><img height="28" src="bc.gif" tppabs="http://www.owlei.com/DancingWind/Pic/bc.gif" width="100%"></td>
+    <td><img height="28" src="br.gif" tppabs="http://www.owlei.com/DancingWind/Pic/br.gif" width="28"></td>
+  </tr>
+</TBODY>
+</table>
+
+</body>
+</html>

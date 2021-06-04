@@ -1,0 +1,428 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<!-- 这篇文章由Dancingwind翻译，作者的联系方式zhouwei02@mails.tsinghua.edu.cn --><html>
+<head>
+<title>NeHe OpenGL教程第三十八课，DancingWind翻译</title>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<style type=text/css>
+A:link {COLOR: #ccaaff; TEXT-DECORATION: none}
+A:visited {COLOR: #ccaaff; TEXT-DECORATION: none}
+A:active {COLOR: #ccaaff; TEXT-DECORATION: none}
+A:hover {COLOR: #ffccaa; TEXT-DECORATION: none}
+</style>
+</head>
+
+<br><br>
+
+<body bgcolor=#000000 text=#ffffff><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td width=326 height=130><img src="logo.png" tppabs="http://www.owlei.com/DancingWind/Pic/logo.png" width=326 height=130></td>
+    <td valign=middle align=center width="75%"><font color=#ffccaa size=+3><b><i>第38课 
+      </i></b></font></td>
+  </tr></table>
+  <!-- 上边框-->
+<table border="0" cellPadding="0" cellSpacing="0" width="100%">
+<TBODY>
+  <tr>
+    <td><img height="28" src="tl.jpg" tppabs="http://www.owlei.com/DancingWind/Pic/tl.jpg" width="28"></td>
+    <td width="100%"><img height="28" src="tc.gif" tppabs="http://www.owlei.com/DancingWind/Pic/tc.gif" width="100%"></td>
+    <td><img height="28" src="tr.gif" tppabs="http://www.owlei.com/DancingWind/Pic/tr.gif" width="28"></td>
+  </tr>
+</TBODY>
+</table>
+
+<!-- 中部-->
+<table border="0" cellPadding="0" cellSpacing="0" width="100%">
+<TBODY>
+  <tr>
+  	<!-- 中部左边框-->
+    <td  background="l.gif" tppabs="http://www.owlei.com/DancingWind/Pic/l.gif"><img src="l.gif" tppabs="http://www.owlei.com/DancingWind/Pic/l.gif" width="28" height="28"></td>
+	<!-- 中部文字部分-->
+    <td vAlign="top" width="100%">
+	<table width="100%" border="0">
+          <tr>
+            <td width="32%"><img src="lesson38.jpg" tppabs="http://www.owlei.com/DancingWind/Pic/lesson38.jpg" width="240" height="180"></td>
+            <td width="68%"><p><FONT class=head>从资源文件中载入图像:</FONT></p>
+              <p><font size="3">如何把图像数据保存到*.exe程序中，使用Windows的资源文件吧，它既简单又实用。</FONT></p></td>
+          </tr>
+     </table>
+      </td>
+	<!-- 中部右边框-->
+    <td background="r.gif" tppabs="http://www.owlei.com/DancingWind/Pic/r.gif"><img src="r.gif" tppabs="http://www.owlei.com/DancingWind/Pic/r.gif" width="28" height="28"></td>
+  </tr>
+</TBODY>
+</table>
+
+<!-- 下边框-->
+<table border="0" cellPadding="0" cellSpacing="0" width="100%">
+<TBODY>
+  <tr>
+    <td><img height="28" src="bl.gif" tppabs="http://www.owlei.com/DancingWind/Pic/bl.gif" width="28"></td>
+    <td width="100%"><img height="28" src="bc.gif" tppabs="http://www.owlei.com/DancingWind/Pic/bc.gif" width="100%"></td>
+    <td><img height="28" src="br.gif" tppabs="http://www.owlei.com/DancingWind/Pic/br.gif" width="28"></td>
+  </tr>
+</TBODY>
+</table>
+  <table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>欢迎来到NeHe教程第38课。离上节课的写作已经有些时日了，加上写了一整天的code，也许笔头已经开始生锈了 
+      :) 
+      <p>现在你已经学会了如何做方格贴图，如何读入bitmap及各种光栅图像...那么如何做三角形贴图，又如何在.exe文件中体现你的纹理呢？ </p>
+      <p>我每每被问及这两个问题，可是一旦你看到他们是多么简单，你就会大骂自己居然没有想到过 :) </p>
+      <p>我不会事无巨细地解释每一个细节，只需给你一些抓图，就明白了。我将基于最新的code，请在主页&quot;NeHeGL I Basecode&quot;下或者这张网页最下面下载。 
+      </p>
+      <p>首先，我们把图像加载入资源文件。我向大家已经知道怎么做了，只是，你忽略了几步，于是值得到一些无用的资源文件。里面有bitmap文件，却无法使用。 
+      </p>
+      <p>还记得吧？我们使用Visual C++ 6.0 做的。如果你使用其它工具，这页教材关于资源的部分（尤其是那些图）完全不适用。 </p>
+      <p>* 暂时你只能用24bit BMP 图像。如果读8bit BMP文件要写很多额外的code。我很希望听到你们谁有更小的/更好的loader。我这里的读入8bit 
+        和 24bit BMP 的code实在臃肿。用LoadImage就可以。 <br>
+      </p>
+      <FONT face=Tahoma,Verdana,sans-serif size=-1> 
+      <center>
+        <img src="resource1.jpg" tppabs="http://www.owlei.com/DancingWind/Pic/resource1.jpg"> 
+      </center>
+      <br>
+      <br>
+      </font>打开文件，点击“插入”菜单，选“资源”<FONT face=Tahoma,Verdana,sans-serif size=-1><br>
+      <br>
+      <center>
+        <img src="resource2.jpg" tppabs="http://www.owlei.com/DancingWind/Pic/resource2.jpg"> 
+      </center>
+      </font>然后选择你要插入的资源类型BITMAP文件，单击&quot;插入&quot; <FONT face=Tahoma,Verdana,sans-serif size=-1><br>
+      <center>
+        <img src="resource3.jpg" tppabs="http://www.owlei.com/DancingWind/Pic/resource3.jpg"> 
+      </center>
+      </font>然后是文件窗口，进入DATA目录，选中三个图形文件（用Ctrl啦）然后点“读入”。注意文件类型是否正确。 <FONT face=Tahoma,Verdana,sans-serif size=-1> 
+      <center>
+        <img src="resource4.jpg" tppabs="http://www.owlei.com/DancingWind/Pic/resource4.jpg"> 
+      </center>
+      </font>接下来会弹出三次警告（一个文件一次），说读入正确，但该文件不能被浏览或编辑，因为它有多于256种颜色。没什么的！<FONT face=Tahoma,Verdana,sans-serif size=-1> 
+      <center>
+        <img src="resource5.jpg" tppabs="http://www.owlei.com/DancingWind/Pic/resource5.jpg"> 
+      </center>
+      <br>
+      <br>
+      </font>一旦所有图形都调入，将会出现一个列表。每个图分配有一个ID，每个ID都是IDB_BITMAP打头的，然后数字1-3。你要是懒得改，就不用管它了。不过我们还都比较勤快！ 
+      <FONT face=Tahoma,Verdana,sans-serif size=-1><br>
+      <br>
+      <center>
+        <img src="resource6.jpg" tppabs="http://www.owlei.com/DancingWind/Pic/resource6.jpg"> 
+      </center>
+      <br>
+      <br>
+      </font>右健单击每个ID，选&quot;属性&quot;，然后重命名，使之与文件名匹配。就像我图片上那样。<FONT face=Tahoma,Verdana,sans-serif size=-1><br>
+      <br>
+      <center>
+        <img src="resource7.jpg" tppabs="http://www.owlei.com/DancingWind/Pic/resource7.jpg"> 
+      </center>
+      <br>
+      <br>
+      </font>接下来，选“文件--〉全部保存”。你刚刚创建一个新的资源文件，所以Windows会问你取什么名字。你随便拉，也可以叫&quot;lesson38.rc&quot; 
+      , 然后保存。 
+      <p>到此为止，你有了一个资源文件，里面全是保存在硬盘上的Bitmap 图形文件，要使用这些文件，你还需要完成一系列步骤。 </p>
+      <FONT face=Tahoma,Verdana,sans-serif size=-1><br>
+      <br>
+      <center>
+        <img src="resource8.jpg" tppabs="http://www.owlei.com/DancingWind/Pic/resource8.jpg"> 
+      </center>
+      <br>
+      </font><br>
+      接下来该把资源文件加到你自己的项目里面了。选“项目--〉添加到项目--〉文件”<FONT face=Tahoma,Verdana,sans-serif size=-1><br>
+      <br>
+      <center>
+        <img src="resource9.jpg" tppabs="http://www.owlei.com/DancingWind/Pic/resource9.jpg"> 
+      </center>
+      <br>
+      </font><br>
+      选择resorce.h文件和资源文件Lesson38.rc（用Ctrl）<FONT face=Tahoma,Verdana,sans-serif size=-1><br>
+      <br>
+      <center>
+        <img src="resource10.jpg" tppabs="http://www.owlei.com/DancingWind/Pic/resource10.jpg"> 
+      </center>
+      <br>
+      <br>
+      </font>最后确认资源文件Lesson38.rc放入RESOURCE FILES文件夹。就像上面图片里那样，点击并拖入RESOURCE FILES文件夹就好了。 
+      <p>移动之后选“文件--〉全部保存”，然后文件部分就好了。好多的图阿:) </p>
+      <p>然后我们开始code的部分。下面一段最重要的一行是#include &quot;resource.h&quot;.没有这行，编译的时候就会有无数未定义变量的错误。resource.h文件定义了资源文件里的对象。所以要从IDB_BUTTERFLY1里面读取数据的话，最好include这个头文件 
+        ! </p>
+      <FONT face=Tahoma,Verdana,sans-serif size=-1>&nbsp; </font></td>
+    <td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table><font color=#aaffaa size=3>
+<pre>
+#include &lt;windows.h&gt;			
+#include &lt;gl\gl.h&gt;										
+#include &lt;gl\glu.h&gt;										
+#include &lt;gl\glaux.h&gt;										
+#include "NeHeGL.h"									
+#include "resource.h"										<font color=#ffffaa>// 资源文件的头文件</font>
+
+#pragma comment( lib, "opengl32.lib" )								
+#pragma comment( lib, "glu32.lib" )								
+#pragma comment( lib, "glaux.lib" )								
+
+GL_Window*	g_window;
+Keys*		g_keys;
+</pre>
+</font><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>下面一段第一行分配三个纹理所需空间，接下来的结构体用于保存关于约50个在屏幕上运动的物体的信息。<br>
+      tex将跟踪每个物体所用纹理，x是物体的x坐标，y是y坐标，z,z坐标，yi是一个随机数用来控制物体下落速度，<br>
+      spinz用来控制沿z轴的旋转，spinzi是另一个随机树，记录旋转速度。flap用来控制物体的翅膀（一会在解释这个）随机数fi控制翅膀拍打的速度。 
+      <br></td><td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table><font color=#aaffaa size=3>
+<pre>
+<font color=#ffffaa>// 定义三个保存纹理变量的ID</font>
+GLuint texture[3];											<font color=#ffffaa>// 保存三个纹理</font>
+
+struct object											<font color=#ffffaa>// 定义一个物体</font>
+{
+	int   tex;										<font color=#ffffaa>// 纹理值</font>
+	float x;										<font color=#ffffaa>	// 位置</font>
+	float y;										
+	float z;										
+	float yi;											<font color=#ffffaa>// 速度</font>
+	float spinz;										<font color=#ffffaa>// 沿Z轴旋转的角度和速度</font>
+	float spinzi;										
+	float flap;										<font color=#ffffaa>// 是否翻转三角形</font>
+	float fi;										
+};
+
+object obj[50];											<font color=#ffffaa>// 创建50个物体</font>
+</pre>
+</font><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>下面一段代码是物体obj[loop]的初始化，loop从0到49（表示50个物体中的一个）。首先是随机纹理从0到2表示<br>
+      一个随机着色的蝴蝶。x坐标随机的取-17.0f到+17.0f之间的值，y取18.0f，也就是从屏幕的上面一点点开始，<br>
+      这样一开始时看不到物体的。z也是-10.0f到-40.f之间的随机数，spinzi取-1.0f到1.0f之间。flap取翅膀中心<br>
+      位置，为0.0f。最后拍打速度fi和下落速度yi也是随机的。<br></td><td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table><font color=#aaffaa size=3>
+<pre>
+void SetObject(int loop)									<font color=#ffffaa>// 循环设置50个物体</font>
+{
+	obj[loop].tex=rand()%3;								<font color=#ffffaa>// 纹理</font>
+	obj[loop].x=rand()%34-17.0f;							<font color=#ffffaa>// 位置</font>
+	obj[loop].y=18.0f;									
+	obj[loop].z=-((rand()%30000/1000.0f)+10.0f);						
+	obj[loop].spinzi=(rand()%10000)/5000.0f-1.0f;						<font color=#ffffaa>// 旋转</font>
+	obj[loop].flap=0.0f;									
+	obj[loop].fi=0.05f+(rand()%100)/1000.0f;						
+	obj[loop].yi=0.001f+(rand()%1000)/10000.0f;						
+}
+</pre>
+</font><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>这回该到了最有意思的地方了。从资源文件中读入bitmap，转为纹理。hBMP是指向这个bitmap文件的指针，<br>
+      它将告诉我们的程序从哪里读取数据。BMP是一个bitmap结构体，我们把从资源文件中读取的数据保存在里面。<br>
+      第三行是告诉我们的程序我们将使用哪些ID：IDB_BUTTERFLY1,IDB_BUTTERFLY2,IDB_BUTTERFLY3。要用更多<br>
+      的图像的话，只需增加资源文件中的图像，并在Texture[]中增加新的ID。 <br></td><td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table><font color=#aaffaa size=3>
+<pre>
+void LoadGLTextures()										<font color=#ffffaa>// 资源文件中读入bitmap，转为纹理</font>
+{
+	HBITMAP hBMP;										<font color=#ffffaa>// 位图句柄</font>
+	BITMAP	BMP;										<font color=#ffffaa>// 位图结构</font>
+
+	<font color=#ffffaa>// 纹理句柄</font>
+	byte	Texture[]={ IDB_BUTTERFLY1, IDB_BUTTERFLY2, IDB_BUTTERFLY3 };
+</pre>
+</font><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top><FONT color="#FFFFFF">下面一行使用sizeof(Texture)来计算要创建多少个纹理。我们有3个ID，也就是3个纹理。</font></td>
+    <td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table><font color=#aaffaa size=3>
+<pre>
+	glGenTextures(sizeof(Texture), &amp;texture[0]);							<font color=#ffffaa>// 创建三个纹理</font>
+	for (int loop=0; loop&lt;sizeof(Texture); loop++)						<font color=#ffffaa>// 循环载入所有的位图</font>
+	{
+</pre>
+</font><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>LoadImage需要如下参数：GetModuleHandle(NULL)-指向实例的句柄，MAKEINTRESOURCE(Texture[loop])-把Texture[loop]从整型转为一个资<br>
+      源值，也就是要读的图形文件。IMAGE_BITMAP-告诉我们要读的是一个bitmap文件。 <br>
+      接下来两个参数(0,0)是读入图像的高度和宽度像素数，使用默认大小就设为0。 <br>
+      最后一个参数(LR_CREATEDIBSECTION)返回DIB section bitmap??这是一个没有保存颜色信息的bitmap。也正是我们需要的。 
+      <br>
+      hBMP 指向从LoadImage()读入的bitmap数据。 <br></td><td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table><font color=#aaffaa size=3><pre>
+		hBMP=(HBITMAP)LoadImage(GetModuleHandle(NULL),MAKEINTRESOURCE(Texture[loop]), IMAGE_BITMAP, 0, 0, LR_CREATEDIBSECTION);
+</pre></font><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>检查指针hBMP是否有效，即指向有用数据。如果没有指向任何数据，也可以弹出错误提示。 <br>
+      如果数据存在，用GetObject()从hBMP取得数据(sizeof(BMP))并存储在BMP中。 <br>
+      glPixelStorei告诉OpenGL这些数据是以word alignments存储的，也就是每像素4字节。 <br>
+      绑定纹理，设置滤波方式为GL_LINEAR_MIPMAP_LINEAR(又好又光滑)，然后生成纹理。 <br>
+      注意到我们使用BMP.bmWidth和BMP.bmHeight获取图像的高度和宽度。并用GL_BGR_EXT交换红蓝，实际使用的资源数据是从BMP.bmBits中取得的<br>
+      。 <br>
+      最后删除bitmap对象，释放所有与之相联系的系统资源空间。 <br></td><td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table><font color=#aaffaa size=3>
+<pre>
+		if (hBMP)									<font color=#ffffaa>// 位图是否存在</font>
+		{									<font color=#ffffaa>// 存在</font>
+			GetObject(hBMP,sizeof(BMP), &amp;BMP);					<font color=#ffffaa>// 获得位图</font>
+			glPixelStorei(GL_UNPACK_ALIGNMENT,4);				<font color=#ffffaa>// 以四字节方式对其内存</font>
+			glBindTexture(GL_TEXTURE_2D, texture[loop]);				<font color=#ffffaa>// 绑定位图</font>
+			glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_LINEAR);		<font color=#ffffaa>// 设置纹理过滤器</font>
+			glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_LINEAR_MIPMAP_LINEAR); <font color=#ffffaa>
+		// 创建纹理</font>
+			gluBuild2DMipmaps(GL_TEXTURE_2D, 3, BMP.bmWidth, BMP.bmHeight, GL_BGR_EXT, GL_UNSIGNED_BYTE, BMP.bmBits);
+			DeleteObject(hBMP);						<font color=#ffffaa>// 删除位图对象</font>
+		}
+	}
+}
+</pre>
+</font><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>init code没有什么新鲜的，只是增加了LoadGLTextures()调用上面的code。清屏的颜色是黑色，不进行深度检测，这样比较快。启用纹理映<br>
+      射和混色效果。 <br></td><td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table><font color=#aaffaa size=3>
+<pre>
+BOOL Initialize (GL_Window* window, Keys* keys)							<font color=#ffffaa>// 初始化</font>
+{
+	g_window	= window;
+	g_keys		= keys;
+
+	LoadGLTextures();										<font color=#ffffaa>//载入纹理</font>
+
+	glClearColor (0.0f, 0.0f, 0.0f, 0.5f);							<font color=#ffffaa>// 设置背景</font>
+	glClearDepth (1.0f);									
+	glDepthFunc (GL_LEQUAL);								
+	glDisable(GL_DEPTH_TEST);									<font color=#ffffaa>// 启用深度测试</font>
+	glShadeModel (GL_SMOOTH);								
+	glHint (GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);				
+	glEnable(GL_TEXTURE_2D);									<font color=#ffffaa>// 启用2D纹理</font>
+	glBlendFunc(GL_ONE,GL_SRC_ALPHA);								<font color=#ffffaa>// 使用混合</font>
+	glEnable(GL_BLEND);									</pre>
+</font><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top><FONT color="#000066">初始化所有的物体</font></td>
+    <td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table><font color=#aaffaa size=3>
+<pre>
+	for (int loop=0; loop&lt;50; loop++)
+	{
+		SetObject(loop);							
+	}
+
+	return TRUE;										<font color=#ffffaa>// 成功返回</font>
+}
+
+void Deinitialize (void)									
+{
+}
+
+void Update (DWORD milliseconds)									<font color=#ffffaa>// 更新,执行动画</font>
+{
+	if (g_keys-&gt;keyDown [VK_ESCAPE] == TRUE)							<font color=#ffffaa>// 按ESC退出</font>
+	{
+		TerminateApplication (g_window);						
+	}
+
+	if (g_keys-&gt;keyDown [VK_F1] == TRUE)								<font color=#ffffaa>// 按F1切换显示模式</font>
+	{
+		ToggleFullscreen (g_window);							
+	}
+}
+</pre>
+</font><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>接下来看看绘制代码。在这部分我将讲解如何用尽可能简单的方式将一个图像映到两个三角形上。有些人认为有理由相信，一个图像到三角形<br>
+      上的单一映射是不可能的。 <br>
+      实际上，你可以轻而易举地将图像映到任何形状的区域内。使得图像与边界匹配或者完全不考虑形式。根本没关系的。（译者：我想作者的意<br>
+      思是，从长方形到三角形的解析影射是不存在的，但不考虑那么多的话，任意形状之间的连续影射总是可以存在的。他说的使纹理与边界匹配<br>
+      ，大概是指某一种参数化的方法，简单地说使得扭曲最小。） <br>
+      首先清屏，循环润色50个蝴蝶对象。 <br></td><td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table><font color=#aaffaa size=3>
+<pre>
+void Draw (void)										<font color=#ffffaa>// 绘制场景</font>
+{
+	glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);					
+
+	for (int loop=0; loop&lt;50; loop++)							
+	{
+</pre>
+</font><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top> 调用glLoadIdentify()重置投影矩阵，然后选择对象的纹理。用glTranslatef()为蝴蝶定位，然后沿x轴旋转45度。使之向观众微略倾斜，这<br>
+      样比较有立体感。最后沿z轴旋转，蝴蝶就旋转下落了。 <br></td><td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table><font color=#aaffaa size=3>
+<pre>
+		glLoadIdentity ();								<font color=#ffffaa>// 重置矩阵</font>
+		glBindTexture(GL_TEXTURE_2D, texture[obj[loop].tex]);				<font color=#ffffaa>// 绑定纹理</font>
+		glTranslatef(obj[loop].x,obj[loop].y,obj[loop].z);				<font color=#ffffaa>// 绘制物体</font>
+		glRotatef(45.0f,1.0f,0.0f,0.0f);						
+		glRotatef((obj[loop].spinz),0.0f,0.0f,1.0f);					</pre>
+</font><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>其实到三角形上的映射和到方形上并没有很大区别。只是你只有三个定点，要小心一点。 <br>
+      下面的code中，我们将会值第一个三角形。从一个设想的方形的右上角开始，到左上角，再到左下角。润色的结果像下面这样：<FONT face=Tahoma,Verdana,sans-serif size=-1><br>
+      <br>
+      <br>
+      <center>
+        <img src="triangle1.jpg" tppabs="http://www.owlei.com/DancingWind/Pic/triangle1.jpg"> 
+      </center>
+      <br>
+      <br>
+      </font>注意半个蝴蝶出现了。另外半个出现在第二个三角形里。同样地将三个纹理坐标与顶点坐标非别对应，这给出充分的信息定义一个三角形上的映射。 
+      <br></td>
+    <td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table><font color=#aaffaa size=3>
+<pre>
+		glBegin(GL_TRIANGLES);	
+
+			glTexCoord2f(1.0f,1.0f); glVertex3f( 1.0f, 1.0f, 0.0f);			
+			glTexCoord2f(0.0f,1.0f); glVertex3f(-1.0f, 1.0f, obj[loop].flap);	
+			glTexCoord2f(0.0f,0.0f); glVertex3f(-1.0f,-1.0f, 0.0f);			</pre>
+</font><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>下面的code润色另一半。同上，只是我们的三角变成了从右上到左下，再到右下。 
+      <center>
+        <img src="triangle2.jpg" tppabs="http://www.owlei.com/DancingWind/Pic/triangle2.jpg"> 
+      </center>
+      第一个三角形的第二点和第二个三角形的第三点（也就是翅膀的尖端）在z方向往复运动（即z=-1.0f和1.0f之间），两个三角形沿着蝴蝶的身<br>
+      体折叠起来，产生拍打的效果，简易可行。 <br></td>
+    <td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table><font color=#aaffaa size=3>
+<pre>
+
+			glTexCoord2f(1.0f,1.0f); glVertex3f( 1.0f, 1.0f, 0.0f);			
+			glTexCoord2f(0.0f,0.0f); glVertex3f(-1.0f,-1.0f, 0.0f);			
+			glTexCoord2f(1.0f,0.0f); glVertex3f( 1.0f,-1.0f, obj[loop].flap);	
+
+		glEnd();				
+</pre>
+</font><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>下面一段通过从obj[loop].y中递减obj[loop].yi使蝴蝶自上而下运动。spinz值递增spinzi（可正可负）flap递增fi.fi的正负取决于翅膀向<br>
+      上还是向下运动。 <br></td><td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table><font color=#aaffaa size=3><pre>
+		<font color=#ffffaa>//移动，选择图像</font>
+		obj[loop].y-=obj[loop].yi;							
+		obj[loop].spinz+=obj[loop].spinzi;						
+		obj[loop].flap+=obj[loop].fi;							
+</pre></font><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>当蝴蝶向下运行时，需要检查是否越出屏幕，如果是，就调用SetObject(loop)来给蝴蝶赋新的纹理，新下落速度等。 
+    </td>
+    <td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table><font color=#aaffaa size=3>
+<pre>
+		if (obj[loop].y&lt;-18.0f)								<font color=#ffffaa>//判断是否超出了屏幕，如果是重置它</font>
+		{
+			SetObject(loop);							
+		}
+</pre>
+</font><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top>翅膀拍打的时候，还要检查flap是否小于-1.0f或大于1.0f，如果是，令fi=-fi，以改变运动方向。Sleep(15)是用来减缓运行速度，每帧15毫<br>
+      秒。在我朋友的机器上，这让蝴蝶疯狂的飞舞。不过我懒得改了:) <br></td><td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table><font color=#aaffaa size=3>
+<pre>
+		if ((obj[loop].flap&gt;1.0f) || (obj[loop].flap&lt;-1.0f))				
+		{
+			obj[loop].fi=-obj[loop].fi;
+		}
+	}
+
+	Sleep(15);										
+
+	glFlush ();									
+}
+</pre>
+</font><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="tl.png" tppabs="http://www.owlei.com/DancingWind/Pic/tl.png" width=28 height=28></td><td width="100%"><img src="tc.png" tppabs="http://www.owlei.com/DancingWind/Pic/tc.png" width=100% height=28></td><td><img src="tr.png" tppabs="http://www.owlei.com/DancingWind/Pic/tr.png" width=28 height=28></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td background="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"><img src="l.png" tppabs="http://www.owlei.com/DancingWind/Pic/l.png"></td>
+    <td width=100% valign=top><p>希望你在这一课学的开心。也希望通过这一课，从资源文件里读取纹理，和三角形映射的过程变得比较容易理解。我花五分钟又冲读了一遍，<br>
+        感觉还好。如果你还有什么问题，尽管问。我希望我的讲义尽可能好，因此期待您的任何回应。</p>
+<table width="100%" border="1">
+  <tr>
+    <td width="27%"><img src="logo 3.jpg" tppabs="http://www.owlei.com/DancingWind/images/logo%203.jpg" width="209" height="200" align="middle"></td>
+    <td width="73%">版权与使用声明:<br>
+      我是个对学习和生活充满激情的普通男孩,在网络上我以DancingWind为昵称，我的联系方式是zhouwei02@mails.tsinghua.edu.cn，如果你有任何问题，都可以联系我。
+      <p>引子<br>
+        网络是一个共享的资源，但我在自己的学习生涯中浪费大量的时间去搜索可用的资料，在现实生活中花费了大量的金钱和时间在书店中寻找资料，于是我给自己起了个昵称DancingWind，其意义是想风一样从各个知识的站点中吸取成长的养料。在飘荡了多年之后，我决定把自己收集的资料整理为一个统一的资源库。</p>
+      <p>版权声明<br>
+        所有DancingWind发表的内容，大多都来自共享的资源，所以我没有资格把它们据为己有，或声称自己为这些资源作出了一点贡献。故任何人都可以复制，修改，重新发表，甚至以自己的名义发表，我都不会追究，但你在做以上事情的时候必须保证内容的完整性，给后来的人一个完整的教程。最后，任何人不能以这些资料的任何部分，谋取任何形式的报酬。</p>
+      <p>发展计划<br>
+        在国外，很多资料都是很多人花费几年的时间慢慢积累起来的。如果任何人有兴趣与别人共享你的知识，我很欢迎你与我联系，但你必须同意我上面的声明。</p>
+            <p>感谢<br>
+              感谢我的母亲一直以来对我的支持和在生活上的照顾。<br>
+              感谢我深爱的女友田芹，一直以来默默的在精神上和生活中对我的支持，她甚至把买衣服的钱都用来给我买书了，她真的是我见过的最好的女孩，希望我能带给她幸福。</p>
+            <p>资源下载: <br>
+              文档 <a href="javascript:if(confirm('http://www.owlei.com/DancingWind/Res/mht/NeHe%20OpenGL%20Chinese%20Course%2038.mht  \n\nThis file was not retrieved by Teleport Pro, because the server reports that this file cannot be found.  \n\nDo you want to open it from the server?'))window.location='http://www.owlei.com/DancingWind/Res/mht/NeHe%20OpenGL%20Chinese%20Course%2038.mht'" tppabs="http://www.owlei.com/DancingWind/Res/mht/NeHe%20OpenGL%20Chinese%20Course%2038.mht">网页格式</a> 
+              <a href="javascript:if(confirm('http://www.owlei.com/DancingWind/Res/pdf/OpenGL_Nehe_Course_Tutorial_38.pdf  \n\nThis file was not retrieved by Teleport Pro, because the server reports that this file cannot be found.  \n\nDo you want to open it from the server?'))window.location='http://www.owlei.com/DancingWind/Res/pdf/OpenGL_Nehe_Course_Tutorial_38.pdf'" tppabs="http://www.owlei.com/DancingWind/Res/pdf/OpenGL_Nehe_Course_Tutorial_38.pdf">PDF格式</a><br>
+              源码 <a href="javascript:if(confirm('http://www.owlei.com/DancingWind/Res/Src/38_Resource.rar  \n\nThis file was not retrieved by Teleport Pro, because the server reports that this file cannot be found.  \n\nDo you want to open it from the server?'))window.location='http://www.owlei.com/DancingWind/Res/Src/38_Resource.rar'" tppabs="http://www.owlei.com/DancingWind/Res/Src/38_Resource.rar">RAR格式</a></p></td>
+  </tr>
+</table><table border="0" width="100%">
+        <td width="50%" align="left"><b><font size="-1"><a href="Tutorial_37.htm" tppabs="http://www.owlei.com/DancingWind/Course/Tutorial_37.htm">< 
+          第37课 </a></font></b></td>
+        <td width="50%" align="right"><b><font size="-1"><a href="Tutorial_39.htm" tppabs="http://www.owlei.com/DancingWind/Course/Tutorial_39.htm">第39课 
+          ></a></font></b></td>
+      </table>
+      </font></td>
+    <td background="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"><img src="r.png" tppabs="http://www.owlei.com/DancingWind/Pic/r.png"></td></tr></table><table border=0 cellpadding=0 cellspacing=0 width="100%"><tr><td><img src="bl.png" tppabs="http://www.owlei.com/DancingWind/Pic/bl.png" width=28 height=28></td><td width="100%"><img src="bc.png" tppabs="http://www.owlei.com/DancingWind/Pic/bc.png" width=100% height=28></td><td><img src="br.png" tppabs="http://www.owlei.com/DancingWind/Pic/br.png" width=28 height=28></td></tr></table>
+
+</body>
+</html>

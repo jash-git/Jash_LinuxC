@@ -1,0 +1,863 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<!-- saved from url=(0066)http://www.blogjava.net/xiaomage234/archive/2012/11/29/392204.html -->
+<html><head id="Head"><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><title>
+	详解Linux下auto工具制作Makefile源码包（制作篇） - xiaomage234 - BlogJava
+</title><meta id="metaKeywords" name="keywords" content="详解Linux下auto工具制作Makefile源码包（制作篇）"><link type="text/css" rel="stylesheet" href="./詳解Linux下auto工具製作Makefile源碼包_files/common.css"><link id="MainCss" type="text/css" rel="stylesheet" href="./詳解Linux下auto工具製作Makefile源碼包_files/style.css"><link id="RSSLink" title="RSS" type="application/rss+xml" rel="alternate" href="http://www.blogjava.net/xiaomage234/rss.aspx"><script src="chrome-extension://lifbcibllhkdhoafpjfnlhfpfgnpldfl/document_iterator.js"></script><script src="chrome-extension://lifbcibllhkdhoafpjfnlhfpfgnpldfl/find_proxy.js"></script><script src="chrome-extension://lifbcibllhkdhoafpjfnlhfpfgnpldfl/get_html_text.js"></script><script src="chrome-extension://lifbcibllhkdhoafpjfnlhfpfgnpldfl/global_constants.js"></script><script src="chrome-extension://lifbcibllhkdhoafpjfnlhfpfgnpldfl/name_injection_builder.js"></script><script src="chrome-extension://lifbcibllhkdhoafpjfnlhfpfgnpldfl/number_injection_builder.js"></script><script src="chrome-extension://lifbcibllhkdhoafpjfnlhfpfgnpldfl/string_finder.js"></script><script src="chrome-extension://lifbcibllhkdhoafpjfnlhfpfgnpldfl/change_sink.js"></script><meta name="document_iterator.js"><meta name="find_proxy.js"><meta name="get_html_text.js"><meta name="global_constants.js"><meta name="name_injection_builder.js"><meta name="number_injection_builder.js"><meta name="string_finder.js"><meta name="change_sink.js"><script async="" type="text/javascript" src="./詳解Linux下auto工具製作Makefile源碼包_files/google_ads_gpt.js"></script><style id="wrc-middle-css" type="text/css">.wrc_whole_window{	display: none;	position: fixed; 	z-index: 2147483647;	background-color: rgba(40, 40, 40, 0.9);	word-spacing: normal !important;	margin: 0px !important;	padding: 0px !important;	border: 0px !important;	left: 0px;	top: 0px;	width: 100%;	height: 100%;	line-height: normal !important;	letter-spacing: normal !important;	overflow: hidden;}.wrc_bar_window{	display: none;	position: fixed; 	z-index: 2147483647;	background-color: rgba(60, 60, 60, 1.0);	word-spacing: normal !important;	font-family: Segoe UI, Arial Unicode MS, Arial, Sans-Serif;	margin: 0px !important;	padding: 0px !important;	border: 0px !important;	left: 0px;	top: 0px;	width: 100%;	height: 40px;	line-height: normal !important;	letter-spacing: normal !important;	color: white !important;	font-size: 13px !important;}.wrc_middle {	display: table-cell;	vertical-align: middle;	width: 100%;}.wrc_middle_main {	font-family: Segoe UI, Arial Unicode MS, Arial, Sans-Serif;	font-size: 14px;	width: 600px;	height: auto;    background: url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/background-body.jpg) repeat-x left top;	background-color: rgb(39, 53, 62);	position: relative;	margin-left: auto;	margin-right: auto;	text-align: left;}.wrc_middle_tq_main {	font-family: Segoe UI, Arial Unicode MS, Arial, Sans-Serif;	font-size: 16px;	width: 615px;	height: 460px;    background: url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/background-sitecorrect.png) no-repeat;	background-color: white;	color: black !important;	position: relative;	margin-left: auto;	margin-right: auto;	text-align: center;}.wrc_middle_logo {    background: url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/logo.jpg) no-repeat left bottom;    width: 140px;    height: 42px;    color: orange;    display: table-cell;    text-align: right;    vertical-align: middle;}.wrc_icon_warning {	margin: 20px 10px 20px 15px;	float: left;	background-color: transparent;}.wrc_middle_title {    color: #b6bec7;	height: auto;    margin: 0px auto;	font-size: 2.2em;	white-space: nowrap;	text-align: center;}.wrc_middle_hline {    height: 2px;	width: 100%;    display: block;}.wrc_middle_description {	text-align: center;	margin: 15px;	font-size: 1.4em;	padding: 20px;	height: auto;	color: white;	min-height: 3.5em;}.wrc_middle_actions_main_div {	margin-bottom: 15px;	text-align: center;}.wrc_middle_actions_blue_button div {	display: inline-block;	width: auto;	cursor: Pointer;	margin: 3px 10px 3px 10px;	color: white;	font-size: 1.2em;	font-weight: bold;}.wrc_middle_actions_blue_button {	-moz-appearance: none;	border-radius: 7px;	-moz-border-radius: 7px/7px;	border-radius: 7px/7px;	background-color: rgb(0, 173, 223) !important;	display: inline-block;	width: auto;	cursor: Pointer;	border: 2px solid #00dddd;	padding: 0px 20px 0px 20px;}.wrc_middle_actions_blue_button:hover {	background-color: rgb(0, 159, 212) !important;}.wrc_middle_actions_blue_button:active {	background-color: rgb(0, 146, 200) !important;	border: 2px solid #00aaaa;}.wrc_middle_actions_grey_button div {	display: inline-block;	width: auto;	cursor: Pointer;	margin: 3px 10px 3px 10px;	color: white !important;	font-size: 15px;	font-weight: bold;}.wrc_middle_actions_grey_button {	-moz-appearance: none;	border-radius: 7px;	-moz-border-radius: 7px/7px;	border-radius: 7px/7px;	background-color: rgb(100, 100, 100) !important;	display: inline-block;	width: auto;	cursor: Pointer;	border: 2px solid #aaaaaa;	text-decoration: none;	padding: 0px 20px 0px 20px;}.wrc_middle_actions_grey_button:hover {	background-color: rgb(120, 120, 120) !important;}.wrc_middle_actions_grey_button:active {	background-color: rgb(130, 130, 130) !important;	border: 2px solid #00aaaa;}.wrc_middle_action_low {	font-size: 0.9em;	white-space: nowrap;	cursor: Pointer;	color: grey !important;	margin: 10px 10px 0px 10px;	text-decoration: none;}.wrc_middle_action_low:hover {	color: #aa4400 !important;}.wrc_middle_actions_rest_div {	padding-top: 5px;	white-space: nowrap;	text-align: center;}.wrc_middle_action {	white-space: nowrap;	cursor: Pointer;	color: red !important;	font-size: 1.2em;	margin: 10px 10px 0px 10px;	text-decoration: none;}.wrc_middle_action:hover {	color: #aa4400 !important;}</style><script id="wrc-script-middle_window" type="text/javascript" language="JavaScript">var g_inputsCnt = 0;var g_InputThis = new Array(null, null, null, null);var g_alerted = false;/* we test the input if it includes 4 digits   (input is a part of 4 inputs for filling the credit-card number)*/function is4DigitsCardNumber(val){	var regExp = new RegExp('[0-9]{4}');	return (val.length == 4 && val.search(regExp) == 0);}/* testing the whole credit-card number 19 digits devided by three '-' symbols or   exactly 16 digits without any dividers*/function isCreditCardNumber(val){	if(val.length == 19)	{		var regExp = new RegExp('[0-9]{4}-[0-9]{4}-[0-9]{4}-[0-9]{4}');		return (val.search(regExp) == 0);	}	else if(val.length == 16)	{		var regExp = new RegExp('[0-9]{4}[0-9]{4}[0-9]{4}[0-9]{4}');		return (val.search(regExp) == 0);	}	return false;}function CheckInputOnCreditNumber(self){	if(g_alerted)		return false;	var value = self.value;	if(self.type == 'text')	{		if(is4DigitsCardNumber(value))		{			var cont = true;			for(i = 0; i < g_inputsCnt; i++)				if(g_InputThis[i] == self)					cont = false;			if(cont && g_inputsCnt < 4)			{				g_InputThis[g_inputsCnt] = self;				g_inputsCnt++;			}		}		g_alerted = (g_inputsCnt == 4);		if(g_alerted)			g_inputsCnt = 0;		else			g_alerted = isCreditCardNumber(value);	}	return g_alerted;}function CheckInputOnPassword(self){	if(g_alerted)		return false;	var value = self.value;	if(self.type == 'password')	{		g_alerted = (value.length > 0);	}	return g_alerted;}function onInputBlur(self, bRatingOk, bFishingSite){	var bCreditNumber = CheckInputOnCreditNumber(self);	var bPassword = CheckInputOnPassword(self);	if((!bRatingOk || bFishingSite == 1) && (bCreditNumber || bPassword) )	{		var warnDiv = document.getElementById("wrcinputdiv");		if(warnDiv)		{			/* show the warning div in the middle of the screen */			warnDiv.style.left = "0px";			warnDiv.style.top = "0px";			warnDiv.style.width = "100%";			warnDiv.style.height = "100%";			document.getElementById("wrc_warn_fs").style.display = 'none';			document.getElementById("wrc_warn_cn").style.display = 'none';			if(bFishingSite)				document.getElementById("wrc_warn_fs").style.display = 'block';			else				document.getElementById("wrc_warn_cn").style.display = 'block';			warnDiv.style.display = 'table';		}	}}</script><style id="wrc-css" type="text/css">.wrcx {display:none} .r .wrcx,  .fc .wrcx, #rhsline ol .wrcx {display:inline; background: url("chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/grey0-16.png") right no-repeat} .vresult .r, .tl .r .wrcx{ display: none;}
+.wrc0 {display:none} .r .wrc0,  .fc .wrc0, #rhsline ol .wrc0 {display:inline; background: url("chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/grey0-16.png") right no-repeat} .vresult .r, .tl .r .wrc0{ display: none;}
+.wrc11 {display:none} .r .wrc11,  .fc .wrc11, #rhsline ol .wrc11 {display:inline; background: url("chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/green1-16.png") right no-repeat} .vresult .r, .tl .r .wrc11{ display: none;}
+.wrc12 {display:none} .r .wrc12,  .fc .wrc12, #rhsline ol .wrc12 {display:inline; background: url("chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/green2-16.png") right no-repeat} .vresult .r, .tl .r .wrc12{ display: none;}
+.wrc13 {display:none} .r .wrc13,  .fc .wrc13, #rhsline ol .wrc13 {display:inline; background: url("chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/green3-16.png") right no-repeat} .vresult .r, .tl .r .wrc13{ display: none;}
+.wrc21 {display:none} .r .wrc21,  .fc .wrc21, #rhsline ol .wrc21 {display:inline; background: url("chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/yellow1-16.png") right no-repeat} .vresult .r, .tl .r .wrc21{ display: none;}
+.wrc22 {display:none} .r .wrc22,  .fc .wrc22, #rhsline ol .wrc22 {display:inline; background: url("chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/yellow2-16.png") right no-repeat} .vresult .r, .tl .r .wrc22{ display: none;}
+.wrc23 {display:none} .r .wrc23,  .fc .wrc23, #rhsline ol .wrc23 {display:inline; background: url("chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/yellow3-16.png") right no-repeat} .vresult .r, .tl .r .wrc23{ display: none;}
+.wrc31 {display:none} .r .wrc31,  .fc .wrc31, #rhsline ol .wrc31 {display:inline; background: url("chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/red1-16.png") right no-repeat} .vresult .r, .tl .r .wrc31{ display: none;}
+.wrc32 {display:none} .r .wrc32,  .fc .wrc32, #rhsline ol .wrc32 {display:inline; background: url("chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/red2-16.png") right no-repeat} .vresult .r, .tl .r .wrc32{ display: none;}
+.wrc33 {display:none} .r .wrc33,  .fc .wrc33, #rhsline ol .wrc33 {display:inline; background: url("chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/red3-16.png") right no-repeat} .vresult .r, .tl .r .wrc33{ display: none;}
+.wrc_icon{margin:0;padding:0;padding-left:15px !important; margin-left: 5px; width:16px !important; height:16px !important;line-height:16px !important;}
+#wrchoverdiv{padding-bottom:20px;-webkit-border-radius: 4px; -webkit-box-shadow: 2px 2px 1px rgba(0,0,0,0.2); position:absolute; width:180px; background:transparent url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/background-body.jpg) top left repeat-x; display:none; font-family: Segoe UI, Arial Unicode MS, Arial, Sans-Serif; font-size: 14px; z-index:9999999;}
+#wrchoverdiv{cursor:default;}
+#wrchoverdiv #wrccontainer{width:180px;}
+#wrchoverdiv #wrcheader{width:140px; height:42px; background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/logo.jpg) bottom left no-repeat; text-align:right; line-height:42px; color:orange; margin:0 auto;}
+#wrchoverdiv .wrchorizontal{width:180px; height:2px; background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/horizontal-line.jpg) bottom left no-repeat;}
+#wrchoverdiv #wrccurrentvote{height:25px; line-height:25px; color:#FFF; text-align:center; text-transform:uppercase;}
+#wrchoverdiv #wrcrating{margin:5px auto; width:69px; height:55px; background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/grey-0.png) bottom left no-repeat;}
+#wrchoverdiv #wrcrating.wrcbx{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/grey-0.png);}
+#wrchoverdiv #wrcrating.wrcb0{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/grey-0.png);}
+#wrchoverdiv #wrcrating.wrcb11{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/green-1.png);}
+#wrchoverdiv #wrcrating.wrcb12{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/green-2.png);}
+#wrchoverdiv #wrcrating.wrcb13{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/green-3.png);}
+#wrchoverdiv #wrcrating.wrcb21{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/yellow-1.png);}
+#wrchoverdiv #wrcrating.wrcb22{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/yellow-2.png);}
+#wrchoverdiv #wrcrating.wrcb23{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/yellow-3.png);}
+#wrchoverdiv #wrcrating.wrcb31{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/red-1.png);}
+#wrchoverdiv #wrcrating.wrcb32{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/red-2.png);}
+#wrchoverdiv #wrcrating.wrcb33{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/red-3.png);}
+#wrchoverdiv #wrcratingtext{margin:3px 5px; color:#FFF; text-align:center; padding:0; font-size:12px;}
+#wrchoverdiv #wrcweighttext{margin:3px 5px; color:#FFF; text-align:center; padding:0; font-size:12px;}
+#wrchoverdiv #wrcflags{width:150px; height:70px; margin:0 auto;}
+#wrchoverdiv .wrcicon{width:30px; height:30px; float:left;}
+#wrchoverdiv #wrcicon_shopping{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/shopping-small-disable.png) top left no-repeat;}
+#wrchoverdiv #wrcicon_shopping.selected{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/shopping-small-selected.png) top left no-repeat;}
+#wrchoverdiv #wrcicon_social{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/social-small-disable.png) top left no-repeat;}
+#wrchoverdiv #wrcicon_social.selected{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/social-small-selected.png) top left no-repeat;}
+#wrchoverdiv #wrcicon_news{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/news-small-disable.png) top left no-repeat;}
+#wrchoverdiv #wrcicon_news.selected{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/news-small-selected.png) top left no-repeat;}
+#wrchoverdiv #wrcicon_it{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/it-small-disable.png) top left no-repeat;}
+#wrchoverdiv #wrcicon_it.selected{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/it-small-selected.png) top left no-repeat;}
+#wrchoverdiv #wrcicon_corporate{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/corporate-small-disable.png) top left no-repeat;}
+#wrchoverdiv #wrcicon_corporate.selected{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/corporate-small-selected.png) top left no-repeat;}
+#wrchoverdiv #wrcicon_pornography{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/pornography-small-disable.png) top left no-repeat;}
+#wrchoverdiv #wrcicon_pornography.selected{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/pornography-small-selected.png) top left no-repeat;}
+#wrchoverdiv #wrcicon_violence{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/violence-small-disable.png) top left no-repeat;}
+#wrchoverdiv #wrcicon_violence.selected{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/violence-small-selected.png) top left no-repeat;}
+#wrchoverdiv #wrcicon_gambling{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/gambling-small-disable.png) top left no-repeat;}
+#wrchoverdiv #wrcicon_gambling.selected{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/gambling-small-selected.png) top left no-repeat;}
+#wrchoverdiv #wrcicon_drugs{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/drugs-small-disable.png) top left no-repeat;}
+#wrchoverdiv #wrcicon_drugs.selected{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/drugs-small-selected.png) top left no-repeat;}
+#wrchoverdiv #wrcicon_illegal{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/illegal-small-disable.png) top left no-repeat;}
+#wrchoverdiv #wrcicon_illegal.selected{background:url(chrome-extension://icmlaeflemplmjndnaapfdbbnpncnbda/skin/images/icons/illegal-small-selected.png) top left no-repeat;}
+</style><script type="text/javascript" src="./詳解Linux下auto工具製作Makefile源碼包_files/osd.js"></script></head>
+<body>
+    <form name="Form1" method="post" action="./詳解Linux下auto工具製作Makefile源碼包_files/詳解Linux下auto工具製作Makefile源碼包.htm" onsubmit="javascript:return WebForm_OnSubmit();" id="Form1">
+<div>
+<input type="hidden" name="__EVENTTARGET" id="__EVENTTARGET" value="">
+<input type="hidden" name="__EVENTARGUMENT" id="__EVENTARGUMENT" value="">
+<input type="hidden" name="__VIEWSTATE" id="
+__VIEWSTATE" value="">
+</div>
+
+<script type="text/javascript" async="" src="./詳解Linux下auto工具製作Makefile源碼包_files/ga.js"></script><script async="" type="text/javascript" src="./詳解Linux下auto工具製作Makefile源碼包_files/gpt.js"></script><script type="text/javascript">
+//<![CDATA[
+var theForm = document.forms['Form1'];
+if (!theForm) {
+    theForm = document.Form1;
+}
+function __doPostBack(eventTarget, eventArgument) {
+    if (!theForm.onsubmit || (theForm.onsubmit() != false)) {
+        theForm.__EVENTTARGET.value = eventTarget;
+        theForm.__EVENTARGUMENT.value = eventArgument;
+        theForm.submit();
+    }
+}
+//]]>
+</script>
+
+
+<script src="./詳解Linux下auto工具製作Makefile源碼包_files/WebResource.axd" type="text/javascript"></script>
+
+<script language="JavaScript">
+									function ctlent(evt,id)
+											{
+												if(evt.ctrlKey && evt.keyCode == 13)
+												{	
+													try
+													{
+														TempSave(id);
+													}
+													catch(ex)
+													{
+													}
+													finally
+													{
+													    __doPostBack('AjaxHolder$PostComment$btnSubmit','')
+													}
+												}
+		
+												}</script>
+												<script language="JavaScript">function SetReplyAuhor(author){document.getElementById('AjaxHolder_PostComment_tbComment').value+="@"+author+"\n";document.getElementById('AjaxHolder_PostComment_tbComment').focus();return false}</script>
+<script src="./詳解Linux下auto工具製作Makefile源碼包_files/ScriptResource.axd" type="text/javascript"></script>
+<script src="./詳解Linux下auto工具製作Makefile源碼包_files/ScriptResource(1).axd" type="text/javascript"></script>
+<script src="./詳解Linux下auto工具製作Makefile源碼包_files/ScriptResource(2).axd" type="text/javascript"></script>
+<script type="text/javascript">
+//<![CDATA[
+function WebForm_OnSubmit() {
+if (typeof(ValidatorOnSubmit) == "function" && ValidatorOnSubmit() == false) return false;
+return true;
+}
+//]]>
+</script>
+
+        
+
+
+		<div class="pagelayout">
+		
+			
+<div id="header">
+	<span>
+		<a id="Header1_HeaderTitle" href="http://www.blogjava.net/xiaomage234/">xiaomage234</a><br>
+		<p id="tagline">生命本就是一次凄美的漂流，记忆中放不下的，永远是孩提时代的那一份浪漫与纯真！</p>
+	</span>
+</div>
+			
+			<div id="menu" style="display: inline;">
+				
+					
+<h1>My Links</h1>
+<ul class="list">
+	<li class="listitem"></li>
+	<li class="listitem"></li>
+	<li class="listitem"><a id="MyLinks1_NewPostLink" class="listitem" href="http://www.blogjava.net/xiaomage234/admin/EditPosts.aspx?opt=1">新随笔</a></li>
+	<li class="listitem"></li>
+	<li class="listitem">
+	</li><li class="listitem"><a id="MyLinks1_Admin" class="listitem" href="http://www.blogjava.net/xiaomage234/admin/EditPosts.aspx">管理</a></li>
+</ul>
+
+					
+<h1>Blog Stats</h1>
+	<ul class="list">
+		<li class="listitem">Posts - 618
+		</li><li class="listitem">Stories - 34
+		</li><li class="listitem">Comments - 132
+		</li><li class="listitem">Trackbacks - 0
+	</li>
+</ul>
+						
+					
+<h3>留言簿<span style="font-size:11px;font-weight:normal;">(14)</span></h3>
+<ul>
+	<li>
+		<a id="SingleColumn1_ctl00_lnkMessages" href="http://www.blogjava.net/xiaomage234/Contact.aspx?id=1">给我留言</a>
+	</li><li>
+		<a id="SingleColumn1_ctl00_lnkPublicMsgView" href="http://www.blogjava.net/xiaomage234/default.aspx?opt=msg">查看公开留言</a>
+	</li><li>
+		<a id="SingleColumn1_ctl00_lnkPrivateMsgView" href="http://www.blogjava.net/xiaomage234/admin/MyMessages.aspx">查看私人留言</a>
+	</li>
+</ul>
+
+		<h1 class="listtitle">随笔分类</h1>
+		
+				<ul class="list">
+			
+				<li class="listitem"><a id="SingleColumn1_Categories_CatList_ctl00_LinkList_ctl01_Link" class="listitem" href="http://www.blogjava.net/xiaomage234/category/28353.html">c/c++(11)</a> <a id="SingleColumn1_Categories_CatList_ctl00_LinkList_ctl01_RssLink" title="Subscribe to c/c++(11)" class="listitem" href="http://www.blogjava.net/xiaomage234/category/28353.html/rss">(rss)</a></li>
+			
+				<li class="listitem"><a id="SingleColumn1_Categories_CatList_ctl00_LinkList_ctl02_Link" class="listitem" href="http://www.blogjava.net/xiaomage234/category/28166.html">db tools(62)</a> <a id="SingleColumn1_Categories_CatList_ctl00_LinkList_ctl02_RssLink" title="Subscribe to db tools(62)" class="listitem" href="http://www.blogjava.net/xiaomage234/category/28166.html/rss">(rss)</a></li>
+			
+				<li class="listitem"><a id="SingleColumn1_Categories_CatList_ctl00_LinkList_ctl03_Link" class="listitem" href="http://www.blogjava.net/xiaomage234/category/50919.html">design(1)</a> <a id="SingleColumn1_Categories_CatList_ctl00_LinkList_ctl03_RssLink" title="Subscribe to design(1)" class="listitem" href="http://www.blogjava.net/xiaomage234/category/50919.html/rss">(rss)</a></li>
+			
+				<li class="listitem"><a id="SingleColumn1_Categories_CatList_ctl00_LinkList_ctl04_Link" class="listitem" href="http://www.blogjava.net/xiaomage234/category/28294.html">flash(5)</a> <a id="SingleColumn1_Categories_CatList_ctl00_LinkList_ctl04_RssLink" title="Subscribe to flash(5)" class="listitem" href="http://www.blogjava.net/xiaomage234/category/28294.html/rss">(rss)</a></li>
+			
+				<li class="listitem"><a id="SingleColumn1_Categories_CatList_ctl00_LinkList_ctl05_Link" class="listitem" href="http://www.blogjava.net/xiaomage234/category/50778.html">html5(10)</a> <a id="SingleColumn1_Categories_CatList_ctl00_LinkList_ctl05_RssLink" title="Subscribe to html5(10)" class="listitem" href="http://www.blogjava.net/xiaomage234/category/50778.html/rss">(rss)</a></li>
+			
+				<li class="listitem"><a id="SingleColumn1_Categories_CatList_ctl00_LinkList_ctl06_Link" class="listitem" href="http://www.blogjava.net/xiaomage234/category/41065.html">Http accelerator(10)</a> <a id="SingleColumn1_Categories_CatList_ctl00_LinkList_ctl06_RssLink" title="Subscribe to Http accelerator(10)" class="listitem" href="http://www.blogjava.net/xiaomage234/category/41065.html/rss">(rss)</a></li>
+			
+				<li class="listitem"><a id="SingleColumn1_Categories_CatList_ctl00_LinkList_ctl07_Link" class="listitem" href="http://www.blogjava.net/xiaomage234/category/30805.html">java groovy(29)</a> <a id="SingleColumn1_Categories_CatList_ctl00_LinkList_ctl07_RssLink" title="Subscribe to java groovy(29)" class="listitem" href="http://www.blogjava.net/xiaomage234/category/30805.html/rss">(rss)</a></li>
+			
+				<li class="listitem"><a id="SingleColumn1_Categories_CatList_ctl00_LinkList_ctl08_Link" class="listitem" href="http://www.blogjava.net/xiaomage234/category/28167.html">linux(125)</a> <a id="SingleColumn1_Categories_CatList_ctl00_LinkList_ctl08_RssLink" title="Subscribe to linux(125)" class="listitem" href="http://www.blogjava.net/xiaomage234/category/28167.html/rss">(rss)</a></li>
+			
+				<li class="listitem"><a id="SingleColumn1_Categories_CatList_ctl00_LinkList_ctl09_Link" class="listitem" href="http://www.blogjava.net/xiaomage234/category/28868.html">ms office(2)</a> <a id="SingleColumn1_Categories_CatList_ctl00_LinkList_ctl09_RssLink" title="Subscribe to ms office(2)" class="listitem" href="http://www.blogjava.net/xiaomage234/category/28868.html/rss">(rss)</a></li>
+			
+				<li class="listitem"><a id="SingleColumn1_Categories_CatList_ctl00_LinkList_ctl10_Link" class="listitem" href="http://www.blogjava.net/xiaomage234/category/38027.html">network(10)</a> <a id="SingleColumn1_Categories_CatList_ctl00_LinkList_ctl10_RssLink" title="Subscribe to network(10)" class="listitem" href="http://www.blogjava.net/xiaomage234/category/38027.html/rss">(rss)</a></li>
+			
+				<li class="listitem"><a id="SingleColumn1_Categories_CatList_ctl00_LinkList_ctl11_Link" class="listitem" href="http://www.blogjava.net/xiaomage234/category/35357.html">page(30)</a> <a id="SingleColumn1_Categories_CatList_ctl00_LinkList_ctl11_RssLink" title="Subscribe to page(30)" class="listitem" href="http://www.blogjava.net/xiaomage234/category/35357.html/rss">(rss)</a></li>
+			
+				<li class="listitem"><a id="SingleColumn1_Categories_CatList_ctl00_LinkList_ctl12_Link" class="listitem" href="http://www.blogjava.net/xiaomage234/category/40627.html">performance(48)</a> <a id="SingleColumn1_Categories_CatList_ctl00_LinkList_ctl12_RssLink" title="Subscribe to performance(48)" class="listitem" href="http://www.blogjava.net/xiaomage234/category/40627.html/rss">(rss)</a></li>
+			
+				<li class="listitem"><a id="SingleColumn1_Categories_CatList_ctl00_LinkList_ctl13_Link" class="listitem" href="http://www.blogjava.net/xiaomage234/category/33640.html">perl python ruby(30)</a> <a id="SingleColumn1_Categories_CatList_ctl00_LinkList_ctl13_RssLink" title="Subscribe to perl python ruby(30)" class="listitem" href="http://www.blogjava.net/xiaomage234/category/33640.html/rss">(rss)</a></li>
+			
+				<li class="listitem"><a id="SingleColumn1_Categories_CatList_ctl00_LinkList_ctl14_Link" class="listitem" href="http://www.blogjava.net/xiaomage234/category/35231.html">php(105)</a> <a id="SingleColumn1_Categories_CatList_ctl00_LinkList_ctl14_RssLink" title="Subscribe to php(105)" class="listitem" href="http://www.blogjava.net/xiaomage234/category/35231.html/rss">(rss)</a></li>
+			
+				<li class="listitem"><a id="SingleColumn1_Categories_CatList_ctl00_LinkList_ctl15_Link" class="listitem" href="http://www.blogjava.net/xiaomage234/category/34729.html">security(7)</a> <a id="SingleColumn1_Categories_CatList_ctl00_LinkList_ctl15_RssLink" title="Subscribe to security(7)" class="listitem" href="http://www.blogjava.net/xiaomage234/category/34729.html/rss">(rss)</a></li>
+			
+				<li class="listitem"><a id="SingleColumn1_Categories_CatList_ctl00_LinkList_ctl16_Link" class="listitem" href="http://www.blogjava.net/xiaomage234/category/28165.html">shell(6)</a> <a id="SingleColumn1_Categories_CatList_ctl00_LinkList_ctl16_RssLink" title="Subscribe to shell(6)" class="listitem" href="http://www.blogjava.net/xiaomage234/category/28165.html/rss">(rss)</a></li>
+			
+				<li class="listitem"><a id="SingleColumn1_Categories_CatList_ctl00_LinkList_ctl17_Link" class="listitem" href="http://www.blogjava.net/xiaomage234/category/33941.html">svn(4)</a> <a id="SingleColumn1_Categories_CatList_ctl00_LinkList_ctl17_RssLink" title="Subscribe to svn(4)" class="listitem" href="http://www.blogjava.net/xiaomage234/category/33941.html/rss">(rss)</a></li>
+			
+				<li class="listitem"><a id="SingleColumn1_Categories_CatList_ctl00_LinkList_ctl18_Link" class="listitem" href="http://www.blogjava.net/xiaomage234/category/33769.html">test tools(4)</a> <a id="SingleColumn1_Categories_CatList_ctl00_LinkList_ctl18_RssLink" title="Subscribe to test tools(4)" class="listitem" href="http://www.blogjava.net/xiaomage234/category/33769.html/rss">(rss)</a></li>
+			
+				<li class="listitem"><a id="SingleColumn1_Categories_CatList_ctl00_LinkList_ctl19_Link" class="listitem" href="http://www.blogjava.net/xiaomage234/category/34728.html">video encoding(19)</a> <a id="SingleColumn1_Categories_CatList_ctl00_LinkList_ctl19_RssLink" title="Subscribe to video encoding(19)" class="listitem" href="http://www.blogjava.net/xiaomage234/category/34728.html/rss">(rss)</a></li>
+			
+				<li class="listitem"><a id="SingleColumn1_Categories_CatList_ctl00_LinkList_ctl20_Link" class="listitem" href="http://www.blogjava.net/xiaomage234/category/28168.html">web server(77)</a> <a id="SingleColumn1_Categories_CatList_ctl00_LinkList_ctl20_RssLink" title="Subscribe to web server(77)" class="listitem" href="http://www.blogjava.net/xiaomage234/category/28168.html/rss">(rss)</a></li>
+			
+				<li class="listitem"><a id="SingleColumn1_Categories_CatList_ctl00_LinkList_ctl21_Link" class="listitem" href="http://www.blogjava.net/xiaomage234/category/28303.html">web tools(112)</a> <a id="SingleColumn1_Categories_CatList_ctl00_LinkList_ctl21_RssLink" title="Subscribe to web tools(112)" class="listitem" href="http://www.blogjava.net/xiaomage234/category/28303.html/rss">(rss)</a></li>
+			
+				<li class="listitem"><a id="SingleColumn1_Categories_CatList_ctl00_LinkList_ctl22_Link" class="listitem" href="http://www.blogjava.net/xiaomage234/category/35224.html">windows(16)</a> <a id="SingleColumn1_Categories_CatList_ctl00_LinkList_ctl22_RssLink" title="Subscribe to windows(16)" class="listitem" href="http://www.blogjava.net/xiaomage234/category/35224.html/rss">(rss)</a></li>
+			
+				<li class="listitem"><a id="SingleColumn1_Categories_CatList_ctl00_LinkList_ctl23_Link" class="listitem" href="http://www.blogjava.net/xiaomage234/category/28214.html">xml(5)</a> <a id="SingleColumn1_Categories_CatList_ctl00_LinkList_ctl23_RssLink" title="Subscribe to xml(5)" class="listitem" href="http://www.blogjava.net/xiaomage234/category/28214.html/rss">(rss)</a></li>
+			
+				<li class="listitem"><a id="SingleColumn1_Categories_CatList_ctl00_LinkList_ctl24_Link" class="listitem" href="http://www.blogjava.net/xiaomage234/category/28867.html">非技术(77)</a> <a id="SingleColumn1_Categories_CatList_ctl00_LinkList_ctl24_RssLink" title="Subscribe to 非技术(77)" class="listitem" href="http://www.blogjava.net/xiaomage234/category/28867.html/rss">(rss)</a></li>
+			
+				</ul>
+			
+	
+		<h1 class="listtitle">文章分类</h1>
+		
+				<ul class="list">
+			
+				<li class="listitem"><a id="SingleColumn1_Categories_CatList_ctl01_LinkList_ctl01_Link" class="listitem" href="http://www.blogjava.net/xiaomage234/category/1691.html">D-Encoding(4)</a> <a id="SingleColumn1_Categories_CatList_ctl01_LinkList_ctl01_RssLink" title="Subscribe to D-Encoding(4)" class="listitem" href="http://www.blogjava.net/xiaomage234/category/1691.html/rss">(rss)</a></li>
+			
+				<li class="listitem"><a id="SingleColumn1_Categories_CatList_ctl01_LinkList_ctl02_Link" class="listitem" href="http://www.blogjava.net/xiaomage234/category/1689.html">Java Language(8)</a> <a id="SingleColumn1_Categories_CatList_ctl01_LinkList_ctl02_RssLink" title="Subscribe to Java Language(8)" class="listitem" href="http://www.blogjava.net/xiaomage234/category/1689.html/rss">(rss)</a></li>
+			
+				<li class="listitem"><a id="SingleColumn1_Categories_CatList_ctl01_LinkList_ctl03_Link" class="listitem" href="http://www.blogjava.net/xiaomage234/category/1690.html">Performance Tuning(6)</a> <a id="SingleColumn1_Categories_CatList_ctl01_LinkList_ctl03_RssLink" title="Subscribe to Performance Tuning(6)" class="listitem" href="http://www.blogjava.net/xiaomage234/category/1690.html/rss">(rss)</a></li>
+			
+				<li class="listitem"><a id="SingleColumn1_Categories_CatList_ctl01_LinkList_ctl04_Link" class="listitem" href="http://www.blogjava.net/xiaomage234/category/1775.html">Tools(2)</a> <a id="SingleColumn1_Categories_CatList_ctl01_LinkList_ctl04_RssLink" title="Subscribe to Tools(2)" class="listitem" href="http://www.blogjava.net/xiaomage234/category/1775.html/rss">(rss)</a></li>
+			
+				<li class="listitem"><a id="SingleColumn1_Categories_CatList_ctl01_LinkList_ctl05_Link" class="listitem" href="http://www.blogjava.net/xiaomage234/category/1774.html">设计(3)</a> <a id="SingleColumn1_Categories_CatList_ctl01_LinkList_ctl05_RssLink" title="Subscribe to 设计(3)" class="listitem" href="http://www.blogjava.net/xiaomage234/category/1774.html/rss">(rss)</a></li>
+			
+				</ul>
+			
+	
+		<h1 class="listtitle">文章档案</h1>
+		
+				<ul class="list">
+			
+				<li class="listitem"><a id="SingleColumn1_Categories_CatList_ctl02_LinkList_ctl01_Link" class="listitem" href="http://www.blogjava.net/xiaomage234/archives/2005/06.html">2005年6月 (33)</a> </li>
+			
+				<li class="listitem"><a id="SingleColumn1_Categories_CatList_ctl02_LinkList_ctl02_Link" class="listitem" href="http://www.blogjava.net/xiaomage234/archives/2005/04.html">2005年4月 (1)</a> </li>
+			
+				</ul>
+			
+	
+		<h1 class="listtitle">博客连接</h1>
+		
+				<ul class="list">
+			
+				<li class="listitem"><a id="SingleColumn1_Categories_CatList_ctl03_LinkList_ctl01_Link" class="listitem" href="http://www.blogjava.net/crazycy">cuiyi's blog</a> </li>
+			<li style="margin-top:2px;">xiaocui</li>
+				<li class="listitem"><a id="SingleColumn1_Categories_CatList_ctl03_LinkList_ctl02_Link" class="listitem" href="http://www.neiyibra.com/">我要男女内衣</a> </li>
+			<li style="margin-top:2px;">内裤,文胸，睡衣</li>
+				<li class="listitem"><a id="SingleColumn1_Categories_CatList_ctl03_LinkList_ctl03_Link" class="listitem" href="http://www.taobeidian.com/">淘贝店</a> </li>
+			<li style="margin-top:2px;">淘宝,宝贝</li>
+				<li class="listitem"><a id="SingleColumn1_Categories_CatList_ctl03_LinkList_ctl04_Link" class="listitem" href="http://www.blogjava.net/coffee/">阿海的blog</a> </li>
+			
+				</ul>
+			
+	
+
+
+<script language="JavaScript">
+function SearchGoogle(key,evt,site)
+		{
+			if(evt.keyCode==13 || evt.keyCode==0 || evt.type =='click')
+			{
+				key.focus();
+				var keystr = encodeURIComponent(key.value);
+				url = "http://www.google.com/search?q=";
+				url = url+keystr;
+				url += "&ie=UTF-8&oe=GB2312&hl=zh-CN&domains="+site+"&sitesearch="+site;
+				window.location=url;
+				return false;
+			}
+		}
+</script>
+<h3>搜索</h3>
+<ul>
+	<li>
+		</li><li><input style="WIDTH: 130px" type="text" name="q" id="q" onkeydown="return SearchGoogle(document.getElementById(&#39;q&#39;),event,&#39;www.blogjava.net/xiaomage234&#39;)">&nbsp;<input onclick="SearchGoogle(document.getElementById(&#39;q&#39;),event,&#39;www.blogjava.net/xiaomage234&#39;)" type="button" value="搜索" name="sa">
+	</li>
+</ul>
+
+<h3>最新评论
+	<a id="SingleColumn1__1688146_RSSHyperlink1" href="http://www.blogjava.net/xiaomage234/CommentsRSS.aspx"><img src="./詳解Linux下auto工具製作Makefile源碼包_files/xml.gif" style="border-width:0px;"></a></h3>
+<div class="RecentComment">
+	
+			<ul>
+		
+			<li style="word-break:break-all">
+				<a id="SingleColumn1__1688146_CommentList_ctl01_Hyperlink1" href="http://www.blogjava.net/xiaomage234/archive/2012/11/10/349150.html#391151">1.&nbsp;re: GoAgent又一个基于GAE的穿越利器[未登录]</a>
+			</li>
+			<li style="word-break:break-all">
+				为何在选择国家和地区时，没有其他选项，与输入的电话号码不相符，该怎么解决呀，求帮忙，谢谢！
+			</li>
+			<li style="text-align:right;margin-right:4px">
+				--张静</li>
+		
+			<li style="word-break:break-all">
+				<a id="SingleColumn1__1688146_CommentList_ctl02_Hyperlink1" href="http://www.blogjava.net/xiaomage234/archive/2012/08/22/349150.html#385986">2.&nbsp;re: GoAgent又一个基于GAE的穿越利器</a>
+			</li>
+			<li style="word-break:break-all">
+				评论内容较长,点击标题查看
+			</li>
+			<li style="text-align:right;margin-right:4px">
+				--231685</li>
+		
+			<li style="word-break:break-all">
+				<a id="SingleColumn1__1688146_CommentList_ctl03_Hyperlink1" href="http://www.blogjava.net/xiaomage234/archive/2012/08/22/349150.html#385985">3.&nbsp;re: GoAgent又一个基于GAE的穿越利器</a>
+			</li>
+			<li style="word-break:break-all">
+				楼主给的下载地址新版里面只有一个这样的文件：README.md<br><br>怎么回事呢？》
+			</li>
+			<li style="text-align:right;margin-right:4px">
+				--231685</li>
+		
+			<li style="word-break:break-all">
+				<a id="SingleColumn1__1688146_CommentList_ctl04_Hyperlink1" href="http://www.blogjava.net/xiaomage234/archive/2012/05/09/349150.html#377682">4.&nbsp;re: GoAgent又一个基于GAE的穿越利器</a>
+			</li>
+			<li style="word-break:break-all">
+				安卓手机上登录推特一直没有成功、、、你们的情况如何？
+			</li>
+			<li style="text-align:right;margin-right:4px">
+				--jszhou</li>
+		
+			<li style="word-break:break-all">
+				<a id="SingleColumn1__1688146_CommentList_ctl05_Hyperlink1" href="http://www.blogjava.net/xiaomage234/archive/2012/04/09/349150.html#373659">5.&nbsp;re: GoAgent又一个基于GAE的穿越利器</a>
+			</li>
+			<li style="word-break:break-all">
+				@iguana<br>我的也没有，怎么办啊
+			</li>
+			<li style="text-align:right;margin-right:4px">
+				--Cui Xuan</li>
+		
+			</ul>
+		
+</div>
+
+<h3>阅读排行榜</h3>
+<div class="RecentComment">
+	
+			<ul style="word-break:break-all">
+		
+			<li>
+				<a id="SingleColumn1__15b953a_TopList_ctl01_Hyperlink1" href="http://www.blogjava.net/xiaomage234/archive/2011/04/28/349150.html">1.&nbsp;GoAgent又一个基于GAE的穿越利器(51800)</a>
+			</li>
+		
+			<li>
+				<a id="SingleColumn1__15b953a_TopList_ctl02_Hyperlink1" href="http://www.blogjava.net/xiaomage234/archive/2007/12/26/170490.html">2.&nbsp;crontab格式，命令(10132)</a>
+			</li>
+		
+			<li>
+				<a id="SingleColumn1__15b953a_TopList_ctl03_Hyperlink1" href="http://www.blogjava.net/xiaomage234/archive/2010/11/25/339048.html">3.&nbsp;基于jQuery的AJAX跨域问题完美解决方案[转](7846)</a>
+			</li>
+		
+			<li>
+				<a id="SingleColumn1__15b953a_TopList_ctl04_Hyperlink1" href="http://www.blogjava.net/xiaomage234/archive/2009/07/10/286214.html">4.&nbsp;thrift的binaryprotocol协议分析 [转](7824)</a>
+			</li>
+		
+			<li>
+				<a id="SingleColumn1__15b953a_TopList_ctl05_Hyperlink1" href="http://www.blogjava.net/xiaomage234/archive/2005/06/08/5770.html">5.&nbsp;ResourceBundle和Properties类的区别 (4516)</a>
+			</li>
+		
+			</ul>
+		
+</div>
+
+<h3>评论排行榜</h3>
+<div class="RecentComment">
+	
+			<ul style="word-break:break-all">
+		
+			<li>
+				<a id="SingleColumn1__2f936f_TopList_ctl01_Hyperlink1" href="http://www.blogjava.net/xiaomage234/archive/2011/04/28/349150.html">1.&nbsp;GoAgent又一个基于GAE的穿越利器(32)</a>
+			</li>
+		
+			<li>
+				<a id="SingleColumn1__2f936f_TopList_ctl02_Hyperlink1" href="http://www.blogjava.net/xiaomage234/archive/2005/04/08/3008.html">2.&nbsp;算法--一个判断是否闰年的方法带来的思考(8)</a>
+			</li>
+		
+			<li>
+				<a id="SingleColumn1__2f936f_TopList_ctl03_Hyperlink1" href="http://www.blogjava.net/xiaomage234/archive/2010/11/25/339048.html">3.&nbsp;基于jQuery的AJAX跨域问题完美解决方案[转](7)</a>
+			</li>
+		
+			<li>
+				<a id="SingleColumn1__2f936f_TopList_ctl04_Hyperlink1" href="http://www.blogjava.net/xiaomage234/archive/2008/01/04/172763.html">4.&nbsp;开机自动启动服务(5)</a>
+			</li>
+		
+			<li>
+				<a id="SingleColumn1__2f936f_TopList_ctl05_Hyperlink1" href="http://www.blogjava.net/xiaomage234/archive/2008/11/29/243386.html">5.&nbsp;解决IE6、IE7、IE8样式不兼容问题(5)</a>
+			</li>
+		
+			</ul>
+		
+</div>
+
+<h3>60天内阅读排行</h3>
+<div class="RecentComment">
+	
+			<ul>
+		
+			<li>
+				<a id="SingleColumn1__3089d2c_TopList_ctl01_Hyperlink1" href="http://www.blogjava.net/xiaomage234/archive/2012/11/12/391196.html">1.&nbsp;Amazon AWS 漫游指南(44)</a>
+			</li>
+		
+			<li>
+				<a id="SingleColumn1__3089d2c_TopList_ctl02_Hyperlink1" href="http://www.blogjava.net/xiaomage234/archive/2012/11/05/390813.html">2.&nbsp;大流量网站的底层系统架构(35)</a>
+			</li>
+		
+			<li>
+				<a id="SingleColumn1__3089d2c_TopList_ctl03_Hyperlink1" href="http://www.blogjava.net/xiaomage234/archive/2012/11/15/391374.html">3.&nbsp;【转】淘宝TFS分布式文件系统 + php接口(33)</a>
+			</li>
+		
+			<li>
+				<a id="SingleColumn1__3089d2c_TopList_ctl04_Hyperlink1" href="http://www.blogjava.net/xiaomage234/archive/2012/11/25/391924.html">4.&nbsp;macport vs brew(31)</a>
+			</li>
+		
+			<li>
+				<a id="SingleColumn1__3089d2c_TopList_ctl05_Hyperlink1" href="http://www.blogjava.net/xiaomage234/archive/2012/11/22/391770.html">5.&nbsp;用nexus搭建maven私服(28)</a>
+			</li>
+		
+			</ul>
+		
+</div>
+				
+				<div class="spacer">&nbsp;</div>
+			</div>
+			
+			<div id="main">
+				
+					
+<div class="block">
+	<h1 class="block_title"><a id="viewpost1_TitleUrl" href="./詳解Linux下auto工具製作Makefile源碼包_files/詳解Linux下auto工具製作Makefile源碼包.htm">详解Linux下auto工具制作Makefile源码包（制作篇）</a></h1>
+	<div class="post">
+		<div class="postcontent">
+			<p style="color: #333333; font-family: tahoma, 宋体; line-height: 22px; background-color: #efefef; ">一、 概述</p><p style="color: #333333; font-family: tahoma, 宋体; line-height: 22px; background-color: #efefef; ">为了更好的制作configure与Makefile，我先把制作流程给写在这里，好让大伙都有个心理准备。这里只说流程，不做解释。（附图供参考）</p><p align="center" style="color: #333333; font-family: tahoma, 宋体; line-height: 22px; background-color: #efefef; "><br></p><p style="color: #333333; font-family: tahoma, 宋体; line-height: 22px; background-color: #efefef; ">1、autosan命令生成configure.scan文件，这只是个模板，我们重新编辑这个文件，并把它保存为configure.in文件。</p><p style="color: #333333; font-family: tahoma, 宋体; line-height: 22px; background-color: #efefef; ">2、aclocal命令生成aclocal.m4文件。</p><p style="color: #333333; font-family: tahoma, 宋体; line-height: 22px; background-color: #efefef; ">3、autoheader命令生成config.h.in。前提是aclocal.m4和configure.in必须生成。</p><p style="color: #333333; font-family: tahoma, 宋体; line-height: 22px; background-color: #efefef; ">4、autoconf命令生成configure文件(这个文件都很熟悉吧，嘎嘎)。</p><p style="color: #333333; font-family: tahoma, 宋体; line-height: 22px; background-color: #efefef; ">5、创建并编辑Makefile.am，这个文件在根目录与子目录都应该有的。</p><p style="color: #333333; font-family: tahoma, 宋体; line-height: 22px; background-color: #efefef; ">6、automake命令生成Makefile.in。</p><p style="color: #333333; font-family: tahoma, 宋体; line-height: 22px; background-color: #efefef; ">7、./configure命令，根据Makefile.in生成Makefile文件，这个再熟悉不过了吧。</p><p style="color: #333333; font-family: tahoma, 宋体; line-height: 22px; background-color: #efefef; ">相关阅读： 详解Linux下auto工具制作Makefile源码包（工具安装篇）<a title="详解Linux下auto工具制作Makefile源码包（工具安装篇）" href="http://www.linuxidc.com/Linux/2011-05/36616.htm" target="" style="color: #b32bd5; ">http://www.linuxidc.com/Linux/2011-05/36616.htm</a></p><p style="color: #333333; font-family: tahoma, 宋体; line-height: 22px; background-color: #efefef; ">二、&nbsp;&nbsp;&nbsp;&nbsp; 制作</p><p style="color: #333333; font-family: tahoma, 宋体; line-height: 22px; background-color: #efefef; ">巧妇难做无米之炊，要想完成这次体验，我们还得按规矩一步一步来，源文件得有。首先建个目录Family用来放我们的东西，它下面的东西就多了。源代码什么阿c，阿h啊，都放在src下面，src这个文件夹命名一般都是约定俗成的，我们也不破坏。当然你也可以起其他名字，别搞忘就好。</p><p style="color: #333333; font-family: tahoma, 宋体; line-height: 22px; background-color: #efefef; ">&lt;Family&gt;</p><p style="color: #333333; font-family: tahoma, 宋体; line-height: 22px; background-color: #efefef; ">　　　|-configure.in</p><p style="color: #333333; font-family: tahoma, 宋体; line-height: 22px; background-color: #efefef; ">　　　|-Makefile.am　</p><p style="color: #333333; font-family: tahoma, 宋体; line-height: 22px; background-color: #efefef; ">　　　|-&lt;src&gt;</p><p style="color: #333333; font-family: tahoma, 宋体; line-height: 22px; background-color: #efefef; ">　　　　　|-wife.c</p><p style="color: #333333; font-family: tahoma, 宋体; line-height: 22px; background-color: #efefef; ">　　　　　|-daughter.c&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; |-main.c</p><p style="color: #333333; font-family: tahoma, 宋体; line-height: 22px; background-color: #efefef; ">　　　　　|-wife.h&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; |-daughter.h</p><p style="color: #333333; font-family: tahoma, 宋体; line-height: 22px; background-color: #efefef; ">　　　　　|-Makefile.am</p><p style="color: #333333; font-family: tahoma, 宋体; line-height: 22px; background-color: #efefef; ">※说明:</p><p style="color: #333333; font-family: tahoma, 宋体; line-height: 22px; background-color: #efefef; ">1. configure.in　这是最重要的文档，整个安装过程都靠它来主导。</p><p style="color: #333333; font-family: tahoma, 宋体; line-height: 22px; background-color: #efefef; ">2. Makefile.am　automake会根据它来生成Makefile.in，再由./configure Makefile.in变成最终的Makefile，一般来说在顶级目录和各个子目录都应该有一个Makefile.am</p><p style="color: #333333; font-family: tahoma, 宋体; line-height: 22px; background-color: #efefef; ">3. wife.c daughter.c main.c wife.h daughter.h　这是我们的源程序。</p><p style="color: #333333; font-family: tahoma, 宋体; line-height: 22px; background-color: #efefef; ">不用细看，这些文件除了configure.in是用模板创建手动编辑外，其他都是手动创建并编辑的，如果你还木有，动手吧。其实这里边有个小小的经验，也不一定是对的，只是个人的经验，也就是后缀名为in的文件是生成的模板。</p><p style="color: #333333; font-family: tahoma, 宋体; line-height: 22px; background-color: #efefef; ">$ mkdir –p Family/src</p><p style="color: #333333; font-family: tahoma, 宋体; line-height: 22px; background-color: #efefef; ">$ touch Makefile.am</p><p style="color: #333333; font-family: tahoma, 宋体; line-height: 22px; background-color: #efefef; ">$ cd src</p><p style="color: #333333; font-family: tahoma, 宋体; line-height: 22px; background-color: #efefef; ">$ touch wife.c daughter.c main.c wife.h daughter.h Makefile.am</p><p style="color: #333333; font-family: tahoma, 宋体; line-height: 22px; background-color: #efefef; ">$ cd ..&nbsp; 进入刚创建的Family目录</p><p style="color: #333333; font-family: tahoma, 宋体; line-height: 22px; background-color: #efefef; ">$ autoscan 该命令产生 configure.scan 和 configure.log两个文件，然后</p><p style="color: #333333; font-family: tahoma, 宋体; line-height: 22px; background-color: #efefef; ">$ mv configure.scan configure.i n这样configure.in就创建成了。</p><p style="color: #333333; font-family: tahoma, 宋体; line-height: 22px; background-color: #efefef; ">※源代码内容：</p><p style="color: #333333; font-family: tahoma, 宋体; line-height: 22px; background-color: #efefef; "><strong>main.c:</strong>&nbsp;</p><p style="color: #333333; font-family: tahoma, 宋体; line-height: 22px; background-color: #efefef; ">#include &lt;stdio.h&gt;</p><p style="color: #333333; font-family: tahoma, 宋体; line-height: 22px; background-color: #efefef; ">#include "wife.h"</p><p style="color: #333333; font-family: tahoma, 宋体; line-height: 22px; background-color: #efefef; ">#include "daughter.h"</p><p style="color: #333333; font-family: tahoma, 宋体; line-height: 22px; background-color: #efefef; ">#ifdef HAVE_CONFIG_H</p><p style="color: #333333; font-family: tahoma, 宋体; line-height: 22px; background-color: #efefef; ">#include &lt;config.h&gt;</p><p style="color: #333333; font-family: tahoma, 宋体; line-height: 22px; background-color: #efefef; ">#endif</p><p style="color: #333333; font-family: tahoma, 宋体; line-height: 22px; background-color: #efefef; ">int main(void)</p><p style="color: #333333; font-family: tahoma, 宋体; line-height: 22px; background-color: #efefef; ">{</p><p style="color: #333333; font-family: tahoma, 宋体; line-height: 22px; background-color: #efefef; ">printf( "These are my girls\n");</p><p style="color: #333333; font-family: tahoma, 宋体; line-height: 22px; background-color: #efefef; ">daughter_say();</p><p style="color: #333333; font-family: tahoma, 宋体; line-height: 22px; background-color: #efefef; ">wife_say();</p><p style="color: #333333; font-family: tahoma, 宋体; line-height: 22px; background-color: #efefef; ">return 0;</p><p style="color: #333333; font-family: tahoma, 宋体; line-height: 22px; background-color: #efefef; ">}</p><p style="color: #333333; font-family: tahoma, 宋体; line-height: 22px; background-color: #efefef; "><strong>daughter.c</strong></p><p style="color: #333333; font-family: tahoma, 宋体; line-height: 22px; background-color: #efefef; ">#include &lt;stdio.h&gt;</p><p style="color: #333333; font-family: tahoma, 宋体; line-height: 22px; background-color: #efefef; ">#include "daughter.h"</p><p style="color: #333333; font-family: tahoma, 宋体; line-height: 22px; background-color: #efefef; ">#ifdef HAVE_CONFIG_H</p><p style="color: #333333; font-family: tahoma, 宋体; line-height: 22px; background-color: #efefef; ">#include &lt;config.h&gt;</p><p style="color: #333333; font-family: tahoma, 宋体; line-height: 22px; background-color: #efefef; ">#endif</p><p style="color: #333333; font-family: tahoma, 宋体; line-height: 22px; background-color: #efefef; ">void daughter_say(void)</p><p style="color: #333333; font-family: tahoma, 宋体; line-height: 22px; background-color: #efefef; ">{</p><p style="color: #333333; font-family: tahoma, 宋体; line-height: 22px; background-color: #efefef; ">printf("My Dad ,are you call me ?\n");</p><p style="color: #333333; font-family: tahoma, 宋体; line-height: 22px; background-color: #efefef; ">}</p><p style="color: #333333; font-family: tahoma, 宋体; line-height: 22px; background-color: #efefef; "><strong>daughter.h</strong></p><p style="color: #333333; font-family: tahoma, 宋体; line-height: 22px; background-color: #efefef; ">#ifndef _DAUGHTER_</p><p style="color: #333333; font-family: tahoma, 宋体; line-height: 22px; background-color: #efefef; ">#define _DAUGHTER_</p><p style="color: #333333; font-family: tahoma, 宋体; line-height: 22px; background-color: #efefef; ">void daughter_say(void);</p><p style="color: #333333; font-family: tahoma, 宋体; line-height: 22px; background-color: #efefef; ">#endif</p><p style="color: #333333; font-family: tahoma, 宋体; line-height: 22px; background-color: #efefef; "><strong>wife.c</strong></p><p style="color: #333333; font-family: tahoma, 宋体; line-height: 22px; background-color: #efefef; ">#include &lt;stdio.h&gt;</p><p style="color: #333333; font-family: tahoma, 宋体; line-height: 22px; background-color: #efefef; ">#include "wife.h"</p><p style="color: #333333; font-family: tahoma, 宋体; line-height: 22px; background-color: #efefef; ">#ifdef HAVE_CONFIG_H</p><p style="color: #333333; font-family: tahoma, 宋体; line-height: 22px; background-color: #efefef; ">#include &lt;config.h&gt;</p><p style="color: #333333; font-family: tahoma, 宋体; line-height: 22px; background-color: #efefef; ">#endif</p><p style="color: #333333; font-family: tahoma, 宋体; line-height: 22px; background-color: #efefef; ">void wife_say(void)</p><p style="color: #333333; font-family: tahoma, 宋体; line-height: 22px; background-color: #efefef; ">{</p><p style="color: #333333; font-family: tahoma, 宋体; line-height: 22px; background-color: #efefef; ">printf("My darling ,are you call me ?\n");</p><p style="color: #333333; font-family: tahoma, 宋体; line-height: 22px; background-color: #efefef; ">}</p><p style="color: #333333; font-family: tahoma, 宋体; line-height: 22px; background-color: #efefef; "><strong>wife.h</strong></p><p style="color: #333333; font-family: tahoma, 宋体; line-height: 22px; background-color: #efefef; ">#ifndef _WIFE_</p><p style="color: #333333; font-family: tahoma, 宋体; line-height: 22px; background-color: #efefef; ">#define _WIFE_</p><p style="color: #333333; font-family: tahoma, 宋体; line-height: 22px; background-color: #efefef; ">void wife_say(void);</p><p style="color: #333333; font-family: tahoma, 宋体; line-height: 22px; background-color: #efefef; ">#endif<br></p><p>※制作流程：</p><p>第1步：编辑configure.in文件。</p><p>上面用autoscan生成的scan后缀的文件改名而成的configure.in文件，我的用autoconf版本是2.66，貌似autoscan自动生成的模板2.61之前与之后的不大一样，这点可以自己参照自己的版本修改，2.61以后的版本这个文件更简单了。</p><p>打开看看：&nbsp; #&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -*- Autoconf -*-</p><p># Process this file with autoconf to produce a configure script.</p><p>AC_PREREQ([2.66])</p><p>AC_INIT([family], [1.0], [804927399@qq.com])</p><p>AM_INIT_AUTOMAKE(family,1.0)</p><p>AC_CONFIG_SRCDIR([src/wife.c])</p><p>AC_CONFIG_HEADERS([config.h])</p><p># Checks for programs.</p><p>AC_PROG_CC</p><p># Checks for libraries.</p><p># Checks for header files.</p><p># Checks for typedefs, structures, and compiler characteristics.</p><p># Checks for library functions.</p><p>AC_CONFIG_FILES([Makefile</p><p>src/Makefile])</p><p>AC_OUTPUT</p><p>configure.in 未修改版，简单对上面进行说明：</p><p>AC_PREREQ([2.66])这个宏是用来检测autoconf的版本的。</p><p>AC_INIT（）是个初始化宏，括号中内容分别为：要生成的软件名称，版本号，bug报告邮箱</p><p>AM_INIT_AUTOMAKE(family,1.0)这个宏是新添加的，不过好像1.8的automake不用添加这个也可以，但是我没有添加的时候在后面make的时候会有“Makefile:15: *** 遗漏分隔符 。 停止。”的问题，而加上则有警告。现在还真有点晕呼呼滴。</p><p>AC_CONFIG_SRCDIR([src/wife.c])这个宏是用来检测源码目录的有效性，srcdir就可以看出来，括号里边的文件不一定非得是wife.c，也可以改成其他的。</p><p>AC_CONFIG_HEADERS([config.h])这个宏用来生成标准的config.h文件。</p><p>接下来的内容就是众多的check了</p><p>AC_PROG_CC这个是检测编译器的宏。</p><p>我们用的版本不用AC_OUTPUT输出了，还是比较省力的。</p><p>第2步：aclocal命令生成aclocal.m4文件</p><p>不知为何，我直接用命令：</p><p>$aclocal 命令总是出错：aclocal</p><p>aclocal: couldn't open directory `/usr/local/share/aclocal-': 没有那个文件或目录。</p><p>最后还是加上绝对路径/usr/bin/aclocal总算是没这个错误，生成aclocal.m4了。</p><p>第3步：autoconf命令生成 configure文件</p><p>这一步没什么难度，输入命令：</p><p>$ autoconf 就ok了，autoconf可以根据configure.in和aclocal.m4生成大名鼎鼎的configure，这时候已经可以运行它了，但是会报错，因为Makefile.in还没出现。</p><p>那么何为M4呢，M4的名称取自Macro（M后面跟4个字母…）。它和C预处理器里的宏是一个概念（其实，M4和C预处理器都K&amp;R操刀设计的！！），用来处理文本替换。也就是说，M4是bash里的预处理器。</p><p>第4步：autoheader命令生成config.h.in</p><p>$ autoheader通过autoheader命令，我们就可以得到config.h.in这个东东了。有了它，./configure才会生成config.h这个东东，所以不可大意。</p><p>autoheader这个工具通常会从“acconfig.h”文件中复制用户附加的符号定义，因此此处没有附加符号定义，所以不需要创建“acconfig.h”文件。</p><p>第5步：编辑Makefile.am文件</p><p>我们再编译安装源码包的时候都知道./configure可以生成Makefile，殊不知要生成Makefile还全仰仗Makefile.in这个老东西，而这个东西是以in结尾的 ，也是个模板，是由Makefile.am生成的，好了，知道这个来龙去脉了，就着手编写Makefile.am，我们这里Family顶级目录与子目录各有一个，如果还有其他的子目录，理论上也是需要Makefile.am的。我们这就来编辑它：</p><p>Family/Makefile.am内容如下：</p><p>AUTOMAKE_OPTIONS = foreign</p><p>SUBDIRS = src</p><p>Family/src/Makefile.am内容如下：</p><p>AUTOMAKE_OPTIONS = foreign</p><p>bin_PROGRAMS = family</p><p>family_SOURCES = main.c wife.c daughter.c wife.h daughter.h</p><p>其中的AUTOMAKE_OPTIONS为设置automake的选项。由于GNU对自己发布的软件有严格的规范，比如必须附带许可证声明文件COPYING等，否则automake执行时会报错。automake提供了三种软件等级：foreign、gnu和gnits，让用 户选择采用，默认等级为gnu。在本例使用foreign等级，它只检测必须的文件，而不用检查README啊什么的。</p><p>bin_PROGRAMS定义要产生的执行文件名。如果要产生多个执行文件，每个文件名用空格隔开。</p><p>family_SOURCES定义“family”这个执行程序所需要的原始文件。如果”family”这个程序是由多个原始文件所产生的，则必须把它所用到的所有原 始文件都列出来，并用空格隔开。如果源文件名字太长，可以加上”\”行连接符换行书写。</p><p>第6步：automake --add-missing命令生成config.h.in</p><p>$ automake –a或者 automake -–add-missing，大功告成！</p><p>注意运行automake命令时一定要加参数，否则不会自动生成install.sh，missing等脚本，这样会出乱子滴。</p><p>这样，源码安装包就制作成了，用tar打包就可以了，使用的时候用三部曲./configure,make ， make install安装即可，帅吧！</p><p></p>
+		</div>
+		<div class="itemdesc">
+			posted on 2012-11-29 15:48 <a href="http://www.blogjava.net/xiaomage234/">小马歌</a> 阅读(15) <a href="http://www.blogjava.net/xiaomage234/archive/2012/11/29/392204.html#Post">评论(0)</a> &nbsp;<a href="http://www.blogjava.net/xiaomage234/admin/EditPosts.aspx?postid=392204">编辑</a> &nbsp;<a href="http://www.blogjava.net/xiaomage234/AddToFavorite.aspx?id=392204">收藏</a>  所属分类: <a href="http://www.blogjava.net/xiaomage234/category/28303.html">web tools</a> 
+		</div>
+	</div>
+	<div class="seperator">&nbsp;</div>
+	<img src="./詳解Linux下auto工具製作Makefile源碼包_files/392204.html" width="1" height="1">
+	
+<!--
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+xmlns:dc="http://purl.org/dc/elements/1.1/"
+xmlns:trackback="http://madskills.com/public/xml/rss/module/trackback/">
+<rdf:Description
+rdf:about="http://www.blogjava.net/xiaomage234/archive/2012/11/29/392204.html"
+dc:identifier="http://www.blogjava.net/xiaomage234/archive/2012/11/29/392204.html"
+dc:title="详解Linux下auto工具制作Makefile源码包（制作篇）"
+trackback:ping="http://www.blogjava.net/xiaomage234/services/trackbacks/392204.aspx" />
+</rdf:RDF>
+-->
+
+<script type="text/javascript">
+//<![CDATA[
+Sys.WebForms.PageRequestManager._initialize('AjaxHolder$scriptmanager1', document.getElementById('Form1'));
+Sys.WebForms.PageRequestManager.getInstance()._updateControls(['tAjaxHolder$UpdatePanel1'], [], [], 90);
+//]]>
+</script>
+
+<div id="AjaxHolder_UpdatePanel1">
+	    
+    
+<style>
+td { font-size: 12px }
+.commentTextBox 
+{ 
+    font-family : Verdana; 
+    font-size: 13px;
+ }
+</style>
+<!--Beging Temp Save-->
+<style>.userData { BEHAVIOR: url(#default#userdata) }
+	</style>
+<div class="userData" id="CommentsPersistDiv"></div>
+
+<script type="text/javascript">
+function pageLoad()
+{
+    Sys.WebForms.PageRequestManager.getInstance().add_initializeRequest(handleInitializeRequest);
+    //Sys.WebForms.PageRequestManager.getInstance().add_endRequest(handleEndRequest);
+}
+
+function handleInitializeRequest(sender, args)
+{
+    var prm = Sys.WebForms.PageRequestManager.getInstance();
+    var eid = args.get_postBackElement().id;
+    if (eid.indexOf("DeleteLink")>0) 
+    {
+       args.get_postBackElement().innerHTML = "<font color='red'>正在删除...</font>";         
+    }    
+    else if (eid.indexOf("btnSubmit")>0) 
+    {
+       document.getElementById("AjaxHolder_PostComment_ltSubmitMsg").innerHTML="正在提交...";
+       document.getElementById("AjaxHolder_PostComment_btnSubmit").disabled = true;       
+    }   
+    else if(eid.indexOf("refreshList")>0)
+    {
+        document.getElementById("AjaxHolder_PostComment_refreshList").innerHTML="<font color='red'>正在刷新...</font>";
+    }
+   
+}	
+
+function TempSave(ElementID)
+{
+	try
+	{
+	CommentsPersistDiv.setAttribute("CommentContent",document.getElementById(ElementID).value);
+	CommentsPersistDiv.save("CommentXMLStore");
+	}
+	catch(ex)
+	{
+	}
+	
+}
+function Restore(ElementID)
+{
+	CommentsPersistDiv.load("CommentXMLStore");
+	document.getElementById(ElementID).value=CommentsPersistDiv.getAttribute("CommentContent");
+}	
+			
+			
+</script>
+<!--Ene TempSave-->
+<div id="divRefreshComments" style="text-align:right;margin-right:10px;margin-bottom:5px;font-size:12px"><a href="http://www.blogjava.net/RequireRegister.aspx">新用户注册</a>&nbsp;&nbsp;<a id="AjaxHolder_PostComment_refreshList" href="javascript:__doPostBack('AjaxHolder$PostComment$refreshList','')">刷新评论列表</a>&nbsp;&nbsp;</div>
+<div class="commentform">
+<span id="AjaxHolder_PostComment_ltSubmitMsg" style="color:Red;"></span>
+<br>
+<a name="Feedback"></a>
+	<div id="AjaxHolder_PostComment_divCommnentArea">
+		</div><table cellspacing="1" cellpadding="1" border="0">	
+		<tbody><tr>
+		<td id="AjaxHolder_PostComment_tdOnCommentForm" colspan="3" style="line-height:1.5">
+		<a href="http://job.cnblogs.com/" target="_blank">找优秀程序员，就在博客园</a><br>
+		<!--<a href="http://zt.cnblogs.com/training/2012/" target="_blank">国家职业资格证书-Java高级程序设计员免费培训（上海）</a>-->
+		<!--<div>
+		技术专题：<br/>
+		<a href="http://kb.cnblogs.com/zt/jquery/" title="jQuery" target="_blank">jQuery</a>&nbsp; &nbsp;<a href="http://kb.cnblogs.com/zt/android/" title="Android" target="_blank">Android</a>&nbsp; &nbsp;<a href="http://kb.cnblogs.com/zt/ipad/" title="iPad" target="_blank">iPad</a>
+		</div>-->
+		</td>
+	
+		</tr>
+		<tr>
+			<td colspan="3"></td>
+		</tr>
+		<tr>
+			<td width="75"></td>
+			<td></td>
+			<td></td>
+		</tr>
+		<tr>
+			<td></td>
+			<td colspan="2">
+			<a href="http://www.cnblogs.com/" target="_blank">博客园</a>&nbsp;  <a href="http://q.cnblogs.com/" target="_blank">博问</a>&nbsp; <a href="http://news.cnblogs.com/" target="_blank">IT新闻</a>&nbsp; <!--<a href="http://home.cnblogs.com/ing/" target="_blank">闪存</a>&nbsp;  <a href="http://a4.yeshj.com/rd/36007/" target="_blank">学英语</a>&nbsp;  --><a href="http://job.cnblogs.com/cate-java_programmer/" target="_blank">Java程序员招聘</a>
+			</td>
+		</tr>
+		<tr>
+			<td width="55">标题</td>
+			<td><input name="AjaxHolder$PostComment$tbTitle" type="text" value="re: 详解Linux下auto工具制作Makefile源码包（制作篇）" id="AjaxHolder_PostComment_tbTitle" class="commenttb" style="width:320"></td>
+			<td><span id="AjaxHolder_PostComment_RequiredFieldValidator1" style="color:Red;visibility:hidden;">请输入标题</span></td>
+		</tr>
+		<tr>
+			<td>姓名</td>
+			<td><input name="AjaxHolder$PostComment$tbName" type="text" id="AjaxHolder_PostComment_tbName" class="commenttb" style="width:320"></td>
+			<td><span id="AjaxHolder_PostComment_RequiredFieldValidator2" style="color:Red;visibility:hidden;">请输入你的姓名</span></td>
+		</tr>
+		<tr>
+			<td>主页</td>
+			<td><input name="AjaxHolder$PostComment$tbUrl" type="text" id="AjaxHolder_PostComment_tbUrl" class="commenttb" style="width:320"></td>
+			<td><font face="宋体"></font></td>
+		</tr>
+		<tr>
+			<td align="left" colspan="3">
+				<table id="AjaxHolder_PostComment_tbCaptchaImage" class="CommentForm" cellspacing="0" cellpadding="0" border="0">
+		<tbody><tr>
+			<td colspan="3">
+							<span id="AjaxHolder_PostComment_Requiredfieldvalidator4" style="color:Red;display:none;">请输入验证码</span>
+							<span id="AjaxHolder_PostComment_lblImage" style="color:Red;font-weight:bold;"></span>
+						</td>
+		</tr>
+		<tr>
+			<td width="78">验证码</td>
+			<td><input name="AjaxHolder$PostComment$CodeNumberTextBox" type="text" id="AjaxHolder_PostComment_CodeNumberTextBox">*&nbsp;&nbsp;<img src="./詳解Linux下auto工具製作Makefile源碼包_files/JpegImage.aspx"></td>
+			<td align="left"></td>
+		</tr>
+	</tbody></table>
+	
+			</td>
+		</tr>
+		<tr>
+			<td colspan="3">内容(请不要发表任何与政治相关的内容)
+				<span id="AjaxHolder_PostComment_RequiredFieldValidator3" style="color:Red;visibility:hidden;">请输入评论内容</span><br>
+				<textarea name="AjaxHolder$PostComment$tbComment" rows="10" cols="50" id="AjaxHolder_PostComment_tbComment" class="commentTextBox" onkeydown="ctlent(event,&#39;AjaxHolder_PostComment_tbComment&#39;)" style="Width:480;Height:220"></textarea></td>
+		</tr>
+		<tr>
+			<td colspan="3">
+		<span id="AjaxHolder_PostComment_Message" style="color:Red;"></span>
+		</td>
+		</tr><tr>
+			<td colspan="3"><input id="AjaxHolder_PostComment_chkRemember" type="checkbox" name="AjaxHolder$PostComment$chkRemember" checked="checked" tabindex="-1"><label for="AjaxHolder_PostComment_chkRemember">Remember Me?</label></td>
+		</tr>
+		<tr>
+			<td height="23"><input type="submit" name="AjaxHolder$PostComment$btnSubmit" value="提交" onclick="TempSave(&#39;AjaxHolder_PostComment_tbComment&#39;);WebForm_DoPostBackWithOptions(new WebForm_PostBackOptions(&quot;AjaxHolder$PostComment$btnSubmit&quot;, &quot;&quot;, true, &quot;&quot;, &quot;&quot;, false, false))" id="AjaxHolder_PostComment_btnSubmit" class="commentButton">
+				</td>
+			<td colspan="2" height="23">&nbsp;
+				<a id="AjaxHolder_PostComment_lnkLogin" href="http://www.blogjava.net/login.aspx?ReturnURL=http://www.blogjava.net/xiaomage234/archive/2012/11/29/392204.html&SourceURL=/xiaomage234/archive/2012/11/29/392204.html">登录</a>&nbsp;&nbsp;<!--<a id="AjaxHolder_PostComment_linkLoginComment" OnClick="if(document.getElementById('AjaxHolder_PostComment_tbComment').value != '') return confirm('未提交的评论内容将会丢失, 你真的要进入高级评论吗?');" href="http://www.blogjava.net/xiaomage234/archive/2012/11/29/392204.html?login=1#Post">使用高级评论</a>&nbsp;&nbsp;<a href="http://www.blogjava.net/RequireRegister.aspx">新用户注册</a>&nbsp;&nbsp;<A href="#Top">返回页首</A>&nbsp;&nbsp;<a id="AjaxHolder_PostComment_lbRestore" OnClick="Restore('AjaxHolder_PostComment_tbComment'); return false;" href="/xiaomage234/archive/2012/11/29/392204.html#Post">恢复上次提交</a>&nbsp;&nbsp;-->&nbsp;&nbsp;&nbsp;&nbsp;
+				</td>
+		</tr>
+		<tr>
+			<td colspan="3"><label class="CtrlEnter">[使用Ctrl+Enter键可以直接提交]</label></td>
+		</tr>
+		
+		
+		<tr>
+			<td colspan="3"><!----></td>
+		</tr>
+		<!--
+		<TR>
+			<TD colSpan="3" height="5"></TD>
+		</TR>	
+		-->	
+		<tr>
+		<td colspan="3">
+		
+<script type="text/javascript">
+var googletag = googletag || {};
+googletag.cmd = googletag.cmd || [];
+(function() {
+var gads = document.createElement('script');
+gads.async = true;
+gads.type = 'text/javascript';
+var useSSL = 'https:' == document.location.protocol;
+gads.src = (useSSL ? 'https:' : 'http:') + 
+'//www.googletagservices.com/tag/js/gpt.js';
+var node = document.getElementsByTagName('script')[0];
+node.parentNode.insertBefore(gads, node);
+})();
+</script>
+
+<script type="text/javascript">
+googletag.cmd.push(function() {
+googletag.defineSlot('/1090369/blogjava_blogpost_bottom', [300, 250], 'div-gpt-ad-1343724280665-0').addService(googletag.pubads());
+googletag.pubads().enableSingleRequest();
+googletag.enableServices();
+});
+</script>
+
+<!-- blogjava_blogpost_bottom -->
+<div id="div-gpt-ad-1343724280665-0" style="width: 300px; height: 250px;">
+<script type="text/javascript">
+googletag.cmd.push(function() { googletag.display('div-gpt-ad-1343724280665-0'); });
+</script>
+<iframe id="google_ads_iframe_/1090369/blogjava_blogpost_bottom_0" name="google_ads_iframe_/1090369/blogjava_blogpost_bottom_0" width="300" height="250" scrolling="no" marginwidth="0" marginheight="0" frameborder="0" style="border: 0px;"></iframe><iframe id="google_ads_iframe_/1090369/blogjava_blogpost_bottom_0__hidden__" name="google_ads_iframe_/1090369/blogjava_blogpost_bottom_0__hidden__" width="0" height="0" scrolling="no" marginwidth="0" marginheight="0" frameborder="0" style="border: 0px; visibility: hidden; display: none;"></iframe></div>
+<br>
+
+		</td>
+		</tr>
+		<tr>			
+		<td colspan="3">
+		<div id="itnews_block" style="line-height:180%;" class="other_info_list">IT新闻：<br>· <a href="http://news.cnblogs.com/n/166108/" target="_blank">六成创业者首次创业靠借钱：低龄化成为常态</a><br>· <a href="http://news.cnblogs.com/n/166106/" target="_blank">我国科技论文数居世界第二</a><br>· <a href="http://news.cnblogs.com/n/166105/" target="_blank">亚马逊Appstore应用下载量同比增长500%</a><br>· <a href="http://news.cnblogs.com/n/166104/" target="_blank">为配合苹果要求 鸿海将在美国开生产线</a><br>· <a href="http://news.cnblogs.com/n/166103/" target="_blank">LinkedIn 通过 InCubator 鼓励员工创新</a><br></div><div id="cnblogs_posts" style="line-height:180%;">博客园首页随笔：<br>· <a href="http://www.cnblogs.com/leishiyuning/archive/2012/12/07/2807525.html" target="_blank">MES项目简单总结（技术篇）—— “热替换”及客制化支持的实现（动态加载/卸载程序集）</a><br>· <a href="http://www.cnblogs.com/majiang/archive/2012/12/07/2807514.html" target="_blank">Asp.net web Api源码分析-ParameterBindingAttribute</a><br>· <a href="http://www.cnblogs.com/ejiyuan/archive/2012/12/07/2760477.html" target="_blank">.Net下实现可扩展的编程方法简述</a><br>· <a href="http://www.cnblogs.com/allen0118/archive/2012/12/07/2807435.html" target="_blank">分享一下Oracle 10g和Toad for Oracle的安装步骤</a><br>· <a href="http://www.cnblogs.com/cmt/archive/2012/12/07/2807338.html" target="_blank">博客园电子期刊2012年11月刊发布啦</a><br></div><div id="job_block" style="line-height:180%;">知识库：<br>· <a href="http://kb.cnblogs.com/page/154559/" target="_blank">你好，对话框</a><br>· <a href="http://kb.cnblogs.com/page/158124/" target="_blank">研发经理构建团队的心得分享</a><br>· <a href="http://kb.cnblogs.com/page/158262/" target="_blank">年过50，还能继续当码农吗？</a><br>· <a href="http://kb.cnblogs.com/page/165729/" target="_blank">你可能不知道的Shell</a><br>· <a href="http://kb.cnblogs.com/page/165530/" target="_blank">硅谷创业教父Paul Graham：如何获得创业idea</a><br></div>
+		</td>
+		</tr>
+		<tr>
+		<td colspan="3"></td>
+		</tr>
+		<tr>
+			<td colspan="3" height="1">网站导航:<div id="blogsite">
+			<a href="http://www.cnblogs.com/" title="程序员的网上家园">博客园</a>&nbsp;&nbsp;
+			<a href="http://news.cnblogs.com/">IT新闻</a>&nbsp;&nbsp;
+			<a href="http://kb.cnblogs.com/">知识库</a>&nbsp;&nbsp;
+			<a href="http://www.cppblog.com/">C++博客</a>&nbsp;&nbsp;
+			<a href="http://job.cnblogs.com/">程序员招聘</a>&nbsp;&nbsp;
+			<a href="http://www.blogjava.net/xiaomage234/archive/2012/11/29/392204.html?opt=admin">管理</a>
+			</div>
+		</td>
+		</tr>
+		<tr>
+			<td colspan="3" height="5">
+<div id="divRelativePosts">
+相关文章:
+	
+			<ul style="margin-top:0px;padding-left:0px;">
+		
+			<li style="list-style:none;">
+				<a id="AjaxHolder_PostComment_ctl07_RelativePostsList_ctl01_Hyperlink1" href="http://www.blogjava.net/xiaomage234/archive/2012/11/30/392286.html">Makefile.am详解</a>
+			</li>
+		
+			<li style="list-style:none;display:none">
+				<a id="AjaxHolder_PostComment_ctl07_RelativePostsList_ctl02_Hyperlink1" href="./詳解Linux下auto工具製作Makefile源碼包_files/詳解Linux下auto工具製作Makefile源碼包.htm">详解Linux下auto工具制作Makefile源码包（制作篇）</a>
+			</li>
+		
+			<li style="list-style:none;">
+				<a id="AjaxHolder_PostComment_ctl07_RelativePostsList_ctl03_Hyperlink1" href="http://www.blogjava.net/xiaomage234/archive/2012/11/28/392141.html">RabbitMQ 管理指南(添加虚拟host)</a>
+			</li>
+		
+			<li style="list-style:none;">
+				<a id="AjaxHolder_PostComment_ctl07_RelativePostsList_ctl04_Hyperlink1" href="http://www.blogjava.net/xiaomage234/archive/2012/11/25/391924.html">macport vs brew</a>
+			</li>
+		
+			<li style="list-style:none;">
+				<a id="AjaxHolder_PostComment_ctl07_RelativePostsList_ctl05_Hyperlink1" href="http://www.blogjava.net/xiaomage234/archive/2012/11/22/391770.html">用nexus搭建maven私服</a>
+			</li>
+		
+			<li style="list-style:none;">
+				<a id="AjaxHolder_PostComment_ctl07_RelativePostsList_ctl06_Hyperlink1" href="http://www.blogjava.net/xiaomage234/archive/2012/11/22/391766.html">centos安装git  </a>
+			</li>
+		
+			<li style="list-style:none;">
+				<a id="AjaxHolder_PostComment_ctl07_RelativePostsList_ctl07_Hyperlink1" href="http://www.blogjava.net/xiaomage234/archive/2012/11/22/391763.html">Amazon Simple Storage Service(S3)</a>
+			</li>
+		
+			<li style="list-style:none;">
+				<a id="AjaxHolder_PostComment_ctl07_RelativePostsList_ctl08_Hyperlink1" href="http://www.blogjava.net/xiaomage234/archive/2012/11/15/391364.html">[转]Ketama一致性Hash算法(含Java代码)</a>
+			</li>
+		
+			<li style="list-style:none;">
+				<a id="AjaxHolder_PostComment_ctl07_RelativePostsList_ctl09_Hyperlink1" href="http://www.blogjava.net/xiaomage234/archive/2012/11/12/391196.html">Amazon AWS 漫游指南</a>
+			</li>
+		
+			<li style="list-style:none;">
+				<a id="AjaxHolder_PostComment_ctl07_RelativePostsList_ctl10_Hyperlink1" href="http://www.blogjava.net/xiaomage234/archive/2012/11/08/391012.html">阿里云主机和linode的vps使用体会</a>
+			</li>
+		
+			</ul>
+		
+</div>
+</td>
+		</tr>	
+		<tr>
+			<td colspan="3">&nbsp;</td>
+		</tr>
+		<tr>
+			<td colspan="3" height="5"></td>
+		</tr>
+		<tr>
+			<td colspan="3">
+				</td>
+		</tr>		
+	</tbody></table>	
+</div>
+<div id="AjaxHolder_PostComment_ValidationSummary1" style="color:Red;display:none;">
+
+	</div>
+
+</div>
+
+				
+				<div class="spacer">&nbsp;</div>
+			</div>
+			
+			
+<div class="footer">
+	Powered by: 
+	<br>
+	
+	<a id="Footer1_Hyperlink3" name="Hyperlink1" href="http://www.blogjava.net/" style="font-family:Verdana;font-size:12px;">BlogJava</a>
+	<br>
+	Copyright © 小马歌
+</div>
+		
+		</div>
+    
+<script type="text/javascript">
+//<![CDATA[
+var Page_ValidationSummaries =  new Array(document.getElementById("AjaxHolder_PostComment_ValidationSummary1"));
+var Page_Validators =  new Array(document.getElementById("AjaxHolder_PostComment_RequiredFieldValidator1"), document.getElementById("AjaxHolder_PostComment_RequiredFieldValidator2"), document.getElementById("AjaxHolder_PostComment_Requiredfieldvalidator4"), document.getElementById("AjaxHolder_PostComment_RequiredFieldValidator3"));
+//]]>
+</script>
+
+<script type="text/javascript">
+//<![CDATA[
+var AjaxHolder_PostComment_RequiredFieldValidator1 = document.all ? document.all["AjaxHolder_PostComment_RequiredFieldValidator1"] : document.getElementById("AjaxHolder_PostComment_RequiredFieldValidator1");
+AjaxHolder_PostComment_RequiredFieldValidator1.controltovalidate = "AjaxHolder_PostComment_tbTitle";
+AjaxHolder_PostComment_RequiredFieldValidator1.errormessage = "请输入标题";
+AjaxHolder_PostComment_RequiredFieldValidator1.evaluationfunction = "RequiredFieldValidatorEvaluateIsValid";
+AjaxHolder_PostComment_RequiredFieldValidator1.initialvalue = "";
+var AjaxHolder_PostComment_RequiredFieldValidator2 = document.all ? document.all["AjaxHolder_PostComment_RequiredFieldValidator2"] : document.getElementById("AjaxHolder_PostComment_RequiredFieldValidator2");
+AjaxHolder_PostComment_RequiredFieldValidator2.controltovalidate = "AjaxHolder_PostComment_tbName";
+AjaxHolder_PostComment_RequiredFieldValidator2.errormessage = "请输入你的姓名";
+AjaxHolder_PostComment_RequiredFieldValidator2.evaluationfunction = "RequiredFieldValidatorEvaluateIsValid";
+AjaxHolder_PostComment_RequiredFieldValidator2.initialvalue = "";
+var AjaxHolder_PostComment_Requiredfieldvalidator4 = document.all ? document.all["AjaxHolder_PostComment_Requiredfieldvalidator4"] : document.getElementById("AjaxHolder_PostComment_Requiredfieldvalidator4");
+AjaxHolder_PostComment_Requiredfieldvalidator4.controltovalidate = "AjaxHolder_PostComment_CodeNumberTextBox";
+AjaxHolder_PostComment_Requiredfieldvalidator4.errormessage = "请输入验证码";
+AjaxHolder_PostComment_Requiredfieldvalidator4.display = "Dynamic";
+AjaxHolder_PostComment_Requiredfieldvalidator4.evaluationfunction = "RequiredFieldValidatorEvaluateIsValid";
+AjaxHolder_PostComment_Requiredfieldvalidator4.initialvalue = "";
+var AjaxHolder_PostComment_RequiredFieldValidator3 = document.all ? document.all["AjaxHolder_PostComment_RequiredFieldValidator3"] : document.getElementById("AjaxHolder_PostComment_RequiredFieldValidator3");
+AjaxHolder_PostComment_RequiredFieldValidator3.controltovalidate = "AjaxHolder_PostComment_tbComment";
+AjaxHolder_PostComment_RequiredFieldValidator3.errormessage = "请输入评论内容";
+AjaxHolder_PostComment_RequiredFieldValidator3.evaluationfunction = "RequiredFieldValidatorEvaluateIsValid";
+AjaxHolder_PostComment_RequiredFieldValidator3.initialvalue = "";
+var AjaxHolder_PostComment_ValidationSummary1 = document.all ? document.all["AjaxHolder_PostComment_ValidationSummary1"] : document.getElementById("AjaxHolder_PostComment_ValidationSummary1");
+AjaxHolder_PostComment_ValidationSummary1.showmessagebox = "True";
+AjaxHolder_PostComment_ValidationSummary1.showsummary = "False";
+//]]>
+</script>
+
+
+<script type="text/javascript">
+//<![CDATA[
+
+var Page_ValidationActive = false;
+if (typeof(ValidatorOnLoad) == "function") {
+    ValidatorOnLoad();
+}
+
+function ValidatorOnSubmit() {
+    if (Page_ValidationActive) {
+        return ValidatorCommonOnSubmit();
+    }
+    else {
+        return true;
+    }
+}
+        
+document.getElementById('AjaxHolder_PostComment_ValidationSummary1').dispose = function() {
+    Array.remove(Page_ValidationSummaries, document.getElementById('AjaxHolder_PostComment_ValidationSummary1'));
+}
+Sys.Application.initialize();
+
+document.getElementById('AjaxHolder_PostComment_RequiredFieldValidator1').dispose = function() {
+    Array.remove(Page_Validators, document.getElementById('AjaxHolder_PostComment_RequiredFieldValidator1'));
+}
+
+document.getElementById('AjaxHolder_PostComment_RequiredFieldValidator2').dispose = function() {
+    Array.remove(Page_Validators, document.getElementById('AjaxHolder_PostComment_RequiredFieldValidator2'));
+}
+
+document.getElementById('AjaxHolder_PostComment_Requiredfieldvalidator4').dispose = function() {
+    Array.remove(Page_Validators, document.getElementById('AjaxHolder_PostComment_Requiredfieldvalidator4'));
+}
+
+document.getElementById('AjaxHolder_PostComment_RequiredFieldValidator3').dispose = function() {
+    Array.remove(Page_Validators, document.getElementById('AjaxHolder_PostComment_RequiredFieldValidator3'));
+}
+//]]>
+</script>
+
+    <script type="text/javascript" src="./詳解Linux下auto工具製作Makefile源碼包_files/ShowHidden.js"></script>
+	<script type="text/javascript">
+	  var _gaq = _gaq || [];
+	  _gaq.push(['_setAccount', 'UA-476124-3']);
+	  _gaq.push(['_trackPageview']);
+
+	  (function() {
+		var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+		ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+		var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+	  })();
+	</script>
+
+
+</div></form><div id="wrchoverdiv"><div id="wrccontainer"><div id="wrcheader"><div id="wrctitle"> WebRep</div></div><div class="wrchorizontal"></div><div id="wrccurrentvote">總體評價</div><div class="wrchorizontal"></div><div id="wrcrating"></div><div id="wrcratingtext">此網站沒有任何評價資訊</div><div id="wrcweighttext">（票數不足）</div><div id="wrcflags"><div id="wrcicon_shopping" class="wrcicon"></div><div id="wrcicon_social" class="wrcicon"></div><div id="wrcicon_news" class="wrcicon"></div><div id="wrcicon_it" class="wrcicon"></div><div id="wrcicon_corporate" class="wrcicon"></div><div id="wrcicon_pornography" class="wrcicon"></div><div id="wrcicon_violence" class="wrcicon"></div><div id="wrcicon_gambling" class="wrcicon"></div><div id="wrcicon_drugs" class="wrcicon"></div><div id="wrcicon_illegal" class="wrcicon"></div></div><div class="wrchorizontal"></div></div></div></body><style type="text/css">embed[type*="application/x-shockwave-flash"],embed[src*=".swf"],object[type*="application/x-shockwave-flash"],object[codetype*="application/x-shockwave-flash"],object[src*=".swf"],object[codebase*="swflash.cab"],object[classid*="D27CDB6E-AE6D-11cf-96B8-444553540000"],object[classid*="d27cdb6e-ae6d-11cf-96b8-444553540000"],object[classid*="D27CDB6E-AE6D-11cf-96B8-444553540000"]{	display: none !important;}</style><span id="skype_highlighting_settings" display="none" autoextractnumbers="1"></span><object id="skype_plugin_object" location.href="http://www.blogjava.net/xiaomage234/archive/2012/11/29/392204.html" location.hostname="www.blogjava.net" style="position: absolute; visibility: hidden; left: -100px; top: -100px;" width="0" height="0" type="application/x-vnd.skype.toolbars.npplugin.4.2.0"></object></html>
